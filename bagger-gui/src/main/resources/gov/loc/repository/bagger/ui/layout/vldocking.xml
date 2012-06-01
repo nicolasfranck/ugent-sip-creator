@@ -7,15 +7,18 @@
                <Dockable>
                     <Key dockName="bagView"/>
                 </Dockable>
-               
+
                  <Split orientation="0" location="0.7">
+
                  <Dockable>
                     <Key dockName="profilesView"/>
                 </Dockable>
                  <Dockable>
                     <Key dockName="consoleView"/>
                 </Dockable>
+                
                  </Split>
+               
             </Split>
         </DockingPanel>
     </DockingDesktop>

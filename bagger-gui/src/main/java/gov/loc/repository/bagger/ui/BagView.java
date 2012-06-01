@@ -73,6 +73,7 @@ import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.command.config.CommandConfigurer;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.progress.BusyIndicator;
@@ -646,6 +647,7 @@ public class BagView extends AbstractView implements ApplicationListener {
     	context.register("saveBagAsCommand", saveBagAsExecutor);
     }
 
+    @Override
     public void onApplicationEvent(ApplicationEvent e) {
     	log.info("BagView.onApplicationEvent: " + e);
         if (e instanceof LifecycleApplicationEvent) {
@@ -662,6 +664,7 @@ public class BagView extends AbstractView implements ApplicationListener {
      * is called each time the Timer "goes off".
      */
     class TimerListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             // check if task is completed or user has clicked cancel button
             if (task.hasUserTriedToCancel() || task.isDone()) {

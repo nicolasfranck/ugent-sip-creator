@@ -39,7 +39,7 @@ public class BaggerApplication {
         String richclientApplicationContextPath = rootContextDirectoryClassPath
                 + "/common/richclient-application-context.xml";
      
-
+       
         String businessLayerContextPath = rootContextDirectoryClassPath + "/common/business-layer-context.xml";
 
         try {
