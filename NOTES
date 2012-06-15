@@ -1,0 +1,5 @@
+- veldwaarde in baginfo toevoegen kan nu ook door op enter te drukken (add-button niet nodig)
+- waarde van veldwaarde zou niet leeg mogen zijn => beter 'Rules' voor op te maken?
+- Add files: wanneer een directory aangeklikt is in de lijst van payloads, dan zou de add de bestanden aan die directory moeten toevoegen ipv aan de hoofdmap data
+- payload list: mogelijkheid om bestanden te verplaatsen in de lijst (niet mogelijk nu)
+- profiel kunnen aanpassen (nu enkel tijdens creatie) (en dus laten hervalideren volgens profiel)

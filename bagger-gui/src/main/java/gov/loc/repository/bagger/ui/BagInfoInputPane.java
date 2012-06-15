@@ -20,12 +20,12 @@ import org.springframework.binding.form.HierarchicalFormModel;
 import org.springframework.richclient.form.FormModelHelper;
 
 public class BagInfoInputPane extends JTabbedPane {
-	private static final long serialVersionUID = 1L;
-	private static final Log logger = LogFactory.getLog(BagInfoInputPane.class);
-	
-	private BagView bagView;
-	private DefaultBag defaultBag;
-	private BaggerProfile bagProfile;
+    private static final long serialVersionUID = 1L;
+    private static final Log logger = LogFactory.getLog(BagInfoInputPane.class);
+
+    private BagView bagView;
+    private DefaultBag defaultBag;
+    private BaggerProfile bagProfile;
     private BagInfoForm bagInfoForm = null;
     private OrganizationProfileForm profileForm = null;
     private HierarchicalFormModel infoFormModel = null;
@@ -34,28 +34,28 @@ public class BagInfoInputPane extends JTabbedPane {
 
     public BagInfoInputPane(BagView bagView, boolean b ) {
     	this.bagView = bagView;
-    	this.defaultBag = bagView.getBag();
-    	populateForms(defaultBag, b);
-
+    	this.defaultBag = bagView.getBag();        
+    	populateForms(defaultBag, b); 
         InputMap im = this.getInputMap();
         im.put(KeyStroke.getKeyStroke("F2"), "tabNext");
         ActionMap am = this.getActionMap();
         am.put("tabNext", new AbstractAction("tabNext") {
-        	private static final long serialVersionUID = 1L;
-        	public void actionPerformed(ActionEvent evt) {
-        		try {
-                    int selected = getSelectedIndex();
-                    int count = getComponentCount();
-                    if (selected >= 0 && selected < count-1) {
-                    	setSelectedIndex(selected+1);
-                    } else {
-                    	setSelectedIndex(0);
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                    try {
+                int selected = getSelectedIndex();
+                int count = getComponentCount();
+                if (selected >= 0 && selected < count-1) {
+                    setSelectedIndex(selected+1);
+                } else {
+                    setSelectedIndex(0);
+                }
+                    invalidate();
+                    repaint();
+                    } catch (Exception e) {
                     }
-                	invalidate();
-                	repaint();
-        		} catch (Exception e) {
-        		}
-        	}
+            }
         });
         this.setActionMap(am);
     }
@@ -148,7 +148,7 @@ public class BagInfoInputPane extends JTabbedPane {
     	repaint();
     }
 
-    public void updateProject(BagView bagView) {
+    public void updateProject(BagView bagView) {       
     	bagView.infoInputPane.updateInfoFormsPane(true);
     }
     
@@ -156,8 +156,10 @@ public class BagInfoInputPane extends JTabbedPane {
         HashMap<String,String> map = bagInfoForm.getBagInfoMap();
         bag.updateBagInfo(map);
     }
-    
+    @Override
     public void requestFocus() {
+        System.out.println("focus in BagInfoInputPane requested");
     	bagInfoForm.getControl().requestFocus();
+        System.out.println("focus in BagInfoInputPane done");
     }
 }

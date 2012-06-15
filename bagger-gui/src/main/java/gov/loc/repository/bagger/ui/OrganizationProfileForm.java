@@ -28,12 +28,12 @@ public class OrganizationProfileForm extends AbstractForm implements FocusListen
         this.bagView = bagView;
     }
 
+    @Override
     protected JComponent createFormControl() {
     	form = new JPanel();
-		form.setLayout(new BorderLayout());
+        form.setLayout(new BorderLayout());
         JComponent formFields = createFormFields();
         form.add(formFields, BorderLayout.CENTER);
-
         return form;
     }
 
@@ -138,9 +138,11 @@ public class OrganizationProfileForm extends AbstractForm implements FocusListen
         return contactName.requestFocusInWindow();
     }
 
+    @Override
     public void focusGained(FocusEvent evt) {
     }
 
+    @Override
     public void focusLost(FocusEvent evt) {
     	if (bagView != null && !this.hasErrors() && this.isDirty()) {
         	bagView.infoInputPane.updateBagHandler.updateBag(bagView.getBag());

@@ -20,6 +20,7 @@ public class SaveBagAsHandler extends AbstractAction {
 		this.bagView = bagView;
 	}
 
+    @Override
 	public void actionPerformed(ActionEvent e) {
 		openSaveBagAsFrame();
 	}

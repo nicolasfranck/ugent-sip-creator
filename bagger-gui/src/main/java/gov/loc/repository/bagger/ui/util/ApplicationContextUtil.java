@@ -14,6 +14,7 @@ import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.image.ImageSource;
 
+
 public class ApplicationContextUtil {
 	
 	static {
@@ -21,6 +22,7 @@ public class ApplicationContextUtil {
 	}
 
 	public static String getMessage(String propertyName) {
+                
 		return Application.instance().getApplicationContext().getMessage(
 				propertyName, null, propertyName, Locale.getDefault());
 	}

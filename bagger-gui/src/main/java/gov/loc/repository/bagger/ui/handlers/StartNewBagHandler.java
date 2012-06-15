@@ -19,19 +19,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class StartNewBagHandler extends AbstractAction {
-   	private static final long serialVersionUID = 1L;
-   	private static final Log log = LogFactory.getLog(StartNewBagHandler.class);
-   	
-	BagView bagView;
+    private static final long serialVersionUID = 1L;
+    private static final Log log = LogFactory.getLog(StartNewBagHandler.class);
 
-	public StartNewBagHandler(BagView bagView) {
-		super();
-		this.bagView = bagView;
-	}
+    BagView bagView;
 
-	public void actionPerformed(ActionEvent e) {
-		newBag();
-	}
+    public StartNewBagHandler(BagView bagView) {
+        super();
+        this.bagView = bagView;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        newBag();
+    }
 
     public void newBag() {
     	NewBagFrame newBagFrame = new NewBagFrame(bagView, bagView.getPropertyMessage("bag.frame.new"));
@@ -46,18 +47,18 @@ public class StartNewBagHandler extends AbstractAction {
     	bagView.infoInputPane.bagInfoInputPane.enableForms(true);
 
     	String bagName = bagView.getPropertyMessage("bag.label.noname");
-		bag.setName(bagName);
-		bagView.infoInputPane.setBagName(bagName);
+        bag.setName(bagName);
+        bagView.infoInputPane.setBagName(bagName);
 
         bagView.bagTagFileTree = new BagTree(bagView, bag.getName(), false);
         Collection<BagFile> tags = bag.getTags();
         for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
-        	BagFile bf = it.next();
-        	bagView.bagTagFileTree.addNode(bf.getFilepath());
+            BagFile bf = it.next();
+            bagView.bagTagFileTree.addNode(bf.getFilepath());
         }
         bagView.bagTagFileTreePanel.refresh(bagView.bagTagFileTree);
-		bagView.updateBaggerRules();
-		bag.setRootDir(bagView.getBagRootPath());
+        bagView.updateBaggerRules();
+        bag.setRootDir(bagView.getBagRootPath());
 
     	bagView.infoInputPane.bagInfoInputPane.populateForms(bag, true);
     	ApplicationContextUtil.addConsoleMessage("A new bag has been created in memory.");
@@ -73,11 +74,10 @@ public class StartNewBagHandler extends AbstractAction {
     // TODO refactor
     private void changeProfile(String selected) {
     	Profile profile = bagView.getProfileStore().getProfile(selected);
-		log.info("bagProject: " + profile.getName());
-		DefaultBag bag = bagView.getBag();
-		bag.setProfile(profile, true);
-        bagView.infoInputPane.bagInfoInputPane.updateProject(bagView);
-        
+        log.info("bagProject: " + profile.getName());
+        DefaultBag bag = bagView.getBag();
+        bag.setProfile(profile, true);
+        bagView.infoInputPane.bagInfoInputPane.updateProject(bagView);        
         bagView.infoInputPane.setProfile(bag.getProfile().getName());
     }
 }

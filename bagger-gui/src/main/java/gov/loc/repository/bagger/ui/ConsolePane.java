@@ -75,31 +75,31 @@ public class ConsolePane extends JPanel {
         statusPanel.add(completeLabel, gbc);
         
         JLabel completeStatus = new StatusImageLabel(bagStatus.getCompletenessStatus());
-		gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-		statusPanel.add(completeStatus, gbc);
-		
-		// Validation Status
-		JLabel validationLabel = new JLabel(ApplicationContextUtil.getMessage("compositePane.message.isValid")  + " ");
-		validationLabel.setToolTipText(ApplicationContextUtil.getMessage("consolepane.isvalid.help"));
-		gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
+        gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+        statusPanel.add(completeStatus, gbc);
+
+        // Validation Status
+        JLabel validationLabel = new JLabel(ApplicationContextUtil.getMessage("compositePane.message.isValid")  + " ");
+        validationLabel.setToolTipText(ApplicationContextUtil.getMessage("consolepane.isvalid.help"));
+        gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         statusPanel.add(validationLabel, gbc);
         
         JLabel validationStatus = new StatusImageLabel(bagStatus.getValidationStatus());
         gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-		statusPanel.add(validationStatus, gbc);
-		
-		// Profile Compliance Status
-		JLabel profileComplianceLabel = new JLabel(ApplicationContextUtil.getMessage("compositePane.message.isMetadata")  + " ");
-		profileComplianceLabel.setToolTipText(ApplicationContextUtil.getMessage("consolepane.ismetadata.help"));
-		gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
+        statusPanel.add(validationStatus, gbc);
+
+        // Profile Compliance Status
+        JLabel profileComplianceLabel = new JLabel(ApplicationContextUtil.getMessage("compositePane.message.isMetadata")  + " ");
+        profileComplianceLabel.setToolTipText(ApplicationContextUtil.getMessage("consolepane.ismetadata.help"));
+        gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         statusPanel.add(profileComplianceLabel, gbc);
         
         JLabel profileComplianceStatus = new StatusImageLabel(bagStatus.getProfileComplianceStatus());
         gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-		statusPanel.add(profileComplianceStatus, gbc);
-    	
-		return statusPanel;
-	}
+        statusPanel.add(profileComplianceStatus, gbc);
+
+        return statusPanel;
+    }
 
     private JScrollPane createConsoleArea() {
         serializedArea = new JTextArea();
@@ -116,6 +116,7 @@ public class ConsolePane extends JPanel {
         
     }
     
+    @Override
     public boolean requestFocusInWindow() {
         //return this.requestFocusInWindow();
         //aanpassing Nicolas

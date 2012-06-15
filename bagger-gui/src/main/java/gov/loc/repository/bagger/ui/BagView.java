@@ -73,48 +73,39 @@ import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.command.config.CommandConfigurer;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.util.Assert;
 
 public class BagView extends AbstractView implements ApplicationListener {
-	private static final Log log = LogFactory.getLog(BagView.class);
-	
-	public static BagView instance;
-	
+    private static final Log log = LogFactory.getLog(BagView.class);
+    public static BagView instance;
     private final static int ONE_SECOND = 1000;
-	private int DEFAULT_WIDTH = 1024;
-	private int DEFAULT_HEIGHT = 768;
-
-	public ProgressMonitor progressMonitor;
+    private int DEFAULT_WIDTH = 1024;
+    private int DEFAULT_HEIGHT = 768;
+    public ProgressMonitor progressMonitor;
     public LongTask task;
     public Cancellable longRunningProcess = null;
     private final Timer timer = new Timer(ONE_SECOND/10, null);
-
-	private Bagger bagger;
+    private Bagger bagger;
     private DefaultBag bag;
     public BaggerValidationRulesSource baggerRules;
     public BaggerProfileStore profileStore;
     public BagTree bagPayloadTree;
-	public BagTree bagTagFileTree;
-
+    public BagTree bagTagFileTree;
     private File bagRootPath;
-	private String userHomeDir;
-
-	public TagManifestPane tagManifestPane;
-	public InfoFormsPane infoInputPane;
-	public BagTreePanel bagPayloadTreePanel;
-	public BagTreePanel bagTagFileTreePanel;
-
-	private JPanel bagButtonPanel;
-	private JPanel bagTagButtonPanel;
-	private JPanel topButtonPanel;
-
+    private String userHomeDir;
+    public TagManifestPane tagManifestPane;
+    public InfoFormsPane infoInputPane;
+    public BagTreePanel bagPayloadTreePanel;
+    public BagTreePanel bagTagFileTreePanel;
+    private JPanel bagButtonPanel;
+    private JPanel bagTagButtonPanel;
+    private JPanel topButtonPanel;
     public StartNewBagHandler startNewBagHandler;
-	public StartExecutor startExecutor = new StartExecutor(this);
-	public OpenBagHandler openBagHandler;
+    public StartExecutor startExecutor = new StartExecutor(this);
+    public OpenBagHandler openBagHandler;
     public  OpenExecutor openExecutor = new OpenExecutor(this);
     public CreateBagInPlaceHandler createBagInPlaceHandler;
     public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor(this);
@@ -134,15 +125,20 @@ public class BagView extends AbstractView implements ApplicationListener {
     public RemoveTagFileHandler removeTagFileHandler;
     public AddTagFileHandler addTagFileHandler;
 
-	private JLabel addDataToolBarAction;
-	private JLabel removeDataToolBarAction;
-	private JLabel viewTagFilesToolbarAction;
-	private JLabel addTagFileToolBarAction;
-	private JLabel removeTagFileToolbarAction;
+    private JLabel addDataToolBarAction;
+    private JLabel removeDataToolBarAction;
+    private JLabel viewTagFilesToolbarAction;
+    private JLabel addTagFileToolBarAction;
+    private JLabel removeTagFileToolbarAction;
+
+    /*
+     * Nicolas Franck
+     */
+    private final TimerListener timerListener = new TimerListener();
 	
-	public BagView() {
-		instance = this;
-	}
+    public BagView() {
+        instance = this;
+    }
 
     public void setBagger(Bagger bagger) {
         Assert.notNull(bagger, "The bagger property is required");
@@ -170,23 +166,23 @@ public class BagView extends AbstractView implements ApplicationListener {
     }
     
     public Dimension getMinimumSize() {
-		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
+        return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
 
-	public Dimension getPreferredSize() {
-		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
+    public Dimension getPreferredSize() {
+        return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
 
-	public void display(String s) {
-		log.info(s);
-	}
+    public void display(String s) {
+        log.info(s);
+    }
 
-	public ImageIcon getPropertyImage(String name) {
-		ImageSource source = this.getImageSource();
+    public ImageIcon getPropertyImage(String name) {
+        ImageSource source = this.getImageSource();
         Image image = source.getImage(name);
         ImageIcon imageIcon = new ImageIcon(image);
         return imageIcon;
-	}
+    }
 
 
     public void setBagPayloadTree(BagTree bagTree) {
@@ -210,15 +206,19 @@ public class BagView extends AbstractView implements ApplicationListener {
     // property in the richclient-application-context.xml file.
     protected JComponent createControl() {
     	bag = new DefaultBag();
-		
+
+        /*
+         * Nicolas Franck: vreemd dat dit nergens gebruikt wordt..
+         * zou handig zijn voor basismap bij selecteren van bestanden (i.p.v root of C:/)
+         */
     	this.userHomeDir = System.getProperty("user.home");
         display("createControl - User Home Path: "+ userHomeDir);
         
     	initializeCommands();
 
-        ApplicationServices services = this.getApplicationServices();
-        Object rulesSource = services.getService(org.springframework.rules.RulesSource.class);
-        baggerRules = (BaggerValidationRulesSource) rulesSource;
+        ApplicationServices services = this.getApplicationServices();     
+
+        baggerRules = (BaggerValidationRulesSource) services.getService(org.springframework.rules.RulesSource.class);
 		
     	Color bgColor = new Color(20,20,100);
     	topButtonPanel = createTopButtonPanel();
@@ -239,10 +239,11 @@ public class BagView extends AbstractView implements ApplicationListener {
     	JPanel bagViewPanel = new JPanel(new BorderLayout(2, 2));
         bagViewPanel.setBackground(bgColor);
     	bagViewPanel.add(mainPanel, BorderLayout.CENTER);
+        
         return bagViewPanel;
     }
     
-    private JPanel createTopButtonPanel() {
+    private JPanel createTopButtonPanel(){
     	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
     	startNewBagHandler = new StartNewBagHandler(this);
     	openBagHandler = new OpenBagHandler(this);
@@ -255,7 +256,7 @@ public class BagView extends AbstractView implements ApplicationListener {
         return buttonPanel;
     }
     
-    private JSplitPane createBagPanel() {
+    private JSplitPane createBagPanel(){
     	
     	LineBorder border = new LineBorder(Color.GRAY,1);
     	
@@ -279,60 +280,55 @@ public class BagView extends AbstractView implements ApplicationListener {
     	bagTagFileTreePanel.setToolTipText(getMessage("bagTree.help"));
 
     	tagManifestPane = new TagManifestPane(this);
-    	tagManifestPane.setToolTipText(getMessage("compositePane.tab.help"));
-    	
-    	
-    	
-		JSplitPane splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.5);
-		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		
-		JPanel payloadPannel = new JPanel();
-		splitPane.setLeftComponent(payloadPannel);
-		payloadPannel.setLayout(new BorderLayout(0, 0));
-		
-		JPanel payLoadToolBarPanel = new JPanel();
-		payloadPannel.add(payLoadToolBarPanel, BorderLayout.NORTH);
-		payLoadToolBarPanel.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		JPanel payloadLabelPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) payloadLabelPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		payLoadToolBarPanel.add(payloadLabelPanel);
-		
-		JLabel lblPayloadTree = new JLabel(getMessage("bagView.payloadTree.name"));
-		payloadLabelPanel.add(lblPayloadTree);
-		
-		payLoadToolBarPanel.add(bagButtonPanel);
-		
-		
-		payloadPannel.add(bagPayloadTreePanel, BorderLayout.CENTER);
-		
-		JPanel tagFilePanel = new JPanel();
-		splitPane.setRightComponent(tagFilePanel);
-		tagFilePanel.setLayout(new BorderLayout(0, 0));
-		
-		JPanel tagFileToolBarPannel = new JPanel();
-		tagFilePanel.add(tagFileToolBarPannel, BorderLayout.NORTH);
-		tagFileToolBarPannel.setLayout(new GridLayout(0, 2, 0, 0));
-		
-		JPanel TagFileLabelPanel = new JPanel();
-		FlowLayout tagFileToolbarFlowLayout = (FlowLayout) TagFileLabelPanel.getLayout();
-		tagFileToolbarFlowLayout.setAlignment(FlowLayout.LEFT);
-		tagFileToolBarPannel.add(TagFileLabelPanel);
-		
-		JLabel tagFileTreeLabel = new JLabel(getMessage("bagView.TagFilesTree.name"));
-		TagFileLabelPanel.add(tagFileTreeLabel);
-		
-		tagFileToolBarPannel.add(bagTagButtonPanel);
-		
-		
-		tagFilePanel.add(bagTagFileTreePanel, BorderLayout.CENTER);
-    	
-    	
-		
+    	tagManifestPane.setToolTipText(getMessage("compositePane.tab.help"));    	
 
-		
+
+        JSplitPane splitPane = new JSplitPane();
+        splitPane.setResizeWeight(0.5);
+        splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+
+        JPanel payloadPannel = new JPanel();
+        splitPane.setLeftComponent(payloadPannel);
+        payloadPannel.setLayout(new BorderLayout(0, 0));
+
+        JPanel payLoadToolBarPanel = new JPanel();
+        payloadPannel.add(payLoadToolBarPanel, BorderLayout.NORTH);
+        payLoadToolBarPanel.setLayout(new GridLayout(1, 0, 0, 0));
+
+        JPanel payloadLabelPanel = new JPanel();
+        FlowLayout flowLayout = (FlowLayout) payloadLabelPanel.getLayout();
+        flowLayout.setAlignment(FlowLayout.LEFT);
+        payLoadToolBarPanel.add(payloadLabelPanel);
+
+        JLabel lblPayloadTree = new JLabel(getMessage("bagView.payloadTree.name"));
+        payloadLabelPanel.add(lblPayloadTree);
+
+        payLoadToolBarPanel.add(bagButtonPanel);
+
+
+        payloadPannel.add(bagPayloadTreePanel, BorderLayout.CENTER);
+
+        JPanel tagFilePanel = new JPanel();
+        splitPane.setRightComponent(tagFilePanel);
+        tagFilePanel.setLayout(new BorderLayout(0, 0));
+
+        JPanel tagFileToolBarPannel = new JPanel();
+        tagFilePanel.add(tagFileToolBarPannel, BorderLayout.NORTH);
+        tagFileToolBarPannel.setLayout(new GridLayout(0, 2, 0, 0));
+
+        JPanel TagFileLabelPanel = new JPanel();
+        FlowLayout tagFileToolbarFlowLayout = (FlowLayout) TagFileLabelPanel.getLayout();
+        tagFileToolbarFlowLayout.setAlignment(FlowLayout.LEFT);
+        tagFileToolBarPannel.add(TagFileLabelPanel);
+
+        JLabel tagFileTreeLabel = new JLabel(getMessage("bagView.TagFilesTree.name"));
+        TagFileLabelPanel.add(tagFileTreeLabel);
+
+        tagFileToolBarPannel.add(bagTagButtonPanel);
+
+
+        tagFilePanel.add(bagTagFileTreePanel, BorderLayout.CENTER);
+
 
         return splitPane;
     }
@@ -343,66 +339,63 @@ public class BagView extends AbstractView implements ApplicationListener {
     	removeDataHandler = new RemoveDataHandler(this);
     	
     	JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
+	buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
 		
-		addDataToolBarAction = new JLabel("");
-		addDataToolBarAction.setEnabled(false);
-		addDataToolBarAction.setHorizontalAlignment(SwingConstants.CENTER);
-		addDataToolBarAction.setBorder(new LineBorder(addDataToolBarAction.getBackground(),1));
-		addDataToolBarAction.setIcon(getPropertyImage("Bag_Content.add.icon"));
-		addDataToolBarAction.setToolTipText(getMessage("bagView.payloadTree.addbutton.tooltip"));
+        addDataToolBarAction = new JLabel("");
+        addDataToolBarAction.setEnabled(false);
+        addDataToolBarAction.setHorizontalAlignment(SwingConstants.CENTER);
+        addDataToolBarAction.setBorder(new LineBorder(addDataToolBarAction.getBackground(),1));
+        addDataToolBarAction.setIcon(getPropertyImage("Bag_Content.add.icon"));
+        addDataToolBarAction.setToolTipText(getMessage("bagView.payloadTree.addbutton.tooltip"));
+
+        addDataToolBarAction.addMouseListener(new MouseAdapter(){			
+            @Override
+            public void mousePressed(MouseEvent e) {
+                    if(addDataToolBarAction.isEnabled())
+                            addDataHandler.actionPerformed(null);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                    addDataToolBarAction.setBorder(new LineBorder(addDataToolBarAction.getBackground(),1));
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                    if(addDataToolBarAction.isEnabled())
+                            addDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+            }
+        });
+        buttonPanel.add(addDataToolBarAction);
+
+        removeDataToolBarAction = new JLabel("");
+        removeDataToolBarAction.setEnabled(false);
+        removeDataToolBarAction.setHorizontalAlignment(SwingConstants.CENTER);
+        removeDataToolBarAction.setBorder(new LineBorder(removeDataToolBarAction.getBackground(),1));
+        removeDataToolBarAction.setIcon(getPropertyImage("Bag_Content.minus.icon"));
+        removeDataToolBarAction.setToolTipText(getMessage("bagView.payloadTree.remove.tooltip"));
+        buttonPanel.add(removeDataToolBarAction);
+        removeDataToolBarAction.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e) {
+                    if(removeDataToolBarAction.isEnabled())
+                            removeDataHandler.actionPerformed(null);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                    removeDataToolBarAction.setBorder(new LineBorder(removeDataToolBarAction.getBackground(),1));
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                    if(removeDataToolBarAction.isEnabled())
+                            removeDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+            }
+        });
 		
-		addDataToolBarAction.addMouseListener(new MouseAdapter()  {
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if(addDataToolBarAction.isEnabled())
-					addDataHandler.actionPerformed(null);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				addDataToolBarAction.setBorder(new LineBorder(addDataToolBarAction.getBackground(),1));
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				if(addDataToolBarAction.isEnabled())
-					addDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
-			}
-		});
-		buttonPanel.add(addDataToolBarAction);
-		
-		removeDataToolBarAction = new JLabel("");
-		removeDataToolBarAction.setEnabled(false);
-		removeDataToolBarAction.setHorizontalAlignment(SwingConstants.CENTER);
-		removeDataToolBarAction.setBorder(new LineBorder(removeDataToolBarAction.getBackground(),1));
-		removeDataToolBarAction.setIcon(getPropertyImage("Bag_Content.minus.icon"));
-		removeDataToolBarAction.setToolTipText(getMessage("bagView.payloadTree.remove.tooltip"));
-		buttonPanel.add(removeDataToolBarAction);
-		removeDataToolBarAction.addMouseListener(new MouseAdapter() {
-		  
-					@Override
-					public void mousePressed(MouseEvent e) {	
-						if(removeDataToolBarAction.isEnabled())
-							removeDataHandler.actionPerformed(null);
-					}
-					
-					@Override
-					public void mouseExited(MouseEvent e) {
-						removeDataToolBarAction.setBorder(new LineBorder(removeDataToolBarAction.getBackground(),1));
-					}
-					
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						if(removeDataToolBarAction.isEnabled())
-							removeDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
-					}
-				});
-		
-		final JLabel spacerLabel = new JLabel("    ");
-		buttonPanel.add(spacerLabel);
-	
+        final JLabel spacerLabel = new JLabel("    ");
+        buttonPanel.add(spacerLabel);
 		
     	addDataHandler = new AddDataHandler(this);
     	removeDataHandler = new RemoveDataHandler(this);
@@ -418,45 +411,43 @@ public class BagView extends AbstractView implements ApplicationListener {
     	addTagFileHandler = new AddTagFileHandler(this);
     	removeTagFileHandler = new RemoveTagFileHandler(this);
     	
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
-		
-		viewTagFilesToolbarAction = new JLabel("");
-		viewTagFilesToolbarAction.setEnabled(false);
-		viewTagFilesToolbarAction.setHorizontalAlignment(SwingConstants.CENTER);
-		viewTagFilesToolbarAction.setBorder(new LineBorder(viewTagFilesToolbarAction.getBackground(),1));
-		viewTagFilesToolbarAction.setIcon(getPropertyImage("Bag_ViewTagFile.icon"));
-		viewTagFilesToolbarAction.setToolTipText(getMessage("bagView.TagFilesTree.viewfile.tooltip"));
-		
-		viewTagFilesToolbarAction.addMouseListener(new MouseAdapter()  {
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if(viewTagFilesToolbarAction.isEnabled())
-					showTageFileHandler.actionPerformed(null);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				viewTagFilesToolbarAction.setBorder(new LineBorder(viewTagFilesToolbarAction.getBackground(),1));
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				if(viewTagFilesToolbarAction.isEnabled())
-					viewTagFilesToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
-			}
-		});
-		buttonPanel.add(viewTagFilesToolbarAction);
-		
-		addTagFileToolBarAction = new JLabel("");
-		addTagFileToolBarAction.setEnabled(false);
-		addTagFileToolBarAction.setHorizontalAlignment(SwingConstants.CENTER);
-		addTagFileToolBarAction.setBorder(new LineBorder(addTagFileToolBarAction.getBackground(),1));
-		addTagFileToolBarAction.setIcon(getPropertyImage("Bag_Content.add.icon"));
-		addTagFileToolBarAction.setToolTipText(getMessage("bagView.TagFilesTree.addbutton.tooltip"));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
 
-		addTagFileToolBarAction.addMouseListener(new MouseAdapter()  {
-			
+        viewTagFilesToolbarAction = new JLabel("");
+        viewTagFilesToolbarAction.setEnabled(false);
+        viewTagFilesToolbarAction.setHorizontalAlignment(SwingConstants.CENTER);
+        viewTagFilesToolbarAction.setBorder(new LineBorder(viewTagFilesToolbarAction.getBackground(),1));
+        viewTagFilesToolbarAction.setIcon(getPropertyImage("Bag_ViewTagFile.icon"));
+        viewTagFilesToolbarAction.setToolTipText(getMessage("bagView.TagFilesTree.viewfile.tooltip"));
+		
+        viewTagFilesToolbarAction.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e) {
+                    if(viewTagFilesToolbarAction.isEnabled())
+                            showTageFileHandler.actionPerformed(null);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                    viewTagFilesToolbarAction.setBorder(new LineBorder(viewTagFilesToolbarAction.getBackground(),1));
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                    if(viewTagFilesToolbarAction.isEnabled())
+                            viewTagFilesToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
+            }
+        });
+        buttonPanel.add(viewTagFilesToolbarAction);
+
+        addTagFileToolBarAction = new JLabel("");
+        addTagFileToolBarAction.setEnabled(false);
+        addTagFileToolBarAction.setHorizontalAlignment(SwingConstants.CENTER);
+        addTagFileToolBarAction.setBorder(new LineBorder(addTagFileToolBarAction.getBackground(),1));
+        addTagFileToolBarAction.setIcon(getPropertyImage("Bag_Content.add.icon"));
+        addTagFileToolBarAction.setToolTipText(getMessage("bagView.TagFilesTree.addbutton.tooltip"));
+
+		addTagFileToolBarAction.addMouseListener(new MouseAdapter(){			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if(addTagFileToolBarAction.isEnabled())
@@ -571,10 +562,10 @@ public class BagView extends AbstractView implements ApplicationListener {
     public void updateNewBag() {
         viewTagFilesToolbarAction.setEnabled(true);
         enableBagSettings(true);
-		addDataToolBarAction.setEnabled(true);
-		addDataExecutor.setEnabled(true);
-		addTagFileToolBarAction.setEnabled(true);
-		bagButtonPanel.invalidate();
+        addDataToolBarAction.setEnabled(true);
+        addDataExecutor.setEnabled(true);
+        addTagFileToolBarAction.setEnabled(true);
+        bagButtonPanel.invalidate();
     }
 
     public void updateOpenBag() {
@@ -606,17 +597,17 @@ public class BagView extends AbstractView implements ApplicationListener {
     }
     
     public void updateSaveBag() {
-		addDataToolBarAction.setEnabled(true);
-		addDataExecutor.setEnabled(true);
-		saveBagExecutor.setEnabled(true);
-		addTagFileToolBarAction.setEnabled(true);
-		viewTagFilesToolbarAction.setEnabled(true);
-		saveBagAsExecutor.setEnabled(true);
-		bagButtonPanel.invalidate();
-		clearExecutor.setEnabled(true);
+        addDataToolBarAction.setEnabled(true);
+        addDataExecutor.setEnabled(true);
+        saveBagExecutor.setEnabled(true);
+        addTagFileToolBarAction.setEnabled(true);
+        viewTagFilesToolbarAction.setEnabled(true);
+        saveBagAsExecutor.setEnabled(true);
+        bagButtonPanel.invalidate();
+        clearExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags
-		topButtonPanel.invalidate();
+        topButtonPanel.invalidate();
     }
     
     public void updateAddData() {
@@ -635,6 +626,7 @@ public class BagView extends AbstractView implements ApplicationListener {
         bagTagFileTreePanel.refresh(bagTagFileTree);
     }
 
+    @Override
     protected void registerLocalCommandExecutors(PageComponentContext context) {
     	context.register("startCommand", startExecutor);
     	context.register("openCommand", openExecutor);
@@ -652,10 +644,18 @@ public class BagView extends AbstractView implements ApplicationListener {
     	log.info("BagView.onApplicationEvent: " + e);
         if (e instanceof LifecycleApplicationEvent) {
             LifecycleApplicationEvent le = (LifecycleApplicationEvent)e;
-            if (le.getEventType() == LifecycleApplicationEvent.CREATED && le.objectIs(Profile.class)) {
-            int i = 0;
-            i++;
+            /*
+             * Nicolas Franck
+             */
+            if (le.getEventType().equals(LifecycleApplicationEvent.CREATED) && le.objectIs(Profile.class)) {
+                int i = 0;
+                i++;
             }
+            /*
+            if (le.getEventType() == LifecycleApplicationEvent.CREATED && le.objectIs(Profile.class)) {
+                int i = 0;
+                i++;
+            }*/
         }
     }
 
@@ -692,7 +692,8 @@ public class BagView extends AbstractView implements ApplicationListener {
         task.setActivityMonitored(activityMonitored);
         task.setProgress(progress);
 
-        timer.addActionListener(new TimerListener());
+        //timer.addActionListener(new TimerListener());
+        timer.addActionListener(timerListener);
 
         progressMonitor = new ProgressMonitor(this.getControl(),
         		message, "Preparing the operation...", 0, 1);
@@ -708,82 +709,74 @@ public class BagView extends AbstractView implements ApplicationListener {
     }
     
     
-    public void registerTreeListener(String label, final JTree tree)
-    {
-    	if(AbstractBagConstants.DATA_DIRECTORY.equals(label))
-    	{
-    		tree.addTreeSelectionListener(new TreeSelectionListener() {
+    public void registerTreeListener(String label, final JTree tree){
+    	if(AbstractBagConstants.DATA_DIRECTORY.equals(label)){
+            tree.addTreeSelectionListener(new TreeSelectionListener(){
+                @Override
+                public void valueChanged(TreeSelectionEvent e) {
+                    TreePath[] paths = tree.getSelectionPaths();
+                    if(paths == null || paths.length == 0)return;
+                    for(TreePath path: paths){
+                        if(path.getPathCount() == 1){
+                                removeDataToolBarAction.setEnabled(false);
+                                return;
+                        }
+                    }
+                    removeDataToolBarAction.setEnabled(true);
+                }
+            });
+    	}else{
+            tree.addTreeSelectionListener(new TreeSelectionListener(){
+                @Override
+                    public void valueChanged(TreeSelectionEvent e){
+                        TreePath[] paths = tree.getSelectionPaths();
+                        if(paths == null || paths.length == 0)return;
+                        for(TreePath path: paths){
+                            if(path.getPathCount() == 1){
+                                removeTagFileToolbarAction.setEnabled(false);
+                                return;
+                            }
+                        }
 
-    			public void valueChanged(TreeSelectionEvent e) {
-
-    				TreePath[] paths = tree.getSelectionPaths();
-    				if(paths == null || paths.length == 0)
-    					return;
-
-    				for(TreePath path: paths)
-    				{
-    					if(path.getPathCount() == 1)
-    					{
-    						removeDataToolBarAction.setEnabled(false);
-    						return;
-    					}
-    				}
-
-    				removeDataToolBarAction.setEnabled(true);
-    			}
-    		});
-    	}
-    	else 
-    	{
-    		tree.addTreeSelectionListener(new TreeSelectionListener() {
-
-    			public void valueChanged(TreeSelectionEvent e) {
-
-    				TreePath[] paths = tree.getSelectionPaths();
-    				if(paths == null || paths.length == 0)
-    					return;
-
-    				for(TreePath path: paths)
-    				{
-    					if(path.getPathCount() == 1)
-    					{
-    						removeTagFileToolbarAction.setEnabled(false);
-    						return;
-    					}
-    				}
-
-    				removeTagFileToolbarAction.setEnabled(true);
-    			}
+                        removeTagFileToolbarAction.setEnabled(true);
+                    }
     		});
     	}
     }
     
-	public BaggerProfileStore getProfileStore() {
-		return profileStore;
-	}
+    public BaggerProfileStore getProfileStore() {
+            return profileStore;
+    }
 
-	public void setProfileStore(BaggerProfileStore profileStore) {
-		this.profileStore = profileStore;
-	}
+    public void setProfileStore(BaggerProfileStore profileStore) {
+            this.profileStore = profileStore;
+    }
 
-	public static BagView getInstance() {
-		return instance;
-	}
-	
-	public String getPropertyMessage(String propertyName) {
-		return getMessage(propertyName);
-	}
-	
-	/*
-	 * Returns true if the Fetch.txt file exists.
-	 * This would be true in the case of a Holey Bag
-	 * Returns false for all other types of Bags
-	 */
+    public static BagView getInstance() {
+            return instance;
+    }
+
+    public String getPropertyMessage(String propertyName) {
+            return getMessage(propertyName);
+    }
+
+    /*
+     * Returns true if the Fetch.txt file exists.
+     * This would be true in the case of a Holey Bag
+     * Returns false for all other types of Bags
+     */
     private boolean checkFetchTxtFile() {
+        /*
+         * Nicolas Franck
+         */
+        return (bag.getFetchTxt() != null);
+        /*
     	if (bag.getFetchTxt() != null)
     		return true;
     	else 
-    		return false;    	
+    		return false;
+         *
+         */
     }
 
     /*
@@ -792,10 +785,17 @@ public class BagView extends AbstractView implements ApplicationListener {
      * The Validate Button is enabled for all other types of Bags
      */
     private void setCompleteExecutor() {
+        /*
+         * Nicolas Franck
+         */
+        completeExecutor.setEnabled(!checkFetchTxtFile());
+        /*
     	if (checkFetchTxtFile())
     		completeExecutor.setEnabled(false);
     	else
-    		completeExecutor.setEnabled(true);    		
+    		completeExecutor.setEnabled(true);
+         *
+         */
     }
     
     /*
@@ -804,10 +804,17 @@ public class BagView extends AbstractView implements ApplicationListener {
      * The Validate Button is enabled for all other types of Bags
      */
     private void setValidateExecutor() {
+        /*
+         * Nicolas Franck
+         */
+        validateExecutor.setEnabled(!checkFetchTxtFile());
+        /*
     	if (checkFetchTxtFile())
     		validateExecutor.setEnabled(false);
     	else
-    		validateExecutor.setEnabled(true);    		
+    		validateExecutor.setEnabled(true);
+         * 
+         */
     }	
     
 }

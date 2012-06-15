@@ -54,7 +54,10 @@ public class NewItemFrame extends JFrame implements ActionListener {
 		addPanel = createComponents();
         addPanel.setPreferredSize(preferredDimension);
         getContentPane().add(addPanel, BorderLayout.CENTER);
-        pack();
+
+        //Nicolas Franck: elementen toevoegen na 'pack' zorgt voor XError!
+        //pack();
+        //Nicolas Franck: elementen toevoegen na 'pack' zorgt voor XError!
     }
 
     private JPanel createComponents() {

@@ -34,27 +34,26 @@ public class BagInfoField {
     	
     }
     
-    public BagInfoField(ProfileField projectProfile)
-    {
-		this.setLabel(projectProfile.getFieldName());
-		this.setName(this.getLabel());
-		this.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
-		this.isEnabled(!projectProfile.isReadOnly());
-		this.isEditable(!projectProfile.isReadOnly());
-		this.isRequiredvalue(projectProfile.getIsValueRequired());
-		this.isRequired(projectProfile.getIsRequired());
-		this.setValue(projectProfile.getFieldValue());
-		//field.setValue("");
-		if(projectProfile.isReadOnly())
-			this.isEnabled(false);
-		this.buildElements(projectProfile.getElements());
-		if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTFIELD_CODE)) {
-			this.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
-		} else if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTAREA_CODE)) {
-			this.setComponentType(BagInfoField.TEXTAREA_COMPONENT);
-		}	else if (!(projectProfile.getElements().isEmpty())) {
-			this.setComponentType(BagInfoField.LIST_COMPONENT);
-		}
+    public BagInfoField(ProfileField projectProfile){
+        this.setLabel(projectProfile.getFieldName());
+        this.setName(this.getLabel());
+        this.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
+        this.isEnabled(!projectProfile.isReadOnly());
+        this.isEditable(!projectProfile.isReadOnly());
+        this.isRequiredvalue(projectProfile.getIsValueRequired());
+        this.isRequired(projectProfile.getIsRequired());
+        this.setValue(projectProfile.getFieldValue());
+        //field.setValue("");
+        if(projectProfile.isReadOnly())
+                this.isEnabled(false);
+        this.buildElements(projectProfile.getElements());
+        if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTFIELD_CODE)) {
+                this.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
+        } else if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTAREA_CODE)) {
+                this.setComponentType(BagInfoField.TEXTAREA_COMPONENT);
+        }	else if (!(projectProfile.getElements().isEmpty())) {
+                this.setComponentType(BagInfoField.LIST_COMPONENT);
+        }
     }
 
     public void setName(String n) {
@@ -137,12 +136,12 @@ public class BagInfoField {
     	return this.isProfile;
     }
     
-    public void buildElements(List<String> elements) {
-		
-		this.elements = elements;
+    public void buildElements(List<String> elements){
+        this.elements = elements;
     }
     
    
+    @Override
     public String toString() {
     	StringBuffer sb = new StringBuffer();
     	sb.append("\n");

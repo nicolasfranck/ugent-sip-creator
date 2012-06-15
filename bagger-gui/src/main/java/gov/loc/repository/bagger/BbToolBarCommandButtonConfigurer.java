@@ -30,6 +30,7 @@ public class BbToolBarCommandButtonConfigurer extends ToolBarCommandButtonConfig
    /**
     * {@inheritDoc}
     */
+    @Override
    public void configure(AbstractButton button, AbstractCommand command, CommandFaceDescriptor faceDescriptor) {
 
 	super.configure(button, command, faceDescriptor);

@@ -49,8 +49,7 @@
     -->
   </bean> 
   
-  <bean id="proxyPage" 
-          class="org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor">
+  <bean id="proxyPage" class="org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor">
         <property name="initialLayout">
             <bean class="org.springframework.core.io.ClassPathResource">
                 <constructor-arg type="java.lang.String">
@@ -162,7 +161,7 @@
             <value type="java.lang.Class">java.util.Date</value>
           </key>
           <bean class="org.springframework.richclient.form.binding.swing.date.NachoCalendarDateFieldBinder" />
-        </entry>
+        </entry>       
       </map>
     </property>
   </bean>
@@ -268,10 +267,11 @@
     <property name="viewClass" value="gov.loc.repository.bagger.exceptionhandling.ExceptionHandlingView" />
   </bean>
   -->
-
+<!--
   <bean id="setupWizard" class="org.springframework.richclient.application.setup.SetupWizard">
     <property name="licenseTextLocation" value="/gov/loc/repository/bagger/license.txt" />
   </bean>
+  -->
   
  <!--
  <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices" p:toolBarButtonConfigurer-ref="toolBarButtonConfigurer"/>
@@ -281,12 +281,13 @@
  --> 
  
  <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices">
- <property name="toolBarButtonConfigurer"> <ref bean="toolBarButtonConfigurer"/> </property>
+    <property name="toolBarButtonConfigurer"> <ref bean="toolBarButtonConfigurer"/> </property>
  </bean> 
 
  <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer">
- <property name="useLargeIcons" value="true" />
- </bean> 
-   
+    <property name="useLargeIcons" value="true" />
+ </bean>
+
+
 </beans>
 

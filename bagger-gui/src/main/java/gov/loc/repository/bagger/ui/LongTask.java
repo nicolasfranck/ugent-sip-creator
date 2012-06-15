@@ -11,7 +11,7 @@ import gov.loc.repository.bagit.ProgressListener;
 
 public class LongTask implements ProgressListener {
 	
-	private static final Log log = LogFactory.getLog(LongTask.class);
+    private static final Log log = LogFactory.getLog(LongTask.class);
 	
     private boolean done = false;
     private Progress progress;
@@ -38,12 +38,20 @@ public class LongTask implements ProgressListener {
      */
     public void go() {
     	final SwingWorker worker = new SwingWorker(this) {
+            @Override
             public Object construct() {
                 done = false;
+                /*
+                 * Nicolas Franck
+                 * => LongTask.this.progress.execute();
+                 * => progress.execute();
+                 * Progress => interface, geïmplementeerd door vb. SaveBagHandler
+                 */                
                 longTask.progress.execute();
                 return new Object();
             }
             
+            @Override
             public void finished() {
             	// update UI
             }
@@ -69,25 +77,26 @@ public class LongTask implements ProgressListener {
     }
 
     // should be thread-safe
-	public synchronized void reportProgress(String activity, Object item, Long count, Long total) {
-		if (count == null || total == null) {
-			log.error("reportProgress received null info: count=" + count + ", total=" + total);
-		} else {
-			if (activityMonitored == null || activityMonitored.equals(activity)) {
-				String message = MessageFormat.format("{0} ({2} of {3}) {1} ", activity, item, count, total);
-				this.progressMonitor.setNote(message);
-				this.progressMonitor.setMaximum(total.intValue());
-				this.progressMonitor.setProgress(count.intValue());
-			}
-		}
-	}
+    @Override
+    public synchronized void reportProgress(String activity, Object item, Long count, Long total) {
+        if (count == null || total == null) {
+            log.error("reportProgress received null info: count=" + count + ", total=" + total);
+        } else {
+            if (activityMonitored == null || activityMonitored.equals(activity)) {
+                String message = MessageFormat.format("{0} ({2} of {3}) {1} ", activity, item, count, total);
+                this.progressMonitor.setNote(message);
+                this.progressMonitor.setMaximum(total.intValue());
+                this.progressMonitor.setProgress(count.intValue());
+            }
+        }
+    }
 
-	public String getActivityMonitored() {
-		return activityMonitored;
-	}
+    public String getActivityMonitored() {
+            return activityMonitored;
+    }
 
-	public void setActivityMonitored(String activityMonitored) {
-		this.activityMonitored = activityMonitored;
-	}
+    public void setActivityMonitored(String activityMonitored) {
+            this.activityMonitored = activityMonitored;
+    }
 	
 }

@@ -58,18 +58,18 @@ public class NewBagFrame extends JFrame implements ActionListener {
 	public NewBagFrame(BagView bagView, String title) {
         super(title);
         JPanel createPanel;
-		Application app = Application.instance();
-		ApplicationPage page = app.getActiveWindow().getPage();
-		PageComponent component = page.getActiveComponent();
-		
-		if (component != null) this.bagView = BagView.instance;
-		else this.bagView = bagView;
-		if (bagView != null) {
-	        getContentPane().removeAll();
-	        createPanel = createComponents();
-		} else {
-			createPanel = new JPanel();
-		}
+        Application app = Application.instance();
+        ApplicationPage page = app.getActiveWindow().getPage();
+        PageComponent component = page.getActiveComponent();
+
+        if (component != null) this.bagView = BagView.instance;
+        else this.bagView = bagView;
+        if (bagView != null) {
+        getContentPane().removeAll();
+        createPanel = createComponents();
+        } else {
+                createPanel = new JPanel();
+        }
         getContentPane().add(createPanel, BorderLayout.CENTER);
         
         setPreferredSize(new Dimension(400, 200));
@@ -81,31 +81,31 @@ public class NewBagFrame extends JFrame implements ActionListener {
     	TitlePane titlePane = new TitlePane();
         initStandardCommands();
         JPanel pageControl = new JPanel(new BorderLayout());
-		JPanel titlePaneContainer = new JPanel(new BorderLayout());
-		titlePane.setTitle(bagView.getPropertyMessage("NewBagFrame.title"));
-		titlePane.setMessage( new DefaultMessage(bagView.getPropertyMessage("NewBagFrame.description")));
-		titlePaneContainer.add(titlePane.getControl());
-		titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
-		pageControl.add(titlePaneContainer, BorderLayout.NORTH);
+        JPanel titlePaneContainer = new JPanel(new BorderLayout());
+        titlePane.setTitle(bagView.getPropertyMessage("NewBagFrame.title"));
+        titlePane.setMessage( new DefaultMessage(bagView.getPropertyMessage("NewBagFrame.description")));
+        titlePaneContainer.add(titlePane.getControl());
+        titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
+        pageControl.add(titlePaneContainer, BorderLayout.NORTH);
+
+        JPanel contentPane = new JPanel();
+        contentPane.setLayout(new GridBagLayout());
+
+        int row = 0;
+        layoutBagVersionSelection(contentPane, row++);
+        layoutProfileSelection(contentPane, row++);
+
+        if (getPreferredSize() != null) {
+                contentPane.setPreferredSize(getPreferredSize());
+        }
 		
-		JPanel contentPane = new JPanel();
-		contentPane.setLayout(new GridBagLayout());
-		
-		int row = 0;
-		layoutBagVersionSelection(contentPane, row++);
-		layoutProfileSelection(contentPane, row++);
-        
-		if (getPreferredSize() != null) {
-			contentPane.setPreferredSize(getPreferredSize());
-		}
-		
-		GuiStandardUtils.attachDialogBorder(contentPane);
-		pageControl.add(contentPane);
-		JComponent buttonBar = createButtonBar();
-		pageControl.add(buttonBar,BorderLayout.SOUTH);
-	
-		this.pack();
-		return pageControl;
+        GuiStandardUtils.attachDialogBorder(contentPane);
+        pageControl.add(contentPane);
+        JComponent buttonBar = createButtonBar();
+        pageControl.add(buttonBar,BorderLayout.SOUTH);
+
+        this.pack();
+        return pageControl;
     }
 
 	
@@ -211,6 +211,7 @@ public class NewBagFrame extends JFrame implements ActionListener {
 
 	private ActionCommand cancelCommand;
 
+    @Override
     public void actionPerformed(ActionEvent e) {
     	invalidate();
     	repaint();

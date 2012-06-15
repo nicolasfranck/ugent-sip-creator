@@ -19,18 +19,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class RemoveDataHandler extends AbstractAction {
-	private static final Log log = LogFactory.getLog(RemoveDataHandler.class);
-   	private static final long serialVersionUID = 1L;
-	BagView bagView;
+    private static final Log log = LogFactory.getLog(RemoveDataHandler.class);
+    private static final long serialVersionUID = 1L;
+    BagView bagView;
 
-	public RemoveDataHandler(BagView bagView) {
-		super();
-		this.bagView = bagView;
-	}
+    public RemoveDataHandler(BagView bagView) {
+            super();
+            this.bagView = bagView;
+    }
 
-	public void actionPerformed(ActionEvent e) {
-		removeData();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        removeData();
+    }
 
     public void removeData() {
     	String message = "";

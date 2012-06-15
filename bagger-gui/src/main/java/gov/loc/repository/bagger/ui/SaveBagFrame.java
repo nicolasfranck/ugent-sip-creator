@@ -54,58 +54,61 @@ import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
 
 public class SaveBagFrame extends JFrame implements ActionListener {
-	private static final Log log = LogFactory.getLog(SaveBagFrame.class);
-	private static final long serialVersionUID = 1L;
-	BagView bagView;
-	File bagFile;
-	String bagFileName = "";
-	private Dimension preferredDimension = new Dimension(600, 400);
-	JPanel savePanel;
-	JPanel serializeGroupPanel;
-	JTextField bagNameField;
-	JLabel urlLabel;
-	JTextField urlField;
-	JButton browseButton;
-	JButton okButton;
-	JButton cancelButton;
-	JRadioButton noneButton;
-	JRadioButton zipButton;
-	JRadioButton tarButton;
-	JRadioButton tarGzButton;
-	JRadioButton tarBz2Button;
+    private static final Log log = LogFactory.getLog(SaveBagFrame.class);
+    private static final long serialVersionUID = 1L;
+    BagView bagView;
+    File bagFile;
+    String bagFileName = "";
+    private Dimension preferredDimension = new Dimension(600, 400);
+    JPanel savePanel;
+    JPanel serializeGroupPanel;
+    JTextField bagNameField;
+    JLabel urlLabel;
+    JTextField urlField;
+    JButton browseButton;
+    JButton okButton;
+    JButton cancelButton;
+    JRadioButton noneButton;
+    JRadioButton zipButton;
+    JRadioButton tarButton;
+    JRadioButton tarGzButton;
+    JRadioButton tarBz2Button;
 
-	JCheckBox holeyCheckbox;
-	JCheckBox isTagCheckbox;
-	JCheckBox isPayloadCheckbox;
+    JCheckBox holeyCheckbox;
+    JCheckBox isTagCheckbox;
+    JCheckBox isPayloadCheckbox;
     JComboBox tagAlgorithmList;
     JComboBox payAlgorithmList;
 
-	public SaveBagFrame(BagView bagView, String title) {
+    public SaveBagFrame(BagView bagView, String title) {
         super(title);
-		this.bagView = bagView;
-		if (bagView != null) {
-	        getContentPane().removeAll();
-	        savePanel = createComponents();
-		} else {
-			savePanel = new JPanel();
-		}
+                this.bagView = bagView;
+                if (bagView != null) {
+                getContentPane().removeAll();
+                savePanel = createComponents();
+                } else {
+                        savePanel = new JPanel();
+                }
         getContentPane().add(savePanel, BorderLayout.CENTER);
         setPreferredSize(preferredDimension);
         this.setBounds(300,200, 600, 400);
-        pack();
+
+        //Nicolas Franck: elementen toevoegen na 'pack' zorgt voor XError!
+        //pack();
+        //Nicolas Franck
     }
-	
-	protected JComponent createButtonBar() {
-		CommandGroup dialogCommandGroup = CommandGroup.createCommandGroup(null, getCommandGroupMembers());
-		JComponent buttonBar = dialogCommandGroup.createButtonBar();
-		GuiStandardUtils.attachDialogBorder(buttonBar);
-		return buttonBar;
-	}
-	
-	
-	protected Object[] getCommandGroupMembers() {
-		return new AbstractCommand[] { finishCommand, cancelCommand };
-	}
+
+    protected JComponent createButtonBar() {
+        CommandGroup dialogCommandGroup = CommandGroup.createCommandGroup(null, getCommandGroupMembers());
+        JComponent buttonBar = dialogCommandGroup.createButtonBar();
+        GuiStandardUtils.attachDialogBorder(buttonBar);
+        return buttonBar;
+    }
+
+
+    protected Object[] getCommandGroupMembers() {
+        return new AbstractCommand[] { finishCommand, cancelCommand };
+    }
 	
 	
     /**
@@ -113,6 +116,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
 	 */
 	private void initStandardCommands() {
 		finishCommand = new ActionCommand(getFinishCommandId()) {
+            @Override
 			public void doExecuteCommand() {
 				
 				new OkSaveBagHandler().actionPerformed(null);
@@ -123,6 +127,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
 
 		cancelCommand = new ActionCommand(getCancelCommandId()) {
 
+            @Override
 			public void doExecuteCommand() {
 				new CancelSaveBagHandler().actionPerformed(null);
 			}
@@ -380,8 +385,9 @@ public class SaveBagFrame extends JFrame implements ActionListener {
 		pageControl.add(panel);
 		JComponent buttonBar = createButtonBar();
 		pageControl.add(buttonBar,BorderLayout.SOUTH);
-	
-		this.pack();
+                //Nicolas Franck: elementen toevoegen na 'pack' zorgt voor XError!
+		//this.pack();
+                //Nicolas Franck
 		return pageControl;
     	
  

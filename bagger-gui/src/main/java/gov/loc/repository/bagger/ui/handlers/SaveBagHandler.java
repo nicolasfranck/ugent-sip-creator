@@ -27,30 +27,32 @@ import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 
 public class SaveBagHandler extends AbstractAction implements Progress {
-	private static final Log log = LogFactory.getLog(SaveBagHandler.class);
-   	private static final long serialVersionUID = 1L;
-	private BagView bagView;
+    private static final Log log = LogFactory.getLog(SaveBagHandler.class);
+    private static final long serialVersionUID = 1L;
+    private BagView bagView;
     private File tmpRootPath;
     private boolean clearAfterSaving = false;
-	private String messages;
+    private String messages;
 
-	public SaveBagHandler(BagView bagView) {
-		super();
-		this.bagView = bagView;
-	}
+    public SaveBagHandler(BagView bagView) {
+            super();
+            this.bagView = bagView;
+    }
 
-	public void actionPerformed(ActionEvent e) {
-		DefaultBag bag = bagView.getBag();
-		bagView.infoInputPane.updateBagHandler.updateBag(bag);
-		if (bagView.getBagRootPath().exists()) {
-			tmpRootPath = bagView.getBagRootPath();
-			confirmWriteBag();
-		} else {
-			saveBag(bagView.getBagRootPath());
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        DefaultBag bag = bagView.getBag();
+        bagView.infoInputPane.updateBagHandler.updateBag(bag);
+        if (bagView.getBagRootPath().exists()) {
+                tmpRootPath = bagView.getBagRootPath();
+                confirmWriteBag();
+        } else {
+                saveBag(bagView.getBagRootPath());
+        }
+    }
 
 
+    @Override
 	public void execute() {
 		DefaultBag bag = bagView.getBag();
 		
@@ -81,6 +83,7 @@ public class SaveBagHandler extends AbstractAction implements Progress {
 				
 			SwingUtilities.invokeLater(new Runnable() {
 
+                @Override
 				public void run() {
 					DefaultBag bag = bagView.getBag();
 					if (bag.isSerialized()) {
@@ -137,6 +140,7 @@ public class SaveBagHandler extends AbstractAction implements Progress {
     public void confirmWriteBag() {
 	    ConfirmationDialog dialog = new ConfirmationDialog() {
 	    	boolean isCancel = true;
+            @Override
 	        protected void onConfirm() {
 	        	DefaultBag bag = bagView.getBag();
 	        	if (bag.getSize() > DefaultBag.MAX_SIZE) {
@@ -146,6 +150,7 @@ public class SaveBagHandler extends AbstractAction implements Progress {
 		        	saveBag(bagView.getBagRootPath());
 	        	}
 	        }
+            @Override
 	        protected void onCancel() {
         		super.onCancel();
 	        	if (isCancel) {
@@ -167,6 +172,7 @@ public class SaveBagHandler extends AbstractAction implements Progress {
 
     public void confirmAcceptBagSize() {
 	    ConfirmationDialog dialog = new ConfirmationDialog() {
+            @Override
 	        protected void onConfirm() {
 	        	bagView.setBagRootPath(tmpRootPath);
 	        	saveBag(bagView.getBagRootPath());
