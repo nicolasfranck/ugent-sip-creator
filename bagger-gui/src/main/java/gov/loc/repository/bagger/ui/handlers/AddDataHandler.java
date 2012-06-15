@@ -39,10 +39,22 @@ public class AddDataHandler extends AbstractAction implements Progress {
         /*
          * Nicolas Franck: waarom wordt de filechooser voortdurend opnieuw gemaakt? Geheugen besparen wanneer die niet actief is?
          */
+        
+        /*
+         * Nicolas Franck: default directory
+         * homedir default, en indien opgegeven lastDir? 
+        */
+        String dir = System.getProperty("java.bagger.filechooser.lastdirectory");
+        if(dir == null){           
+            dir = System.getProperty("user.home");           
+        }
 
-        File selectFile = new File(File.separator+".");
+        //File selectFile = new File(File.separator+".");
+
         JFrame frame = new JFrame();
-        JFileChooser fc = new JFileChooser(selectFile);
+        //JFileChooser fc = new JFileChooser(selectFile);
+        JFileChooser fc = new JFileChooser(dir);
+
         fc.setDialogType(JFileChooser.OPEN_DIALOG);
     	fc.setMultiSelectionEnabled(true);
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -68,6 +80,11 @@ public class AddDataHandler extends AbstractAction implements Progress {
             bagView.bagPayloadTreePanel.refresh(bagView.bagPayloadTree);
             bagView.updateAddData();
         }
+        /*
+         * Nicolas Franck
+         */
+        String lastDir = fc.getCurrentDirectory().getAbsolutePath();
+        System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
     }
     private String getFileNames(File[] files) {
     	StringBuffer stringBuff = new StringBuffer();
@@ -101,8 +118,8 @@ public class AddDataHandler extends AbstractAction implements Progress {
         try {
             bagView.getBag().addFileToPayload(file);
             boolean alreadyExists = bagView.bagPayloadTree.addNodes(file, false);
-            if (alreadyExists) {
-                    bagView.showWarningErrorDialog("Warning - file already exists", "File: " + file.getName() + "\n" + "already exists in bag.");
+            if(alreadyExists) {
+                bagView.showWarningErrorDialog("Warning - file already exists", "File: " + file.getName() + "\n" + "already exists in bag.");
             }
         } catch (Exception e) {
             log.error("BagView.addBagData: " + e);

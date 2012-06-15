@@ -1,0 +1,48 @@
+1.  //stel task in BagView in. 'this' is de bagView
+    this.task = new LongTask();
+
+2.  //set Progress in op LongTask  (uitvoerende code ('Progress', vb. SaveBagHandler, steeds 'execute()' methode))
+    //'this' is de bagView
+    //Progress kan worden meegegeven in de functie StatusBarBegin
+
+    this.task.setProgress(progress);
+    
+3.  //set ProgressMonitor in op LongTask
+    //ProgressMonitor is een variabele die door BagView wordt bijgehouden
+
+    this.task.setMonitor(progressMonitor);
+
+4.  //stel timer in die af en toe checkt of taak gedaan of gecancelled is
+    //als TimerListener ziet dat longRunningProcess klaar/gefaald is, dan zet ze ProgressMonitor stop
+    //Cancellable longRunningProcess is een publieke variabele in BagView; kan worden ingesteld door Progress
+
+    this.timer.addActionListener(new TimerListener());
+
+5. //start
+    this.timer.start();
+    this.task.go();
+
+6.  // <LongTask>.go():
+    // De SwingWorker heeft een referentie naar de LongTask, en voert diens Progress uit in een aparte thread
+
+    SwingWorker worker =  SwingWorker(this){
+        ..
+        this.longTask.progress.execute();
+    };
+
+7.  //<LongTask>.<Progress>.execute() voegt <LongTask> toe als ProgressListener aan bagWriter (Cancellable)
+    //en rapporteert het process (Cancellable!) in bagView
+
+    bagWriter.addProgressListener(bagView.task);
+    bagView.longRunningProcess = bagWriter;
+
+    => elke Handler heeft in zijn constructor een BagView als argument
+    => Progress -> Handler, maar de Progress wordt NIET geconstrueerd in BagView!!
+    => BagView krijgt dit enkel mee door dit op te roepen:
+
+    <BagView>.statusBarBegin(Progress progress, String message, String activityMonitored)
+
+8. // <Cancellable> lanceert <LongTask>.reportProgress waardoor ProgressMonitor vooruit geraakt
+
+=> Progress: voert code uit in execute(). SwingWorker start die execute op in een aparte thread
+=> Implementatie SaveBagHandler heeft referentie naar bagView, en stelt <BagView>.<Cancellable> in op zijn process (BagWriter!)

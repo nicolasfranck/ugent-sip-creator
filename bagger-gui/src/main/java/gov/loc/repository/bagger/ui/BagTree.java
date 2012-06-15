@@ -44,18 +44,24 @@ public class BagTree extends JTree {
         this.setShowsRootHandles(true);
         /*
          * Nicolas Franck: is het nodig om de root 'data' te tonen?
+         * nieuwe bagit supporteert data1, data2 .., maar wij niet
          */
-        this.setRootVisible(true);
+        this.setRootVisible(false);
         
         basePath = path;
-        //i.e. 'data'
-        parentNode = new DefaultMutableTreeNode(basePath);
+        //i.e. 'data' => maar dit is al hierboven ingesteld??
+        //parentNode = new DefaultMutableTreeNode(basePath);
         initialize();
         
         //initListeners();
         JTextField nameTextField = new JTextField();
         int fieldHeight = nameTextField.getFontMetrics(nameTextField.getFont()).getHeight() + 5;
         BAGTREE_ROW_MODIFIER = fieldHeight;
+
+        /*
+         * Nicolas Franck: dragEnabled enkel nuttig indien de interne nodelist naar buiten geëxporteerd kan worden!
+         * kan volgens BagTreeTransferHandler, maar wat houdt dat precies in?
+         */
         this.setDragEnabled(true);
         this.setDropMode(DropMode.ON_OR_INSERT);
         this.setTransferHandler(new BagTreeTransferHandler(isPayload));

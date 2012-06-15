@@ -1,0 +1,15 @@
+mogelijkheden
+    - root: 'data' (wat anders?)
+    - merges nieuwe data vanaf de root 'data'
+    - na delete ('-'), verdwijnt de selectiemogelijkheid
+    - drag and drop delete uit de tree
+    - drag and drop vanuit bestandsysteem levert file-url op in Linux (en in Windows?)
+requests:
+    - root 'data' hoeft niet zichtbaar te zijn (setRootVisible(false))
+    - merge nieuwe data moet naar geselecteerde item (indien directory). Maar dan moet nodes zonder children,
+      soms wel als directories eruit zien (nu niet zo, lege directories zien eruit als bestanden)
+    - drag en drop data naar zo'n merge-point
+    - na delete van node, moet - indien mogelijk - de selectie naar die eronder (of erboven indien weg)
+    - drag en drop zou moeten kunnen dingen verplaatsen in de tree
+    - mouseover zou nodes moeten doen openklappen
+    - opletten voor invoegen van dubbels (jtree doesn't care)

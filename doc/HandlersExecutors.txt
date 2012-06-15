@@ -1,0 +1,12 @@
+Executors => door context bepaalde uitvoerders van commando's
+    vb. 'SaveBagExecutor' voert binnen BagView het commando 'saveBagCommand' uit
+
+    P.S. bij opgeven van commando' in commands-context.xml, moet je ofwel een bean-ref naar een AbstractCommand opgeven,
+         ofwel een string, maar dan moet je de implementatie schrijven in de vorm van zo'n executor (AbstractActionCommandExecutor) , en die dan zelf
+         registreren in je view via de functie 'registerLocalCommandExecutors'
+
+Handlers => wordt uitgevoerd binnen zo'n Executor. Handlers zijn:
+    - AbstractAction (hebben dus actionPerformed)
+    - Progress (soms)
+
+TODO: vroeger feedback geven (ProgressMonitor komt pas aan zet wanneer files geschreven worden, niet daarvoor..)

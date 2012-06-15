@@ -1,0 +1,13 @@
+- xml validators nodig
+
+    => geldige xml
+    => geldig volgens xml schema (zelf bijhouden)
+
+- xslt transformators nodig
+
+    - Apache Xalan   
+    - SAXON
+
+    => JAXP (javax.xml) wrapt meerdere xslt en xml interfaces (~ jquery)
+       kijkt welke van de twee api's aanwezig is.
+       systeemvariabelen kunnen bepalen welke gekozen wordt

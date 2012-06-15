@@ -29,6 +29,11 @@ public class BagTreeTransferHandler extends TransferHandler {
     private boolean isPayload;
     private DefaultMutableTreeNode[] nodesToRemove;
 
+    /*
+     * Nicolas Franck
+     */
+    private DataFlavor currentFlavor;
+
     public BagTreeTransferHandler(boolean isPayload) {
     	super();
     	this.isPayload = isPayload;
@@ -51,19 +56,48 @@ public class BagTreeTransferHandler extends TransferHandler {
     	return TransferHandler.COPY;
     }
     /*
-     * Nicolas Franck: waar is de 'importData'???????
+     * Nicolas Franck: vreemd, canImport meent allerlei imports aan te kunnen, maar hier wordt enkel strings geïmporteerd..
      * => test hieronder
      */
     
     @Override
     public boolean importData(JComponent comp,Transferable t){
         if(!(comp instanceof JTree))return false;
+        else if (this.currentFlavor == null)return false;
 
         JTree tree = (JTree)comp;              
         System.out.println("\nIMPORTING!!!!!!\n");
+        System.out.println("current flavor: "+this.currentFlavor);
 
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+
+        JTree.DropLocation dropLoc = (JTree.DropLocation) tree.getDropLocation();
+        TreePath dropPath = dropLoc.getPath();
+        DefaultMutableTreeNode receivingNode = (DefaultMutableTreeNode) dropPath.getLastPathComponent();
+        
+        /*
+         * Nicolas Franck
+         */
+        try{
+            DefaultMutableTreeNode [] newNodes = null;
+            if(this.currentFlavor.equals(nodesFlavor)){
+                newNodes = (DefaultMutableTreeNode []) t.getTransferData(nodesFlavor);
+            }           
+            
+            if(newNodes != null){
+                for(DefaultMutableTreeNode node:newNodes){
+                    receivingNode.add(node);
+                }                
+                model.reload();
+                System.out.println(newNodes);
+            }
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        /*
         try{
             String n = (String) t.getTransferData(DataFlavor.stringFlavor);
             root.add(new DefaultMutableTreeNode(n));
@@ -71,7 +105,7 @@ public class BagTreeTransferHandler extends TransferHandler {
             return true;
         }catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
 
         return false;
     }
@@ -84,31 +118,23 @@ public class BagTreeTransferHandler extends TransferHandler {
     }
  * 
  */
-    /*
-     * Nicolas Franck: test
-     */
-    @Override
-    public boolean canImport(TransferHandler.TransferSupport support) {
-        
-        if(support.isDrop()){
-            System.out.println("\nthis is a drop!!\n");
-        }else{
-            System.out.println("\nthis is NOT a drop!!\n");
-        }
-        return true;
-
-    }
 
     @Override
-    public boolean canImport(JComponent comp, DataFlavor transferFlavors[]) {
-       
-    	for (int i = 0; i < transferFlavors.length; i++) {
+    public boolean canImport(JComponent comp, DataFlavor transferFlavors[]){       
+
+        for (int i = 0; i < transferFlavors.length; i++) {
+            System.out.println(transferFlavors[i]);
+
             Class representationclass = transferFlavors[i].getRepresentationClass();
             // URL from Explorer or Firefox, KDE
             if ((representationclass != null) && URL.class.isAssignableFrom(representationclass)) {
                     if(debugImport){
                         display("canImport accepted " + transferFlavors[i]);
                     }
+                    /*
+                     * Nicolas Franck
+                     */
+                    this.currentFlavor = transferFlavors[i];
                     return true;
             }
             // Drop from Windows Explorer
@@ -116,6 +142,12 @@ public class BagTreeTransferHandler extends TransferHandler {
                     if(debugImport){
                         display("canImport accepted " + transferFlavors[i]);
                     }
+
+                    /*
+                     * Nicolas Franck
+                     */
+                    this.currentFlavor = transferFlavors[i];
+
                     return true;
             }
            
@@ -124,21 +156,50 @@ public class BagTreeTransferHandler extends TransferHandler {
                 if (debugImport) {
                     display("canImport accepted " + transferFlavors[i]);
                 }
+
+                /*
+                 * Nicolas Franck
+                 */
+                this.currentFlavor = transferFlavors[i];
+
                 return true;
             }
             if (uriListFlavor.equals(transferFlavors[i])) {
                 if (debugImport) {
                     display("canImport accepted " + transferFlavors[i]);
                 }
+                
+                /*
+                 * Nicolas Franck
+                 */
+                this.currentFlavor = transferFlavors[i];
                 return true;
             }
+            /*
+             * Nicolas Franck: drop van eigen file list?
+             * <start>
+             */
+            if(nodesFlavor.equals(transferFlavors[i])){
+                System.out.println("AAH! Moving nodes, are you?");
+                this.currentFlavor = transferFlavors[i];
+                return true;
+            }
+            /*
+             * Nicolas Franck: drop van eigen file list?
+             * <end>
+             */
+
             if(debugImport){
                 log.error("canImport " + i + " unknown import " + transferFlavors[i]);
             }
     	}
     	if (debugImport) {
-    		log.error("canImport rejected");
+    		log.error("canImport rejected");                
     	}
+        /*
+         * Nicolas Franck
+         */
+        this.currentFlavor = null;
     	return false;
         
     }
@@ -231,8 +292,7 @@ public class BagTreeTransferHandler extends TransferHandler {
 
         @Override
         public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
-            if(!isDataFlavorSupported(flavor))throw new UnsupportedFlavorException(flavor);
-            System.out.println("\ngetTransferData!!!!!\n");
+            if(!isDataFlavorSupported(flavor))throw new UnsupportedFlavorException(flavor);           
             return nodes;
         }
 
