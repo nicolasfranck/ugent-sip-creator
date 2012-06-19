@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<marc:record xmlns:marc="http://www.loc.gov/MARC21/slim">
+  <marc:leader>_00000ntm^a22^^^^^^a^4500</marc:leader>
+  <marc:controlfield tag="001">001484448</marc:controlfield>
+  <marc:controlfield tag="003">rug01</marc:controlfield>
+  <marc:controlfield tag="005">20110423213617.0</marc:controlfield>
+  <marc:controlfield tag="008">110423s^^^^^^^^xx^^^^^^r^^^^^000^0^grc^d</marc:controlfield>
+  <marc:datafield ind1="7" ind2="" tag="024">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">archive.ugent.be:4DC60118-6FF8-11E1-B269-6C9E3B7C8C91</marc:subfield>
+    <marc:subfield code="2">info</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="0" ind2="0" tag="245">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">Document van Heron aan Dionusios en Herakleides. Contract?</marc:subfield>
+    <marc:subfield code="h">[manuscript]</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="260">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="c">ca. 100-161.</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="300">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">2 kol. ;</marc:subfield>
+    <marc:subfield code="c">9 x 20,5 cm.</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="340">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">Papyrus</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="500">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">Kol. 1 rr. 9-12 grotendeels verloren, kol. 2 rr. 4-10 verloren. De tekst is parallel met de vezels geschreven. Kol. 2 staat op zijn kop tegenover kol. 1. Er is een selisjunctie op 4,2 cm van de rechterrand. Rechts, links en onderaan is de papyrus afgebrok</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="505">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">Kol. 1: document van Heron aan Dionusios en Herakleides. Waarschijnlijk geeft Heron hierin aan dat hij een stuk grond geërfd heeft van zijn moeder in Philadelpheia. Kol. 2: erg fragmentarisch; er worden 2 data vermeld: 14 nov. (r. 3) en 28 (?) mei (r. 11)</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="561">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">Herkomst: Theadelpheia</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="581">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">Baert, P. De papyrusverzameling van de Universiteitsbib. te Gent ; p. 16</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="4" ind2="" tag="856">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="3">Trismegistos Texts Database</marc:subfield>
+    <marc:subfield code="u">http://www.trismegistos.org/text/140367</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="4" ind2="" tag="852">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="x">UB</marc:subfield>
+    <marc:subfield code="b">CA20</marc:subfield>
+    <marc:subfield code="c">BHSL</marc:subfield>
+    <marc:subfield code="j">BHSL.PAP.000011/1</marc:subfield>
+    <marc:subfield code="p">1484448-10</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="920">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">manuscript</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="920">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="3">Trismegistos Texts Database</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH</marc:subfield>
+    <marc:subfield code="b"></marc:subfield>
+    <marc:subfield code="c">20110423</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">2136</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="c">20110423</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">2245</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH</marc:subfield>
+    <marc:subfield code="b"></marc:subfield>
+    <marc:subfield code="c">20120120</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">1611</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH</marc:subfield>
+    <marc:subfield code="b"></marc:subfield>
+    <marc:subfield code="c">20120203</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">1102</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH</marc:subfield>
+    <marc:subfield code="b"></marc:subfield>
+    <marc:subfield code="c">20120220</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">0955</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH-UPD</marc:subfield>
+    <marc:subfield code="b">00</marc:subfield>
+    <marc:subfield code="c">20120224</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">1540</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH</marc:subfield>
+    <marc:subfield code="b"></marc:subfield>
+    <marc:subfield code="c">20120226</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">1124</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH</marc:subfield>
+    <marc:subfield code="b"></marc:subfield>
+    <marc:subfield code="c">20120404</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">1601</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CAT">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BATCH</marc:subfield>
+    <marc:subfield code="b"></marc:subfield>
+    <marc:subfield code="c">20120405</marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="h">1145</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="-" ind2="1" tag="Z30">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="l">RUG01</marc:subfield>
+    <marc:subfield code="L">RUG01</marc:subfield>
+    <marc:subfield code="m">MANUS</marc:subfield>
+    <marc:subfield code="x">UB</marc:subfield>
+    <marc:subfield code="1">CA20</marc:subfield>
+    <marc:subfield code="2">BHSL</marc:subfield>
+    <marc:subfield code="3">BHSL.PAP.000011/1</marc:subfield>
+    <marc:subfield code="5">1484448-10</marc:subfield>
+    <marc:subfield code="8">20110423</marc:subfield>
+    <marc:subfield code="f">59</marc:subfield>
+    <marc:subfield code="F">Consult digital copy</marc:subfield>
+    <marc:subfield code="h">Recto</marc:subfield>
+  </marc:datafield>
+  <marc:datafield ind1="" ind2="" tag="CRD">
+    <marc:subfield code="_"></marc:subfield>
+    <marc:subfield code="a">BHSL20110423</marc:subfield>
+  </marc:datafield>
+</marc:record>

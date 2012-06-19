@@ -1,0 +1,36 @@
+- xml validators nodig
+
+    => geldige xml
+    => geldig volgens xml schema (zelf bijhouden)
+
+- xslt transformators nodig
+
+    - Apache Xalan   
+    - SAXON
+
+    => JAXP (javax.xml) wrapt meerdere xslt en xml interfaces (~ jquery)
+       kijkt welke van de twee api's aanwezig is.
+       systeemvariabelen kunnen bepalen welke gekozen wordt
+
+- mets creëren of aanvullen:
+
+    - METS Java Toolkit, Version 1.5
+        zéér snel in creëren en valideren
+        valideert louter in java, niet volledig volgens de specificatie
+    - METS API 1.2
+        minder snel,
+        maar volledig in validatie (gebruikt xsd-validatie ipv het zelf proberen te doen in java)
+        combineert SAX en W3C DOM libraries met sun java jdk.
+    - jpstroop / mets-api op Github (https://github.com/jpstroop/mets-api)
+
+    - 7train METS Generation Tool
+        XSLT2.0 tool om XML input om te zetten naar METS. Mogelijkheid om verwerking aan te passen
+        aan eigen noden.
+        nadeel: geen library die gedocumenteert is, wel CLI tool
+    - Archivists' Toolkit Version 2.0
+        GUI
+        "Open source archival data management system providing integrated support for archival materials. Provides for EAD export at the collection level and METS export at the item level. METS building and export features can be used independently of the EAD features. Will soon be merged with Archon to become ArchiveSpace, and feature a web-based, service oriented architecture."
+
+    - ContentE (Biblioteca Nacional Digital, Portugal)
+        GUI
+        "An application supporting the formal structuring of digital content and associated metadata, and the export of the resulting structure to METS (xml) and XHTML."
