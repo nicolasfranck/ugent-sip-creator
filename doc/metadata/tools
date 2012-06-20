@@ -17,10 +17,18 @@
     - METS Java Toolkit, Version 1.5
         zéér snel in creëren en valideren
         valideert louter in java, niet volledig volgens de specificatie
+        -> ID moeten enkel letters bevatten, en IDREF's moeten kloppen        
+        -> mets element mag niet leeg zijn
+        -> geen check of structMap aanwezig is
+        
+        xmllint valideert output van deze tool successvol op de laatste mets 1.9.1
     - METS API 1.2
         minder snel,
         maar volledig in validatie (gebruikt xsd-validatie ipv het zelf proberen te doen in java)
         combineert SAX en W3C DOM libraries met sun java jdk.
+
+        => valideert nooit, zelfs niet eigen geproduceerde xml???
+
     - jpstroop / mets-api op Github (https://github.com/jpstroop/mets-api)
 
     - 7train METS Generation Tool
