@@ -14,6 +14,11 @@
 
 - mets creëren of aanvullen:
 
+    conclusie: geen enkele valideert mets volledig, dus beter opsplitsing maken
+        1. creëren van mets-object in geheugen, en dat kunnen manipuleren door toolkit
+        2. valideren van output tegen schema in echte validator
+
+
     - METS Java Toolkit, Version 1.5
         zéér snel in creëren en valideren
         valideert louter in java, niet volledig volgens de specificatie
@@ -27,9 +32,11 @@
         maar volledig in validatie (gebruikt xsd-validatie ipv het zelf proberen te doen in java)
         combineert SAX en W3C DOM libraries met sun java jdk.
 
-        => valideert nooit, zelfs niet eigen geproduceerde xml???
+        => valideert nooit succesvol, zelfs niet eigen geproduceerde xml???
 
     - jpstroop / mets-api op Github (https://github.com/jpstroop/mets-api)
+
+        vergelijkbaar mets METS java toolkit, maar id referenties worden niet gecontroleerd
 
     - 7train METS Generation Tool
         XSLT2.0 tool om XML input om te zetten naar METS. Mogelijkheid om verwerking aan te passen
