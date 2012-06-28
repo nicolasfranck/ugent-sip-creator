@@ -2,7 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package renamewand;
+package RenameWand;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -188,6 +189,7 @@ public class Renamewandlib {
             OPERATOR_PRECEDENCE.put("-",   3);
             OPERATOR_PRECEDENCE.put(SUBSTRING_RANGE_CHAR  + "", 2);
             OPERATOR_PRECEDENCE.put(SUBSTRING_DELIMITER_CHAR + "", 1);
+            
         }
 
         public Renamewandlib(){
@@ -320,39 +322,32 @@ public class Renamewandlib {
             errors.clear();
             /* files/directories to be renamed */
             List<FileUnit> files = null;
-           
+          
             /* get match candidates */
-            files = getMatchCandidates(); 
+            files = getMatchCandidates();
+           
             /* perform matching */
             try{
-                files = performSourcePatternMatching(files);            
-                
-                if(files.size() == 0)return;              
-                
-                evaluateTargetPattern(files.toArray(new FileUnit[files.size()]));
+                files = performSourcePatternMatching(files);
 
-                for(FileUnit fu:files){
-                    System.out.println(fu.source.getAbsolutePath()+" => ");
-                }
+                
+                if(files.size() == 0)return;             
+           
+           
+                evaluateTargetPattern(files.toArray(new FileUnit[files.size()]));               
 
                 /* determine renaming sequence and find clashes, bad names, etc. */
-                /*final List<RenameFilePair> renameOperations = getRenameOperations(files);
+                final List<RenameFilePair> renameOperations = getRenameOperations(files);
                 final int numRenameOperations = renameOperations.size();
 
-                for(RenameFilePair pair:renameOperations){
-                    System.out.println(pair.source.getCanonicalFile()+" => "+pair.target.getCanonicalPath());
-                }
+                               
+                final boolean proceedToRename = promptUserOnRename(files, numRenameOperations);                
 
                 
-                final boolean proceedToRename = promptUserOnRename(files, numRenameOperations);*/
-
-                
-
-                /*
                 final int numRenameOperationsPerformed = proceedToRename ? performRenameOperations(renameOperations) : 0;
                 for(String str:warnings){
                     System.err.println(str);
-                }*/
+                }
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -361,31 +356,23 @@ public class Renamewandlib {
         public static void main(String [] args){
             try{
                 Renamewandlib renamer = new Renamewandlib();
-                renamer.setCurrentDirectory(new File("/home/nicolas/tiffs"));
-                System.out.println(renamer.currentDirectory.getAbsolutePath());
-              
-                renamer.setSourcePatternString("<prefix>.jpg");
-                renamer.setTargetPatternString("<prefix>.tif");
-                System.out.println(renamer.getSourcePatternString());
-                System.out.println(renamer.getTargetPatternString());
+                File dir = new File("/home/nicolas/bhsl-pap");
+                renamer.setCurrentDirectory(dir);
+                renamer.setRecurseIntoSubdirectories(true);
                 
-
+              
+                renamer.setSourcePatternString("<prefix>.jpeg");
+                renamer.setTargetPatternString("<prefix>.tif");
 
                 renamer.setRenameListener(new RenameListener(){
-                    public boolean approveList(List<FileUnit> list){
-                        for(FileUnit fu:list){
-                            try {
-                                System.out.println("renaming " + fu.source.getCanonicalPath() + " to " + fu.target.getCanonicalPath());
-                            } catch (IOException ex) {
-                                Logger.getLogger(Renamewandlib.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
+                    public boolean approveList(List<FileUnit> list){               
                         return true;
                     }
 
                     public OnRenameOperationError onError(RenameFilePair pair, RenameError errorType, String errorStr) {
                         if(errorStr != null)System.err.println(errorStr);
                         System.err.println("undoing all operations!");
+                        System.err.println(errorType+":'"+errorStr+"'");
                         return OnRenameOperationError.undoAllOnRenameOperationError;
                     }
 
@@ -456,7 +443,7 @@ public class Renamewandlib {
                         final boolean isDirectory = f.isDirectory();
 
                         if(renameDirectories == isDirectory){
-                            final FileUnit u = new FileUnit();
+                            final FileUnit u = new FileUnit(this);
                             u.source = f;
                             u.parentDirId = numDirs;
                             matchCandidates.add(u);
@@ -523,7 +510,7 @@ public class Renamewandlib {
 
                     /* regex pattern matcher */
                     final Matcher sourceMatcher = sourcePattern.matcher(name);
-                    System.out.println(sourcePattern.toString());
+                    
 
                     if(sourceMatcher.matches()){
                         /* add capture group values to FileUnit's registerValues, and */
@@ -675,7 +662,7 @@ public class Renamewandlib {
                     sourceRegex.append(")|(?:");
                 }
                 else if (c == '<'){
-                    System.out.println("< found!");
+                    
                     /*********************************
                      * (6) SPECIAL CONSTRUCT "<...>" *
                      *********************************/
@@ -687,7 +674,7 @@ public class Renamewandlib {
                     while(!closingAngleBracketFound && (index < sourcePatternStringLength)){
                         c = sourcePatternString.charAt(index++);
                         specialConstruct.append(c);
-
+                        
                         if ((c == '>') && (specialConstruct.charAt(specialConstruct.length() - 2) != '\\'))
                             closingAngleBracketFound = true;
                     }
@@ -695,7 +682,7 @@ public class Renamewandlib {
                     if(!closingAngleBracketFound)
                         throw new TerminatingException("Failed to find matching closing angle bracket > for special construct \"" +
                                             specialConstruct + "\" in source pattern string. Please ensure that each literal < is escaped as \\<.");
-
+                    
                     /* check if special construct is in the form "<length|@expr>" */
                     final Matcher specialConstructMatcher = SOURCE_SPECIAL_CONSTRUCT_PATTERN.matcher(specialConstruct);
 
@@ -1925,13 +1912,13 @@ public class Renamewandlib {
                 else{
                     r.target.getParentFile().mkdirs();
                     String error = null;
-                    try{
-                        r.success = r.source.renameTo(r.target);
+
+                    try{                        
+                        r.success = r.source.renameTo(r.target);                        
                     }catch(SecurityException e){
-                        r.success = false;
+                        r.success = false;                        
                         error = e.getMessage();
-                    }
-                    r.success = r.source.renameTo(r.target);
+                    }                    
 
                     if(!r.success){
                         if(renameListener != null){
@@ -1956,9 +1943,11 @@ public class Renamewandlib {
                     }
                     else if(action == OnRenameOperationError.undoAllOnRenameOperationError){                        
                         
-                        for(int j = i - 1; j >= 0; j--){
+                        for(int j = i ; j >= 0; j--){
                             final RenameFilePair t = renameOperations.get(j);
-                            if(t.success){                                
+                            
+                            if(t.success){
+                                
                                 String error = null;
                                 t.source.getParentFile().mkdirs();
                                 try{

@@ -23,7 +23,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package renamewand;
+package RenameWand;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -58,6 +58,20 @@ public class FileUnit
 	/** target file/directory (absolute and canonical abstract pathname) */
 	File target = null;
 
+
+
+        /*
+         * Nicolas Franck
+         */
+        Renamewandlib renamer = null;
+
+        public Renamewandlib getRenamer() {
+            return renamer;
+        }
+
+        public FileUnit(Renamewandlib renamer){
+            this.renamer = renamer;
+        }
 
 	/**
 	 * Evaluate the specified macro, by returning the value of the specified
@@ -137,8 +151,8 @@ public class FileUnit
 		{
 			String path = this.source.getPath();
 
-			if (path.startsWith(RenameWand.currentDirectoryFullPathname))
-				path = path.substring(RenameWand.currentDirectoryFullPathnameLength);
+			if (path.startsWith(renamer.currentDirectoryFullPathname))
+				path = path.substring(renamer.currentDirectoryFullPathname.length());
 
 			/* trim off trailing separator */
 			while (path.endsWith(File.separator))
@@ -152,7 +166,7 @@ public class FileUnit
 		{
 			final File parent = this.source.getParentFile();
 
-			if ((parent == null) || (parent.equals(RenameWand.currentDirectory)))
+			if ((parent == null) || (parent.equals(renamer.getCurrentDirectory())))
 			{
 				return "";
 			}
@@ -173,7 +187,7 @@ public class FileUnit
 		{
 			final File parent = this.source.getParentFile();
 
-			if ((parent == null) || (parent.equals(RenameWand.currentDirectory)))
+			if ((parent == null) || (parent.equals(renamer.getCurrentDirectory())))
 			{
 				return "";
 			}
@@ -181,8 +195,8 @@ public class FileUnit
 			{
 				String path = parent.getPath();
 
-				if (path.startsWith(RenameWand.currentDirectoryFullPathname))
-					path = path.substring(RenameWand.currentDirectoryFullPathnameLength);
+				if (path.startsWith(renamer.currentDirectoryFullPathname))
+					path = path.substring(renamer.currentDirectoryFullPathname.length());
 
 				/* trim off trailing separator */
 				while (path.endsWith(File.separator))
@@ -359,7 +373,7 @@ public class FileUnit
 		/* Full pathname of the current directory (e.g. "C:\Work") */
 		if ("RW.cd".equals(macro))
 		{
-			String path = RenameWand.currentDirectoryFullPathname;
+			String path = renamer.currentDirectoryFullPathname;
 
 			/* trim off trailing separator */
 			while (path.endsWith(File.separator))
@@ -588,9 +602,9 @@ public class FileUnit
 		/* MUST BE THIRD-LAST BLOCK */
 
 		if ((this.registerValues != null) &&
-				RenameWand.registerNames.containsKey(macro))
+				renamer.getRegisterNames().containsKey(macro))
 		{
-			return this.registerValues[RenameWand.registerNames.get(macro)];
+			return this.registerValues[renamer.getRegisterNames().get(macro)];
 		}
 
 
@@ -616,8 +630,8 @@ public class FileUnit
 			{
 				final String upper = c1.toUpperCase(Locale.ENGLISH);
 				final String lower = c1.toLowerCase(Locale.ENGLISH);
-				final boolean upperIsRegister = RenameWand.registerNames.containsKey(upper);
-				final boolean lowerIsRegister = RenameWand.registerNames.containsKey(lower);
+				final boolean upperIsRegister = renamer.getRegisterNames().containsKey(upper);
+				final boolean lowerIsRegister = renamer.getRegisterNames().containsKey(lower);
 				String parentMacro = null;
 
 				if (upperIsRegister && !lowerIsRegister)

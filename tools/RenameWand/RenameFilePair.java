@@ -23,20 +23,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package renamewand;
+package RenameWand;
+
+import java.io.File;
 
 
 /**
- * Represent the result of an evaluation.
+ * Represent a source-target pair for renaming a file/directory.
  */
-class EvaluationResult<T>
+public class RenameFilePair
 {
-	/** error message */
-	String error = null;
+	/** source file/directory */
+	File source;
 
-	/** evaluation success */
-	boolean success = false;
+	/** target file/directory */
+	File target;
 
-	/** evaluation output */
-	T[] output = null;
+	/** true if rename operation is successful; false otherwise */
+	boolean success;
+
+
+	/**
+	 * Constructor.
+	 *
+	 * @param source
+	 *     Source file/directory.
+	 * @param target
+	 *     Target file/directory.
+	 */
+	RenameFilePair(
+			File source,
+			File target)
+	{
+		this.source = source;
+		this.target = target;
+	}
 }

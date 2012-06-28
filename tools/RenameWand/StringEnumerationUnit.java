@@ -23,20 +23,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package renamewand;
+package RenameWand;
 
 
 /**
- * Represent a double value used in enumeration of files/directories.
+ * Represent a string used in enumeration of files/directories.
  */
-class DoubleEnumerationUnit
-		implements Comparable<DoubleEnumerationUnit>
+class StringEnumerationUnit
+		implements Comparable<StringEnumerationUnit>
 {
 	/** index of the corresponding file/directory */
 	int index;
 
-	/** double value to be used in sorting */
-	double value;
+	/** String to be used in sorting */
+	String value;
 
 
 	/**
@@ -45,11 +45,11 @@ class DoubleEnumerationUnit
 	 * @param index
 	 *     Index of the corresponding file/directory
 	 * @param val
-	 *     Double value to be used in sorting.
+	 *     String to be used in sorting.
 	 */
-	DoubleEnumerationUnit(
+	StringEnumerationUnit(
 			int index,
-			double value)
+			String value)
 	{
 		this.index = index;
 		this.value = value;
@@ -59,30 +59,19 @@ class DoubleEnumerationUnit
 	/** compare this object to the specified object */
 	@Override
 	public int compareTo(
-			DoubleEnumerationUnit o)
+			final StringEnumerationUnit o)
 	{
-		if (this.value > o.value)
-		{
-			return 1;
-		}
-		else if (this.value < o.value)
-		{
-			return -1;
-		}
-		else
-		{
-			return 0;
-		}
+		return this.value.compareTo(o.value);
 	}
 
 
 	/** indicate if this object is equal to the specified object */
 	@Override
 	public boolean equals(
-			Object o)
+			final Object o)
 	{
-		if (o instanceof DoubleEnumerationUnit)
-			return (this.value == ((DoubleEnumerationUnit) o).value);
+		if (o instanceof StringEnumerationUnit)
+			return this.value.equals(((StringEnumerationUnit) o).value);
 
 		return false;
 	}
@@ -92,6 +81,6 @@ class DoubleEnumerationUnit
 	@Override
 	public int hashCode()
 	{
-		return (int) this.value;
+		return this.value.hashCode();
 	}
 }
