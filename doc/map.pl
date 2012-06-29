@@ -28,8 +28,31 @@ my $xpath = XML::XPath->new(filename => $file);
 my $header = <<EOF;
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="marc" xmlns:bxf="http://bitflux.org/functions" xmlns:func="http://exslt.org/functions" extension-element-prefixes="func">
+<xsl:stylesheet 
 
+    version="1.0" 
+
+    xmlns:marc="http://www.loc.gov/MARC21/slim" 
+
+    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
+
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+
+    xmlns:dc="http://purl.org/dc/elements/1.1/" 
+
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+
+    exclude-result-prefixes="marc"
+
+    xmlns:bxf="http://bitflux.org/functions"
+
+    xmlns:func="http://exslt.org/functions" 
+
+    extension-element-prefixes="func" 
+
+
+
+>
     <xsl:output method="text" indent="yes" encoding="UTF-8"/>
 EOF
 my $footer = <<EOF;
