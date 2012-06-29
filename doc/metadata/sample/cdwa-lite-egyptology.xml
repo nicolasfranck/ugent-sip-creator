@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdwalite xmlns="http://www.getty.edu/CDWA/CDWALite"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.getty.edu/CDWA/CDWALite http://www.getty.edu/CDWA/CDWALite/CDWALite-xsd-public-v1-1.xsd">
+    <descriptiveMetadata>
+        <objectWorkTypeWrap>
+            <objectWorkType xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:termsource="aat">shrines (structures)</objectWorkType>
+        </objectWorkTypeWrap>
+        <titleWrap>
+            <titleSet>
+                <title xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:pref="preferred" ns1:type="descriptive">White Chapel of Senwosret I at 
+                Karnak</title>
+              
+            </titleSet>
+        </titleWrap>
+        <displayCreator>
+        </displayCreator>
+        <indexingCreatorWrap>
+            <indexingCreatorSet>
+                <nameCreatorSet>
+                    <nameCreator>unknown Egyptian</nameCreator>
+                </nameCreatorSet>
+                <roleCreator></roleCreator>
+            </indexingCreatorSet>
+        </indexingCreatorWrap>
+        <displayMaterialsTech>
+        </displayMaterialsTech>
+        <indexingMaterialsTechWrap>
+            <indexingMaterialsTechSet>
+                <termMaterialsTech xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:termsource="aat">alabaster (mineral)</termMaterialsTech>
+                <termMaterialsTech xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:termsource="aat">calcite (material)</termMaterialsTech>
+            </indexingMaterialsTechSet>
+        </indexingMaterialsTechWrap>
+        <cultureWrap>
+            <culture xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:termsource="aat" ns1:termsourceID="300020322">Twelfth Dynasty (Middle Kingdom (Egyptian)</culture>
+        </cultureWrap>
+        <displayCreationDate>1971 BC to 1926 BC</displayCreationDate>
+        
+        <indexingDatesWrap>
+            <indexingDatesSet>
+                <earliestDate xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:termsource="">-1971</earliestDate>
+                <latestDate>-1926</latestDate>
+            </indexingDatesSet>
+        </indexingDatesWrap>
+        <locationWrap>
+            <locationSet>
+                <locationName xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:type="currentLocation">Al Karnak, Egypt</locationName><!-- verify form etc in TGN --><!-- do i want to assign a type attribute ? -->
+            </locationSet>
+        </locationWrap>
+        <indexingSubjectWrap>
+            <indexingSubjectSet>
+                <subjectTerm xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:type="conceptTerm" ns1:termsourceID="300028721" ns1:termsource="aat">hieroglyphics</subjectTerm>
+                <subjectTerm xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:type="conceptTerm" ns1:termsource="aat" ns1:termsourceID="300007558">shrines (structures)</subjectTerm>
+                <subjectTerm xmlns:ns1="http://www.getty.edu/CDWA/CDWALite" ns1:type="temporal" ns1:termsourceID="" ns1:termsource="aat">Dynasty 12, Middle Kingdom, Egypt</subjectTerm>
+            </indexingSubjectSet>
+        </indexingSubjectWrap>
+    </descriptiveMetadata>
+    <administrativeMetadata>
+        <recordWrap>
+            <recordID>ARK goes here</recordID>
+            <recordType>still image</recordType>
+        </recordWrap>
+        
+    </administrativeMetadata>
+</cdwalite>
