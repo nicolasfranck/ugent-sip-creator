@@ -29,6 +29,7 @@ TODO
 
         => Apache Tika
             hoge depency graad (20 jars!)
+            vereist communicatie met een Tika server
 
         => JMimeMagic (gebruikt org.apache.oro.text.perl.Perl5Util!)
             test File of Byte [] op extensie door magic headers te lezen

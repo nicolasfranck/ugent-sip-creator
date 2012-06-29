@@ -23,7 +23,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package RenameWand;
+package RenameWandLib;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -63,13 +63,13 @@ public class FileUnit
         /*
          * Nicolas Franck
          */
-        Renamewandlib renamer = null;
+        RenameWand renamer = null;
 
-        public Renamewandlib getRenamer() {
+        public RenameWand getRenamer() {
             return renamer;
         }
 
-        public FileUnit(Renamewandlib renamer){
+        public FileUnit(RenameWand renamer){
             this.renamer = renamer;
         }
 

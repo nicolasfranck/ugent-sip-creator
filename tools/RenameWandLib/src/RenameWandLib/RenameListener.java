@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package RenameWand;
+package RenameWandLib;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface RenameListener {
      * @param errorStr
      *      error message (sometimes null)
      */
-    OnRenameOperationError onError(final RenameFilePair pair,final RenameError errorType,final String errorStr);
+    OnErrorAction onError(final RenameFilePair pair,final RenameError errorType,final String errorStr);
     /*
      * @param pair
      *  object that contains source and target file
