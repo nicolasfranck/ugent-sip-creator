@@ -10,15 +10,23 @@ use List::MoreUtils qw(distinct);
 
 sub to_path {
     my($node) = @_;
-    my @paths = ($node->getName());
-    my $parent = $node->getParentNode();
-
+    my @paths = ();
+    my $parent = $node;
     while($parent){
-        next if $parent->getNodeType != XML::XPath::Node::ELEMENT_NODE();        
-        unshift @paths,$parent->getName() if defined($parent->getName());
+        
+        my $name = $parent->getLocalName();
+        my $ns = $parent->getNamespace();
+        my $prefix = $parent->getPrefix();
+        if($name){
+            unless($prefix){
+                $prefix = "default";
+            }
+            unshift @paths,"$prefix:$name";
+        }        
         $parent = $parent->getParentNode();
+
     }
-    return "/".join('/',@paths);    
+    return "/".join('/',@paths);
 }
 
 # cat map_ead_dc | ./map.pl ead.xml 
