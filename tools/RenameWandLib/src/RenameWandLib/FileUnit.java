@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 
 /**
@@ -59,11 +60,10 @@ public class FileUnit
 	File target = null;
 
 
-
         /*
          * Nicolas Franck
          */
-        RenameWand renamer = null;
+        RenameWand renamer = null;       
 
         public RenameWand getRenamer() {
             return renamer;
@@ -589,11 +589,11 @@ public class FileUnit
 		{
 			final String parentMacro = macro.substring(0, macro.lastIndexOf("."));
 			final String parentMacroValue = this.evaluateMacro(parentMacro);
+                        
 
 			if (parentMacroValue != null)
 				return StringManipulator.spaceOutWords(parentMacroValue);
-		}
-
+		}                
 
 		/****************************
 		 * (9) REGISTERS (ASSIGNED) *

@@ -14,14 +14,14 @@ import java.util.logging.Logger;
  *
  * @author nicolas
  */
-public class TestRenameWand {
+public class Example1 {
     public static void main(String [] args){
         try{
             RenameWand renamer = new RenameWand();
             renamer.setCurrentDirectory(new java.io.File("/home/nicolas/bhsl-pap"));
             renamer.setRecurseIntoSubdirectories(true);
-            renamer.setSourcePatternString("<prefix>_<year>_<seq>_AC_large.jpg");
-            renamer.setTargetPatternString("<prefix>_<year>_<4|seq>_AC_large.jpg");
+            renamer.setSourcePatternString("<prefix>_<year>_<seq>_AC_thumbnail.jpeg");
+            renamer.setTargetPatternString("<prefix>_<year>_<4|seq>_AC_thumbnail.jpg");
             renamer.setRenameListener(new RenameListener(){
                 public boolean approveList(List<FileUnit> list){
                     return true;
