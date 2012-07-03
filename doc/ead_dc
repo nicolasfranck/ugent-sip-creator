@@ -59,7 +59,6 @@
 //edition dc:relation
 //editionstmt dc:relation
 //editionstmt dc:relation
-//ead dc:identifier
 //event dc:description
 //eventgrp dc:description
 //eventgrp dc:description

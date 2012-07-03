@@ -1,0 +1,26 @@
+//recordType dc:title
+//objectWorkType dc:type
+//classification dc:subject
+//title dc:title
+//displayCreator dc:creator
+//displayCreationDate dcterms:created
+//locationName[@type="creationLocation"] dcterms:spatial
+//style dcterms:temporal
+//displayMeasurements dcterms:extent
+//scaleMeasurements dcterms:extent
+//termMaterials dcterms:medium
+//inscriptions dcterms:description
+//subjectTerm dc:subject
+//locationName[@type="currentArchitecturalContext" || @type="formerArchitecturalContext"] dcterms:spatial
+//subject dc:subject
+//descriptiveNote dc:description
+//labelRelatedWork dc:relation
+//locRelatedWork dc:relation
+//relatedWorkRelType dc:relation
+//workID dc:identifier
+//rightsWork dc:rights
+//locationName[@type="formerRepository"] dc:source
+//resourceRelationshipType dcterms:isFormatOf
+//resourceViewType dc:type
+//resourceViewSubjectTerm dc:subject
+//recordSource dcterms:isReferencedBy

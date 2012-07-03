@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<isad:archivaldescription xmlns:isad="ISADG"
+ xmlns:rkms="Stadsarchief_Antwerpen/rkms/1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="ISADG file:/home/nicolas/Bagger-LC/doc/metadata/xsd/isad.xsd">
+    <isad:identity>
+        <isad:reference id="3.1.1">
+        </isad:reference>
+        <isad:title id="3.1.2">
+        </isad:title>
+        <isad:date id="3.1.3">
+        </isad:date>
+        <isad:descriptionlevel id="3.1.4">
+        </isad:descriptionlevel>
+        <isad:extent id="3.1.5">
+        </isad:extent>
+    </isad:identity>
+    <isad:context>
+        <isad:creator id="3.2.1">
+        </isad:creator>
+        <isad:adminbiohistory id="3.2.2">
+        </isad:adminbiohistory>
+        <isad:archivalhistory id="3.2.3">
+        </isad:archivalhistory>
+        <isad:acqinfo id="3.2.4">
+        </isad:acqinfo>
+    </isad:context>
+    <isad:content_structure>
+        <isad:scopecontent id="3.3.1">
+        </isad:scopecontent>
+        <isad:appraisaldestruction id="3.3.2">
+        </isad:appraisaldestruction>
+        <isad:accruals id="3.3.3">
+        </isad:accruals>
+        <isad:arrangement id="3.3.4">
+        </isad:arrangement>
+    </isad:content_structure>
+    <isad:conditions_access_use>
+        <isad:accessrestrictions id="3.4.1">
+        </isad:accessrestrictions>
+        <isad:reprorestrictions id="3.4.2">
+        </isad:reprorestrictions>
+        <isad:languagescripts id="3.4.3">
+        </isad:languagescripts>
+        <isad:phystech id="3.4.4">
+        </isad:phystech>
+        <isad:findingaids id="3.4.5">
+        </isad:findingaids>
+    </isad:conditions_access_use>
+    <isad:allied_materials>
+        <isad:existencelocation_originals id="3.5.1">
+        </isad:existencelocation_originals>
+        <isad:existencelocation_copies id="3.5.2">
+        </isad:existencelocation_copies>
+        <isad:relatedunits id="3.5.3">
+        </isad:relatedunits>
+        <isad:publication id="3.5.4">
+        </isad:publication>
+    </isad:allied_materials>
+    <isad:notes>
+        <isad:note id="3.6.1">
+        </isad:note>
+    </isad:notes>
+    <isad:description_control>
+        <isad:archivistsnote id="3.7.1">
+        </isad:archivistsnote>
+        <isad:rulesconventions id="3.7.2">
+        </isad:rulesconventions>
+        <isad:descriptionsdate id="3.7.3">
+        </isad:descriptionsdate>
+    </isad:description_control>
+</isad:archivaldescription>

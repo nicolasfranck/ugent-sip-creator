@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<v2:mads xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:v2="http://www.loc.gov/mads/v2"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.loc.gov/mads/v2 file:/home/nicolas/Bagger-LC/doc/metadata/xsd/mads/2.0/mads-2.0.xsd" ID="ID000" version="2.0">
+    <v2:authority geographicSubdivision="none" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role0"
+         xlink:arcrole="arcrole0" xlink:title="title0" xlink:show="new" xlink:actuate="onLoad" lang="lang0"
+         xml:lang="en-US" script="script0" transliteration="transliteration0" ID="ID001">
+        <v2:titleInfo displayLabel="displayLabel0" ID="ID002" authority="authority0" authorityURI="http://www.oxygenxml.com/"
+             valueURI="http://www.oxygenxml.com/" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+             xlink:role="role1" xlink:arcrole="arcrole1" xlink:title="title1" xlink:show="new" xlink:actuate="onLoad"
+             lang="lang1" xml:lang="en-US" script="script1" transliteration="transliteration1">
+            <v2:partName lang="lang2" xml:lang="en-US" script="script2" transliteration="transliteration2">partName0</v2:partName>
+            <v2:partName lang="lang3" xml:lang="en-US" script="script3" transliteration="transliteration3">partName1</v2:partName>
+        </v2:titleInfo>
+        <v2:topic authority="authority1" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/"
+             lang="lang4" xml:lang="en-US" script="script4" transliteration="transliteration4">topic0</v2:topic>
+    </v2:authority>
+    <v2:authority geographicSubdivision="none" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role2"
+         xlink:arcrole="arcrole2" xlink:title="title2" xlink:show="new" xlink:actuate="onLoad" lang="lang5"
+         xml:lang="en-US" script="script5" transliteration="transliteration5" ID="ID003">
+        <v2:topic authority="authority2" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/"
+             lang="lang6" xml:lang="en-US" script="script6" transliteration="transliteration6">topic1</v2:topic>
+        <v2:occupation authority="authority3" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/"
+             lang="lang7" xml:lang="en-US" script="script7" transliteration="transliteration7">occupation0</v2:occupation>
+    </v2:authority>
+    <v2:related type="earlier" otherType="otherType0" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role3"
+         xlink:arcrole="arcrole3" xlink:title="title3" xlink:show="new" xlink:actuate="onLoad" lang="lang8"
+         xml:lang="en-US" script="script8" transliteration="transliteration8" ID="ID004">
+        <v2:hierarchicalGeographic authority="authority4" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/">
+            <v2:country lang="lang9" xml:lang="en-US" script="script9" transliteration="transliteration9">country0</v2:country>
+            <v2:city lang="lang10" xml:lang="en-US" script="script10" transliteration="transliteration10">city0</v2:city>
+        </v2:hierarchicalGeographic>
+        <v2:name type="personal" authority="authority5" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/">
+            <v2:namePart type="date" lang="lang11" xml:lang="en-US" script="script11" transliteration="transliteration11">namePart0</v2:namePart>
+            <v2:description lang="lang12" xml:lang="en-US" script="script12" transliteration="transliteration12">description0</v2:description>
+            <v2:namePart type="date" lang="lang13" xml:lang="en-US" script="script13" transliteration="transliteration13">namePart1</v2:namePart>
+            <v2:description lang="lang14" xml:lang="en-US" script="script14" transliteration="transliteration14">description1</v2:description>
+        </v2:name>
+    </v2:related>
+    <v2:related type="earlier" otherType="otherType1" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role4"
+         xlink:arcrole="arcrole4" xlink:title="title4" xlink:show="new" xlink:actuate="onLoad" lang="lang15"
+         xml:lang="en-US" script="script15" transliteration="transliteration15" ID="ID005">
+        <v2:topic authority="authority6" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/"
+             lang="lang16" xml:lang="en-US" script="script16" transliteration="transliteration16">topic2</v2:topic>
+        <v2:hierarchicalGeographic authority="authority7" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/">
+            <v2:continent lang="lang17" xml:lang="en-US" script="script17" transliteration="transliteration17">continent0</v2:continent>
+            <v2:continent lang="lang18" xml:lang="en-US" script="script18" transliteration="transliteration18">continent1</v2:continent>
+        </v2:hierarchicalGeographic>
+    </v2:related>
+    <v2:variant type="acronym" otherType="otherType2" hidden="yes" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+         xlink:role="role5" xlink:arcrole="arcrole5" xlink:title="title5" xlink:show="new" xlink:actuate="onLoad"
+         lang="lang19" xml:lang="en-US" script="script19" transliteration="transliteration19" ID="ID006">
+        <v2:occupation authority="authority8" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/"
+             lang="lang20" xml:lang="en-US" script="script20" transliteration="transliteration20">occupation1</v2:occupation>
+        <v2:topic authority="authority9" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/"
+             lang="lang21" xml:lang="en-US" script="script21" transliteration="transliteration21">topic3</v2:topic>
+    </v2:variant>
+    <v2:variant type="acronym" otherType="otherType3" hidden="yes" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+         xlink:role="role6" xlink:arcrole="arcrole6" xlink:title="title6" xlink:show="new" xlink:actuate="onLoad"
+         lang="lang22" xml:lang="en-US" script="script22" transliteration="transliteration22" ID="ID007">
+        <v2:name type="personal" authority="authority10" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/">
+            <v2:namePart type="date" lang="lang23" xml:lang="en-US" script="script23" transliteration="transliteration23">namePart2</v2:namePart>
+            <v2:description lang="lang24" xml:lang="en-US" script="script24" transliteration="transliteration24">description2</v2:description>
+            <v2:namePart type="date" lang="lang25" xml:lang="en-US" script="script25" transliteration="transliteration25">namePart3</v2:namePart>
+            <v2:description lang="lang26" xml:lang="en-US" script="script26" transliteration="transliteration26">description3</v2:description>
+        </v2:name>
+        <v2:occupation authority="authority11" authorityURI="http://www.oxygenxml.com/" valueURI="http://www.oxygenxml.com/"
+             lang="lang27" xml:lang="en-US" script="script27" transliteration="transliteration27">occupation2</v2:occupation>
+    </v2:variant>
+    <v2:affiliation>
+        <v2:address>
+            <v2:state lang="lang28" xml:lang="en-US" script="script28" transliteration="transliteration28">state0</v2:state>
+            <v2:postcode lang="lang29" xml:lang="en-US" script="script29" transliteration="transliteration29">postcode0</v2:postcode>
+        </v2:address>
+        <v2:address>
+            <v2:country lang="lang30" xml:lang="en-US" script="script30" transliteration="transliteration30">country1</v2:country>
+            <v2:postcode lang="lang31" xml:lang="en-US" script="script31" transliteration="transliteration31">postcode1</v2:postcode>
+        </v2:address>
+    </v2:affiliation>
+    <v2:extension>
+    </v2:extension>
+</v2:mads>

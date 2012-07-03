@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sp:SED xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:sp="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd file:/home/nicolas/Bagger-LC/doc/metadata/xsd/Spectrum-1.01.xsd">
+    <sp:Date unit="Xhuw1PkpBl3-" name="jw_-0SmuW" ucd="qTe">fR3TwxbRSMT.</sp:Date>
+    <sp:Target id="ID000" idref="ID000">
+        <sp:Name name="zduSrKDOccX" ucd="ELTPR-2rTcLa9y">A2Aoe3gy-mQPJIU1pFJdrAms.8.</sp:Name>
+        <sp:Description name="ap0CYh5B" ucd="qwZ8CXXWcrWteXuVx">mvWslTnmrcvCOp1ldRiBGJyuARl</sp:Description>
+        <sp:TargetClass name="sw8" ucd="PW.kNV">gzWBzFAmzmkahW2ZrH7wc5zHB7e</sp:TargetClass>
+        <sp:SpectralClass name="oOP0RmblIMNrB_UG-" ucd="GI-t2Bs1fhY">d8J2fCUDRld</sp:SpectralClass>
+        <sp:Redshift unit="amZnwfoOs" name="P6kLtJl" ucd="cHcO.YQ-dbF0AHsCN">Zd4FGvSlmXEkx_5Yvz_EamJsT3QK</sp:Redshift>
+        <sp:Pos>
+            <sp:value unit="RvK1YCmOgAuW" name="UxowUf1WIC5ZxIBdV4S1J." ucd="UcuAjGncT">jznQOiFtdhFM9xwRg_c.-s5ZQkqNW</sp:value>
+            <sp:value unit="gfgDFYVYC1lJZREWC" name="RwZGpTtADsE.qJ" ucd="d0MxZ">zkW0Zc4NQG</sp:value>
+        </sp:Pos>
+        <sp:VarAmpl unit="CdG" name="Fg9mJSr6b.HwIGF" ucd="E94zKKbGpqp">kvl</sp:VarAmpl>
+        <sp:CustomParams>
+            <sp:Param name="Wb" ucd="Lr7W4b0">gOHf6Bkqj_</sp:Param>
+            <sp:Param name="ef-rtfVxRSqFjhDdzr0JRDwgvB5NR" ucd="L_WbQqZV1F.oJ7suA4xyBIHxmaia5">X5</sp:Param>
+        </sp:CustomParams>
+    </sp:Target>
+    <sp:CustomParams>
+        <sp:Param name="BeVr50" ucd="MLXRo7u9ko">L8YcwKUR6MkDM4JwpXw89tKu</sp:Param>
+        <sp:Param name="r79N9SDY6_-dejt2z7z24YW" ucd="XqD_Jx1_84m">S8Y9UyXAK2ycHKz881</sp:Param>
+    </sp:CustomParams>
+    <sp:Type name="l" ucd="ea_2SuX2k.LsIWzT">KI5PtVWxknK</sp:Type>
+    <sp:NSegments unit="n" name="OrHugQau2fb" ucd="RUcxrm8Ca8RjrbIEbH3pBYs5L">oWHCzh7eShV8Zo9M</sp:NSegments>
+    <sp:Segment id="ID001" idref="ID000">
+        <sp:Target id="ID002" idref="ID001">
+            <sp:Name name="xgsTdlHwyl8adT" ucd="TcgQLGZqDsR5x_KWt3xNgHNXtc">Z-ruX</sp:Name>
+            <sp:Description name="VncQxPESvqJuG8uLkN3N1a_SW" ucd="J4">jxmLM4CvykIaN2lDgHjYwF2P</sp:Description>
+            <sp:TargetClass name="NZ_3qOf" ucd="T8zysODx_myEAI_">tnYrx_qzXzBHpSUMq57yH9DyoUf</sp:TargetClass>
+            <sp:SpectralClass name="u9nTpcp2-v7tUKx976_w" ucd="YhRE9eAQC-tlTjjG">XKaYW74yt6dh0z_</sp:SpectralClass>
+            <sp:Redshift unit="hq3WALcUQmZ5heSB" name="PXC4qO.yyFgqwwEpd4" ucd="In6uF8SgUW-HT-xm7o.WL9iGs0">YCcW91xUx00vld</sp:Redshift>
+            <sp:Pos>
+                <sp:value unit="KE4lKlDQ0_z60zvvCD8w6muEXUI0Y" name="HJHjAS5RyW_" ucd="DBMZfCHovz7A7fwfHvdWldxL5Dm">LGYqXQoionzJ01r2B.80Ves15H</sp:value>
+                <sp:value unit="zR-wlQLAz5vU.wRpUNqRaRM" name="kXCIjdie5iO1x-P" ucd="x">Jc12vqIL</sp:value>
+            </sp:Pos>
+            <sp:VarAmpl unit="PFJpoJN2T" name="k-j" ucd="VCf2SCfMRTfRJ6Uh-">e2oYu</sp:VarAmpl>
+            <sp:CustomParams>
+                <sp:Param name="dPZEUyFcvbjSt6gtg-YYshXYVo22DX" ucd="GKjUVTe_">v8feeYWfJCQTVeU_0Tl56FR2HSTdrw</sp:Param>
+                <sp:Param name="E-uYpEKjDHapP5" ucd="E.-QE">Z.Cy9-M7OdAb8hVOcVXvwLXB</sp:Param>
+            </sp:CustomParams>
+        </sp:Target>
+        <sp:Char id="ID003" idref="ID000">
+            <sp:SpatialAxis name="FfM94gpjcfw4Uw" ucd="CEwFTx7lwU_iF" unit="qo5pdms72JX" id="ID004" idref="ID001">
+                <sp:CoordSystem id="ID005" idref="ID002" ucd="sAvNEGh4raOE9dIEA" xlink:type="simple" xlink:href="http://JFfJcbwX/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID006" idref="ID004">
+                </sp:Coverage>
+                <sp:Resolution unit="W9DQAbLNgCZ9fZ.OyOAMzRKd2" name="U3M" ucd="XOzMNHluT.U">e9M8Btt1OeOcg7M</sp:Resolution>
+                <sp:Accuracy id="ID007" idref="ID001">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID008" idref="ID000">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="tj9jyoPI_lq11selj" ucd="pt1esm6InobUqtuIz5Z">wTJu</sp:Calibration>
+            </sp:SpatialAxis>
+            <sp:TimeAxis name="Po-" ucd="xNZYA5ri" unit="ywfkWD" id="ID009" idref="ID001">
+                <sp:CoordSystem id="ID010" idref="ID008" ucd="pKWQ3obhDwvdF8-B2eByKMsgtGi9G" xlink:type="simple" xlink:href="http://PchoEnud/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID011" idref="ID001">
+                </sp:Coverage>
+                <sp:Resolution unit="sec9MdEhyVl6M16lWWEU4jTuq0" name="tr8XvCgpna0gZo" ucd="HH3QA5nbd-j3ytFi">z5VJ-FDEEEwb0tMXgaA7DDzGMguv</sp:Resolution>
+                <sp:Accuracy id="ID012" idref="ID012">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID013" idref="ID011">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="iIFaC" ucd="ywX.5nxIbvUejj5EARettzwnWRy6Z">LBosfOxN5SRT8tRtf</sp:Calibration>
+            </sp:TimeAxis>
+            <sp:SpectralAxis name="q_fLToXP3X1QwD" ucd="Z" unit="a1dFy45TNlb" id="ID014" idref="ID005">
+                <sp:CoordSystem id="ID015" idref="ID005" ucd="CjTQZDstNv" xlink:type="simple" xlink:href="http://nmagfdeX/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID016" idref="ID001">
+                </sp:Coverage>
+                <sp:Resolution unit="te3VGVYCcjz" name="h1tnsv-xmKNIs" ucd="N7LMFF">qjcdQ34.YCpjov</sp:Resolution>
+                <sp:Accuracy id="ID017" idref="ID017">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID018" idref="ID010">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="S9URbx4jwCv5-IqGVmxCYZuO" ucd="BZzBGFjOTHft3oHummj">PNsRi</sp:Calibration>
+                <sp:ResPower unit="VSnU3FQwhmoj0jgFv3n9SIdtipnJp" name="fYluWfff3i" ucd="gjmQVVj.L35Vzg5DKy_h9yzPn">oIaPJgWZmQNHRnkDS.VZCFHgO</sp:ResPower>
+            </sp:SpectralAxis>
+            <sp:FluxAxis name="p" ucd="a7vj3zNUl1ntu" unit="FwZs5C_2ojm6oII3-2pQV4v2" id="ID019" idref="ID005">
+                <sp:CoordSystem id="ID020" idref="ID013" ucd="vS91z.aAY7.l6bO6H5LgAeVG" xlink:type="simple" xlink:href="http://luHTsFut/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID021" idref="ID016">
+                </sp:Coverage>
+                <sp:Resolution unit="lZXfU-ZY0n_w1Xqht43eRA-uCmt" name="nCV" ucd="YM1drQVi">B6Q.cQQaSHWuuxCc202a2RIV</sp:Resolution>
+                <sp:Accuracy id="ID022" idref="ID022">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID023" idref="ID008">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="nl" ucd="G6wsO_TJk07i1SDZOCNHYB">UA0Ku8m2rD</sp:Calibration>
+            </sp:FluxAxis>
+            <sp:CharacterizationAxis name="l1C74" ucd="qZGLgxnILGep" unit="QdiCXQ.rV_936azTHRr4" id="ID024" idref="ID008">
+                <sp:CoordSystem id="ID025" idref="ID015" ucd="NuacxSTlD8pF0uaDHCR6v4YSnr" xlink:type="simple" xlink:href="http://TMFheDBu/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID026" idref="ID023">
+                </sp:Coverage>
+                <sp:Resolution unit="y.E6sUljR41Ij6gUv7_6r" name="PEe0eg0gDP9BmbbGo-qokWdaQpu" ucd="Ay2UXrZt-I6bnZfnG">Qd4rI2F8mX5HH2eHaDRui</sp:Resolution>
+                <sp:Accuracy id="ID027" idref="ID019">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID028" idref="ID008">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="ZrVuZr" ucd="JCZLMaafpjL555WGf1vN-F">vpp3</sp:Calibration>
+            </sp:CharacterizationAxis>
+            <sp:CharacterizationAxis name="kB40an0WJr" ucd="W.PwVSYviqUm8SDzGx" unit="_wzSz0MWiknj5xC1pwmzsvGpxXg" id="ID029" idref="ID029">
+                <sp:CoordSystem id="ID030" idref="ID011" ucd="nlUwefejkJwAS06S0vA6S0qlMEl" xlink:type="simple" xlink:href="http://JDTKOMGj/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID031" idref="ID024">
+                </sp:Coverage>
+                <sp:Resolution unit="jBG8q" name="qFgrhBR9pITYb9.x.dr6CPVSTOi" ucd="s96QDJzrw3WqVEMgRe">fIqASQZLvym6SczBG6HLvJ</sp:Resolution>
+                <sp:Accuracy id="ID032" idref="ID026">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID033" idref="ID014">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="hah3k" ucd="HV">bA52U7JaJ</sp:Calibration>
+            </sp:CharacterizationAxis>
+        </sp:Char>
+        <sp:CoordSys id="ID034" idref="ID004" ucd="VqDsTws" xlink:type="simple" xlink:href="http://pspaYYYK/">
+            <sp:SpaceFrame id="ID035" ucd="Wam_Be5L7UMQ0JeB">
+            </sp:SpaceFrame>
+            <sp:GenericCoordFrame id="ID036" ucd="JoaS.XqadtDQYOauZrP">
+            </sp:GenericCoordFrame>
+            <sp:SpectralFrame id="ID037" ucd="j.zTpAvCe6eNv">
+            </sp:SpectralFrame>
+            <sp:GenericCoordFrame id="ID038" ucd="qkHXNgXS_wdi5.Wzk1r">
+            </sp:GenericCoordFrame>
+        </sp:CoordSys>
+        <sp:Curation id="ID039" idref="ID008">
+            <sp:Publisher name="vypxOlQO_wfrMb3hNX1s12E" ucd="eDluNZE6H5dDhpP9U4kqz">A3SfZsKWE5-Fx.aapUF0H4l</sp:Publisher>
+            <sp:PublisherID name="PQr-1pi" ucd="AT5lhauAh1K59CVnbeP-g2yHElZ.">aOEBLrTBqbPjcl1b6thW7U4</sp:PublisherID>
+            <sp:Reference name="gd-yQAfokAw-.6kC_hfn7cZi-S_8C" ucd="RJsKr2EtCSZ3LmVYI">_IM</sp:Reference>
+            <sp:Version name="Q5" ucd="OKfn1C">gqUBO._vZQasp</sp:Version>
+            <sp:Contact id="ID040" idref="ID036">
+                <sp:Name name="QF" ucd="AV0yaw6zWc6nkRfYBYk4Ckpjc9oUI7">Q</sp:Name>
+                <sp:Email name="dcBc" ucd="R.MXzsjYv0cTEcak">fEbGDtXMB6t8OULOf1SN</sp:Email>
+            </sp:Contact>
+            <sp:Rights name="Y7XI" ucd="yu">GxaWDBaQKQnkt</sp:Rights>
+            <sp:Date name="iusDpiiSs.KEHFL5Skl" ucd="ReDgHmioi7pqDG-BwdN479lK_gb">FBav.UiAfcySUUigGZOBFAw.toGs</sp:Date>
+            <sp:PublisherDID name="i2TRcvKh.q4aRSm-o1hKG..EC1gC9" ucd="EHSE6HkpWO0cNPj3PI2A">cHUz3I2_oYFCOAWLpBX</sp:PublisherDID>
+        </sp:Curation>
+        <sp:DataID id="ID041" idref="ID002">
+            <sp:Title name="v1tQ0ocNqbZ1raeX6_SUM" ucd="Y">qRS4NWQKDa</sp:Title>
+            <sp:Creator name="bMm6nSuzZ9VOkR0JsNWaa9Am-H6nkN" ucd="mCVEeeNZ4ZHK">m7emVg</sp:Creator>
+            <sp:Collection name="ZMmI1I9BZV2" ucd="mY6v0x">hnRAdFvFTykBO1IldKVY</sp:Collection>
+            <sp:Collection name="l3brcoMQ4hJOWXvqv" ucd="ZOowNnNtPs4DOFGjAHlQijhYwA5rB">FmfA9</sp:Collection>
+            <sp:DatasetID name="yQas7kemx0oSvY0n" ucd="ifPjmiVjRMG30v7O8fWMkO77">f1u</sp:DatasetID>
+            <sp:Date name="kNQrg.1jy.B6Z9" ucd="Ho4zKFiO5ea">U8JFp</sp:Date>
+            <sp:Version name="tW7_H" ucd="G4Gbns">tgpo</sp:Version>
+            <sp:Instrument name="DVAL9YT.5oAM78DI.1DSsdpjutw" ucd="FBlwk">vkE.tX56eoIL</sp:Instrument>
+            <sp:CreationType name="_pGsHfxfCBiYBfW4MVto7s554Up" ucd="On9JpK39AXHox0mxod-b.KT-b">bQTHEKn</sp:CreationType>
+            <sp:Bandpass name="rChIzxA6iSJ6ykQMH7" ucd="Nz-sjXMt-sm_yLysXl">wyvkrAK4e4d</sp:Bandpass>
+            <sp:CreatorDID name="CdMtK" ucd="EJrCxwe">szQ</sp:CreatorDID>
+            <sp:Contributor name="iBXpGWV6bvB6XnzSu.hGnX" ucd="TktLpRSu8">l1q_hHhHQhqv-AOGaQc6DnCAyu4anB</sp:Contributor>
+            <sp:Contributor name="sAtyreM8uBIR0nLaaYCagO2dYB" ucd="r6o883J">_Rtb4j3shYwhH</sp:Contributor>
+            <sp:Logo name="rE" ucd="c7siiRaBrNbBTTw33EsklFvY">wQKv8JoDeibqHQw</sp:Logo>
+            <sp:DataSource name="N5Jy52QJV2vDknqQOASATcQC4" ucd="esej">RAsqvc_VwU</sp:DataSource>
+        </sp:DataID>
+        <sp:Derived id="ID042" idref="ID018">
+            <sp:SNR unit="KgSRFvsO1N9VPW" name="cPv5yAyqv2MHz" ucd="P9C.g">aqQS</sp:SNR>
+            <sp:VarAmpl unit="I" name="bhvCfhnyI" ucd="CRj0_.MR">BSHggPIuWCziPWmuyx</sp:VarAmpl>
+            <sp:Redshift id="ID043" idref="ID005">
+                <sp:Value unit="Tuhm-LrP7DfXh7enF383TUK8XeG" name="oE-uf3yqh4kK" ucd="gwet6IERnBmULj.mRObPHqYb1imwRB">rA49E-0GiYr4kYlAf</sp:Value>
+                <sp:Accuracy id="ID044" idref="ID023">
+                </sp:Accuracy>
+                <sp:Resolution unit="mHk" name="c9ul1ackfyo2MBFw" ucd="oKemz3LDI">EFmBqFeIdesL7aINMBxMfqh6FIGCV</sp:Resolution>
+                <sp:Quality unit="ufx9ffPk4xwa-ul.pRk1_YorQmd.co" name="JsyC84Zhictq" ucd="xE5yv_RoidjZjPXQVtodsXxU5q">Nllo1L4d4</sp:Quality>
+            </sp:Redshift>
+        </sp:Derived>
+        <sp:CustomParams>
+            <sp:Param name="MNjh4P2cMUp5PeSW1S3fZdj8Q9nBxx" ucd="uWTBejv.9IpBTy">FU</sp:Param>
+            <sp:Param name="eW8TLeNgPLpSoq" ucd="MaJaMuVR_ONk">is_EMr</sp:Param>
+        </sp:CustomParams>
+        <sp:Type name="O6HS5QxWP1Cw0bjZ" ucd="xz361r">aG8mbH3gs3XeJhVS4CHW</sp:Type>
+        <sp:Length unit="n" name="KljyQzwatL7By6pZUvxoeu1-" ucd="PJNVCibNp2NQ1-7JQZNhq">D.1ZnBgXhWnEzu_iqMogI_DAYyS5</sp:Length>
+        <sp:TimeSI name="nL" ucd="SR9Q8fejoszyH0HPIeU0J">O855DZv</sp:TimeSI>
+        <sp:SpectralSI name="PIAolqcO8uLbh8ZAKQ9ykGBbTgOjhF" ucd="o">The2a4</sp:SpectralSI>
+        <sp:FluxSI name="iKAx1DktsEP4P" ucd="k2OFmh_UgEX5CaZO">E6cEwOrCjC</sp:FluxSI>
+        <sp:Data/>
+    </sp:Segment>
+    <sp:BaseSegment id="ID045" idref="ID001">
+        <sp:Target id="ID046" idref="ID030">
+            <sp:Name name="eo" ucd="MP93_V87SIO.">nK63uvHK6r3S8CQ4Z5B</sp:Name>
+            <sp:Description name="TXfu6GqCS6_aEC8w" ucd="YOIne_75YX49rQVSdon">t</sp:Description>
+            <sp:TargetClass name="O18TKbgR26Xooz" ucd="O8c-8A9r0kt5yWfk3Kd.fKnku">f</sp:TargetClass>
+            <sp:SpectralClass name="JL_zWt_JIcgNc9Sgvde0juCJexBb" ucd="gX9Tt3oZy9vgFkx4A">AhzKd</sp:SpectralClass>
+            <sp:Redshift unit="lsZGfY" name="wBNanTl30" ucd="MtlT_Rd9pSY3Ox82Gwsedsu.fnbI8">RrYgpAz4</sp:Redshift>
+            <sp:Pos>
+                <sp:value unit="gYeBB-f" name="rnRBZ.P6Q" ucd="m9vvPp5OomHLM2">nHPU4j</sp:value>
+                <sp:value unit="_fZ4ZAK5c" name="gOVISVv64LfnY2grcsEJwJ8m_v9f6" ucd="yp.MOlm..v4rj7zi">Um5tuuqdjRL8UBCj5Bba525</sp:value>
+            </sp:Pos>
+            <sp:VarAmpl unit="fo2d2RDsyyWogjZQ0EGnfYMKH1" name="WwklbgGi7ojiCGbEQP9k0Pc8Y1NT7w" ucd="CnQPbA">kyR1yy2WxByf26gNYfyG</sp:VarAmpl>
+            <sp:CustomParams>
+                <sp:Param name="ceJI" ucd="U4FdMS7_.2N2.U">ufD-fuF8IgoINJ3bv.xwSD7bet</sp:Param>
+                <sp:Param name="PBukqRLegRkcsJUV_CeOzVo" ucd="kw">EgurKeayQqQI_</sp:Param>
+            </sp:CustomParams>
+        </sp:Target>
+        <sp:Char id="ID047" idref="ID047">
+            <sp:SpatialAxis name="WWWJXLv" ucd="P9W-OUYV-" unit="fHZ6Zxz76Dy" id="ID048" idref="ID024">
+                <sp:CoordSystem id="ID049" idref="ID020" ucd="TvhDhri0V" xlink:type="simple" xlink:href="http://XZsiNDPp/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID050" idref="ID046">
+                </sp:Coverage>
+                <sp:Resolution unit="mlV" name="dfOv7yGVJo" ucd="Va">ly1</sp:Resolution>
+                <sp:Accuracy id="ID051" idref="ID027">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID052" idref="ID016">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="On9UeeFQGSZ" ucd="qZxE90bMe-PF_">EyJ1jy.DJLTQHti</sp:Calibration>
+            </sp:SpatialAxis>
+            <sp:TimeAxis name="duNy8HcxGJUFRgo" ucd="rnbByjc32c5V1vlgHdfkrzRN" unit="Gu2a8W41x9UJpmmmDTZNzyoN2oLXm." id="ID053"
+                 idref="ID016">
+                <sp:CoordSystem id="ID054" idref="ID019" ucd="AXIj5XSfsCEpXdLSFZ8tPMNT7VDiS" xlink:type="simple" xlink:href="http://frgmIZnu/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID055" idref="ID017">
+                </sp:Coverage>
+                <sp:Resolution unit="xCNRrYqG_O" name="ConGCTKAI982-Y9n-Fa8kwjmg1sQ" ucd="RNKz1EO">_iFgZuYqeOKL8SYYtwjBl2</sp:Resolution>
+                <sp:Accuracy id="ID056" idref="ID006">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID057" idref="ID042">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="kCI2PRT2tDn.EjPJ.qSV" ucd="DFNoR0BQ_tY7sbjNcsCBIDhT">w</sp:Calibration>
+            </sp:TimeAxis>
+            <sp:SpectralAxis name="x6HFdYZOp" ucd="zrZCNvZlIRMlkwTEagsZcd4EGF" unit="dtt" id="ID058" idref="ID048">
+                <sp:CoordSystem id="ID059" idref="ID015" ucd="XU2RG5FfmnewGaQDjgPDja" xlink:type="simple" xlink:href="http://bmrlqygu/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID060" idref="ID017">
+                </sp:Coverage>
+                <sp:Resolution unit="PlAbP3DkOO_gIs3eD5ZcTDOh6uH" name="xanyraUaVx2lTkdYdz" ucd="ue7MzoJt">tmWRJ7JeT2E_tcozcMR.C</sp:Resolution>
+                <sp:Accuracy id="ID061" idref="ID021">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID062" idref="ID006">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="c-wM5o9" ucd="OCmu.SxLniX.qelY4xnhM9Lfw">ew8P0.Ew8VC</sp:Calibration>
+                <sp:ResPower unit="RIerwBAAWtzVl6AZqOe" name="xDuBgRvqk6U82ESCsb" ucd="aX64hMRF.6OokWcmI9ZO-l.8">Q7smp16H</sp:ResPower>
+            </sp:SpectralAxis>
+            <sp:FluxAxis name="Nz0qqkB4NlPDWylQ" ucd="Gm8YSg9TC4_o8EnoV2XF" unit="oybE4uO_L" id="ID063" idref="ID041">
+                <sp:CoordSystem id="ID064" idref="ID037" ucd="wqFPggIVyP6d" xlink:type="simple" xlink:href="http://mojQmQZa/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID065" idref="ID053">
+                </sp:Coverage>
+                <sp:Resolution unit="nVHvfIrveIsx.8iNEfyN" name="l87nrcGG4DsQTF" ucd="XkM">Sh71KQ.A491km91WgY86-3uKHPjgjJ</sp:Resolution>
+                <sp:Accuracy id="ID066" idref="ID066">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID067" idref="ID009">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="o7NCJv..jAo5KMDX" ucd="pNyO7qYw1">bqFrEJTWul</sp:Calibration>
+            </sp:FluxAxis>
+            <sp:CharacterizationAxis name="IoUY-99LIPT14JfSkeP" ucd="amJZBkq_v" unit="HiUFi" id="ID068" idref="ID014">
+                <sp:CoordSystem id="ID069" idref="ID060" ucd="OF2gJgvmYyn3S3Ixgbnei7tEPX" xlink:type="simple" xlink:href="http://HvnNwoqB/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID070" idref="ID070">
+                </sp:Coverage>
+                <sp:Resolution unit="oh.YEa" name="ucXkQwWvayeLekcOP3ZVA" ucd="M0IdWeXBG..EVL">MnGUVgX.LBws</sp:Resolution>
+                <sp:Accuracy id="ID071" idref="ID063">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID072" idref="ID050">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="sDzn_k2oyZwXk4lhQmpzOcW61" ucd="ns2c">i7IqaPcAEa8wZ</sp:Calibration>
+            </sp:CharacterizationAxis>
+            <sp:CharacterizationAxis name="yU.Ye.vsHsqk" ucd="H35PFJuzo-XVRDck-Ebq" unit="E6bUfjO" id="ID073" idref="ID055">
+                <sp:CoordSystem id="ID074" idref="ID057" ucd="t-QmT2hX-h9KaBY0JXJduzEF7" xlink:type="simple" xlink:href="http://rNxLVKYQ/">
+                </sp:CoordSystem>
+                <sp:Coverage id="ID075" idref="ID015">
+                </sp:Coverage>
+                <sp:Resolution unit="iiwtYtp5" name="oeA00RO" ucd="D5jaRN7DMLJ-unc">GqjYoU4O</sp:Resolution>
+                <sp:Accuracy id="ID076" idref="ID026">
+                </sp:Accuracy>
+                <sp:SamplingPrecision id="ID077" idref="ID070">
+                </sp:SamplingPrecision>
+                <sp:Calibration name="oDyMHdxlJfA8Ot8FEu" ucd="Cvjvp3J35uH_GW_aO1">ZBlQ_AnmImJYXo</sp:Calibration>
+            </sp:CharacterizationAxis>
+        </sp:Char>
+        <sp:CoordSys id="ID078" idref="ID021" ucd="Uvl" xlink:type="simple" xlink:href="http://IazWPKbm/">
+        </sp:CoordSys>
+        <sp:Curation id="ID079" idref="ID075">
+            <sp:Publisher name="NIP" ucd="uazD">Q2DS9JW-f_Z9Z</sp:Publisher>
+            <sp:PublisherID name="O0eXwF2Ep_BiJ_NkPH6nicZ" ucd="lMVxv4lQ.">KakKEE6</sp:PublisherID>
+            <sp:Reference name="r9p9iAuYep6kdbiXSSeqxam" ucd="SyHwVIYPq.fGcCT">yGI.p6KjRGhU.9SGiNlIR1i2ihVY</sp:Reference>
+            <sp:Version name="rc4ijwn-0" ucd="EQ6SRUuxenQ">ogxlHYExQOe_KzK</sp:Version>
+            <sp:Contact id="ID080" idref="ID023">
+                <sp:Name name="IeczsOH3xtai3jh" ucd="ckVy6-egc">d6i</sp:Name>
+                <sp:Email name="YvNkhJ5pGi4CSBqClpm" ucd="WflkF0TWRnLPXIyL">A4qWYH</sp:Email>
+            </sp:Contact>
+            <sp:Rights name="h4GCvJtwe2ZRmTHB1l" ucd="cZ6fk">C0kCwGno-GtxIvQxLK4s.</sp:Rights>
+            <sp:Date name="ih40QbOIHWne.I_iD5gsTF8jwr5" ucd="G8B-">ohpcWKETmK</sp:Date>
+            <sp:PublisherDID name="zhdUY" ucd="Rm3pvyOnnZHjaAGvyWsM7">lv</sp:PublisherDID>
+        </sp:Curation>
+        <sp:DataID id="ID081" idref="ID076">
+            <sp:Title name="WBZciwEZ" ucd="OjazhQFHlU">tR6Mm_Z</sp:Title>
+            <sp:Creator name="F8XoLzribZQn7cL1" ucd="zulUZD.k_WfT">U-z7</sp:Creator>
+            <sp:Collection name="OzW_9" ucd="dcxOqEkbEQcYZ7UDS9">yiU-7vJndquxx27pYVDsPmi_h9yzp1</sp:Collection>
+            <sp:Collection name="buOsn-YGxaL9SthQT" ucd="Sc">RLHQAGfW_hy89aou.0LZHDLbPo</sp:Collection>
+            <sp:DatasetID name="RxDk05qQ" ucd="XfrQpRVgXOPvSj.y0mMz5e4Mw52">LZHuGCKaaLMw4rssZMn97K</sp:DatasetID>
+            <sp:Date name="ux5BZCQWNJ8fNoBmz7B" ucd="D43eQKo2MfYujJoeHFT3GutVkbB">wFECTkwGmJulEI_LlrqDkD_Ejk5zYE</sp:Date>
+            <sp:Version name="Scj" ucd="HjYl6jPY6O6tuQB">hiUQ7dnhBtpot_3QD3RnR52</sp:Version>
+            <sp:Instrument name="AN2" ucd="BxCi-9d3Zhe">uP-CkbeXUbOgKuwB1Pl4.Vub</sp:Instrument>
+            <sp:CreationType name="gZk3HQzHY1w" ucd="FexeTGhBSoyi7N0C1">QzHSpCLBY</sp:CreationType>
+            <sp:Bandpass name="UeGm71safG" ucd="U.VUL0uJQPc">LKMZvwz1ispl0sCq</sp:Bandpass>
+            <sp:CreatorDID name="ElahwjLigiUSUw.LV9uiqGzAsad" ucd="nxj">RM.A4yWcFZ8Vte</sp:CreatorDID>
+            <sp:Contributor name="Rxp2NmEVB5.UiHp" ucd="OjlhFqdKDAr">a94c.pOhpHkf71c0u8Av4raBYh</sp:Contributor>
+            <sp:Contributor name="v2P.CD_UQm" ucd="gRgT4ZnA">_CtEO</sp:Contributor>
+            <sp:Logo name="_ORu4" ucd="AG2sfp47-RsnfU">xOBIg_BCz3Rt_UVtdAHq.my</sp:Logo>
+            <sp:DataSource name="Suc9fy" ucd="VVZmYwFT">LRA0ayidiOjOYm6fe149v</sp:DataSource>
+        </sp:DataID>
+        <sp:Derived id="ID082" idref="ID038">
+            <sp:SNR unit="ZHyJNXm_jKVpO0pgrD2zJmuqrdTTY." name="OFogP2.1rC_TND" ucd="CF0y1Tsby2vrOzl7rTBzKdfyutlR">_GvClXSXj</sp:SNR>
+            <sp:VarAmpl unit="VCOQ3Wn_K2reYcfQsNmwI2GhoCFxp" name="UI-_7lOYUQ_gOq4xoJsiANr6LGA" ucd="k57SQk-8y-srPU5">D.AALKwkDmo6j-Zh3ttWCxsAEyq</sp:VarAmpl>
+            <sp:Redshift id="ID083" idref="ID044">
+                <sp:Value unit="mWkV8QftI91Kg8-Qh" name="d" ucd="p">np.zllWnkyDq2uZanT5Oyrv-</sp:Value>
+                <sp:Accuracy id="ID084" idref="ID043">
+                </sp:Accuracy>
+                <sp:Resolution unit="V0X5tI" name="HoXXK56Y21DvQIC7TvhR" ucd="DyhT1V4rdHTkkLwBAj2KiBkT">PdR7IduY-eL0.g</sp:Resolution>
+                <sp:Quality unit="lP" name="bC.iG7qjQ1NUwcqLNLz" ucd="wj3R_7o_AqFmu2jpX_qgP.bSn">SakpbwHiMYb</sp:Quality>
+            </sp:Redshift>
+        </sp:Derived>
+        <sp:CustomParams>
+            <sp:Param name="H04wbzKuCeba9" ucd="zmwOdz97W">UdwJ9dok1Z</sp:Param>
+            <sp:Param name="cCJuShMHM9_uyT6fCWN" ucd="oY1RTVOOynAGa8TjzkAZXH-">dObSmviJmRZnVJdEA6r</sp:Param>
+        </sp:CustomParams>
+        <sp:Type name="H_v3uZM4PUJICK" ucd="SyidGUaZ6h0Jkr0yknQZu8.">MGr8DlKI0MedYd</sp:Type>
+        <sp:Length unit="efur8z1nnhJ1ge6S" name="XHUVcbFF4WVTKz78" ucd="cpVZebsQOGy_zzNnT6">fpd_sqBKREI6DhkXEn9ZfYK9Fh</sp:Length>
+        <sp:TimeSI name="p.rqH4BbzK5ijCi" ucd="kNsV_wpEOH3bzq7QoXN2B">iWPaD</sp:TimeSI>
+        <sp:SpectralSI name="cJkwkD-zI_4F" ucd="ZefpSh-">Jb</sp:SpectralSI>
+        <sp:FluxSI name="p0sjP90MyKgK_IWUvP3MFiD-Y61gy" ucd="RkwbU">AJk3.Qjd5QZhB8pFESU3b5</sp:FluxSI>
+        <sp:Data/>
+    </sp:BaseSegment>
+    <sp:Creator name="idr6PjncwR68Uu4HNF3QP2OzZ" ucd="jmAThbg0htNgLqvb">DJ0aaQ1RzJMpP46Hjjqjz</sp:Creator>
+    <sp:CreatorDID name="VFcjUx3" ucd="fYdn_elA">l3yMOQTsUF</sp:CreatorDID>
+    <sp:SpectralMinWavelength unit="EAV8pQ5a" name="IWgHwsVh" ucd="IC5.ZW2-ru7r1zQ.dTTpP4w5-zV">aA6pjx0A</sp:SpectralMinWavelength>
+    <sp:SpectralMaxWavelength unit="x0iDoZ7zFo1AhezVHLFT1_C5K_nQ" name="FsX4gX1NPVGmdf5lA2YoLQuGf" ucd="y1kT">iODQM9IRqorCxe</sp:SpectralMaxWavelength>
+</sp:SED>

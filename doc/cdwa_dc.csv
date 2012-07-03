@@ -1,0 +1,493 @@
+//objectWorkType dc:type
+//displayCreationDate dc:date
+//earliestDate dc:date Created
+//latestDate dc:date
+//classification dc:type 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//title dc:title 
+//preference dc:description 
+//title/@lang dc:language 
+//title/@date dc:date 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Creator Description  dc:creator 
+//Creator Extent dc:description 
+//Creator Qualifier dc:description 
+//Creator Identity  dc:creator 
+//Creator Role  dc:description 
+//Creator Statement dc:description 
+//Creation Date  dc:date Created
+//Earliest Date   dc:date Created
+//Latest Date   dc:date Created
+//Date Qualifier dc:description 
+//Creation Place/ Original Location  dc:coverage Spatial
+//Place Qualifier dc:description 
+//Object/Work Culture dc:subject 
+//Commissioner dc:contributor 
+//Commissioner Role dc:contributor 
+//Commission Date dc:date 
+//Earliest Date  dc:date 
+//Latest Date  dc:date 
+//Commission Place dc:coverage Spatial
+//Commission Cost dc:description 
+//Creation Numbers dc:identifier 
+//Number type dc:identifier 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Styles/Periods Description dc:description Abstract
+//Styles/Periods Indexing Terms dc:subject 
+//Term Qualifier dc:type 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Dimensions Description  dc:format Extent
+//Dimensions Type  dc:format Extent
+//Dimensions Value  dc:format Extent
+//Dimensions Unit  dc:format Extent
+//Dimensions Extent dc:format Extent
+//Scale Type  dc:format Extent
+//Dimensions Qualifier dc:format Extent
+//Dimensions Date dc:date Valid
+//Earliest Date  dc:date Valid
+//Latest Date  dc:date Valid
+//Shape  dc:format 
+//Format/Size  dc:format 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Materials/Techniques Description   dc:description 
+//Materials/Techniques Extent dc:description 
+//Technique Name dc:type 
+//Technique Implement dc:type 
+//Material Role dc:format Medium
+//Material Name dc:format Medium
+//Material Color dc:format Medium
+//Watermarks dc:format 
+//Watermark Identification dc:format 
+//Watermark Date dc:date Valid
+//Earliest Date dc:date Valid
+//Latest Date dc:date Valid
+//Performance Actions dc:description 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Inscription Transcription or Description  dc:description 
+//Inscription Type dc:type 
+//Inscription Author dc:contributor 
+//Inscription Location dc:description 
+//Inscription Language dc: language 
+//Typeface/Letterform dc:description 
+//Mark Identification dc:type 
+//Inscription Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//State Description dc:relation Has version
+//State Identification dc:relation Has version
+//Known States dc:relation Has version
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Edition Description dc:relation Is Version Of
+//Edition Number or Name dc:relation Is Version Of
+//Impression Number dc:relation Is Version Of
+//Edition Size dc:format Extent
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Facture Description  dc:description 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Orientation/Arrangement Description dc:description 
+//Orientation Indexing Terms dc:description 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Physical Appearance dc:format Medium
+//Physical Description Indexing Terms dc:type 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Condition/Examination Description  dc:description 
+//Examination Type dc:type 
+//Examination Agent dc:description 
+//Examination Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Examination Place dc:description 
+//Remarks  dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Conservation/Treatment Description dc:description 
+//Treatment Type dc:type 
+//Treatment Agent dc:description 
+//Treatment Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Treatment Place dc:description 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Subject Display dc:description Abstract
+//Subject Indexing Terms   dc:subject 
+//Subject Indexing Type dc:subject 
+//Subject Extent dc:subject 
+//Subject Interpretive History dc:description 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Historical/Cultural Events dc:description Abstract
+//Event Identification dc:subject 
+//Event Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Event Place dc:subject TGN
+//Event Agent dc:description 
+//Agent Role dc:description 
+//Contextual Cost or Value dc:description 
+//Architectural Context dc:description 
+//Building/Site Context dc:description 
+//Part/Placement Context dc:description 
+//Architectural Context Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Archaeological Context  dc:description 
+//Discovery/Excavation Place dc:subject TGN
+//Excavation Site Sector dc:description 
+//Excavator dc:description 
+//Discovery/Excavation Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Historical Location Context dc:description 
+//Historical Location Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Descriptive Note Text dc:description 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Critical Comment dc:relation Is Referenced By
+//Comment Document Type dc:relation Is Referenced By
+//Comment Author dc:relation Is Referenced By
+//Comment Date dc:relation Is Referenced By
+//Earliest Date dc:relation Is Referenced By
+//Latest Date dc:relation Is Referenced By
+//Comment Circumstances dc:relation Is Referenced By
+//Remarks dc:relation Is Referenced By
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Related Work Label/Identification dc:relation Is Version Of
+//Work Relationship Type dc:relation Is Version Of
+//Work Relationship Date  dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Work Broader Context dc:relation 
+//Historical Flag dc:description 
+//Broader Context Date  dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Relationship Number dc:relation Has Part
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Current Location Description dc:description Abstract
+//Current Repository/Geographic Location   dc:coverage Spatial
+//Current Repository Numbers  dc:identifier 
+//Number Type dc:identifier 
+//Gallery/Shelf Location dc:description 
+//Current Credit Line dc:provenance 
+//Object/Work Label/Identification dc:identifier 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Copyright Statement dc:rights 
+//Copyright Holder Name dc:rights 
+//Copyright Place dc:rights 
+//Copyright Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Provenance Description  dc:provenance 
+//Transfer Mode dc:provenance 
+//Cost or Value dc:description 
+//Legal Status dc:description 
+//Owner/Agent  dc:provenance 
+//Owner/Agent Role dc:provenance 
+//Ownership Place dc:provenance 
+//Ownership Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Owner's Numbers dc:identifier 
+//Number Type dc:identifier 
+//Owner's Credit Line dc:provenance 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Exhibition Description dc:description 
+//Exhibition Title or Name dc:title 
+//Exhibition Type dc:type 
+//Exhibition Curator dc:contributor 
+//Exhibition Organizer dc:contributor 
+//Exhibition Sponsor dc:contributor 
+//Exhibition Venue dc:description 
+//Venue Name/Place dc:description 
+//Venue Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Exhibition Object Number dc:identifier 
+//Number Type dc:identifier 
+//Exhibition Object/Work Label/Identification dc:identifier 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Cataloging Institution dc:description 
+//Cataloger Name dc:creator 
+//Cataloger Action dc:description 
+//Area of Record Affected dc:description 
+//Cataloging Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Remarks  dc:description 
+//Object/Work Record ID dc:identifier 
+//Image References dc:relation Is Referenced By
+//Image to Work Relationship Type dc:relation Is Format Of
+//Image Label/Identification dc:identifier 
+//Image Catalog Level dc:description 
+//Image Type  dc:type 
+//Image Title/Name dc:title 
+//Title Type dc:type 
+//Image Measurements  dc:format Extent
+//Dimension Type dc:format Extent
+//Dimension Value  dc:format Extent
+// Dimension Unit  dc:format Extent
+//Image Format  dc:format 
+//Image Date  dc:date 
+//Earliest Date dc:date 
+//Latest Date  dc:date 
+//Image Color dc:format 
+//Works Depicted dc:description 
+//Image View Description dc:description 
+//View Type  dc:type 
+//View Subject  dc:subject 
+//View Subject Indexing Terms  dc:subject 
+//View Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Image Maker/Agent dc:contributor 
+//Image Maker Role dc:contributor 
+//Image Maker Extent dc:contributor 
+//Image Repository dc:description 
+//Image Repository Numbers  dc:identifier 
+//Number Type dc:type 
+//Image Copyright/Restrictions  dc:rights 
+//Image Copyright Holder dc:rights 
+//Image Copyright Holder's Numbers dc:identifier 
+//Number Type dc:type 
+//Image Copyright Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Image Source dc:provenance 
+//Image Source Number dc:identifier 
+//Number Type dc:type 
+//Related Image  dc:relation 
+//Image Relationship Type dc:type 
+//Image Relationship Number dc:identifier 
+//Image Relationship Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Image Broader Context dc:description 
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Image Authority Record ID dc:identifier 
+//Citations for Sources dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Work Cited or Illustrated  dc:relation 
+//Object/Work Number dc:relation 
+//Number Type dc:type 
+//Source Brief Citation  dc:relation Is Referenced By
+//Source Type  dc:type 
+//Full Citation  dc:relation Is Referenced By
+//Source Title dc:title 
+//Source Broader Title dc:title Alternative
+//Source Author dc:contributor 
+//Source Editor/Compiler dc:contributor 
+//Source Publication Place dc:publisher 
+//Source Publisher dc:publisher 
+//Source Publication Year dc:date 
+//Source Edition Statement dc:relation Is Version Of
+//Remarks dc:description 
+//Citations Authority Record ID dc:identifier 
+//Person Authority Record Type dc:subject 
+//Person Name  dc:subject 
+//Preference dc:subject 
+//Name Type dc:type 
+//Name Qualifier dc:description 
+//Name Language  dc:language 
+//Historical Flag dc:description 
+//Display Name Flag dc:description 
+//Other Name Flags dc:description 
+//Name Source   dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Name Date dc:date 
+//Earliest Date dc:date 
+//Latest Date  dc:date 
+//Display Biography   dc:description 
+//Birth Date  dc:date 
+//Death Date  dc:date 
+//Birth Place dc:description 
+//Death Place dc:description 
+//Person Nationality/Culture/Race   dc:description 
+//Preference dc:description 
+//Nationality/Culture Type dc:description 
+//Gender dc:description 
+//Life Roles   dc:description 
+//Preference dc:description 
+//Role Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Person/Corporate Body Event dc:description 
+//Event Date dc:date 
+//Earliest Date  dc:date 
+//Latest Date dc:date 
+//Event Place dc:description 
+//Related Person/Corporate Body  dc:description 
+//Person Relationship Type dc:description 
+//Person Relationship Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Person/Corporate Body Broader Context dc:description 
+//Broader Context Date  dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Person/Corporate Body Label/Identification dc:identifier 
+//Person/Corporate Body Descriptive Note dc:description 
+//Note Source dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Person authority Record ID dc:identifier 
+//Place Authority - Record Type  dc:type 
+//Place Name  dc:subject TGN
+//Preference dc:description 
+//Name Type dc:type 
+//Name Qualifier dc:description 
+//Name Language dc:language 
+//Historical Flag dc:description 
+//Display Name Flag dc:description 
+//Other Name Flags dc:description 
+//Name Source   dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Name Date dc:date 
+//Earliest Date  dc:date 
+//Latest Date  dc:date 
+//Geographic Coordinates dc:coverage Spatial
+//Place Types  dc:type 
+//Preference dc:description 
+//Place Type Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Related Places dc:relation 
+//Place Relationship Type dc:type 
+//Place Relationship Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Place Broader Context  dc:description 
+//Broader Context Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Place/Location Label/Identification dc:identifier 
+//Place/Location Descriptive Note dc:description 
+//Note Source dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Place Authority Record ID dc:identifier 
+//Concept Authority Record Type  dc:type 
+//Generic Concept Term  dc:subject 
+//Preference dc:description 
+//Term Type dc:type 
+//Term Qualifier dc:description 
+//Term Language  dc:language 
+//Historical Flag dc:description 
+//Display Name Flag dc:description 
+//Other Name Flags dc:description 
+//Term Source   dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Term Date dc:date 
+//Earliest Date dc:date 
+//Latest Date  dc:date 
+//Related Generic Concepts dc:relation 
+//Concept Relationship Type dc:type 
+//Concept Relationship Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Concept Broader Context  dc:description 
+//Concept Broader Context Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Generic Concept Label/Identification dc:identifier 
+//Concept Scope Note  dc:description 
+//Note Source  dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Concept Authority Record ID dc:identifier 
+//Subject Authority Record Type  dc:type 
+//Subject Name  dc:subject 
+//Preference dc:description 
+//Name Type dc:type 
+//Name Qualifier dc:description 
+//Name Language  dc:language 
+//Historical Flag dc:description 
+//Display Name Flag dc:description 
+//Other Name Flags dc:description 
+//Name Source   dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Name Date dc:date 
+//Earliest Date  dc:date 
+//Latest Date dc:date 
+//Subject Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Subject Role/Attributes dc:description 
+//Preference dc:description 
+//Role Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Related Subject dc:relation 
+//Subject Relationship Type dc:type 
+//Subject Relationship Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Subject Broader Context  dc:description 
+//Broader Context Date dc:date 
+//Earliest Date dc:date 
+//Latest Date dc:date 
+//Related Place/Location dc:subject TGN
+//Place Relationship Type dc:relation 
+//Related Person/Corporate Body dc:subject 
+//Person Relationship Type dc:relation 
+//Related Generic Concept dc:subject 
+//Concept Relationship Type dc:relation 
+//Subject Label/Identification dc:identifier 
+//Subject Descriptive Note dc:description 
+//Note Source dc:relation Is Referenced By
+//Remarks dc:description 
+//Citations dc:relation Is Referenced By
+//Page dc:relation Is Referenced By
+//Subject Authority Record ID dc:identifier 
