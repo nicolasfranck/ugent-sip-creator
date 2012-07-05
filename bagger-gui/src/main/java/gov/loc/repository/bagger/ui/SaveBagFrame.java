@@ -424,6 +424,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     	savePanel.invalidate();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
     	invalidate();
     	repaint();
@@ -431,6 +432,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
 
     public class SerializeBagHandler extends AbstractAction {
     	private static final long serialVersionUID = 1L;
+        @Override
 		public void actionPerformed(ActionEvent e) {
 			JRadioButton cb = (JRadioButton)e.getSource();
             boolean isSel = cb.isSelected();
@@ -467,6 +469,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     private class SaveBagAsHandler extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
+        @Override
 		public void actionPerformed(ActionEvent e) {
 	        File selectFile = new File(File.separator+".");
 	        JFrame frame = new JFrame();
@@ -518,6 +521,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     private class OkSaveBagHandler extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
+        @Override
 		public void actionPerformed(ActionEvent e) {
 			if (bagNameField.getText().trim().isEmpty() || bagNameField.getText().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
     			bagView.showWarningErrorDialog("Error - bag not saved", "The bag must have a file name.");

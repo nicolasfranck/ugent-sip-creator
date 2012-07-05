@@ -156,7 +156,7 @@ public class RenameWand {
          */
         private RenameListener renameListener = null;
         private int numRenameOperationsPerformed = 0;
-
+        private boolean simulateOnly = false;
 
 
 
@@ -217,6 +217,14 @@ public class RenameWand {
 
         public boolean isMatchRelativePathname() {
             return matchRelativePathname;
+        }
+
+        public boolean isSimulateOnly() {
+            return simulateOnly;
+        }
+
+        public void setSimulateOnly(boolean simulateOnly) {
+            this.simulateOnly = simulateOnly;
         }
 
         public int getNumCaptureGroups() {
@@ -327,7 +335,8 @@ public class RenameWand {
             final boolean proceedToRename = promptUserOnRename(files, numRenameOperations);            
 
             setNumRenameOperationsPerformed(proceedToRename ? performRenameOperations(renameOperations) : 0);
-        }        
+        }
+      
 
         /**
 	 * Scan current directory to get candidate files/directories for matching.
@@ -1839,28 +1848,35 @@ public class RenameWand {
                     }                        
                 }
                 else{
-                    r.target.getParentFile().mkdirs();
-                    String error = null;
+                    if(this.simulateOnly){
 
-                    try{                        
-                        r.success = r.source.renameTo(r.target);                        
-                    }catch(SecurityException e){
-                        r.success = false;                        
-                        error = e.getMessage();
-                    }                    
+                        if(!r.target.getParentFile().canWrite()){
+                            action = renameListener.onError(r, RenameError.SYSTEM_ERROR,"cannot write to "+r.target.getAbsolutePath());
+                        }
 
-                    if(!r.success){
-                        if(renameListener != null){
-                            action = renameListener.onError(r,RenameError.SYSTEM_ERROR,error);
+                    }else{
+                        r.target.getParentFile().mkdirs();
+                        String error = null;
+                        try{
+                            r.success = r.source.renameTo(r.target);
+                        }catch(SecurityException e){
+                            r.success = false;
+                            error = e.getMessage();
+                        }
+                        if(!r.success){
+                            if(renameListener != null){
+                                action = renameListener.onError(r,RenameError.SYSTEM_ERROR,error);
+                            }
                         }
                     }
+                    
                 }
 
                 if(action == null)action = defaultActionOnRenameOperationError;
 
                 /* check if renaming operation was successful */
                 if(!r.success){
-                        
+
                     /* take action */
                     if(action == OnErrorAction.retry){
                         /* retry rename operation */
@@ -1871,22 +1887,25 @@ public class RenameWand {
                         continue;
                     }
                     else if(action == OnErrorAction.undoAll){
-                        
-                        for(int j = i ; j >= 0; j--){
-                            final RenameFilePair t = renameOperations.get(j);
-                            
-                            if(t.success){
-                                
-                                String error = null;
-                                t.source.getParentFile().mkdirs();
-                                try{
-                                    t.success = !t.target.renameTo(t.source);
-                                }catch(SecurityException e){
-                                    t.success = true;
-                                    error = e.getMessage();
-                                }                               
 
-                                if(t.success)warnings.add("Rename operation failed.");
+                        if(!this.simulateOnly){
+
+                            for(int j = i ; j >= 0; j--){
+                                final RenameFilePair t = renameOperations.get(j);
+
+                                if(t.success){
+
+                                    String error = null;
+                                    t.source.getParentFile().mkdirs();
+                                    try{
+                                        t.success = !t.target.renameTo(t.source);
+                                    }catch(SecurityException e){
+                                        t.success = true;
+                                        error = e.getMessage();
+                                    }
+
+                                    if(t.success)warnings.add("Rename operation failed.");
+                                }
                             }
                         }
 
@@ -1896,6 +1915,8 @@ public class RenameWand {
                         /* abort */
                         break;
                     }
+                }else{
+                    renameListener.onRenameSuccess(r);
                 }
 
                 if(renameListener != null){
