@@ -668,4 +668,13 @@ public class FileUnit
 
 		return null; // this should be the only "return null" in this method
 	}
+
+        public File getSource() {
+            return source;
+        }
+
+        public File getTarget() {
+            return target;
+        }
+
 }

@@ -319,8 +319,8 @@ public class RenameWand {
             warnings.clear();
             errors.clear();
             setNumRenameOperationsPerformed(0);
-        }
-        public void rename() throws IOException{            
+        }      
+        public void rename() throws IOException{
             init();
             /* get match candidates */
             List<FileUnit> files = getMatchCandidates();            
@@ -410,7 +410,7 @@ public class RenameWand {
 	 * @return
 	 *     Files/directories with names that match the source pattern
 	 */
-	private List<FileUnit> performSourcePatternMatching(final List<FileUnit> matchCandidates) throws IOException{
+	public List<FileUnit> performSourcePatternMatching(final List<FileUnit> matchCandidates) throws IOException{
             /* return value: files/directories with names that match the source pattern */
             final List<FileUnit> matched = new ArrayList<FileUnit>();
 
@@ -452,8 +452,7 @@ public class RenameWand {
 
                     if(sourceMatcher.matches()){
                         /* add capture group values to FileUnit's registerValues, and */
-                        /* add this file/directory to our list of successful matches  */
-                       
+                        /* add this file/directory to our list of successful matches  */                     
 
                         u.registerValues = new String[numCaptureGroups + 1]; // add index offset 1
 
@@ -747,6 +746,7 @@ public class RenameWand {
 
             try{
                 sourceRegexCompiledPattern = Pattern.compile(sourceRegex.toString());
+                System.out.println(sourceRegexCompiledPattern);
             }
             catch(PatternSyntaxException e){
                 throw new TerminatingException("Failed to compile source pattern string for " +
@@ -765,7 +765,7 @@ public class RenameWand {
 	 * @param matchedFiles
 	 *     Matched files/directories for which to evaluate the target pattern
 	 */
-	private void evaluateTargetPattern(final FileUnit[] matchedFiles){
+	public void evaluateTargetPattern(final FileUnit[] matchedFiles){
             /* number of matched files */
             final int n = matchedFiles.length;
 
@@ -1644,6 +1644,11 @@ public class RenameWand {
 
             for(FileUnit u : matchedFiles){
                 final String targetFilename = u.targetFilename.toString();
+                System.err.println(targetFilename);
+                if(targetFilename.isEmpty()){
+                    System.err.println("strange, this filename is empty:'"+targetFilename+"'");
+                    System.err.println("source:"+u.source.getAbsolutePath());
+                }
 
                 /* check for empty file/directory name */
                 if(targetFilename.isEmpty())throw new TerminatingException("Invalid target " + SINGULAR_NOUN + " name encountered:\n" +

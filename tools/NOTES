@@ -1,0 +1,10 @@
+FileSource:
+    - 'source'
+        locatie bestand op schijf
+    - 'target'
+        bestemming bestand
+    - 'label' 
+        naam die verschijnt in 'toString' methode
+
+    =>  renamer: wijzig label en target, maar niet 'source',
+        want alles is maar een operatie in het geheugen

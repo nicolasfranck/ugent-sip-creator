@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package test;
+package gov.loc.repository.bagger.ui.util;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
@@ -15,27 +15,26 @@ import java.util.Collection;
 public class FileSource extends File{
 
     private File target;
-    //aanvankelijk gelijk aan 'this', maar naarmate het hernoemd wordt niet meer
-    private File copy;
+    private String label = null;
     private long lastModified = -1;
     private Collection<MimeType> mimeTypes;
 
     public FileSource(String path){
         super(path);
-        setCopy(this);
+        setLabel(this.getName());
     }
     public FileSource(File file){
         super(file.getAbsolutePath());
-        setCopy(this);
+        setLabel(this.getName());
     }
     public FileSource(String path,boolean setMimeType){
         super(path);
-        setCopy(this);
+        setLabel(this.getName());
         if(setMimeType)getMimeTypes();
     }
     public FileSource(File file,boolean setMimeType){
         super(file.getAbsolutePath());
-        setCopy(this);
+        setLabel(this.getName());
         if(setMimeType)getMimeTypes();
     }
     public Collection<MimeType> getMimeTypes() {
@@ -56,15 +55,14 @@ public class FileSource extends File{
     public void setTarget(File target) {
         this.target = target;
     }
-
-    public File getCopy() {
-        return copy;
+    public String getLabel() {
+        return label;
     }
-    public void setCopy(File copy) {
-        this.copy = new File(copy.getAbsolutePath());
+    public void setLabel(String label) {
+        this.label = label;
     }
     @Override
     public String toString(){
-        return this.copy.getName();
+        return this.label;
     }
 }

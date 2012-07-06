@@ -56,7 +56,7 @@ public class BagTreeTransferHandler extends TransferHandler {
     	return TransferHandler.COPY;
     }
     /*
-     * Nicolas Franck: vreemd, canImport meent allerlei imports aan te kunnen, maar hier wordt enkel strings geïmporteerd..
+     * Nicolas Franck: vreemd, canImport meent allerlei imports aan te kunnen, maar hier worden enkel strings geïmporteerd..
      * => test hieronder
      */
     

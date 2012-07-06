@@ -5,7 +5,9 @@
 
 package test;
 
+import RenameWandLib.FileUnit;
 import RenameWandLib.RenameFilePair;
+import RenameWandLib.RenameListener;
 import RenameWandLib.RenameListenerAdapter;
 import RenameWandLib.RenameWand;
 import com.jgoodies.forms.factories.Borders;
@@ -21,8 +23,11 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -32,6 +37,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -45,8 +51,14 @@ import javax.swing.tree.TreePath;
  * @author nicolas
  */
 public class FileTree extends ExitJFrame {
+
+    private int numFiles = 0;
+    private int numDirectories = 0;
     
     public FileTree(String title,String path){
+        this(title,new java.io.File(path));
+    }
+    public FileTree(String title,File file){
 
         //global layout
         super(title);       
@@ -58,9 +70,14 @@ public class FileTree extends ExitJFrame {
 
 
         //file tree
-        final DefaultMutableTreeNode root = FileUtils.getTreeNode(new java.io.File(path));
+        final int [] stats = new int[2];
+        final DefaultMutableTreeNode root = FileUtils.getTreeNode(file,true,stats);
+        numFiles = stats[1];
+        numDirectories = stats[0];        
         final TreeModel model = new DefaultTreeModel(root,true);
         final JTree tree = new JTree(model);
+        
+
         tree.setAutoscrolls(true);
         tree.setSize(500,300);
         FileTreeCellRenderer renderer = new FileTreeCellRenderer();
@@ -78,8 +95,8 @@ public class FileTree extends ExitJFrame {
 
         //common progressbar
         final JProgressBar progress = new JProgressBar(0,100);
-        progress.setVisible(false);        
-        progress.setIndeterminate(true);
+        progress.setVisible(true);
+        progress.setStringPainted(true);
 
         gbc.gridy = 2;
         add(progress,gbc);
@@ -112,6 +129,7 @@ public class FileTree extends ExitJFrame {
         }    
 
         final JButton checkMimeTypeButton = new JButton("check mimetype");
+        checkMimeTypeButton.setPreferredSize(new Dimension(40,40));
         checkMimeTypeButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
                 checkMimeTypeButton.setText("checking..");
@@ -122,23 +140,35 @@ public class FileTree extends ExitJFrame {
                         for(int i = 0;i<tableModel.getRowCount();i++){
                             tableModel.removeRow(i);
                         }
-                        progress.setVisible(true);
-                        progress.setIndeterminate(true);                        
+
+                        progress.setStringPainted(true);
                         
-                        checkMimeType(root,new  FileNodeIteratorListener(){
-                            public void call(DefaultMutableTreeNode node, File file) {
-                                Iterator<MimeType> mimeTypes = ((FileSource)file).getMimeTypes().iterator();
-                                while(mimeTypes.hasNext()){
-                                    MimeType mimeType = mimeTypes.next();                                    
-                                    tableModel.addRow(new String [] {
-                                        file.getAbsolutePath(),
-                                        mimeType.toString()
-                                    });
-                                }
+                        final int [] i = new int[] {0};
+
+                        Thread t = new Thread(){
+                            @Override
+                            public void run(){
+                                checkMimeType(root,new  FileNodeIteratorListener(){
+                                    public void call(DefaultMutableTreeNode node, File file) {
+                                        i[0]++;                    
+                                        int percent = (int) Math.floor((i[0] / (double) numFiles)*100);
+                                        progress.setValue(percent);
+
+                                        Iterator<MimeType> mimeTypes = ((FileSource)file).getMimeTypes().iterator();
+                                        while(mimeTypes.hasNext()){
+                                            MimeType mimeType = mimeTypes.next();
+                                            tableModel.addRow(new String [] {
+                                                file.getAbsolutePath(),
+                                                mimeType.toString()
+                                            });
+                                        }
+                                    }
+                                });
+                                progress.setValue(0);
+                                progress.setStringPainted(false);
                             }
-                        });                        
-                        
-                        progress.setVisible(false);
+                        };
+                        t.start();
                        
                         tableModel.fireTableDataChanged();                       
                         checkMimeTypeButton.setText("check mimetype");
@@ -163,7 +193,8 @@ public class FileTree extends ExitJFrame {
                 "p, 3dlu, p, 3dlu, p, 3dlu, p, 9dlu, " +
                 "p, 3dlu, p, 3dlu, p, 3dlu, p");
 
-        JPanel renamePanel = new JPanel(layout);
+        final JPanel renamePanel = new JPanel(layout);
+        renamePanel.setEnabled(false);
         renamePanel.setBorder(Borders.DIALOG_BORDER);
         CellConstraints cc = new CellConstraints();
         renamePanel.add(createSeparator("Give source and target pattern"),cc.xyw(1,1,7));
@@ -174,49 +205,113 @@ public class FileTree extends ExitJFrame {
         renamePanel.add(new JLabel("target pattern"),cc.xy(1,5));
         renamePanel.add(targetPatternField,cc.xyw(3,5,5));
 
+        final JLabel errorMessageLabel = new JLabel();
+        renamePanel.add(errorMessageLabel,cc.xyw(1,9,5));
+
         JButton renameButton = new JButton("rename");
         renameButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
                 //check sourcePatternString
                 String sourcePatternString = sourcePatternField.getText();
                 if(sourcePatternString == null || sourcePatternString.equals("")){
+                    errorMessageLabel.setText("source pattern is not given");
                     sourcePatternField.requestFocus();
                     sourcePatternField.selectAll();
                     return;
                 }
                 String targetPatternString = targetPatternField.getText();
                 if(targetPatternString == null || targetPatternString.equals("")){
+                    errorMessageLabel.setText("target pattern is not given");
                     targetPatternField.requestFocus();
                     targetPatternField.selectAll();
                     return;
                 }
+                errorMessageLabel.setText("");
 
                 //get selected node
-                TreePath tpath = tree.getSelectionPath();
-                if(tpath == null)return;
-                DefaultMutableTreeNode n = (DefaultMutableTreeNode)tpath.getLastPathComponent();
+                final TreePath tpath = tree.getSelectionPath();
+                if(tpath == null){
+                    errorMessageLabel.setText("no directory selected");
+                    return;
+                }
+                final DefaultMutableTreeNode n = (DefaultMutableTreeNode)tpath.getLastPathComponent();
                 File dir = (File)n.getUserObject();
-                if(dir.isFile())return;
-                
+                if(dir.isFile()){
+                    errorMessageLabel.setText("selected node is not a directory");
+                    return;
+                }
+                System.out.println("collecting nodes");
                 //verzamel file objecten
                 try{
                     RenameWand renamer = new RenameWand();
                     renamer.setSimulateOnly(true);
                     renamer.setCurrentDirectory(dir);
+                    System.out.println("dir:"+dir.getAbsolutePath());
                     renamer.setSourcePatternString(sourcePatternString);
                     renamer.setTargetPatternString(targetPatternString);
                     renamer.setRecurseIntoSubdirectories(true);
-                    renamer.setRenameListener(new RenameListenerAdapter(){
-                        @Override
-                        public void onRenameStart(RenameFilePair pair) {
-                            System.out.println("renaming "+pair.getSource().getAbsolutePath()+" to "+pair.getTarget().getAbsolutePath());
-                        }
+
+                    List<FileUnit> files = renamer.getMatchCandidates();
+                    System.out.println("num:"+files.size());
+                    if(files.size() == 0)return;
+                    /* perform matching */
+                    files = renamer.performSourcePatternMatching(files);
+                    System.out.println("num matching:"+files.size());
+                    if(files.size() == 0)return;
+                    renamer.evaluateTargetPattern(files.toArray(new FileUnit[files.size()]));
+
+                    final List<FileUnit> fileUnits = files;
+                    System.out.println("file units:"+fileUnits.size());
+
+                    RenameListener rl = new RenameListenerAdapter(){
                         @Override
                         public void onRenameSuccess(RenameFilePair pair){
-                            System.out.println("yes!");
+                            System.out.println(pair.getSource().getAbsolutePath()+" => "+pair.getTarget());
+                        }
+                    };
+
+                    /*RenameListener rl = new RenameListenerAdapter(){
+                        @Override
+                        public void onRenameSuccess(RenameFilePair pair){
+                            //zwaar: terug path opzoeken in de boomstructuur
+                            Enumeration<DefaultMutableTreeNode> list = n.depthFirstEnumeration();
+                            while(list.hasMoreElements()){
+                                DefaultMutableTreeNode node = list.nextElement();
+                                FileSource fs = (FileSource) node.getUserObject();
+                                if(
+                                        pair.getSource().getAbsolutePath().equals(
+                                            fs.getAbsolutePath()
+                                        )
+                                ){
+                                    fs.setTarget(pair.getTarget());
+                                    fs.setLabel(pair.getTarget().getName());
+                                    node.setUserObject(fs);
+                                }
+                            }
+                        }
+                    };*/
+
+                    FileUtils.walkTree(n,new IteratorListener(){
+                        public void execute(Object o) {                            
+                            FileSource fileSource = (FileSource)o;
+                            System.out.println("file source:"+fileSource.getAbsolutePath());
+                            //zoek nu naar file in lijst 'files'                            
+                            for(FileUnit fu:fileUnits){
+                                if(
+                                        fu.getSource().getAbsolutePath().equals(
+                                            fileSource.getAbsolutePath()
+                                        )
+                                ){
+                                    fileSource.setCopy(fu.getTarget());
+                                    break;
+                                }
+                            }
                         }
                     });
-                    renamer.rename();
+
+                    
+                    tree.repaint();
+                    
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -248,7 +343,27 @@ public class FileTree extends ExitJFrame {
             }
         }
     }
-    public static void main(String []args){        
-       new FileTree("test","/home/nicolas/testdir");
+    public static void main(String []args){
+       JFileChooser fchooser = new JFileChooser();
+       fchooser.setDialogTitle("choose a directory");
+       fchooser.setFileFilter(new FileFilter(){
+            @Override
+            public boolean accept(File file) {              
+                return file.isDirectory();
+            }
+            @Override
+            public String getDescription() {
+                return "directories only";
+            }
+        });
+        fchooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fchooser.setMultiSelectionEnabled(false);
+        int freturn = fchooser.showOpenDialog(null);
+        if(freturn == JFileChooser.APPROVE_OPTION){
+            java.io.File file = fchooser.getSelectedFile();
+            if(file != null)
+                new FileTree("test",file);
+        }
+
     }
 }
