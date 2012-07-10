@@ -1,1 +1,0 @@
-2012-06-15 15:59:53,748 [main] ERROR net.sf.jmimemagic.Magic - getMagicMatch(File): java.io.FileNotFoundException: /tmp/.ICE-unix/1973 (No such device or address)
