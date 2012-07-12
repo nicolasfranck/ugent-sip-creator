@@ -72,9 +72,10 @@ public class FileTree extends ExitJFrame {
         final int [] stats = new int[2];
         final DefaultMutableTreeNode root = FileUtils.getTreeNode(file,true,stats);
         numFiles = stats[1];
-        numDirectories = stats[0];        
+        numDirectories = stats[0];
         final TreeModel model = new DefaultTreeModel(root,true);
         final JTree tree = new JTree(model);
+        
         
 
         tree.setAutoscrolls(true);

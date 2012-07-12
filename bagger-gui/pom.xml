@@ -72,10 +72,11 @@
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-docking</artifactId>
+      <version>1.0.0</version>
     </dependency>
     <dependency>
       <!--<groupId>com.vlsolutions.swing</groupId>-->
-      <groupId>com.vlsolutions</groupId> 
+      <groupId>com.vlsolutions</groupId>
       <artifactId>vldocking</artifactId>
     </dependency>
 
@@ -117,4 +118,6 @@
   </dependencies>
 
 </project>
+
+
 
