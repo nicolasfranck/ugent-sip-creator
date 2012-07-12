@@ -145,7 +145,7 @@ public class XML {
     /*
      * convert XML input to W3C Document object
      */
-    public static Document XMLToDocument(java.io.File file) throws ParserConfigurationException, SAXException, IOException{
+    public static Document XMLToDocument(java.io.File file) throws ParserConfigurationException, SAXException, IOException{      
         return XMLToDocument(new java.io.FileInputStream(file));
     }
     public static Document XMLToDocument(URL sourceURL) throws ParserConfigurationException, SAXException, IOException{

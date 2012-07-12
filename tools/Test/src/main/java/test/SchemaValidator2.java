@@ -48,8 +48,8 @@ public class SchemaValidator2 {
             //Document doc = ch.getDocument();
 
             // 4. Parse the document you want to check.
-            Source source = new StreamSource(args[1]);
-
+            Source source = new StreamSource(args[1]);                  
+          
             // 5. Check the document -> DOMSource: oorzaak van alle problemen!! Of is het de DefaultMETSHandler
             //validator.validate(new DOMSource(doc));
             

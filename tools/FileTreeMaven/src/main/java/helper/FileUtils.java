@@ -77,7 +77,7 @@ public class FileUtils {
         
         if(maxdepth == 0)return root;
 
-        if(file.isDirectory() /*&& file.listFiles() != null*/){
+        if(file.isDirectory() && file.listFiles() != null){
             root.setAllowsChildren(true);
             for(File f:file.listFiles()){                
                 root.add(getTreeNode(new FileSource(f),maxdepth-1));

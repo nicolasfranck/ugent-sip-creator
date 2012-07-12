@@ -20,10 +20,12 @@ public class FileConstraintForm extends AbstractForm{
     }
     @Override
     protected JComponent createFormControl() {
+        logger.info("entering createFormControl");
         TableFormBuilder builder = new TableFormBuilder(getBindingFactory());
         builder.add("file");
         builder.row();
         builder.add("maxDepth");
+        logger.info("end createFormControl");
         return builder.getForm();
     }
 

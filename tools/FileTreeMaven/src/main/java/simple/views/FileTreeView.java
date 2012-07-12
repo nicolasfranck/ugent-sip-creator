@@ -14,13 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.JButton;
-
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -43,18 +37,25 @@ public class FileTreeView extends AbstractView{
         panel.setLayout(new BorderLayout());
         fileTree = getNewFileTree(new File("."));
         fileTree.setCellRenderer(new FileTreeCellRenderer());
-        panel.add(fileTree,BorderLayout.CENTER);
+        JScrollPane fileTreeScroller = new JScrollPane(fileTree);
+        panel.add(fileTreeScroller,BorderLayout.CENTER);
         JButton chooseButton = new JButton("choose file..");
+        
+        
         chooseButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 File file = chooseFile();
                 if(file == null)return;
-                DefaultMutableTreeNode node = FileUtils.getTreeNode(new FileSource(file),0);
+                getStatusBar().getProgressMonitor().taskStarted("test",0);
+                DefaultMutableTreeNode node = FileUtils.getTreeNode(new FileSource(file),10);
+                //reset root: reset Model
                 fileTree.setModel(getNewFileTreeModel(node));
+                getStatusBar().getProgressMonitor().done();
             }
         });
         panel.add(chooseButton,BorderLayout.SOUTH);
+        
 
         //panel.add(new FileConstraintForm(new FileConstraint()).getControl(),BorderLayout.SOUTH);
 
