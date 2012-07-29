@@ -5,17 +5,20 @@
 
 package helper;
 
-import java.io.File;
-import java.util.ArrayList;
-import javax.swing.tree.DefaultMutableTreeNode;
 import eu.medsea.mimeutil.MimeUtil;
-import java.util.Collections;
-import java.util.Comparator;
+import java.io.File;
+import java.util.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 /**
  *
  * @author nicolas
  */
 public class FileUtils {
+    private static final HashMap<String,Double> sizes;
+    private static final String [] sizeNames = {        
+      "TB","GB","MB","KB","B"
+    };
+   
     private static Comparator defaultFileSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1, File f2){
@@ -24,12 +27,29 @@ public class FileUtils {
     };
     static {
         MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+        sizes = new HashMap<String,Double>();
+        sizes.put("KB",new Double(1024));
+        sizes.put("MB",new Double(1024*1024));       
+        sizes.put("GB",new Double(1024*1024*1024));        
+        sizes.put("TB",new Double(1024*1024*1024*1024));        
+    }
+    public static String sizePretty(double size){       
+        for(int i = 0;i < sizeNames.length;i++){
+            if(
+                sizes.containsKey(sizeNames[i])
+            ){                 
+                double d = sizes.get(sizeNames[i]).doubleValue();               
+                int n = (int) Math.round(size / d);                
+                if(n > 0)return ""+n+sizeNames[i];
+            }
+        }
+        return ((long)size)+"B";
     }
     public static ArrayList<File> listFiles(String fn){
         return listFiles(new File(fn));
     }
     public static ArrayList<File> listFiles(File f){
-        final ArrayList<File> files = new ArrayList<File>();
+        final ArrayList<File> files = new ArrayList<File>();        
         listFiles(
             f,new IteratorListener(){
             @Override
@@ -58,10 +78,12 @@ public class FileUtils {
         }
         Collections.sort(directories,defaultFileSorter);
         for(File dir:directories){
+            System.out.println(dir.getAbsolutePath());
             listFiles(dir,l);
         }
         Collections.sort(files,defaultFileSorter);
         for(File file:files){
+            System.out.println(file.getAbsolutePath());
             l.execute(file);
         }
         
@@ -73,19 +95,35 @@ public class FileUtils {
         if(file == null || !file.exists()){
             return null;
         }        
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileSource(file));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileSource(file));       
         
-        if(maxdepth == 0)return root;
-
-        if(file.isDirectory() && file.listFiles() != null){
-            root.setAllowsChildren(true);
-            for(File f:file.listFiles()){                
-                root.add(getTreeNode(new FileSource(f),maxdepth-1));
-            }
-        }else{
-            //prevents the expand sign '+' to appear
+        if(file.isFile()){
             root.setAllowsChildren(false);
+            return root;
         }
+        if(maxdepth == 0){
+            return root;
+        }
+        
+        ArrayList<File>files = new ArrayList<File>();
+        ArrayList<File>directories = new ArrayList<File>();
+        
+        for(File sb:file.listFiles()){
+            if(sb.isDirectory())
+                directories.add(sb);
+            else
+                files.add(sb);         
+        }
+        
+        Collections.sort(directories,defaultFileSorter);
+        for(File dir:directories){            
+            root.add(getTreeNode(new FileSource(dir),maxdepth-1));
+        }
+        Collections.sort(files,defaultFileSorter);
+        for(File f:files){            
+           root.add(getTreeNode(new FileSource(f),maxdepth-1));
+        }             
+        
         return root;
     }
     public static void walkTree(DefaultMutableTreeNode node,IteratorListener il){
@@ -97,14 +135,5 @@ public class FileUtils {
                 walkTree((DefaultMutableTreeNode)node.getChildAt(i),il);
             }
         }
-    }
-    public static void main(String []args){
-        listFiles("/home/nicolas/Grim",new IteratorListener(){
-            @Override
-            public void execute(Object o){
-                File file = (File)o;
-                System.out.println(file.getAbsolutePath());
-            }
-        });
-    }
+    }   
 }

@@ -5,8 +5,6 @@
 
 package simple.views;
 
-import helper.FileConstraint;
-import helper.FileConstraintForm;
 import helper.FileSource;
 import helper.FileTreeCellRenderer;
 import helper.FileUtils;
@@ -26,7 +24,8 @@ import org.springframework.richclient.application.support.AbstractView;
  *
  * @author nicolas
  */
-public class FileTreeView extends AbstractView{
+public class FileTreeView extends AbstractView{    
+    
     private JTree fileTree;
     private TreeModel fileTreeModel;
     private JPanel panel;
@@ -38,6 +37,7 @@ public class FileTreeView extends AbstractView{
         fileTree = getNewFileTree(new File("."));
         fileTree.setCellRenderer(new FileTreeCellRenderer());
         JScrollPane fileTreeScroller = new JScrollPane(fileTree);
+        fileTreeScroller.setBorder(BorderFactory.createEmptyBorder());
         panel.add(fileTreeScroller,BorderLayout.CENTER);
         JButton chooseButton = new JButton("choose file..");
         
@@ -64,10 +64,13 @@ public class FileTreeView extends AbstractView{
     public JTree getNewFileTree(File file) {
         DefaultMutableTreeNode root = FileUtils.getTreeNode(new FileSource(file));
         final JTree tree = new JTree(getNewFileTreeModel(root));
+        tree.setRootVisible(false);        
+        tree.putClientProperty("JTree.padding","20");
+        tree.setShowsRootHandles(true);
         return tree;
     }   
     public TreeModel getNewFileTreeModel(DefaultMutableTreeNode node){
-        TreeModel model = new DefaultTreeModel(node,true);
+        TreeModel model = new DefaultTreeModel(node,true);           
         return model;
     }
 

@@ -70,7 +70,7 @@
     <property name="windowCommandManagerBeanName" value="windowCommandManager" />
     <property name="menubarBeanName" value="menuBar" />
     <property name="toolbarBeanName" value="toolBar" />
-    <property name="startingPageId" value="fileTreeView" />
+    <property name="startingPageId" value="fileTreeView1" />
   </bean>
 
   <!--
@@ -231,9 +231,17 @@
       </list>
     </property>
   </bean>
-
+<!--
  <bean id="fileTreeView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
     <property name="viewClass" value="simple.views.FileTreeView" />
+    <property name="autoHideEnabled" value="true" />
+     <property name="floatEnabled" value="true" />
+     <property name="maximizeEnabled" value="true"/>    
+  </bean>
+  -->
+  
+   <bean id="fileTreeView1" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
+    <property name="viewClass" value="simple.views.FileTreeView1" />
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>    

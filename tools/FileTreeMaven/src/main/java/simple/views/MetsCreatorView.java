@@ -160,7 +160,7 @@ public class MetsCreatorView extends AbstractView{
             fileChooser.setFileFilter(new FileFilter(){
                 @Override
                 public boolean accept(File file) {
-                    return file.isFile() && file.getName().endsWith("xml");
+                    return (file.isDirectory()) || (file.isFile() && file.getName().endsWith("xml"));
                 }
                 @Override
                 public String getDescription() {

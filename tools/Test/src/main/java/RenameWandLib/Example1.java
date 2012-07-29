@@ -26,7 +26,7 @@ public class Example1 {
                 @Override
                 public OnErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {
                     if(errorStr != null)System.err.println(errorStr);
-                    System.out.println("mv "+pair.source.getAbsolutePath()+" to "+pair.target.getAbsolutePath()+" failed");
+                    System.out.println("mv "+pair.getSource().getAbsolutePath()+" to "+pair.target.getAbsolutePath()+" failed");
                     System.out.println("undoing all operations!");
                     System.out.println(errorType+":'"+errorStr+"'");
                     return OnErrorAction.undoAll;
@@ -34,7 +34,7 @@ public class Example1 {
                 @Override
                 public void onRenameStart(RenameFilePair pair) {
                     try {
-                        System.out.println("renaming " + pair.source.getCanonicalPath() + " to " + pair.target.getCanonicalPath());
+                        System.out.println("renaming " + pair.getSource().getCanonicalPath() + " to " + pair.getTarget().getCanonicalPath());
                     } catch (IOException ex) {
                         Logger.getLogger(RenameWand.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -42,7 +42,7 @@ public class Example1 {
                 @Override
                 public void onRenameEnd(RenameFilePair pair) {
                     try {
-                        System.out.println("renaming " + pair.source.getCanonicalPath() + " to " + pair.target.getCanonicalPath()+" DONE!");
+                        System.out.println("renaming " + pair.getSource().getCanonicalPath() + " to " + pair.getTarget().getCanonicalPath()+" DONE!");
                     } catch (IOException ex) {
                         Logger.getLogger(RenameWand.class.getName()).log(Level.SEVERE, null, ex);
                     }
