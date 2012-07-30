@@ -11,7 +11,8 @@ import java.util.List;
  *
  * @author nicolas
  */
-public interface RenameListener {
+public interface RenameListener{
+    public void onInit(final List<FileUnit> matchCandidates,final List<FileUnit> matches);
     /*
      * before operation starts: list of fileunits (source and target file)
      * return boolean to indicate your approval
@@ -34,4 +35,8 @@ public interface RenameListener {
     void onRenameStart(final RenameFilePair pair);
     void onRenameSuccess(final RenameFilePair pair);
     void onRenameEnd(final RenameFilePair pair);
+    /*
+     *  after end of operation
+     */
+    void onEnd();
 }

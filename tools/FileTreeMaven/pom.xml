@@ -77,8 +77,14 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.richclient</groupId>
+            <artifactId>spring-richclient-jdk5</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>
+
 
 
 

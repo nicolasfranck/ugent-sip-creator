@@ -10,7 +10,6 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
@@ -20,6 +19,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
     private Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
     private Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
+    private Icon errorIcon = (Icon) UIManager.getIcon("fileView.errorIcon");
 
 
     @Override
@@ -34,11 +34,10 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
         FileNode node = (FileNode)value;
         File currentFile = (File)node.getFile();
-
-        if (currentFile.isDirectory()){            
+      
+        if (currentFile.isDirectory()){
             renderer.setIcon(directoryIcon);
-        }
-        else{      
+        }else{      
             renderer.setIcon(fileIcon);
         }
         return renderer;

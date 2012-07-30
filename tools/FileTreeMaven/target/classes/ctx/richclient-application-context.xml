@@ -71,6 +71,7 @@
     <property name="menubarBeanName" value="menuBar" />
     <property name="toolbarBeanName" value="toolBar" />
     <property name="startingPageId" value="fileTreeView1" />
+    <property name="registerableExceptionHandler" ref="exceptionHandler" />
   </bean>
 
   <!--
@@ -231,6 +232,7 @@
       </list>
     </property>
   </bean>
+
 <!--
  <bean id="fileTreeView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
     <property name="viewClass" value="simple.views.FileTreeView" />
@@ -239,6 +241,7 @@
      <property name="maximizeEnabled" value="true"/>    
   </bean>
   -->
+ 
   
    <bean id="fileTreeView1" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
     <property name="viewClass" value="simple.views.FileTreeView1" />
@@ -271,7 +274,44 @@
          </map>
      </property>     
   </bean>  
-  
-  
+
+
+<bean id="exceptionHandler"
+    class="org.springframework.richclient.exceptionhandling.delegation.DelegatingExceptionHandler">
+    <property name="delegateList">
+      <list>
+        <bean
+          class="org.springframework.richclient.exceptionhandling.delegation.SimpleExceptionHandlerDelegate">
+          <property name="throwableClass" value="java.lang.Error" />
+          <property name="exceptionHandler">
+            <bean class="org.springframework.richclient.exceptionhandling.MessagesDialogExceptionHandler">
+              <property name="logLevel" value="DEBUG" />
+              <property name="shutdownPolicy" value="OBLIGATE" />
+            </bean>
+          </property>
+        </bean>
+
+        <!-- The order is important: if Throwable would be first then the others would be ignored -->
+
+        <bean
+          class="org.springframework.richclient.exceptionhandling.delegation.SimpleExceptionHandlerDelegate">
+          <property name="throwableClass" value="java.lang.Throwable" />
+          <property name="exceptionHandler">
+            <bean class="org.springframework.richclient.exceptionhandling.MessagesDialogExceptionHandler">
+              <property name="logLevel" value="DEBUG" />
+              <property name="shutdownPolicy" value="ASK" />
+            </bean>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+
+  <!--
+    <bean id="exceptionHandler" class="org.springframework.richclient.exceptionhandling.SilentExceptionHandler">
+        <property name="logLevel" value="DEBUG"/>        
+    </bean>
+    -->
   
 </beans>

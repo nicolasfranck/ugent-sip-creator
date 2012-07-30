@@ -45,17 +45,23 @@ public class FileNode {
     /**
      * Loads the children, caching the results in the children ivar.
      */
-    protected Object[] getChildren() {
+    public Object[] getChildren() {
 	if (children != null) {
 	    return children; 
 	}
-	try{      
-            File [] fileEntries = file.listFiles();           
+	try{            
+            File [] fileEntries = file.listFiles();            
             if(fileEntries != null){
                 ArrayList<File> files = new ArrayList<File>();
-                ArrayList<File> directories = new ArrayList<File>();                
+                ArrayList<File> directories = new ArrayList<File>();
+                int num = 0;
                 for(File fileEntry:fileEntries){
-                    if(fileEntry.isDirectory()){                       
+                    if(!fileEntry.canRead()){
+                        continue;
+                    }
+                    num++;                    
+                    if(fileEntry.isDirectory()){
+
                         directories.add(fileEntry);
                     }else if(fileEntry.isFile()){                        
                         files.add(fileEntry);
@@ -63,7 +69,7 @@ public class FileNode {
                 }               
                 Collections.sort(directories,defaultFileSorter);
                 Collections.sort(files,defaultFileSorter);               
-                children = new FileNode[fileEntries.length];                
+                children = new FileNode[num];
                 int i = 0;
                 for(i = 0;i < directories.size();i++){                
                     children[i] = new FileNode(directories.get(i));
@@ -72,8 +78,12 @@ public class FileNode {
                     children[i] = new FileNode(files.get(j));
                     i++;
                 }               
+            }else{
+                children = new FileNode[]{};
             }
-	} catch (SecurityException se) {}
+	}catch(Exception se){
+            se.printStackTrace();
+        }
 	return children; 
-    }
+    }    
 }

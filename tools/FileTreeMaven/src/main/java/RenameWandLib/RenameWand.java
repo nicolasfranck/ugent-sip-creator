@@ -321,18 +321,29 @@ public class RenameWand {
             setNumRenameOperationsPerformed(0);
         }      
         public void rename() throws IOException{
+            _rename();
+            if(renameListener != null)renameListener.onEnd();
+        }
+        private void _rename() throws IOException{
             init();
             /* get match candidates */
-            List<FileUnit> files = getMatchCandidates();            
-            if(files.size() == 0)return;
-            /* perform matching */            
-            files = performSourcePatternMatching(files);
-            if(files.size() == 0)return;
-            evaluateTargetPattern(files.toArray(new FileUnit[files.size()]));
+            List<FileUnit> matchCandidates = getMatchCandidates();
+            
+            if(matchCandidates.size() == 0){
+                if(renameListener != null)renameListener.onInit(matchCandidates,new ArrayList<FileUnit>());
+                return;
+            }
+            /* perform matching */
+            List<FileUnit> matches = performSourcePatternMatching(matchCandidates);
+            if(matches.size() == 0){
+                if(renameListener != null)renameListener.onInit(matchCandidates,matches);
+                return;
+            }
+            evaluateTargetPattern(matches.toArray(new FileUnit[matches.size()]));
             /* determine renaming sequence and find clashes, bad names, etc. */
-            final List<RenameFilePair> renameOperations = getRenameOperations(files);
+            final List<RenameFilePair> renameOperations = getRenameOperations(matches);
             final int numRenameOperations = renameOperations.size();
-            final boolean proceedToRename = promptUserOnRename(files, numRenameOperations);            
+            final boolean proceedToRename = promptUserOnRename(matches, numRenameOperations);
 
             setNumRenameOperationsPerformed(proceedToRename ? performRenameOperations(renameOperations) : 0);
         }
@@ -745,8 +756,7 @@ public class RenameWand {
             Pattern sourceRegexCompiledPattern = null;
 
             try{
-                sourceRegexCompiledPattern = Pattern.compile(sourceRegex.toString());
-                System.out.println(sourceRegexCompiledPattern);
+                sourceRegexCompiledPattern = Pattern.compile(sourceRegex.toString());                
             }
             catch(PatternSyntaxException e){
                 throw new TerminatingException("Failed to compile source pattern string for " +
@@ -1644,10 +1654,10 @@ public class RenameWand {
 
             for(FileUnit u : matchedFiles){
                 final String targetFilename = u.targetFilename.toString();
-                System.err.println(targetFilename);
+                //System.err.println(targetFilename);
                 if(targetFilename.isEmpty()){
-                    System.err.println("strange, this filename is empty:'"+targetFilename+"'");
-                    System.err.println("source:"+u.source.getAbsolutePath());
+                    /*System.err.println("strange, this filename is empty:'"+targetFilename+"'");
+                    System.err.println("source:"+u.source.getAbsolutePath());*/
                 }
 
                 /* check for empty file/directory name */

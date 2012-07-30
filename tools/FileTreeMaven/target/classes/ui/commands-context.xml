@@ -30,6 +30,7 @@
         <value>selectAllCommand</value>
         <value>newWindowCommand</value>
         <value>helpContentsCommand</value>
+        <value>expandCollapseTreeCommand</value>
       </list>
     </property>
   </bean>
@@ -96,6 +97,8 @@
         <value>printCommand</value>
         <value>separator</value>
         <value>propertiesCommand</value>
+        <value>separator</value>
+        <value>expandCollapseTreeCommand</value>
         <value>separator</value>
         <bean class="org.springframework.richclient.command.support.ExitCommand" />
       </list>

@@ -10,22 +10,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
 import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
 import treetable.TreeTableModel;
+import treetable.executors.ExpandCollapseTreeExecutor;
+
 
 
 /**
@@ -36,15 +33,32 @@ public class FileTreeView1 extends AbstractView{
     private JPanel panel1;
     private JPanel panel2;
     private JFileChooser fileChooser;
-    private JComponent component;
+    private JComponent scrollerTreeTable;
     private FileNode fileNodeChoosen;
     private JTextField sourcePatternField;
     private JTextField destinationPatternField;
-    private File lastFile;
-    //private JTextArea console;
+    private File lastFile;    
     private JTable resultTable;
     private DefaultTableModel resultTableModel;
-    
+    private int numToRename = 0;
+    private int numRenamedSuccess = 0;
+    private int numRenamedError = 0;
+    private JLabel statusLabel;
+    private JTreeTable treeTable;
+    private TreeTableModel treeTableModel;
+    private boolean treeTableExpanded = false;
+    private ExpandCollapseTreeExecutor expandExecutor  = new ExpandCollapseTreeExecutor(this);
+
+    public JTreeTable getCurrentTreeTable(){
+        if(treeTable == null){
+            treeTable = getNewTreeTable(getLastFile());
+        }
+        return treeTable;
+    }
+    public TreeTableModel getCurrentTreeTableModel() {
+        return treeTableModel;
+    }
+
     @Override
     protected JComponent createControl() {
         JSplitPane splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);                
@@ -52,8 +66,9 @@ public class FileTreeView1 extends AbstractView{
         //panel north: file tree
         panel1 = new JPanel();
         panel1.setLayout(new BorderLayout());
-        component = getNewTreeComponent(getLastFile());       
-        panel1.add(component,BorderLayout.CENTER);
+        scrollerTreeTable = new JScrollPane(getCurrentTreeTable());
+
+        panel1.add(scrollerTreeTable,BorderLayout.CENTER);
         
         //add panel north to split pane
         splitter.add(panel1);
@@ -65,7 +80,7 @@ public class FileTreeView1 extends AbstractView{
         GridBagConstraints c = new GridBagConstraints();        
         c.gridx = c.gridy = 0;                
         c.gridwidth = GridBagConstraints.REMAINDER;        
-        c.fill = GridBagConstraints.NONE;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = c.weighty = 0.5;
         
         JButton chooseButton = new JButton("choose file..");                
@@ -74,38 +89,39 @@ public class FileTreeView1 extends AbstractView{
             public void actionPerformed(ActionEvent ae) {
                 final File file = chooseFile();              
                 if(file == null)return;              
-                getStatusBar().getProgressMonitor().taskStarted("test",0);                               
-                panel1.remove(component);
-                component = getNewTreeComponent(file);                 
-                panel1.add(component,BorderLayout.CENTER);                          
-                panel1.revalidate();
-                panel1.repaint();
+                getStatusBar().getProgressMonitor().taskStarted("test",0);
+                setLastFile(file);                
+                reloadTreeTable(file);                
                 getStatusBar().getProgressMonitor().done();                                 
             }
         });
         
         c.gridy = 0;
-        panel2.add(chooseButton,c);        
-        
+        c.fill = GridBagConstraints.NONE;
+        panel2.add(chooseButton,c);
+
         c.gridy = 1;
-        panel2.add(getNewRenameForm(),c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        statusLabel = new JLabel();
+        panel2.add(statusLabel,c);
         
         c.gridy = 2;
-        /*console = new JTextArea();
-        console.setColumns(50);
-        console.setRows(5);*
+        c.fill = GridBagConstraints.HORIZONTAL;
+        panel2.add(getNewRenameForm(),c);
         
-        panel2.add(new JScrollPane(console),c);*/
-        
-        /*result tabel
+        c.gridy = 3;
+        ///result tabel
         String [] [] rows = {};
-        String [] cols = {"from","to"};
+        String [] cols = {"nr","van","naar","status"};
         resultTableModel = new DefaultTableModel(rows,cols);
-        resultTable = new JTable(resultTableModel); 
-        resultTable.getColumnModel().getColumn(0).setWidth(20);
-        resultTable.getColumnModel().getColumn(1).setWidth(20);
-      
-        panel2.add(new JScrollPane(resultTable),c);*/
+        resultTable = new JTable(resultTableModel);
+        resultTable.setFillsViewportHeight(true);
+        resultTable.setRowSelectionAllowed(false);        
+
+        c.fill = GridBagConstraints.BOTH;
+        JScrollPane scrollerResultTable = new JScrollPane(resultTable);
+        scrollerResultTable.setPreferredSize(new Dimension(500,200));
+        panel2.add(scrollerResultTable,c);
         
         //add panel south to split pane
         splitter.add(panel2);
@@ -116,16 +132,9 @@ public class FileTreeView1 extends AbstractView{
         
         return splitter;
     }
-    public JComponent getNewTreeComponent(File file){
-        JTreeTable fileTree = getNewFileTree(file);           
-        JScrollPane fileTreeScroller = new JScrollPane(fileTree);
-        fileTreeScroller.setViewportView(fileTree);
-        fileTreeScroller.setBorder(BorderFactory.createEmptyBorder());        
-        return fileTreeScroller;
-    }
-    public JTreeTable getNewFileTree(File file) {       
-        JTreeTable t = new JTreeTable(getNewFileTreeModel(file));                                
-        final JTree tree = t.getTree();
+    protected JTreeTable getNewTreeTable(File file) {
+        treeTable = new JTreeTable(getNewTreeTableModel(file));
+        final JTree tree = treeTable.getTree();
         tree.addTreeSelectionListener(new TreeSelectionListener(){
             @Override
             public void valueChanged(TreeSelectionEvent tse) {               
@@ -137,20 +146,21 @@ public class FileTreeView1 extends AbstractView{
                 fileNodeChoosen = fn;
             }        
         });
-        return t;
-    }   
-    public TreeTableModel getNewFileTreeModel(File file){
-        FileSystemModel model =  new FileSystemModel(file);                        
-        return model;
+        
+        return treeTable;
+    }    
+    protected TreeTableModel getNewTreeTableModel(File file){
+        treeTableModel =  new FileSystemModel(file);
+        return treeTableModel;
     }
-    public JFileChooser getFileChooser(){
+    protected JFileChooser getFileChooser(){
         if(fileChooser == null){
             fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("choose a directory");
             fileChooser.setFileFilter(new FileFilter(){
                 @Override
                 public boolean accept(File file) {
-                    return file.isDirectory();
+                    return file.isDirectory() && file.canRead();
                 }
                 @Override
                 public String getDescription() {
@@ -162,18 +172,18 @@ public class FileTreeView1 extends AbstractView{
         }
         return fileChooser;
     }
-    public void setFileChooser(JFileChooser fileChooser) {
+    protected void setFileChooser(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
     }
-    public File chooseFile(){
+    protected File chooseFile(){
         JFileChooser fchooser = getFileChooser();
         int freturn = fchooser.showOpenDialog(null);
         File file;
         if(freturn == JFileChooser.APPROVE_OPTION)file = fchooser.getSelectedFile();
-        else file = new File(".");
+        else file = getLastFile();
         return file;
     }
-    public JComponent getNewRenameForm(){
+    protected JComponent getNewRenameForm(){
         JPanel p = new JPanel();
         GridBagLayout layout = new GridBagLayout();
         p.setLayout(layout);
@@ -206,66 +216,121 @@ public class FileTreeView1 extends AbstractView{
         p.add(labelDestinationPattern,c);
         
         c.gridx = 1;
-        p.add(destinationPatternField,c);  
-        
-        //p.setPreferredSize(new Dimension(500,100));
+        p.add(destinationPatternField,c);          
+
        
-        JButton submit = new JButton("rename");
+        final JButton testRenameButton = new JButton("Simulatie..");
         c.gridy = 3;
-        p.add(submit,c);
+        c.gridx = 0;
+        p.add(testRenameButton,c);
+
+        final JButton renameButton = new JButton("Rename!");
+        c.gridy = 3;
+        c.gridx = 1;
+        p.add(renameButton,c);
         
-        submit.addActionListener(new ActionListener(){
+        testRenameButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                if(fileNodeChoosen == null)return;
-                rename();
+            public void actionPerformed(ActionEvent ae) {                
+                renameButton.setEnabled(false);
+                testRenameButton.setEnabled(false);
+                rename(true);
+                testRenameButton.setEnabled(true);
+                renameButton.setEnabled(true);                
             }        
-        });        
+        });
+
+        renameButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {                
+                testRenameButton.setEnabled(false);
+                renameButton.setEnabled(false);
+                rename(false);
+                reloadTreeTable(getLastFile());
+                testRenameButton.setEnabled(true);
+                renameButton.setEnabled(true);
+            }
+        });       
         
         return p;        
     }
-    public void rename(){
-        if(
-            !sourcePatternField.getText().isEmpty() &&
-            !destinationPatternField.getText().isEmpty()            
-        ){
+    public void reloadTreeTable(File file){
+        panel1.remove(scrollerTreeTable);
+        scrollerTreeTable = new JScrollPane(getNewTreeTable(file));
+        panel1.add(scrollerTreeTable,BorderLayout.CENTER);
+        panel1.revalidate();
+        panel1.repaint();
+    }
+    protected void rename(final boolean simulateOnly){
+
+        resultTableModel.getDataVector().clear();
+        resultTable.setModel(resultTableModel);
+        statusLabel.setText(null);
+        numRenamedSuccess = 0;
+        numRenamedError = 0;
+
+        if(fileNodeChoosen == null){
+         
+            statusLabel.setText("no file is selected");
+            
+        }else if(sourcePatternField.getText().isEmpty()){
+
+            statusLabel.setText("source pattern not given");
+
+        }else if(destinationPatternField.getText().isEmpty()){
+
+            statusLabel.setText("destination pattern not given");
+
+        }else if(destinationPatternField.getText().compareTo(sourcePatternField.getText()) == 0){
+
+            statusLabel.setText("source pattern and destination pattern are the same");
+
+        }
+        else{
             try{
-                RenameWand renamer = new RenameWand();
+
+                RenameWand renamer = new RenameWand();                
                 renamer.setCurrentDirectory(fileNodeChoosen.getFile());
                 renamer.setRecurseIntoSubdirectories(true);
                 renamer.setSourcePatternString(sourcePatternField.getText());
                 renamer.setTargetPatternString(destinationPatternField.getText());
-                renamer.setSimulateOnly(true);
+                renamer.setSimulateOnly(simulateOnly);                
+
                 renamer.setRenameListener(new RenameListenerAdapter(){
-                    @Override
-                    public OnErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {
-                        if(errorStr != null)System.err.println(errorStr);                      
-                        /*
-                        console.append("mv "+pair.getSource().getAbsolutePath()+" to "+pair.getTarget().getAbsolutePath()+" failed\n");
-                        console.append("undoing all operations!\n");
-                        console.append(errorType+":'"+errorStr+"'\n");
-                        * 
-                        */
-                                             
-                        return OnErrorAction.undoAll;
+                     @Override
+                    public void onInit(final java.util.List<FileUnit> matchCandidates,final java.util.List<FileUnit> matches){
+                         if(matchCandidates.size() == 0){
+                             statusLabel.setText("selected directory does not contain any files");
+                         }else if(matches.size() == 0){
+                             statusLabel.setText("no matches found (candidates: "+matchCandidates.size()+")");
+                         }
                     }
                     @Override
-                    public void onRenameStart(RenameFilePair pair) {
-                        /*
-                        try {
-                            console.append("renaming " + pair.getSource().getCanonicalPath() + " to " + pair.getTarget().getCanonicalPath()+"\n");
-                        } catch (IOException ex) {
-                            Logger.getLogger(RenameWand.class.getName()).log(Level.SEVERE, null, ex);
-                        }*/
+                    public boolean approveList(final java.util.List<FileUnit> list){
+                        numToRename = list.size();
+                        FileTreeView1.this.getStatusBar().getProgressMonitor().taskStarted("renaming",numToRename);
+                        return true;
+                    }
+                    @Override
+                    public OnErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {
+                        numRenamedError++;
+                        return OnErrorAction.skip;                        
+                    }
+                    @Override
+                    public void onRenameSuccess(RenameFilePair pair) {                        
+                        numRenamedSuccess++;
                     }
                     @Override
                     public void onRenameEnd(RenameFilePair pair) {
-                        /*
-                        try {
-                            console.append("renaming " + pair.getSource().getCanonicalPath() + " to " + pair.getTarget().getCanonicalPath()+" DONE!\n");
-                        } catch (IOException ex) {
-                            Logger.getLogger(RenameWand.class.getName()).log(Level.SEVERE, null, ex);
-                        }*/
+                        String status = simulateOnly ? "simulatie":(pair.isSuccess() ? "successvol":"error");
+                        resultTableModel.insertRow(resultTableModel.getRowCount(),new String []{
+                            ""+(resultTableModel.getRowCount()+1),pair.getSource().getName(),pair.getTarget().getName(),status
+                        });
+                        FileTreeView1.this.getStatusBar().getProgressMonitor().worked(numRenamedError + numRenamedSuccess);                        
+                    }
+                    @Override
+                    public void onEnd(){
+                        FileTreeView1.this.getStatusBar().getProgressMonitor().done();
                     }
                 });
                 renamer.rename();
@@ -274,7 +339,6 @@ public class FileTreeView1 extends AbstractView{
             }
         }
     }
-
     public File getLastFile(){
         if(lastFile == null){           
             lastFile = new File(System.getProperty("user.home"));
@@ -284,9 +348,18 @@ public class FileTreeView1 extends AbstractView{
         }
         return lastFile;
     }
-
-    public void setLastFile(File lastFile) {
+    protected void setLastFile(File lastFile) {
         this.lastFile = lastFile;
     }
-    
+
+    /*
+     * source: http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
+     */
+    // If expand is true, expands all nodes in the tree.
+    // Otherwise, collapses all nodes in the tree.    
+    @Override
+    protected void registerLocalCommandExecutors(PageComponentContext context){       
+        context.register("expandCollapseTreeCommand",expandExecutor);
+        expandExecutor.setEnabled(true);
+    }
 }
