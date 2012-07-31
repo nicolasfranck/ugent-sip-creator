@@ -148,7 +148,7 @@ Renaming:
         - transformatie dmv xslt. die regels worden bijgehouden in config.
             transparant voor modale gebruiker
 
-=> nood aan verpakking data: BagIt
+
 => nood aan combinatie verpakken metadata + data:
    METS-container
 => 'veilig' maken van data: checksums
