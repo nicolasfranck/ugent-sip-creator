@@ -11,6 +11,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -2030,6 +2031,59 @@ public class RenameWand {
             return -1;
 	}
 
-
-
+        /*
+         * Nicolas Franck
+         */
+        private static String [] [] substitutes = new String [] [] {
+            { "[^a-zA-Z0-9-_.]+","_" },
+            { "_+","_" },
+            { "_$","" }
+        };
+        private static HashMap<String,Pattern> patternMap = new HashMap();        
+        protected static Pattern getPattern(String patternString){
+            Pattern pattern = null;           
+            if(patternMap.containsKey(patternString))return patternMap.get(patternString);
+            try{
+                pattern = Pattern.compile(patternString);
+                patternMap.put(patternString,pattern);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return pattern;
+        }
+        public static void cleanFileNames(File [] files,boolean cleanDirectories)throws Exception{
+            cleanFileNames(files,cleanDirectories,substitutes);
+        }
+        public static void cleanFileNames(File [] files,boolean cleanDirectories,String [] [] substitutes)throws Exception{
+            for(File file:files){              
+                if(!cleanDirectories && file.isDirectory())continue;
+                String parent = file.getParent();
+                String sourceName = file.getName();
+                String suffix = "";
+                int lastIndex = sourceName.lastIndexOf('.');
+                if(lastIndex >= 0){
+                    suffix = sourceName.substring(lastIndex);
+                    sourceName = sourceName.substring(0,lastIndex);                    
+                }
+                String destinationName = sourceName;
+                
+                for(String [] substitutePair:substitutes){
+                    String sourcePattern = substitutePair[0];
+                    String destinationPattern = substitutePair[1];                   
+                    Pattern pattern = getPattern(sourcePattern);                    
+                    destinationName = pattern.matcher(sourceName).replaceAll(destinationPattern);
+                    if(suffix.compareTo("") != 0){
+                        suffix = pattern.matcher(suffix).replaceAll(destinationPattern);
+                    }
+                }
+                String sourcePath = parent+"/"+sourceName+suffix;
+                String destinationPath = parent+"/"+destinationName+suffix;
+                File destination = new File(destinationPath);
+               
+                if(sourcePath.compareTo(destinationPath) != 0){
+                    if(destination.exists())throw new Exception("renaming file '"+sourcePath+"' to '"+destinationPath+"' failed: target already exists");                   
+                    file.renameTo(destination);
+                }
+            }
+        }        
 }

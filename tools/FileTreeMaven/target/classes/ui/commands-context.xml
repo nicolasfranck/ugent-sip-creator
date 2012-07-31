@@ -31,6 +31,7 @@
         <value>newWindowCommand</value>
         <value>helpContentsCommand</value>
         <value>expandCollapseTreeCommand</value>
+        <value>reloadTreeCommand</value>
       </list>
     </property>
   </bean>
@@ -99,6 +100,8 @@
         <value>propertiesCommand</value>
         <value>separator</value>
         <value>expandCollapseTreeCommand</value>
+        <value>separator</value>
+        <value>reloadTreeCommand</value>
         <value>separator</value>
         <bean class="org.springframework.richclient.command.support.ExitCommand" />
       </list>

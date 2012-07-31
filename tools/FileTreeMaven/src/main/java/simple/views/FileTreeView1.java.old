@@ -6,7 +6,6 @@
 package simple.views;
 
 import RenameWandLib.*;
-import forms.RenamePairForm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,12 +18,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.TreePath;
-import org.springframework.binding.form.ValidatingFormModel;
-import org.springframework.binding.validation.ValidationListener;
-import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
-import renaming.RenamePair;
 import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
@@ -58,19 +53,6 @@ public class FileTreeView1 extends AbstractView{
     private boolean treeTableExpanded = false;
     private ExpandCollapseTreeExecutor expandExecutor  = new ExpandCollapseTreeExecutor(this);
     private ReloadTreeExecutor reloadTreeExecutor  = new ReloadTreeExecutor(this);
-
-    private RenamePairForm renamePairForm;
-
-    public RenamePairForm getRenamePairForm() {
-        if(renamePairForm == null){
-            renamePairForm = new RenamePairForm(new RenamePair());
-        }
-        return renamePairForm;
-    }
-
-    public void setRenamePairForm(RenamePairForm renamePairForm) {
-        this.renamePairForm = renamePairForm;
-    }
 
     public JTreeTable getCurrentTreeTable(){
         if(treeTable == null){
@@ -227,35 +209,7 @@ public class FileTreeView1 extends AbstractView{
         return file;
     }
     protected JComponent getNewRenameForm(){
-        JPanel panel = new JPanel(new BorderLayout());
-
-        RenamePairForm form = getRenamePairForm();
-        final ValidatingFormModel formModel = form.getFormModel();
-
-        JComponent componentForm = form.getControl();
-        panel.add(componentForm);
-        
-        final JButton submitButton = new JButton("submit");
-        submitButton.setEnabled(false);
-
-        submitButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                System.out.println("SUBMIT: committing changes..");
-                formModel.commit();
-            }
-        });
-        form.addValidationListener(new ValidationListener(){
-            @Override
-            public void validationResultsChanged(ValidationResults results) {
-                submitButton.setEnabled(!results.getHasErrors());
-            }
-        });
-
-        panel.add(submitButton,BorderLayout.SOUTH);
-
-        return panel;
-        /*JPanel p = new JPanel();
+        JPanel p = new JPanel();
         GridBagLayout layout = new GridBagLayout();
         p.setLayout(layout);
         
@@ -323,9 +277,7 @@ public class FileTreeView1 extends AbstractView{
             }
         });       
         
-        return p;   
-         * 
-         */
+        return p;        
     }
     public void reloadTreeTable(File file){
         panel1.remove(scrollerTreeTable);

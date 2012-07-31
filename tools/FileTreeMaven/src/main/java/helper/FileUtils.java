@@ -77,13 +77,11 @@ public class FileUtils {
                 files.add(sb);         
         }
         Collections.sort(directories,defaultFileSorter);
-        for(File dir:directories){
-            System.out.println(dir.getAbsolutePath());
+        for(File dir:directories){           
             listFiles(dir,l);
         }
         Collections.sort(files,defaultFileSorter);
-        for(File file:files){
-            System.out.println(file.getAbsolutePath());
+        for(File file:files){            
             l.execute(file);
         }
         

@@ -45,6 +45,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import javax.swing.tree.TreePath;
 
 /**
  * FileSystemModel is a TreeTableModel representing a hierarchical file 
@@ -134,13 +135,18 @@ public class FileSystemModel extends AbstractTreeTableModel
  
     @Override
     public Object getValueAt(Object node, int column) {
-	File file = getFile(node); 
+	File file = getFile(node);
+
+        if(!file.exists()){
+            this.fireTreeNodesRemoved(this,new TreePath(this.getRoot()).getPath(),new int [] {},new Object [] {});
+            return null;
+        }
+        
 	try {
 	    switch(column) {
 	    case 0:
 		return file.isFile() ? file.getName():"";
-	    case 1:
-		//return file.isFile() ? new Integer((int)file.length()) : "";
+	    case 1:		
                 return file.isFile() ? FileUtils.sizePretty(file.length()) : file.list().length+" files";
 	    case 2:
                 if(file.isFile()){                    
@@ -160,8 +166,9 @@ public class FileSystemModel extends AbstractTreeTableModel
 		return new Date(file.lastModified());
 	    }
 	}
-	catch  (SecurityException se) { }
-   
+	catch  (SecurityException se) { 
+            se.printStackTrace();
+        }   
 	return null; 
     }
 }
