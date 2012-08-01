@@ -82,8 +82,15 @@
             <artifactId>spring-richclient-jdk5</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.jvnet.ogc</groupId>
+            <artifactId>sensorml-v_1_0_0-schema</artifactId>
+            <version>1.0.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 </project>
+
 
 
 

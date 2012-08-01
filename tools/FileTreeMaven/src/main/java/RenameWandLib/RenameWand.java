@@ -6,7 +6,11 @@ package RenameWandLib;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,10 +27,11 @@ import java.util.regex.Pattern;
 import java.util.TreeMap;
 import java.util.regex.PatternSyntaxException;
 
-/**
- *
- * @author nicolas
+/*
+ *  Nicolas Franck
  */
+
+
 public class RenameWand {
     /**************************************
 	 * CONSTANTS AND MISCELLANEOUS FIELDS *
@@ -159,6 +164,18 @@ public class RenameWand {
         private int numRenameOperationsPerformed = 0;
         private boolean simulateOnly = false;
 
+        /*
+         *  Nicolas Franck: copy is soms veiliger dan move!
+         */
+        private boolean copy = false;
+
+        public boolean isCopy() {
+            return copy;
+        }
+
+        public void setCopy(boolean copy) {
+            this.copy = copy;
+        }        
 
 
         static {
@@ -185,6 +202,16 @@ public class RenameWand {
             
         }
 
+        /*
+         *  Nicolas Franck
+         */
+        public void copy(File in,File out) throws FileNotFoundException, IOException{
+            FileChannel cin = new FileInputStream(in).getChannel();
+            FileChannel cout = new FileOutputStream(out).getChannel();
+            cin.transferTo(0,cin.size(),cout);
+            cin.close();
+            cout.close();           
+        }
         public RenameWand(){
             
         }
@@ -1858,7 +1885,7 @@ public class RenameWand {
 
                 /* check for existing distinct target file/directory */
                 if(r.target.exists() && !r.target.equals(r.source)){
-                    r.success = false;
+                    r.success = false;                    
                     if(renameListener != null){
                         action = renameListener.onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
                     }                        
@@ -1876,8 +1903,13 @@ public class RenameWand {
                         r.target.getParentFile().mkdirs();
                         String error = null;
                         try{
-                            r.success = r.source.renameTo(r.target);
-                        }catch(SecurityException e){
+                            if(isCopy()){
+                                copy(r.source,r.target);
+                            }else{
+                                r.success = r.source.renameTo(r.target);
+                            }
+                        }catch(Exception e){
+                            e.printStackTrace();
                             r.success = false;
                             error = e.getMessage();
                         }
@@ -1916,8 +1948,15 @@ public class RenameWand {
                                     String error = null;
                                     t.source.getParentFile().mkdirs();
                                     try{
-                                        t.success = !t.target.renameTo(t.source);
+                                        if(isCopy()){
+                                            if(t.target.exists()){
+                                                t.target.delete();
+                                            }
+                                        }else{
+                                            t.success = !t.target.renameTo(t.source);
+                                        }
                                     }catch(SecurityException e){
+                                        e.printStackTrace();
                                         t.success = true;
                                         error = e.getMessage();
                                     }
@@ -2034,13 +2073,22 @@ public class RenameWand {
         /*
          * Nicolas Franck
          */
-        private static String [] [] substitutes = new String [] [] {
-            { "[^a-zA-Z0-9-_.]+","_" },
+        private CleanListener cleanListener;
+        private String [] [] substitutes = new String [] [] {
+            { "[^a-zA-Z0-9-_.]","_" },
             { "_+","_" },
             { "_$","" }
         };
-        private static HashMap<String,Pattern> patternMap = new HashMap();        
-        protected static Pattern getPattern(String patternString){
+        private HashMap<String,Pattern> patternMap = new HashMap();
+
+        public CleanListener getCleanListener(){
+            if(cleanListener == null)cleanListener = new CleanListenerAdapter();
+            return cleanListener;
+        }
+        public void setCleanListener(CleanListener cleanListener) {
+            this.cleanListener = cleanListener;
+        }
+        protected Pattern getPattern(String patternString){
             Pattern pattern = null;           
             if(patternMap.containsKey(patternString))return patternMap.get(patternString);
             try{
@@ -2051,10 +2099,16 @@ public class RenameWand {
             }
             return pattern;
         }
-        public static void cleanFileNames(File [] files,boolean cleanDirectories)throws Exception{
+        public void cleanFileNames(File [] files,boolean cleanDirectories)throws Exception{
             cleanFileNames(files,cleanDirectories,substitutes);
         }
-        public static void cleanFileNames(File [] files,boolean cleanDirectories,String [] [] substitutes)throws Exception{
+        public void cleanFileNames(File [] files,boolean cleanDirectories,String [] [] substitutes){
+            CleanListener cl = getCleanListener();
+
+            ArrayList<RenameFilePair>cleaned = new ArrayList<RenameFilePair>();
+
+            cl.onInit(files);
+
             for(File file:files){              
                 if(!cleanDirectories && file.isDirectory())continue;
                 String parent = file.getParent();
@@ -2067,11 +2121,11 @@ public class RenameWand {
                 }
                 String destinationName = sourceName;
                 
-                for(String [] substitutePair:substitutes){
+                for(String [] substitutePair:substitutes){                 
                     String sourcePattern = substitutePair[0];
                     String destinationPattern = substitutePair[1];                   
                     Pattern pattern = getPattern(sourcePattern);                    
-                    destinationName = pattern.matcher(sourceName).replaceAll(destinationPattern);
+                    destinationName = pattern.matcher(destinationName).replaceAll(destinationPattern);                    
                     if(suffix.compareTo("") != 0){
                         suffix = pattern.matcher(suffix).replaceAll(destinationPattern);
                     }
@@ -2079,11 +2133,99 @@ public class RenameWand {
                 String sourcePath = parent+"/"+sourceName+suffix;
                 String destinationPath = parent+"/"+destinationName+suffix;
                 File destination = new File(destinationPath);
-               
+
+                if(!cl.doClean(file,destination))continue;
+                
                 if(sourcePath.compareTo(destinationPath) != 0){
-                    if(destination.exists())throw new Exception("renaming file '"+sourcePath+"' to '"+destinationPath+"' failed: target already exists");                   
-                    file.renameTo(destination);
+
+                    boolean retry = false;
+
+                    do{
+                        retry = false;
+                        boolean success = true;
+                        OnErrorAction errorAction = OnErrorAction.ignore;
+
+                        cl.onRenameStart(file,destination);
+
+                        try{
+                            if(destination.exists())throw new IOException("renaming file '"+sourcePath+"' to '"+destinationPath+"' failed: target already exists");
+                            success = file.renameTo(destination);
+                        }catch(Exception e){
+                            success = false;
+                            errorAction = cl.onError(file,destination,RenameError.SYSTEM_ERROR,e.getMessage());
+                        }
+
+                        if(success){
+
+                            cl.onRenameSuccess(file,destination);
+                            cleaned.add(new RenameFilePair(file,destination));
+
+                        }else{
+                            
+                            if(errorAction == OnErrorAction.abort)
+                                return;
+                            else if(errorAction == OnErrorAction.ignore){}
+                            else if(errorAction == OnErrorAction.retry){                               
+                                retry = true;
+                            }
+                            else if(errorAction == OnErrorAction.skip){}
+                            else if(errorAction == OnErrorAction.undoAll){
+                                for(int i = cleaned.size() - 1;i >= 0;i--){
+                                    RenameFilePair pair = cleaned.get(i);
+                                    pair.source.getParentFile().mkdirs();
+                                    try{
+                                        if(isCopy()){
+                                            if(pair.target.exists()){
+                                                pair.success = !pair.target.delete();
+                                            }
+                                        }else{
+                                            pair.success = !pair.target.renameTo(pair.source);
+                                        }
+                                    }catch(SecurityException e){
+                                        pair.success = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        cl.onRenameEnd(file,destination);
+
+                    }while(retry);
                 }
             }
-        }        
+
+            cl.onEnd(files);
+        }
+        public static void main(String [] args){
+            try{
+
+                CleanListener cl = new CleanListenerAdapter(){
+                    @Override
+                    public void onInit(File[] files) {
+                        System.out.println("CleanListener::onInit()");
+                    }
+                    @Override
+                    public void onRenameStart(File from, File to) {
+                        System.out.println("CleanListener::onRenameStart() "+from.getAbsolutePath()+" => "+to.getAbsolutePath());
+                    }
+                    @Override
+                    public void onEnd(File[] files) {
+                        System.out.println("CleanListener::onEnd()");
+                    }
+                };
+
+                RenameWand renamer = new RenameWand();
+                renamer.setCleanListener(cl);
+                File [] files = new File [] {};
+
+                files = helper.FileUtils.listFiles("/home/nicolas/brol").toArray(files);
+               
+                renamer.cleanFileNames(files,false);
+                
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+        }
 }

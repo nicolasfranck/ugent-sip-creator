@@ -325,5 +325,6 @@
   
   <bean id="rulesSource" class="validation.MyValidationRulesSource" />
 
+  <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />
 
 </beans>

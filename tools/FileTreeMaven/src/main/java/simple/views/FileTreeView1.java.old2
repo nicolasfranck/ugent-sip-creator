@@ -6,7 +6,6 @@
 package simple.views;
 
 import RenameWandLib.*;
-import forms.CleanParamsForm;
 import forms.RenameParamsForm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,19 +18,17 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import javax.swing.tree.TreePath;
 import org.springframework.binding.form.ValidatingFormModel;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
-import renaming.CleanParams;
 import renaming.RenameParams;
 import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
+import treetable.RenameResultTable;
 import treetable.TreeTableModel;
 import treetable.executors.ExpandCollapseTreeExecutor;
 import treetable.executors.ReloadTreeExecutor;
@@ -64,7 +61,7 @@ public class FileTreeView1 extends AbstractView{
 
     private RenameParams renameParams;
     private RenameParamsForm renameParamsForm;
-    
+    private RenameResultTable renameResultTable;
 
     public RenameParams getRenamePair() {
         if(renameParams == null)renameParams = new RenameParams();
@@ -117,7 +114,6 @@ public class FileTreeView1 extends AbstractView{
         c.gridx = c.gridy = 0;                
         c.gridwidth = GridBagConstraints.REMAINDER;        
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.NORTHWEST;
         c.weightx = c.weighty = 0.5;
         
         JButton chooseButton = new JButton("kies map..");
@@ -155,18 +151,10 @@ public class FileTreeView1 extends AbstractView{
             public boolean isCellEditable(int row,int col){
                 return false;
             }
-            @Override
-            public Class getColumnClass(int column) {                
-                return column == 0 ? Integer.class:String.class;
-          }
         };
         resultTable = new JTable(resultTableModel);
         resultTable.setFillsViewportHeight(true);
-        resultTable.setRowSelectionAllowed(false);
-
-        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(resultTableModel);
-
-        resultTable.setRowSorter(sorter);
+        resultTable.setRowSelectionAllowed(false);      
 
         c.fill = GridBagConstraints.BOTH;
         JScrollPane scrollerResultTable = new JScrollPane(resultTable);
@@ -199,7 +187,6 @@ public class FileTreeView1 extends AbstractView{
         //per default wordt de root geselecteerd
         TreePath tp = new TreePath(tree.getModel().getRoot());
         tree.setSelectionPath(tp);        
-
         return treeTable;
     }    
     protected TreeTableModel getNewTreeTableModel(File file){
@@ -263,10 +250,10 @@ public class FileTreeView1 extends AbstractView{
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        RenameParamsForm renameForm = getRenamePairForm();
-        final ValidatingFormModel renameFormModel = renameForm.getFormModel();
+        RenameParamsForm form = getRenamePairForm();
+        final ValidatingFormModel formModel = form.getFormModel();
 
-        JComponent componentForm = renameForm.getControl();
+        JComponent componentForm = form.getControl();
         panel.add(componentForm,c);        
         
 
@@ -281,7 +268,7 @@ public class FileTreeView1 extends AbstractView{
         submitButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                renameFormModel.commit();
+                formModel.commit();              
                 submitButton.setEnabled(false);
                 simulateButton.setEnabled(false);
                 rename(false);
@@ -291,7 +278,7 @@ public class FileTreeView1 extends AbstractView{
             }
         });
 
-        renameForm.addValidationListener(new ValidationListener(){
+        form.addValidationListener(new ValidationListener(){
             @Override
             public void validationResultsChanged(ValidationResults results) {
                 submitButton.setEnabled(!results.getHasErrors());
@@ -303,7 +290,7 @@ public class FileTreeView1 extends AbstractView{
         simulateButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                renameFormModel.commit();
+                formModel.commit();
                 submitButton.setEnabled(false);
                 simulateButton.setEnabled(false);
                 rename(true);
@@ -312,33 +299,11 @@ public class FileTreeView1 extends AbstractView{
             }
         });
 
-        c.gridy += 1;
+        c.gridy = 1;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.NORTHWEST;
-        panel.add(buttonPanel,c);
-
-        CleanParamsForm cleanForm = new CleanParamsForm(new CleanParams());
-        final ValidatingFormModel cleanFormModel = cleanForm.getFormModel();
-
-        componentForm = cleanForm.getControl();
-        c.gridy += 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-
-        panel.add(componentForm,c);
-
-        c.gridy += 1;
-        c.fill = GridBagConstraints.NONE;
-        JPanel cleanButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        final JButton cleanSubmitButton = new JButton("ok");
-        cleanButtonPanel.add(cleanSubmitButton);
-        final JButton cleanSimulateButton = new JButton("simuleer");
-        cleanButtonPanel.add(cleanSimulateButton);
-        
-        panel.add(cleanButtonPanel,c);
-
-
-
+        panel.add(buttonPanel,c);       
 
         return panel;        
     }
@@ -352,9 +317,6 @@ public class FileTreeView1 extends AbstractView{
     protected void rename(final boolean simulateOnly){
 
         resultTableModel.getDataVector().clear();
-        //belangrijk: ander weet de row-sorter van niets, wat resulteert in een nullpointer-exception
-        resultTableModel.fireTableDataChanged();
-
         resultTable.setModel(resultTableModel);
         statusLabel.setText(null);
         numRenamedSuccess = 0;
@@ -368,24 +330,16 @@ public class FileTreeView1 extends AbstractView{
         }
         else{
             try{
-              
                 RenameWand renamer = new RenameWand();                
                 renamer.setCurrentDirectory(fileNodeChoosen.getFile());
-
-                renamer.setRecurseIntoSubdirectories(renameParams.isRecurseIntoSubdirectories());
+                renamer.setRecurseIntoSubdirectories(true);
                 renamer.setSourcePatternString(renameParams.getSourcePattern());
                 renamer.setTargetPatternString(renameParams.getDestinationPattern());
-                renamer.setCopy(renameParams.isCopy());
-                renamer.setOnRenameOperationError(renameParams.getOnErrorAction());
-
                 renamer.setSimulateOnly(simulateOnly);                
-
-                System.out.println(renamer.getCurrentDirectory());
 
                 renamer.setRenameListener(new RenameListenerAdapter(){
                      @Override
                     public void onInit(final java.util.List<FileUnit> matchCandidates,final java.util.List<FileUnit> matches){
-
                          if(matchCandidates.size() == 0){
                              statusLabel.setText("geselecteerde map is leeg");
                          }else if(matches.size() == 0){
@@ -409,9 +363,9 @@ public class FileTreeView1 extends AbstractView{
                     }
                     @Override
                     public void onRenameEnd(RenameFilePair pair) {
-                        String status = simulateOnly ? "simulatie":(pair.isSuccess() ? "successvol":"error");                       
-                        resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{
-                            new Integer(resultTableModel.getRowCount()+1),
+                        String status = simulateOnly ? "simulatie":(pair.isSuccess() ? "successvol":"error");
+                        resultTableModel.insertRow(resultTableModel.getRowCount(),new String []{
+                            ""+(resultTableModel.getRowCount()+1),
                             pair.getSource().getName(),
                             pair.getTarget().getName(),
                             status
