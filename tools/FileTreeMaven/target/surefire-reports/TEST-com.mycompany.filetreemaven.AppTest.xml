@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.038" errors="0" skipped="0" tests="1" name="com.mycompany.filetreemaven.AppTest">
+<testsuite failures="0" time="0.069" errors="0" skipped="0" tests="1" name="com.mycompany.filetreemaven.AppTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/i386"/>
     <property name="java.vm.version" value="20.1-b02"/>
     <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
     <property name="java.vendor.url" value="http://java.sun.com/"/>
     <property name="path.separator" value=":"/>
-    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"/>
     <property name="file.encoding.pkg" value="sun.io"/>
-    <property name="user.country" value="US"/>
+    <property name="user.country" value="AU"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="/home/nicolas/Bagger-LC/tools/FileTreeMaven"/>
     <property name="java.runtime.version" value="1.6.0_26-b03"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="basedir" value="/home/nicolas/Bagger-LC/tools/FileTreeMaven"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed"/>
-    <property name="os.arch" value="amd64"/>
-    <property name="surefire.real.class.path" value="/tmp/surefirebooter5875026395076453647.jar"/>
+    <property name="os.arch" value="i386"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
     <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="os.name" value="Linux"/>
+    <property name="classworlds.conf" value="/usr/local/netbeans-7.1.2/java/maven/bin/m2.conf"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
-    <property name="surefire.test.class.path" value="/home/nicolas/Bagger-LC/tools/FileTreeMaven/target/test-classes:/home/nicolas/Bagger-LC/tools/FileTreeMaven/target/classes:/home/nicolas/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-core/1.0.0/spring-richclient-core-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/spring-core/2.5.1/spring-core-2.5.1.jar:/home/nicolas/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/home/nicolas/.m2/repository/org/springframework/spring-beans/2.5.1/spring-beans-2.5.1.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-jdk6/1.0.0/spring-richclient-jdk6-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-support/1.0.0/spring-richclient-support-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-binding/1.0.0/spring-richclient-binding-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/spring-binding/1.0/spring-binding-1.0.jar:/home/nicolas/.m2/repository/ognl/ognl/2.6.9/ognl-2.6.9.jar:/home/nicolas/.m2/repository/org/springframework/spring-context/2.5.1/spring-context-2.5.1.jar:/home/nicolas/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-form/1.0.0/spring-richclient-form-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/spring-web/2.5.1/spring-web-2.5.1.jar:/home/nicolas/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1.jar:/home/nicolas/.m2/repository/com/jgoodies/forms/1.0.7/forms-1.0.7.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-resources/1.0.0/spring-richclient-resources-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-sandbox/1.0.0/spring-richclient-sandbox-1.0.0.jar:/home/nicolas/.m2/repository/com/jgoodies/looks/2.2.0/looks-2.2.0.jar:/home/nicolas/.m2/repository/com/vlsolutions/vldocking/2.1.4/vldocking-2.1.4.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-docking/1.0.0/spring-richclient-docking-1.0.0.jar:/home/nicolas/.m2/repository/eu/medsea/mimeutil/mime-util/2.1.3/mime-util-2.1.3.jar:/home/nicolas/.m2/repository/org/slf4j/slf4j-api/1.5.6/slf4j-api-1.5.6.jar:/home/nicolas/.m2/repository/org/slf4j/slf4j-log4j12/1.5.6/slf4j-log4j12-1.5.6.jar:/home/nicolas/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-jdk5/1.0.0/spring-richclient-jdk5-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/sensorml-v_1_0_0-schema/1.0.0/sensorml-v_1_0_0-schema-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/swecommon-v_1_0_0-schema/1.0.0/swecommon-v_1_0_0-schema-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/gml-v_3_1_1-schema/1.0.0/gml-v_3_1_1-schema-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/ic-v_2_0-schema/1.0.0/ic-v_2_0-schema-1.0.0.jar:"/>
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/i386/client:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/i386:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="50.0"/>
-    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="2.6.32-41-generic"/>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"/>
+    <property name="os.version" value="3.2.0-25-generic"/>
     <property name="user.home" value="/home/nicolas"/>
-    <property name="user.timezone" value=""/>
+    <property name="user.timezone" value="Europe/Brussels"/>
     <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="1.6"/>
     <property name="user.name" value="nicolas"/>
-    <property name="java.class.path" value="/home/nicolas/Bagger-LC/tools/FileTreeMaven/target/test-classes:/home/nicolas/Bagger-LC/tools/FileTreeMaven/target/classes:/home/nicolas/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-core/1.0.0/spring-richclient-core-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/spring-core/2.5.1/spring-core-2.5.1.jar:/home/nicolas/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/home/nicolas/.m2/repository/org/springframework/spring-beans/2.5.1/spring-beans-2.5.1.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-jdk6/1.0.0/spring-richclient-jdk6-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-support/1.0.0/spring-richclient-support-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-binding/1.0.0/spring-richclient-binding-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/spring-binding/1.0/spring-binding-1.0.jar:/home/nicolas/.m2/repository/ognl/ognl/2.6.9/ognl-2.6.9.jar:/home/nicolas/.m2/repository/org/springframework/spring-context/2.5.1/spring-context-2.5.1.jar:/home/nicolas/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-form/1.0.0/spring-richclient-form-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/spring-web/2.5.1/spring-web-2.5.1.jar:/home/nicolas/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1.jar:/home/nicolas/.m2/repository/com/jgoodies/forms/1.0.7/forms-1.0.7.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-resources/1.0.0/spring-richclient-resources-1.0.0.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-sandbox/1.0.0/spring-richclient-sandbox-1.0.0.jar:/home/nicolas/.m2/repository/com/jgoodies/looks/2.2.0/looks-2.2.0.jar:/home/nicolas/.m2/repository/com/vlsolutions/vldocking/2.1.4/vldocking-2.1.4.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-docking/1.0.0/spring-richclient-docking-1.0.0.jar:/home/nicolas/.m2/repository/eu/medsea/mimeutil/mime-util/2.1.3/mime-util-2.1.3.jar:/home/nicolas/.m2/repository/org/slf4j/slf4j-api/1.5.6/slf4j-api-1.5.6.jar:/home/nicolas/.m2/repository/org/slf4j/slf4j-log4j12/1.5.6/slf4j-log4j12-1.5.6.jar:/home/nicolas/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/nicolas/.m2/repository/org/springframework/richclient/spring-richclient-jdk5/1.0.0/spring-richclient-jdk5-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/sensorml-v_1_0_0-schema/1.0.0/sensorml-v_1_0_0-schema-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/swecommon-v_1_0_0-schema/1.0.0/swecommon-v_1_0_0-schema-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/gml-v_3_1_1-schema/1.0.0/gml-v_3_1_1-schema-1.0.0.jar:/home/nicolas/.m2/repository/org/jvnet/ogc/ic-v_2_0-schema/1.0.0/ic-v_2_0-schema-1.0.0.jar:"/>
+    <property name="java.class.path" value="/usr/local/netbeans-7.1.2/java/maven/boot/plexus-classworlds-2.4.jar"/>
     <property name="java.vm.specification.version" value="1.0"/>
-    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre"/>
-    <property name="sun.java.command" value="/tmp/surefirebooter5875026395076453647.jar /tmp/surefire5874146441457466080tmp /tmp/surefire8876176099771079768tmp"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
-    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="java.version" value="1.6.0_26"/>
     <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="securerandom.source" value="file:/dev/./urandom"/>
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes"/>
     <property name="java.vendor" value="Sun Microsystems Inc."/>
-    <property name="localRepository" value="/home/nicolas/.m2/repository"/>
+    <property name="maven.home" value="/usr/local/netbeans-7.1.2/java/maven"/>
     <property name="file.separator" value="/"/>
     <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -58,5 +58,5 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.002" classname="com.mycompany.filetreemaven.AppTest" name="testApp"/>
+  <testcase time="0.005" classname="com.mycompany.filetreemaven.AppTest" name="testApp"/>
 </testsuite>

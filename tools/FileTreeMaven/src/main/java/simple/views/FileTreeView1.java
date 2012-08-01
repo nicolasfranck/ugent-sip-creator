@@ -377,10 +377,9 @@ public class FileTreeView1 extends AbstractView{
                 renamer.setTargetPatternString(renameParams.getDestinationPattern());
                 renamer.setCopy(renameParams.isCopy());
                 renamer.setOnRenameOperationError(renameParams.getOnErrorAction());
-
-                renamer.setSimulateOnly(simulateOnly);                
-
-                System.out.println(renamer.getCurrentDirectory());
+                renamer.setRenameDirectories(renameParams.isRenameDirectories());
+                renamer.setSimulateOnly(simulateOnly);               
+                renamer.setMatchLowerCase(renameParams.isMatchLowerCase());
 
                 renamer.setRenameListener(new RenameListenerAdapter(){
                      @Override

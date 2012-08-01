@@ -42,10 +42,15 @@ public class RenameParamsForm extends AbstractForm{
         builder.row();
         builder.add("destinationPattern","colSpan=1 align=left");
         builder.row();
-        builder.add("recurseIntoSubdirectories");
-        builder.row();
         builder.add("copy");
         builder.row();
+        builder.add("matchLowerCase");
+        builder.row();
+        builder.add("recurseIntoSubdirectories");
+        builder.row();
+        builder.add("renameDirectories");
+        builder.row();
+        
 
         Binding b = bf.createBoundComboBox("onErrorAction",OnErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());
