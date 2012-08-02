@@ -5,18 +5,18 @@
 
 package RenameWandLib;
 
-import java.io.File;
+import java.util.ArrayList;
 
 /**
  *
  * @author nicolas
  */
 public interface CleanListener{
-    void onInit(File [] files);
-    boolean doClean(final File from,final File to);
-    OnErrorAction onError(final File from,final File to,RenameError errorType,final String errorStr);    
-    void onRenameStart(final File from,final File to);
-    void onRenameSuccess(final File from,final File to);
-    void onRenameEnd(final File from,final File to);
-    void onEnd(File [] files);
+    void onInit(final ArrayList<RenameFilePair> pairs);
+    boolean doClean(final RenameFilePair pair);
+    OnErrorAction onError(final RenameFilePair pair,RenameError errorType,final String errorStr);
+    void onCleanStart(final RenameFilePair pair);
+    void onCleanSuccess(final RenameFilePair pair);
+    void onCleanEnd(final RenameFilePair pair);
+    void onEnd(final ArrayList<RenameFilePair> pairs);
 }

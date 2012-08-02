@@ -10,7 +10,7 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import simple.views.FileTreeView1;
+import simple.views.RenameView;
 import treetable.FileNode;
 
 /**
@@ -18,10 +18,10 @@ import treetable.FileNode;
  * @author nicolas
  */
 public class ExpandCollapseTreeExecutor extends AbstractActionCommandExecutor{
-    private FileTreeView1 view;   
+    private RenameView view;
     private static final Log log = LogFactory.getLog(ExpandCollapseTreeExecutor.class);
 
-    public ExpandCollapseTreeExecutor(FileTreeView1 view){
+    public ExpandCollapseTreeExecutor(RenameView view){
         this.view = view;        
     }
     @Override

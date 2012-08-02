@@ -5,6 +5,7 @@
 
 package renaming;
 
+import RenameWandLib.OnErrorAction;
 import java.util.HashMap;
 
 /**
@@ -15,7 +16,14 @@ public class CleanParams {
     private HashMap substitutes;
     private boolean cleanDirectories = false;
     private boolean copy = false;
+    private OnErrorAction onErrorAction;
 
+    public OnErrorAction getOnErrorAction() {
+        return onErrorAction;
+    }
+    public void setOnErrorAction(OnErrorAction onErrorAction) {
+        this.onErrorAction = onErrorAction;
+    }
     public boolean isCleanDirectories() {
         return cleanDirectories;
     }

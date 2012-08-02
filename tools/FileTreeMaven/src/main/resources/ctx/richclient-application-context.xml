@@ -70,7 +70,7 @@
     <property name="windowCommandManagerBeanName" value="windowCommandManager" />
     <property name="menubarBeanName" value="menuBar" />
     <property name="toolbarBeanName" value="toolBar" />
-    <property name="startingPageId" value="fileTreeView1" />
+    <property name="startingPageId" value="renameView" />
     <property name="registerableExceptionHandler" ref="exceptionHandler" />
   </bean>
 
@@ -243,19 +243,12 @@
   -->
  
   
-   <bean id="fileTreeView1" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
-    <property name="viewClass" value="simple.views.FileTreeView1" />
+   <bean id="renameView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
+    <property name="viewClass" value="simple.views.RenameView" />
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>    
-  </bean>
-
-  <bean id="formView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
-    <property name="viewClass" value="simple.views.FormView" />
-    <property name="autoHideEnabled" value="true" />
-     <property name="floatEnabled" value="true" />
-     <property name="maximizeEnabled" value="true"/>
-  </bean>
+  </bean>  
 
   <!--<util:map id="xsd_mapping" map-class="java.util.HashMap">
       <entry key="http://www.loc.gov/MARC21/slim" value="file:///home/nicolas/Bagger-LC/doc/metadata/xsd/MARC21.xsd" />

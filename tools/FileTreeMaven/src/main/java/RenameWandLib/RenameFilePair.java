@@ -40,7 +40,7 @@ public class RenameFilePair
 	File target;
 
 	/** true if rename operation is successful; false otherwise */
-	boolean success;
+	boolean success = false;
 
 
 	/**

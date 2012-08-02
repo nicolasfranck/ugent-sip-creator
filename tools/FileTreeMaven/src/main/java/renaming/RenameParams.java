@@ -17,8 +17,7 @@ public class RenameParams {
     private String destinationPattern;
     private boolean recurseIntoSubdirectories = false;
     private boolean copy = false;
-    private OnErrorAction onErrorAction;
-    private boolean renameDirectories = false;
+    private OnErrorAction onErrorAction;    
     private boolean matchLowerCase = false;
 
     public String getDestinationPattern() {
@@ -50,13 +49,7 @@ public class RenameParams {
     }
     public void setOnErrorAction(OnErrorAction onErrorAction) {
         this.onErrorAction = onErrorAction;
-    }
-    public boolean isRenameDirectories() {
-        return renameDirectories;
-    }
-    public void setRenameDirectories(boolean renameDirectories) {
-        this.renameDirectories = renameDirectories;
-    }
+    }    
     public boolean isMatchLowerCase() {
         return matchLowerCase;
     }

@@ -5,7 +5,7 @@
 
 package RenameWandLib;
 
-import java.io.File;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,26 +13,26 @@ import java.io.File;
  */
 public class CleanListenerAdapter implements CleanListener{
     @Override
-    public boolean doClean(File from, File to) {
+    public boolean doClean(final RenameFilePair pair) {
         return true;
     }
     @Override
-    public OnErrorAction onError(File from, File to, RenameError errorType, String errorStr) {
+    public OnErrorAction onError(final RenameFilePair pair, RenameError errorType, String errorStr) {
         return OnErrorAction.skip;
     }
     @Override
-    public void onRenameStart(File from, File to) {        
+    public void onCleanStart(final RenameFilePair pair) {
     }
     @Override
-    public void onRenameSuccess(File from, File to) {        
+    public void onCleanSuccess(final RenameFilePair pair) {
     }
     @Override
-    public void onRenameEnd(File from, File to) {        
+    public void onCleanEnd(final RenameFilePair pair) {
     }
     @Override
-    public void onEnd(File [] files) {
+    public void onEnd(final ArrayList<RenameFilePair> pairs) {
     }
     @Override
-    public void onInit(File [] files) {
+    public void onInit(final ArrayList<RenameFilePair> pairs) {
     }
 }

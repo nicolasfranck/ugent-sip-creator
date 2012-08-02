@@ -6,7 +6,6 @@
 package forms;
 
 import RenameWandLib.OnErrorAction;
-import bindings.JComboBoxBinding;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -48,9 +47,6 @@ public class RenameParamsForm extends AbstractForm{
         builder.row();
         builder.add("recurseIntoSubdirectories");
         builder.row();
-        builder.add("renameDirectories");
-        builder.row();
-        
 
         Binding b = bf.createBoundComboBox("onErrorAction",OnErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());
