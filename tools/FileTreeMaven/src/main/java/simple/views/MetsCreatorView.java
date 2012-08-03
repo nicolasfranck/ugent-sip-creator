@@ -5,30 +5,19 @@
 
 package simple.views;
 
-import eu.medsea.mimeutil.MimeType;
-import eu.medsea.mimeutil.MimeUtil;
-import helper.FileConstraint;
-import helper.FileConstraintForm;
-import helper.FileSource;
-import helper.FileTreeCellRenderer;
-import helper.FileUtils;
 import helper.XML;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 import javax.xml.validation.Schema;
 import org.springframework.richclient.application.support.AbstractView;
 import org.w3c.dom.Document;
@@ -41,6 +30,7 @@ import org.w3c.dom.Document;
 public class MetsCreatorView extends AbstractView{
     private JTable table;
     private JPanel panel;
+    private JTextArea console;
     private JFileChooser fileChooser;
     private HashMap xsdMap;
     private HashSet<String> xmlFiles = new HashSet<String>();
@@ -49,21 +39,38 @@ public class MetsCreatorView extends AbstractView{
     public HashMap getXsdMap() {
         return xsdMap;
     }
-
     public void setXsdMap(HashMap xsdMap) {
         this.xsdMap = xsdMap;
+    }
+    public JTextArea getConsole() {
+        if(console == null){
+            console = new JTextArea();
+            console.setEditable(false);
+        }
+        return console;
+    }
+    public void setConsole(JTextArea console) {
+        this.console = console;
     }
     
     @Override
     protected JComponent createControl() {
         panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        panel.setLayout(new GridBagLayout());
+        
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = c.gridy = 0;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.fill = GridBagConstraints.BOTH;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.weightx = c.weighty = 0.5;
+
 
         JTable t = getTable();
         JScrollPane scrollTable = new JScrollPane(t);
         scrollTable.setPreferredSize(new Dimension(400,500));
 
-        panel.add(scrollTable,BorderLayout.CENTER);
+        panel.add(scrollTable,c);
 
 
         JButton chooseButton = new JButton("choose file..");
@@ -83,8 +90,7 @@ public class MetsCreatorView extends AbstractView{
                         int i = 0;
                         for(File file:files){
 
-                            if(getStatusBar().getProgressMonitor().isCanceled()){
-                                logger.info("cancelling");
+                            if(getStatusBar().getProgressMonitor().isCanceled()){                                
                                 return;
                             }
 
@@ -99,16 +105,13 @@ public class MetsCreatorView extends AbstractView{
                                 ns = doc.getDocumentElement().getNamespaceURI();
                                 String xsd_url = (String) xsdMap.get(ns);
                                 if(xsd_url != null){
-                                    validated = true;
-                                    logger.info("searching for "+xsd_url);
-                                    logger.info("validating..");
+                                    validated = true;                                    
                                     Schema xsd_schema = xsd_cache.get(xsd_url);
                                     if(xsd_schema == null){
                                         xsd_schema = XML.getSchemaFactory().newSchema(new URL(xsd_url));
                                         xsd_cache.put(xsd_url,xsd_schema);
                                     }
-                                    XML.validate(doc,xsd_schema);
-                                    logger.info("validating done");
+                                    XML.validate(doc,xsd_schema);                                    
                                 }
                                 validates = true;
                             }catch(Exception e){
@@ -132,26 +135,28 @@ public class MetsCreatorView extends AbstractView{
                 table.repaint();
             }
         });
-        panel.add(chooseButton,BorderLayout.SOUTH);
+
+        c.gridy += 1;
+        c.fill = GridBagConstraints.NONE;
+        panel.add(chooseButton,c);
+
+        c.gridy += 1;
+        c.fill = GridBagConstraints.BOTH;
+        panel.add(new JScrollPane(getConsole()),c);
         
-
-        //panel.add(new FileConstraintForm(new FileConstraint()).getControl(),BorderLayout.SOUTH);
-
         return panel;
     }
     public JTable getTable(){
         if(table == null){
             DefaultTableModel tableModel = newTableModel();
-            table = new JTable(tableModel);
-            tableModel.addColumn("file");
-            tableModel.addColumn("namespace");
-            tableModel.addColumn("validated against schema");
-            tableModel.addColumn("validation result");
+            table = new JTable(tableModel);            
         }
         return table;
     }
     public DefaultTableModel newTableModel(){
-        return new DefaultTableModel();
+        return new DefaultTableModel(new String [] [] {},new String [] {
+            "file","namespace","validated against schema","validation result"
+        });
     }
     public JFileChooser getFileChooser(){
         if(fileChooser == null){

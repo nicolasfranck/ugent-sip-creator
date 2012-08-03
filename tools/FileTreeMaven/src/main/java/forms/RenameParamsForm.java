@@ -35,8 +35,7 @@ public class RenameParamsForm extends AbstractForm{
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
 
         TableFormBuilder builder = new TableFormBuilder(bf);
-        builder.addSeparator("hernoemen");
-        builder.row();
+        
         builder.add("sourcePattern","colSpan=1 align=left");
         builder.row();
         builder.add("destinationPattern","colSpan=1 align=left");
@@ -62,6 +61,7 @@ public class RenameParamsForm extends AbstractForm{
         });
         builder.add(b);
         builder.row();
+
 
         return builder.getForm();
     }

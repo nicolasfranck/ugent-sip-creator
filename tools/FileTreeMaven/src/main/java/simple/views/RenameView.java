@@ -8,11 +8,13 @@ package simple.views;
 import RenameWandLib.*;
 import forms.CleanParamsForm;
 import forms.RenameParamsForm;
+import helper.Context;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -78,27 +80,43 @@ public class RenameView extends AbstractView{
             resultTable.setRowSelectionAllowed(false);
             RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(resultTableModel);
             resultTable.setRowSorter(sorter);
-            /*
+            
             resultTable.setDefaultRenderer(Object.class,new TableCellRenderer(){
                 @Override
                 public Component getTableCellRendererComponent(JTable jtable, Object o, boolean isSelected, boolean hasFocus, int row, int col) {
                     JLabel label = new JLabel();
 
+                    String labelSimulation = Context.getMessage("simulation");
+                    String labelSuccess = Context.getMessage("success");
+                    String labelFailed = Context.getMessage("failed");
+
                     if(row >= 0){
-                        label.setText(o.toString());
-                        System.out.println(o);
-                        if(col == 3 && o.toString().compareTo("failed") == 0){
-                            System.out.println("setting colors");
-                            label.setForeground(Color.WHITE);
-                            label.setBackground(Color.RED);
+                        String value = null;
+                        RenameFilePair pair = (RenameFilePair)o;                        
+                        switch(col){                            
+                            case 0:                                
+                                value = pair.getSource().getName();
+                                break;
+                            case 1:
+                                value = pair.getTarget().getName();
+                                break;
+                            case 2:
+                                value = pair.isSimulateOnly() ? labelSimulation:(pair.isSuccess() ? labelSuccess:labelFailed);
+                                break;                                
+                        }                        
+                        label.setText(value);                        
+                        if(pair.isSimulateOnly()){                            
+                            label.setForeground(Color.DARK_GRAY);
+                        }else if(pair.isSuccess()){                            
+                            label.setForeground(Color.green);
+                        }else{                             
+                            label.setForeground(Color.red);
                         }
                     }
 
                     return label;
                 }
             });
-             * 
-             */
             
         }
         return resultTable;
@@ -109,7 +127,11 @@ public class RenameView extends AbstractView{
     public DefaultTableModel getResultTableModel(){
         if(resultTableModel == null){
             String [] [] rows = {};
-            String [] cols = {"nr","van","naar","status"};
+            String [] cols = {
+                Context.getMessage("from"),
+                Context.getMessage("to"),
+                Context.getMessage("status")
+            };
             resultTableModel = new DefaultTableModel(rows,cols){
                 @Override
                 public boolean isCellEditable(int row,int col){
@@ -117,7 +139,7 @@ public class RenameView extends AbstractView{
                 }
                 @Override
                 public Class getColumnClass(int column) {
-                    return column == 0 ? Integer.class:String.class;
+                    return Object.class;
               }
             };            
         }
@@ -224,7 +246,7 @@ public class RenameView extends AbstractView{
         c.weightx = c.weighty = 0.5;
 
         //panel east: modifier: choose directory
-        JButton chooseButton = new JButton("kies map..");
+        JButton chooseButton = new JButton(Context.getMessage("renameView.chooseFileButton.label"));
         chooseButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -295,7 +317,7 @@ public class RenameView extends AbstractView{
                 setJComponentEnabled(getRenameButtonPanel(),!getRenameParamsForm().getFormModel().getHasErrors());
                 setJComponentEnabled(getCleanButtonPanel(),!getCleanParamsForm().getFormModel().getHasErrors());
                 setFormsEnabled(true);
-                fileNodeChoosen = fn;
+                fileNodeChoosen = fn;                 
             }        
         });
         //per default wordt de root geselecteerd
@@ -368,7 +390,7 @@ public class RenameView extends AbstractView{
     protected void setFileChooser(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
     }
-    protected File chooseFile(){
+    public File chooseFile(){
         JFileChooser fchooser = getFileChooser();
         int freturn = fchooser.showOpenDialog(null);
         File file;
@@ -523,7 +545,6 @@ public class RenameView extends AbstractView{
             renamer.setCleanDirectories(cleanParams.isCleanDirectories());
             renamer.setOverWrite(cleanParams.isOverWrite());
 
-
             renamer.setCleanListener(new CleanListenerAdapter(){
                 @Override
                 public void onInit(ArrayList<RenameFilePair>pairs){
@@ -532,11 +553,10 @@ public class RenameView extends AbstractView{
                 @Override
                 public OnErrorAction onError(final RenameFilePair pair, RenameError errorType, String errorStr){
                     String status = simulateOnly ? "simulatie":"failed";
-                    resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{
-                        new Integer(resultTableModel.getRowCount()+1),
-                        pair.getSource().getName(),
-                        pair.getTarget().getName(),
-                        status
+                    resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
+                        pair,
+                        pair,
+                        pair
                     });
                     return cleanParams.getOnErrorAction();
                 }
@@ -547,18 +567,14 @@ public class RenameView extends AbstractView{
                 @Override
                 public void onCleanSuccess(final RenameFilePair pair){
                     String status = simulateOnly ? "simulatie":"successvol";
-                    resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{
-                        new Integer(resultTableModel.getRowCount()+1),
-                        pair.getSource().getName(),
-                        pair.getTarget().getName(),
-                        status
+                    resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
+                        pair,
+                        pair,
+                        pair
                     });
                 }
                 @Override
-                public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                    System.out.println("onEnd called:"+renamePairs.size()+", success:"+numSuccess);
-                    System.out.println("is EDT:"+SwingUtilities.isEventDispatchThread());
-                    System.out.println("renamePairs:"+renamePairs);
+                public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){                   
                     getStatusLabel().setText("totaal matches:"+renamePairs.size()+", aantal geslaagd: "+numSuccess);
                     RenameView.this.getStatusBar().getProgressMonitor().done();
                 }
@@ -611,7 +627,7 @@ public class RenameView extends AbstractView{
                     return true;
                 }
                 @Override
-                public OnErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {
+                public OnErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {                    
                     numRenamedError++;
                     return OnErrorAction.skip;
                 }
@@ -622,11 +638,10 @@ public class RenameView extends AbstractView{
                 @Override
                 public void onRenameEnd(RenameFilePair pair) {
                     String status = simulateOnly ? "simulatie":(pair.isSuccess() ? "successvol":"error");
-                    resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{
-                        new Integer(resultTableModel.getRowCount()+1),
-                        pair.getSource().getName(),
-                        pair.getTarget().getName(),
-                        status
+                    resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
+                        pair,
+                        pair,
+                        pair
                     });
 
                     RenameView.this.getStatusBar().getProgressMonitor().worked(numRenamedError + numRenamedSuccess);

@@ -24,11 +24,6 @@ public class MyValidationRulesSource extends DefaultRulesSource{
         addRules(renamePairRules);
 
         Rules cleanParamsRules = new Rules(CleanParams.class);
-        /*
-        cleanParamsRules
-                .add(required("cleanDirectories"))
-                .add(required("copy"));*         
-         */
         addRules(cleanParamsRules);
     }
 }

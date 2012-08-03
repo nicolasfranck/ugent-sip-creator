@@ -1882,6 +1882,7 @@ public class RenameWand {
 	 */
 	private int performRenameOperations(final ArrayList<RenameFilePair> renameOperations){
 
+          
             for(int i = 0; i < renameOperations.size(); i++){            
 
                 final RenameFilePair r = renameOperations.get(i);
@@ -1891,30 +1892,35 @@ public class RenameWand {
                  */
                 r.setSimulateOnly(this.isSimulateOnly());
 
+                
+
                 if(renameListener != null){
                     renameListener.onRenameStart(r);
                 }
 
                 OnErrorAction action = null;
+                    
                 
-                if(!isOverWrite()){
-                    /* check for existing distinct target file/directory */
-                    if(r.target.exists() && !r.target.equals(r.source)){
+                if(this.isSimulateOnly()){
+                   
+                    if(!isOverWrite() && r.target.exists()){
                         r.success = false;
                         if(renameListener != null){
                             action = renameListener.onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
                         }
+                    }else if(!r.target.getParentFile().canWrite()){
+                        action = renameListener.onError(r, RenameError.SYSTEM_ERROR,"cannot write to "+r.target.getAbsolutePath());
+                    }else{
+                        r.success = true;
                     }
-                }
-                else{
-                    if(this.isSimulateOnly()){
 
-                        if(!r.target.getParentFile().canWrite()){
-                            action = renameListener.onError(r, RenameError.SYSTEM_ERROR,"cannot write to "+r.target.getAbsolutePath());
-                        }else{
-                            r.success = true;
+                }else{
+                    
+                    if(!isOverWrite() && r.target.exists()){
+                        r.success = false;
+                        if(renameListener != null){
+                            action = renameListener.onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
                         }
-
                     }else{
                         r.target.getParentFile().mkdirs();
                         String error = null;
@@ -1925,11 +1931,10 @@ public class RenameWand {
                                 /*
                                  *  TODO: in Windows wordt target niet overschreven.
                                     Zie: http://stackoverflow.com/questions/595631/how-to-atomically-rename-a-file-in-java-even-if-the-dest-file-already-exists
-                                 */
-                                r.success = r.source.renameTo(r.target);
+                                 */                              
+                                r.success = r.source.renameTo(r.target);                              
                             }
-                        }catch(Exception e){
-                            e.printStackTrace();
+                        }catch(Exception e){                            
                             r.success = false;
                             error = e.getMessage();
                         }
@@ -1939,7 +1944,6 @@ public class RenameWand {
                             }
                         }
                     }
-                    
                 }
 
                 if(action == null)action = defaultActionOnRenameOperationError;                
@@ -1975,8 +1979,7 @@ public class RenameWand {
                                         }else{
                                             t.success = !t.target.renameTo(t.source);
                                         }
-                                    }catch(SecurityException e){
-                                        e.printStackTrace();
+                                    }catch(SecurityException e){                                      
                                         t.success = true;
                                         error = e.getMessage();
                                     }
@@ -2142,8 +2145,7 @@ public class RenameWand {
             try{
                 pattern = Pattern.compile(patternString);
                 patternMap.put(patternString,pattern);
-            }catch(Exception e){
-                e.printStackTrace();
+            }catch(Exception e){                
             }
             return pattern;
         }
@@ -2229,14 +2231,12 @@ public class RenameWand {
                         }else{
                             pair.success = true;
                         }
-                    }catch(SecurityException e){
-                        e.printStackTrace();
+                    }catch(SecurityException e){                        
                         //zelden: indien een SecurityManager bestaat (vooral in Applets)
                         pair.success = false;
                         renameError = RenameError.SECURITY_EXCEPTION;
                         renameErrorStr = e.getLocalizedMessage();                        
-                    }catch(IOException e){
-                        e.printStackTrace();
+                    }catch(IOException e){                        
                         pair.success = false;
                         renameError = renameError.IO_EXCEPTION;
                         renameErrorStr = e.getMessage();
@@ -2246,18 +2246,15 @@ public class RenameWand {
                             renameError = RenameError.UNKNOWN_ERROR;
                         }
                     }
-                    System.out.println(pair.getSource().getAbsolutePath()+" => "+pair.getTarget().getAbsolutePath()+": "+pair.isSuccess());
                     
-                    if(pair.success){                       
-                        System.out.println("calling onCleanSuccess");
+                    
+                    if(pair.success){                                               
                         cl.onCleanSuccess(pair);
 
-                    }else{
-                        System.out.println("calling onError");
+                    }else{                        
                         errorAction = cl.onError(pair,renameError,renameErrorStr);
                         if(errorAction == OnErrorAction.retry)
-                            retry = true;
-                        System.out.println("errorAction: "+errorAction);
+                            retry = true;                        
                     }
 
                     cl.onCleanEnd(pair);
@@ -2275,7 +2272,7 @@ public class RenameWand {
                 }               
                 
             }
-            System.out.println("GOT HERE!");
+            
             if(undoAll){
                 
                 for(int i = getCleanPairs().size() - 1;i >= 0;i--){

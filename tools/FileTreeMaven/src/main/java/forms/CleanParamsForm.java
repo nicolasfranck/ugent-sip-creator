@@ -6,8 +6,11 @@
 package forms;
 
 import RenameWandLib.OnErrorAction;
+import bindings.FileChooserBinding;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
@@ -33,10 +36,7 @@ public class CleanParamsForm extends AbstractForm{
     protected JComponent createFormControl() {
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);
-        builder.addSeparator("opkuisen naamgeving");
-        builder.row();
-        /*builder.add("substitutes","colSpan=1 align=left");
-        builder.row();*/
+        
         builder.add("cleanDirectories");
         builder.row();
         builder.add("copy");
@@ -55,7 +55,7 @@ public class CleanParamsForm extends AbstractForm{
             }
         });
         builder.add(b);
-        builder.row();
+        builder.row();        
 
         return builder.getForm();
     }
