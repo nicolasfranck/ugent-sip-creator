@@ -291,8 +291,7 @@ public class RenameView extends AbstractView{
                     setJComponentEnabled(getCleanButtonPanel(),false);
                     setFormsEnabled(false);                    
                     return;
-                }
-                getStatusLabel().setText(null);
+                }                
                 setJComponentEnabled(getRenameButtonPanel(),!getRenameParamsForm().getFormModel().getHasErrors());
                 setJComponentEnabled(getCleanButtonPanel(),!getCleanParamsForm().getFormModel().getHasErrors());
                 setFormsEnabled(true);
@@ -522,7 +521,7 @@ public class RenameView extends AbstractView{
             renamer.setSimulateOnly(simulateOnly);
             renamer.setCleanCandidates(helper.FileUtils.listFiles(getLastFile()));
             renamer.setCleanDirectories(cleanParams.isCleanDirectories());
-
+            renamer.setOverWrite(cleanParams.isOverWrite());
 
 
             renamer.setCleanListener(new CleanListenerAdapter(){
@@ -555,6 +554,14 @@ public class RenameView extends AbstractView{
                         status
                     });
                 }
+                @Override
+                public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
+                    System.out.println("onEnd called:"+renamePairs.size()+", success:"+numSuccess);
+                    System.out.println("is EDT:"+SwingUtilities.isEventDispatchThread());
+                    System.out.println("renamePairs:"+renamePairs);
+                    getStatusLabel().setText("totaal matches:"+renamePairs.size()+", aantal geslaagd: "+numSuccess);
+                    RenameView.this.getStatusBar().getProgressMonitor().done();
+                }
             });
             renamer.clean();
         }catch(Exception e){
@@ -585,10 +592,11 @@ public class RenameView extends AbstractView{
             renamer.setOnRenameOperationError(renameParams.getOnErrorAction());
             renamer.setSimulateOnly(simulateOnly);
             renamer.setMatchLowerCase(renameParams.isMatchLowerCase());
+            renamer.setOverWrite(renameParams.isOverWrite());
 
             renamer.setRenameListener(new RenameListenerAdapter(){
-                 @Override
-                public void onInit(final java.util.List<FileUnit> matchCandidates,final java.util.List<FileUnit> matches){
+                @Override
+                public void onInit(final java.util.ArrayList<FileUnit> matchCandidates,final java.util.ArrayList<FileUnit> matches){
 
                      if(matchCandidates.size() == 0){
                          getStatusLabel().setText("geselecteerde map is leeg");
@@ -597,7 +605,7 @@ public class RenameView extends AbstractView{
                      }
                 }
                 @Override
-                public boolean approveList(final java.util.List<FileUnit> list){
+                public boolean approveList(final java.util.ArrayList<FileUnit> list){
                     numToRename = list.size();
                     RenameView.this.getStatusBar().getProgressMonitor().taskStarted("renaming",numToRename);
                     return true;
@@ -624,7 +632,8 @@ public class RenameView extends AbstractView{
                     RenameView.this.getStatusBar().getProgressMonitor().worked(numRenamedError + numRenamedSuccess);
                 }
                 @Override
-                public void onEnd(){
+                public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
+                    getStatusLabel().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);
                     RenameView.this.getStatusBar().getProgressMonitor().done();
                 }
             });

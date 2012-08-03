@@ -18,5 +18,5 @@ public interface CleanListener{
     void onCleanStart(final RenameFilePair pair);
     void onCleanSuccess(final RenameFilePair pair);
     void onCleanEnd(final RenameFilePair pair);
-    void onEnd(final ArrayList<RenameFilePair> pairs);
+    void onEnd(final ArrayList<RenameFilePair> pairs,int numSuccess);
 }

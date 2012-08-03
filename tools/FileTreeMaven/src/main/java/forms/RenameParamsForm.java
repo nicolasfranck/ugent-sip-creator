@@ -47,6 +47,8 @@ public class RenameParamsForm extends AbstractForm{
         builder.row();
         builder.add("recurseIntoSubdirectories");
         builder.row();
+        builder.add("overWrite");
+        builder.row();
 
         Binding b = bf.createBoundComboBox("onErrorAction",OnErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());

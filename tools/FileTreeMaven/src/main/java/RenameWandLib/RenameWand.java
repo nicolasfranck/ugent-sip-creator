@@ -15,7 +15,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
+//import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -161,6 +161,7 @@ public class RenameWand {
         private RenameListener renameListener = null;
         private int numRenameOperationsPerformed = 0;
         private boolean simulateOnly = false;
+        private ArrayList<RenameFilePair>renamePairs;
 
         /*
          *  Nicolas Franck: copy is soms veiliger dan move!
@@ -169,14 +170,37 @@ public class RenameWand {
         //indien kopiëren van mappen: moet contents ook mee gekopiëerd worden?
         private boolean copyDirectoryContent = false;
 
+        private boolean overWrite = false;
+
+        public boolean isOverWrite() {
+            return overWrite;
+        }
+        public void setOverWrite(boolean overWrite) {
+            this.overWrite = overWrite;
+        }
         public boolean isCopy() {
             return copy;
         }
 
         public void setCopy(boolean copy) {
             this.copy = copy;
-        }        
-
+        }
+        public void copy(File in,File out) throws FileNotFoundException, IOException{
+            if(in.isFile()){
+                FileUtils.copyFile(in, out);
+            }else if(in.isDirectory()){
+                if(copyDirectoryContent)
+                    FileUtils.copyDirectory(in, out);
+                else
+                    FileUtils.copyFile(in, out);
+            }
+        }
+        public ArrayList<RenameFilePair> getRenamePairs() {
+            return renamePairs;
+        }
+        public void setRenamePairs(ArrayList<RenameFilePair> renamePairs) {
+            this.renamePairs = renamePairs;
+        }
 
         static {
             /* determine if this is a Windows OS */
@@ -200,23 +224,9 @@ public class RenameWand {
             OPERATOR_PRECEDENCE.put(SUBSTRING_RANGE_CHAR  + "", 2);
             OPERATOR_PRECEDENCE.put(SUBSTRING_DELIMITER_CHAR + "", 1);
             
-        }
-
-        /*
-         *  Nicolas Franck
-         */
-        public void copy(File in,File out) throws FileNotFoundException, IOException{
-            if(in.isFile()){
-                FileUtils.copyFile(in, out);
-            }else if(in.isDirectory()){
-                if(copyDirectoryContent)
-                    FileUtils.copyDirectory(in, out);
-                else
-                    FileUtils.copyFile(in, out);
-            }
-        }        
-        public RenameWand(){
-            
+        }       
+                
+        public RenameWand(){            
         }
         public File getCurrentDirectory() {
             return currentDirectory;
@@ -353,26 +363,27 @@ public class RenameWand {
         }      
         public void rename() throws IOException{
             _rename();
-            if(renameListener != null)renameListener.onEnd();
+            if(renameListener != null)renameListener.onEnd(getRenamePairs(),getNumRenameOperationsPerformed());
         }
         private void _rename() throws IOException{
             init();
             /* get match candidates */
-            List<FileUnit> matchCandidates = getMatchCandidates();
+            ArrayList<FileUnit> matchCandidates = getMatchCandidates();
             
             if(matchCandidates.size() == 0){
                 if(renameListener != null)renameListener.onInit(matchCandidates,new ArrayList<FileUnit>());
                 return;
             }
             /* perform matching */
-            List<FileUnit> matches = performSourcePatternMatching(matchCandidates);
+            ArrayList<FileUnit> matches = performSourcePatternMatching(matchCandidates);
             if(matches.size() == 0){
                 if(renameListener != null)renameListener.onInit(matchCandidates,matches);
                 return;
             }
             evaluateTargetPattern(matches.toArray(new FileUnit[matches.size()]));
             /* determine renaming sequence and find clashes, bad names, etc. */
-            final List<RenameFilePair> renameOperations = getRenameOperations(matches);
+            final ArrayList<RenameFilePair> renameOperations = getRenameOperations(matches);
+            setRenamePairs(renameOperations);
             final int numRenameOperations = renameOperations.size();
             final boolean proceedToRename = promptUserOnRename(matches, numRenameOperations);
 
@@ -388,11 +399,11 @@ public class RenameWand {
          *
          *      Nicolas Franck: dit geeft louter bestanden in een map terug
 	 */
-	public List<FileUnit> getMatchCandidates(){
+	public ArrayList<FileUnit> getMatchCandidates(){
             
             
             /* return value: match candidate files/directories */
-            final List<FileUnit> matchCandidates = new ArrayList<FileUnit>();
+            final ArrayList<FileUnit> matchCandidates = new ArrayList<FileUnit>();
 
             /* stack containing the subdirectories to be scanned */
             final Deque<File> subdirectories = new ArrayDeque<File>();
@@ -417,7 +428,7 @@ public class RenameWand {
                             "\".\nThis directory will be ignored.");
                 }else{
                     /* subdirectories under this directory */
-                    final List<File> subdirs = new ArrayList<File>();
+                    final ArrayList<File> subdirs = new ArrayList<File>();
 
                     for(File f: listFiles){
                         final boolean isDirectory = f.isDirectory();
@@ -452,9 +463,9 @@ public class RenameWand {
 	 * @return
 	 *     Files/directories with names that match the source pattern
 	 */
-	public List<FileUnit> performSourcePatternMatching(final List<FileUnit> matchCandidates) throws IOException{
+	public ArrayList<FileUnit> performSourcePatternMatching(final ArrayList<FileUnit> matchCandidates) throws IOException{
             /* return value: files/directories with names that match the source pattern */
-            final List<FileUnit> matched = new ArrayList<FileUnit>();
+            final ArrayList<FileUnit> matched = new ArrayList<FileUnit>();
 
             /* regex pattern used for matching file/directory names */
             Pattern sourcePattern = null;
@@ -1000,7 +1011,7 @@ public class RenameWand {
                             true);
 
             /* preprocess tokens */
-            final List<StringManipulator.Token> tokens = new ArrayList<StringManipulator.Token>();
+            final ArrayList<StringManipulator.Token> tokens = new ArrayList<StringManipulator.Token>();
 
             for (StringManipulator.Token token : tempTokens){
                 token.val = token.val.trim();
@@ -1679,7 +1690,7 @@ public class RenameWand {
 	 * @return
 	 *     Rename file/directory pairs indicating sequence of rename operations
 	 */
-	private List<RenameFilePair> getRenameOperations(final List<FileUnit> matchedFiles){
+	private ArrayList<RenameFilePair> getRenameOperations(final ArrayList<FileUnit> matchedFiles){
             /* determine target files, check validity, and detect clashes */
             final Map<File,FileUnit> targetFilesMap = new TreeMap<File,FileUnit>();
 
@@ -1810,7 +1821,7 @@ public class RenameWand {
             }
 
             /* return value */
-            final List<RenameFilePair> renameOperations = new ArrayList<RenameFilePair>();
+            final ArrayList<RenameFilePair> renameOperations = new ArrayList<RenameFilePair>();
 
             /* sequence deeper subdirectories for renaming first (approx), if renaming directories */
             final NavigableMap<File,LinkedList<RenameFilePair>> sequences =
@@ -1849,7 +1860,7 @@ public class RenameWand {
 	 * @return
 	 *     True if proceeding with rename; false otherwise
 	 */
-	private boolean promptUserOnRename(final List<FileUnit> matchedFiles,final int numRenameOperations){            
+	private boolean promptUserOnRename(final ArrayList<FileUnit> matchedFiles,final int numRenameOperations){
             
             /* no rename operations to perform */
             if(numRenameOperations == 0)return false;
@@ -1869,27 +1880,34 @@ public class RenameWand {
 	 * @return
 	 *     Number of successful rename operations performed
 	 */
-	private int performRenameOperations(final List<RenameFilePair> renameOperations){            
+	private int performRenameOperations(final ArrayList<RenameFilePair> renameOperations){
 
             for(int i = 0; i < renameOperations.size(); i++){            
 
                 final RenameFilePair r = renameOperations.get(i);
+
+                /*
+                 * Nicolas Franck
+                 */
+                r.setSimulateOnly(this.isSimulateOnly());
 
                 if(renameListener != null){
                     renameListener.onRenameStart(r);
                 }
 
                 OnErrorAction action = null;
-
-                /* check for existing distinct target file/directory */
-                if(r.target.exists() && !r.target.equals(r.source)){
-                    r.success = false;                    
-                    if(renameListener != null){
-                        action = renameListener.onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
-                    }                        
+                
+                if(!isOverWrite()){
+                    /* check for existing distinct target file/directory */
+                    if(r.target.exists() && !r.target.equals(r.source)){
+                        r.success = false;
+                        if(renameListener != null){
+                            action = renameListener.onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
+                        }
+                    }
                 }
                 else{
-                    if(this.simulateOnly){
+                    if(this.isSimulateOnly()){
 
                         if(!r.target.getParentFile().canWrite()){
                             action = renameListener.onError(r, RenameError.SYSTEM_ERROR,"cannot write to "+r.target.getAbsolutePath());
@@ -1904,6 +1922,10 @@ public class RenameWand {
                             if(isCopy()){
                                 copy(r.source,r.target);
                             }else{
+                                /*
+                                 *  TODO: in Windows wordt target niet overschreven.
+                                    Zie: http://stackoverflow.com/questions/595631/how-to-atomically-rename-a-file-in-java-even-if-the-dest-file-already-exists
+                                 */
                                 r.success = r.source.renameTo(r.target);
                             }
                         }catch(Exception e){
@@ -1936,7 +1958,7 @@ public class RenameWand {
                     }
                     else if(action == OnErrorAction.undoAll){
 
-                        if(!this.simulateOnly){
+                        if(!this.isSimulateOnly()){
 
                             for(int j = i ; j >= 0; j--){
                                 final RenameFilePair t = renameOperations.get(j);
@@ -2161,15 +2183,23 @@ public class RenameWand {
                 }
             }
             setCleanPairs(pairs);
-        }        
+        }
         public void clean(){
+            int numSuccess = _clean();
+            getCleanListener().onEnd(getCleanPairs(),numSuccess);
+        }
+        private int _clean(){
             CleanListener cl = getCleanListener();
+
+            int numSuccess = 0;
 
             cl.onInit(getCleanPairs());
 
             boolean undoAll = false;
 
             for(RenameFilePair pair:getCleanPairs()){
+
+                pair.setSimulateOnly(this.isSimulateOnly());
                 
                 if(!cl.doClean(pair))continue;
 
@@ -2185,7 +2215,7 @@ public class RenameWand {
                     cl.onCleanStart(pair);
 
                     try{
-                        if(pair.target.exists())
+                        if(pair.target.exists() && !isOverWrite())
                             throw new IOException(pair.target.getAbsolutePath()+"' already exists");
                         if(!pair.target.getParentFile().canWrite())
                             throw new IOException("cannot write to parent directory '"+pair.target.getParentFile().getAbsolutePath()+"'");
@@ -2236,14 +2266,16 @@ public class RenameWand {
                 
                 if(!pair.success){
                     if(errorAction == OnErrorAction.abort){                        
-                        return;
+                        return numSuccess;
                     }
                     else if(errorAction == OnErrorAction.undoAll)
                         undoAll = true;                                            
-                }
+                }else{
+                    numSuccess++;
+                }               
                 
             }
-
+            System.out.println("GOT HERE!");
             if(undoAll){
                 
                 for(int i = getCleanPairs().size() - 1;i >= 0;i--){
@@ -2268,8 +2300,7 @@ public class RenameWand {
                     }
                 }
             }
-
-            cl.onEnd(getCleanPairs());
+            return numSuccess;
         }
         public static void main(String [] args){
             try{
@@ -2290,8 +2321,8 @@ public class RenameWand {
                         return OnErrorAction.undoAll;
                     }
                     @Override
-                    public void onEnd(ArrayList<RenameFilePair> pairs) {
-                        System.out.println("CleanListener::onEnd()");
+                    public void onEnd(ArrayList<RenameFilePair> pairs,int numSuccess) {
+                        System.out.println("CleanListener::onEnd(), numSuccess:"+numSuccess);
                     }
                 };
 

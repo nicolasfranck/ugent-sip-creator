@@ -42,6 +42,17 @@ public class RenameFilePair
 	/** true if rename operation is successful; false otherwise */
 	boolean success = false;
 
+        /*
+         * Nicolas Franck
+         */
+        boolean simulateOnly = false;
+
+        public boolean isSimulateOnly() {
+            return simulateOnly;
+        }
+        public void setSimulateOnly(boolean simulateOnly) {
+            this.simulateOnly = simulateOnly;
+        }
 
 	/**
 	 * Constructor.

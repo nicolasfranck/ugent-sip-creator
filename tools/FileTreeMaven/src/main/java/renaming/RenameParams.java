@@ -19,6 +19,7 @@ public class RenameParams {
     private boolean copy = false;
     private OnErrorAction onErrorAction;    
     private boolean matchLowerCase = false;
+    private boolean overWrite = false;
 
     public String getDestinationPattern() {
         return destinationPattern;
@@ -55,5 +56,12 @@ public class RenameParams {
     }
     public void setMatchLowerCase(boolean matchLowerCase) {
         this.matchLowerCase = matchLowerCase;
-    }    
+    }
+    public boolean isOverWrite() {
+        return overWrite;
+    }
+    public void setOverWrite(boolean overWrite) {
+        this.overWrite = overWrite;
+    }
+
 }

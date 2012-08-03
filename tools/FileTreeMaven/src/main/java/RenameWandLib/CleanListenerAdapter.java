@@ -30,7 +30,7 @@ public class CleanListenerAdapter implements CleanListener{
     public void onCleanEnd(final RenameFilePair pair) {
     }
     @Override
-    public void onEnd(final ArrayList<RenameFilePair> pairs) {
+    public void onEnd(final ArrayList<RenameFilePair> pairs,int numSuccess) {
     }
     @Override
     public void onInit(final ArrayList<RenameFilePair> pairs) {

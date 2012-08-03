@@ -5,7 +5,9 @@
 
 package RenameWandLib;
 
-import java.util.List;
+import java.util.ArrayList;
+
+
 
 /**
  *
@@ -13,10 +15,10 @@ import java.util.List;
  */
 public class RenameListenerAdapter implements RenameListener{
     @Override
-    public void onInit(final List<FileUnit> matchCandidates,final List<FileUnit> matches){
+    public void onInit(final ArrayList<FileUnit> matchCandidates,final ArrayList<FileUnit> matches){
     }
     @Override
-    public boolean approveList(List<FileUnit> list) {
+    public boolean approveList(ArrayList<FileUnit> list) {
         return true;
     }
     @Override
@@ -33,7 +35,7 @@ public class RenameListenerAdapter implements RenameListener{
     public void onRenameSuccess(RenameFilePair pair) {
     }
     @Override
-    public void onEnd(){
+    public void onEnd(final ArrayList<RenameFilePair> list,int numSuccess){
     }
    
 }

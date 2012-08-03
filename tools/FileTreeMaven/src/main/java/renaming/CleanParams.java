@@ -17,6 +17,7 @@ public class CleanParams {
     private boolean cleanDirectories = false;
     private boolean copy = false;
     private OnErrorAction onErrorAction;
+    private boolean overWrite = false;
 
     public OnErrorAction getOnErrorAction() {
         return onErrorAction;
@@ -41,5 +42,11 @@ public class CleanParams {
     }
     public void setCopy(boolean copy) {
         this.copy = copy;
+    }
+    public boolean isOverWrite() {
+        return overWrite;
+    }
+    public void setOverWrite(boolean overWrite) {
+        this.overWrite = overWrite;
     }
 }

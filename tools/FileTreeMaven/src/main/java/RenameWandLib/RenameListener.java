@@ -5,19 +5,19 @@
 
 package RenameWandLib;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
  * @author nicolas
  */
 public interface RenameListener{
-    public void onInit(final List<FileUnit> matchCandidates,final List<FileUnit> matches);
+    public void onInit(final ArrayList<FileUnit> matchCandidates,final ArrayList<FileUnit> matches);
     /*
      * before operation starts: list of fileunits (source and target file)
      * return boolean to indicate your approval
      */
-    boolean approveList(final List<FileUnit> list);
+    boolean approveList(final ArrayList<FileUnit> list);
     /*
      * rename operation failed
      * @param pair
@@ -38,5 +38,5 @@ public interface RenameListener{
     /*
      *  after end of operation
      */
-    void onEnd();
+    void onEnd(final ArrayList<RenameFilePair> list,int numSuccess);
 }
