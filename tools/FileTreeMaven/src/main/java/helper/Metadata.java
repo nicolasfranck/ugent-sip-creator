@@ -13,16 +13,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
  * @author nicolas
  */
 public class Metadata {
-    public static ArrayList<Node> loadSiteMap(String filePath) throws FileNotFoundException, IOException{
+    public static Set<Node> loadSiteMap(String filePath) throws FileNotFoundException, IOException{
         return loadSiteMap(new File(filePath));
     }
-    public static ArrayList<Node> loadSiteMap(File file) throws FileNotFoundException, IOException{
+    public static Set<Node> loadSiteMap(File file) throws FileNotFoundException, IOException{
         //get/set current name of tab position
         HashMap<Integer,String>tabMap = new HashMap<Integer,String>();
 
@@ -32,7 +34,7 @@ public class Metadata {
             )            
         );
     }
-    public static ArrayList<Node> readSiteMap(BufferedReader in) throws IOException{
+    public static Set<Node> readSiteMap(BufferedReader in) throws IOException{
         Node root = new Node("root");
         String line;
         while((line = in.readLine()) != null){
