@@ -90,23 +90,7 @@ public class RenameView extends AbstractView{
                 for(int i = 0;i<selectedPaths.length;i++){
                     FileNode fn = (FileNode) selectedPaths[i].getLastPathComponent();
                     fileNodesSelected.add(fn);
-                }
-                /*
-                FileNode fn = (FileNode) tse.getPath().getLastPathComponent();
-                if(!fn.getFile().isDirectory()){
-                    getStatusLabel().setText("gelieve een map te selecteren");
-                    tree.clearSelection();
-                    setJComponentEnabled(getRenameButtonPanel(),false);
-                    setJComponentEnabled(getCleanButtonPanel(),false);
-                    setFormsEnabled(false);
-                    return;
-                }
-                setJComponentEnabled(getRenameButtonPanel(),!getRenameParamsForm().getFormModel().getHasErrors());
-                setJComponentEnabled(getCleanButtonPanel(),!getCleanParamsForm().getFormModel().getHasErrors());
-                setFormsEnabled(true);
-                fileNodeChoosen = fn;
-                 *
-                 */
+                }               
             }
         };
         return treeTableSelectionListener;
@@ -549,6 +533,8 @@ public class RenameView extends AbstractView{
 
         panel.add(componentForm,c);
 
+        
+
         return panel;
     }
     protected JPanel getNewAdvancedRenamePanel(){
@@ -591,7 +577,7 @@ public class RenameView extends AbstractView{
                 renameFormModel.commit();
                 submitButton.setEnabled(false);
                 simulateButton.setEnabled(false);
-                rename(fileNodeChoosen.getFile(),false);
+                advancedRename(fileNodeChoosen.getFile(),false);
                 reloadTreeTable(getLastFile());
                 submitButton.setEnabled(true);
                 simulateButton.setEnabled(true);
@@ -621,7 +607,7 @@ public class RenameView extends AbstractView{
                 renameFormModel.commit();
                 submitButton.setEnabled(false);
                 simulateButton.setEnabled(false);
-                rename(fileNodeChoosen.getFile(),true);
+                advancedRename(fileNodeChoosen.getFile(),true);
                 submitButton.setEnabled(true);
                 simulateButton.setEnabled(true);
             }
@@ -710,7 +696,7 @@ public class RenameView extends AbstractView{
         resultTableModel.fireTableDataChanged();
         resultTable.setModel(resultTableModel);
     }
-    protected void rename(File directory,final boolean simulateOnly){
+    protected void advancedRename(File directory,final boolean simulateOnly){
 
         clearResultTable();
         getStatusLabel().setText(null);        
@@ -776,6 +762,12 @@ public class RenameView extends AbstractView{
         }catch(Exception e){
             logger.debug(e.getMessage());
         }
+        
+    }
+    public void simpleRename(ArrayList<File>files,final boolean simulateOnly){
+        clearResultTable();
+        getStatusLabel().setText(null);
+
         
     }
     public File getLastFile(){

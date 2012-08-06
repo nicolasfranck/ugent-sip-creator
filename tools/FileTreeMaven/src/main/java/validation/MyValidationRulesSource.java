@@ -6,9 +6,11 @@
 package validation;
 
 import org.springframework.rules.Rules;
+import org.springframework.rules.constraint.property.PropertyConstraint;
 import org.springframework.rules.support.DefaultRulesSource;
 import renaming.CleanParams;
 import renaming.AdvancedRenameParams;
+import renaming.SimpleRenameParams;
 
 /**
  *
@@ -17,13 +19,14 @@ import renaming.AdvancedRenameParams;
 public class MyValidationRulesSource extends DefaultRulesSource{
     public MyValidationRulesSource(){
 
-        Rules renamePairRules = new Rules(AdvancedRenameParams.class);
-        renamePairRules
+        Rules advancedRenameParamsRules = new Rules(AdvancedRenameParams.class);
+        advancedRenameParamsRules
                 .add(required("sourcePattern"))
                 .add(required("destinationPattern"));
-        addRules(renamePairRules);
+        addRules(advancedRenameParamsRules);
 
         Rules cleanParamsRules = new Rules(CleanParams.class);
         addRules(cleanParamsRules);
+       
     }
 }

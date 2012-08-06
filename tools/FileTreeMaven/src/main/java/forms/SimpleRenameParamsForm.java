@@ -48,10 +48,8 @@ public class SimpleRenameParamsForm extends AbstractForm{
         builder.row();        
         builder.add("renumber","colSpan=1 align=left");
         builder.row();
-        builder.add("paddingNum","colSpan=1 align=left");
+        builder.add("numPadding","colSpan=1 align=left");
         builder.row();
-
-
         builder.addSeparator(Context.getMessage("detail"));
         builder.row();
         builder.add("copy","colSpan=1 align=left");

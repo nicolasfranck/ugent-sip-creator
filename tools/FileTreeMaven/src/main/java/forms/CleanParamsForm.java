@@ -6,12 +6,11 @@
 package forms;
 
 import RenameWandLib.OnErrorAction;
-import bindings.FileChooserBinding;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
@@ -55,7 +54,13 @@ public class CleanParamsForm extends AbstractForm{
             }
         });
         builder.add(b);
-        builder.row();        
+        builder.row();
+
+        JTable table = new JTable(new DefaultTableModel(
+            new Object [] [] {},
+            new String [] {"van","naar"}
+        ));
+
 
         return builder.getForm();
     }

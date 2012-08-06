@@ -18,7 +18,7 @@ public class SimpleRenameParams {
     private String name;
     private String extension;    
     private boolean renumber;
-    private int paddingNum;    
+    private int numPadding;
 
     private boolean recurseIntoSubdirectories = false;
     private boolean copy = false;
@@ -65,12 +65,12 @@ public class SimpleRenameParams {
         this.extension = extension;
     }
 
-    public int getPaddingNum() {
-        return paddingNum;
+    public int getNumPadding() {
+        return numPadding;
     }
 
-    public void setPaddingNum(int paddingNum) {
-        this.paddingNum = paddingNum;
+    public void setNumPadding(int paddingNum) {
+        this.numPadding = paddingNum;
     }
     
     public String getPrefix() {
