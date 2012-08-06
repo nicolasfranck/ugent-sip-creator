@@ -62,7 +62,7 @@ public class RenameFilePair
 	 * @param target
 	 *     Target file/directory.
 	 */
-	RenameFilePair(
+	public RenameFilePair(
 			File source,
 			File target)
 	{
@@ -77,6 +77,11 @@ public class RenameFilePair
         public boolean isSuccess() {
             return success;
         }
+
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
+        
 
         public File getTarget() {
             return target;
