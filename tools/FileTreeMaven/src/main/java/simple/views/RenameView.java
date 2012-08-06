@@ -48,7 +48,8 @@ import treetable.executors.ReloadTreeExecutor;
 public class RenameView extends AbstractView{
     private JPanel panelTreeTable;
     private JPanel panelModifier;
-    private JPanel panelRenamer;
+    private JPanel panelAdvancedRenamer;
+    private JPanel SimpleRenamer;
     private JPanel panelCleaner;
     private JPanel renameButtonPanel;
     private JPanel cleanButtonPanel;
@@ -72,6 +73,36 @@ public class RenameView extends AbstractView{
     private RenameParamsForm renameParamsForm;
     private CleanParams cleanParams;
     private CleanParamsForm cleanParamsForm;
+
+    private TreeSelectionListener selectOneDirectoryOnlyListener;
+    private TreeSelectionListener selectFilesListener;
+
+    public TreeSelectionListener getNewSelectFilesListener(final JTree tree) {
+        return selectFilesListener;
+    }    
+    public TreeSelectionListener getNewSelectOneDirectoryOnlyListener(final JTree tree) {
+        if(selectOneDirectoryOnlyListener == null){
+            selectOneDirectoryOnlyListener = new TreeSelectionListener(){
+                @Override
+                public void valueChanged(TreeSelectionEvent tse) {
+                    FileNode fn = (FileNode) tse.getPath().getLastPathComponent();
+                    if(!fn.getFile().isDirectory()){
+                        getStatusLabel().setText("gelieve een map te selecteren");
+                        tree.clearSelection();
+                        setJComponentEnabled(getRenameButtonPanel(),false);
+                        setJComponentEnabled(getCleanButtonPanel(),false);
+                        setFormsEnabled(false);
+                        return;
+                    }
+                    setJComponentEnabled(getRenameButtonPanel(),!getRenameParamsForm().getFormModel().getHasErrors());
+                    setJComponentEnabled(getCleanButtonPanel(),!getCleanParamsForm().getFormModel().getHasErrors());
+                    setFormsEnabled(true);
+                    fileNodeChoosen = fn;
+                }
+            };
+        }
+        return selectOneDirectoryOnlyListener;
+    }    
 
     public JTable getResultTable(){
         if(resultTable == null){
@@ -272,11 +303,11 @@ public class RenameView extends AbstractView{
         JTabbedPane tabs = new JTabbedPane();
 
         //panel east: tabs: panelRenamer en panelCleaner
-        panelRenamer = getNewRenamePanel();
+        panelAdvancedRenamer = getNewRenamePanel();
         panelCleaner = getNewCleanerPanel();
 
         //panel east:tabs
-        tabs.add("rename",panelRenamer);
+        tabs.add("rename",panelAdvancedRenamer);
         tabs.add("clean",panelCleaner);
 
         //panel east: add tabs
@@ -302,24 +333,7 @@ public class RenameView extends AbstractView{
     protected JTreeTable getNewTreeTable(File file) {
         treeTable = new JTreeTable(getNewTreeTableModel(file));
         final JTree tree = treeTable.getTree();
-        tree.addTreeSelectionListener(new TreeSelectionListener(){
-            @Override
-            public void valueChanged(TreeSelectionEvent tse) {                
-                FileNode fn = (FileNode) tse.getPath().getLastPathComponent();
-                if(!fn.getFile().isDirectory()){
-                    getStatusLabel().setText("gelieve een map te selecteren");
-                    tree.clearSelection();                    
-                    setJComponentEnabled(getRenameButtonPanel(),false);
-                    setJComponentEnabled(getCleanButtonPanel(),false);
-                    setFormsEnabled(false);                    
-                    return;
-                }                
-                setJComponentEnabled(getRenameButtonPanel(),!getRenameParamsForm().getFormModel().getHasErrors());
-                setJComponentEnabled(getCleanButtonPanel(),!getCleanParamsForm().getFormModel().getHasErrors());
-                setFormsEnabled(true);
-                fileNodeChoosen = fn;                 
-            }        
-        });
+        tree.addTreeSelectionListener(getNewSelectOneDirectoryOnlyListener(tree));
         //per default wordt de root geselecteerd
         TreePath tp = new TreePath(tree.getModel().getRoot());
         tree.setSelectionPath(tp);        

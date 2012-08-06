@@ -10,5 +10,5 @@ package RenameWandLib;
  * @author nicolas
  */
 public enum RenameError {
-    TARGET_EXISTS,SYSTEM_ERROR;
+    TARGET_EXISTS,SYSTEM_ERROR,UNKNOWN_ERROR,IO_EXCEPTION,SECURITY_EXCEPTION;
 }
