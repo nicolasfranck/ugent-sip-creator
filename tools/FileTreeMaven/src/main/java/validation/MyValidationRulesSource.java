@@ -8,7 +8,7 @@ package validation;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
 import renaming.CleanParams;
-import renaming.RenameParams;
+import renaming.AdvancedRenameParams;
 
 /**
  *
@@ -17,7 +17,7 @@ import renaming.RenameParams;
 public class MyValidationRulesSource extends DefaultRulesSource{
     public MyValidationRulesSource(){
 
-        Rules renamePairRules = new Rules(RenameParams.class);
+        Rules renamePairRules = new Rules(AdvancedRenameParams.class);
         renamePairRules
                 .add(required("sourcePattern"))
                 .add(required("destinationPattern"));

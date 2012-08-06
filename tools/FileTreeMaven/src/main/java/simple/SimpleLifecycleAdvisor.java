@@ -42,11 +42,12 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
      * @param configurer The application window configurer
      */
     @Override
-    public void onPreWindowOpen( ApplicationWindowConfigurer configurer ) {
-
+    public void onPreWindowOpen( ApplicationWindowConfigurer configurer ) {        
         // If you override this method, it is critical to allow the superclass
         // implementation to run as well.
         super.onPreWindowOpen(configurer);
+
+        configurer.setShowToolBar(false);
 
         // Uncomment to hide the menubar, toolbar, or alter window size...
         // configurer.setShowMenuBar(false);

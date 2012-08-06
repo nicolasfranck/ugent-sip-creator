@@ -11,7 +11,7 @@ import RenameWandLib.OnErrorAction;
  *
  * @author nicolas
  */
-public class RenameParams {
+public class AdvancedRenameParams {
 
     private String sourcePattern;    
     private String destinationPattern;

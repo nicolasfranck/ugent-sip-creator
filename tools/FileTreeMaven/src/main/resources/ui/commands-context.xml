@@ -15,7 +15,7 @@
   <bean id="windowCommandManager"
     class="org.springframework.richclient.application.support.ApplicationWindowCommandManager">
     <property name="sharedCommandIds">
-      <list>
+      <list>        
         <value>newCommand</value>
         <value>saveCommand</value>
         <value>saveAsCommand</value>
@@ -29,7 +29,7 @@
         <value>deleteCommand</value>
         <value>selectAllCommand</value>
         <value>newWindowCommand</value>
-        <value>helpContentsCommand</value>
+        <value>helpContentsCommand</value>        
         <value>expandCollapseTreeCommand</value>
         <value>reloadTreeCommand</value>
       </list>
@@ -49,9 +49,10 @@
     <property name="members">
       <list>
         <ref bean="fileMenu" />
-        <ref bean="editMenu" />
+        <!--<ref bean="editMenu" />
         <ref bean="windowMenu" />
         <ref bean="helpMenu" />
+        -->
       </list>
     </property>
   </bean>
@@ -69,12 +70,12 @@
   -->
   <bean id="toolBar" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
-      <list>
+      <list>        
         <value>newCommand</value>
         <value>saveCommand</value>
         <value>printCommand</value>
         <value>separator</value>
-        <value>propertiesCommand</value>
+        <value>propertiesCommand</value>        
       </list>
     </property>
   </bean>
@@ -90,6 +91,7 @@
   <bean id="fileMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
       <list>
+         <!--
         <value>newCommand</value>
         <value>separator</value>
         <value>saveCommand</value>
@@ -99,6 +101,7 @@
         <value>separator</value>
         <value>propertiesCommand</value>
         <value>separator</value>
+        -->
         <value>expandCollapseTreeCommand</value>
         <value>separator</value>
         <value>reloadTreeCommand</value>

@@ -6,6 +6,7 @@
 package forms;
 
 import RenameWandLib.OnErrorAction;
+import helper.Context;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -15,18 +16,18 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import renaming.RenameParams;
+import renaming.SimpleRenameParams;
 
 /**
  *
  * @author nicolas
  */
-public class RenameParamsForm extends AbstractForm{
+public class SimpleRenameParamsForm extends AbstractForm{
     
-    public RenameParamsForm(RenameParams renameParams){
-        this(FormModelHelper.createFormModel(renameParams,"renamePairForm"));
+    public SimpleRenameParamsForm(SimpleRenameParams renameParams){
+        this(FormModelHelper.createFormModel(renameParams,"simpleRenameForm"));
     }
-    public RenameParamsForm(FormModel formModel){
+    public SimpleRenameParamsForm(FormModel formModel){
         super(formModel);       
     }    
     @Override
@@ -35,18 +36,31 @@ public class RenameParamsForm extends AbstractForm{
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
 
         TableFormBuilder builder = new TableFormBuilder(bf);
-        
-        builder.add("sourcePattern","colSpan=1 align=left");
+
+        builder.addSeparator(Context.getMessage("common"));
         builder.row();
-        builder.add("destinationPattern","colSpan=1 align=left");
+
+        builder.add("prefix","colSpan=1 align=left");
         builder.row();
-        builder.add("copy");
+        builder.add("suffix","colSpan=1 align=left");
         builder.row();
-        builder.add("matchLowerCase");
+        builder.add("name","colSpan=1 align=left");
+        builder.row();        
+        builder.add("renumber","colSpan=1 align=left");
         builder.row();
-        builder.add("recurseIntoSubdirectories");
+        builder.add("paddingNum","colSpan=1 align=left");
         builder.row();
-        builder.add("overWrite");
+
+
+        builder.addSeparator(Context.getMessage("detail"));
+        builder.row();
+        builder.add("copy","colSpan=1 align=left");
+        builder.row();
+        builder.add("matchLowerCase","colSpan=1 align=left");
+        builder.row();
+        builder.add("recurseIntoSubdirectories","colSpan=1 align=left");
+        builder.row();
+        builder.add("overWrite","colSpan=1 align=left");
         builder.row();
 
         Binding b = bf.createBoundComboBox("onErrorAction",OnErrorAction.values());
