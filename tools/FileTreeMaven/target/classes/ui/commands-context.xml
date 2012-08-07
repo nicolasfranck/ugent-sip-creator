@@ -48,7 +48,7 @@
   <bean id="menuBar" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
       <list>
-        <ref bean="fileMenu" />
+        <!--<ref bean="fileMenu" />-->
         <!--<ref bean="editMenu" />
         <ref bean="windowMenu" />
         <ref bean="helpMenu" />

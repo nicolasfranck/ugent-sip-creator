@@ -350,9 +350,13 @@ public class RenameView extends AbstractView{
 
         c.gridy += 1;
         c.fill = GridBagConstraints.BOTH;
+        c.gridheight = 2;
+        
         JScrollPane scrollerResultTable = new JScrollPane(getResultTable());
-        scrollerResultTable.setPreferredSize(new Dimension(500,200));
+        scrollerResultTable.setPreferredSize(new Dimension(500,300));        
         panelModifier.add(scrollerResultTable,c);
+        
+        c.gridheight = 2;
         
         //add panel east to split pane
         splitter.add(panelModifier);
@@ -376,36 +380,7 @@ public class RenameView extends AbstractView{
         getCleanParamsForm().setEnabled(enabled);
     }    
     protected TreeTableModel getNewTreeTableModel(File file){
-        treeTableModel =  new FileSystemModel(file);
-        treeTableModel.addTreeModelListener(new TreeModelListener(){
-            @Override
-            public void treeNodesChanged(TreeModelEvent tme) {
-                /*
-                treeTable.getTree().collapsePath(tme.getTreePath());
-                treeTable.getTree().expandPath(tme.getTreePath());
-                 *
-                 */
-                //reloadTreeTable(getLastFile());
-            }
-            @Override
-            public void treeNodesInserted(TreeModelEvent tme) {
-                /*
-                treeTable.getTree().collapsePath(tme.getTreePath());
-                treeTable.getTree().expandPath(tme.getTreePath());*/
-                //reloadTreeTable(getLastFile());
-            }
-            @Override
-            public void treeNodesRemoved(TreeModelEvent tme) {
-                /*
-                treeTable.getTree().collapsePath(tme.getTreePath());
-                treeTable.getTree().expandPath(tme.getTreePath());*/
-                //reloadTreeTable(getLastFile());
-            }
-            @Override
-            public void treeStructureChanged(TreeModelEvent tme) {
-                //reloadTreeTable(getLastFile());
-            }
-        });
+        treeTableModel =  new FileSystemModel(file);        
         return treeTableModel;
     }
     protected JFileChooser getFileChooser(){
@@ -895,11 +870,14 @@ public class RenameView extends AbstractView{
         }        
     }
     public File getLastFile(){
-        if(lastFile == null){           
+        if(lastFile == null){  
+            logger.debug("trying to set empty lastFile user <user.home>");
             lastFile = new File(System.getProperty("user.home"));
             if(lastFile == null || !lastFile.isDirectory()){
+                logger.debug("trying to set empty lastFile to first root folder");
                 lastFile = File.listRoots()[0];
             }
+            logger.debug("lastFile now: "+lastFile);
         }
         return lastFile;
     }

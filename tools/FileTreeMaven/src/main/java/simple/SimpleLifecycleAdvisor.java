@@ -48,6 +48,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         super.onPreWindowOpen(configurer);
 
         configurer.setShowToolBar(false);
+        configurer.setShowMenuBar(false);        
 
         // Uncomment to hide the menubar, toolbar, or alter window size...
         // configurer.setShowMenuBar(false);
