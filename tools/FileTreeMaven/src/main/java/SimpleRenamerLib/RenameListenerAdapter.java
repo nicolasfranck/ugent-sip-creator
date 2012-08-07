@@ -3,11 +3,12 @@
  * and open the template in the editor.
  */
 
-package RenameWandLib;
+package SimpleRenamerLib;
 
+import RenameWandLib.ErrorAction;
+import RenameWandLib.RenameError;
+import RenameWandLib.RenameFilePair;
 import java.util.ArrayList;
-
-
 
 /**
  *
@@ -15,27 +16,23 @@ import java.util.ArrayList;
  */
 public class RenameListenerAdapter implements RenameListener{
     @Override
-    public void onInit(final ArrayList<FileUnit> matchCandidates,final ArrayList<FileUnit> matches){
-    }
-    @Override
-    public boolean approveList(ArrayList<FileUnit> list) {
-        return true;
+    public void onInit(ArrayList<RenameFilePair> pairs) {
     }
     @Override
     public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {
         return ErrorAction.ignore;
     }
     @Override
-    public void onRenameStart(RenameFilePair pair){
+    public void onRenameStart(RenameFilePair pair) {
     }
     @Override
-    public void onRenameEnd(RenameFilePair pair) {
+    public void onRenameSuccess(RenameFilePair pair){
     }
     @Override
-    public void onRenameSuccess(RenameFilePair pair) {
+    public void onRenameEnd(RenameFilePair pair){
     }
     @Override
-    public void onEnd(final ArrayList<RenameFilePair> list,int numSuccess){
+    public void onEnd(ArrayList<RenameFilePair> pairs, int numSuccess){
     }
-   
+
 }

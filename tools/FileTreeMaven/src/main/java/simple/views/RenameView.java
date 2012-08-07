@@ -6,6 +6,7 @@
 package simple.views;
 
 import RenameWandLib.*;
+import SimpleRenamerLib.SimpleRenamer;
 import forms.CleanParamsForm;
 import forms.AdvancedRenameParamsForm;
 import forms.SimpleRenameParamsForm;
@@ -31,9 +32,9 @@ import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
-import renaming.CleanParams;
-import renaming.AdvancedRenameParams;
-import renaming.SimpleRenameParams;
+import Params.CleanParams;
+import Params.AdvancedRenameParams;
+import Params.SimpleRenameParams;
 import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
@@ -52,7 +53,8 @@ public class RenameView extends AbstractView{
     private JPanel panelAdvancedRenamer;
     private JPanel panelSimpleRenamer;
     private JPanel panelCleaner;
-    private JPanel renameButtonPanel;
+    private JPanel advancedRenameButtonPanel;
+    private JPanel simpleRenameButtonPanel;
     private JPanel cleanButtonPanel;
 
     private JFileChooser fileChooser;
@@ -179,21 +181,35 @@ public class RenameView extends AbstractView{
     public void setStatusLabel(JLabel statusLabel) {
         this.statusLabel = statusLabel;
     }
+    public JPanel getNewButtonPanel(){
+        return new JPanel(new FlowLayout(FlowLayout.LEFT));
+    }
     public JPanel getCleanButtonPanel() {
         if(cleanButtonPanel == null)
-            cleanButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            cleanButtonPanel = getNewButtonPanel();
         return cleanButtonPanel;
     }
     public void setCleanButtonPanel(JPanel cleanButtonPanel) {
         this.cleanButtonPanel = cleanButtonPanel;
     }
-    public JPanel getRenameButtonPanel() {
-        if(renameButtonPanel == null)
-            renameButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        return renameButtonPanel;
+    public JPanel getAdvancedRenameButtonPanel() {
+        if(advancedRenameButtonPanel == null)
+            advancedRenameButtonPanel = getNewButtonPanel();
+        return advancedRenameButtonPanel;
     }
-    public void setRenameButtonPanel(JPanel renameButtonPanel) {
-        this.renameButtonPanel = renameButtonPanel;
+    
+    public void setAdvancedRenameButtonPanel(JPanel advancedRenameButtonPanel) {
+        this.advancedRenameButtonPanel = advancedRenameButtonPanel;
+    }
+
+    public JPanel getSimpleRenameButtonPanel() {
+        if(simpleRenameButtonPanel == null)
+            simpleRenameButtonPanel = getNewButtonPanel();
+        return simpleRenameButtonPanel;
+    }
+
+    public void setSimpleRenameButtonPanel(JPanel simpleRenameButtonPanel) {
+        this.simpleRenameButtonPanel = simpleRenameButtonPanel;
     }
 
     public AdvancedRenameParams getAdvancedRenameParams() {
@@ -215,8 +231,9 @@ public class RenameView extends AbstractView{
     }
 
     public SimpleRenameParams getSimpleRenameParams() {
-        if(simpleRenameParams == null)
-            simpleRenameParams = new SimpleRenameParams();
+        if(simpleRenameParams == null){
+            simpleRenameParams = new SimpleRenameParams();           
+        }
         return simpleRenameParams;
     }
 
@@ -357,12 +374,7 @@ public class RenameView extends AbstractView{
     protected void setFormsEnabled(boolean enabled){
         getAdvancedRenameParamsForm().setEnabled(enabled);
         getCleanParamsForm().setEnabled(enabled);
-    }
-    protected void setJComponentEnabled(JComponent component,boolean enabled){
-        component.setEnabled(enabled);        
-        for(Component c:component.getComponents())
-            c.setEnabled(enabled);
-    }
+    }    
     protected TreeTableModel getNewTreeTableModel(File file){
         treeTableModel =  new FileSystemModel(file);
         treeTableModel.addTreeModelListener(new TreeModelListener(){
@@ -533,8 +545,70 @@ public class RenameView extends AbstractView{
 
         panel.add(componentForm,c);
 
+        final JButton submitButton = new JButton(Context.getMessage("ok"));
+        final JButton simulateButton = new JButton(Context.getMessage("simulate"));
         
+        getSimpleRenameButtonPanel().add(submitButton);
+        getSimpleRenameButtonPanel().add(simulateButton);
+        c.gridy += 1;
+        panel.add(getSimpleRenameButtonPanel(),c);
 
+        submitButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ArrayList<File>candidates = new ArrayList<File>();
+                for(FileNode fn:fileNodesSelected){
+                    if(fn.getFile().isFile())
+                        candidates.add(fn.getFile());
+                }
+                if(
+                    candidates.size() <= 0
+                ){
+                    getStatusLabel().setText(Context.getMessage("RenameView.fileNodesSelected.noFilesSelected"));
+                    return;
+                }
+                renameFormModel.commit();
+                submitButton.setEnabled(false);
+                simulateButton.setEnabled(false);
+                simpleRename(candidates,false);
+                reloadTreeTable(getLastFile());
+                submitButton.setEnabled(true);
+                simulateButton.setEnabled(true);
+            }
+        });
+        simulateButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+
+                ArrayList<File>candidates = new ArrayList<File>();
+                for(FileNode fn:fileNodesSelected){
+                    if(fn.getFile().isFile())
+                        candidates.add(fn.getFile());
+                }
+                
+                if( candidates.size() <= 0 ){
+                    getStatusLabel().setText(Context.getMessage("RenameView.fileNodesSelected.noFilesSelected"));
+                    return;
+                }      
+                try{
+                    renameFormModel.commit();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                submitButton.setEnabled(false);
+                simulateButton.setEnabled(false);      
+                simpleRename(candidates,true);
+                submitButton.setEnabled(true);
+                simulateButton.setEnabled(true);
+            }
+        });
+        renameForm.addValidationListener(new ValidationListener(){
+            @Override
+            public void validationResultsChanged(ValidationResults results) {
+                submitButton.setEnabled(!results.getHasErrors());
+                simulateButton.setEnabled(!results.getHasErrors());
+            }
+        });
         return panel;
     }
     protected JPanel getNewAdvancedRenamePanel(){
@@ -556,9 +630,9 @@ public class RenameView extends AbstractView{
         //buttons
       
         final JButton submitButton = new JButton(Context.getMessage("ok"));
-        getRenameButtonPanel().add(submitButton);
+        getAdvancedRenameButtonPanel().add(submitButton);
         final JButton simulateButton = new JButton(Context.getMessage("simulate"));
-        getRenameButtonPanel().add(simulateButton);
+        getAdvancedRenameButtonPanel().add(simulateButton);
 
         submitButton.setEnabled(false);
         submitButton.addActionListener(new ActionListener(){
@@ -617,7 +691,7 @@ public class RenameView extends AbstractView{
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.NORTHWEST;
 
-        panel.add(getRenameButtonPanel(),c);
+        panel.add(getAdvancedRenameButtonPanel(),c);
         
         return panel;        
     }
@@ -651,7 +725,7 @@ public class RenameView extends AbstractView{
                     );
                 }
                 @Override
-                public OnErrorAction onError(final RenameFilePair pair, RenameError errorType, String errorStr){
+                public ErrorAction onError(final RenameFilePair pair, RenameError errorType, String errorStr){
                     String status = simulateOnly ? "simulatie":"failed";
                     resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
                         pair,
@@ -714,12 +788,13 @@ public class RenameView extends AbstractView{
             renamer.setOnRenameOperationError(advancedRenameParams.getOnErrorAction());
             renamer.setSimulateOnly(simulateOnly);
             renamer.setMatchLowerCase(advancedRenameParams.isMatchLowerCase());
-            renamer.setOverWrite(advancedRenameParams.isOverWrite());
+            renamer.setOverWrite(advancedRenameParams.isOverWrite());            
 
             renamer.setRenameListener(new RenameListenerAdapter(){
                 @Override
                 public void onInit(final java.util.ArrayList<FileUnit> matchCandidates,final java.util.ArrayList<FileUnit> matches){
-
+                     System.out.println("matchCandidates: "+matchCandidates.size());
+                     System.out.println("matches: "+matches.size());
                      if(matchCandidates.size() == 0){
                          getStatusLabel().setText("geselecteerde map is leeg");
                      }else if(matches.size() == 0){
@@ -733,9 +808,9 @@ public class RenameView extends AbstractView{
                     return true;
                 }
                 @Override
-                public OnErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {                    
+                public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {
                     numRenamedError++;
-                    return OnErrorAction.skip;
+                    return ErrorAction.skip;
                 }
                 @Override
                 public void onRenameSuccess(RenameFilePair pair) {
@@ -765,10 +840,59 @@ public class RenameView extends AbstractView{
         
     }
     public void simpleRename(ArrayList<File>files,final boolean simulateOnly){
+        
         clearResultTable();
         getStatusLabel().setText(null);
-
+        numRenamedSuccess = 0;
+        numRenamedError = 0;
         
+        try{
+            SimpleRenamer renamer = new SimpleRenamer();
+            for(File file:files){                
+                renamer.addRenameCandidate(file);
+            }
+            renamer.setSimulateOnly(simulateOnly);
+            renamer.setPrefix(simpleRenameParams.getPrefix());
+            renamer.setName(simpleRenameParams.getName());
+            renamer.setSuffix(simpleRenameParams.getSuffix());
+            renamer.setPreserveExtension(true);
+            renamer.setStartNumber(simpleRenameParams.getStartNumber());
+            renamer.setJumpNumber(simpleRenameParams.getJumpNumber());
+            renamer.setNumPadding(simpleRenameParams.getNumPadding());
+            renamer.setNumber(simpleRenameParams.isNumber());
+            renamer.setPreserveExtension(simpleRenameParams.isPreserveExtension());
+            
+            renamer.setRenameListener(new SimpleRenamerLib.RenameListenerAdapter(){               
+                @Override
+                public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr) {
+                    numRenamedError++;
+                    return simpleRenameParams.getOnErrorAction();
+                }                
+                @Override
+                public void onRenameSuccess(RenameFilePair pair) {
+                    numRenamedSuccess++;
+                }
+                @Override
+                public void onRenameEnd(RenameFilePair pair) {
+                    String status = simulateOnly ? "simulatie":(pair.isSuccess() ? "successvol":"error");
+                    resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{
+                        pair,
+                        pair,
+                        pair
+                    });
+                    RenameView.this.getStatusBar().getProgressMonitor().worked(numRenamedError + numRenamedSuccess);
+                }
+                @Override
+                public void onEnd(ArrayList<RenameFilePair> pairs, int numSuccess) {
+                    getStatusLabel().setText("totaal bestanden:"+pairs.size()+", aantal geslaagd: "+numSuccess);
+                    RenameView.this.getStatusBar().getProgressMonitor().done();
+                }
+            });
+            renamer.rename();
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.debug(e.getMessage());
+        }        
     }
     public File getLastFile(){
         if(lastFile == null){           

@@ -141,7 +141,7 @@ public class RenameWand {
 	private boolean renameDirectories = false;
 
 	/** parameter: default action on rename operation error (default = '\0') */
-	private OnErrorAction defaultActionOnRenameOperationError = OnErrorAction.ignore;
+	private ErrorAction defaultActionOnRenameOperationError = ErrorAction.ignore;
 
 	/** parameter: source pattern string */
 	private String sourcePatternString;
@@ -150,7 +150,7 @@ public class RenameWand {
 	private String targetPatternString;
 
         
-        private OnErrorAction onRenameOperationError = defaultActionOnRenameOperationError;
+        private ErrorAction onRenameOperationError = defaultActionOnRenameOperationError;
 
         private ArrayList<String> errors = new ArrayList<String>();
         private ArrayList<String> warnings = new ArrayList<String>();
@@ -336,7 +336,7 @@ public class RenameWand {
             this.targetPatternString = targetPatternString;
         }
 
-        public void setOnRenameOperationError(OnErrorAction onRenameOperationError) {
+        public void setOnRenameOperationError(ErrorAction onRenameOperationError) {
             this.onRenameOperationError = onRenameOperationError;
         }
 
@@ -363,23 +363,21 @@ public class RenameWand {
         }      
         public void rename() throws IOException{
             _rename();
-            if(renameListener != null)renameListener.onEnd(getRenamePairs(),getNumRenameOperationsPerformed());
+            getRenameListener().onEnd(getRenamePairs(),getNumRenameOperationsPerformed());
         }
         private void _rename() throws IOException{
             init();
             /* get match candidates */
             ArrayList<FileUnit> matchCandidates = getMatchCandidates();
-            
-            if(matchCandidates.size() == 0){
-                if(renameListener != null)renameListener.onInit(matchCandidates,new ArrayList<FileUnit>());
-                return;
-            }
             /* perform matching */
             ArrayList<FileUnit> matches = performSourcePatternMatching(matchCandidates);
-            if(matches.size() == 0){
-                if(renameListener != null)renameListener.onInit(matchCandidates,matches);
+
+            getRenameListener().onInit(matchCandidates,new ArrayList<FileUnit>());
+
+            if(matchCandidates.size() == 0 || matches.size() == 0){
                 return;
             }
+            
             evaluateTargetPattern(matches.toArray(new FileUnit[matches.size()]));
             /* determine renaming sequence and find clashes, bad names, etc. */
             final ArrayList<RenameFilePair> renameOperations = getRenameOperations(matches);
@@ -421,7 +419,10 @@ public class RenameWand {
                 final File dir = subdirectories.pop();
                 final File[] listFiles = dir.listFiles();
 
+               
+
                 if(listFiles == null){
+                   
                     final String path = dir.getPath();
                     warnings.add("Failed to get contents of directory \"" + path +
                             (path.endsWith(File.separator) ? "" : File.separator) +
@@ -1848,6 +1849,10 @@ public class RenameWand {
         public void setRenameListener(final RenameListener renameListener){
             this.renameListener = renameListener;
         }
+        public RenameListener getRenameListener(){
+            if(renameListener == null)renameListener = new RenameListenerAdapter();
+            return renameListener;
+        }
 
 	/**
 	 * Print the matched files/directories and their target names, and
@@ -1864,11 +1869,8 @@ public class RenameWand {
             
             /* no rename operations to perform */
             if(numRenameOperations == 0)return false;
-            /* prompt user on whether to continue with renaming operations */            
-            if(renameListener != null){
-                return renameListener.approveList(matchedFiles);
-            }
-            return true;
+            /* prompt user on whether to continue with renaming operations */                        
+            return getRenameListener().approveList(matchedFiles);            
 	}
 
 
@@ -1890,26 +1892,22 @@ public class RenameWand {
                 /*
                  * Nicolas Franck
                  */
-                r.setSimulateOnly(this.isSimulateOnly());
+                r.setSimulateOnly(isSimulateOnly());
 
                 
+                getRenameListener().onRenameStart(r);
+                
 
-                if(renameListener != null){
-                    renameListener.onRenameStart(r);
-                }
-
-                OnErrorAction action = null;
+                ErrorAction action = null;
                     
                 
                 if(this.isSimulateOnly()){
                    
                     if(!isOverWrite() && r.target.exists()){
                         r.success = false;
-                        if(renameListener != null){
-                            action = renameListener.onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
-                        }
+                        action = getRenameListener().onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
                     }else if(!r.target.getParentFile().canWrite()){
-                        action = renameListener.onError(r, RenameError.SYSTEM_ERROR,"cannot write to "+r.target.getAbsolutePath());
+                        action = getRenameListener().onError(r, RenameError.IO_EXCEPTION,"cannot write to "+r.target.getParentFile().getAbsolutePath());
                     }else{
                         r.success = true;
                     }
@@ -1918,9 +1916,9 @@ public class RenameWand {
                     
                     if(!isOverWrite() && r.target.exists()){
                         r.success = false;
-                        if(renameListener != null){
-                            action = renameListener.onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
-                        }
+                        
+                        action = getRenameListener().onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
+                        
                     }else{
                         r.target.getParentFile().mkdirs();
                         String error = null;
@@ -1939,9 +1937,7 @@ public class RenameWand {
                             error = e.getMessage();
                         }
                         if(!r.success){
-                            if(renameListener != null){
-                                action = renameListener.onError(r,RenameError.SYSTEM_ERROR,error);
-                            }
+                            action = getRenameListener().onError(r,RenameError.SYSTEM_ERROR,error);
                         }
                     }
                 }
@@ -1952,15 +1948,15 @@ public class RenameWand {
                 if(!r.success){
 
                     /* take action */
-                    if(action == OnErrorAction.retry){
+                    if(action == ErrorAction.retry){
                         /* retry rename operation */
                         i--;
                     }
-                    else if(action == OnErrorAction.skip){
+                    else if(action == ErrorAction.skip){
                         /* skip to next file/directory */
                         continue;
                     }
-                    else if(action == OnErrorAction.undoAll){
+                    else if(action == ErrorAction.undoAll){
 
                         if(!this.isSimulateOnly()){
 
@@ -1991,17 +1987,17 @@ public class RenameWand {
 
                         break;
                     }
-                    else if(action == OnErrorAction.abort){
+                    else if(action == ErrorAction.abort){
                         /* abort */
                         break;
                     }
                 }else{
-                    renameListener.onRenameSuccess(r);
+                    getRenameListener().onRenameSuccess(r);
                 }
 
-                if(renameListener != null){
-                    renameListener.onRenameEnd(r);
-                }
+                
+                getRenameListener().onRenameEnd(r);
+                
             }
 
             /* return value */
@@ -2187,6 +2183,7 @@ public class RenameWand {
             setCleanPairs(pairs);
         }
         public void clean(){
+            getCleanListener().onInit(getCleanPairs());
             int numSuccess = _clean();
             getCleanListener().onEnd(getCleanPairs(),numSuccess);
         }
@@ -2195,98 +2192,81 @@ public class RenameWand {
 
             int numSuccess = 0;
 
-            cl.onInit(getCleanPairs());
-
             boolean undoAll = false;
+            
 
-            for(RenameFilePair pair:getCleanPairs()){
+            for(int i = 0;i < getCleanPairs().size();i++){                
+                RenameFilePair pair = getCleanPairs().get(i);
 
                 pair.setSimulateOnly(this.isSimulateOnly());
                 
                 if(!cl.doClean(pair))continue;
+                
+                ErrorAction errorAction = ErrorAction.ignore;                
+                
+                RenameError renameError = null;
+                String renameErrorStr = null;
+                pair.success = false;
 
-                boolean retry = false;
-                OnErrorAction errorAction = OnErrorAction.ignore;
+                cl.onCleanStart(pair);
 
-                do{
-                    retry = false;
-                    RenameError renameError = null;
-                    String renameErrorStr = null;
-                    pair.success = false;
-
-                    cl.onCleanStart(pair);
-
-                    try{
-                        if(pair.target.exists() && !isOverWrite())
-                            throw new IOException(pair.target.getAbsolutePath()+"' already exists");
-                        if(!pair.target.getParentFile().canWrite())
-                            throw new IOException("cannot write to parent directory '"+pair.target.getParentFile().getAbsolutePath()+"'");
-                        if(!isSimulateOnly()){
-                            if(isCopy()){
-                                copy(pair.source,pair.target);
-                                pair.success = true;
-                            }else{
-                                pair.success = pair.source.renameTo(pair.target);
-                            }
-                        }else{
+                try{
+                    if(pair.target.exists() && !isOverWrite())
+                        throw new IOException(pair.target.getAbsolutePath()+"' already exists");
+                    if(!pair.target.getParentFile().canWrite())
+                        throw new IOException("cannot write to parent directory '"+pair.target.getParentFile().getAbsolutePath()+"'");
+                    if(!isSimulateOnly()){
+                        if(isCopy()){
+                            copy(pair.source,pair.target);
                             pair.success = true;
+                        }else{
+                            pair.success = pair.source.renameTo(pair.target);
                         }
-                    }catch(SecurityException e){                        
-                        //zelden: indien een SecurityManager bestaat (vooral in Applets)
-                        pair.success = false;
-                        renameError = RenameError.SECURITY_EXCEPTION;
-                        renameErrorStr = e.getLocalizedMessage();                        
-                    }catch(IOException e){                        
-                        pair.success = false;
-                        renameError = renameError.IO_EXCEPTION;
-                        renameErrorStr = e.getMessage();
-                    }finally{
-                        //soms geeft copy of rename geen enkele error..
-                        if(!pair.success && renameError == null){
-                            renameError = RenameError.UNKNOWN_ERROR;
-                        }
+                    }else{
+                        pair.success = true;
                     }
-                    
-                    
-                    if(pair.success){                                               
-                        cl.onCleanSuccess(pair);
-
-                    }else{                        
-                        errorAction = cl.onError(pair,renameError,renameErrorStr);
-                        if(errorAction == OnErrorAction.retry)
-                            retry = true;                        
+                }catch(SecurityException e){
+                    //zelden: indien een SecurityManager bestaat (vooral in Applets)
+                    pair.success = false;
+                    renameError = RenameError.SECURITY_EXCEPTION;
+                    renameErrorStr = e.getLocalizedMessage();
+                }catch(IOException e){
+                    pair.success = false;
+                    renameError = renameError.IO_EXCEPTION;
+                    renameErrorStr = e.getMessage();
+                }finally{
+                    //soms geeft copy of rename geen enkele error..
+                    if(!pair.success && renameError == null){
+                        renameError = RenameError.UNKNOWN_ERROR;
                     }
+                }                
 
-                    cl.onCleanEnd(pair);
-
-                }while(retry);
+                cl.onCleanEnd(pair);
                 
                 if(!pair.success){
-                    if(errorAction == OnErrorAction.abort){                        
+                    errorAction = cl.onError(pair,renameError,renameErrorStr);
+                    if(errorAction == ErrorAction.abort){
                         return numSuccess;
                     }
-                    else if(errorAction == OnErrorAction.undoAll)
-                        undoAll = true;                                            
+                    else if(errorAction == ErrorAction.undoAll)
+                        undoAll = true;
+                    else if(errorAction == ErrorAction.retry)i--;
                 }else{
                     numSuccess++;
+                    cl.onCleanSuccess(pair);
                 }               
                 
             }
             
-            if(undoAll){
-                
-                for(int i = getCleanPairs().size() - 1;i >= 0;i--){
-                    RenameFilePair pair = getCleanPairs().get(i);
-                    
-                    if(!pair.success)
-                        continue;
+            if(undoAll){                
+                for(int j = getCleanPairs().size() - 1;j >= 0;j--){
+                    RenameFilePair pair = getCleanPairs().get(j);                    
+                    if(!pair.success)continue;
                     pair.source.getParentFile().mkdirs();
                     try{
                         
-                        if(isCopy()){
-                            
-                            if(pair.target.exists()){
-                                
+                        if(isCopy()){                            
+                            if(pair.target.exists()){                                
                                 pair.success = !pair.target.delete();
                             }
                         }else{
@@ -2312,10 +2292,10 @@ public class RenameWand {
                         System.out.println("CleanListener::onRenameStart() "+pair.source.getAbsolutePath()+" => "+pair.target.getAbsolutePath());
                     }
                     @Override
-                    public OnErrorAction onError(RenameFilePair pair,RenameError errorType,final String errorStr) {
+                    public ErrorAction onError(RenameFilePair pair,RenameError errorType,final String errorStr) {
                         System.out.println("CleanListener::onError() "+pair.source.getAbsolutePath()+" => "+pair.target.getAbsolutePath());
                         System.out.println(errorStr);
-                        return OnErrorAction.undoAll;
+                        return ErrorAction.undoAll;
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair> pairs,int numSuccess) {

@@ -9,7 +9,7 @@ package RenameWandLib;
  *
  * @author nicolas
  */
-public enum OnErrorAction {
+public enum ErrorAction {
     ignore,
     skip,   
     undoAll,

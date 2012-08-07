@@ -9,3 +9,4 @@ bagger-business/target
 bagger-package/target
 bagger-maven/target
 *.class
+*.jar

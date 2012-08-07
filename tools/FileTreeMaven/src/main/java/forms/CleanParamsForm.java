@@ -5,7 +5,7 @@
 
 package forms;
 
-import RenameWandLib.OnErrorAction;
+import RenameWandLib.ErrorAction;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -17,7 +17,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import renaming.CleanParams;
+import Params.CleanParams;
 
 /**
  *
@@ -33,6 +33,8 @@ public class CleanParamsForm extends AbstractForm{
     }    
     @Override
     protected JComponent createFormControl() {
+        
+
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);
         
@@ -43,25 +45,26 @@ public class CleanParamsForm extends AbstractForm{
         builder.add("overWrite");
         builder.row();
 
-        Binding b = bf.createBoundComboBox("onErrorAction",OnErrorAction.values());
+        Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());
 
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
                 comboBox.setEditable(false)                ;
-                comboBox.setSelectedItem(OnErrorAction.ignore);
+                comboBox.setSelectedItem(ErrorAction.ignore);
             }
         });
         builder.add(b);
         builder.row();
 
+        
+        
+
         JTable table = new JTable(new DefaultTableModel(
             new Object [] [] {},
             new String [] {"van","naar"}
         ));
-
-
         return builder.getForm();
     }
 }

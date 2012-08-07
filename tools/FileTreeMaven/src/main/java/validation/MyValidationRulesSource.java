@@ -8,9 +8,9 @@ package validation;
 import org.springframework.rules.Rules;
 import org.springframework.rules.constraint.property.PropertyConstraint;
 import org.springframework.rules.support.DefaultRulesSource;
-import renaming.CleanParams;
-import renaming.AdvancedRenameParams;
-import renaming.SimpleRenameParams;
+import Params.CleanParams;
+import Params.AdvancedRenameParams;
+import Params.SimpleRenameParams;
 
 /**
  *

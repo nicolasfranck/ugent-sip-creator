@@ -27,7 +27,7 @@ public interface RenameListener{
      * @param errorStr
      *      error message (sometimes null)
      */
-    OnErrorAction onError(final RenameFilePair pair,final RenameError errorType,final String errorStr);
+    ErrorAction onError(final RenameFilePair pair,final RenameError errorType,final String errorStr);
     /*
      * @param pair
      *  object that contains source and target file

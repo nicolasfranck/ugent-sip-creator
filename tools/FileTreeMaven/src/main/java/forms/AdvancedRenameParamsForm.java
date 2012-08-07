@@ -5,7 +5,7 @@
 
 package forms;
 
-import RenameWandLib.OnErrorAction;
+import RenameWandLib.ErrorAction;
 import helper.Context;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -16,7 +16,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import renaming.AdvancedRenameParams;
+import Params.AdvancedRenameParams;
 
 /**
  *
@@ -55,14 +55,14 @@ public class AdvancedRenameParamsForm extends AbstractForm{
         builder.add("overWrite","colSpan=1 align=left");
         builder.row();
 
-        Binding b = bf.createBoundComboBox("onErrorAction",OnErrorAction.values());
+        Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());
 
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
                 comboBox.setEditable(false)                ;
-                comboBox.setSelectedItem(OnErrorAction.ignore);
+                comboBox.setSelectedItem(ErrorAction.ignore);
             }        
         });
         builder.add(b);

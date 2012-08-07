@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package renaming;
+package Params;
 
-import RenameWandLib.OnErrorAction;
+import RenameWandLib.ErrorAction;
 import java.util.HashMap;
 
 /**
@@ -16,13 +16,13 @@ public class CleanParams {
     private HashMap substitutes;
     private boolean cleanDirectories = false;
     private boolean copy = false;
-    private OnErrorAction onErrorAction;
+    private ErrorAction onErrorAction;
     private boolean overWrite = false;
 
-    public OnErrorAction getOnErrorAction() {
+    public ErrorAction getOnErrorAction() {
         return onErrorAction;
     }
-    public void setOnErrorAction(OnErrorAction onErrorAction) {
+    public void setOnErrorAction(ErrorAction onErrorAction) {
         this.onErrorAction = onErrorAction;
     }
     public boolean isCleanDirectories() {

@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package renaming;
+package Params;
 
-import RenameWandLib.OnErrorAction;
+import RenameWandLib.ErrorAction;
 
 /**
  *
@@ -15,9 +15,9 @@ public class AdvancedRenameParams {
 
     private String sourcePattern;    
     private String destinationPattern;
-    private boolean recurseIntoSubdirectories = false;
+    private boolean recurseIntoSubdirectories = true;
     private boolean copy = false;
-    private OnErrorAction onErrorAction;    
+    private ErrorAction onErrorAction;
     private boolean matchLowerCase = false;
     private boolean overWrite = false;
 
@@ -45,10 +45,10 @@ public class AdvancedRenameParams {
     public void setCopy(boolean copy) {
         this.copy = copy;
     }
-    public OnErrorAction getOnErrorAction() {
+    public ErrorAction getOnErrorAction() {
         return onErrorAction;
     }
-    public void setOnErrorAction(OnErrorAction onErrorAction) {
+    public void setOnErrorAction(ErrorAction onErrorAction) {
         this.onErrorAction = onErrorAction;
     }    
     public boolean isMatchLowerCase() {

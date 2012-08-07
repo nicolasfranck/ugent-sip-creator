@@ -17,8 +17,8 @@ public class CleanListenerAdapter implements CleanListener{
         return true;
     }
     @Override
-    public OnErrorAction onError(final RenameFilePair pair, RenameError errorType, String errorStr) {
-        return OnErrorAction.skip;
+    public ErrorAction onError(final RenameFilePair pair, RenameError errorType, String errorStr) {
+        return ErrorAction.skip;
     }
     @Override
     public void onCleanStart(final RenameFilePair pair) {
