@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package helper;
 
 import java.io.*;
@@ -9,15 +5,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-/**
- *
- * @author nicolas
- */
 public final class Node {
     private Object object;
     private HashSet<Node>children = new HashSet<Node>();
     private Node parent;
+    private int hashCode = 0;
+    
+    public static int calculateHashCode(Node node){
+        int h = 0;
+        String s = node.getObject().toString();
+        for(int i = 0;i<s.length();i++)
+            h += s.charAt(i);
+        return h;
+    }
    
     public Node(Object object){
         this(object,null);
@@ -31,6 +31,7 @@ public final class Node {
     }
     public void setObject(Object object) {
         this.object = object;
+        this.hashCode = calculateHashCode(this);
     }
     public Node getParent() {
         return parent;
@@ -56,6 +57,9 @@ public final class Node {
     public void addChildren(ArrayList<Node>nodes){
         children.addAll(nodes);
     }
+    public void addPath(Path path){
+        addPath(path.getComponents());
+    }
     public void addPath(Object [] objects){
         pathToNode(this,objects);       
     }   
@@ -73,7 +77,7 @@ public final class Node {
         }        
         return node;
     }
-    public ArrayList<Object>getPath(){
+    public Path getPath(){
         ArrayList<Object>objects = new ArrayList<Object>();
         Node parentNode = this;
         do{
@@ -81,20 +85,24 @@ public final class Node {
             parentNode = parentNode.getParent();
         }while(parentNode != null);
         //geef beter omgekeerde lijst terug!!!
-        Collections.reverse(objects);
-        return objects;
-    }
-    @Override
-    public String toString(){
-        return getPath().toString();
-    }
+        Collections.reverse(objects);        
+        return new Path(objects.toArray());
+    }    
     public static void main(String [] args){
         if(args.length < 1)return;
         try{
+            //write code
+            /*
+            Node node = listFiles(new File(args[0]));
+            writeNode(node);
+            */
+            //write code
             ArrayList<ArrayList<String>>list = readStructure(new File(args[0]));
+            
             Node node = null;
             for(ArrayList<String>paths:list){
-                node = pathToNode(node,paths.toArray());
+                System.out.println(join(paths.toArray(),"/"));
+                //node = pathToNode(node,paths.toArray());
             }
             walkNode(node);
         }catch(Exception e){
@@ -126,8 +134,9 @@ public final class Node {
         return result;
     }
     public static void walkNode(Node node){
-        ArrayList<Object> objects = node.getPath();
-        System.out.println(join(objects.toArray(),"/"));
+        if(node == null)return;
+        Path path = node.getPath();
+        System.out.println(join(path.getComponents(),"/"));
         if(!node.isLeaf()){
             for(Node n:node.getChildren()){
                 walkNode(n);
@@ -158,15 +167,21 @@ public final class Node {
         }
         return node;
     }
-    public static ArrayList<ArrayList<String>> readStructure(File file) throws FileNotFoundException, IOException{
+    public static ArrayList<ArrayList<String>> readStructure(File file) throws FileNotFoundException, IOException, NodeException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line = null;
         String parent = null;
         int prevNumTabs = 0;
         ArrayList<String>paths = new ArrayList<String>();
         ArrayList<ArrayList<String>>list = new ArrayList<ArrayList<String>>();
+        int lineNo = 0;
         while((line = reader.readLine()) != null){
             int numTabs = numLeadingChars(line,'\t');
+            
+            if(Math.abs(numTabs - prevNumTabs) > 1){
+                throw new NodeException("invalid tab indentation at line "+lineNo);
+            }
+            
             String name = line.trim();
             if(numTabs == prevNumTabs){
                 if(paths.size() > 0)
@@ -179,11 +194,28 @@ public final class Node {
                 for(int i = 0;i<numChop;i++){
                     paths.remove(paths.size() - 1);
                 }
+                paths.add(name);
             }
-            list.add(paths);
-            //System.out.println(list.get(list.size()-1));
+            //list.add(paths);            
+            ArrayList<String>copy = new ArrayList<String>(paths.size());
+            for(String s:paths)
+                copy.add(s);
+            list.add(copy);
             prevNumTabs = numTabs;
+            lineNo++;
         }
         return list;
     }
+    @Override
+    public String toString(){
+        return object.toString();
+    }
+    @Override
+    public boolean equals(Object o){        
+        return object.toString().compareTo(o.toString()) == 0;
+    }
+    @Override
+    public int hashCode(){
+        return hashCode;
+    } 
 }
