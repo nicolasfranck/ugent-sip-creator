@@ -18,6 +18,7 @@ public final class Node {
     private Object object;
     private HashSet<Node>children = new HashSet<Node>();
     private Node parent;
+   
     public Node(Object object){
         this(object,null);
     }
@@ -31,11 +32,9 @@ public final class Node {
     public void setObject(Object object) {
         this.object = object;
     }
-
     public Node getParent() {
         return parent;
     }
-
     public void setParent(Node parent) {
         this.parent = parent;
     }
@@ -57,25 +56,22 @@ public final class Node {
     public void addChildren(ArrayList<Node>nodes){
         children.addAll(nodes);
     }
-    public void addPath(ArrayList<Object>objects){
-        Node newNode = Node.pathToNode(objects);
-        if(newNode != null)
-            children.add(newNode);
-    }
-    public static Node pathToNode(ArrayList<Object>objects){
-        Node firstNode = null;
-        Node lastNode = firstNode;
+    public void addPath(Object [] objects){
+        pathToNode(this,objects);       
+    }   
+    public static Node pathToNode(Node node,Object [] objects){
+        Node lastNode = node;
         for(Object o:objects){            
-            if(lastNode == null){
-                lastNode = new Node(o);
-                firstNode = lastNode;
+            if(lastNode == node){
+                lastNode = new Node(o,node);
+                node = lastNode;
             }else{
                 Node currentNode = new Node(o,lastNode);
                 lastNode.addChild(currentNode);
                 lastNode = currentNode;
             }            
         }        
-        return firstNode;
+        return node;
     }
     public ArrayList<Object>getPath(){
         ArrayList<Object>objects = new ArrayList<Object>();
@@ -93,12 +89,17 @@ public final class Node {
         return getPath().toString();
     }
     public static void main(String [] args){
-        String path;
-        if(args.length >= 1)path = args[0];
-        else path = "/home/nicolas/bhsl-pap";
-        Node node = listFiles(new File(path),null);
-        //walkNode(node);
-        writeNode(node);
+        if(args.length < 1)return;
+        try{
+            ArrayList<ArrayList<String>>list = readStructure(new File(args[0]));
+            Node node = null;
+            for(ArrayList<String>paths:list){
+                node = pathToNode(node,paths.toArray());
+            }
+            walkNode(node);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     public static Node listFiles(File file){
         return listFiles(file,null);
@@ -132,8 +133,7 @@ public final class Node {
                 walkNode(n);
             }
         }
-    }
-    
+    }    
     public static void writeNode(Node node){
         writeNode(node,0);
     }
@@ -152,29 +152,38 @@ public final class Node {
         while(line.charAt(pos) == c)pos++;           
         return pos;
     }
-    
-    public static Set<Node> readStructure(File file) throws IOException{        
-        return readStructure(new BufferedReader(
-                new InputStreamReader(
-                    new FileInputStream(file)
-                )
-        ));
+    public static Node getRootNode(Node node){
+        while(!node.isRoot()){
+            node = node.getParent();
+        }
+        return node;
     }
-    public static Set<Node> readStructure(BufferedReader reader) throws IOException{
-        return readStructure(reader,0);        
-    }
-    private static Set<Node> readStructure(BufferedReader reader,int tabPos) throws IOException{
-        Set<Node>set = new HashSet<Node>();
-        String line;
+    public static ArrayList<ArrayList<String>> readStructure(File file) throws FileNotFoundException, IOException{
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        String line = null;
+        String parent = null;
+        int prevNumTabs = 0;
+        ArrayList<String>paths = new ArrayList<String>();
+        ArrayList<ArrayList<String>>list = new ArrayList<ArrayList<String>>();
         while((line = reader.readLine()) != null){
-            int numLeadingTabs = numLeadingChars(line,'\t');
-            if(numLeadingTabs > tabPos){
-                
+            int numTabs = numLeadingChars(line,'\t');
+            String name = line.trim();
+            if(numTabs == prevNumTabs){
+                if(paths.size() > 0)
+                    paths.remove(paths.size()-1);
+                paths.add(name);
+            }else if(numTabs > prevNumTabs){
+                paths.add(name);
             }else{
-                
+                int numChop = prevNumTabs - numTabs;
+                for(int i = 0;i<numChop;i++){
+                    paths.remove(paths.size() - 1);
+                }
             }
-        }         
-        return set;        
-    }    
-   
+            list.add(paths);
+            //System.out.println(list.get(list.size()-1));
+            prevNumTabs = numTabs;
+        }
+        return list;
+    }
 }

@@ -17,8 +17,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -89,6 +87,8 @@ public class RenameView extends AbstractView{
                 fileNodesSelected.clear();
                 // tree.getSelectionPaths() != tse.getPaths()
                 TreePath [] selectedPaths = tree.getSelectionPaths();
+                logger.debug("RenameView: getNewTreeTableSelectionListener: selectedPaths: "+selectedPaths);
+                if(selectedPaths == null)return;
                 for(int i = 0;i<selectedPaths.length;i++){
                     FileNode fn = (FileNode) selectedPaths[i].getLastPathComponent();
                     fileNodesSelected.add(fn);
@@ -513,10 +513,17 @@ public class RenameView extends AbstractView{
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.fill = GridBagConstraints.HORIZONTAL;
 
+        
+        JTextArea descriptionArea = new JTextArea(Context.getMessage("RenameView.simpleRenamePanel.description.syntax"));
+        descriptionArea.setEditable(false);        
+        panel.add(descriptionArea,c);
+        c.gridy += 1;
+        
+
         //form
         SimpleRenameParamsForm renameForm = getSimpleRenameParamsForm();
         final ValidatingFormModel renameFormModel = renameForm.getFormModel();
-        JComponent componentForm = renameForm.getControl();
+        JComponent componentForm = renameForm.getControl();       
 
         panel.add(componentForm,c);
 
@@ -594,6 +601,11 @@ public class RenameView extends AbstractView{
         c.gridx = c.gridy = 0;
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.fill = GridBagConstraints.HORIZONTAL;
+
+        JTextArea descriptionArea = new JTextArea(Context.getMessage("RenameView.advancedRenamePanel.description.syntax"));
+        descriptionArea.setEditable(false);        
+        panel.add(descriptionArea,c);
+        c.gridy += 1;
 
         //form
         AdvancedRenameParamsForm renameForm = getAdvancedRenameParamsForm();

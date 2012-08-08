@@ -253,7 +253,7 @@
   <!--<util:map id="xsd_mapping" map-class="java.util.HashMap">
       <entry key="http://www.loc.gov/MARC21/slim" value="file:///home/nicolas/Bagger-LC/doc/metadata/xsd/MARC21.xsd" />
   </util:map>-->
-
+<!--
    <bean id="metsCreatorView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
     <property name="viewClass" value="simple.views.MetsCreatorView" />
     <property name="autoHideEnabled" value="true" />
@@ -273,7 +273,8 @@
              </entry>
          </map>
      </property>     
-  </bean>  
+  </bean>
+  -->
 
 
 <bean id="exceptionHandler"

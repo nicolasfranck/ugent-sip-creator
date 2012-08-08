@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,6 +22,7 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
     private Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
     private Icon errorIcon = (Icon) UIManager.getIcon("fileView.errorIcon");
 
+    private static Logger logger = Logger.getLogger(FileTreeCellRenderer.class);
 
     @Override
     public Component getTreeCellRendererComponent(
@@ -34,10 +36,15 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
         FileNode node = (FileNode)value;
         File currentFile = (File)node.getFile();
-      
+
+        logger.debug("getTreeCellRendererComponent: currentFile: "+currentFile);
+
+
         if (currentFile.isDirectory()){
+            logger.debug("getTreeCellRendererComponent: isDirectory");
             renderer.setIcon(directoryIcon);
-        }else{      
+        }else{
+            logger.debug("getTreeCellRendererComponent: isNotADirectory");
             renderer.setIcon(fileIcon);
         }
         return renderer;

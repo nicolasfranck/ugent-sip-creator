@@ -46,6 +46,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import javax.swing.tree.TreePath;
+import org.apache.log4j.Logger;
 
 /**
  * FileSystemModel is a TreeTableModel representing a hierarchical file 
@@ -65,6 +66,7 @@ public class FileSystemModel extends AbstractTreeTableModel
         MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
     }
     
+    private static Logger logger = Logger.getLogger(FileSystemModel.class);
 
     // Names of the columns.
     static protected String[]  cNames = {"Name", "Size", "Type", "Modified"};
@@ -75,8 +77,8 @@ public class FileSystemModel extends AbstractTreeTableModel
     // The the returned file length for directories. 
     public static final Integer ZERO = new Integer(0); 
 
-    public FileSystemModel() { 
-	super(new FileNode(new File(File.separator))); 
+    public FileSystemModel() {        
+	super(new FileNode(new File(File.separator)));        
     }
     public FileSystemModel(File file){
         super(new FileNode(file));
@@ -86,12 +88,15 @@ public class FileSystemModel extends AbstractTreeTableModel
     //
 
     protected File getFile(Object node) {
-	FileNode fileNode = ((FileNode)node); 
+	FileNode fileNode = ((FileNode)node);
+        logger.debug("getFile: fileNode: "+fileNode);
 	return fileNode.getFile();       
     }
 
     protected Object[] getChildren(Object node) {
-	FileNode fileNode = ((FileNode)node); 
+	FileNode fileNode = ((FileNode)node);
+        logger.debug("getChildren: fileNode: "+fileNode);
+        logger.debug("getChildren: fileNode.children: "+fileNode.getChildren());       
 	return fileNode.getChildren(); 
     }
 
@@ -101,18 +106,28 @@ public class FileSystemModel extends AbstractTreeTableModel
 
     @Override
     public int getChildCount(Object node) { 
-	Object[] children = getChildren(node); 
+	Object[] children = getChildren(node);
+        logger.debug("getChildCount: children: "+children);
 	return (children == null) ? 0 : children.length;
     }
 
     @Override
-    public Object getChild(Object node, int i) { 
-	return getChildren(node)[i]; 
+    public Object getChild(Object node, int i){
+        Object [] children = getChildren(node);
+        logger.debug("getChild: children: "+children);
+        if(children == null)return new Object [] {};
+        else if(i >= children.length)return new Object [] {};
+        else return children[i];
+	//return getChildren(node)[i];
     }
 
     // The superclass's implementation would work, but this is more efficient. 
     @Override
-    public boolean isLeaf(Object node) { return getFile(node).isFile(); }
+    public boolean isLeaf(Object node) {
+        File file = getFile(node);
+        return file == null ? false:file.isFile();
+        //return getFile(node).isFile();
+    }
 
     //
     //  The TreeTableNode interface. 
@@ -136,18 +151,37 @@ public class FileSystemModel extends AbstractTreeTableModel
     @Override
     public Object getValueAt(Object node, int column) {
 	File file = getFile(node);
+        
+        logger.debug("getValueAt: node: "+node);
+        logger.debug("getValueAt: column: "+column);
+        logger.debug("getValueAt: file: "+file);
+        logger.debug("getValueAt: file.path: "+file.getAbsolutePath());
+        logger.debug("getValueAt: file.list: "+file.list());
 
-        if(!file.exists()){
+        if(file == null)return null;
+        else if(!file.exists()){
             this.fireTreeNodesRemoved(this,new TreePath(this.getRoot()).getPath(),new int [] {},new Object [] {});
             return null;
         }
         
+
+        String [] listFileNames = null;
+        try{
+            listFileNames = file.list();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
 	try {
 	    switch(column) {
 	    case 0:
 		return file.isFile() ? file.getName():"";
-	    case 1:		
-                return file.isFile() ? FileUtils.sizePretty(file.length()) : file.list().length+" files";
+	    case 1:
+                if(file.isFile())return FileUtils.sizePretty(file.length());
+                else if(file.isDirectory()){
+                    if(!file.canRead() || listFileNames == null)return "(access denied)";
+                    return listFileNames.length+" files";
+                }                
 	    case 2:
                 if(file.isFile()){                    
                     Collection mimes = MimeUtil.getMimeTypes(file);
@@ -166,7 +200,7 @@ public class FileSystemModel extends AbstractTreeTableModel
 		return new Date(file.lastModified());
 	    }
 	}
-	catch  (SecurityException se) { 
+	catch(SecurityException se){ 
             se.printStackTrace();
         }   
 	return null; 

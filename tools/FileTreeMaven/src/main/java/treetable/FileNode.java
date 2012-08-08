@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import org.apache.log4j.Logger;
 
 /* A FileNode is a derivative of the File class - though we delegate to 
  * the File object rather than subclassing it. It is used to maintain a 
@@ -16,7 +17,9 @@ import java.util.Comparator;
  */
 public class FileNode { 
     File     file; 
-    Object[] children; 
+    Object[] children;
+
+    private static Logger logger = Logger.getLogger(FileNode.class);
 
     public FileNode(File file) { 
 	this.file = file; 
@@ -50,23 +53,29 @@ public class FileNode {
 	    return children; 
 	}
 	try{            
-            File [] fileEntries = file.listFiles();            
+            File [] fileEntries = file.listFiles();
+            logger.debug("getChildren: fileEntries:"+fileEntries);
             if(fileEntries != null){
                 ArrayList<File> files = new ArrayList<File>();
                 ArrayList<File> directories = new ArrayList<File>();
                 int num = 0;
                 for(File fileEntry:fileEntries){
                     if(!fileEntry.canRead()){
+                        logger.debug("getChildren: fileEntry "+fileEntry+" not readable ('num' now:"+num+")");
                         continue;
-                    }
-                    num++;                    
-                    if(fileEntry.isDirectory()){
-
+                    }else if(fileEntry.isDirectory()){
+                        logger.debug("getChildren: fileEntry "+fileEntry+" is directory ('num' now:"+num+")");
                         directories.add(fileEntry);
-                    }else if(fileEntry.isFile()){                        
+                        num++;
+                    }else if(fileEntry.isFile()){
+                        logger.debug("getChildren: fileEntry "+fileEntry+" is regular file");
                         files.add(fileEntry);
-                    }
-                }               
+                        num++;
+                    }                    
+                }
+                logger.debug("getChildren: directories:"+directories.size());
+                logger.debug("getChildren: files:"+files.size());
+                logger.debug("getChildren: total:"+num);
                 Collections.sort(directories,defaultFileSorter);
                 Collections.sort(files,defaultFileSorter);               
                 children = new FileNode[num];
@@ -83,6 +92,7 @@ public class FileNode {
             }
 	}catch(Exception se){
             se.printStackTrace();
+            children = new FileNode[]{};
         }
 	return children; 
     }    
