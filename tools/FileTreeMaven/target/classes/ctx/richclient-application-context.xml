@@ -248,7 +248,14 @@
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>    
-  </bean>  
+  </bean>
+
+  <bean id="bagItView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
+    <property name="viewClass" value="simple.views.BagItView" />
+    <property name="autoHideEnabled" value="true" />
+     <property name="floatEnabled" value="true" />
+     <property name="maximizeEnabled" value="true"/>
+  </bean>
 
   <!--<util:map id="xsd_mapping" map-class="java.util.HashMap">
       <entry key="http://www.loc.gov/MARC21/slim" value="file:///home/nicolas/Bagger-LC/doc/metadata/xsd/MARC21.xsd" />

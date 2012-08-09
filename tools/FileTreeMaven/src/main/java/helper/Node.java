@@ -235,7 +235,6 @@ public final class Node {
                 if(args.length < 2)return;
                 if(args.length >= 3)
                     System.setOut(new PrintStream(new File(args[2])));
-
                 //write code
                 ArrayList<Path>list = readStructure(new File(args[1]));
                 Node node = null;

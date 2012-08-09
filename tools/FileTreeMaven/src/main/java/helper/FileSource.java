@@ -13,29 +13,25 @@ import java.util.Collection;
  * @author nicolas
  */
 public class FileSource extends File{
-
-    private File target;
-    //aanvankelijk gelijk aan 'this', maar naarmate het hernoemd wordt niet meer
-    private File copy;
+    static {
+        MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+    }
+        
     private long lastModified = -1;
     private Collection<MimeType> mimeTypes;
 
     public FileSource(String path){
-        super(path);
-        setCopy(this);
+        super(path);        
     }
     public FileSource(File file){
-        super(file.getAbsolutePath());
-        setCopy(this);
+        super(file.getAbsolutePath());        
     }
     public FileSource(String path,boolean setMimeType){
-        super(path);
-        setCopy(this);
+        super(path);        
         if(setMimeType)getMimeTypes();
     }
     public FileSource(File file,boolean setMimeType){
-        super(file.getAbsolutePath());
-        setCopy(this);
+        super(file.getAbsolutePath());        
         if(setMimeType)getMimeTypes();
     }
     public Collection<MimeType> getMimeTypes() {
@@ -49,22 +45,9 @@ public class FileSource extends File{
     }
     private void setMimeTypes(Collection<MimeType> mimeTypes) {
         this.mimeTypes = mimeTypes;
-    }
-    public File getTarget() {
-        return target;
-    }
-    public void setTarget(File target) {
-        this.target = target;
-    }
-
-    public File getCopy() {
-        return copy;
-    }
-    public void setCopy(File copy) {
-        this.copy = new File(copy.getAbsolutePath());
-    }
+    }   
     @Override
     public String toString(){
-        return this.copy.getName();
+        return this.getName();
     }
 }

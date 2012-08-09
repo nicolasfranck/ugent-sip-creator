@@ -86,10 +86,10 @@ public class FileUtils {
         }
         
     }
-    public static DefaultMutableTreeNode getTreeNode(FileSource file){
-        return getTreeNode(file,-1);
+    public static DefaultMutableTreeNode toTreeNode(FileSource file){
+        return toTreeNode(file,-1);
     }
-    public static DefaultMutableTreeNode getTreeNode(FileSource file,int maxdepth){
+    public static DefaultMutableTreeNode toTreeNode(FileSource file,int maxdepth){
         if(file == null || !file.exists()){
             return null;
         }        
@@ -115,11 +115,11 @@ public class FileUtils {
         
         Collections.sort(directories,defaultFileSorter);
         for(File dir:directories){            
-            root.add(getTreeNode(new FileSource(dir),maxdepth-1));
+            root.add(toTreeNode(new FileSource(dir),maxdepth-1));
         }
         Collections.sort(files,defaultFileSorter);
         for(File f:files){            
-           root.add(getTreeNode(new FileSource(f),maxdepth-1));
+           root.add(toTreeNode(new FileSource(f),maxdepth-1));
         }             
         
         return root;

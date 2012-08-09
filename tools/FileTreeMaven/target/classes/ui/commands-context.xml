@@ -49,8 +49,9 @@
     <property name="members">
       <list>
         <!--<ref bean="fileMenu" />-->
-        <!--<ref bean="editMenu" />
+        <!--<ref bean="editMenu" />-->
         <ref bean="windowMenu" />
+        <!--
         <ref bean="helpMenu" />
         -->
       </list>
@@ -142,8 +143,8 @@
   <bean id="windowMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
       <list>
-        <bean class="org.springframework.richclient.command.support.NewWindowCommand" />
-        <value>separator</value>
+        <!--<bean class="org.springframework.richclient.command.support.NewWindowCommand" />
+        <value>separator</value>-->
         <bean class="org.springframework.richclient.command.support.ShowViewMenu" />
       </list>
     </property>

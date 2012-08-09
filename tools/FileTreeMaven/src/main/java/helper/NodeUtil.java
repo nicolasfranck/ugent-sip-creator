@@ -4,9 +4,6 @@
  */
 
 package helper;
-
-import java.util.ArrayList;
-
 /**
  *
  * @author nicolas
