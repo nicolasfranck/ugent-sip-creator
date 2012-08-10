@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package test;
+package creator;
 
 import com.anearalone.mets.*;
 import com.anearalone.mets.FileSec.*;
@@ -20,9 +20,9 @@ import java.io.InputStream;
  */
 public class MetsApiGit1 {
     public static void main(String []args){
-        if(args.length < 1)System.exit(1);
+        //if(args.length < 1)System.exit(1);
         try{
-            InputStream in = new FileInputStream(args[0]);
+            InputStream in = new FileInputStream("/home/nicolas/mets.xml");
             MetsReader mr = new MetsReader();
             
             Mets mets = mr.read(in);
@@ -31,7 +31,7 @@ public class MetsApiGit1 {
             for(FileGrp fileGrp:fileSec.getFileGrp()){
                 for(File metsFile:fileGrp.getFile()){     
                     for(FLocat floc:metsFile.getFLocat()){
-                        /*System.out.println(
+                        System.out.println(
                             fileGrp.getUse()+
                             " "
                             +
@@ -46,14 +46,18 @@ public class MetsApiGit1 {
                             metsFile.getID()
                             +
                             "')"
-                        );*/
+                        );
                     }                    
                 }
             }
-            StructMap sm = mets.getStructMap().get(0);
-            for(Fptr p:sm.getDiv().getFptr()){
-               p.setFILEID("test");
+            if(mets.getStructMap().size() > 0){
+                StructMap sm = mets.getStructMap().get(0);
+                for(Fptr p:sm.getDiv().getFptr()){
+                    p.setFILEID("test");
+                }
             }
+
+
             MetsWriter mw = new MetsWriter();
             mw.writeToOutputStream(mets,System.out);
             
