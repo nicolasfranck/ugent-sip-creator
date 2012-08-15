@@ -271,7 +271,8 @@
      </property>
   </bean>
 
-    <util:map id="xsd_mapping" map-class="java.util.HashMap">
+
+    <!--<util:map id="xsd_mapping" map-class="java.util.HashMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="file:///home/nicolas/Bagger-LC/doc/metadata/xsd/MARC21.xsd" />
     </util:map>-->
 <!--
