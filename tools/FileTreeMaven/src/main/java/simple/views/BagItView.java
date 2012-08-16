@@ -5,8 +5,7 @@
 
 package simple.views;
 
-import Filters.MimeTypeFilter;
-import eu.medsea.mimeutil.MimeType;
+import Filters.ExtensionFilter;
 import handlers.FileTreeTransferHandler;
 import handlers.FileTreeTransferHandler.Mode;
 import helper.Context;
@@ -57,8 +56,9 @@ public class BagItView extends AbstractView{
     private DefaultMutableTreeNode [] tagfileNodesSelected;
         
     public TransferHandler getPayloadTransferHandler() {
-        if(payloadTransferHandler == null)
+        if(payloadTransferHandler == null) {
             payloadTransferHandler = new FileTreeTransferHandler();
+        }
         return payloadTransferHandler;
     }
 
@@ -67,8 +67,9 @@ public class BagItView extends AbstractView{
     }
 
     public TransferHandler getTagfileTransferHandler() {
-        if(tagfileTransferHandler == null)
+        if(tagfileTransferHandler == null) {
             tagfileTransferHandler = new FileTreeTransferHandler(Mode.FILES_ONLY);
+        }
         return tagfileTransferHandler;
     }
 
@@ -77,8 +78,9 @@ public class BagItView extends AbstractView{
     }
     private JPanel constructButtonPanel(final JButton [] buttons){
        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-       for(JButton button:buttons)
-           panel.add(button);
+       for(JButton button:buttons) {
+            panel.add(button);
+        }
        return panel;
     }
 
@@ -267,13 +269,15 @@ public class BagItView extends AbstractView{
         fileSelector.setDialogTitle("Tag Files");
         fileSelector.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileSelector.setMultiSelectionEnabled(true);
-        fileSelector.setFileFilter(new MimeTypeFilter(new MimeType("text/xml"),"xml files only"));
+        fileSelector.setFileFilter(new ExtensionFilter("xml","xml files only",true));
         return selectFilesFrom(fileSelector);
     }
     public static File [] selectFilesFrom(JFileChooser fileSelector){
         int freturn = fileSelector.showOpenDialog(null);
         File [] files = {};
-        if(freturn == JFileChooser.APPROVE_OPTION)files = fileSelector.getSelectedFiles();
+        if(freturn == JFileChooser.APPROVE_OPTION) {
+            files = fileSelector.getSelectedFiles();
+        }
         return files;
     }
     @Override

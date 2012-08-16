@@ -104,15 +104,18 @@ public class TreeTableModelAdapter extends AbstractTableModel
     public int getRowCount() {
 	return tree.getRowCount();
     }
-
+    
     protected Object nodeForRow(int row) {
 	TreePath treePath = tree.getPathForRow(row);
+        //System.out.println("\nnodeForRow: "+row+", object:"+treePath.getLastPathComponent()+"\n");
 	return treePath.getLastPathComponent();         
     }
 
     @Override
     public Object getValueAt(int row, int column) {
-	return treeTableModel.getValueAt(nodeForRow(row), column);
+        Object o = nodeForRow(row);
+        System.out.println("row: "+row+", col: "+column+", object:"+o);
+	return treeTableModel.getValueAt(o, column);
     }
 
     @Override

@@ -64,8 +64,9 @@ public class BagItMETSCreator {
             BagFactory bagFactory = new BagFactory();
             Bag bag = bagFactory.createBag();
 
-            //add payloads
-            bag.addFilesToPayload(helper.FileUtils.listFiles("/home/nicolas/bhsl-pap"));
+            java.io.File sourceFile = new java.io.File("/home/nicolas/bhsl-pap");
+            //add payloads            
+            bag.addFileToPayload(sourceFile);
 
             bag = bag.makeComplete();
 
@@ -88,15 +89,19 @@ public class BagItMETSCreator {
             List<File>files = fileGrpMA.getFile();
 
             for(BagFile payload:bag.getPayload()){
-                System.out.println("adding payload to mets file: "+payload.getFilepath());
+                System.out.println("adding payload to mets file: "+payload.getFilepath());                
+                System.out.println("exists? "+(payload.exists() ? "yes":"no"));                
                 File metsFile = new File(payload.getFilepath());
+                
 
                 Map<Manifest.Algorithm,String> mapChecksums = bag.getChecksums(payload.getFilepath());
 
                 metsFile.setSIZE(payload.getSize());
-                
+                System.out.println("bag.getFile:"+bag.getFile());
+                java.io.File thisFile = new java.io.File(bag.getFile().getAbsolutePath()+"/"+payload.getFilepath());
+                System.out.println("file: "+thisFile.getAbsolutePath());
                 metsFile.setMIMETYPE(getMimeType(
-                    new java.io.File(bag.getFile().getAbsolutePath()+"/"+payload.getFilepath())
+                    thisFile
                 ));
 
                 if(mapChecksums.containsKey(Manifest.Algorithm.MD5)){

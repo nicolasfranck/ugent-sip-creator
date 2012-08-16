@@ -73,15 +73,15 @@ public final class JTreeTable extends JTable {
 	// Install a tableModel representing the visible rows in the tree.         
 	//super.setModel(new TreeTableModelAdapter(treeTableModel, tree));
         
-        setTreeTabelModel(treeTableModel);
-
+        setTreeTabelModel(treeTableModel);         
+        
 	// Force the JTable and JTree to share their row selection models. 
 	tree.setSelectionModel(new DefaultTreeSelectionModel() { 
 	    // Extend the implementation of the constructor, as if: 
-	 /* public this() */ {
-		setSelectionModel(listSelectionModel); 
+	 /* public this() */ {                
+		setSelectionModel(listSelectionModel);                 
 	    } 
-	}); 
+	});         
 	// Make the tree and table row heights the same. 
 	tree.setRowHeight(getRowHeight());
         
