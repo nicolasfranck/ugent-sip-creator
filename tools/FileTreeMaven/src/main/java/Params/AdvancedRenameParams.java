@@ -16,6 +16,7 @@ public class AdvancedRenameParams {
     private String sourcePattern;    
     private String destinationPattern;
     private boolean recurseIntoSubdirectories = true;
+    private boolean renameDirectories = false;
     private boolean copy = false;
     private ErrorAction onErrorAction;
     private boolean matchLowerCase = false;
@@ -63,5 +64,13 @@ public class AdvancedRenameParams {
     public void setOverWrite(boolean overWrite) {
         this.overWrite = overWrite;
     }
+
+    public boolean isRenameDirectories() {
+        return renameDirectories;
+    }
+
+    public void setRenameDirectories(boolean renameDirectories) {
+        this.renameDirectories = renameDirectories;
+    }    
 
 }

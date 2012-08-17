@@ -189,10 +189,12 @@ public class RenameWand {
             if(in.isFile()){
                 FileUtils.copyFile(in, out);
             }else if(in.isDirectory()){
-                if(copyDirectoryContent)
+                if(copyDirectoryContent) {
                     FileUtils.copyDirectory(in, out);
-                else
+                }
+                else {
                     FileUtils.copyFile(in, out);
+                }
             }
         }
         public ArrayList<RenameFilePair> getRenamePairs() {

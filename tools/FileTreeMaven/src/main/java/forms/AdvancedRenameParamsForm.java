@@ -46,6 +46,8 @@ public class AdvancedRenameParamsForm extends AbstractForm{
         builder.row();
         builder.addSeparator(Context.getMessage("detail"));
         builder.row();
+        builder.add("renameDirectories","colSpan=1 align=left");
+        builder.row();
         builder.add("copy","colSpan=1 align=left");
         builder.row();
         builder.add("matchLowerCase","colSpan=1 align=left");
