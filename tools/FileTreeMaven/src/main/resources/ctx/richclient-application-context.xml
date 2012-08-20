@@ -270,6 +270,14 @@
          </map>
      </property>
   </bean>
+  
+  
+  <bean id="mdSecView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
+    <property name="viewClass" value="simple.views.MdSecView" />
+    <property name="autoHideEnabled" value="true" />
+     <property name="floatEnabled" value="true" />
+     <property name="maximizeEnabled" value="true"/>    
+  </bean>
 
 
     <!--<util:map id="xsd_mapping" map-class="java.util.HashMap">
