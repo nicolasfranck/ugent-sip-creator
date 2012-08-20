@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -31,7 +32,7 @@ public class MdSecView extends AbstractView{
         return mdSecTable;
     }
     public MdSecTable createMdSecTable(){
-        return new MdSecTable(new MdSec [] {},new String [] {"ID","GROUPID"},"mdSecTable");
+        return new MdSecTable(new ArrayList<MdSec>(),new String [] {"ID","GROUPID"},"mdSecTable");
     }
     public void setMdSecTable(MdSecTable mdSecTable) {
         this.mdSecTable = mdSecTable;
@@ -66,11 +67,10 @@ public class MdSecView extends AbstractView{
                     setID(""+lastIndex);
                     setGROUPID(""+lastIndex);
                 }});
+                getMdSecTable().refresh();
                 lastIndex++;
             }        
         });
-        
         return buttonPanel;
-    }   
-    
+    }
 }
