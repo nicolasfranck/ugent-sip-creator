@@ -1,5 +1,5 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:x="http://www.w3.org/XML/1998/namespace"
+           xmlns:xml="http://www.w3.org/XML/1998/namespace"
            xmlns="http://purl.org/dc/elements/1.1/"
            targetNamespace="http://purl.org/dc/elements/1.1/"
            elementFormDefault="qualified"
@@ -83,7 +83,7 @@
   <xs:complexType name="elementType">
     <xs:simpleContent>
       <xs:extension base="xs:string">
-        <xs:attribute ref="x:lang" use="optional"/>
+        <xs:attribute ref="xml:lang" use="optional"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>

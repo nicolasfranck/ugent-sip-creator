@@ -1,6 +1,7 @@
 package helper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,7 +46,7 @@ public class XML {
      */
     public static DOMImplementationRegistry getDOMImplementationRegistry() throws Exception {
         if(registry == null){
-            registry = DOMImplementationRegistry.newInstance();
+            registry = DOMImplementationRegistry.newInstance();            
         }
         return registry;
     }
@@ -72,13 +73,14 @@ public class XML {
     public static DocumentBuilderFactory getDocumentBuilderFactory(){
         if(dbf == null){
             dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);            
+            dbf.setNamespaceAware(true);      
+            dbf.setValidating(true);
         }
         return dbf;
     }    
     public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException{
         if(db == null){
-            db = getDocumentBuilderFactory().newDocumentBuilder();
+            db = getDocumentBuilderFactory().newDocumentBuilder();            
         }
         return db;
     }
@@ -90,7 +92,7 @@ public class XML {
      */
     public static SchemaFactory getSchemaFactory(){
         if(sf == null){
-            sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);           
         }
         return sf;
     }
@@ -117,12 +119,25 @@ public class XML {
         Schema schema = getSchemaFactory().newSchema(schemaStreamSource);
         validate(sourceStreamSource,schema);
     }
+    public static void validate(Document doc,URL schemaURL) throws SAXException, IOException{
+        validate(
+            doc,createSchema(schemaURL)            
+        );
+    }
     public static void validate(Document doc,Schema schema) throws SAXException, IOException{
         validate(new DOMSource(doc),schema);
     }
     public static void validate(Source source,Schema schema) throws SAXException, IOException{
         Validator validator = schema.newValidator();
         validator.validate(source);
+    }
+    public static Schema createSchema(URL schemaURL) throws SAXException, IOException{        
+        return getSchemaFactory().newSchema(new StreamSource(
+            new BufferedReader(new InputStreamReader(schemaURL.openStream()))                
+        ));
+    }
+    public static Schema createSchema(File schemaFile) throws SAXException{
+        return getSchemaFactory().newSchema(schemaFile);
     }
 
 
