@@ -22,12 +22,10 @@ import org.w3c.dom.Element;
  * @author nicolas
  */
 public class NameValueToOAIDCImporter implements Importer{
-    private String [] DCKeys = {
-     "title","creator","subject","description","publisher",
-     "contributor","date","type","format","identifier","source",
-     "language","relation","coverage","rights" 
+    private static final String [] DCKeys = {
+     "title","creator","subject","description","publisher","contributor","date","type","format","identifier","source","language","relation","coverage","rights"
     };
-    public boolean hasKey(String lookupKey){
+    private static boolean hasKey(String lookupKey){
         for(String key:DCKeys){           
             if(key.compareTo(lookupKey) == 0){
                 return true;
@@ -65,14 +63,12 @@ public class NameValueToOAIDCImporter implements Importer{
             Logger.getLogger(NameValueToOAIDCImporter.class.getName()).log(Level.SEVERE, null, ex);
         }        
         return doc;
-    }    
-    /*
-    public static void main(String []args) throws Exception{      
-        String path = "../../doc/metadata/xsd/MARC21.xsd";
-        File file = new File(path);        
-        URL url = new URL("file://../../doc/metadata/xsd/MARC21.xsd");                
-        XML.DocumentToXML(new NameValueToOAIDCImporter().performImport(new File("/tmp/bag-info.txt")),new FileOutputStream("/tmp/dc.xml"));
     }
-    */
-    
+    public static void main(String [] args){
+        try{
+            XML.DocumentToXML(new NameValueToOAIDCImporter().performImport(new File("/tmp/bag-info.txt")),System.out,true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

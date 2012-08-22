@@ -114,7 +114,7 @@ public class TreeTableModelAdapter extends AbstractTableModel
     @Override
     public Object getValueAt(int row, int column) {
         Object o = nodeForRow(row);
-        System.out.println("row: "+row+", col: "+column+", object:"+o);
+        //System.out.println("row: "+row+", col: "+column+", object:"+o);
 	return treeTableModel.getValueAt(o, column);
     }
 

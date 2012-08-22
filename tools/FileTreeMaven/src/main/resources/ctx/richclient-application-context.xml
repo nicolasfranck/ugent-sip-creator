@@ -70,7 +70,7 @@
     <property name="windowCommandManagerBeanName" value="windowCommandManager" />
     <property name="menubarBeanName" value="menuBar" />
     <!--<property name="toolbarBeanName" value="toolBar" />-->
-    <property name="startingPageId" value="renameView" />
+    <property name="startingPageId" value="mdSecView" />
     <property name="registerableExceptionHandler" ref="exceptionHandler" />
   </bean>
 
@@ -252,6 +252,12 @@
      </property>
   </bean>
   
+  <bean id="metsView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
+    <property name="viewClass" value="simple.views.MetsView" />
+    <property name="autoHideEnabled" value="true" />
+     <property name="floatEnabled" value="true" />
+     <property name="maximizeEnabled" value="true"/>      
+  </bean>
   
   <bean id="mdSecView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
     <property name="viewClass" value="simple.views.MdSecView" />
@@ -260,17 +266,18 @@
      <property name="maximizeEnabled" value="true"/> 
      <property name="viewProperties">         
          <map>  
-             <entry key="forbiddenNamespaces">
-                <list>
-                     <value>http://www.loc.gov/METS/</value>
-                </list>
-             </entry>
+             <!--
+             <entry key="forbiddenNamespaces" value-ref="forbiddenNamespaces" />                
              <entry key="namespaceMap" value-ref="namespaceMap" />
              <entry key="xsdMap" value-ref="xsdMap" />            
+             -->
          </map>   
      </property>
   </bean>
-
+  
+    <util:list id="forbiddenNamespaces">
+        <value>http://www.loc.gov/METS/</value>               
+    </util:list>
     <util:map id="namespaceMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="MARC"  />
         <entry key="http://www.loc.gov/mods/v3" value="MODS" />
@@ -281,14 +288,15 @@
         <entry key="http://www.loc.gov/METS/" value="METS" />                    
     </util:map>
     
-    <util:map id="xsdMap">                     
-        <entry key="http://www.loc.gov/MARC21/slim" value="../../doc/metadata/xsd/MARC21.xsd" />
-        <entry key="http://www.loc.gov/mods/v3" value="../../doc/metadata/xsd/mods.xsd" />
-        <entry key="info:lc/xmlns/premis-v2" value="../../doc/metadata/xsd/premis.xsd" />
-        <entry key="urn:isbn:1-931666-22-9" value="../../doc/metadata/xsd/ead.xsd" />
-        <entry key="urn:ebu:metadata-schema:ebupmeta_2011" value="../../doc/metadata/xsd/EBU_PMETA_2011.xsd" />
-        <entry key="http://www.getty.edu/CDWA/CDWALite" value="../../doc/metadata/xsd/CDWALite-xsd-public-v1-1.xsd" />
-        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="../../doc/metadata/xsd/oai_dc.xsd" />
+    <util:map id="xsdMap">
+        <entry key="http://www.loc.gov/MARC21/slim" value="file:../../doc/metadata/xsd/MARC21.xsd" />
+        <entry key="http://www.loc.gov/mods/v3" value="file:../../doc/metadata/xsd/mods.xsd" />
+        <entry key="info:lc/xmlns/premis-v2" value="file:../../doc/metadata/xsd/premis.xsd" />
+        <entry key="urn:isbn:1-931666-22-9" value="file:../../doc/metadata/xsd/ead.xsd" />
+        <entry key="urn:ebu:metadata-schema:ebupmeta_2011" value="file:../../doc/metadata/xsd/EBU_PMETA_2011.xsd" />
+        <entry key="http://www.getty.edu/CDWA/CDWALite" value="file:../../doc/metadata/xsd/CDWALite-xsd-public-v1-1.xsd" />
+        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="file:../../doc/metadata/xsd/oai_dc.xsd" />
+        
     </util:map>
     
 <!--

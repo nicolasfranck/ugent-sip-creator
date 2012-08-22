@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,6 +27,7 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -73,14 +75,23 @@ public class XML {
     public static DocumentBuilderFactory getDocumentBuilderFactory(){
         if(dbf == null){
             dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);      
-            dbf.setValidating(true);
+            dbf.setNamespaceAware(true);                  
+            dbf.setValidating(false);
+            dbf.setIgnoringComments(true);
+            dbf.setIgnoringElementContentWhitespace(true);
         }
         return dbf;
     }    
     public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException{
         if(db == null){
-            db = getDocumentBuilderFactory().newDocumentBuilder();            
+            db = getDocumentBuilderFactory().newDocumentBuilder();   
+            db.setEntityResolver(new EntityResolver() {
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId)throws SAXException, IOException {
+                    System.out.println("Ignoring " + publicId + ", " + systemId);
+                    return new InputSource(new StringReader(""));
+                }
+            });
         }
         return db;
     }
@@ -195,6 +206,6 @@ public class XML {
         LSSerializer serializer = createLSSerializer();
         DOMConfiguration conf = serializer.getDomConfig();                
         conf.setParameter("format-pretty-print",new Boolean(pretty));
-        serializer.write(doc, lsout);
+        serializer.write(doc,lsout);
     }
 }

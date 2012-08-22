@@ -21,8 +21,7 @@ public class ApplicationContextUtil {
 		UIManager.put("FileChooser.readOnly", Boolean.TRUE);
 	}
 
-	public static String getMessage(String propertyName) {
-                
+	public static String getMessage(String propertyName) {                
 		return Application.instance().getApplicationContext().getMessage(
 				propertyName, null, propertyName, Locale.getDefault());
 	}

@@ -17,7 +17,7 @@ public final class ExtensionFilter extends FileFilter{
     
     private String description;  
     private static Logger logger = Logger.getLogger(ExtensionFilter.class);
-    private String extension;
+    private String [] extensions;
     private boolean ignoreCase = false;           
 
     public boolean isIgnoreCase() {
@@ -26,18 +26,29 @@ public final class ExtensionFilter extends FileFilter{
     public void setIgnoreCase(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
     }   
-    public String getExtension() {
-        return extension;
+    public String [] getExtensions() {
+        return extensions;
     }
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setExtensions(String [] extensions) {
+        this.extensions = extensions;
     }
-    public ExtensionFilter(String extension,String description){
-        setExtension(extension);
+    private boolean extensionValid(String filename){
+        int posDot = filename.lastIndexOf(".");
+        if(posDot < 0)return false;
+        String ext = filename.substring(posDot+1);
+        for(String extension:extensions){
+            if(ext.compareTo(extension) == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+    public ExtensionFilter(String [] extensions,String description){
+        setExtensions(extensions);
         setDescription(description);
     }
     public ExtensionFilter(String extension,String description,boolean ignoreCase){
-        setExtension(extension);
+        setExtensions(extensions);
         setDescription(ignoreCase ? description.toLowerCase():description);
         setIgnoreCase(ignoreCase);
     }
@@ -51,7 +62,7 @@ public final class ExtensionFilter extends FileFilter{
             
         return file.canRead() && (
             file.isDirectory() ||
-            name.endsWith("."+getExtension())
+            extensionValid(name)            
         );
     }   
     public void setDescription(String description) {
