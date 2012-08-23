@@ -7,9 +7,8 @@ package Importers;
 import gov.loc.repository.bagit.utilities.namevalue.NameValueReader.NameValue;
 import gov.loc.repository.bagit.utilities.namevalue.impl.NameValueReaderImpl;
 import helper.XML;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,12 +35,42 @@ public class NameValueToOAIDCImporter implements Importer{
     @Override
     public Document performImport(File file) {
         Document doc = null;      
+        try {                       
+            doc = performImport(new FileInputStream(file));
+        }catch (FileNotFoundException ex) {
+            Logger.getLogger(NameValueToOAIDCImporter.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return doc;
+    }
+    
+    public static void main(String [] args){
+        try{
+            XML.DocumentToXML(new NameValueToOAIDCImporter().performImport(new File("/tmp/bag-info.txt")),System.out,true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Document performImport(URL url) {
+        Document doc = null;
+        try {
+            doc = performImport(url.openStream());
+        } catch (IOException ex) {
+            Logger.getLogger(NameValueToOAIDCImporter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return doc;
+    }
+
+    @Override
+    public Document performImport(InputStream is) {
+        Document doc = null;      
         try {           
             DOMImplementation domImpl = XML.getDocumentBuilder().getDOMImplementation();            
             doc = domImpl.createDocument("http://www.openarchives.org/OAI/2.0/oai_dc/","oai_dc:dc", null);                               
             Element root = doc.getDocumentElement();                                 
             root.setAttribute("xmlns:dc","http://purl.org/dc/elements/1.1/");                                    
-            NameValueReaderImpl reader = new NameValueReaderImpl("UTF-8",new FileInputStream(file),"bagInfoTxt");
+            NameValueReaderImpl reader = new NameValueReaderImpl("UTF-8",is,"bagInfoTxt");
             while(reader.hasNext()){
                 NameValue pair = reader.next();   
                 String lowerKey = pair.getKey().toLowerCase();
@@ -57,18 +86,9 @@ public class NameValueToOAIDCImporter implements Importer{
                 root.appendChild(el);                
             }
             
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(NameValueToOAIDCImporter.class.getName()).log(Level.SEVERE, null, ex);
         }catch (ParserConfigurationException ex) {
             Logger.getLogger(NameValueToOAIDCImporter.class.getName()).log(Level.SEVERE, null, ex);
         }        
         return doc;
-    }
-    public static void main(String [] args){
-        try{
-            XML.DocumentToXML(new NameValueToOAIDCImporter().performImport(new File("/tmp/bag-info.txt")),System.out,true);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
     }
 }

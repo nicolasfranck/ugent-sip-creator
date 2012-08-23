@@ -4,11 +4,11 @@
  */
 package Panels;
 
+import Bindings.MdSecTable;
 import Exceptions.IllegalNamespaceException;
 import Exceptions.NoNamespaceException;
 import Filters.FileExtensionFilter;
 import Mets.MdSecWrapper;
-import bindings.MdSecTable;
 import com.anearalone.mets.MdSec;
 import helper.Context;
 import java.awt.BorderLayout;
@@ -23,15 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ProgressMonitor;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

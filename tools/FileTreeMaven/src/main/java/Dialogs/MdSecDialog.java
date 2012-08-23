@@ -4,6 +4,7 @@
  */
 package Dialogs;
 
+import Panels.AgentPanel;
 import Panels.MdSecPanel;
 import com.anearalone.mets.MdSec;
 import java.awt.Frame;

@@ -262,8 +262,14 @@
              <entry key="schemaURL" value="file:../../doc/metadata/xsd/mets.xsd" />
          </map>
      </property>
-  </bean>
-
+  </bean>  
+  <bean id="agentView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
+    <property name="viewClass" value="simple.views.AgentView" />
+    <property name="autoHideEnabled" value="true" />
+     <property name="floatEnabled" value="true" />
+     <property name="maximizeEnabled" value="true"/>     
+     
+  </bean>  
     <util:list id="forbiddenNamespaces">
         <value>http://www.loc.gov/METS/</value>               
     </util:list>

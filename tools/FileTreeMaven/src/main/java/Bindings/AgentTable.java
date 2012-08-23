@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bindings;
+package Bindings;
 
 import ca.odell.glazedlists.EventList;
-import com.anearalone.mets.MdSec;
+import com.anearalone.mets.MetsHdr.Agent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -19,10 +19,10 @@ import org.springframework.richclient.table.support.AbstractObjectTable;
  *
  * @author nicolas
  */
-public final class MdSecTable extends AbstractObjectTable{    
-    private ArrayList<MdSec>data;
+public final class AgentTable extends AbstractObjectTable{    
+    private ArrayList<Agent>data;
     
-    public MdSecTable(ArrayList<MdSec>data,String [] cols,String id){
+    public AgentTable(ArrayList<Agent>data,String [] cols,String id){
         super(id,cols);         
         setData(data);                
     }    
@@ -38,7 +38,7 @@ public final class MdSecTable extends AbstractObjectTable{
             @Override
             public void keyReleased(KeyEvent ke) {               
                 if(ke.getKeyCode() == 127){                    
-                    deleteSelectedMdSec();                    
+                    deleteSelectedAgent();                    
                 }
             }            
         });          
@@ -50,10 +50,10 @@ public final class MdSecTable extends AbstractObjectTable{
     protected Object[] getDefaultInitialData(){               
        return getData().toArray();
     }
-    protected ArrayList<MdSec> getData() {
+    protected ArrayList<Agent> getData() {
         return data;
     }
-    protected void setData(ArrayList<MdSec> data) {        
+    protected void setData(ArrayList<Agent> data) {        
         this.data = data;        
     }   
     public void refresh(){        
@@ -68,27 +68,25 @@ public final class MdSecTable extends AbstractObjectTable{
            ((AbstractTableModel)this.getTable().getModel()).fireTableDataChanged();
         }
     }
-    public void addMdSec(MdSec mdSec){        
-        getData().add(mdSec);        
+    public void addAgent(Agent agent){        
+        getData().add(agent);        
     }   
-    public void deleteSelectedMdSec(){
+    public void deleteSelectedAgent(){
         if(getTable().getSelectedRows().length > 0){
             //indexes van geselecteerde rijen (pas op: indien gesorteerd, niet gelijk aan data in model)
             int [] indexes = getTable().getSelectedRows();
             //mapping naar indexes in model
-            for(int i = 0;i<indexes.length;i++){             
-                System.out.print("from "+indexes[i]);                                
+            for(int i = 0;i<indexes.length;i++){
                 indexes[i] = getTable().convertRowIndexToModel(indexes[i]);
-                System.out.println(" to "+indexes[i]);
             }            
-            deleteMdSec(indexes);
+            deleteAgent(indexes);
             refresh();
         }
     }   
-    public void deleteMdSec(int i){
-        deleteMdSec(new int[] {i});
+    public void deleteAgent(int i){
+        deleteAgent(new int[] {i});
     }
-    public void deleteMdSec(int [] indexes){
+    public void deleteAgent(int [] indexes){
         
         //PROBLEEM: de data wordt door Model gesorteerd: de orde van de rijen in de table
         //is dus niet gelijk aan de orde in data!!       

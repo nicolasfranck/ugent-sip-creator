@@ -5,6 +5,8 @@
 package Importers;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import org.w3c.dom.Document;
 
 /**
@@ -13,4 +15,6 @@ import org.w3c.dom.Document;
  */
 public interface Importer {
     Document performImport(File file);
+    Document performImport(URL url);
+    Document performImport(InputStream is);
 }

@@ -9,7 +9,7 @@ import Filters.FileExtensionFilter;
 import Swing.SimpleFormBuilder;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
-import Forms.MetsAgentForm;
+import Forms.AgentForm;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -122,7 +122,7 @@ public class MetsView extends AbstractView implements ActionListener{
             helper.SwingUtils.removeAllActionListeners(editDmdSecButton);            
             editDmdSecButton.addActionListener(new editMdSecListener((Frame)getWindowControl(),(ArrayList<MdSec>)getMets().getDmdSec()));            
             helper.SwingUtils.setJComponentEnabled(middlePanel,true);
-            panel.add(new MetsAgentForm(mets.getMetsHdr().getAgent().get(0)).getControl(),BorderLayout.SOUTH);
+            panel.add(new AgentForm(mets.getMetsHdr().getAgent().get(0)).getControl(),BorderLayout.SOUTH);
             panel.repaint();
             
             

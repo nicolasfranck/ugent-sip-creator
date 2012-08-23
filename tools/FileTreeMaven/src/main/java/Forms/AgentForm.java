@@ -7,10 +7,10 @@ package Forms;
 
 import com.anearalone.mets.MetsHdr;
 import com.anearalone.mets.MetsHdr.Agent;
-import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
@@ -22,12 +22,12 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
  *
  * @author nicolas
  */
-public class MetsAgentForm extends AbstractForm{
+public class AgentForm extends AbstractForm{
     
-    public MetsAgentForm(Agent agent){
+    public AgentForm(Agent agent){
         this(FormModelHelper.createFormModel(agent,"metsAgentForm"));
     }
-    public MetsAgentForm(FormModel formModel){
+    public AgentForm(FormModel formModel){
         super(formModel);       
     }    
     @Override
@@ -40,6 +40,10 @@ public class MetsAgentForm extends AbstractForm{
         builder.add("name","colSpan=1 align=left");
         builder.row();
         
+        System.out.println("agenttype values: "+Agent.AGENTTYPE.values().length);
+        for(Agent.AGENTTYPE val:Agent.AGENTTYPE.values()){
+            System.out.println("agenttype values: "+val);
+        }
         Binding agentTypeBinding = bf.createBoundComboBox("AGENTTYPE",Agent.AGENTTYPE.values());
         builder.add(agentTypeBinding,"colSpan=1 align=left");        
         builder.row();
@@ -51,6 +55,7 @@ public class MetsAgentForm extends AbstractForm{
         final JComponent [] componentsOtherRole = builder.add("OTHERROLE","colSpan=1 align=left");
         helper.SwingUtils.setJComponentsEnabled(componentsOtherRole,false);
         builder.row();
+        
         final JComponent [] componentsOtherType = builder.add("OTHERTYPE","colSpan=1 align=left");
         helper.SwingUtils.setJComponentsEnabled(componentsOtherType,false);
         builder.row();        
@@ -64,11 +69,14 @@ public class MetsAgentForm extends AbstractForm{
                     enabled = true;                    
                 }else{
                     enabled = false;
+                    ((JTextField)componentsOtherRole[1]).setText("");
+                    ((JTextField)componentsOtherType[1]).setText("");
                 }
                 helper.SwingUtils.setJComponentsEnabled(componentsOtherRole,enabled);
-                helper.SwingUtils.setJComponentsEnabled(componentsOtherRole,enabled);
+                helper.SwingUtils.setJComponentsEnabled(componentsOtherType,enabled);
             }
         });
+        
 
         return builder.getForm();
     }

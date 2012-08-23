@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package bindings;
+package Bindings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
