@@ -7,9 +7,9 @@ package simple.views;
 
 import RenameWandLib.*;
 import SimpleRenamerLib.SimpleRenamer;
-import forms.CleanParamsForm;
-import forms.AdvancedRenameParamsForm;
-import forms.SimpleRenameParamsForm;
+import Forms.CleanParamsForm;
+import Forms.AdvancedRenameParamsForm;
+import Forms.SimpleRenameParamsForm;
 import helper.Context;
 import java.awt.*;
 import java.awt.event.ActionEvent;

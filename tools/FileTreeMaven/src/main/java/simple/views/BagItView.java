@@ -5,7 +5,7 @@
 
 package simple.views;
 
-import Filters.ExtensionFilter;
+import Filters.FileExtensionFilter;
 import handlers.FileTreeTransferHandler;
 import handlers.FileTreeTransferHandler.Mode;
 import helper.Context;
@@ -269,7 +269,7 @@ public class BagItView extends AbstractView{
         fileSelector.setDialogTitle("Tag Files");
         fileSelector.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileSelector.setMultiSelectionEnabled(true);
-        fileSelector.setFileFilter(new ExtensionFilter("xml","xml files only",true));
+        fileSelector.setFileFilter(new FileExtensionFilter(new String [] {"xml"},"xml files only",true));
         return selectFilesFrom(fileSelector);
     }
     public static File [] selectFilesFrom(JFileChooser fileSelector){

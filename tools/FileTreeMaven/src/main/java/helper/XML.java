@@ -43,6 +43,13 @@ public class XML {
     private static DOMImplementationRegistry registry = null;
     private static DOMImplementationLS impl = null;
 
+    public static void free(){
+        sf = null;
+        dbf = null;
+        db = null;
+        registry = null;
+        impl = null;
+    }
     /*
      * W3C DOM helper functions
      */
@@ -107,8 +114,6 @@ public class XML {
         }
         return sf;
     }
-
-
     /*
      * check against schema (XSD or DTD)
      */

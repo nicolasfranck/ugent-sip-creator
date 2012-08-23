@@ -338,16 +338,16 @@ public class Mets extends IDElement implements ElementInterface {
      */
     public void marshal(Element root, Document doc) {
         String metsNs = NS.METS.ns();
-
+        
         // set up namespace declarations and schema references
         root.setAttribute("xmlns:mets", metsNs);
         root.setAttribute("xmlns:xlink", NS.XLINK.ns());
         root.setAttribute("xmlns:xsi", NS.XSI.ns());
         root.setAttributeNS(NS.XSI.ns(), "xsi:schemaLocation", NS.METS.schemaLoc());
-
+        
         // ID, TYPE
         super.marshal(root, doc);
-
+        
         // OBJID
         if (this.objid != null)
             root.setAttribute("OBJID", this.objid);
