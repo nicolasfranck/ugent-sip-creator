@@ -213,4 +213,13 @@ public class XML {
         conf.setParameter("format-pretty-print",new Boolean(pretty));
         serializer.write(doc,lsout);
     }
+    public static void main(String [] args){
+        try{
+        XML.validate(
+            XML.XMLToDocument(new File("/home/nicolas/bag-info.txt")),
+                new URL("file:///home/nicolas/Bagger-LC/doc/metadata/xsd/oai_dc.xsd"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

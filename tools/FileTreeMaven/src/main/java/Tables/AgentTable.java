@@ -2,17 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Bindings;
+package Tables;
 
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MetsHdr.Agent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumnModel;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 
 /**
@@ -22,7 +20,7 @@ import org.springframework.richclient.table.support.AbstractObjectTable;
 public final class AgentTable extends AbstractObjectTable{    
     private ArrayList<Agent>data;
     
-    public AgentTable(ArrayList<Agent>data,String [] cols,String id){
+    public AgentTable(final ArrayList<Agent>data,String [] cols,String id){
         super(id,cols);         
         setData(data);                
     }    
@@ -38,13 +36,11 @@ public final class AgentTable extends AbstractObjectTable{
             @Override
             public void keyReleased(KeyEvent ke) {               
                 if(ke.getKeyCode() == 127){                    
-                    deleteSelectedAgent();                    
+                    deleteSelectedAgent();           
+                    refresh();
                 }
             }            
-        });          
-        TableColumnModel tcm = table.getColumnModel();
-        tcm.getColumn(0).setPreferredWidth(100);
-        tcm.getColumn(1).setPreferredWidth(100);                                      
+        });        
     }
     @Override
     protected Object[] getDefaultInitialData(){               
@@ -53,8 +49,12 @@ public final class AgentTable extends AbstractObjectTable{
     protected ArrayList<Agent> getData() {
         return data;
     }
-    protected void setData(ArrayList<Agent> data) {        
-        this.data = data;        
+    public void reset(final ArrayList<Agent>data){        
+        setData(data);
+        refresh();
+    }
+    protected void setData(final ArrayList<Agent> data) {        
+        this.data = data;    
     }   
     public void refresh(){        
         EventList rows = getFinalEventList();        
@@ -70,31 +70,31 @@ public final class AgentTable extends AbstractObjectTable{
     }
     public void addAgent(Agent agent){        
         getData().add(agent);        
-    }   
+    }        
     public void deleteSelectedAgent(){
         if(getTable().getSelectedRows().length > 0){
-            //indexes van geselecteerde rijen (pas op: indien gesorteerd, niet gelijk aan data in model)
-            int [] indexes = getTable().getSelectedRows();
-            //mapping naar indexes in model
-            for(int i = 0;i<indexes.length;i++){
-                indexes[i] = getTable().convertRowIndexToModel(indexes[i]);
+            for(Agent agent:getSelections()){
+                getData().remove(agent);
             }            
-            deleteAgent(indexes);
-            refresh();
         }
-    }   
-    public void deleteAgent(int i){
-        deleteAgent(new int[] {i});
+    }      
+    public Agent [] getSelections(){
+        int[] selected = getTable().getSelectedRows();
+        if(selected == null){
+            return null;
+        }
+        Agent[]agents = new Agent[selected.length];
+        for (int i = 0; i < selected.length; i++) {
+            agents[i] = (Agent) getTableModel().getElementAt(selected[i]);
+        }
+        return agents;
     }
-    public void deleteAgent(int [] indexes){
-        
-        //PROBLEEM: de data wordt door Model gesorteerd: de orde van de rijen in de table
-        //is dus niet gelijk aan de orde in data!!       
-        
-        //onderstaande werkt enkel indien lijst gesorteerd is
-        Arrays.sort(indexes);       
-        for(int i = 0;i < indexes.length;i++){           
-            getData().remove(indexes[i] - i);
+    public Agent getSelected(){
+        Agent [] agents = getSelections();
+        if(agents == null || agents.length == 0){
+            return null;
+        }else{
+            return agents[0];
         }
     }
 }

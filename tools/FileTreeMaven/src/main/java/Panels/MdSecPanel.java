@@ -4,13 +4,17 @@
  */
 package Panels;
 
-import Bindings.MdSecTable;
 import Exceptions.IllegalNamespaceException;
 import Exceptions.NoNamespaceException;
 import Filters.FileExtensionFilter;
+import Importers.Importer;
+import Importers.ImporterFactory;
 import Mets.MdSecWrapper;
+import Tables.DmdSecTable;
 import com.anearalone.mets.MdSec;
+import com.anearalone.mets.MdSec.MdWrap;
 import helper.Context;
+import helper.XML;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,11 +24,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -34,7 +41,7 @@ import org.xml.sax.SAXException;
  */
 public class MdSecPanel extends JPanel{
     private JComponent buttonPanel;
-    private MdSecTable mdSecTable;       
+    private DmdSecTable dmdSecTable;       
     private HashMap<String,String> xsdMap = null;
     private HashMap<String,String> namespaceMap = null;
     private ArrayList<String>forbiddenNamespaces = null;  
@@ -42,11 +49,15 @@ public class MdSecPanel extends JPanel{
     private ArrayList<MdSec>data;
     private ProgressMonitor progressMonitor;    
     
-    public MdSecPanel(ArrayList<MdSec>data){        
+    public MdSecPanel(final ArrayList<MdSec>data){        
         assert(data != null);
         this.data = data; 
         setLayout(new BorderLayout());
         add(createContentPane());        
+    }
+    public void reset(final ArrayList<MdSec>data){                
+        getDmdSecTable().reset(data);
+        this.data = data;        
     }
     public JComponent getButtonPanel() {
         if(buttonPanel == null){
@@ -96,21 +107,21 @@ public class MdSecPanel extends JPanel{
     public void setNamespaceMap(HashMap namespaceMap) {
         this.namespaceMap = namespaceMap;
     } 
-    public MdSecTable getMdSecTable() {
-        if(mdSecTable == null){
-            mdSecTable = createMdSecTable();
+    public DmdSecTable getDmdSecTable() {
+        if(dmdSecTable == null){
+            dmdSecTable = createMdSecTable();
         }
-        return mdSecTable;
+        return dmdSecTable;
     }
-    public MdSecTable createMdSecTable(){
-        return new MdSecTable(data,new String [] {"ID","mdWrap.xmlData[0].namespaceURI","mdWrap.MDTYPE"},"mdSecTable");
+    public DmdSecTable createMdSecTable(){
+        return new DmdSecTable(data,new String [] {"ID","mdWrap.xmlData[0].namespaceURI","mdWrap.MDTYPE"},"mdSecTable");
     }
-    public void setMdSecTable(MdSecTable mdSecTable) {
-        this.mdSecTable = mdSecTable;
+    public void setMdSecTable(DmdSecTable dmdSecTable) {
+        this.dmdSecTable = dmdSecTable;
     }  
     protected JComponent createContentPane() {
         JPanel panel = new JPanel(new BorderLayout());        
-        panel.add(new JScrollPane(getMdSecTable().getControl()));        
+        panel.add(new JScrollPane(getDmdSecTable().getControl()));        
         panel.add(getButtonPanel(),BorderLayout.NORTH);        
         JPanel consolePanel = new JPanel(new BorderLayout());     
         consolePanel.add(new JLabel("log:"));
@@ -131,7 +142,7 @@ public class MdSecPanel extends JPanel{
         removeButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                getMdSecTable().deleteSelectedMdSec();
+                getDmdSecTable().deleteSelectedMdSec();
             }        
         });     
         
@@ -146,7 +157,32 @@ public class MdSecPanel extends JPanel{
                 progressMonitor.setMillisToPopup(0);              
                 
                 
-                MdSecPanel.TaskAddMdSec task = new MdSecPanel.TaskAddMdSec();
+                MdSecPanel.TaskAddMdSecFromFile task = new MdSecPanel.TaskAddMdSecFromFile();
+                task.addPropertyChangeListener(new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {                        
+                        if("progress".compareTo(evt.getPropertyName())==0){                            
+                            int progress = (Integer) evt.getNewValue();                            
+                            progressMonitor.setProgress(progress);                              
+                            progressMonitor.setNote(progress+"%");
+                        }
+                    }
+                });                
+                task.execute();
+            }
+        });
+        importButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                helper.SwingUtils.setJComponentEnabled(panel,false);
+                
+                progressMonitor = new ProgressMonitor(MdSecPanel.this,"importing..","",0,100);
+                progressMonitor.setProgress(0);
+                progressMonitor.setMillisToDecideToPopup(100);
+                progressMonitor.setMillisToPopup(0);              
+                
+                
+                MdSecPanel.TaskAddMdSecFromImport task = new MdSecPanel.TaskAddMdSecFromImport();
                 task.addPropertyChangeListener(new PropertyChangeListener() {
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {                        
@@ -164,16 +200,19 @@ public class MdSecPanel extends JPanel{
     }   
     private MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException{        
         MdSec mdSec = new MdSecWrapper();        
-        mdSec.setID(file.getName());        
+        mdSec.setID(file.getName());
         mdSec.setMdWrap(createMdWrap(file));                
         mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString()); 
         return mdSec;
     }
-    private MdSec.MdWrap createMdWrap(File file) throws ParserConfigurationException, SAXException, IOException, IllegalNamespaceException, NoNamespaceException{           
-        
-        //Valideer xml, en geef W3C-document terug
-        Document doc = helper.XML.XMLToDocument(file);
-        
+    private MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException{
+        MdSec mdSec = new MdSecWrapper();
+        mdSec.setID(UUID.randomUUID().toString());
+        mdSec.setGROUPID(UUID.randomUUID().toString()); 
+        mdSec.setMdWrap(createMdWrap(doc));
+        return mdSec;
+    }
+    private MdWrap createMdWrap(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException{
         String namespace = doc.getDocumentElement().getNamespaceURI();      
         //elke xml moet namespace bevatten (geen oude DOCTYPE!)
         if(namespace == null || namespace.isEmpty()){
@@ -183,18 +222,23 @@ public class MdSecPanel extends JPanel{
         if(getForbiddenNamespaces().contains(namespace)){
             throw new IllegalNamespaceException("namespace "+namespace+" is forbidden in mdWrap",namespace);
         }
-        //indien XSD bekend, dan validatie hierop
+        //indien XSD bekend, dan validatie hierop       
         if(getXsdMap().containsKey(namespace)){
+            System.out.println("validating against "+(String)getXsdMap().get(namespace));
             URL schemaURL = new URL((String)getXsdMap().get(namespace));
-            helper.XML.validate(doc,helper.XML.createSchema(schemaURL));            
+            System.out.println("creating schema");
+            Schema schema = helper.XML.createSchema(schemaURL);
+            System.out.println("creating schema done!");
+            helper.XML.validate(doc,schema);            
         } 
+        System.out.println("validation successfull");
         MdSec.MDTYPE mdType = null;
         try{                     
             mdType = MdSec.MDTYPE.fromValue(getNamespaceMap().get(namespace));                              
         }catch(IllegalArgumentException e){
             mdType = MdSec.MDTYPE.OTHER;                        
         }
-        MdSec.MdWrap mdWrap = new MdSec.MdWrap(mdType);                                                            
+        MdSec.MdWrap mdWrap = new MdWrap(mdType);                                                            
         if(mdType == MdSec.MDTYPE.OTHER){
             mdWrap.setOTHERMDTYPE(namespace);
         } 
@@ -202,8 +246,12 @@ public class MdSecPanel extends JPanel{
         mdWrap.getXmlData().add(doc.getDocumentElement());                
         return mdWrap;
     }
+    private MdWrap createMdWrap(File file) throws ParserConfigurationException, SAXException, IOException, IllegalNamespaceException, NoNamespaceException{           
+        //Valideer xml, en geef W3C-document terug
+        return createMdWrap(helper.XML.XMLToDocument(file));
+    }
     
-    private class TaskAddMdSec extends SwingWorker<Void, Void> {
+    private class TaskAddMdSecFromFile extends SwingWorker<Void, Void> {
         @Override
         @SuppressWarnings("empty-statement")
         protected Void doInBackground() throws Exception {
@@ -221,7 +269,7 @@ public class MdSecPanel extends JPanel{
                
                 try{
                     MdSec mdSec = createMdSec(file);                        
-                    getMdSecTable().addMdSec(mdSec);
+                    getDmdSecTable().addMdSec(mdSec);
                     succeeded++;
                 }catch(IOException e){                                
                     console.append(Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
@@ -250,12 +298,84 @@ public class MdSecPanel extends JPanel{
                 setProgress(percent);                
             }                        
             if(succeeded > 0){
-                getMdSecTable().refresh();                            
+                getDmdSecTable().refresh();                            
             }
             progressMonitor.close();;
             
             helper.SwingUtils.setJComponentEnabled(getButtonPanel(),true);
             return null;
         }    
+    }
+    private class TaskAddMdSecFromImport extends SwingWorker<Void, Void> {
+        @Override
+        protected Void doInBackground() throws Exception {
+            File [] files = helper.SwingUtils.chooseFiles(
+                "Select file",
+                null,
+                JFileChooser.FILES_ONLY,
+                true
+            );
+            int succeeded = 0;
+            
+            console.setText("");
+            for(int i = 0;i<files.length;i++){
+                File file = files[i];
+                Importer importer = ImporterFactory.createImporter(file);
+                if(importer == null){
+                    System.out.println("no importer found for "+file);
+                    continue;
+                }
+                System.out.println("importing from file "+file);
+                Document doc = importer.performImport(file);
+                if(doc == null){
+                    System.out.println("doc creation failed "+file);
+                    continue;
+                }
+                System.out.println("importing from file "+file+" successfull");
+                try{
+                    XML.DocumentToXML(doc,new java.io.FileOutputStream(new File("/tmp/dc.xml")),true);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                try{
+                    MdSec mdSec = createMdSec(doc);                        
+                    getDmdSecTable().addMdSec(mdSec);
+                    succeeded++;
+                }catch(IOException e){                                
+                    e.printStackTrace();
+                    console.append(Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
+                        file,e.getMessage()
+                    }));                                
+                }catch(SAXException e){                                
+                    e.printStackTrace();
+                    console.append(helper.Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
+                        file,e.getMessage()
+                    }));                                
+                }catch(IllegalNamespaceException e){
+                    e.printStackTrace();
+                    console.append(helper.Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
+                        file,e.getNamespace()
+                    }));
+                }
+                catch(NoNamespaceException e){                               
+                    e.printStackTrace();
+                    console.append(helper.Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
+                        file
+                    }));                                
+                }            
+                console.append("\n");
+                int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
+                setProgress(percent); 
+                
+            }
+            if(succeeded > 0){
+                getDmdSecTable().refresh();                            
+            }
+            progressMonitor.close();;
+            
+            helper.SwingUtils.setJComponentEnabled(getButtonPanel(),true);
+            return null;
+        }
+        
     }
 }

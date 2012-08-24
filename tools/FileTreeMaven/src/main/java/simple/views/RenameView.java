@@ -5,11 +5,15 @@
 
 package simple.views;
 
+import Filters.DirectoryFilter;
+import Forms.AdvancedRenameParamsForm;
+import Forms.CleanParamsForm;
+import Forms.SimpleRenameParamsForm;
+import Params.AdvancedRenameParams;
+import Params.CleanParams;
+import Params.SimpleRenameParams;
 import RenameWandLib.*;
 import SimpleRenamerLib.SimpleRenamer;
-import Forms.CleanParamsForm;
-import Forms.AdvancedRenameParamsForm;
-import Forms.SimpleRenameParamsForm;
 import helper.Context;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +23,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
@@ -30,9 +33,6 @@ import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
-import Params.CleanParams;
-import Params.AdvancedRenameParams;
-import Params.SimpleRenameParams;
 import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
@@ -54,8 +54,7 @@ public class RenameView extends AbstractView{
     private JPanel advancedRenameButtonPanel;
     private JPanel simpleRenameButtonPanel;
     private JPanel cleanButtonPanel;
-
-    private JFileChooser fileChooser;
+    
     private JComponent scrollerTreeTable;
     private ArrayList<FileNode>fileNodesSelected = new ArrayList<FileNode>();
     private File lastFile;    
@@ -174,8 +173,9 @@ public class RenameView extends AbstractView{
         this.resultTableModel = resultTableModel;
     }
     public JLabel getStatusLabel() {
-        if(statusLabel == null)
+        if(statusLabel == null) {
             statusLabel = new JLabel();
+        }
         return statusLabel;
     }
     public void setStatusLabel(JLabel statusLabel) {
@@ -185,16 +185,18 @@ public class RenameView extends AbstractView{
         return new JPanel(new FlowLayout(FlowLayout.LEFT));
     }
     public JPanel getCleanButtonPanel() {
-        if(cleanButtonPanel == null)
+        if(cleanButtonPanel == null) {
             cleanButtonPanel = getNewButtonPanel();
+        }
         return cleanButtonPanel;
     }
     public void setCleanButtonPanel(JPanel cleanButtonPanel) {
         this.cleanButtonPanel = cleanButtonPanel;
     }
     public JPanel getAdvancedRenameButtonPanel() {
-        if(advancedRenameButtonPanel == null)
+        if(advancedRenameButtonPanel == null) {
             advancedRenameButtonPanel = getNewButtonPanel();
+        }
         return advancedRenameButtonPanel;
     }
     
@@ -203,8 +205,9 @@ public class RenameView extends AbstractView{
     }
 
     public JPanel getSimpleRenameButtonPanel() {
-        if(simpleRenameButtonPanel == null)
+        if(simpleRenameButtonPanel == null) {
             simpleRenameButtonPanel = getNewButtonPanel();
+        }
         return simpleRenameButtonPanel;
     }
 
@@ -213,7 +216,9 @@ public class RenameView extends AbstractView{
     }
 
     public AdvancedRenameParams getAdvancedRenameParams() {
-        if(advancedRenameParams == null)advancedRenameParams = new AdvancedRenameParams();
+        if(advancedRenameParams == null) {
+            advancedRenameParams = new AdvancedRenameParams();
+        }
         return advancedRenameParams;
     }
     public void setAdvancedRenameParams(AdvancedRenameParams renameParams) {
@@ -242,8 +247,9 @@ public class RenameView extends AbstractView{
     }
 
     public SimpleRenameParamsForm getSimpleRenameParamsForm() {
-        if(simpleRenameParamsForm == null)
+        if(simpleRenameParamsForm == null) {
             simpleRenameParamsForm = new SimpleRenameParamsForm(getSimpleRenameParams());
+        }
         return simpleRenameParamsForm;
     }
 
@@ -253,8 +259,9 @@ public class RenameView extends AbstractView{
 
 
     public CleanParams getCleanParams() {
-        if(cleanParams == null)
+        if(cleanParams == null) {
             cleanParams = new CleanParams();
+        }
         return cleanParams;
     }
 
@@ -262,8 +269,9 @@ public class RenameView extends AbstractView{
         this.cleanParams = cleanParams;
     }
     public CleanParamsForm getCleanParamsForm() {
-        if(cleanParamsForm == null)
+        if(cleanParamsForm == null) {
             cleanParamsForm = new CleanParamsForm(getCleanParams());
+        }
         return cleanParamsForm;
     }
 
@@ -310,12 +318,20 @@ public class RenameView extends AbstractView{
         JButton chooseButton = new JButton(Context.getMessage("renameView.chooseFileButton.label"));
         chooseButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                final File file = chooseFile();              
-                if(file == null)return;              
+            public void actionPerformed(ActionEvent ae){
+                final File [] files = helper.SwingUtils.chooseFiles(
+                    Context.getMessage("RenameView.FileChooser.dialogtitle"),
+                    new DirectoryFilter(Context.getMessage("RenameView.FileChooser.description")),
+                    JFileChooser.DIRECTORIES_ONLY,
+                    false
+                );
+                
+                if(files.length == 0){
+                    return;
+                }              
                 getStatusBar().getProgressMonitor().taskStarted("test",0);
-                setLastFile(file);                
-                reloadTreeTable(file);                
+                setLastFile(files[0]);                
+                reloadTreeTable(files[0]);                
                 getStatusBar().getProgressMonitor().done();                                 
             }
         });
@@ -382,37 +398,7 @@ public class RenameView extends AbstractView{
     protected TreeTableModel getNewTreeTableModel(File file){
         treeTableModel =  new FileSystemModel(file);        
         return treeTableModel;
-    }
-    protected JFileChooser getFileChooser(){
-        if(fileChooser == null){
-            fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle(Context.getMessage("RenameView.FileChooser.dialogtitle"));
-            fileChooser.setFileFilter(new FileFilter(){
-                @Override
-                public boolean accept(File file) {
-                    return file.isDirectory() && file.canRead();
-                }
-                @Override
-                public String getDescription() {
-                    return Context.getMessage("RenameView.FileChooser.description");
-                }
-            });
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fileChooser.setMultiSelectionEnabled(false);
-        }
-        return fileChooser;
-    }
-    protected void setFileChooser(JFileChooser fileChooser) {
-        this.fileChooser = fileChooser;
-    }
-    public File chooseFile(){
-        JFileChooser fchooser = getFileChooser();
-        int freturn = fchooser.showOpenDialog(null);
-        File file;
-        if(freturn == JFileChooser.APPROVE_OPTION)file = fchooser.getSelectedFile();
-        else file = getLastFile();
-        return file;
-    }
+    }    
     protected JPanel getNewCleanerPanel(){
         JPanel panel = new JPanel(new GridBagLayout());
 
@@ -469,7 +455,7 @@ public class RenameView extends AbstractView{
         cleanSubmitButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){
-                if(fileNodesSelected.size() == 0){
+                if(fileNodesSelected.isEmpty()){
                     getStatusLabel().setText(Context.getMessage("RenameView.fileNodesSelected.noFilesSelected"));
                     return;
                 }
@@ -540,8 +526,9 @@ public class RenameView extends AbstractView{
             public void actionPerformed(ActionEvent ae) {
                 ArrayList<File>candidates = new ArrayList<File>();
                 for(FileNode fn:fileNodesSelected){
-                    if(fn.getFile().isFile())
+                    if(fn.getFile().isFile()) {
                         candidates.add(fn.getFile());
+                    }
                 }
                 if(
                     candidates.size() <= 0
@@ -564,8 +551,9 @@ public class RenameView extends AbstractView{
 
                 ArrayList<File>candidates = new ArrayList<File>();
                 for(FileNode fn:fileNodesSelected){
-                    if(fn.getFile().isFile())
+                    if(fn.getFile().isFile()) {
                         candidates.add(fn.getFile());
+                    }
                 }
                 
                 if( candidates.size() <= 0 ){
@@ -575,7 +563,6 @@ public class RenameView extends AbstractView{
                 try{
                     renameFormModel.commit();
                 }catch(Exception e){
-                    e.printStackTrace();
                 }
                 submitButton.setEnabled(false);
                 simulateButton.setEnabled(false);      
@@ -784,9 +771,9 @@ public class RenameView extends AbstractView{
                 public void onInit(final java.util.ArrayList<FileUnit> matchCandidates,final java.util.ArrayList<FileUnit> matches){
                      System.out.println("matchCandidates: "+matchCandidates.size());
                      System.out.println("matches: "+matches.size());
-                     if(matchCandidates.size() == 0){
+                     if(matchCandidates.isEmpty()){
                          getStatusLabel().setText("geselecteerde map is leeg");
-                     }else if(matches.size() == 0){
+                     }else if(matches.isEmpty()){
                          getStatusLabel().setText("geen bestanden gevonden overeenkomstig het bronpatroon");
                      }
                 }

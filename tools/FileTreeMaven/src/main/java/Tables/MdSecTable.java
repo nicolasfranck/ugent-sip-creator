@@ -2,27 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Bindings;
+package Tables;
 
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumnModel;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 
 /**
  *
  * @author nicolas
  */
-public final class MdSecTable extends AbstractObjectTable{    
+public class MdSecTable extends AbstractObjectTable{    
     private ArrayList<MdSec>data;
     
-    public MdSecTable(ArrayList<MdSec>data,String [] cols,String id){
+    public MdSecTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         
         setData(data);                
     }    
@@ -38,24 +36,34 @@ public final class MdSecTable extends AbstractObjectTable{
             @Override
             public void keyReleased(KeyEvent ke) {               
                 if(ke.getKeyCode() == 127){                    
-                    deleteSelectedMdSec();                    
+                    deleteSelectedMdSec(); 
+                    refresh();
                 }
             }            
-        });          
-        TableColumnModel tcm = table.getColumnModel();
-        tcm.getColumn(0).setPreferredWidth(100);
-        tcm.getColumn(1).setPreferredWidth(100);                                      
+        });                 
     }
     @Override
     protected Object[] getDefaultInitialData(){               
-       return getData().toArray();
+        //filter op data met mdWrap
+        ArrayList<MdSec>from = getData();
+        ArrayList<MdSec>to = new ArrayList<MdSec>();
+        for(MdSec mdSec:from){
+            if(mdSec.getMdWrap() != null && mdSec.getMdWrap().getXmlData() != null){
+                to.add(mdSec);
+            }                    
+        }
+        return to.toArray();        
     }
     protected ArrayList<MdSec> getData() {
         return data;
     }
-    protected void setData(ArrayList<MdSec> data) {        
+    protected void setData(final ArrayList<MdSec> data) {        
         this.data = data;        
-    }   
+    }     
+    public void reset(final ArrayList<MdSec>data){        
+        setData(data);
+        refresh();
+    }
     public void refresh(){        
         EventList rows = getFinalEventList();        
         rows.getReadWriteLock().writeLock().lock();        
@@ -73,30 +81,32 @@ public final class MdSecTable extends AbstractObjectTable{
     }   
     public void deleteSelectedMdSec(){
         if(getTable().getSelectedRows().length > 0){
-            //indexes van geselecteerde rijen (pas op: indien gesorteerd, niet gelijk aan data in model)
-            int [] indexes = getTable().getSelectedRows();
-            //mapping naar indexes in model
-            for(int i = 0;i<indexes.length;i++){             
-                System.out.print("from "+indexes[i]);                                
-                indexes[i] = getTable().convertRowIndexToModel(indexes[i]);
-                System.out.println(" to "+indexes[i]);
+            for(MdSec mdSec:getSelections()){
+                deleteMdSec(mdSec);
             }            
-            deleteMdSec(indexes);
-            refresh();
         }
-    }   
-    public void deleteMdSec(int i){
-        deleteMdSec(new int[] {i});
+    }  
+    
+    public void deleteMdSec(MdSec mdSec){
+        getData().remove(mdSec);
     }
-    public void deleteMdSec(int [] indexes){
-        
-        //PROBLEEM: de data wordt door Model gesorteerd: de orde van de rijen in de table
-        //is dus niet gelijk aan de orde in data!!       
-        
-        //onderstaande werkt enkel indien lijst gesorteerd is
-        Arrays.sort(indexes);       
-        for(int i = 0;i < indexes.length;i++){           
-            getData().remove(indexes[i] - i);
+    public MdSec [] getSelections(){
+        int[] selected = getTable().getSelectedRows();
+        if(selected == null){
+            return null;
+        }
+        MdSec [] mds = new MdSec[selected.length];
+        for (int i = 0; i < selected.length; i++) {
+            mds[i] = (MdSec) getTableModel().getElementAt(selected[i]);
+        }
+        return mds;
+    }
+    public MdSec getSelected(){
+        MdSec [] mds = getSelections();
+        if(mds == null || mds.length == 0){
+            return null;
+        }else{
+            return mds[0];
         }
     }
 }

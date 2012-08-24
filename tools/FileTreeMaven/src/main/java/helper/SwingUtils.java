@@ -31,14 +31,15 @@ public class SwingUtils {
         File [] files = {};
         if(freturn == JFileChooser.APPROVE_OPTION) {
             if(multiSelectionEnabled){
-                files = fchooser.getSelectedFiles();
+                files = fchooser.getSelectedFiles();                
             }else{
                 //when multiSelectionEnabled == false, then getSelectedFiles() returns an empty array!
                 files = new File [] {fchooser.getSelectedFile()};
             }
-            
-        }        
-        System.out.println("num choosen:"+files.length);
+            if(files == null){
+                files = new File [] {};
+            }            
+        }               
         return files;
     }
     public static void setJComponentsEnabled(JComponent [] components,boolean enabled){
