@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
@@ -39,9 +40,11 @@ public class MdSecTable extends AbstractObjectTable{
                     Document doc = mdSec.getMdWrap().getXmlData().get(0).getOwnerDocument();                
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     XML.DocumentToXML(doc,os, true);
-                    new TextViewDialog(null,new String [] {
+                    JDialog dialog = new TextViewDialog(null,new String [] {
                         new String(os.toByteArray(),"UTF-8")
-                    }).setVisible(true);
+                    });
+                    dialog.pack();
+                    dialog.setVisible(true);
                 }catch(Exception e){
                     e.printStackTrace();
                 }

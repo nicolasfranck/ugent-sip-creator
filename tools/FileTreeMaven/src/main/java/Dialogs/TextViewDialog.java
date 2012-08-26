@@ -5,11 +5,9 @@
 package Dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 /**
  *
@@ -29,13 +27,13 @@ public class TextViewDialog extends JDialog {
         return data;
     }
     protected JComponent createPanel(){
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextArea textArea = new JTextArea();
+        JPanel panel = new JPanel(new BorderLayout());        
+        JTextArea textArea = new JTextArea();       
         textArea.setEditable(false);
         for(String entry:getData()){
             textArea.append(entry);
         }
-        panel.add(textArea);
+        panel.add(new JScrollPane(textArea));
         return panel;
     }
     protected void setData(String[] data) {
