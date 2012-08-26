@@ -1,14 +1,8 @@
 package helper;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.Writer;
+import Importers.Importer;
+import Importers.ImporterFactory;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.XMLConstants;
@@ -215,9 +209,27 @@ public class XML {
     }
     public static void main(String [] args){
         try{
-        XML.validate(
-            XML.XMLToDocument(new File("/home/nicolas/bag-info.txt")),
-                new URL("file:///home/nicolas/Bagger-LC/doc/metadata/xsd/oai_dc.xsd"));
+            File file = new File("/tmp/bag-info.txt");
+            Importer importer = ImporterFactory.createImporter(file);
+            if(importer == null){
+                System.out.println("no importer found for "+file);                    
+            }
+            System.out.println("importing from file "+file);
+            Document doc = importer.performImport(file);
+           
+            System.out.println("importing from file "+file+" successfull");
+            try{
+                XML.DocumentToXML(doc,new java.io.FileOutputStream(new File("/tmp/dc.xml")),true);
+            }catch(Exception e){
+                e.printStackTrace();
+            }           
+            Schema schema = XML.createSchema(new URL("http://www.openarchives.org/OAI/2.0/oai_dc.xsd"));
+            System.out.println("schema created");
+            XML.validate(
+                doc,
+                schema
+            );
+            System.out.println("validation successfull");
         }catch(Exception e){
             e.printStackTrace();
         }

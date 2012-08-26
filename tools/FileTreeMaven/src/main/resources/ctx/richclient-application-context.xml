@@ -283,7 +283,9 @@
         <entry key="urn:isbn:1-931666-22-9" value="file:../../doc/metadata/xsd/ead.xsd" />
         <entry key="urn:ebu:metadata-schema:ebupmeta_2011" value="file:../../doc/metadata/xsd/EBU_PMETA_2011.xsd" />
         <entry key="http://www.getty.edu/CDWA/CDWALite" value="file:../../doc/metadata/xsd/CDWALite-xsd-public-v1-1.xsd" />
-        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="file:../../doc/metadata/xsd/oai_dc.xsd" />
+        <!--<entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="file:../../doc/metadata/xsd/oai_dc.xsd" />-->
+        
+        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
         
     </util:map>
     

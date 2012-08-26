@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.UUID;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -46,7 +47,10 @@ public class AgentPanel extends JPanel{
         this.data = data;        
     }
     public Agent newAgent(){
-        return new Agent(Agent.ROLE.ARCHIVIST,"");
+        Agent agent = new Agent(Agent.ROLE.ARCHIVIST,"");
+        agent.setID(UUID.randomUUID().toString());
+        agent.setAGENTTYPE(Agent.AGENTTYPE.INDIVIDUAL);
+        return agent;
     }
     public AgentForm getAgentForm() {
         if(agentForm == null){
@@ -74,7 +78,7 @@ public class AgentPanel extends JPanel{
         return agentTable;
     }
     public AgentTable createAgentTable(){
-        final AgentTable t = new AgentTable(data,new String [] {"name","ROLE","AGENTTYPE","OTHERROLE"},"agentTable");
+        final AgentTable t = new AgentTable(data,new String [] {"ID","name","ROLE","AGENTTYPE","OTHERROLE"},"agentTable");
         
         t.getSelectionModel().addListSelectionListener(new ListSelectionListener() {            
             @Override

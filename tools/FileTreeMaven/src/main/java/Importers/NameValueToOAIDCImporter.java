@@ -24,6 +24,8 @@ public class NameValueToOAIDCImporter implements Importer{
     private static final String [] DCKeys = {
      "title","creator","subject","description","publisher","contributor","date","type","format","identifier","source","language","relation","coverage","rights"
     };
+    public static final String namespaceDC = "http://purl.org/dc/elements/1.1/";
+    public static final String namespaceOAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/";
     private static boolean hasKey(String lookupKey){
         for(String key:DCKeys){           
             if(key.compareTo(lookupKey) == 0){
@@ -32,6 +34,7 @@ public class NameValueToOAIDCImporter implements Importer{
         }        
         return false;
     }
+    
     @Override
     public Document performImport(File file) {
         Document doc = null;      
@@ -64,12 +67,12 @@ public class NameValueToOAIDCImporter implements Importer{
 
     @Override
     public Document performImport(InputStream is) {
-        Document doc = null;      
+        Document doc = null;              
         try {           
             DOMImplementation domImpl = XML.getDocumentBuilder().getDOMImplementation();            
-            doc = domImpl.createDocument("http://www.openarchives.org/OAI/2.0/oai_dc/","oai_dc:dc", null);                               
-            Element root = doc.getDocumentElement();                                 
-            root.setAttribute("xmlns:dc","http://purl.org/dc/elements/1.1/");                                    
+            doc = domImpl.createDocument(namespaceOAI_DC,"oai_dc:dc", null);                               
+            Element root = doc.getDocumentElement(); 
+            
             NameValueReaderImpl reader = new NameValueReaderImpl("UTF-8",is,"bagInfoTxt");
             while(reader.hasNext()){
                 NameValue pair = reader.next();   
@@ -80,8 +83,8 @@ public class NameValueToOAIDCImporter implements Importer{
                 String key = lowerKey.substring(3);                                       
                 if(!hasKey(key)){
                     continue;
-                }                
-                Element el = doc.createElement("dc:"+key);            
+                }                 
+                Element el = doc.createElementNS(namespaceDC,key);                
                 el.appendChild(doc.createTextNode(pair.getValue()));
                 root.appendChild(el);                
             }

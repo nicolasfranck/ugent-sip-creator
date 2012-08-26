@@ -54,7 +54,7 @@ public class MdSecPanel extends JPanel{
         this.data = data; 
         setLayout(new BorderLayout());
         add(createContentPane());        
-    }
+    }    
     public void reset(final ArrayList<MdSec>data){                
         getDmdSecTable().reset(data);
         this.data = data;        
@@ -125,7 +125,10 @@ public class MdSecPanel extends JPanel{
         panel.add(getButtonPanel(),BorderLayout.NORTH);        
         JPanel consolePanel = new JPanel(new BorderLayout());     
         consolePanel.add(new JLabel("log:"));
-        consolePanel.add(new JScrollPane(getConsole()),BorderLayout.SOUTH);        
+        JScrollPane pane = new JScrollPane();
+        pane.setViewportView(getConsole());
+        pane.setPreferredSize(new Dimension(0,80));
+        consolePanel.add(pane,BorderLayout.SOUTH);        
         panel.add(consolePanel,BorderLayout.SOUTH);        
         return panel;
     }
@@ -148,8 +151,7 @@ public class MdSecPanel extends JPanel{
         
         addButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                helper.SwingUtils.setJComponentEnabled(panel,false);
+            public void actionPerformed(ActionEvent ae){                
                 
                 progressMonitor = new ProgressMonitor(MdSecPanel.this,"importing..","",0,100);
                 progressMonitor.setProgress(0);
@@ -173,8 +175,7 @@ public class MdSecPanel extends JPanel{
         });
         importButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                helper.SwingUtils.setJComponentEnabled(panel,false);
+            public void actionPerformed(ActionEvent ae) {                
                 
                 progressMonitor = new ProgressMonitor(MdSecPanel.this,"importing..","",0,100);
                 progressMonitor.setProgress(0);
@@ -300,9 +301,8 @@ public class MdSecPanel extends JPanel{
             if(succeeded > 0){
                 getDmdSecTable().refresh();                            
             }
-            progressMonitor.close();;
+            progressMonitor.close();            
             
-            helper.SwingUtils.setJComponentEnabled(getButtonPanel(),true);
             return null;
         }    
     }
@@ -371,9 +371,8 @@ public class MdSecPanel extends JPanel{
             if(succeeded > 0){
                 getDmdSecTable().refresh();                            
             }
-            progressMonitor.close();;
-            
-            helper.SwingUtils.setJComponentEnabled(getButtonPanel(),true);
+            progressMonitor.close();
+                        
             return null;
         }
         

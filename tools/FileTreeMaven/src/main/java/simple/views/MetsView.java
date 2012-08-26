@@ -7,6 +7,7 @@ package simple.views;
 import Filters.FileExtensionFilter;
 import Tabs.MetsTab;
 import com.anearalone.mets.Mets;
+import com.anearalone.mets.MetsWriter;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -15,11 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 import org.springframework.richclient.application.support.AbstractView;
@@ -57,10 +54,24 @@ public class MetsView extends AbstractView implements ActionListener{
         
         importMetsButton.addActionListener(this);
         
+        JButton dumpButton = new JButton("dump");
+        dumpButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try{
+                    MetsWriter mw = new MetsWriter();                    
+                    mw.writeToFile(getMets(),new File("/tmp/mets.xml"));
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        
         middlePanel = getMetsTab();
         
         //samenstellen
         topPanel.add(importMetsButton);
+        topPanel.add(dumpButton);
                 
         panel = new JPanel(new BorderLayout());
         panel.add(topPanel,BorderLayout.NORTH);
@@ -123,8 +134,7 @@ public class MetsView extends AbstractView implements ActionListener{
     protected void setMets(Mets mets){
         this.mets = mets;
     }   
-    protected void reset(){
-        System.out.println("resetting from MetsView");
+    protected void reset(){        
         getMetsTab().reset(getMets());
     }
     public MetsTab getMetsTab() {

@@ -12,12 +12,12 @@
       2002-12-19 updated to use simpledc20021212.xsd (instead of simpledc20020312.xsd)
   </documentation>
 </annotation>
-<import namespace="http://purl.org/dc/elements/1.1/" 
-        schemaLocation="simpledc20020312.xsd"/>
-	
-<element name="dc" type="oai_dc:oai_dc"/>
 
-<complexType name="oai_dc">
+<import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="../../doc/metadata/xsd/simpledc20021212.xsd"/>
+	
+<element name="dc" type="oai_dc:oai_dcType"/>
+
+<complexType name="oai_dcType">
   <choice minOccurs="0" maxOccurs="unbounded">
     <element ref="dc:title"/>
     <element ref="dc:creator"/>

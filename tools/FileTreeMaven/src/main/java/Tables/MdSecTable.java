@@ -4,14 +4,21 @@
  */
 package Tables;
 
+import Dialogs.TextViewDialog;
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
+import com.anearalone.mets.MetsHdr;
+import helper.XML;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -22,7 +29,24 @@ public class MdSecTable extends AbstractObjectTable{
     
     public MdSecTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         
-        setData(data);                
+        setData(data);
+        setDoubleClickHandler(new ActionCommandExecutor(){
+            @Override
+            public void execute() {
+                try{
+                    MdSec mdSec = getSelected();                
+                    if(mdSec == null || mdSec.getMdWrap().getXmlData().size() == 0)return;
+                    Document doc = mdSec.getMdWrap().getXmlData().get(0).getOwnerDocument();                
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    XML.DocumentToXML(doc,os, true);
+                    new TextViewDialog(null,new String [] {
+                        new String(os.toByteArray(),"UTF-8")
+                    }).setVisible(true);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }    
     @Override
     protected void configureTable(JTable table){        

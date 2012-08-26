@@ -470,8 +470,15 @@ public class MetsHdr extends IDElement implements ElementInterface {
          * 
          * @param agenttype
          */
+        /*
         public void setTYPE(AGENTTYPE agenttype) {
             this.agenttype = agenttype;
+        }*/
+        /*
+         * Nicolas Franck: beans compliant code added
+         */
+        public void setAGENTTYPE(AGENTTYPE agenttype){
+            this.agenttype = agenttype;                  
         }
 
         /**

@@ -17,7 +17,7 @@ public class AgentWrapper extends Agent{
     public static Agent clone(Agent agent){
         Agent n = new Agent(agent.getROLE(),agent.getName());
         n.setID(agent.getID());
-        n.setTYPE(agent.getAGENTTYPE());
+        n.setAGENTTYPE(agent.getAGENTTYPE());
         n.setOTHERROLE(agent.getOTHERROLE());
         n.setOTHERTYPE(agent.getOTHERTYPE());
         return n;        

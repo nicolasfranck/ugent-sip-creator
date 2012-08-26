@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 
 /**
@@ -22,10 +23,10 @@ public final class AgentTable extends AbstractObjectTable{
     
     public AgentTable(final ArrayList<Agent>data,String [] cols,String id){
         super(id,cols);         
-        setData(data);                
+        setData(data);        
     }    
     @Override
-    protected void configureTable(JTable table){        
+    protected void configureTable(JTable table){
         table.addKeyListener(new KeyListener(){
             @Override
             public void keyTyped(KeyEvent ke) {                             
@@ -53,7 +54,7 @@ public final class AgentTable extends AbstractObjectTable{
         setData(data);
         refresh();
     }
-    protected void setData(final ArrayList<Agent> data) {        
+    protected void setData(final ArrayList<Agent> data) {                
         this.data = data;    
     }   
     public void refresh(){        

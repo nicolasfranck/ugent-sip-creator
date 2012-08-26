@@ -9,6 +9,7 @@ import com.anearalone.mets.MetsHdr;
 import com.anearalone.mets.MetsHdr.Agent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import org.springframework.binding.form.FormModel;
@@ -37,14 +38,15 @@ public class AgentForm extends AbstractForm{
 
         TableFormBuilder builder = new TableFormBuilder(bf);
         
-        builder.add("name","colSpan=1 align=left");
+        builder.add("ID","colSpan=1 align=left");
         builder.row();
         
-        System.out.println("agenttype values: "+Agent.AGENTTYPE.values().length);
-        for(Agent.AGENTTYPE val:Agent.AGENTTYPE.values()){
-            System.out.println("agenttype values: "+val);
-        }
+        builder.add("name","colSpan=1 align=left");
+        builder.row();
+      
         Binding agentTypeBinding = bf.createBoundComboBox("AGENTTYPE",Agent.AGENTTYPE.values());
+        JComboBox box = (JComboBox)agentTypeBinding.getControl();
+     
         builder.add(agentTypeBinding,"colSpan=1 align=left");        
         builder.row();
         
