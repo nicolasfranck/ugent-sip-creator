@@ -11,8 +11,8 @@ import java.util.ArrayList;
  *
  * @author nicolas
  */
-public class DmDSecPanel extends MdSecPanel{
-    public DmDSecPanel(ArrayList<MdSec>data){        
+public class DmdSecPanel extends MdSecPanel{
+    public DmdSecPanel(ArrayList<MdSec>data){        
         super(data);        
     }
 }

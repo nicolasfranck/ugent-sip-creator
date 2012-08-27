@@ -288,6 +288,10 @@
         <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
         
     </util:map>
+    <util:map id="xsltMap">
+        <entry key="http://www.loc.gov/MARC21/slim" value="file:../../doc/metadata/xslt/marc2dc.xsl" />
+        <entry key="http://www.loc.gov/mods/v3" value="file:../../doc/metadata/xslt/MODS3-22simpleDC.xsl" />        
+    </util:map>
     
 <!--
    <bean id="metsCreatorView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">

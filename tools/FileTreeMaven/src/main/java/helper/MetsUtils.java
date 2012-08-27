@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -43,5 +44,26 @@ public class MetsUtils {
         Mets mets = new Mets();        
         mets.unmarshal(doc.getDocumentElement());
         return mets;
+    }
+    private static Node toNode(File file) throws FileNotFoundException, IOException, NodeException{
+        ArrayList<Path>paths = Node.structureToList(file);
+        if(paths.isEmpty()){
+            return null;
+        }
+        Node node = new Node("/");
+        
+        for(int i = 0;i<paths.size();i++){
+            node.addPath(paths.get(i));            
+        }
+        
+        return node;
+    }
+    public static void main(String [] args){
+        try{
+            Node node = toNode(new File("/tmp/structure.txt"));            
+            Node.writeNode(node);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -6,10 +6,14 @@ package helper;
 
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.ProgressMonitor;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -17,7 +21,8 @@ import javax.swing.filechooser.FileFilter;
  * @author nicolas
  */
 public class SwingUtils {
-     private static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
+    
+    private static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
         JFileChooser fileChooser = new JFileChooser();              
         fileChooser.setDialogTitle(title);            
         fileChooser.setFileFilter(filter);            
@@ -57,5 +62,25 @@ public class SwingUtils {
         for(ActionListener l:button.getActionListeners()){
             button.removeActionListener(l);
         }
+    }
+    public static void monitor(Component component,SwingWorker worker,String title){
+        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,"",0,100);
+        progressMonitor.setProgress(0);
+        progressMonitor.setMillisToDecideToPopup(100);
+        progressMonitor.setMillisToPopup(0);
+        worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
+        worker.execute();
+    }
+    private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor){
+        return new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {                        
+                if("progress".compareTo(evt.getPropertyName())==0){                            
+                    int progress = (Integer) evt.getNewValue();                            
+                    progressMonitor.setProgress(progress);                              
+                    progressMonitor.setNote(progress+"%");
+                }
+            }
+        };
     }
 }

@@ -89,7 +89,8 @@ public class XML {
             db.setEntityResolver(new EntityResolver() {
                 @Override
                 public InputSource resolveEntity(String publicId, String systemId)throws SAXException, IOException {
-                    System.out.println("Ignoring " + publicId + ", " + systemId);
+                    //avoid schema validating while building xml documents
+                    //System.out.println("Ignoring " + publicId + ", " + systemId);
                     return new InputSource(new StringReader(""));
                 }
             });

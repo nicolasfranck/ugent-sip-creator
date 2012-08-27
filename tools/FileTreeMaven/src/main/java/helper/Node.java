@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public final class Node {
@@ -44,6 +45,7 @@ public final class Node {
     }
     public void addChild(Node node){
         children.add(node);
+        node.setParent(this);
     }
     public void addChildren(ArrayList<Node>nodes){
         children.addAll(nodes);
@@ -52,22 +54,47 @@ public final class Node {
         addPath(path.getComponents());
     }
     public void addPath(Object [] objects){
-        pathToNode(this,objects);       
-    }   
-    public static Node pathToNode(Node node,Object [] objects){
-        Node lastNode = node;
-        for(Object o:objects){            
-            if(lastNode == node){
-                lastNode = new Node(o,node);
-                node = lastNode;
-            }else{
-                Node currentNode = new Node(o,lastNode);
-                lastNode.addChild(currentNode);
-                lastNode = currentNode;
-            }            
-        }        
-        return node;
+        addPathToNode(this,objects);
+    }    
+    public static Node pathToNode(Path path){
+        return addPathToNode(null,path.getComponents());
     }
+    public static Node pathToNode(Object [] objects){
+        return addPathToNode(null,objects);
+    }
+    public static Node addPathToNode(Node node,Object [] objects){
+        return addPathToNode(node,objects,0);
+    }
+    private static Node addPathToNode(Node node,Object [] objects,int offset){
+        if(objects == null || objects.length == 0 || offset >= objects.length){            
+            return null;
+        }
+        
+        Node newNode = new Node(objects[offset]);          
+            
+        if(node != null){   
+            //contains is implements as nodeA.getObject.equals(nodeB.getObject())            
+            Node find = null;
+            Iterator<Node>it = node.getChildren().iterator();
+            while(it.hasNext()){
+                Node n = it.next();
+                if(n.equals(newNode)){                    
+                    find = n;
+                    break;
+                }
+            }            
+            if(find == null){                
+                node.addChild(newNode);  
+                addPathToNode(newNode,objects,offset+1);
+            }else{                
+                addPathToNode(find,objects,offset+1);
+            }            
+        }else{
+            addPathToNode(newNode,objects,offset+1);
+        }                        
+        return newNode;
+        
+    }          
     public Path getPath(){
         ArrayList<Object>objects = new ArrayList<Object>();
         Node parentNode = this;
@@ -91,49 +118,34 @@ public final class Node {
             }
         }
         return node;
+    }    
+    public static void writeNode(Node node) throws NodeException, IOException{        
+        writeNode(new PrintWriter(System.out),node,'\t',0);
     }
-    public static String join(Object [] objects,String delimiter){
-        String result = "";
-        for(int i = 0;i < objects.length;i++){
-            if(i < objects.length - 1){
-                result += objects[i]+delimiter;
-            }else{
-                result += objects[i];
-            }
+    public static void writeNode(Node node,char whiteSpaceChar) throws NodeException, IOException{
+        writeNode(new PrintWriter(System.out),node,whiteSpaceChar,0);
+    }    
+    public static void writeNode(Writer writer,Node node,char whiteSpaceChar,int tabs) throws NodeException, IOException{
+        if(!Character.isWhitespace(whiteSpaceChar)) {
+            throw new NodeException("invalid whitespace character '"+whiteSpaceChar+"'");
         }
-        return result;
-    }
-    public static void walkNode(Node node){
-        if(node == null)return;
-        Path path = node.getPath();
-        System.out.println(join(path.getComponents(),"/"));
-        if(!node.isLeaf()){
-            for(Node n:node.getChildren()){
-                walkNode(n);
-            }
-        }
-    }
-    public static void writeNode(Node node) throws NodeException{
-        writeNode(node,'\t',0);
-    }
-    public static void writeNode(Node node,char whiteSpaceChar) throws NodeException{
-        writeNode(node,whiteSpaceChar,0);
-    }
-    public static void writeNode(Node node,char whiteSpaceChar,int tabs) throws NodeException{
-        if(!Character.isWhitespace(whiteSpaceChar))throw new NodeException("invalid whitespace character '"+whiteSpaceChar+"'");
-
-        for(int i = 0;i < Math.abs(tabs);i++)
+        for(int i = 0;i < Math.abs(tabs);i++) {
             System.out.print(whiteSpaceChar);
+        }
+        
+        writer.write(node.getObject()+"\n");
         System.out.println(node.getObject());
         if(node.getChildren().size() > 0){
             for(Node n:node.getChildren()){
-                writeNode(n,whiteSpaceChar,tabs + 1);
+                writeNode(writer,n,whiteSpaceChar,tabs + 1);
             }
         }
     }
     public static int numLeadingChars(String line,char c){
         int pos = 0;
-        while(line.charAt(pos) == c)pos++;           
+        while(line.charAt(pos) == c) {
+            pos++;
+        }           
         return pos;
     }
     public static Node getRootNode(Node node){        
@@ -146,10 +158,9 @@ public final class Node {
     private static boolean hasLeadingWhiteSpace(String line){
         return Character.isWhitespace(line.charAt(0));
     }    
-    public static ArrayList<Path> readStructure(File file) throws FileNotFoundException, IOException, NodeException{
+    public static ArrayList<Path> structureToList(File file) throws FileNotFoundException, IOException, NodeException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-        String line = null;
-        String parent = null;
+        String line;        
         int prevNumTabs = 0;
         ArrayList<String>paths = new ArrayList<String>();
         ArrayList<Path>list = new ArrayList<Path>();
@@ -181,8 +192,9 @@ public final class Node {
             
             String name = line.trim();
             if(numTabs == prevNumTabs){
-                if(paths.size() > 0)
+                if(paths.size() > 0) {
                     paths.remove(paths.size()-1);
+                }
                 paths.add(name);
             }else if(numTabs > prevNumTabs){
                 paths.add(name);
@@ -195,14 +207,15 @@ public final class Node {
             }
             //list.add(paths);            
             ArrayList<String>copy = new ArrayList<String>(paths.size());
-            for(String s:paths)
+            for(String s:paths) {
                 copy.add(s);
+            }
             list.add(new Path(copy.toArray()));
             prevNumTabs = numTabs;
             lineNo++;
         }
         return list;
-    }
+    }     
     @Override
     public String toString(){
         return object.toString();
@@ -219,35 +232,16 @@ public final class Node {
     public int hashCode(){
         return object.toString().hashCode();
     }
-    /*
-    public static void main(String [] args) throws FileNotFoundException{
-        if(args.length < 1)return;
+    public static void main(String [] args){
+        Node node = new Node("/");
+        node.addPath(new String [] {"home","nicolas"});
+        node.addPath(new String [] {"home","foo"});
+        node.addPath(new String [] {"a","b","c"});
+        node.addPath(new String [] {"home","nicolas","test"});
         try{
-            if(args[0].equals("-i")){
-                if(args.length < 2)return;
-                if(args.length >= 3)
-                    System.setOut(new PrintStream(new File(args[2])));
-
-                //read file structure and write out
-                Node node = listFiles(new File(args[1]));
-                writeNode(node,'\t');
-            }else if(args[0].equals("-r")){
-                if(args.length < 2)return;
-                if(args.length >= 3)
-                    System.setOut(new PrintStream(new File(args[2])));
-                //write code
-                ArrayList<Path>list = readStructure(new File(args[1]));
-                Node node = null;
-                for(Path path:list){
-                    System.out.println(join(path.getComponents(),"/"));
-                }
-                walkNode(node);
-            }
-
+            writeNode(node);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-     *
-     */
 }

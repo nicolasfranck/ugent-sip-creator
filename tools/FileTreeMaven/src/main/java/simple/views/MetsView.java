@@ -77,6 +77,8 @@ public class MetsView extends AbstractView implements ActionListener{
         panel.add(topPanel,BorderLayout.NORTH);
         panel.add(middlePanel,BorderLayout.CENTER);
         
+        
+        
         return panel;
     }    
     protected Schema getSchema() throws MalformedURLException, SAXException, IOException{

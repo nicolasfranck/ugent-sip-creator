@@ -15,13 +15,12 @@ import com.anearalone.mets.MdSec;
 import com.anearalone.mets.MdSec.MdWrap;
 import helper.Context;
 import helper.XML;
+import helper.XSLT;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -43,11 +42,11 @@ public class MdSecPanel extends JPanel{
     private JComponent buttonPanel;
     private DmdSecTable dmdSecTable;       
     private HashMap<String,String> xsdMap = null;
+    private HashMap<String,String> xsltMap = null;
     private HashMap<String,String> namespaceMap = null;
     private ArrayList<String>forbiddenNamespaces = null;  
     private JTextArea console;
-    private ArrayList<MdSec>data;
-    private ProgressMonitor progressMonitor;    
+    private ArrayList<MdSec>data;    
     
     public MdSecPanel(final ArrayList<MdSec>data){        
         assert(data != null);
@@ -71,8 +70,7 @@ public class MdSecPanel extends JPanel{
     public JTextArea getConsole() {
         if(console == null){
            console = new JTextArea();
-           console.setLineWrap(false);          
-           console.setPreferredSize(new Dimension(0,100));
+           console.setLineWrap(false);                     
            console.setEditable(false);
         }
         return console;
@@ -106,7 +104,18 @@ public class MdSecPanel extends JPanel{
     }
     public void setNamespaceMap(HashMap namespaceMap) {
         this.namespaceMap = namespaceMap;
-    } 
+    }
+
+    public HashMap<String, String> getXsltMap() {
+        if(xsltMap == null){
+            xsltMap = (HashMap<String,String>)helper.Beans.getBean("xsltMap"); 
+        }
+        return xsltMap;
+    }
+
+    public void setXsltMap(HashMap<String, String> xsltMap) {
+        this.xsltMap = xsltMap;
+    }    
     public DmdSecTable getDmdSecTable() {
         if(dmdSecTable == null){
             dmdSecTable = createMdSecTable();
@@ -126,6 +135,7 @@ public class MdSecPanel extends JPanel{
         JPanel consolePanel = new JPanel(new BorderLayout());     
         consolePanel.add(new JLabel("log:"));
         JScrollPane pane = new JScrollPane();
+        pane.setPreferredSize(new Dimension(0,100));
         pane.setViewportView(getConsole());
         pane.setPreferredSize(new Dimension(0,80));
         consolePanel.add(pane,BorderLayout.SOUTH);        
@@ -134,13 +144,17 @@ public class MdSecPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton addButton = new JButton("add xml file..");
-        JButton importButton = new JButton("import non xml file..");       
-        JButton removeButton = new JButton("remove");       
+        JButton addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                
+        JButton importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
+        importButton.setToolTipText(Context.getMessage("MdSecPanel.importButton.toolTip"));
+        JButton removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));  
+        JButton transformButton = new JButton(Context.getMessage("MdSecPanel.transformButton.label"));
+        transformButton.setToolTipText(Context.getMessage("MdSecPanel.transformButton.toolTip"));
         
         panel.add(addButton);                
         panel.add(importButton);        
         panel.add(removeButton);
+        panel.add(transformButton);
         
         removeButton.addActionListener(new ActionListener(){
             @Override
@@ -152,53 +166,26 @@ public class MdSecPanel extends JPanel{
         addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){                
-                
-                progressMonitor = new ProgressMonitor(MdSecPanel.this,"importing..","",0,100);
-                progressMonitor.setProgress(0);
-                progressMonitor.setMillisToDecideToPopup(100);
-                progressMonitor.setMillisToPopup(0);              
-                
-                
-                MdSecPanel.TaskAddMdSecFromFile task = new MdSecPanel.TaskAddMdSecFromFile();
-                task.addPropertyChangeListener(new PropertyChangeListener() {
-                    @Override
-                    public void propertyChange(PropertyChangeEvent evt) {                        
-                        if("progress".compareTo(evt.getPropertyName())==0){                            
-                            int progress = (Integer) evt.getNewValue();                            
-                            progressMonitor.setProgress(progress);                              
-                            progressMonitor.setNote(progress+"%");
-                        }
-                    }
-                });                
-                task.execute();
+                monitor(new MdSecPanel.TaskAddMdSecFromFile(),"importing..");
             }
         });
         importButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {                
-                
-                progressMonitor = new ProgressMonitor(MdSecPanel.this,"importing..","",0,100);
-                progressMonitor.setProgress(0);
-                progressMonitor.setMillisToDecideToPopup(100);
-                progressMonitor.setMillisToPopup(0);              
-                
-                
-                MdSecPanel.TaskAddMdSecFromImport task = new MdSecPanel.TaskAddMdSecFromImport();
-                task.addPropertyChangeListener(new PropertyChangeListener() {
-                    @Override
-                    public void propertyChange(PropertyChangeEvent evt) {                        
-                        if("progress".compareTo(evt.getPropertyName())==0){                            
-                            int progress = (Integer) evt.getNewValue();                            
-                            progressMonitor.setProgress(progress);                              
-                            progressMonitor.setNote(progress+"%");
-                        }
-                    }
-                });                
-                task.execute();
+                monitor(new MdSecPanel.TaskAddMdSecFromImport(),"importing..");
+            }
+        });
+        transformButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                monitor(new MdSecPanel.TaskAddMdSecFromTransform(),"transforming..");               
             }
         });
         return panel;
-    }   
+    }
+    private void monitor(SwingWorker worker,String title){
+        helper.SwingUtils.monitor(MdSecPanel.this,worker,title);        
+    }
     private MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException{        
         MdSec mdSec = new MdSecWrapper();        
         mdSec.setID(file.getName());
@@ -301,7 +288,7 @@ public class MdSecPanel extends JPanel{
             if(succeeded > 0){
                 getDmdSecTable().refresh();                            
             }
-            progressMonitor.close();            
+            
             
             return null;
         }    
@@ -319,25 +306,23 @@ public class MdSecPanel extends JPanel{
             
             console.setText("");
             for(int i = 0;i<files.length;i++){
-                File file = files[i];
-                Importer importer = ImporterFactory.createImporter(file);
-                if(importer == null){
-                    System.out.println("no importer found for "+file);
-                    continue;
-                }
-                System.out.println("importing from file "+file);
-                Document doc = importer.performImport(file);
-                if(doc == null){
-                    System.out.println("doc creation failed "+file);
-                    continue;
-                }
-                System.out.println("importing from file "+file+" successfull");
+                File file = files[i];               
                 try{
+                    Importer importer = ImporterFactory.createImporter(file);
+                    if(importer == null){
+                        System.out.println("no importer found for "+file);
+                        continue;
+                    }
+                    System.out.println("importing from file "+file);
+                    Document doc = importer.performImport(file);
+                    if(doc == null){
+                        System.out.println("doc creation failed "+file);
+                        continue;
+                    }
+                    System.out.println("importing from file "+file+" successfull");
                     XML.DocumentToXML(doc,new java.io.FileOutputStream(new File("/tmp/dc.xml")),true);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                try{
+                    
+                    
                     MdSec mdSec = createMdSec(doc);                        
                     getDmdSecTable().addMdSec(mdSec);
                     succeeded++;
@@ -371,7 +356,78 @@ public class MdSecPanel extends JPanel{
             if(succeeded > 0){
                 getDmdSecTable().refresh();                            
             }
-            progressMonitor.close();
+            
+                        
+            return null;
+        }
+        
+    }
+    private class TaskAddMdSecFromTransform extends SwingWorker<Void, Void> {
+        @Override
+        protected Void doInBackground() throws Exception {
+            File [] files = helper.SwingUtils.chooseFiles(
+                "Select xml file",
+                new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
+                JFileChooser.FILES_ONLY,
+                true
+            );
+            int succeeded = 0;
+            
+            console.setText("");
+            for(int i = 0;i<files.length;i++){
+                File file = files[i];
+                
+                try{
+                    Document inputDoc = XML.XMLToDocument(file);
+                    String namespace = inputDoc.getDocumentElement().getNamespaceURI();
+
+                    if(!getXsltMap().containsKey(namespace)){
+                        System.out.println("no transformation found for "+file);
+                        continue;
+                    }
+                    Document xsltDoc = XML.XMLToDocument(new URL(getXsltMap().get(namespace)));
+                    if(xsltDoc == null){
+                        continue;
+                    }
+                    Document outDoc = XSLT.transform(inputDoc,xsltDoc);
+
+                    if(outDoc == null){
+                        continue;
+                    }
+                    MdSec mdSec = createMdSec(outDoc);                        
+                    getDmdSecTable().addMdSec(mdSec);
+                    succeeded++;
+                }catch(IOException e){                                
+                    e.printStackTrace();
+                    console.append(Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
+                        file,e.getMessage()
+                    }));                                
+                }catch(SAXException e){                                
+                    e.printStackTrace();
+                    console.append(helper.Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
+                        file,e.getMessage()
+                    }));                                
+                }catch(IllegalNamespaceException e){
+                    e.printStackTrace();
+                    console.append(helper.Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
+                        file,e.getNamespace()
+                    }));
+                }
+                catch(NoNamespaceException e){                               
+                    e.printStackTrace();
+                    console.append(helper.Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
+                        file
+                    }));                                
+                } 
+                
+                console.append("\n");
+                int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
+                setProgress(percent); 
+                
+            }
+            if(succeeded > 0){
+                getDmdSecTable().refresh();                            
+            }           
                         
             return null;
         }

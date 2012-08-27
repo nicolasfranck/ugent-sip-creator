@@ -5,12 +5,11 @@
 
 package validation;
 
-import org.springframework.rules.Rules;
-import org.springframework.rules.constraint.property.PropertyConstraint;
-import org.springframework.rules.support.DefaultRulesSource;
-import Params.CleanParams;
 import Params.AdvancedRenameParams;
-import Params.SimpleRenameParams;
+import Params.CleanParams;
+import com.anearalone.mets.MetsHdr.Agent;
+import org.springframework.rules.Rules;
+import org.springframework.rules.support.DefaultRulesSource;
 
 /**
  *
@@ -27,6 +26,14 @@ public class MyValidationRulesSource extends DefaultRulesSource{
 
         Rules cleanParamsRules = new Rules(CleanParams.class);
         addRules(cleanParamsRules);
+        
+        Rules agentRules = new Rules(Agent.class);
+        agentRules
+                .add(required("name"))
+                .add(required("ID"));
+                
+                
+        addRules(agentRules);
        
     }
 }

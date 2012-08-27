@@ -5,7 +5,7 @@
 package Tabs;
 
 import Panels.AgentPanel;
-import Panels.DmDSecPanel;
+import Panels.DmdSecPanel;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsHdr;
@@ -20,7 +20,7 @@ import javax.swing.JTabbedPane;
  */
 public class MetsTab extends JPanel{
     private AgentPanel agentPanel;
-    private DmDSecPanel dmdSecPanel;
+    private DmdSecPanel dmdSecPanel;
     private Mets mets;
     public MetsTab(Mets mets){
         assert(mets != null);
@@ -36,7 +36,7 @@ public class MetsTab extends JPanel{
         
         tabs.add(getAgentPanel(),"agent");
         
-        DmDSecPanel dmdSecPanel = new DmDSecPanel(((ArrayList<MdSec>)mets.getDmdSec()));
+        DmdSecPanel dmdSecPanel = new DmdSecPanel(((ArrayList<MdSec>)mets.getDmdSec()));
         tabs.add(getDmdSecPanel(),"dmdSec");
         
         add(tabs);
@@ -50,13 +50,13 @@ public class MetsTab extends JPanel{
     public void setAgentPanel(AgentPanel agentPanel) {
         this.agentPanel = agentPanel;
     }
-    public DmDSecPanel getDmdSecPanel() {
+    public DmdSecPanel getDmdSecPanel() {
         if(dmdSecPanel == null){
-            dmdSecPanel = new DmDSecPanel(((ArrayList<MdSec>)mets.getDmdSec()));
+            dmdSecPanel = new DmdSecPanel(((ArrayList<MdSec>)mets.getDmdSec()));
         }
         return dmdSecPanel;
     }
-    public void setDmdSecPanel(DmDSecPanel dmdSecPanel) {
+    public void setDmdSecPanel(DmdSecPanel dmdSecPanel) {
         this.dmdSecPanel = dmdSecPanel;
     }    
 
