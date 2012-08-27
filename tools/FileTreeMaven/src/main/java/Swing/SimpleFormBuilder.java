@@ -7,7 +7,6 @@ package Swing;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import org.springframework.richclient.util.SpringLayoutUtils;

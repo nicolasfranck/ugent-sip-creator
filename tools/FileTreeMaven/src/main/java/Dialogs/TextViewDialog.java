@@ -5,7 +5,6 @@
 package Dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Frame;
 import javax.swing.*;
 

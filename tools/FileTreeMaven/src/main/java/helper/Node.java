@@ -101,8 +101,7 @@ public final class Node {
         do{
             objects.add(parentNode.getObject());
             parentNode = parentNode.getParent();
-        }while(parentNode != null);
-        //geef beter omgekeerde lijst terug!!!
+        }while(parentNode != null);        
         Collections.reverse(objects);        
         return new Path(objects.toArray());
     }    
@@ -204,8 +203,7 @@ public final class Node {
                     paths.remove(paths.size() - 1);
                 }
                 paths.add(name);
-            }
-            //list.add(paths);            
+            }                      
             ArrayList<String>copy = new ArrayList<String>(paths.size());
             for(String s:paths) {
                 copy.add(s);
@@ -233,11 +231,23 @@ public final class Node {
         return object.toString().hashCode();
     }
     public static void main(String [] args){
-        Node node = new Node("/");
+        /*Node node = new Node("/");
         node.addPath(new String [] {"home","nicolas"});
         node.addPath(new String [] {"home","foo"});
         node.addPath(new String [] {"a","b","c"});
-        node.addPath(new String [] {"home","nicolas","test"});
+        node.addPath(new String [] {"home","nicolas","test"});*/
+        
+        final Node node = new Node("/");
+        helper.FileUtils.listFiles(new File("/usr/local/share/perl"),new IteratorListener(){
+            @Override
+            public void execute(Object o) {
+                File file = (File)o;
+                System.out.println("adding path "+file);
+                node.addPath(file.getAbsolutePath().substring(1).split("/"));
+            }
+        });       
+           
+        
         try{
             writeNode(node);
         }catch(Exception e){

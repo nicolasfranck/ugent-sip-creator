@@ -430,7 +430,6 @@ public class MdSecPanel extends JPanel{
             }           
                         
             return null;
-        }
-        
+        }        
     }
 }

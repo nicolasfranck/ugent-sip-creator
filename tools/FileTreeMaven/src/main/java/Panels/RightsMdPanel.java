@@ -11,8 +11,8 @@ import java.util.ArrayList;
  *
  * @author nicolas
  */
-public class rightsMdPanel extends MdSecPanel{
-    public rightsMdPanel(ArrayList<MdSec>data){        
+public class RightsMdPanel extends MdSecPanel{
+    public RightsMdPanel(ArrayList<MdSec>data){        
         super(data);        
     }
 }
