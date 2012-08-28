@@ -15,6 +15,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import org.apache.log4j.Logger;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.Document;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -36,6 +37,8 @@ public class XML {
     private static DocumentBuilder db = null;
     private static DOMImplementationRegistry registry = null;
     private static DOMImplementationLS impl = null;
+    
+    private static Logger log = Logger.getLogger(XML.class);
 
     public static void free(){
         sf = null;
@@ -209,7 +212,7 @@ public class XML {
         serializer.write(doc,lsout);
     }
     public static void main(String [] args){
-        try{
+        /*try{
             File file = new File("/tmp/bag-info.txt");
             Importer importer = ImporterFactory.createImporter(file);
             if(importer == null){
@@ -231,6 +234,62 @@ public class XML {
                 schema
             );
             System.out.println("validation successfull");
+        }catch(Exception e){
+            e.printStackTrace();
+        }*/
+        String []  metsSchemaUrls = new String [] {
+            "http://www.loc.gov/METS/"
+        };
+        String [] versions = new String [] {
+            "file:../../doc/metadata/xsd/mets/1.9.1/mets-1.9.1.xsd",
+            "file:../../doc/metadata/xsd/mets/1.9/mets-1.9.xsd",
+            "file:../../doc/metadata/xsd/mets/1.8/mets-1.8.xsd",
+            "file:../../doc/metadata/xsd/mets/1.7/mets-1.7.xsd",
+            "file:../../doc/metadata/xsd/mets/1.6/mets-1.6.xsd",
+            "file:../../doc/metadata/xsd/mets/1.5/mets-1.5.xsd",
+            "file:../../doc/metadata/xsd/mets/1.4/mets-1.4.xsd",
+            "file:../../doc/metadata/xsd/mets/1.3/mets-1.3.xsd",
+            "file:../../doc/metadata/xsd/mets/1.2/mets-1.2.xsd",
+            "file:../../doc/metadata/xsd/mets/1.1/mets-1.1.xsd"            
+        };
+        try{
+            File file = new File("/tmp/mets.xml");
+            Document doc = helper.XML.XMLToDocument(file);        
+            String namespace = doc.getDocumentElement().getNamespaceURI();
+            log.debug("namespace:"+namespace);
+            boolean namespaceFound = false;
+            for(String ns:metsSchemaUrls){
+                if(ns.equals(namespace)){
+                    namespaceFound = true;
+                    break;
+                }
+            }
+            if(!namespaceFound){               
+                throw new Exception("xml file has incorrect namespace");
+            }
+            log.debug("namespace found");
+
+            //stap 3
+
+            //valideer doc tegen schema mets (Mets api doet dit niet)            
+            boolean success = false;
+            for(String version:versions){                
+                try{
+                    log.debug("validating against "+version);
+                    Schema schema = XML.createSchema(new URL(version));                            
+                    helper.XML.validate(doc,schema);                    
+                    success = true;
+                }catch(Exception e){
+                    e.printStackTrace();                    
+                }
+                if(success){
+                    break;
+                }
+            }                               
+            if(success){                
+                System.out.println("validation successfull");
+            }
+
         }catch(Exception e){
             e.printStackTrace();
         }

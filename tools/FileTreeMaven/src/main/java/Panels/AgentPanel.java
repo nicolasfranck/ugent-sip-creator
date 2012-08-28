@@ -5,7 +5,6 @@
 package Panels;
 
 import Forms.AgentForm;
-import Mets.AgentWrapper;
 import Tables.AgentTable;
 import com.anearalone.mets.MetsHdr.Agent;
 import java.awt.BorderLayout;
@@ -20,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.springframework.binding.validation.ValidationListener;
+import org.springframework.binding.validation.ValidationResults;
 
 /**
  *
@@ -34,6 +35,7 @@ public class AgentPanel extends JPanel{
     private JButton updateButton;
     private JButton removeButton;
     private ActionListener removeAgentListener = new RemoveAgentListener();
+    private boolean modusAdding = true;
     
     public AgentPanel(final ArrayList<Agent>data){        
         assert(data != null);
@@ -54,7 +56,17 @@ public class AgentPanel extends JPanel{
     }
     public AgentForm getAgentForm() {
         if(agentForm == null){
-            agentForm = new AgentForm(newAgent());
+            agentForm = new AgentForm(newAgent());  
+            agentForm.addValidationListener(new ValidationListener(){
+                @Override
+                public void validationResultsChanged(ValidationResults results) {
+                    if(modusAdding){
+                        addButton.setEnabled(!results.getHasErrors());
+                    }else{
+                        updateButton.setEnabled(!results.getHasErrors());
+                    }                    
+                }
+            });
         }
         return agentForm;
     }
@@ -73,13 +85,14 @@ public class AgentPanel extends JPanel{
      
     public AgentTable getAgentTable() {
         if(agentTable == null){
-            agentTable = createAgentTable();
+            agentTable = createAgentTable();            
         }
         return agentTable;
     }
     public AgentTable createAgentTable(){
         final AgentTable t = new AgentTable(data,new String [] {"ID","name","ROLE","AGENTTYPE","OTHERROLE"},"agentTable");
         
+        //indien agent geselecteerd, verander modus naar update
         t.getSelectionModel().addListSelectionListener(new ListSelectionListener() {            
             @Override
             public void valueChanged(ListSelectionEvent lse) {                
@@ -89,9 +102,9 @@ public class AgentPanel extends JPanel{
                 Agent agent = t.getSelected();
                 if(agent == null){
                     return;
-                }
-                AgentWrapper.dump(agent);
+                }                
                 addButton.setEnabled(false);
+                modusAdding = false;
                 updateButton.setEnabled(true);
                 getAgentForm().setFormObject(agent);               
             }
@@ -128,6 +141,7 @@ public class AgentPanel extends JPanel{
                 
                 updateButton.setEnabled(false);
                 addButton.setEnabled(true);
+                modusAdding = true;
             }        
         });
         addButton.addActionListener(new ActionListener(){

@@ -5,7 +5,7 @@
 package Tables;
 
 import ca.odell.glazedlists.EventList;
-import com.anearalone.mets.MetsHdr.Agent;
+import com.anearalone.mets.StructMap;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -17,15 +17,15 @@ import org.springframework.richclient.table.support.AbstractObjectTable;
  *
  * @author nicolas
  */
-public final class AgentTable extends AbstractObjectTable{    
-    private ArrayList<Agent>data;
+public class StructMapTable extends AbstractObjectTable{    
+    private ArrayList<StructMap>data;
     
-    public AgentTable(final ArrayList<Agent>data,String [] cols,String id){
+    public StructMapTable(final ArrayList<StructMap>data,String [] cols,String id){
         super(id,cols);         
         setData(data);        
     }    
     @Override
-    protected void configureTable(JTable table){
+    protected void configureTable(JTable table){        
         table.addKeyListener(new KeyListener(){
             @Override
             public void keyTyped(KeyEvent ke) {                             
@@ -36,26 +36,26 @@ public final class AgentTable extends AbstractObjectTable{
             @Override
             public void keyReleased(KeyEvent ke) {               
                 if(ke.getKeyCode() == 127){                    
-                    deleteSelectedAgent();           
+                    deleteSelectedStructMap(); 
                     refresh();
                 }
             }            
-        });        
+        });                 
     }
     @Override
     protected Object[] getDefaultInitialData(){               
-       return getData().toArray();
+        return getData().toArray();         
     }
-    protected ArrayList<Agent> getData() {
+    protected ArrayList<StructMap> getData() {
         return data;
     }
-    public void reset(final ArrayList<Agent>data){        
+    protected void setData(final ArrayList<StructMap> data) {        
+        this.data = data;        
+    }     
+    public void reset(final ArrayList<StructMap>data){        
         setData(data);
         refresh();
     }
-    protected void setData(final ArrayList<Agent> data) {                
-        this.data = data;    
-    }   
     public void refresh(){        
         EventList rows = getFinalEventList();        
         rows.getReadWriteLock().writeLock().lock();        
@@ -68,33 +68,37 @@ public final class AgentTable extends AbstractObjectTable{
            ((AbstractTableModel)this.getTable().getModel()).fireTableDataChanged();
         }
     }
-    public void addAgent(Agent agent){        
-        getData().add(agent);        
-    }        
-    public void deleteSelectedAgent(){
+    public void addStructMap(StructMap mdSec){        
+        getData().add(mdSec);        
+    }   
+    public void deleteSelectedStructMap(){
         if(getTable().getSelectedRows().length > 0){
-            for(Agent agent:getSelections()){
-                getData().remove(agent);
+            for(StructMap sm:getSelections()){
+                deleteStructMap(sm);
             }            
         }
-    }      
-    public Agent [] getSelections(){
+    }  
+    
+    public void deleteStructMap(StructMap structMap){
+        getData().remove(structMap);
+    }
+    public StructMap [] getSelections(){
         int[] selected = getTable().getSelectedRows();
         if(selected == null){
             return null;
         }
-        Agent[]agents = new Agent[selected.length];
+        StructMap [] stms = new StructMap[selected.length];
         for (int i = 0; i < selected.length; i++) {
-            agents[i] = (Agent) getTableModel().getElementAt(selected[i]);
+            stms[i] = (StructMap) getTableModel().getElementAt(selected[i]);
         }
-        return agents;
+        return stms;
     }
-    public Agent getSelected(){
-        Agent [] agents = getSelections();
-        if(agents == null || agents.length == 0){
+    public StructMap getSelected(){
+        StructMap [] stms = getSelections();
+        if(stms == null || stms.length == 0){
             return null;
         }else{
-            return agents[0];
+            return stms[0];
         }
     }
 }

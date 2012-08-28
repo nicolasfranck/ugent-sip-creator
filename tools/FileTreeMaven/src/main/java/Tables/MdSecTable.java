@@ -7,7 +7,6 @@ package Tables;
 import Dialogs.TextViewDialog;
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
-import com.anearalone.mets.MetsHdr;
 import helper.XML;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,10 +15,11 @@ import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-
 import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import org.w3c.dom.Document;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 
 /**
  *
@@ -31,17 +31,28 @@ public class MdSecTable extends AbstractObjectTable{
     public MdSecTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         
         setData(data);
+        System.out.println("data size:"+data.size());
         setDoubleClickHandler(new ActionCommandExecutor(){
             @Override
             public void execute() {
                 try{
                     MdSec mdSec = getSelected();                
-                    if(mdSec == null || mdSec.getMdWrap().getXmlData().size() == 0)return;
+                    if(mdSec == null || mdSec.getMdWrap().getXmlData().isEmpty()) {
+                        return;
+                    }                    
+                    
                     Document doc = mdSec.getMdWrap().getXmlData().get(0).getOwnerDocument();                
+                    
+                    LSSerializer serializer = ((DOMImplementationLS)doc.getImplementation()).createLSSerializer();
+                    String str = serializer.writeToString(mdSec.getMdWrap().getXmlData().get(0))
+                    
+                    
+                    System.out.println("doc selected: "+doc.getNamespaceURI());
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     XML.DocumentToXML(doc,os, true);
+                    byte [] bytes = os.toByteArray();
                     JDialog dialog = new TextViewDialog(null,new String [] {
-                        new String(os.toByteArray(),"UTF-8")
+                        new String(bytes,"UTF-8")
                     });
                     dialog.pack();
                     dialog.setVisible(true);
@@ -88,6 +99,7 @@ public class MdSecTable extends AbstractObjectTable{
         this.data = data;        
     }     
     public void reset(final ArrayList<MdSec>data){        
+        System.out.println("data size: "+data.size());
         setData(data);
         refresh();
     }

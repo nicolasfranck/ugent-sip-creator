@@ -8,6 +8,8 @@ package helper;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsReader;
 import com.anearalone.mets.MetsWriter;
+import com.anearalone.mets.StructMap;
+import com.anearalone.mets.StructMap.Div;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,23 +47,34 @@ public class MetsUtils {
         mets.unmarshal(doc.getDocumentElement());
         return mets;
     }
-    private static Node toNode(File file) throws FileNotFoundException, IOException, NodeException{
-        ArrayList<Path>paths = Node.structureToList(file);
-        if(paths.isEmpty()){
-            return null;
+    public static StructMap toStructMap(Node node){
+        StructMap struct = new StructMap();        
+        Div div = toDiv(node);
+        struct.setDiv(div);                
+        return struct;
+    }
+    public static Div toDiv(Node node){
+        Div div = new Div();
+        div.setLabel(node.getObject().toString());
+        for(Node n:node.getChildren()){
+            div.getDiv().add(toDiv(n));
         }
-        Node node = new Node("/");
-        
-        for(int i = 0;i<paths.size();i++){
-            node.addPath(paths.get(i));            
-        }
-        
-        return node;
+        return div;
     }
     public static void main(String [] args){
         try{
-            Node node = toNode(new File("/tmp/structure.txt"));            
-            Node.writeNode(node);
+            Mets mets = new Mets();
+            ArrayList<Path>paths = Node.structureToList(new File("/tmp/a.txt"));
+            Node node = new Node(".");
+            for(Path path:paths){
+                node.addPath(path);
+                System.out.println("adding path "+path);
+            }
+            for(Node n:node.getChildren()){
+                mets.getStructMap().add(toStructMap(n));
+            }
+            MetsWriter mw = new MetsWriter();
+            mw.writeToOutputStream(mets,new FileOutputStream(new File("/tmp/output.txt")));
         }catch(Exception e){
             e.printStackTrace();
         }

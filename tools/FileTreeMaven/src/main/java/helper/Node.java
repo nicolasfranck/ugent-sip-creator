@@ -68,10 +68,8 @@ public final class Node {
     private static Node addPathToNode(Node node,Object [] objects,int offset){
         if(objects == null || objects.length == 0 || offset >= objects.length){            
             return null;
-        }
-        
-        Node newNode = new Node(objects[offset]);          
-            
+        }        
+        Node newNode = new Node(objects[offset]);
         if(node != null){   
             //contains is implements as nodeA.getObject.equals(nodeB.getObject())            
             Node find = null;
@@ -92,8 +90,7 @@ public final class Node {
         }else{
             addPathToNode(newNode,objects,offset+1);
         }                        
-        return newNode;
-        
+        return newNode;        
     }          
     public Path getPath(){
         ArrayList<Object>objects = new ArrayList<Object>();
@@ -119,28 +116,32 @@ public final class Node {
         return node;
     }    
     public static void writeNode(Node node) throws NodeException, IOException{        
-        writeNode(new PrintWriter(System.out),node,'\t',0);
+        writeNode(new PrintWriter(System.out),node);
+    }
+    public static void writeNode(PrintWriter writer,Node node) throws NodeException, IOException{        
+        writeNode(writer,node,'\t',0);
     }
     public static void writeNode(Node node,char whiteSpaceChar) throws NodeException, IOException{
         writeNode(new PrintWriter(System.out),node,whiteSpaceChar,0);
     }    
+    public static void writeNode(PrintWriter writer,Node node,char whiteSpaceChar) throws NodeException, IOException{
+        writeNode(writer,node,whiteSpaceChar,0);
+    }
     public static void writeNode(Writer writer,Node node,char whiteSpaceChar,int tabs) throws NodeException, IOException{
         if(!Character.isWhitespace(whiteSpaceChar)) {
             throw new NodeException("invalid whitespace character '"+whiteSpaceChar+"'");
-        }
+        }        
         for(int i = 0;i < Math.abs(tabs);i++) {
-            System.out.print(whiteSpaceChar);
-        }
-        
-        writer.write(node.getObject()+"\n");
-        System.out.println(node.getObject());
-        if(node.getChildren().size() > 0){
+            writer.write(whiteSpaceChar);         
+        }        
+        writer.write(node.getObject()+"\n");        
+        if(node.getChildren().size() > 0){            
             for(Node n:node.getChildren()){
-                writeNode(writer,n,whiteSpaceChar,tabs + 1);
+                writeNode(writer,n,whiteSpaceChar,tabs + 1);                
             }
-        }
+        }       
     }
-    public static int numLeadingChars(String line,char c){
+    private static int numLeadingChars(String line,char c){
         int pos = 0;
         while(line.charAt(pos) == c) {
             pos++;
@@ -187,9 +188,8 @@ public final class Node {
                 Math.abs(numTabs - prevNumTabs) > 1
             ){
                 throw new NodeException("invalid indentation at line "+lineNo);
-            }
-            
-            String name = line.trim();
+            }            
+            String name = line.trim();            
             if(numTabs == prevNumTabs){
                 if(paths.size() > 0) {
                     paths.remove(paths.size()-1);
@@ -197,8 +197,9 @@ public final class Node {
                 paths.add(name);
             }else if(numTabs > prevNumTabs){
                 paths.add(name);
-            }else{
-                int numChop = prevNumTabs - numTabs;
+            }else{                
+                int numChop = prevNumTabs - numTabs + 1;
+                
                 for(int i = 0;i<numChop;i++){
                     paths.remove(paths.size() - 1);
                 }
@@ -227,31 +228,65 @@ public final class Node {
      * Belangrijk voor unieke key in set..
      */
     @Override
-    public int hashCode(){
+    public int hashCode(){        
         return object.toString().hashCode();
     }
-    public static void main(String [] args){
-        /*Node node = new Node("/");
-        node.addPath(new String [] {"home","nicolas"});
-        node.addPath(new String [] {"home","foo"});
-        node.addPath(new String [] {"a","b","c"});
-        node.addPath(new String [] {"home","nicolas","test"});*/
+    
+    public static void main(String [] args){        
         
-        final Node node = new Node("/");
-        helper.FileUtils.listFiles(new File("/usr/local/share/perl"),new IteratorListener(){
+         
+        PrintWriter writer1 = null;
+        PrintWriter writer2 = null;
+        try{           
+            final Node node = new Node(".");
+            //write
+            System.out.println("writing..");
+            helper.FileUtils.listFiles(new File("/usr/local/share"),new IteratorListener(){
             @Override
             public void execute(Object o) {
-                File file = (File)o;
-                System.out.println("adding path "+file);
-                node.addPath(file.getAbsolutePath().substring(1).split("/"));
+                    File file = (File)o;                    
+                    node.addPath(file.getAbsolutePath().substring(1).split("/"));
+                }
+            });            
+            
+            System.setErr(new PrintStream(new File("/tmp/error.txt")));
+            writer1 = new PrintWriter(new FileWriter(new File("/tmp/output.txt"),true));
+            
+            for(Node n:node.getChildren()){
+                writeNode(writer1,n,' ');
+            }      
+            
+            //and read again
+            System.out.print("and rewriting..");
+            node.getChildren().clear();
+            ArrayList<Path>paths = structureToList(new File("/tmp/output.txt"));
+            for(Path path:paths){
+                node.addPath(path);
             }
-        });       
-           
-        
-        try{
-            writeNode(node);
+            writer2 = new PrintWriter(new FileWriter(new File("/tmp/output2.txt"),true));
+            for(Node n:node.getChildren()){
+                writeNode(writer2,n,' ');
+            }
+            
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            if(writer1 != null){
+                try{
+                    //important: otherwise the last part will never be flushed
+                    writer1.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if(writer2 != null){
+                try{
+                    //important: otherwise the last part will never be flushed
+                    writer2.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

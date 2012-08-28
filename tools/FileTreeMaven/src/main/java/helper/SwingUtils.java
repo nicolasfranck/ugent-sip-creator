@@ -4,6 +4,8 @@
  */
 package helper;
 
+import com.anearalone.mets.StructMap;
+import com.anearalone.mets.StructMap.Div;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -15,6 +17,8 @@ import javax.swing.JFileChooser;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -64,7 +68,7 @@ public class SwingUtils {
         }
     }
     public static void monitor(Component component,SwingWorker worker,String title){
-        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,"",0,100);
+        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,"",0,100);        
         progressMonitor.setProgress(0);
         progressMonitor.setMillisToDecideToPopup(100);
         progressMonitor.setMillisToPopup(0);
@@ -75,12 +79,41 @@ public class SwingUtils {
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {                        
+                System.out.println("property change event: "+evt.getPropertyName());
+                System.out.println("property value:"+evt.getNewValue());                
                 if("progress".compareTo(evt.getPropertyName())==0){                            
                     int progress = (Integer) evt.getNewValue();                            
                     progressMonitor.setProgress(progress);                              
-                    progressMonitor.setNote(progress+"%");
+                    progressMonitor.setNote(progress+"%");                    
+                }else if(
+                    "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue().toString().compareTo("DONE") == 0
+                ){
+                    progressMonitor.close();
                 }
             }
         };
+    }
+    public static DefaultMutableTreeNode pathToTreeNode(Object [] objects){
+        return pathToTreeNode(objects,0);
+    }
+    private static DefaultMutableTreeNode pathToTreeNode(Object [] objects,int offset){
+        if(objects == null || objects.length == 0 || offset >= objects.length || offset < 0){
+            return null;
+        }
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(objects[offset]);
+        DefaultMutableTreeNode child = pathToTreeNode(objects,offset+1);
+        if(child != null){
+            node.add(child);
+        }        
+        return node;
+    }
+    public static DefaultMutableTreeNode structMapToTreeNode(StructMap struct){
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(struct.getLabel());
+        
+        return node; 
+    }
+    public static DefaultMutableTreeNode divToTreeNode(Div div){
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(div.getLabel());
+        return node; 
     }
 }
