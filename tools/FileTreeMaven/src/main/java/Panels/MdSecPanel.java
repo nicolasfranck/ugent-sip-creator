@@ -9,7 +9,6 @@ import Exceptions.NoNamespaceException;
 import Filters.FileExtensionFilter;
 import Importers.Importer;
 import Importers.ImporterFactory;
-import Mets.MdSecWrapper;
 import Tables.DmdSecTable;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.MdSec.MdWrap;
@@ -50,7 +49,7 @@ public class MdSecPanel extends JPanel{
     
     public MdSecPanel(final ArrayList<MdSec>data){        
         assert(data != null);
-        this.data = data; 
+        this.data = data;         
         setLayout(new BorderLayout());
         add(createContentPane());        
     }    
@@ -122,8 +121,8 @@ public class MdSecPanel extends JPanel{
         }
         return dmdSecTable;
     }
-    public DmdSecTable createMdSecTable(){
-        return new DmdSecTable(data,new String [] {"ID","mdWrap.xmlData[0].namespaceURI","mdWrap.MDTYPE"},"mdSecTable");
+    public DmdSecTable createMdSecTable(){                
+        return new DmdSecTable(data,new String [] {"ID","GROUPID","STATUS","CREATED"},"mdSecTable");
     }
     public void setMdSecTable(DmdSecTable dmdSecTable) {
         this.dmdSecTable = dmdSecTable;
@@ -187,15 +186,13 @@ public class MdSecPanel extends JPanel{
         helper.SwingUtils.monitor(MdSecPanel.this,worker,title);        
     }
     private MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException{        
-        MdSec mdSec = new MdSecWrapper();        
-        mdSec.setID(file.getName());
+        MdSec mdSec = new MdSec(file.getName());                
         mdSec.setMdWrap(createMdWrap(file));                
         mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString()); 
         return mdSec;
     }
     private MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException{
-        MdSec mdSec = new MdSecWrapper();
-        mdSec.setID(UUID.randomUUID().toString());
+        MdSec mdSec = new MdSec(UUID.randomUUID().toString());        
         mdSec.setGROUPID(UUID.randomUUID().toString()); 
         mdSec.setMdWrap(createMdWrap(doc));
         return mdSec;

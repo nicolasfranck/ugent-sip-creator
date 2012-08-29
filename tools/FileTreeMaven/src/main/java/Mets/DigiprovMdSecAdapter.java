@@ -8,8 +8,8 @@ package Mets;
  *
  * @author nicolas
  */
-public class DigiprovMdSecWrapper extends MdSecWrapper {
-    public DigiprovMdSecWrapper(String id){
+public class DigiprovMdSecAdapter extends MdSecAdapter {
+    public DigiprovMdSecAdapter(String id){
         super(id);
     }
 }

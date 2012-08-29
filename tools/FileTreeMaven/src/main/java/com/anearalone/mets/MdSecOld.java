@@ -30,7 +30,7 @@ import org.w3c.dom.NamedNodeMap;
  * From the METS Schema: A generic framework for pointing to/including metadata within a METS
  * document, a la Warwick Framework.
  */
-public class MdSec extends IDElement implements ElementInterface {
+public class MdSecOld extends IDElement implements ElementInterface {
     protected MdRef mdRef;
     protected MdWrap mdWrap;
     protected String groupid;
@@ -53,7 +53,7 @@ public class MdSec extends IDElement implements ElementInterface {
      * 
      * @param id
      */
-    public MdSec(String id) {
+    public MdSecOld(String id) {
         this.id = id;
         if (dtf == null)
             dtf = MetsIO.getDataTypeFactory();
@@ -61,7 +61,7 @@ public class MdSec extends IDElement implements ElementInterface {
 
     // Needed for METS unmarshalling. The MdSec(String id) constructor is
     // preferred.
-    protected MdSec() {
+    protected MdSecOld() {
         if (dtf == null)
             dtf = MetsIO.getDataTypeFactory();
     }
@@ -235,13 +235,6 @@ public class MdSec extends IDElement implements ElementInterface {
         }
     }
 
-    /*
-     * Nicolas Franck: MdRef en MdWrap samen nemen in één interface
-     */
-    public interface MdContentType {
-        
-    }
-    
     /**
      * Representation of a <code>mets:mdRef</code>.
      * <p>
@@ -254,7 +247,7 @@ public class MdSec extends IDElement implements ElementInterface {
      * is an empty element. The location of the metadata must be recorded in the xlink:href
      * attribute, supplemented by the XPTR attribute as needed.
      */
-    public static class MdRef extends LocatorElement implements ElementInterface,MdContentType {
+    public static class MdRef extends LocatorElement implements ElementInterface {
         protected String label;
         protected String xptr;
         protected MDTYPE mdtype;
@@ -530,17 +523,13 @@ public class MdSec extends IDElement implements ElementInterface {
      * <p>
      * Representation of a <code>mets:mdRef</code>.
      */
-    public static class MdWrap extends IDElement implements ElementInterface,MdContentType {
+    public static class MdWrap extends IDElement implements ElementInterface {
 
         protected String label;
         /**
          * <strong>Not supported in this version.</strong>
          */
-        /*
-         * Nicolas Franck: binData wel ondersteund
-         */
-        protected List<byte[]>binData;
-        //protected byte[] binData;
+        protected byte[] binData;
         protected List<Element> xmlData;
         protected MDTYPE mdtype;
         protected String othermdtype;
@@ -567,25 +556,19 @@ public class MdSec extends IDElement implements ElementInterface {
         // * Gets the base 64 value of the <code>mets:binData</code> child
         // *
         // * @return possible object is byte[]
-        // */
-        /*
-         * Nicolas Franck: binData toch ondersteunen
-         */
-        public List<byte[]> getBinData() {
-            if(binData == null){
-                binData = new ArrayList<byte[]>();
-            }
-            return binData;
-        }
+        // */        
+        //public byte[] getBinData() {
+        //    return binData;
+        //}
         //
         // /**
         // * Sets the <code>mets:binData</code> child
         // *
         // * @param binData
         // */
-        public void setBinData(List<byte[]> binData) {
-            this.binData = binData;
-        }
+        //public void setBinData(byte[] binData) {
+        //    this.binData = ((byte[]) binData);
+        //}
         
 
         /**
@@ -797,26 +780,16 @@ public class MdSec extends IDElement implements ElementInterface {
                 mdWrap.setAttribute("OTHERMDTYPE", this.othermdtype);
             if (this.mdtypeversion != null)
                 mdWrap.setAttribute("MDTYPEVERSION", this.mdtypeversion);
-            if (this.xmlData != null && this.xmlData.size() > 0) {
+            if (this.xmlData != null) {
                 Element xd = doc.createElementNS(NS.METS.ns(), "mets:xmlData");
                 mdWrap.appendChild(xd);
-                for (Element e : this.xmlData) {                    
+                for (Element e : this.xmlData) {
                     Element data = (Element) doc.importNode(e, true);
                     xd.appendChild(data);
                 }
             }            
             // binData : byte[]
-            /*
-             * Nicolas Franck
-             */
             
-            if(this.binData != null && this.binData.size() > 0){
-                for(byte [] bytes:getBinData()){
-                    Element xd = doc.createElementNS(NS.METS.ns(), "mets:binData");
-                    xd.setTextContent(new String(bytes));
-                    mdWrap.appendChild(xd);
-                }                
-            }
         }
 
         @Override
@@ -855,15 +828,7 @@ public class MdSec extends IDElement implements ElementInterface {
                         this.getXmlData().add(gChild);
                     }
                 }
-                /*
-                * Nicolas Franck: binData
-                */
-                if(child.getLocalName().equals("binData")){
-                    System.out.println("binData found!");                    
-                    this.getBinData().add(child.getTextContent().getBytes());                    
-                    System.out.println("binData imported!");
-                }
-            }                        
+            }
         }
     }
 

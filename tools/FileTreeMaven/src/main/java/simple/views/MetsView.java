@@ -4,6 +4,7 @@
  */
 package simple.views;
 
+import Exceptions.MdRefException;
 import Filters.FileExtensionFilter;
 import Tabs.MetsTab;
 import com.anearalone.mets.Mets;
@@ -131,9 +132,8 @@ public class MetsView extends AbstractView{
         this.metsTab = metsTab;
     }  
     private class TaskImportMetsFromFile extends SwingWorker<Void, Void> {
-        @Override
-        @SuppressWarnings("empty-statement")
-        protected Void doInBackground() throws Exception {            
+        @Override        
+        protected Void doInBackground() throws Exception {                        
             try{      
                 System.out.println("starting");
                 //stap 1
@@ -145,12 +145,11 @@ public class MetsView extends AbstractView{
                 if(files.length == 0) {
                     return null;
                 }       
-                System.out.println("files found");
-                setProgress( (int) ((1.0 / 4)*100));
+                
+                setProgress( (int) ((1.0 / 5)*100));
                 //stap 2
                 Document doc = helper.XML.XMLToDocument(files[0]);        
-                String namespace = doc.getDocumentElement().getNamespaceURI();
-                System.out.println("namespace:"+namespace);
+                String namespace = doc.getDocumentElement().getNamespaceURI();                
                 
                 boolean namespaceFound = false;
                 for(String ns:metsSchemaURLS){
@@ -165,7 +164,7 @@ public class MetsView extends AbstractView{
                     throw new Exception("xml file has incorrect namespace");
                 }                
                 
-                setProgress( (int) ((2.0 / 4)*100));
+                setProgress( (int) ((2.0 / 5)*100));
                 
                 //stap 3
                 
@@ -184,19 +183,30 @@ public class MetsView extends AbstractView{
                         break;
                     }
                 }                               
-                if(!success){
-                    System.out.println("validation failed");
+                if(!success){                    
                     JOptionPane.showMessageDialog(null,Context.getMessage("MetsView.importMets.validationFailed.label"));
                     return null;
                 }
                 
-                setProgress( (int) ((3.0 / 4)*100));
+                setProgress( (int) ((3.0 / 5)*100));
                 
                 //stap 4
-                setMets(helper.MetsUtils.documentToMets(doc));          
+                Mets tempMets = helper.MetsUtils.documentToMets(doc);                        
+                      
+                //helper.MetsUtils.validate(tempMets);
+                
+                setProgress( (int) ((4.0 / 5)*100));
+                //stap 5
+                setMets(tempMets);          
                 reset();               
                 
-                setProgress( (int) ((4.0 / 4)*100));
+                setProgress( (int) ((5.0 / 5)*100));
+            }catch(IOException e){
+                JOptionPane.showMessageDialog(null,"fout bij het lezen van het bestand: "+e.getMessage());
+            }catch(SAXException e){
+                JOptionPane.showMessageDialog(null,"bestand bevat geen geldige mets xml: "+e.getMessage());
+            }catch(MdRefException e){
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }finally{
                 System.out.println("DONE called???");
                 this.done();                

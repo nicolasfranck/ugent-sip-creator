@@ -10,8 +10,8 @@ import com.anearalone.mets.MetsHdr.Agent;
  *
  * @author nicolas
  */
-public class AgentWrapper extends Agent{
-    public AgentWrapper(Agent.ROLE role,String name){
+public class AgentAdapter extends Agent{
+    public AgentAdapter(Agent.ROLE role,String name){
         super(role,name);
     }  
     public static Agent clone(Agent agent){

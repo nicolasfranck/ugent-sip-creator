@@ -8,8 +8,8 @@ package Mets;
  *
  * @author nicolas
  */
-public class TechMdSecWrapper extends MdSecWrapper {
-    public TechMdSecWrapper(String id){
+public class TechMdSecAdapter extends MdSecAdapter {
+    public TechMdSecAdapter(String id){
         super(id);
     }
 }

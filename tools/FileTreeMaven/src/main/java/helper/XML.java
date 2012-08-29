@@ -1,7 +1,5 @@
 package helper;
 
-import Importers.Importer;
-import Importers.ImporterFactory;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,28 +48,28 @@ public class XML {
     /*
      * W3C DOM helper functions
      */
-    public static DOMImplementationRegistry getDOMImplementationRegistry() throws Exception {
+    public static DOMImplementationRegistry getDOMImplementationRegistry() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         if(registry == null){
             registry = DOMImplementationRegistry.newInstance();            
         }
         return registry;
     }
 
-    public static DOMImplementationLS getDOMImplementationLS() throws Exception {
+    public static DOMImplementationLS getDOMImplementationLS() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         if(impl == null){
             impl = (DOMImplementationLS)(getDOMImplementationRegistry().getDOMImplementation("LS"));
         }
         return impl;
     }
-    public static LSSerializer createLSSerializer() throws Exception{
+    public static LSSerializer createLSSerializer() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         return getDOMImplementationLS().createLSSerializer();
     }
-    public static LSOutput createLSOutput(OutputStream out) throws Exception{
+    public static LSOutput createLSOutput(OutputStream out) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         LSOutput lsout = getDOMImplementationLS().createLSOutput();
         lsout.setByteStream(out);
         return lsout;
     }
-    public static LSOutput createLSOutput(Writer out) throws Exception{
+    public static LSOutput createLSOutput(Writer out) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         LSOutput lsout = getDOMImplementationLS().createLSOutput();
         lsout.setCharacterStream(out);
         return lsout;
@@ -190,26 +188,35 @@ public class XML {
     /*
      * convert W3C Document object to XML
      */
-    public static void DocumentToXML(Document doc,OutputStream out) throws Exception{
+    public static void DocumentToXML(Document doc,OutputStream out) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         DocumentToXML(doc,createLSOutput(out));
     }
-     public static void DocumentToXML(Document doc,OutputStream out,boolean pretty) throws Exception{
+     public static void DocumentToXML(Document doc,OutputStream out,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         DocumentToXML(doc,createLSOutput(out),pretty);
     }
-    public static void DocumentToXML(Document doc,Writer out) throws Exception{
+    public static void DocumentToXML(Document doc,Writer out) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         DocumentToXML(doc,createLSOutput(out));
     }
-    public static void DocumentToXML(Document doc,Writer out,boolean pretty) throws Exception{
+    public static void DocumentToXML(Document doc,Writer out,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         DocumentToXML(doc,createLSOutput(out),pretty);
     }
-    public static void DocumentToXML(Document doc,LSOutput lsout) throws Exception{
+    public static void DocumentToXML(Document doc,LSOutput lsout) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         DocumentToXML(doc,lsout,false);
     }    
-    public static void DocumentToXML(Document doc,LSOutput lsout,boolean pretty) throws Exception{
+    public static void DocumentToXML(Document doc,LSOutput lsout,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         LSSerializer serializer = createLSSerializer();
         DOMConfiguration conf = serializer.getDomConfig();                
         conf.setParameter("format-pretty-print",new Boolean(pretty));
         serializer.write(doc,lsout);
+    }
+    public static String NodeToXML(org.w3c.dom.Node node) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+        return NodeToXML(node,false);
+    }
+    public static String NodeToXML(org.w3c.dom.Node node,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+        LSSerializer serializer = createLSSerializer();
+        DOMConfiguration conf = serializer.getDomConfig();                
+        conf.setParameter("format-pretty-print",new Boolean(pretty));
+        return serializer.writeToString(node);
     }
     public static void main(String [] args){
         /*try{

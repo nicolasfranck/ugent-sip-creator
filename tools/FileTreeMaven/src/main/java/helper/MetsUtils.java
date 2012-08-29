@@ -5,6 +5,9 @@
 package helper;
 
 
+import Exceptions.MdRefException;
+import com.anearalone.mets.AmdSec;
+import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsReader;
 import com.anearalone.mets.MetsWriter;
@@ -60,6 +63,33 @@ public class MetsUtils {
             div.getDiv().add(toDiv(n));
         }
         return div;
+    }
+    /*
+     * TODO: check binData within mdWrap (not possible in Mets api)
+     */
+    public static void validate(Mets mets) throws MdRefException{
+        for(MdSec mdSec:mets.getDmdSec()){
+           validate(mdSec);
+        }
+        for(AmdSec amdSec:mets.getAmdSec()){           
+           for(MdSec m:amdSec.getDigiprovMD()){
+               validate(m);
+           }
+           for(MdSec m:amdSec.getRightsMD()){
+               validate(m);
+           }
+           for(MdSec m:amdSec.getSourceMD()){
+               validate(m);
+           }
+           for(MdSec m:amdSec.getTechMD()){
+               validate(m);
+           }
+        }
+    }
+    public static void validate(MdSec mdSec) throws MdRefException{        
+        if(mdSec.getMdRef() != null) {
+            throw new MdRefException("MdRef not allowed. XML need to be wrapped in a xmlData element");
+        }
     }
     public static void main(String [] args){
         try{

@@ -10,16 +10,13 @@ import com.anearalone.mets.MdSec;
 import helper.XML;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
-import org.w3c.dom.Document;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 
 /**
  *
@@ -30,32 +27,29 @@ public class MdSecTable extends AbstractObjectTable{
     
     public MdSecTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         
-        setData(data);
-        System.out.println("data size:"+data.size());
+        setData(data);        
         setDoubleClickHandler(new ActionCommandExecutor(){
             @Override
             public void execute() {
                 try{
-                    MdSec mdSec = getSelected();                
-                    if(mdSec == null || mdSec.getMdWrap().getXmlData().isEmpty()) {
+                    MdSec mdSec = getSelected();                                    
+                    if(
+                        mdSec.getMdWrap() == null || mdSec.getMdWrap().getXmlData() == null ||
+                        mdSec.getMdWrap().getXmlData().isEmpty()
+                    ){
+                        if(mdSec.getMdRef() == null){
+                            JOptionPane.showMessageDialog(MdSecTable.this.getControl(),"no data available");
+                        }else{
+                            JOptionPane.showMessageDialog(MdSecTable.this.getControl(),"data available at external location: "+mdSec.getMdRef().getXlinkHREF());
+                        }      
+                        
                         return;
-                    }                    
-                    
-                    Document doc = mdSec.getMdWrap().getXmlData().get(0).getOwnerDocument();                
-                    
-                    LSSerializer serializer = ((DOMImplementationLS)doc.getImplementation()).createLSSerializer();
-                    String str = serializer.writeToString(mdSec.getMdWrap().getXmlData().get(0))
-                    
-                    
-                    System.out.println("doc selected: "+doc.getNamespaceURI());
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    XML.DocumentToXML(doc,os, true);
-                    byte [] bytes = os.toByteArray();
+                    }                                        
                     JDialog dialog = new TextViewDialog(null,new String [] {
-                        new String(bytes,"UTF-8")
+                        XML.NodeToXML(mdSec.getMdWrap().getXmlData().get(0))
                     });
                     dialog.pack();
-                    dialog.setVisible(true);
+                    dialog.setVisible(true);                   
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -82,15 +76,8 @@ public class MdSecTable extends AbstractObjectTable{
     }
     @Override
     protected Object[] getDefaultInitialData(){               
-        //filter op data met mdWrap
-        ArrayList<MdSec>from = getData();
-        ArrayList<MdSec>to = new ArrayList<MdSec>();
-        for(MdSec mdSec:from){
-            if(mdSec.getMdWrap() != null && mdSec.getMdWrap().getXmlData() != null){
-                to.add(mdSec);
-            }                    
-        }
-        return to.toArray();        
+        //filter op data met mdWrap? => nee, want gevaarlijk wanneer je dingen eruit verwijdert..
+        return getData().toArray();         
     }
     protected ArrayList<MdSec> getData() {
         return data;
@@ -98,8 +85,7 @@ public class MdSecTable extends AbstractObjectTable{
     protected void setData(final ArrayList<MdSec> data) {        
         this.data = data;        
     }     
-    public void reset(final ArrayList<MdSec>data){        
-        System.out.println("data size: "+data.size());
+    public void reset(final ArrayList<MdSec>data){                
         setData(data);
         refresh();
     }

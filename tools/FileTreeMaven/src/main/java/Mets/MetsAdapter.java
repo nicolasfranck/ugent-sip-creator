@@ -4,12 +4,12 @@
  */
 package Mets;
 
+import com.anearalone.mets.Mets;
+
 /**
  *
  * @author nicolas
  */
-public class SourceMdSecWrapper extends MdSecWrapper {
-    public SourceMdSecWrapper(String id){
-        super(id);
-    }
+public class MetsAdapter extends Mets {
+    
 }

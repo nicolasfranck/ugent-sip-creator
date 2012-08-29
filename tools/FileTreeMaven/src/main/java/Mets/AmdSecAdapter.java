@@ -10,7 +10,7 @@ import com.anearalone.mets.AmdSec;
  *
  * @author nicolas
  */
-public class AmdSecWrapper extends AmdSec {
+public class AmdSecAdapter extends AmdSec {
     
     
 }
