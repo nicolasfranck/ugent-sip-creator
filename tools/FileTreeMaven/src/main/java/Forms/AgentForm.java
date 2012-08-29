@@ -38,27 +38,28 @@ public class AgentForm extends AbstractForm{
 
         TableFormBuilder builder = new TableFormBuilder(bf);
         
-        builder.add("ID","colSpan=1 align=left");
-        builder.row();
+        builder.setLabelAttributes("colSpan=1 align=right");
         
-        builder.add("name","colSpan=1 align=left");
+        builder.add("ID");
+        builder.row();        
+        builder.add("name");
         builder.row();
       
         Binding agentTypeBinding = bf.createBoundComboBox("AGENTTYPE",Agent.AGENTTYPE.values());
         JComboBox box = (JComboBox)agentTypeBinding.getControl();
      
-        builder.add(agentTypeBinding,"colSpan=1 align=left");        
+        builder.add(agentTypeBinding);        
         builder.row();
         
         Binding roleBinding = bf.createBoundComboBox("ROLE",Agent.ROLE.values());
-        builder.add(roleBinding,"colSpan=1 align=left");                
+        builder.add(roleBinding);                
         builder.row();
         
-        final JComponent [] componentsOtherRole = builder.add("OTHERROLE","colSpan=1 align=left");
+        final JComponent [] componentsOtherRole = builder.add("OTHERROLE");
         helper.SwingUtils.setJComponentsEnabled(componentsOtherRole,false);
         builder.row();
         
-        final JComponent [] componentsOtherType = builder.add("OTHERTYPE","colSpan=1 align=left");
+        final JComponent [] componentsOtherType = builder.add("OTHERTYPE");
         helper.SwingUtils.setJComponentsEnabled(componentsOtherType,false);
         builder.row();        
         
@@ -79,7 +80,6 @@ public class AgentForm extends AbstractForm{
             }
         });
         
-
         return builder.getForm();
     }
 }

@@ -4,21 +4,19 @@
  */
 package Dialogs;
 
-import Panels.AgentPanel;
-import Panels.MdSecPanel;
+import Panels.EditMdSecPanel;
 import com.anearalone.mets.MdSec;
 import java.awt.Frame;
-import java.util.ArrayList;
 import javax.swing.JDialog;
 
 /**
  *
  * @author nicolas
  */
-public class MdSecDialog extends JDialog {      
-    public MdSecDialog(Frame parentFrame,ArrayList<MdSec>data){
+public class EditMdSecDialog extends JDialog {      
+    public EditMdSecDialog(Frame parentFrame,MdSec mdSec){
         super(parentFrame,true);
-        assert(data != null);
-        setContentPane(new MdSecPanel(data));        
+        assert(mdSec != null);
+        setContentPane(new EditMdSecPanel(mdSec));        
     }    
 }

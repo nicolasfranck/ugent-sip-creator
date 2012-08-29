@@ -38,6 +38,8 @@ public class CleanParamsForm extends AbstractForm{
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);
         
+        builder.setLabelAttributes("colSpan=1 align=right");
+        
         builder.add("cleanDirectories");
         builder.row();
         builder.add("copy");

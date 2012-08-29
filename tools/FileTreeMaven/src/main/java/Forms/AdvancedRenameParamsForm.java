@@ -36,25 +36,27 @@ public class AdvancedRenameParamsForm extends AbstractForm{
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
 
         TableFormBuilder builder = new TableFormBuilder(bf);
+        
+        builder.setLabelAttributes("colSpan=1 align=right");        
 
         builder.addSeparator(Context.getMessage("common"));
         builder.row();
 
-        builder.add("sourcePattern","colSpan=1 align=left");
+        builder.add("sourcePattern");
         builder.row();
-        builder.add("destinationPattern","colSpan=1 align=left");
+        builder.add("destinationPattern");
         builder.row();
         builder.addSeparator(Context.getMessage("detail"));
         builder.row();
-        builder.add("renameDirectories","colSpan=1 align=left");
+        builder.add("renameDirectories");
         builder.row();
-        builder.add("copy","colSpan=1 align=left");
+        builder.add("copy");
         builder.row();
-        builder.add("matchLowerCase","colSpan=1 align=left");
+        builder.add("matchLowerCase");
         builder.row();
-        builder.add("recurseIntoSubdirectories","colSpan=1 align=left");
+        builder.add("recurseIntoSubdirectories");
         builder.row();
-        builder.add("overWrite","colSpan=1 align=left");
+        builder.add("overWrite");
         builder.row();
 
         Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());

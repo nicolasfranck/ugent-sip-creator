@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.util.WindowUtils;
 
 /**
  * Custom application lifecycle implementation that configures the sample app at
@@ -69,7 +70,8 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
     public void onCommandsCreated( ApplicationWindow window ) {
         if( logger.isInfoEnabled() ) {
             logger.info("onCommandsCreated( windowNumber=" + window.getNumber() + " )");
-        }
+        }       
+        
     }
 
     /**
@@ -81,7 +83,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
     public void onWindowCreated( ApplicationWindow window ) {
         if( logger.isInfoEnabled() ) {
             logger.info("onWindowCreated( windowNumber=" + window.getNumber() + " )");
-        }
+        }        
     }
 
     /**
@@ -93,7 +95,8 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
     public void onWindowOpened( ApplicationWindow window ) {
         if( logger.isInfoEnabled() ) {
             logger.info("onWindowOpened( windowNumber=" + window.getNumber() + " )");
-        }
+        }        
+        window.getControl().pack();
     }
 
     /**

@@ -39,32 +39,34 @@ public class SimpleRenameParamsForm extends AbstractForm{
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
 
         TableFormBuilder builder = new TableFormBuilder(bf);
+        
+        builder.setLabelAttributes("colSpan=1 align=right");
 
         final ArrayList<JComponent>list = new ArrayList<JComponent>();
 
         builder.addSeparator(Context.getMessage("common"));
         builder.row();
-        builder.add("prefix","colSpan=1 align=left");
+        builder.add("prefix");
         builder.row();
-        builder.add("suffix","colSpan=1 align=left");
+        builder.add("suffix");
         builder.row();
-        builder.add("name","colSpan=1 align=left");
+        builder.add("name");
         builder.row();
-        builder.add("preserveExtension","colSpan=1 align=left");
+        builder.add("preserveExtension");
         builder.row();
 
-        builder.add("number","colSpan=1 align=left");
+        builder.add("number");
         builder.row();        
-        list.add(builder.add("startNumber","colSpan=1 align=left")[1]);
+        list.add(builder.add("startNumber")[1]);
         builder.row();
-        list.add(builder.add("jumpNumber","colSpan=1 align=left")[1]);
+        list.add(builder.add("jumpNumber")[1]);
         builder.row();
-        list.add(builder.add("numPadding","colSpan=1 align=left")[1]);
+        list.add(builder.add("numPadding")[1]);
         builder.row();
 
         builder.addSeparator(Context.getMessage("detail"));
         builder.row();
-        builder.add("overWrite","colSpan=1 align=left");
+        builder.add("overWrite");
         builder.row();
 
         getFormModel().getValueModel("number").addValueChangeListener(new PropertyChangeListener(){

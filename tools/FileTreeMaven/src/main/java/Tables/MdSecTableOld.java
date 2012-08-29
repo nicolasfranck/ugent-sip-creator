@@ -4,13 +4,15 @@
  */
 package Tables;
 
-import Dialogs.EditMdSecDialog;
+import Dialogs.TextViewDialog;
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
+import helper.XML;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import org.springframework.richclient.command.ActionCommandExecutor;
@@ -20,20 +22,34 @@ import org.springframework.richclient.table.support.AbstractObjectTable;
  *
  * @author nicolas
  */
-public class MdSecTable extends AbstractObjectTable{    
+public class MdSecTableOld extends AbstractObjectTable{    
     private ArrayList<MdSec>data;
     
-    public MdSecTable(final ArrayList<MdSec>data,String [] cols,String id){
+    public MdSecTableOld(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         
         setData(data);             
         setDoubleClickHandler(new ActionCommandExecutor(){
             @Override
             public void execute() {
                 try{
-                    MdSec mdSec = getSelected(); 
-                    JDialog dialog = new EditMdSecDialog(null,getSelected());
+                    MdSec mdSec = getSelected();                                                        
+                    if(
+                        mdSec.getMdWrap() == null || mdSec.getMdWrap().getXmlData() == null ||
+                        mdSec.getMdWrap().getXmlData().isEmpty()
+                    ){
+                        if(mdSec.getMdRef() == null){
+                            JOptionPane.showMessageDialog(MdSecTableOld.this.getControl(),"no data available");
+                        }else{
+                            JOptionPane.showMessageDialog(MdSecTableOld.this.getControl(),"data available at external location: "+mdSec.getMdRef().getXlinkHREF());
+                        }      
+                        
+                        return;
+                    }                                        
+                    JDialog dialog = new TextViewDialog(null,new String [] {
+                        XML.NodeToXML(mdSec.getMdWrap().getXmlData().get(0))
+                    });
                     dialog.pack();
-                    dialog.setVisible(true);                    
+                    dialog.setVisible(true);                   
                 }catch(Exception e){
                     e.printStackTrace();
                 }
