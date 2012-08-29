@@ -37,27 +37,23 @@ public class AdvancedRenameParamsForm extends AbstractForm{
 
         TableFormBuilder builder = new TableFormBuilder(bf);
         
-        builder.setLabelAttributes("colSpan=1 align=right");        
+        builder.setLabelAttributes("colSpan=1 align=left");        
 
         builder.addSeparator(Context.getMessage("common"));
         builder.row();
-
-        builder.add("sourcePattern");
-        builder.row();
-        builder.add("destinationPattern");
-        builder.row();
-        builder.addSeparator(Context.getMessage("detail"));
-        builder.row();
-        builder.add("renameDirectories");
-        builder.row();
-        builder.add("copy");
-        builder.row();
-        builder.add("matchLowerCase");
-        builder.row();
-        builder.add("recurseIntoSubdirectories");
-        builder.row();
-        builder.add("overWrite");
-        builder.row();
+        
+        String [] commonFields = {"sourcePattern","destinationPattern"};
+        for(String field:commonFields){
+            builder.add(field);
+            builder.row();
+        }
+        String [] detailFields = {
+            "renameDirectories","copy","matchLowerCase","recurseIntoSubdirectories","overWrite"
+        };
+        for(String field:detailFields){
+            builder.add(field);
+            builder.row();
+        }
 
         Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());

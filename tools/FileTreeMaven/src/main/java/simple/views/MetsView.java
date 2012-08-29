@@ -10,6 +10,7 @@ import Tabs.MetsTab;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsWriter;
 import helper.Context;
+import helper.SwingUtils;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -48,7 +49,7 @@ public class MetsView extends AbstractView{
     @Override
     protected JComponent createControl() {
         return createForm();
-    }
+    }    
     private JComponent createForm(){   
         
         //create
@@ -160,7 +161,7 @@ public class MetsView extends AbstractView{
                 }
                 if(!namespaceFound){
                     System.out.println("xml file has incorrect namespace");
-                    JOptionPane.showMessageDialog(null,Context.getMessage("MetsView.importMets.incorrectNamespaceException.label"));
+                    JOptionPane.showMessageDialog(SwingUtils.getFrame(),Context.getMessage("MetsView.importMets.incorrectNamespaceException.label"));
                     throw new Exception("xml file has incorrect namespace");
                 }                
                 
@@ -184,7 +185,7 @@ public class MetsView extends AbstractView{
                     }
                 }                               
                 if(!success){                    
-                    JOptionPane.showMessageDialog(null,Context.getMessage("MetsView.importMets.validationFailed.label"));
+                    JOptionPane.showMessageDialog(SwingUtils.getFrame(),Context.getMessage("MetsView.importMets.validationFailed.label"));
                     return null;
                 }
                 
@@ -202,11 +203,11 @@ public class MetsView extends AbstractView{
                 
                 setProgress( (int) ((5.0 / 5)*100));
             }catch(IOException e){
-                JOptionPane.showMessageDialog(null,"fout bij het lezen van het bestand: "+e.getMessage());
+                JOptionPane.showMessageDialog(SwingUtils.getFrame(),"fout bij het lezen van het bestand: "+e.getMessage());
             }catch(SAXException e){
-                JOptionPane.showMessageDialog(null,"bestand bevat geen geldige mets xml: "+e.getMessage());
+                JOptionPane.showMessageDialog(SwingUtils.getFrame(),"bestand bevat geen geldige mets xml: "+e.getMessage());
             }catch(MdRefException e){
-                JOptionPane.showMessageDialog(null,e.getMessage());
+                JOptionPane.showMessageDialog(SwingUtils.getFrame(),e.getMessage());
             }finally{
                 System.out.println("DONE called???");
                 this.done();                

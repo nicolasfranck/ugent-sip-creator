@@ -7,6 +7,7 @@ package Tables;
 import Dialogs.EditMdSecDialog;
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
+import helper.SwingUtils;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -31,7 +32,10 @@ public class MdSecTable extends AbstractObjectTable{
             public void execute() {
                 try{
                     MdSec mdSec = getSelected(); 
-                    JDialog dialog = new EditMdSecDialog(null,getSelected());
+                    JDialog dialog = new EditMdSecDialog(
+                        SwingUtils.getFrame(),
+                        getSelected()
+                    );
                     dialog.pack();
                     dialog.setVisible(true);                    
                 }catch(Exception e){

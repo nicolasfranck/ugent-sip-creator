@@ -38,7 +38,7 @@ public class MdWrapForm extends AbstractForm{
 
         TableFormBuilder builder = new TableFormBuilder(bf);       
         
-        builder.setLabelAttributes("colSpan=1 align=right");
+        builder.setLabelAttributes("colSpan=1 align=left");
         
         builder.add("ID");
         builder.row();

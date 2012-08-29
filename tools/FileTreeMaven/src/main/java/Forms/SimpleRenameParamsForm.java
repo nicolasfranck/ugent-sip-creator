@@ -40,23 +40,18 @@ public class SimpleRenameParamsForm extends AbstractForm{
 
         TableFormBuilder builder = new TableFormBuilder(bf);
         
-        builder.setLabelAttributes("colSpan=1 align=right");
+        builder.setLabelAttributes("colSpan=1 align=left");
 
         final ArrayList<JComponent>list = new ArrayList<JComponent>();
 
         builder.addSeparator(Context.getMessage("common"));
-        builder.row();
-        builder.add("prefix");
-        builder.row();
-        builder.add("suffix");
-        builder.row();
-        builder.add("name");
-        builder.row();
-        builder.add("preserveExtension");
-        builder.row();
-
-        builder.add("number");
-        builder.row();        
+        
+        String [] commonFields = {"prefix","suffix","name","preserveExtension","number"};
+        for(String field:commonFields){
+            builder.row();
+            builder.add(field);
+        }
+        
         list.add(builder.add("startNumber")[1]);
         builder.row();
         list.add(builder.add("jumpNumber")[1]);

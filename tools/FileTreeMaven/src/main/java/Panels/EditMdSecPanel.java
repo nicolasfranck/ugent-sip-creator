@@ -4,11 +4,11 @@
  */
 package Panels;
 
-import org.springframework.richclient.application.Application;
 import Dialogs.TextViewDialog;
 import Forms.MdWrapForm;
 import com.anearalone.mets.MdSec;
 import helper.Context;
+import helper.SwingUtils;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -76,8 +76,10 @@ public class EditMdSecPanel extends JPanel{
             public void actionPerformed(ActionEvent ae){
                 if(getMdSec().getMdWrap() != null && getMdSec().getMdWrap().getXmlData() != null && !getMdSec().getMdWrap().getXmlData().isEmpty()){                                                            
                     try{                        
-                        JDialog dialog = new TextViewDialog(null,new String [] {
-                            helper.XML.NodeToXML(getMdSec().getMdWrap().getXmlData().get(0))
+                        JDialog dialog = new TextViewDialog(
+                            SwingUtils.getFrame(),
+                            new String [] {
+                                helper.XML.NodeToXML(getMdSec().getMdWrap().getXmlData().get(0))
                         });
                         dialog.pack();
                         dialog.setVisible(true);    

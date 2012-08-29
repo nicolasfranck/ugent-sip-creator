@@ -38,15 +38,14 @@ public class CleanParamsForm extends AbstractForm{
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);
         
-        builder.setLabelAttributes("colSpan=1 align=right");
+        builder.setLabelAttributes("colSpan=1 align=left");
         
-        builder.add("cleanDirectories");
-        builder.row();
-        builder.add("copy");
-        builder.row();
-        builder.add("overWrite");
-        builder.row();
-
+        String [] fields = {"cleanDirectories","copy","overWrite"};
+        for(String field:fields){
+            builder.add(field);
+            builder.row();
+        }
+     
         Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());
 
@@ -59,9 +58,6 @@ public class CleanParamsForm extends AbstractForm{
         });
         builder.add(b);
         builder.row();
-
-        
-        
 
         JTable table = new JTable(new DefaultTableModel(
             new Object [] [] {},

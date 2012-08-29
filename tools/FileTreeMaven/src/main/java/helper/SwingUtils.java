@@ -11,14 +11,11 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import javax.swing.AbstractButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.ProgressMonitor;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
+import org.springframework.richclient.application.Application;
 
 /**
  *
@@ -34,9 +31,13 @@ public class SwingUtils {
         fileChooser.setMultiSelectionEnabled(multiSelectionEnabled);        
         return fileChooser;
     }        
-    public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){        
-        JFileChooser fchooser = createFileChooser(title,filter,mode,multiSelectionEnabled);
-        int freturn = fchooser.showOpenDialog(null);
+    public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
+        return chooseFiles(title,filter,mode,multiSelectionEnabled,SwingUtils.getFrame());
+    }
+    public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,Component component){        
+        JFileChooser fchooser = createFileChooser(title,filter,mode,multiSelectionEnabled);        
+        
+        int freturn = fchooser.showOpenDialog(component);
         File [] files = {};
         if(freturn == JFileChooser.APPROVE_OPTION) {
             if(multiSelectionEnabled){
@@ -115,5 +116,8 @@ public class SwingUtils {
     public static DefaultMutableTreeNode divToTreeNode(Div div){
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(div.getLabel());
         return node; 
+    }
+    public static JFrame getFrame(){
+        return Application.instance().getActiveWindow().getControl();
     }
 }

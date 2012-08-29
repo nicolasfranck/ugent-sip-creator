@@ -15,6 +15,7 @@ import Params.SimpleRenameParams;
 import RenameWandLib.*;
 import SimpleRenamerLib.SimpleRenamer;
 import helper.Context;
+import helper.SwingUtils;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,9 +77,9 @@ public class RenameView extends AbstractView{
     private AdvancedRenameParamsForm advancedRenameParamsForm;
     private CleanParams cleanParams;
     private CleanParamsForm cleanParamsForm;
-
     private TreeSelectionListener treeTableSelectionListener;
 
+    
     public TreeSelectionListener getNewTreeTableSelectionListener(final JTree tree) {
         treeTableSelectionListener = new TreeSelectionListener(){
             @Override
