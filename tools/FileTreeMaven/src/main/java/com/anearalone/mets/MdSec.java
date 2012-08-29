@@ -235,12 +235,6 @@ public class MdSec extends IDElement implements ElementInterface {
         }
     }
 
-    /*
-     * Nicolas Franck: MdRef en MdWrap samen nemen in één interface
-     */
-    public interface MdContentType {
-        
-    }
     
     /**
      * Representation of a <code>mets:mdRef</code>.
@@ -254,7 +248,7 @@ public class MdSec extends IDElement implements ElementInterface {
      * is an empty element. The location of the metadata must be recorded in the xlink:href
      * attribute, supplemented by the XPTR attribute as needed.
      */
-    public static class MdRef extends LocatorElement implements ElementInterface,MdContentType {
+    public static class MdRef extends LocatorElement implements ElementInterface {
         protected String label;
         protected String xptr;
         protected MDTYPE mdtype;
@@ -530,7 +524,7 @@ public class MdSec extends IDElement implements ElementInterface {
      * <p>
      * Representation of a <code>mets:mdRef</code>.
      */
-    public static class MdWrap extends IDElement implements ElementInterface,MdContentType {
+    public static class MdWrap extends IDElement implements ElementInterface {
 
         protected String label;
         /**
