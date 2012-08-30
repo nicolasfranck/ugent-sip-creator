@@ -26,7 +26,7 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 public class MdWrapForm extends AbstractForm{
     
     public MdWrapForm(MdWrap mdWrap){        
-        this(FormModelHelper.createFormModel(mdWrap,"metsAgentForm"));
+        this(FormModelHelper.createFormModel(mdWrap,"mdWrapForm"));
     }
     public MdWrapForm(FormModel formModel){
         super(formModel);       

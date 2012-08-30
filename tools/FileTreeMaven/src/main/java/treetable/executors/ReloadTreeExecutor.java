@@ -5,26 +5,30 @@
 
 package treetable.executors;
 
-import javax.swing.JTree;
-import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import simple.views.RenameView;
-import treetable.FileNode;
 
 /**
  *
  * @author nicolas
  */
 public class ReloadTreeExecutor extends AbstractActionCommandExecutor{
-    private RenameView view;
+    private RenameView renameView;
     private static final Log log = LogFactory.getLog(ReloadTreeExecutor.class);
-    public ReloadTreeExecutor(RenameView view){
-        this.view = view;        
+    public ReloadTreeExecutor(RenameView renameView){
+        setRenameView(renameView);         
     }
     @Override
     public void execute(){
-        view.reloadTreeTable(view.getLastFile());
-    }          
+        System.out.println("reloading..");
+        getRenameView().getRenamePanel().reloadTreeTable(getRenameView().getRenamePanel().getLastFile());        
+    }         
+    private RenameView getRenameView() {
+        return renameView;
+    }
+    private void setRenameView(RenameView renameView) {
+        this.renameView = renameView;
+    }    
 }

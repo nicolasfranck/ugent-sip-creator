@@ -115,7 +115,7 @@ public class AgentPanel extends JPanel{
         this.agentTable = agentTable;
     }  
     protected JComponent createContentPane() {
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new BorderLayout());        
         panel.add(new JScrollPane(getAgentTable().getControl()),BorderLayout.NORTH);
         panel.add(getButtonPanel(),BorderLayout.CENTER);
         panel.add(getAgentForm().getControl(),BorderLayout.SOUTH);

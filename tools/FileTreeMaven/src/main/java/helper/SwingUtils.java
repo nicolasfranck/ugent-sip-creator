@@ -11,10 +11,13 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 
 /**
@@ -22,7 +25,7 @@ import org.springframework.richclient.application.Application;
  * @author nicolas
  */
 public class SwingUtils {
-    
+    private static Log logger = LogFactory.getLog(SwingUtils.class);
     private static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
         JFileChooser fileChooser = new JFileChooser();              
         fileChooser.setDialogTitle(title);            
@@ -67,28 +70,42 @@ public class SwingUtils {
         for(ActionListener l:button.getActionListeners()){
             button.removeActionListener(l);
         }
+    }    
+    public static void monitor(SwingWorker worker,String title,String note){
+        monitor(getFrame(),worker,title,note);
     }
-    public static void monitor(Component component,SwingWorker worker,String title){
-        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,"",0,100);        
+    public static void monitor(SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
+        monitor(getFrame(),worker,title,note,listeners);
+    }
+    public static void monitor(Component component,SwingWorker worker,String title,String note){
+        monitor(component,worker,title,note,new ArrayList<PropertyChangeListener>());
+    }
+    public static void monitor(Component component,SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
+        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                
         progressMonitor.setProgress(0);
         progressMonitor.setMillisToDecideToPopup(100);
         progressMonitor.setMillisToPopup(0);
         worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
+        if(listeners != null){
+            for(PropertyChangeListener listener:listeners){
+                worker.addPropertyChangeListener(listener);
+            }            
+        }
         worker.execute();
     }
     private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor){
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {                        
-                System.out.println("property change event: "+evt.getPropertyName());
-                System.out.println("property value:"+evt.getNewValue());                
+                logger.debug("property change event: "+evt.getPropertyName());
+                logger.debug("property value:"+evt.getNewValue());                
                 if("progress".compareTo(evt.getPropertyName())==0){                            
                     int progress = (Integer) evt.getNewValue();                            
                     progressMonitor.setProgress(progress);                              
                     progressMonitor.setNote(progress+"%");                    
                 }else if(
-                    "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue().toString().compareTo("DONE") == 0
-                ){
+                    "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue() == SwingWorker.StateValue.DONE
+                ){                    
                     progressMonitor.close();
                 }
             }

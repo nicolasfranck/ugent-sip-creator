@@ -7,6 +7,7 @@ package validation;
 
 import Params.AdvancedRenameParams;
 import Params.CleanParams;
+import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.MetsHdr.Agent;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
@@ -31,9 +32,10 @@ public class MyValidationRulesSource extends DefaultRulesSource{
         agentRules
                 .add(required("name"))
                 .add(required("ID"));
-                
-                
         addRules(agentRules);
-       
+        
+        Rules mdWrapRules = new Rules(MdWrap.class);
+        mdWrapRules.add(required("ID"));
+        addRules(mdWrapRules);
     }
 }

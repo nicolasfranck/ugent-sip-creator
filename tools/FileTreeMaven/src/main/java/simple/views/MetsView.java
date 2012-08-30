@@ -6,7 +6,7 @@ package simple.views;
 
 import Exceptions.MdRefException;
 import Filters.FileExtensionFilter;
-import Tabs.MetsTab;
+import Panels.MetsPanel;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsWriter;
 import helper.Context;
@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import javax.swing.*;
 import javax.xml.validation.Schema;
-import org.springframework.richclient.application.support.AbstractView;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -31,7 +30,7 @@ import org.xml.sax.SAXException;
  *
  * @author nicolas
  */
-public class MetsView extends AbstractView{
+public class MetsView extends DefaultView{
     private Mets mets;    
     private JButton importMetsButton;
     
@@ -43,8 +42,8 @@ public class MetsView extends AbstractView{
     private JPanel topPanel;
     private JPanel middlePanel;
     
-    private MetsTab metsTab;
-    
+    private MetsPanel metsTab;   
+        
     
     @Override
     protected JComponent createControl() {
@@ -109,7 +108,7 @@ public class MetsView extends AbstractView{
         return metsSchemas.get(version);        
     }
     private void monitor(SwingWorker worker,String title){        
-        helper.SwingUtils.monitor(MetsView.this.getControl(),worker,title);        
+        helper.SwingUtils.monitor(worker,title,"");        
     }           
     protected Mets getMets(){
         if(mets == null){
@@ -123,13 +122,13 @@ public class MetsView extends AbstractView{
     protected void reset(){        
         getMetsTab().reset(getMets());
     }
-    public MetsTab getMetsTab() {
+    public MetsPanel getMetsTab() {
         if(metsTab == null){
-            metsTab = new MetsTab(getMets());
+            metsTab = new MetsPanel(getMets());
         }
         return metsTab;
     }
-    public void setMetsTab(MetsTab metsTab) {
+    public void setMetsTab(MetsPanel metsTab) {
         this.metsTab = metsTab;
     }  
     private class TaskImportMetsFromFile extends SwingWorker<Void, Void> {

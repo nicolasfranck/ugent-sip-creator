@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public interface RenameListener{
     public void onInit(final ArrayList<RenameFilePair>pairs);
     ErrorAction onError(final RenameFilePair pair,final RenameError errorType,final String errorStr);
-    void onRenameStart(final RenameFilePair pair);
-    void onRenameSuccess(final RenameFilePair pair);
-    void onRenameEnd(final RenameFilePair pair);    
+    void onRenameStart(final RenameFilePair pair,int index);
+    void onRenameSuccess(final RenameFilePair pair,int index);
+    void onRenameEnd(final RenameFilePair pair,int index);    
     void onEnd(final ArrayList<RenameFilePair>pairs,int numSuccess);
 }

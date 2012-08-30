@@ -1897,7 +1897,7 @@ public class RenameWand {
                 r.setSimulateOnly(isSimulateOnly());
 
                 
-                getRenameListener().onRenameStart(r);
+                getRenameListener().onRenameStart(r,i);
                 
 
                 ErrorAction action = null;
@@ -1907,9 +1907,9 @@ public class RenameWand {
                    
                     if(!isOverWrite() && r.target.exists()){
                         r.success = false;
-                        action = getRenameListener().onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
+                        action = getRenameListener().onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists",i);
                     }else if(!r.target.getParentFile().canWrite()){
-                        action = getRenameListener().onError(r, RenameError.IO_EXCEPTION,"cannot write to "+r.target.getParentFile().getAbsolutePath());
+                        action = getRenameListener().onError(r, RenameError.IO_EXCEPTION,"cannot write to "+r.target.getParentFile().getAbsolutePath(),i);
                     }else{
                         r.success = true;
                     }
@@ -1919,7 +1919,7 @@ public class RenameWand {
                     if(!isOverWrite() && r.target.exists()){
                         r.success = false;
                         
-                        action = getRenameListener().onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists");
+                        action = getRenameListener().onError(r, RenameError.TARGET_EXISTS,"target file "+r.target.getAbsolutePath()+" already exists",i);
                         
                     }else{
                         r.target.getParentFile().mkdirs();
@@ -1939,7 +1939,7 @@ public class RenameWand {
                             error = e.getMessage();
                         }
                         if(!r.success){
-                            action = getRenameListener().onError(r,RenameError.SYSTEM_ERROR,error);
+                            action = getRenameListener().onError(r,RenameError.SYSTEM_ERROR,error,i);
                         }
                     }
                 }
@@ -1994,11 +1994,11 @@ public class RenameWand {
                         break;
                     }
                 }else{
-                    getRenameListener().onRenameSuccess(r);
+                    getRenameListener().onRenameSuccess(r,i);
                 }
 
                 
-                getRenameListener().onRenameEnd(r);
+                getRenameListener().onRenameEnd(r,i);
                 
             }
 

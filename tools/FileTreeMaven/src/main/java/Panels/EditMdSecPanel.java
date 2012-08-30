@@ -81,7 +81,7 @@ public class EditMdSecPanel extends JPanel{
                             new String [] {
                                 helper.XML.NodeToXML(getMdSec().getMdWrap().getXmlData().get(0))
                         });
-                        dialog.pack();
+                        dialog.pack();                        
                         dialog.setVisible(true);    
                     }catch(ClassNotFoundException e){                        
                     }catch(InstantiationException e){

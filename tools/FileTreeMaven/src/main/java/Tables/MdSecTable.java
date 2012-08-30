@@ -39,7 +39,7 @@ public class MdSecTable extends AbstractObjectTable{
                     dialog.pack();
                     dialog.setVisible(true);                    
                 }catch(Exception e){
-                    e.printStackTrace();
+                    logger.debug(e.getMessage());                    
                 }
             }
         });
@@ -63,8 +63,7 @@ public class MdSecTable extends AbstractObjectTable{
         });                 
     }
     @Override
-    protected Object[] getDefaultInitialData(){               
-        //filter op data met mdWrap? => nee, want gevaarlijk wanneer je dingen eruit verwijdert..
+    protected Object[] getDefaultInitialData(){                       
         return getData().toArray();         
     }
     protected ArrayList<MdSec> getData() {

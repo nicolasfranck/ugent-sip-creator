@@ -192,7 +192,7 @@ public class SimpleRenamer {
             ErrorAction errorAction = ErrorAction.ignore;
             boolean abort = false;            
             
-            getRenameListener().onRenameStart(pair);
+            getRenameListener().onRenameStart(pair,i);
 
             RenameError renameError = null;
 
@@ -237,7 +237,7 @@ public class SimpleRenamer {
                 }
             }
 
-            getRenameListener().onRenameEnd(pair);            
+            getRenameListener().onRenameEnd(pair,i);            
 
             if(pair.isSuccess())numSuccess++;
             else{
@@ -289,15 +289,15 @@ public class SimpleRenamer {
                     return ErrorAction.undoAll;
                 }
                 @Override
-                public void onRenameStart(RenameFilePair pair) {
+                public void onRenameStart(RenameFilePair pair,int index) {
                     System.out.println("onStart:"+pair.getSource().getAbsolutePath()+" => "+pair.getTarget().getAbsolutePath());
                 }
                 @Override
-                public void onRenameSuccess(RenameFilePair pair) {
+                public void onRenameSuccess(RenameFilePair pair,int index) {
                     System.out.println("onRenameSuccess");
                 }
                 @Override
-                public void onRenameEnd(RenameFilePair pair) {
+                public void onRenameEnd(RenameFilePair pair,int index) {
                     System.out.println("onRenameEnd");
                 }
                 @Override

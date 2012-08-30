@@ -5,7 +5,7 @@
 package simple.views;
 
 import Filters.FileExtensionFilter;
-import Tabs.MetsTab;
+import Panels.MetsPanel;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsWriter;
 import java.awt.BorderLayout;
@@ -38,7 +38,7 @@ public class TestView extends AbstractView implements ActionListener{
     private JPanel topPanel;
     private JPanel middlePanel;
     
-    private MetsTab metsTab;
+    private MetsPanel metsTab;
     
     
     @Override
@@ -137,13 +137,13 @@ public class TestView extends AbstractView implements ActionListener{
     protected void reset(){        
         getMetsTab().reset(getMets());
     }
-    public MetsTab getMetsTab() {
+    public MetsPanel getMetsTab() {
         if(metsTab == null){
-            metsTab = new MetsTab(getMets());
+            metsTab = new MetsPanel(getMets());
         }
         return metsTab;
     }
-    public void setMetsTab(MetsTab metsTab) {
+    public void setMetsTab(MetsPanel metsTab) {
         this.metsTab = metsTab;
     }    
 }

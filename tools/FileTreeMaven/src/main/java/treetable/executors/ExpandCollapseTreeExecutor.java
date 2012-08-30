@@ -17,22 +17,35 @@ import treetable.FileNode;
  *
  * @author nicolas
  */
+/*
+* source: http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
+*/
+// If expand is true, expands all nodes in the tree.
+// Otherwise, collapses all nodes in the tree.
+    
 public class ExpandCollapseTreeExecutor extends AbstractActionCommandExecutor{
-    private RenameView view;
+    private RenameView renameView;
     private static final Log log = LogFactory.getLog(ExpandCollapseTreeExecutor.class);
 
-    public ExpandCollapseTreeExecutor(RenameView view){
-        this.view = view;        
+    public ExpandCollapseTreeExecutor(RenameView renameView){
+        setRenameView(renameView);        
     }
+    private RenameView getRenameView() {
+        return renameView;
+    }
+    private void setRenameView(RenameView renameView) {
+        this.renameView = renameView;
+    }    
     @Override
     public void execute(){        
-        JTree tree = view.getCurrentTreeTable().getTree();
+        System.out.println("expanding..");
+        JTree tree = getRenameView().getRenamePanel().getCurrentTreeTable().getTree();                
         FileNode root = (FileNode)tree.getModel().getRoot();
         TreePath path = new TreePath(root);
         expandAll(tree.isCollapsed(path));
     }
     public void expandAll(boolean isCollapsed) {
-        FileNode root = (FileNode)view.getCurrentTreeTable().getTree().getModel().getRoot();
+        FileNode root = (FileNode)getRenameView().getRenamePanel().getCurrentTreeTable().getTree().getModel().getRoot();
         // Traverse tree from root
         expandAll(new TreePath(root),isCollapsed);
     }
@@ -46,7 +59,7 @@ public class ExpandCollapseTreeExecutor extends AbstractActionCommandExecutor{
             expandAll(path,isCollapsed);
         }
         // Expansion or collapse must be done bottom-up
-        JTree tree = view.getCurrentTreeTable().getTree();
+        JTree tree = getRenameView().getRenamePanel().getCurrentTreeTable().getTree();
         if(isCollapsed) {
             tree.expandPath(parent);
         }else{

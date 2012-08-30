@@ -86,6 +86,6 @@ public class StructMapPanel extends JPanel{
         return panel;
     }
     private void monitor(SwingWorker worker,String title){
-        helper.SwingUtils.monitor(StructMapPanel.this,worker,title);        
+        helper.SwingUtils.monitor(worker,title,"");        
     }    
 }

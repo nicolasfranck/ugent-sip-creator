@@ -40,7 +40,7 @@ public final class AgentTable extends AbstractObjectTable{
                     refresh();
                 }
             }            
-        });        
+        });         
     }
     @Override
     protected Object[] getDefaultInitialData(){               

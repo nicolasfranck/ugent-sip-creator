@@ -40,7 +40,7 @@ import org.springframework.richclient.application.support.AbstractView;
  *
  * @author nicolas
  */
-public class BagItView extends AbstractView{
+public class BagItView extends DefaultView{
     private JPanel rootPanel;
     private JPanel payloadPanel;
     private JTree payloadTree;

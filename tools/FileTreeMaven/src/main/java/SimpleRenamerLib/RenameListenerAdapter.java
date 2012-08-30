@@ -23,13 +23,13 @@ public class RenameListenerAdapter implements RenameListener{
         return ErrorAction.ignore;
     }
     @Override
-    public void onRenameStart(RenameFilePair pair) {
+    public void onRenameStart(RenameFilePair pair,int index) {
     }
     @Override
-    public void onRenameSuccess(RenameFilePair pair){
+    public void onRenameSuccess(RenameFilePair pair,int index){
     }
     @Override
-    public void onRenameEnd(RenameFilePair pair){
+    public void onRenameEnd(RenameFilePair pair,int index){
     }
     @Override
     public void onEnd(ArrayList<RenameFilePair> pairs, int numSuccess){

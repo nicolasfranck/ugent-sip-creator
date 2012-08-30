@@ -27,14 +27,14 @@ public interface RenameListener{
      * @param errorStr
      *      error message (sometimes null)
      */
-    ErrorAction onError(final RenameFilePair pair,final RenameError errorType,final String errorStr);
+    ErrorAction onError(final RenameFilePair pair,final RenameError errorType,final String errorStr,int index);
     /*
      * @param pair
      *  object that contains source and target file
      */
-    void onRenameStart(final RenameFilePair pair);
-    void onRenameSuccess(final RenameFilePair pair);
-    void onRenameEnd(final RenameFilePair pair);
+    void onRenameStart(final RenameFilePair pair,int index);
+    void onRenameSuccess(final RenameFilePair pair,int index);
+    void onRenameEnd(final RenameFilePair pair,int index);
     /*
      *  after end of operation
      */
