@@ -187,8 +187,9 @@ public class MetsUtils {
         //indien XSD bekend, dan validatie hierop       
         if(getXsdMap().containsKey(namespace)){
             logger.debug("validating against "+(String)getXsdMap().get(namespace));            
-            URL schemaURL = new URL((String)getXsdMap().get(namespace));
+            URL schemaURL = MetsUtils.class.getClassLoader().getResource((String)getXsdMap().get(namespace));
             logger.debug("creating schema");            
+            logger.debug("url of schema: "+schemaURL);
             Schema schema = helper.XML.createSchema(schemaURL);            
             logger.debug("creating schema done!");
             helper.XML.validate(doc,schema);            

@@ -10,7 +10,6 @@ import Importers.Importer;
 import Importers.ImporterFactory;
 import com.anearalone.mets.MdSec;
 import helper.Context;
-import helper.XML;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
@@ -46,9 +45,6 @@ public class TaskAddMdSecFromImport extends DefaultWorker {
                     System.out.println("doc creation failed "+file);
                     continue;
                 }
-                System.out.println("importing from file "+file+" successfull");
-                XML.DocumentToXML(doc,new java.io.FileOutputStream(new File("/tmp/dc.xml")),true);
-
 
                 MdSec mdSec = helper.MetsUtils.createMdSec(doc);                        
                 

@@ -144,8 +144,11 @@ public class XML {
         validator.validate(source);
     }
     public static Schema createSchema(URL schemaURL) throws SAXException, IOException{        
+        return createSchema(schemaURL.openStream());        
+    }
+    public static Schema createSchema(InputStream in) throws SAXException, IOException{
         return getSchemaFactory().newSchema(new StreamSource(
-            new BufferedReader(new InputStreamReader(schemaURL.openStream()))                
+            new BufferedReader(new InputStreamReader(in))                
         ));
     }
     public static Schema createSchema(File schemaFile) throws SAXException{

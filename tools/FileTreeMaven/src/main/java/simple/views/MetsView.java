@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -49,8 +50,8 @@ public class MetsView extends DefaultView{
     protected JComponent createControl() {
         return createForm();
     }    
-    private JComponent createForm(){   
-        
+    private JComponent createForm(){ 
+       
         //create
         topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
         
@@ -103,7 +104,12 @@ public class MetsView extends DefaultView{
     }    
     protected Schema getSchema(String version) throws MalformedURLException, SAXException, IOException{        
         if(!metsSchemas.containsKey(version)){
-            metsSchemas.put(version,helper.XML.createSchema(new URL(version)));
+            metsSchemas.put(
+                version,
+                helper.XML.createSchema(
+                    getClass().getClassLoader().getResource(version)                    
+                )
+            );
         }
         return metsSchemas.get(version);        
     }
@@ -215,4 +221,3 @@ public class MetsView extends DefaultView{
         }    
     }
 }
-
