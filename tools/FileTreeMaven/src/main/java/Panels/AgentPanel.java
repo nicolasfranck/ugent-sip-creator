@@ -12,7 +12,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.UUID;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -49,8 +48,7 @@ public class AgentPanel extends JPanel{
         this.data = data;        
     }
     public Agent newAgent(){
-        Agent agent = new Agent(Agent.ROLE.ARCHIVIST,"");
-        agent.setID(UUID.randomUUID().toString());
+        Agent agent = new Agent(Agent.ROLE.ARCHIVIST,"");        
         agent.setAGENTTYPE(Agent.AGENTTYPE.INDIVIDUAL);
         return agent;
     }
@@ -116,13 +114,13 @@ public class AgentPanel extends JPanel{
     }  
     protected JComponent createContentPane() {
         JPanel panel = new JPanel(new BorderLayout());        
-        panel.add(new JScrollPane(getAgentTable().getControl()),BorderLayout.NORTH);
-        panel.add(getButtonPanel(),BorderLayout.CENTER);
-        panel.add(getAgentForm().getControl(),BorderLayout.SOUTH);
+        panel.add(new JScrollPane(getAgentTable().getControl()),BorderLayout.CENTER);
+        panel.add(getButtonPanel(),BorderLayout.NORTH);
+        panel.add(getAgentForm().getControl(),BorderLayout.EAST);
         return panel;
     }
     public JComponent createButtonPanel(){
-        final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        final JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         addButton = new JButton("add");        
         updateButton = new JButton("update");       
         removeButton = new JButton("remove");

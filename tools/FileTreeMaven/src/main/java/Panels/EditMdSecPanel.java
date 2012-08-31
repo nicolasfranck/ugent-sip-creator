@@ -5,6 +5,7 @@
 package Panels;
 
 import Dialogs.TextViewDialog;
+import Forms.MdSecForm;
 import Forms.MdWrapForm;
 import com.anearalone.mets.MdSec;
 import helper.Context;
@@ -24,6 +25,7 @@ import org.springframework.binding.validation.ValidationResults;
 public class EditMdSecPanel extends JPanel{
     private JComponent buttonPanel;
     private MdWrapForm mdWrapForm;
+    private MdSecForm mdSecForm;
     private MdSec mdSec;    
     
     public EditMdSecPanel(final MdSec mdSec){        
@@ -37,8 +39,16 @@ public class EditMdSecPanel extends JPanel{
     }
     public void setMdSec(MdSec mdSec) {
         this.mdSec = mdSec;
-    }   
-
+    }
+    public MdSecForm getMdSecForm(){
+        if(mdSecForm == null){
+            mdSecForm = new MdSecForm(getMdSec());
+        }
+        return mdSecForm;
+    }
+    public void setMdSecForm(MdSecForm mdSecForm) {
+        this.mdSecForm = mdSecForm;
+    }    
     public MdWrapForm getMdWrapForm() {
         if(mdWrapForm == null){
             mdWrapForm = new MdWrapForm(getMdSec().getMdWrap());
@@ -64,6 +74,7 @@ public class EditMdSecPanel extends JPanel{
     protected JComponent createContentPane() {
         JPanel panel = new JPanel(new BorderLayout());                        
         panel.add(getButtonPanel(),BorderLayout.NORTH);        
+        panel.add(new JScrollPane(getMdSecForm().getControl()));
         panel.add(new JScrollPane(getMdWrapForm().getControl()));
         return panel;
     }

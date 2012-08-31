@@ -4,7 +4,10 @@
  */
 package Panels;
 
+import Forms.MdSecForm;
+import Forms.MdWrapForm;
 import Tables.DmdSecTable;
+import Tables.MdSecTable;
 import com.anearalone.mets.MdSec;
 import helper.Context;
 import java.awt.BorderLayout;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
+import org.springframework.binding.validation.ValidationListener;
+import org.springframework.binding.validation.ValidationResults;
 
 /**
  *
@@ -25,15 +30,51 @@ import javax.swing.*;
  */
 public class MdSecPanel extends JPanel{
     private JComponent buttonPanel;
-    private DmdSecTable dmdSecTable;     
+    private MdSecTable dmdSecTable;     
     private JTextArea console;
-    private ArrayList<MdSec>data;    
+    private ArrayList<MdSec>data; 
+    private MdSecForm mdSecForm;
+    private MdWrapForm mdWrapForm;
+    private boolean modusAdding = true;
+    private JButton updateButton;
+    private JButton removeButton;
+    private JButton addButton;
+    private JButton importButton;
+    private JButton transformButton;
     
     public MdSecPanel(final ArrayList<MdSec>data){        
         assert(data != null);
         this.data = data;         
         setLayout(new BorderLayout());
         add(createContentPane());        
+    }
+    public MdSec newMdSec(){
+        return new MdSec("");        
+    }
+    public MdSecForm getMdSecForm() {
+        if(mdSecForm == null){
+            mdSecForm = new MdSecForm(newMdSec());
+            mdSecForm.addValidationListener(new ValidationListener() {
+                @Override
+                public void validationResultsChanged(ValidationResults results) {
+                    if(modusAdding){
+                        addButton.setEnabled(!results.getHasErrors());
+                    }else{
+                        updateButton.setEnabled(!results.getHasErrors());
+                    }
+                }
+            });
+        }
+        return mdSecForm;
+    }
+    public MdWrapForm getMdWrapForm() {
+        return mdWrapForm;
+    }
+    public void setMdWrapForm(MdWrapForm mdWrapForm) {
+        this.mdWrapForm = mdWrapForm;
+    }    
+    public void setMdSecForm(MdSecForm mdSecForm) {
+        this.mdSecForm = mdSecForm;
     }    
     public void reset(final ArrayList<MdSec>data){                
         getDmdSecTable().reset(data);
@@ -59,7 +100,7 @@ public class MdSecPanel extends JPanel{
     public void setConsole(JTextArea console) {
         this.console = console;
     }      
-    public DmdSecTable getDmdSecTable() {
+    public MdSecTable getDmdSecTable() {
         if(dmdSecTable == null){
             dmdSecTable = createMdSecTable();
         }
@@ -87,12 +128,12 @@ public class MdSecPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                
-        JButton importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
+        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                
+        importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
         importButton.setToolTipText(Context.getMessage("MdSecPanel.importButton.toolTip"));
-        JButton removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));  
-        JButton transformButton = new JButton(Context.getMessage("MdSecPanel.transformButton.label"));
-        transformButton.setToolTipText(Context.getMessage("MdSecPanel.transformButton.toolTip"));
+        removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));  
+        transformButton = new JButton(Context.getMessage("MdSecPanel.transformButton.label"));
+        transformButton.setToolTipText(Context.getMessage("MdSecPanel.transformButton.toolTip"));        
         
         panel.add(addButton);                
         panel.add(importButton);        
