@@ -44,7 +44,7 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
                     System.out.println("no transformation found for "+file);
                     continue;
                 }
-                URL url = getClass().getClassLoader().getResource(helper.MetsUtils.getXsltMap().get(namespace));
+                URL url = Context.getResource(helper.MetsUtils.getXsltMap().get(namespace));                        
                 Document xsltDoc = XML.XMLToDocument(url);
                 if(xsltDoc == null){
                     continue;

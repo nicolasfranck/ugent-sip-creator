@@ -69,27 +69,6 @@ public class EditMdSecPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));                
-        JButton showButton = new JButton(Context.getMessage("EditMdSecPanel.showButton.label"));          
-        showButton.setToolTipText(Context.getMessage("EditMdSecPanel.showButton.toolTip"));        
-        showButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae){
-                if(getMdSec().getMdWrap() != null && getMdSec().getMdWrap().getXmlData() != null && !getMdSec().getMdWrap().getXmlData().isEmpty()){                                                            
-                    try{                        
-                        JDialog dialog = new TextViewDialog(
-                            SwingUtils.getFrame(),
-                            new String [] {
-                                helper.XML.NodeToXML(getMdSec().getMdWrap().getXmlData().get(0))
-                        });
-                        dialog.pack();                        
-                        dialog.setVisible(true);    
-                    }catch(ClassNotFoundException e){                        
-                    }catch(InstantiationException e){
-                    }catch(IllegalAccessException e){                        
-                    }                    
-                }
-            }
-        });
         
         final JButton saveButton = new JButton(Context.getMessage("EditMdSecPanel.saveButton.label"));
         saveButton.setEnabled(true);
@@ -103,6 +82,30 @@ public class EditMdSecPanel extends JPanel{
                 }
             }
         });
+        
+        JButton showButton = new JButton(Context.getMessage("EditMdSecPanel.showButton.label"));          
+        showButton.setToolTipText(Context.getMessage("EditMdSecPanel.showButton.toolTip"));        
+        showButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae){
+                if(getMdSec().getMdWrap() != null && getMdSec().getMdWrap().getXmlData() != null && !getMdSec().getMdWrap().getXmlData().isEmpty()){                                                            
+                    try{                        
+                        JDialog dialog = new TextViewDialog(
+                            SwingUtils.getFrame(),
+                            new String [] {
+                                helper.XML.NodeToXML(getMdSec().getMdWrap().getXmlData().get(0),true)
+                        });
+                        dialog.pack();                        
+                        dialog.setVisible(true);    
+                    }catch(ClassNotFoundException e){                        
+                    }catch(InstantiationException e){
+                    }catch(IllegalAccessException e){                        
+                    }                    
+                }
+            }
+        });
+        
+        
         getMdWrapForm().addValidationListener(new ValidationListener(){
             @Override
             public void validationResultsChanged(ValidationResults results) {
@@ -110,8 +113,9 @@ public class EditMdSecPanel extends JPanel{
             }
         });
         
-        panel.add(showButton);
         panel.add(saveButton);
+        panel.add(showButton);
+        
         return panel;
     }     
 }

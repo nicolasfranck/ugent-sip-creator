@@ -14,7 +14,7 @@ public class ImporterFactory {
     public static Importer createImporter(File file){
         String extension = getExtension(file.getName());
         if(extension.compareToIgnoreCase("txt") == 0){
-            return new NameValueToOAIDCImporter();
+            return new NameValueToDCImporter();
         }
         return null;
     }

@@ -102,12 +102,15 @@ public class MetsView extends DefaultView{
     public void setMetsSchemaVersions(List<String> metsSchemaVersions) {
         this.metsSchemaVersions = metsSchemaVersions;
     }    
+    protected void free(){
+        metsSchemas.clear();
+    }
     protected Schema getSchema(String version) throws MalformedURLException, SAXException, IOException{        
         if(!metsSchemas.containsKey(version)){
             metsSchemas.put(
                 version,
                 helper.XML.createSchema(
-                    getClass().getClassLoader().getResource(version)                    
+                    Context.getResource(version)                    
                 )
             );
         }
@@ -140,8 +143,7 @@ public class MetsView extends DefaultView{
     private class TaskImportMetsFromFile extends SwingWorker<Void, Void> {
         @Override        
         protected Void doInBackground() throws Exception {                        
-            try{      
-                System.out.println("starting");
+            try{
                 //stap 1
                 File [] files = helper.SwingUtils.chooseFiles(
                     Context.getMessage("MetsView.fileChooser.dialog.title"),                
@@ -198,8 +200,6 @@ public class MetsView extends DefaultView{
                 
                 //stap 4
                 Mets tempMets = helper.MetsUtils.documentToMets(doc);                        
-                      
-                //helper.MetsUtils.validate(tempMets);
                 
                 setProgress( (int) ((4.0 / 5)*100));
                 //stap 5
@@ -213,10 +213,10 @@ public class MetsView extends DefaultView{
                 JOptionPane.showMessageDialog(SwingUtils.getFrame(),"bestand bevat geen geldige mets xml: "+e.getMessage());
             }catch(MdRefException e){
                 JOptionPane.showMessageDialog(SwingUtils.getFrame(),e.getMessage());
-            }finally{
-                System.out.println("DONE called???");
+            }finally{                
                 this.done();                
-            }            
+            }
+            free();
             return null;
         }    
     }

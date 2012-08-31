@@ -11,7 +11,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JTextField;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
@@ -33,10 +32,12 @@ public class MdWrapForm extends AbstractForm{
     }    
     @Override
     protected JComponent createFormControl() {
-
+        MdWrap mdWrap = (MdWrap) getFormObject();
+        
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
 
         TableFormBuilder builder = new TableFormBuilder(bf);       
+        System.out.println("label attributes: "+builder.getLabelAttributes());
         
         builder.setLabelAttributes("colSpan=1 align=left");
         
@@ -53,21 +54,15 @@ public class MdWrapForm extends AbstractForm{
         builder.row();           
         
         final JComponent [] componentsOtherMdType = builder.add("OTHERMDTYPE");
-        helper.SwingUtils.setJComponentsEnabled(componentsOtherMdType,false);
+        
+        helper.SwingUtils.setJComponentsEnabled(componentsOtherMdType,mdWrap.getMDTYPE() == MDTYPE.OTHER);
         builder.row();        
         
         getFormModel().getValueModel("MDTYPE").addValueChangeListener(new PropertyChangeListener(){
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                MDTYPE mdType = (MDTYPE) pce.getNewValue();     
-                boolean enabled = false;
-                if(mdType == MDTYPE.OTHER){
-                    enabled = true;                    
-                }else{
-                    enabled = false;
-                    ((JTextField)componentsOtherMdType[1]).setText("");                    
-                }
-                helper.SwingUtils.setJComponentsEnabled(componentsOtherMdType,enabled);                
+                MDTYPE mdType = (MDTYPE) pce.getNewValue();                   
+                helper.SwingUtils.setJComponentsEnabled(componentsOtherMdType,mdType == MDTYPE.OTHER);                 
             }
         });        
 

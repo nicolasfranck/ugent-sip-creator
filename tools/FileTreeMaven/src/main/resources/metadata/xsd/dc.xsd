@@ -1,0 +1,27 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          targetNamespace="http://purl.org/dc/elements/1.1/"
+          elementFormDefault="qualified"
+          attributeFormDefault="unqualified">
+
+ <element name="dc" type="dc:dublincoreType"/>
+ <complexType name="dublincoreType">
+  <choice minOccurs="0" maxOccurs="unbounded">
+   <element name="title" minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="creator"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="subject"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="description"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="contributor"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="publisher"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="date"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="type"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="format"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="identifier"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="source"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="language"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="relation"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="coverage"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+   <element name="rights"  minOccurs="0" maxOccurs="unbounded" type="string"/>
+  </choice>
+ </complexType>
+</schema>
