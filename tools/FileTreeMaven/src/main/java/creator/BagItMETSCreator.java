@@ -144,7 +144,7 @@ public class BagItMETSCreator {
             List<File>files = fileGrpMA.getFile();
 
             for(java.io.File sourceFile:getPayloads()){
-                ArrayList<java.io.File>list = helper.FileUtils.listFiles(sourceFile);                         
+                ArrayList<java.io.File>list = ugent.bagger.helper.FileUtils.listFiles(sourceFile);                         
                 for(java.io.File file:list){                                                  
                     String pathInBag = "data" +
                         file.getAbsolutePath().replaceFirst(
@@ -272,7 +272,7 @@ public class BagItMETSCreator {
         return mdSec;
     }
     private static MdWrap makeMdWrap(java.io.File file) throws ParserConfigurationException, SAXException, IOException{
-        Document doc = helper.XML.XMLToDocument(file);
+        Document doc = ugent.bagger.helper.XML.XMLToDocument(file);
         Element element = doc.getDocumentElement();
         System.out.println("namespace: "+element.getNamespaceURI());
         MdWrap wrapper = new MdWrap(getMetadataType(element.getNamespaceURI()));                                                    
@@ -292,14 +292,14 @@ public class BagItMETSCreator {
         BagItMETSCreator creator = new BagItMETSCreator();
         creator.setFile(saveAsFile);
         creator.setPayloads(new ArrayList<java.io.File>(Arrays.asList(list)));
-        creator.setDmdFiles(helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
+        creator.setDmdFiles(ugent.bagger.helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
         
         
         Amd amd = new Amd();
-        amd.getDigiprovMDFile().addAll(helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
-        amd.getSourceMDFile().addAll(helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
-        amd.getTechMDFile().addAll(helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
-        amd.getRightsMDFile().addAll(helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));        
+        amd.getDigiprovMDFile().addAll(ugent.bagger.helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
+        amd.getSourceMDFile().addAll(ugent.bagger.helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
+        amd.getTechMDFile().addAll(ugent.bagger.helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));
+        amd.getRightsMDFile().addAll(ugent.bagger.helper.FileUtils.listFiles(new java.io.File("/home/nicolas/ead")));        
         
         creator.getAmds().add(amd);
         

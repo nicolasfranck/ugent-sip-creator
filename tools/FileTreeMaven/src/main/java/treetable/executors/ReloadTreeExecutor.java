@@ -8,7 +8,7 @@ package treetable.executors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import simple.views.RenameView;
+import ugent.bagger.views.RenameView;
 
 /**
  *

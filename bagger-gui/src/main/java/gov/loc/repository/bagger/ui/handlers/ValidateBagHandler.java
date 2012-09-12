@@ -53,6 +53,7 @@ public class ValidateBagHandler extends AbstractAction implements Progress {
     	    }
     	    
     	    SwingUtilities.invokeLater(new Runnable() {
+                @Override
 				public void run() {
 					ApplicationContextUtil.addConsoleMessage(messages);
 				}

@@ -87,7 +87,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
     }
     private String getFileNames(File[] files) {
-    	StringBuffer stringBuff = new StringBuffer();
+    	StringBuilder stringBuff = new StringBuilder();
     	int totalFileCount = files.length;
     	int displayCount = 20;
     	if (totalFileCount < 20) {

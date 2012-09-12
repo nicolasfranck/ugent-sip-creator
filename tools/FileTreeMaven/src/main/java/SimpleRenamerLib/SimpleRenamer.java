@@ -270,7 +270,7 @@ public class SimpleRenamer {
     public static void main(String [] args){
         try{
             SimpleRenamer renamer = new SimpleRenamer();
-            ArrayList<File>files = helper.FileUtils.listFiles("/home/nicolas/brol");
+            ArrayList<File>files = ugent.bagger.helper.FileUtils.listFiles("/home/nicolas/brol");
             for(File file:files){                
                 renamer.addRenameCandidate(file);
             }

@@ -2307,7 +2307,7 @@ public class RenameWand {
 
                 RenameWand renamer = new RenameWand();
                 renamer.setCleanListener(cl);                
-                renamer.setCleanCandidates(helper.FileUtils.listFiles("/home/nicolas/brol"));
+                renamer.setCleanCandidates(ugent.bagger.helper.FileUtils.listFiles("/home/nicolas/brol"));
                 renamer.setCopy(true);
                 renamer.clean();
                 

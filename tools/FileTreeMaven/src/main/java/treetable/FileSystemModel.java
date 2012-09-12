@@ -40,7 +40,7 @@
 package treetable;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
-import helper.FileUtils;
+import ugent.bagger.helper.FileUtils;
 import java.io.File;
 import java.util.Collection;
 import java.util.Date;

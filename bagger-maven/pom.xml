@@ -23,7 +23,7 @@
     </plugins>
   </build>
   <modules>
-    <module>../bagger-common</module>
+    <!--<module>../bagger-common</module>-->
     <module>../bagger-core</module>
     <module>../bagger-business</module>
     <module>../bagger-gui</module>

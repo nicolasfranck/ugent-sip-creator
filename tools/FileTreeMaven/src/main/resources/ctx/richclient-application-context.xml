@@ -65,7 +65,7 @@
     AWT event thread as the handler to receive uncaught exceptions that occur
     on the event thread.
   -->
-  <bean id="lifecycleAdvisor" class="simple.SimpleLifecycleAdvisor">
+  <bean id="lifecycleAdvisor" class="ugent.bagger.app.SimpleLifecycleAdvisor">
     <property name="windowCommandBarDefinitions" value="ui/commands-context.xml" />
     <property name="windowCommandManagerBeanName" value="windowCommandManager" />
     <property name="menubarBeanName" value="menuBar" />
@@ -234,7 +234,7 @@
   </bean>
   
    <bean id="renameView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
-    <property name="viewClass" value="simple.views.RenameView" />
+    <property name="viewClass" value="ugent.bagger.views.RenameView" />
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>    
@@ -242,7 +242,7 @@
 
 <!--
   <bean id="bagItView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
-    <property name="viewClass" value="simple.views.BagItView" />
+    <property name="viewClass" value="ugent.bagger.views.BagItView" />
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>
@@ -255,7 +255,7 @@
   -->
   
   <bean id="metsView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
-    <property name="viewClass" value="simple.views.MetsView" />
+    <property name="viewClass" value="ugent.bagger.views.MetsView" />
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>      
@@ -382,7 +382,7 @@
 
   <!--<bean id="rulesSource" class="test.MyValidationRulesSource" />-->
   
-  <bean id="rulesSource" class="validation.MyValidationRulesSource" />
+  <bean id="rulesSource" class="ugent.bagger.validation.MyValidationRulesSource" />
 
   <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />
 

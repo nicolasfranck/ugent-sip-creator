@@ -11,3 +11,5 @@ bagger-maven/target
 tools/FileTreeMaven/target
 *.class
 *.jar
+/new/bagger-gui/target/
+/new/bagger-business/target/

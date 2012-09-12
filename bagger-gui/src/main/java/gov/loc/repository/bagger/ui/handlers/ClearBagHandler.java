@@ -6,12 +6,9 @@ import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
-
 import java.awt.event.ActionEvent;
 import java.io.File;
-
 import javax.swing.AbstractAction;
-
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 
@@ -25,6 +22,7 @@ public class ClearBagHandler extends AbstractAction {
 		this.bagView = bagView;
 	}
 
+    @Override
 	public void actionPerformed(ActionEvent e) {
 		closeExistingBag();
 	}
@@ -47,9 +45,11 @@ public class ClearBagHandler extends AbstractAction {
 
     private void confirmCloseBag() {
 	    ConfirmationDialog dialog = new ConfirmationDialog() {
+            @Override
 	        protected void onConfirm() {
 	        	setConfirmSaveFlag(true);
 	        }
+            @Override
 	        protected void onCancel() {
         		super.onCancel();
 	        	clearExistingBag();
