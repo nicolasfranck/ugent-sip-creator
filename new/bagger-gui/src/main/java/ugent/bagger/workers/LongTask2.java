@@ -9,13 +9,21 @@ import javax.swing.SwingWorker;
  * @author nicolas
  */
 public abstract class LongTask2 extends SwingWorker implements ProgressListener,Cancellable{       
+    private String lastNote = "";
     @Override
-    final public void reportProgress(String string, Object o, Long count, Long total) {
+    final public void reportProgress(String activity, Object o, Long count, Long total) {
         if(count == null || total == null){
             return;
         }
-        System.out.println("progress:"+count+"/"+total);
+        if(activity.compareTo(lastNote) != 0){            
+            firePropertyChange("note",lastNote,activity);
+            lastNote = activity;
+        }        
         int percent = (int)Math.floor( (count / ((float)total))*100);        
-        setProgress(percent);        
+        if(percent == 100){            
+            //indien percent == 100, dan sluit de monitor, en dat willen we zelf doen
+            percent = 99;
+        }
+        setProgress(percent);       
     }
 }

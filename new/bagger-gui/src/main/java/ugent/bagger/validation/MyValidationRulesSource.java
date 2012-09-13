@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ugent.bagger.validation;
 
-import ugent.bagger.params.AdvancedRenameParams;
-import ugent.bagger.params.CleanParams;
 import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.MetsHdr.Agent;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
+import ugent.bagger.params.AdvancedRenameParams;
+import ugent.bagger.params.CleanParams;
 
 /**
  *

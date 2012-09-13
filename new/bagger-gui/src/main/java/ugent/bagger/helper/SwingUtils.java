@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.helper;
 
 import com.anearalone.mets.StructMap;
@@ -71,7 +67,7 @@ public class SwingUtils {
             button.removeActionListener(l);
         }
     }    
-    public static void monitor(SwingWorker worker,String title,String note){
+    public static void monitor(SwingWorker worker,String title,String note){      
         monitor(getFrame(),worker,title,note);
     }
     public static void monitor(SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
@@ -84,7 +80,7 @@ public class SwingUtils {
         ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                
         progressMonitor.setProgress(0);
         progressMonitor.setMillisToDecideToPopup(0);
-        progressMonitor.setMillisToPopup(0);
+        progressMonitor.setMillisToPopup(0);        
         worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
         if(listeners != null){
             for(PropertyChangeListener listener:listeners){
@@ -95,16 +91,18 @@ public class SwingUtils {
     }
     private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor){
         return new PropertyChangeListener() {
+            private String lastNote = "";
             @Override
             public void propertyChange(PropertyChangeEvent evt) {                                                       
-                if("progress".compareTo(evt.getPropertyName())==0){                            
+                if("note".compareTo(evt.getPropertyName()) == 0){                    
+                    lastNote = (String) evt.getNewValue();
+                }else if("progress".compareTo(evt.getPropertyName())==0){                            
                     int progress = (Integer) evt.getNewValue();                            
                     progressMonitor.setProgress(progress);                              
-                    progressMonitor.setNote(progress+"%");  
-                    System.out.println("progress in monitor:"+progress);
+                    progressMonitor.setNote(lastNote+": "+progress+"%");                                          
                 }else if(
                     "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue() == SwingWorker.StateValue.DONE
-                ){                    
+                ){  
                     progressMonitor.close();
                 }
             }

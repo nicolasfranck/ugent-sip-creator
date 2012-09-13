@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.progress.BusyIndicator;
 
 public class CreateBagInPlaceHandler extends AbstractAction implements Progress {
     private static final long serialVersionUID = 1L;
@@ -28,12 +30,14 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        createBagInPlace();
+        execute();
     }
 
     @Override
     public void execute() {
-        BagView.getInstance().statusBarEnd();
+        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+        createBagInPlace();
+        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
 
     public void createBagInPlace() {

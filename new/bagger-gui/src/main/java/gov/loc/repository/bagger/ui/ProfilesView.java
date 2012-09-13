@@ -1,32 +1,29 @@
 package gov.loc.repository.bagger.ui;
 
 import java.awt.BorderLayout;
-
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
 
 public class ProfilesView extends AbstractView{
-
-	@Override
-	protected JComponent createControl() {
-		JPanel bagViewPanel = new JPanel(new BorderLayout(2, 2));
-		InfoFormsPane infoPanel= BagView.instance.infoInputPane;
-		bagViewPanel.add(infoPanel);
+    @Override
+    protected JComponent createControl() {
+        JPanel bagViewPanel = new JPanel(new BorderLayout(2, 2));        
+        bagViewPanel.add(BagView.getInstance().infoInputPane);
         return bagViewPanel;
-	}
-	
-	 protected void registerLocalCommandExecutors(PageComponentContext context) {
-	    	context.register("startCommand", BagView.instance.startExecutor);
-	    	context.register("openCommand", BagView.instance.openExecutor);
-	    	context.register("createBagInPlaceCommand", BagView.instance.createBagInPlaceExecutor);
-	    	context.register("clearCommand", BagView.instance.clearExecutor);
-	    	context.register("validateCommand", BagView.instance.validateExecutor);
-	    	context.register("completeCommand", BagView.instance.completeExecutor);
-	    	context.register("addDataCommand", BagView.instance.addDataExecutor);
-	    	context.register("saveBagCommand", BagView.instance.saveBagExecutor);
-	    	context.register("saveBagAsCommand", BagView.instance.saveBagAsExecutor);
-	 }
+    }
+    @Override
+     protected void registerLocalCommandExecutors(PageComponentContext context) {
+        BagView bagView = BagView.getInstance();
+        context.register("startCommand",bagView.startExecutor);
+        context.register("openCommand",bagView.openExecutor);
+        context.register("createBagInPlaceCommand",bagView.createBagInPlaceExecutor);
+        context.register("clearCommand",bagView.clearExecutor);
+        context.register("validateCommand",bagView.validateExecutor);
+        context.register("completeCommand",bagView.completeExecutor);
+        context.register("addDataCommand",bagView.addDataExecutor);
+        context.register("saveBagCommand",bagView.saveBagExecutor);
+        context.register("saveBagAsCommand",bagView.saveBagAsExecutor);
+     }
 }

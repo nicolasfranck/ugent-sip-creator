@@ -11,6 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.progress.BusyIndicator;
 
 public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
@@ -26,7 +28,9 @@ public class OpenBagHandler extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
         openBag();
+        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
 
     public void openBag() {
@@ -129,7 +133,6 @@ public class OpenBagHandler extends AbstractAction {
                 ApplicationContextUtil.addConsoleMessage(msgs);
         }
         bagView.infoInputPane.bagInfoInputPane.populateForms(bag, true);
-        bagView.updateOpenBag();
-        bagView.statusBarEnd();
+        bagView.updateOpenBag();        
     }
 }

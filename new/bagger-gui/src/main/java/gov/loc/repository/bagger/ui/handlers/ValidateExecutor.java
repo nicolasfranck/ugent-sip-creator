@@ -15,6 +15,7 @@ public class ValidateExecutor extends AbstractActionCommandExecutor{
     }
     @Override
     public void execute() {
+        System.out.println("ValidateExecutor::execute");
         BagView.getInstance().validateBagHandler.validateBag();
     }
 }

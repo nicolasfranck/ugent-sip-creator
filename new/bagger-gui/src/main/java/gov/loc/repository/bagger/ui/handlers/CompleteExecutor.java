@@ -15,8 +15,8 @@ public class CompleteExecutor extends AbstractActionCommandExecutor {
     }
 
     @Override
-    public void execute() {
+    public void execute(){
+        System.out.println("\ncomplete executor called!\n");
         BagView.getInstance().completeBagHandler.completeBag();
     }
-
 }

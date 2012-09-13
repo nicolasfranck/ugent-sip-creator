@@ -26,13 +26,13 @@ public class AddDataHandler extends AbstractAction implements Progress {
     }
     @Override
     public void execute() {
-        BagView.getInstance().statusBarEnd();
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
         BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
         addData();
         BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        execute();        
     }
     public void addData(){ 
         BagView bagView = BagView.getInstance();

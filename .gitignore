@@ -13,3 +13,4 @@ tools/FileTreeMaven/target
 *.jar
 /new/bagger-gui/target/
 /new/bagger-business/target/
+/new/bagger-core/target/

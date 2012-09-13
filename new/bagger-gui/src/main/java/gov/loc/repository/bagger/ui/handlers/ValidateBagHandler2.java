@@ -23,16 +23,14 @@ public class ValidateBagHandler2 extends Handler {
         super();      
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {        
         validateBag();
     }
-    public void validateBag() {
-        BagView bagView = BagView.getInstance();
+    public void validateBag(){        
         execute();    	
     }
     @Override
-    public void execute() {
-        System.out.println("\nmonitoring called!\n");
+    public void execute() {        
         SwingUtils.monitor(new ValidateBagWorker(),"validating bag..","");
     }
     private class ValidateBagWorker extends LongTask2{

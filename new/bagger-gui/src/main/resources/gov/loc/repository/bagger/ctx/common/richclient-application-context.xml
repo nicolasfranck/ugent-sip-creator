@@ -147,15 +147,6 @@
     class="org.springframework.richclient.form.binding.swing.SwingBinderSelectionStrategy">
     <property name="bindersForPropertyTypes">
       <map>
-        <!--
-          <entry>
-          <key>
-          <value type="java.lang.Class">java.util.Date</value>
-          </key>
-          <bean
-          class="gov.loc.repository.bagger.ui.binder.CustomDatePickerBinder"/>
-          </entry>
-         -->
         <entry>
           <key>
             <value type="java.lang.Class">java.util.Date</value>
@@ -174,18 +165,6 @@
     </property>
     <property name="3DEnabled"   value="true"/>
   </bean>
-  
-<!-- 
-  <bean name="statusBar" class="org.springframework.richclient.application.statusbar.support.DefaultStatusBar" 
-		depends-on="lookAndFeelConfigurer">
-		<property name="cancelEnabled" value="true" />
-		<property name="statusBarItems">
-			<list>
-				<ref bean="resizeStatusBarItem" />
-			</list> 
-		</property> 
-  </bean>
- -->
 
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basenames">
@@ -267,18 +246,18 @@
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>    
-  </bean>
+  </bean> 
+ 
 
-  <!--  
-  <bean id="exceptionHandlingView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
-    <property name="viewClass" value="gov.loc.repository.bagger.exceptionhandling.ExceptionHandlingView" />
-  </bean>
-  -->
+<!--
+   wizard die de toegang tot de applicatie bewaakt. Enkel indien de licentievoorwaarden worden geaccepteerd,
+   wordt de applicatie geopend
+-->
 <!--
   <bean id="setupWizard" class="org.springframework.richclient.application.setup.SetupWizard">
     <property name="licenseTextLocation" value="/gov/loc/repository/bagger/license.txt" />
   </bean>
-  -->
+-->
   
  <!--
  <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices" p:toolBarButtonConfigurer-ref="toolBarButtonConfigurer"/>
@@ -294,6 +273,5 @@
  <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer">
     <property name="useLargeIcons" value="true" />
  </bean>
-
- <bean id="rulesSource2" class="ugent.bagger.validation.MyValidationRulesSource" />
+ 
 </beans>

@@ -1,10 +1,8 @@
-
 package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -16,7 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,24 +25,17 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 
 public class BagInfoForm extends AbstractForm implements FocusListener {
     private static final long serialVersionUID = -3231249644435262577L;
-    private static final Log logger = LogFactory.getLog(BagInfoForm.class);
-
     public static final String INFO_FORM_PAGE = "infoPage";
-
     private JComponent focusField;
     private BagView bagView;
     private HashMap<String, BagInfoField> fieldMap;
     private JComponent  form;
     private AddFieldPanel addFieldPannel;
-	
 	
     public BagInfoForm(FormModel formModel, BagView bagView, HashMap<String, BagInfoField> map, boolean enabled) {
     	super(formModel, INFO_FORM_PAGE);

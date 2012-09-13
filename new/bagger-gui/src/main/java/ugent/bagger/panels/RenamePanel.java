@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.panels;
 
 import java.awt.*;
@@ -366,6 +362,7 @@ public class RenamePanel extends JPanel{
         renameForm.addValidationListener(new ValidationListener(){
             @Override
             public void validationResultsChanged(ValidationResults results) {
+                System.out.println("validation results changed!: "+results.getMessageCount());
                 submitButton.setEnabled(!results.getHasErrors());
                 simulateButton.setEnabled(!results.getHasErrors());
             }

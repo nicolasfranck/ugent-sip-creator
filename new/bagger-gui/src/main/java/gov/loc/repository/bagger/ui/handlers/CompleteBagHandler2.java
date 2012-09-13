@@ -21,15 +21,15 @@ public class CompleteBagHandler2 extends Handler {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {        
         completeBag();
     }
 
-    public void completeBag(){
+    public void completeBag(){        
         execute();    	
     }
     @Override
-    public void execute() {
+    public void execute() {        
         SwingUtils.monitor(new CompleteBagWorker(),"checking bag complete","");
     }
     private class CompleteBagWorker extends LongTask2 {
