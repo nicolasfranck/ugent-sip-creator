@@ -22,7 +22,7 @@ import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
 import treetable.TreeTableModel;
-import ugent.bagger.RenameWandLib.*;
+import ugent.RenameWandLib.*;
 import ugent.bagger.filters.DirectoryFilter;
 import ugent.bagger.forms.AdvancedRenameParamsForm;
 import ugent.bagger.helper.Context;

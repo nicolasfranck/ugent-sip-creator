@@ -90,6 +90,17 @@ public class BagView extends AbstractView {
         instance = this;
     }
 
+    public InfoFormsPane getInfoInputPane() {
+        if(infoInputPane == null){
+            infoInputPane = new InfoFormsPane(this);
+        }
+        return infoInputPane;
+    }
+
+    public void setInfoInputPane(InfoFormsPane infoInputPane) {
+        this.infoInputPane = infoInputPane;
+    }
+    
     public void setBagger(Bagger bagger) {
         Assert.notNull(bagger, "The bagger property is required");
         this.bagger = bagger;
@@ -172,9 +183,8 @@ public class BagView extends AbstractView {
     	Color bgColor = new Color(20,20,100);
     	topButtonPanel = createTopButtonPanel();
     	topButtonPanel.setBackground(bgColor);
-
-    	infoInputPane = new InfoFormsPane(this);
-    	infoInputPane.bagInfoInputPane.enableForms(false);
+    	
+    	getInfoInputPane().bagInfoInputPane.enableForms(false);
         JSplitPane bagPanel = createBagPanel();
 
     	GridBagLayout layout = new GridBagLayout();
@@ -298,19 +308,20 @@ public class BagView extends AbstractView {
         addDataToolBarAction.addMouseListener(new MouseAdapter(){			
             @Override
             public void mousePressed(MouseEvent e) {
-                    if(addDataToolBarAction.isEnabled())
-                            addDataHandler.actionPerformed(null);
+                if(addDataToolBarAction.isEnabled()){
+                    addDataHandler.actionPerformed(null);
+                }
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
-                    addDataToolBarAction.setBorder(new LineBorder(addDataToolBarAction.getBackground(),1));
+                addDataToolBarAction.setBorder(new LineBorder(addDataToolBarAction.getBackground(),1));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                    if(addDataToolBarAction.isEnabled())
-                            addDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+                if(addDataToolBarAction.isEnabled()){
+                    addDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+                }                            
             }
         });
         buttonPanel.add(addDataToolBarAction);
@@ -455,7 +466,7 @@ public class BagView extends AbstractView {
     	bagPayloadTreePanel.setEnabled(b);
     	bagTagFileTree.setEnabled(b);
     	bagTagFileTreePanel.setEnabled(b);
-        infoInputPane.bagInfoInputPane.setEnabled(b);
+        getInfoInputPane().bagInfoInputPane.setEnabled(b);
     }
 
     public String updateBaggerRules() {
@@ -484,7 +495,7 @@ public class BagView extends AbstractView {
 
     public void updateClearBag() {
     	enableBagSettings(false);    	
-    	infoInputPane.holeyValue.setText("");
+    	getInfoInputPane().holeyValue.setText("");
     	addDataToolBarAction.setEnabled(false);
     	removeDataToolBarAction.setEnabled(false);
     	addDataExecutor.setEnabled(false);

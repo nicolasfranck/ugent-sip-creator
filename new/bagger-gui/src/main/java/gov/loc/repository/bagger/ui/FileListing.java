@@ -47,16 +47,16 @@ public final class FileListing {
 		File[] filesAndDirs = aStartingDir.listFiles();
 		if (filesAndDirs == null) return result;
 		try {
-			List<File> filesDirs = Arrays.asList(filesAndDirs);
-			for(File file : filesDirs) {
-				result.add(file); //always add, even if directory
-				if ( ! file.isFile() ) {
-					//must be a directory
-					//recursive call!
-					List<File> deeperList = getFileListingNoSort(file);
-					result.addAll(deeperList);
-				}
-			}
+                    List<File> filesDirs = Arrays.asList(filesAndDirs);
+                    for(File file : filesDirs) {
+                            result.add(file); //always add, even if directory
+                            if ( ! file.isFile() ) {
+                                    //must be a directory
+                                    //recursive call!
+                                    List<File> deeperList = getFileListingNoSort(file);
+                                    result.addAll(deeperList);
+                            }
+                    }
 		} catch (Exception e) {
 			//System.out.println("FileListing: " + e);
 		}

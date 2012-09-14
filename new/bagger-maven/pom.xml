@@ -126,7 +126,8 @@
 
     </dependencies>
   </dependencyManagement>
-  <repositories>
+ 
+ <repositories>
     <repository>
           <id>springRichclientRepository</id>
           <name>Spring rich client repository</name>

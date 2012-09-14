@@ -6,10 +6,10 @@
                 <Dockable>
                     <Key dockName="bagView"/>
                 </Dockable>                
-                <Split orientation="0" location="0.7">
+                <Split orientation="0" location="0.7">                    
                     <Dockable>
-                        <Key dockName="profilesView"/>
-                    </Dockable>
+                        <Key dockName="mainView"/>
+                    </Dockable>                    
                     <Dockable>
                         <Key dockName="consoleView"/>
                     </Dockable>                

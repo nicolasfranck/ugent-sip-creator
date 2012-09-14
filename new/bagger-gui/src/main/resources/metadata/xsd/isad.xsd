@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:isad="ISADG" xmlns:rkms="Stadsarchief_Antwerpen/rkms/1.0" targetNamespace="ISADG" version="2.0" elementFormDefault="qualified">
+<!-- from http://www.expertisecentrumdavid.be/xmlschemas/ -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+XML Schema for ISAD(G): General International Standard Archival Description, Stockholm, 19-22 September 1999.
+For reasons of the restrictions of the XML-syntax and efficiency, abbreviated elementnames were applied. These elementnames are tuned with the EAD DTD, for so far no meaning is lost.
+The use of the ID-attributes is recommended, but is not required.
+The XML Schema offers the possibility:
+- to register an archival description conforming to ISAD(G) in XML: the elements reference, title, creator, date, descriptionlevel and extent are mandatory
+- to describe individual elements of ISAD(G)
+Filip Boudrez - eDAVID - April, 19th 2005 
+</xs:documentation>
+	</xs:annotation>
+	<!-- global element for a full/minimal ISADG-description -->
+	<xs:element name="archivaldescription">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="identity">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="isad:reference"/>
+							<xs:element ref="isad:title"/>
+							<xs:element ref="isad:date"/>
+							<xs:element ref="isad:descriptionlevel"/>
+							<xs:element ref="isad:extent"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="context">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="isad:creator"/>
+							<xs:element ref="isad:adminbiohistory" minOccurs="0"/>
+							<xs:element ref="isad:archivalhistory" minOccurs="0"/>
+							<xs:element ref="isad:acqinfo" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="content_structure" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="isad:scopecontent" minOccurs="0"/>
+							<xs:element ref="isad:appraisaldestruction" minOccurs="0"/>
+							<xs:element ref="isad:accruals" minOccurs="0"/>
+							<xs:element ref="isad:arrangement" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="conditions_access_use" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="isad:accessrestrictions" minOccurs="0"/>
+							<xs:element ref="isad:reprorestrictions" minOccurs="0"/>
+							<xs:element ref="isad:languagescripts" minOccurs="0"/>
+							<xs:element ref="isad:phystech" minOccurs="0"/>
+							<xs:element ref="isad:findingaids" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="allied_materials" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="isad:existencelocation_originals" minOccurs="0"/>
+							<xs:element ref="isad:existencelocation_copies" minOccurs="0"/>
+							<xs:element ref="isad:relatedunits" minOccurs="0"/>
+							<xs:element ref="isad:publication" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="notes" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="isad:note" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="description_control" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="isad:archivistsnote" minOccurs="0"/>
+							<xs:element ref="isad:rulesconventions" minOccurs="0"/>
+							<xs:element ref="isad:descriptionsdate" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- definitions of the individual ISAD(G) elements -->
+	<xs:element name="reference">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.1.1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="title">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.1.2"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="date">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.1.3"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptionlevel">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.1.4"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="extent">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.1.5"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="creator">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.2.1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adminbiohistory">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.2.2"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="archivalhistory">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.2.3"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="acqinfo">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.2.4"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="scopecontent">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.3.1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="appraisaldestruction">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.3.2"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="accruals">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.3.3"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="arrangement">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.3.4"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="accessrestrictions">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.4.1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reprorestrictions">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.4.2"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="languagescripts">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.4.3"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="phystech">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.4.4"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="findingaids">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.4.5"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="existencelocation_originals">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.5.1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="existencelocation_copies">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.5.2"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="relatedunits">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.5.3"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="publication">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.5.4"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="note">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.6.1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="archivistsnote">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.7.1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="rulesconventions">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.7.2"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptionsdate">
+		<xs:complexType mixed="true">
+			<xs:attribute name="id" type="xs:string" fixed="3.7.3"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

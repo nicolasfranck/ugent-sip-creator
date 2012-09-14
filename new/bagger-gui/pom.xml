@@ -14,8 +14,20 @@
   <description>
     The GUI presentation layer which resides in client, but NOT in the server.
   </description>
-
+  <repositories>
+    <repository>
+        <id>in-project</id>
+        <name>In Project Repo</name>
+        <url>file://${project.basedir}/libs</url>
+    </repository>
+  </repositories>
   <dependencies>
+    <dependency>
+        <groupId>ugent.RenameWandLib</groupId>
+        <artifactId>ugent.RenameWandLib</artifactId>
+        <version>1.0</version>
+    </dependency>
+
     <!-- Internal -->
     <dependency>
       <groupId>gov.loc</groupId>
@@ -120,6 +132,11 @@
       <groupId>net.java.dev.glazedlists</groupId>
       <artifactId>glazedlists_java15</artifactId>
       <version>1.8.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.anearalone</groupId>
+      <artifactId>mets-api</artifactId>
+      <version>0.1.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

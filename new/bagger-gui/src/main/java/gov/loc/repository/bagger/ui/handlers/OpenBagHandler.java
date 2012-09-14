@@ -132,7 +132,7 @@ public class OpenBagHandler extends AbstractAction {
         if (msgs != null) {
                 ApplicationContextUtil.addConsoleMessage(msgs);
         }
-        bagView.infoInputPane.bagInfoInputPane.populateForms(bag, true);
+        bagView.infoInputPane.bagInfoInputPane.populateForms(true);
         bagView.updateOpenBag();        
     }
 }

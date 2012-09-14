@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.panels;
 
 import com.anearalone.mets.MdSec;
+import gov.loc.repository.bagger.ui.BagView;
+import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,8 +28,7 @@ import ugent.bagger.workers.*;
  */
 public class MdSecPanel extends JPanel{
     private JComponent buttonPanel;
-    private MdSecTable dmdSecTable;     
-    private JTextArea console;
+    private MdSecTable dmdSecTable;         
     private ArrayList<MdSec>data; 
     private MdSecForm mdSecForm;
     private MdWrapForm mdWrapForm;
@@ -90,17 +86,6 @@ public class MdSecPanel extends JPanel{
     public void setButtonPanel(JPanel buttonPanel) {
         this.buttonPanel = buttonPanel;
     }        
-    public JTextArea getConsole() {
-        if(console == null){
-           console = new JTextArea();
-           console.setLineWrap(false);                     
-           console.setEditable(false);
-        }
-        return console;
-    }
-    public void setConsole(JTextArea console) {
-        this.console = console;
-    }      
     public MdSecTable getDmdSecTable() {
         if(dmdSecTable == null){
             dmdSecTable = createMdSecTable();
@@ -117,14 +102,6 @@ public class MdSecPanel extends JPanel{
         JPanel panel = new JPanel(new BorderLayout());        
         panel.add(new JScrollPane(getDmdSecTable().getControl()));        
         panel.add(getButtonPanel(),BorderLayout.NORTH);        
-        JPanel consolePanel = new JPanel(new BorderLayout());     
-        consolePanel.add(new JLabel("log:"));
-        JScrollPane pane = new JScrollPane();
-        pane.setPreferredSize(new Dimension(0,100));
-        pane.setViewportView(getConsole());
-        pane.setPreferredSize(new Dimension(0,80));
-        consolePanel.add(pane,BorderLayout.SOUTH);        
-        panel.add(consolePanel,BorderLayout.SOUTH);        
         return panel;
     }
     public JComponent createButtonPanel(){
@@ -175,10 +152,11 @@ public class MdSecPanel extends JPanel{
         PropertyChangeListener listener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {                
-                if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){
-                    console.setText("");
+                final BagView bagView = BagView.getInstance();
+                if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){                    
+                    ApplicationContextUtil.addConsoleMessage("adding new mdSec batch");
                 }else if(pce.getPropertyName().equals("log")){
-                    console.append(pce.getNewValue().toString());
+                    ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){
                     getDmdSecTable().addMdSec((MdSec)pce.getNewValue());
                 }else if(

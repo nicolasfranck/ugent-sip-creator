@@ -62,7 +62,7 @@ public class InfoFormsPane extends JScrollPane {
         GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         infoPanel.add(bagSettingsPanel, gbc);
         
-    	bagInfoInputPane = new BagInfoInputPane(bagView, false);
+    	bagInfoInputPane = new BagInfoInputPane(false);
     	bagInfoInputPane.setToolTipText(bagView.getPropertyMessage("bagView.bagInfoInputPane.help"));
     	bagInfoInputPane.setEnabled(false);
     	
@@ -177,7 +177,7 @@ public class InfoFormsPane extends JScrollPane {
     }
     
     public void updateInfoForms() {
-    	bagInfoInputPane.populateForms(bag, false);
+    	bagInfoInputPane.populateForms(false);
     	bagInfoInputPane.enableForms(false);
     	bagInfoInputPane.invalidate();
     }
@@ -186,16 +186,14 @@ public class InfoFormsPane extends JScrollPane {
     	// need to remove something?        
         infoPanel.remove(bagInfoInputPane);
         infoPanel.validate();      
-    	bagInfoInputPane = new BagInfoInputPane(bagView, enabled);
+    	bagInfoInputPane = new BagInfoInputPane(enabled);
     	bagInfoInputPane.setToolTipText(bagView.getPropertyMessage("bagView.bagInfoInputPane.help"));
     	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
         infoPanel.add(bagInfoInputPane, gbc);
         this.validate();
-    }
-    
+    }    
     public void showTabPane(int i) {
     	bagInfoInputPane.setSelectedIndex(i);
     	bagInfoInputPane.invalidate();
     }
-
 }

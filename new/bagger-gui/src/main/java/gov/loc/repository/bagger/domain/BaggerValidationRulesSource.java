@@ -6,7 +6,7 @@ import com.anearalone.mets.MetsHdr;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
 import ugent.bagger.params.AdvancedRenameParams;
-import ugent.bagger.params.CleanParams;
+
 
 public class BaggerValidationRulesSource extends DefaultRulesSource {
     boolean isLcProject = false;
@@ -21,8 +21,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
                 .add(required("sourcePattern"))
                 .add(required("destinationPattern"));
         addRules(advancedRenameParamsRules);
-        Rules cleanParamsRules = new Rules(CleanParams.class);
-        addRules(cleanParamsRules);        
+       
         Rules agentRules = new Rules(MetsHdr.Agent.class);
         agentRules
                 .add(required("name"))

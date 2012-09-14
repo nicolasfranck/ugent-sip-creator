@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.panels;
 
 import com.anearalone.mets.MdSec;
@@ -26,19 +22,15 @@ public class MetsPanel extends JPanel{
         init(mets);
     }
     private void init(Mets mets){
-        setLayout(new BorderLayout());
-        
-        JTabbedPane tabs = new JTabbedPane();
-        
+        setLayout(new BorderLayout());        
+        JTabbedPane tabs = new JTabbedPane();        
         if(mets.getMetsHdr() == null){            
             mets.setMetsHdr(new MetsHdr());
         }        
-        setMets(mets);        
-        
+        setMets(mets);                
         setDmdSecPanel(new DmdSecPanel(((ArrayList<MdSec>)mets.getDmdSec())));        
         tabs.add(getDmdSecPanel(),"dmdSec");        
-        tabs.add(getAgentPanel(),"agent");        
-        
+        tabs.add(getAgentPanel(),"agent");                
         add(tabs);
     }
     public AgentPanel getAgentPanel() {

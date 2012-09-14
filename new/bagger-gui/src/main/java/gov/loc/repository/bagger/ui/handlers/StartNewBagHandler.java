@@ -63,7 +63,7 @@ public class StartNewBagHandler extends AbstractAction {
         bagView.updateBaggerRules();
         bag.setRootDir(bagView.getBagRootPath());
 
-    	bagView.infoInputPane.bagInfoInputPane.populateForms(bag, true);
+    	bagView.infoInputPane.bagInfoInputPane.populateForms(true);
     	ApplicationContextUtil.addConsoleMessage("A new bag has been created in memory.");
     	bagView.updateNewBag();
     	
@@ -77,8 +77,7 @@ public class StartNewBagHandler extends AbstractAction {
     // TODO refactor
     private void changeProfile(String selected) {
         BagView bagView = BagView.getInstance();
-    	Profile profile = bagView.getProfileStore().getProfile(selected);
-        log.info("bagProject: " + profile.getName());
+    	Profile profile = bagView.getProfileStore().getProfile(selected);        
         DefaultBag bag = bagView.getBag();
         bag.setProfile(profile, true);
         bagView.infoInputPane.bagInfoInputPane.updateProject(bagView);        

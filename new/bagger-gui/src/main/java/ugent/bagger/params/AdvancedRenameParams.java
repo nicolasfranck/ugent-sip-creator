@@ -5,7 +5,7 @@
 
 package ugent.bagger.params;
 
-import ugent.bagger.RenameWandLib.ErrorAction;
+import ugent.RenameWandLib.ErrorAction;
 
 /**
  *

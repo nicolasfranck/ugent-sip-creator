@@ -2,8 +2,8 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xmlns="http://www.springframework.org/schema/beans"
   xmlns:p="http://www.springframework.org/schema/p" 
-  xsi:schemaLocation="http://www.springframework.org/schema/beans 
- classpath:org/springframework/beans/factory/xml/spring-beans-2.5.xsd"> 
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans classpath:org/springframework/beans/factory/xml/spring-beans-2.5.xsd http://www.springframework.org/schema/util classpath:org/springframework/beans/factory/xml/spring-util-2.0.xsd" > 
 <!--  As you can see, I'm skipping this xml namespaces
 <beans xmlns="http://www.springframework.org/schema/beans" 
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -223,15 +223,15 @@
         <entry key="profileStore" value-ref="profiles" />
       </map>
     </property>
-  </bean>
+  </bean>  
   
-  <bean id="profilesView" 
+  <bean id="mainView" 
      class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
-    <property name="viewClass" value="gov.loc.repository.bagger.ui.ProfilesView" />
+    <property name="viewClass" value="gov.loc.repository.bagger.ui.MainView" />
     <property name="autoHideEnabled" value="true" />
     <property name="floatEnabled" value="true" />
     <property name="maximizeEnabled" value="true"/>
-  </bean>
+  </bean>  
   
   <bean id="consoleView" 
      class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
@@ -241,12 +241,13 @@
     <property name="maximizeEnabled" value="true"/>
    </bean>
    
+   <!--
    <bean id="renameView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
     <property name="viewClass" value="ugent.bagger.views.RenameView" />
     <property name="autoHideEnabled" value="true" />
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>    
-  </bean> 
+  </bean>-->
  
 
 <!--
@@ -273,5 +274,80 @@
  <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer">
     <property name="useLargeIcons" value="true" />
  </bean>
+ 
+ <util:list id="metsSchemaURLS">        
+        <value>http://www.loc.gov/METS/</value>
+    </util:list>
+    <!--mets does not register 'versions' in its namespace, so we try it this way: 1st? => 2th? => 3th? ..-->
+    <util:list id="metsSchemaVersions">
+        <value>metadata/xsd/mets/1.9.1/mets-1.9.1.xsd</value>
+        <value>metadata/metadata/xsd/mets/1.9/mets-1.9.xsd</value>
+        <value>metadata/metadata/xsd/mets/1.8/mets-1.8.xsd</value>
+        <value>metadata/xsd/mets/1.7/mets-1.7.xsd</value>
+        <value>metadata/xsd/mets/1.6/mets-1.6.xsd</value>
+        <value>metadata/xsd/mets/1.5/mets-1.5.xsd</value>
+        <value>metadata/xsd/mets/1.4/mets-1.4.xsd</value>
+        <value>metadata/xsd/mets/1.3/mets-1.3.xsd</value>
+        <value>metadata/xsd/mets/1.2/mets-1.2.xsd</value>
+        <value>metadata/xsd/mets/1.1/mets-1.1.xsd</value>
+    </util:list>
+    
+    <util:list id="forbiddenNamespaces">
+        <value>http://www.loc.gov/METS/</value>               
+    </util:list>
+    <util:map id="namespaceMap">
+        <entry key="http://www.loc.gov/MARC21/slim" value="MARC"  />
+        <entry key="http://www.loc.gov/mods/v3" value="MODS" />
+        
+        <entry key="info:lc/xmlns/premis-v2" value="PREMIS" />
+        <entry key="http://www.loc.gov/standards/premis/v1" value="PREMIS" />
+        <entry key="http://www.loc.gov/standards/premis" value="PREMIS" />                     
+        
+        <entry key="urn:isbn:1-931666-22-9" value="EAD" />
+        <entry key="http://www.loc.gov/METS/" value="METS" />           
+        <entry key="http://purl.org/dc/elements/1.1/" value="DC" />         
+        <entry key="http://www.loc.gov/mix/v20" value="NISOIMG" />
+        <entry key="http://www.loc.gov/mix/v10" value="NISOIMG" />
+        <entry key="http://www.loc.gov/AMD/" value="LC-AV" />
+        <entry key="http://www.loc.gov/VMD/" value="LC-AV" />
+        <entry key="http://www.vraweb.org/vracore4.htm" value="VRA" />
+        <!---->
+        <!-- DDI wat onduidelijk: onnoemelijk veel schema's die aan elkaar gekoppeld zijn.. -->
+        <!--FGDC => heeft geen namespace: http://lab.usgin.org/groups/etl-debug-blog/fgdc-xml-schema-woes-->
+        <entry key="http://ltsc.ieee.org/xsd/LOM" value="LOM" />
+        <entry key="http://www.tei-c.org/ns/1.0" value="TEIHDR" />
+        <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="METSRIGHTS" />
+        
+        <!--ISO 19115:2003 NAP => xsd niet gevonden -->
+    </util:map>
+    
+    <util:map id="xsdMap">
+        <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xsd/MARC21.xsd" />
+        <entry key="http://www.loc.gov/mods/v3" value="metadata/xsd/mods.xsd" />        
+        <entry key="info:lc/xmlns/premis-v2" value="metadata/xsd/premis.xsd" />        
+        <entry key="urn:isbn:1-931666-22-9" value="metadata/xsd/ead.xsd" />
+        <entry key="urn:ebu:metadata-schema:ebupmeta_2011" value="metadata/xsd/EBU_PMETA_2011.xsd" />
+        <entry key="http://www.getty.edu/CDWA/CDWALite" value="metadata/xsd/CDWALite-xsd-public-v1-1.xsd" />
+        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
+        <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xsd/dc.xsd" />
+        <entry key="http://www.loc.gov/mix/v20" value="metadata/xsd/mix20.xsd" />
+        <entry key="http://www.loc.gov/mix/v10" value="metadata/xsd/mix10.xsd" />        
+        <entry key="http://www.loc.gov/AMD/" value="metadata/xsd/AMD.xsd" />
+        <entry key="http://www.loc.gov/VMD/" value="metadata/xsd/VMD.xsd" />
+        <entry key="http://www.vraweb.org/vracore4.htm" value="metadata/xsd/vra.xsd" />
+        <entry key="http://ltsc.ieee.org/xsd/LOM" value="http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd" />        
+        <entry key="info:lc/xmlns/premis-v2" value="metadata/xsd/premis/premis-2-2.xsd" />
+        <entry key="http://www.loc.gov/standards/premis/v1" value="metadata/xsd/premis/premis-1-1.xsd" />
+        <entry key="http://www.loc.gov/standards/premis" value="metadata/xsd/premis/premis-1-1.xsd" />        
+        <!--premis agent|object|event|rights hebben allemaal dezelfde namespace: http://www.loc.gov/standards/premis -->        
+        <entry key="http://www.tei-c.org/ns/1.0" value="metadata/xsd/tei_all.xsd" />
+        <entry key="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" value="metadata/xsd/Spectrum-1.01.xsd" />
+        <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="metadata/xsd/METSRights.xsd" />
+    </util:map>
+    <util:map id="xsltMap">
+        <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/marc2oai_dc.xsl" />
+        <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MODS3-22OAIDC.xsl" />        
+    </util:map>    
+
  
 </beans>

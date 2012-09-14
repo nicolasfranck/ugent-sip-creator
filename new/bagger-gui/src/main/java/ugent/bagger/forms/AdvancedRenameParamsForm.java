@@ -14,7 +14,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import ugent.bagger.RenameWandLib.ErrorAction;
+import ugent.RenameWandLib.ErrorAction;
 import ugent.bagger.helper.Context;
 import ugent.bagger.params.AdvancedRenameParams;
 
