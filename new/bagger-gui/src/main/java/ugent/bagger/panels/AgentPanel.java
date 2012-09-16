@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.panels;
 
-import ugent.bagger.forms.AgentForm;
-import ugent.bagger.tables.AgentTable;
 import com.anearalone.mets.MetsHdr.Agent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -20,12 +14,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
+import ugent.bagger.forms.AgentForm;
+import ugent.bagger.tables.AgentTable;
 
 /**
  *
  * @author nicolas
  */
-public class AgentPanel extends JPanel{
+public final class AgentPanel extends JPanel{
     private JComponent buttonPanel;
     private AgentTable agentTable; 
     private ArrayList<Agent>data;   

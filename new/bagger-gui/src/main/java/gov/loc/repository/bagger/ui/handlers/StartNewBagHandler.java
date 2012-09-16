@@ -80,7 +80,7 @@ public class StartNewBagHandler extends AbstractAction {
     	Profile profile = bagView.getProfileStore().getProfile(selected);        
         DefaultBag bag = bagView.getBag();
         bag.setProfile(profile, true);
-        bagView.infoInputPane.bagInfoInputPane.updateProject(bagView);        
-        bagView.infoInputPane.setProfile(bag.getProfile().getName());
+        bagView.getInfoInputPane().bagInfoInputPane.updateProject();        
+        bagView.getInfoInputPane().setProfile(bag.getProfile().getName());
     }
 }

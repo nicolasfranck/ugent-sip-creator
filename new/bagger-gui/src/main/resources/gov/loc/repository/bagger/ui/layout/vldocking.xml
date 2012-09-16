@@ -8,7 +8,7 @@
                 </Dockable>                
                 <Split orientation="0" location="0.7">                    
                     <Dockable>
-                        <Key dockName="mainView"/>
+                        <Key dockName="metaView"/>
                     </Dockable>                    
                     <Dockable>
                         <Key dockName="consoleView"/>

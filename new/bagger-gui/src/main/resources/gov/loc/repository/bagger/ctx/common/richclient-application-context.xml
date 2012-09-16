@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xmlns="http://www.springframework.org/schema/beans"
-  xmlns:p="http://www.springframework.org/schema/p" 
-  xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans classpath:org/springframework/beans/factory/xml/spring-beans-2.5.xsd http://www.springframework.org/schema/util classpath:org/springframework/beans/factory/xml/spring-util-2.0.xsd" > 
-<!--  As you can see, I'm skipping this xml namespaces
-<beans xmlns="http://www.springframework.org/schema/beans" 
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:schemaLocation="http://www.springframework.org/schema/beans 
-        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"> 
-<beans>
--->
+<beans 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p" 
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans classpath:org/springframework/beans/factory/xml/spring-beans-2.5.xsd http://www.springframework.org/schema/util classpath:org/springframework/beans/factory/xml/spring-util-2.0.xsd" > 
 
   <!--
     Bean: application
@@ -25,8 +19,7 @@
   </bean>
 
   <bean id="baggerLifecycleAdvisor" class="gov.loc.repository.bagger.BaggerLifecycleAdvisor"> 
-    <property name="windowCommandBarDefinitions"
-      value="gov/loc/repository/bagger/ui/commands-context.xml" />
+    <property name="windowCommandBarDefinitions" value="gov/loc/repository/bagger/ui/commands-context.xml" />
     <property name="startingPageId" value="proxyPage" />
     <property name="registerableExceptionHandler" ref="exceptionHandler" />
     <property name="menubarBeanName" value="menuBar" />
@@ -41,15 +34,10 @@
     Application.  Note the reference to this bean in the constructor
     args in the application bean.
   -->
-  <bean id="applicationDescriptor"
-    class="org.springframework.richclient.application.support.DefaultApplicationDescriptor">
-    <!--
-    <property name="version" value="0.1" />
-    <property name="buildId" value="20080616" />
-    -->
+  <bean id="applicationDescriptor" class="org.springframework.richclient.application.support.DefaultApplicationDescriptor">   
   </bean> 
   
-  <bean id="proxyPage" class="org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor">
+    <bean id="proxyPage" class="org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor">
         <property name="initialLayout">
             <bean class="org.springframework.core.io.ClassPathResource">
                 <constructor-arg type="java.lang.String">
@@ -57,7 +45,7 @@
                 </constructor-arg>
             </bean>
         </property>
-  </bean>
+    </bean>
   
   <bean id="exceptionHandler"
     class="org.springframework.richclient.exceptionhandling.delegation.DelegatingExceptionHandler">
@@ -68,7 +56,7 @@
           <property name="throwableClass" value="java.lang.Error" />
           <property name="exceptionHandler">
             <bean class="org.springframework.richclient.exceptionhandling.MessagesDialogExceptionHandler">
-              <property name="logLevel" value="FATAL" />
+              <property name="logLevel" value="DEBUG" />
               <property name="shutdownPolicy" value="OBLIGATE" />
             </bean>
           </property>
@@ -79,7 +67,7 @@
           <property name="throwableClass" value="java.lang.Throwable" />
           <property name="exceptionHandler">
             <bean class="org.springframework.richclient.exceptionhandling.MessagesDialogExceptionHandler">
-              <property name="logLevel" value="ERROR" />
+              <property name="logLevel" value="DEBUG" />
               <property name="shutdownPolicy" value="ASK" />
             </bean>
           </property>
@@ -112,7 +100,7 @@
     class="org.springframework.richclient.application.support.DefaultApplicationServices">
     <property name="applicationObjectConfigurerId">
       <idref bean="applicationObjectConfigurer" />
-    </property>
+    </property>   
     <property name="binderSelectionStrategyId">
       <idref bean="binderSelectionStrategy" />
     </property>
@@ -124,11 +112,10 @@
     </property>
     <property name="messageSourceId">
       <idref bean="messageSource"/>
-    </property>
+    </property>    
     <property name="rulesSourceId">
       <idref bean="rulesSource" />
-    </property>
-    
+    </property>        
     <property name="registryEntries">
         <map>
            <entry key="org.springframework.richclient.command.CommandServices" value-ref="commandServices" />
@@ -136,13 +123,12 @@
      </property>
   </bean>
 
-  <bean id="applicationObjectConfigurer" depends-on="serviceLocator"
-    class="org.springframework.richclient.application.config.DefaultApplicationObjectConfigurer">
+  <bean id="applicationObjectConfigurer" depends-on="serviceLocator" class="org.springframework.richclient.application.config.DefaultApplicationObjectConfigurer">
   </bean>
 
-  <bean id="applicationEventMulticaster"
-    class="org.springframework.context.event.SimpleApplicationEventMulticaster" />
+  <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster" />
 
+   
   <bean id="binderSelectionStrategy"
     class="org.springframework.richclient.form.binding.swing.SwingBinderSelectionStrategy">
     <property name="bindersForPropertyTypes">
@@ -156,7 +142,6 @@
       </map>
     </property>
   </bean>
-   
   <bean id="lookAndFeelConfigurer"
     class="org.springframework.richclient.application.config.JGoodiesLooksConfigurer">
     <property name="popupDropShadowEnabled" value="false" />
@@ -165,6 +150,7 @@
     </property>
     <property name="3DEnabled"   value="true"/>
   </bean>
+  
 
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basenames">
@@ -189,57 +175,54 @@
     <property name="brokenImageIndicator" value="/org/springframework/richclient/images/alert/error_obj.gif" />
   </bean>
 
-  <bean id="formComponentInterceptorFactory"
-    class="org.springframework.richclient.form.builder.support.ChainedInterceptorFactory">
-    <property name="interceptorFactories">
-      <list>
-        <bean class="org.springframework.richclient.form.builder.support.ColorValidationInterceptorFactory">
-          <property name="errorColor" value="255,245,245" />
-        </bean>
-        <bean class="org.springframework.richclient.form.builder.support.OverlayValidationInterceptorFactory" />
-        <bean class="org.springframework.richclient.text.TextComponentPopupInterceptorFactory" />
-        <bean class="org.springframework.richclient.list.ComboBoxAutoCompletionInterceptorFactory" />
-      </list>
-    </property>
-  </bean>
+    <bean id="formComponentInterceptorFactory" class="org.springframework.richclient.form.builder.support.ChainedInterceptorFactory">
+        <property name="interceptorFactories">
+            <list>                
+                <bean class="org.springframework.richclient.form.builder.support.ColorValidationInterceptorFactory">
+                    <property name="errorColor" value="255,245,245" />
+                </bean>
+                <bean class="org.springframework.richclient.form.builder.support.OverlayValidationInterceptorFactory" />               
+                <bean class="org.springframework.richclient.text.TextComponentPopupInterceptorFactory" />               
+                <bean class="org.springframework.richclient.list.ComboBoxAutoCompletionInterceptorFactory" />
+            </list>
+        </property>
+    </bean>
 
-  <bean id="rulesSource"
-    class="gov.loc.repository.bagger.domain.BaggerValidationRulesSource" />
+    <bean id="rulesSource" class="gov.loc.repository.bagger.domain.BaggerValidationRulesSource" />
+  
+    <bean id="applicationPageFactory" depends-on="serviceLocator"
+        class="org.springframework.richclient.application.docking.vldocking.VLDockingApplicationPageFactory">
+    </bean>
+
+    <bean id="bagView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
+        <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView" />
+        <property name="autoHideEnabled" value="true" />
+        <property name="floatEnabled" value="true" />
+        <property name="maximizeEnabled" value="true"/>
+        <property name="viewProperties">
+        <map>
+            <entry key="bagger" value-ref="bagger" />
+            <entry key="profileStore" value-ref="profiles" />
+        </map>
+        </property>
+    </bean>  
+   
+    <bean id="metaView" 
+        class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
+        <property name="viewClass" value="gov.loc.repository.bagger.ui.MetaView" />
+        <property name="autoHideEnabled" value="true" />
+        <property name="floatEnabled" value="true" />
+        <property name="maximizeEnabled" value="true"/>
+    </bean> 
     
   
-   <bean id="applicationPageFactory" depends-on="serviceLocator"
-       class="org.springframework.richclient.application.docking.vldocking.VLDockingApplicationPageFactory">
-  </bean>
-
-  <bean id="bagView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
-    <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView" />
-    <property name="autoHideEnabled" value="true" />
-     <property name="floatEnabled" value="true" />
-     <property name="maximizeEnabled" value="true"/>
-    
-    <property name="viewProperties">
-      <map>
-        <entry key="bagger" value-ref="bagger" />
-        <entry key="profileStore" value-ref="profiles" />
-      </map>
-    </property>
-  </bean>  
-  
-  <bean id="mainView" 
-     class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
-    <property name="viewClass" value="gov.loc.repository.bagger.ui.MainView" />
-    <property name="autoHideEnabled" value="true" />
-    <property name="floatEnabled" value="true" />
-    <property name="maximizeEnabled" value="true"/>
-  </bean>  
-  
-  <bean id="consoleView" 
-     class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
-    <property name="viewClass" value="gov.loc.repository.bagger.ui.ConsoleView" />
-    <property name="autoHideEnabled" value="true" />
-    <property name="floatEnabled" value="true" />
-    <property name="maximizeEnabled" value="true"/>
-   </bean>
+    <bean id="consoleView" 
+        class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
+        <property name="viewClass" value="gov.loc.repository.bagger.ui.ConsoleView" />
+        <property name="autoHideEnabled" value="true" />
+        <property name="floatEnabled" value="true" />
+        <property name="maximizeEnabled" value="true"/>
+    </bean>
    
    <!--
    <bean id="renameView" class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor">
@@ -267,15 +250,15 @@
    
  --> 
  
- <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices">
-    <property name="toolBarButtonConfigurer"> <ref bean="toolBarButtonConfigurer"/> </property>
- </bean> 
+    <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices">
+        <property name="toolBarButtonConfigurer"> <ref bean="toolBarButtonConfigurer"/> </property>
+    </bean> 
 
- <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer">
-    <property name="useLargeIcons" value="true" />
- </bean>
+    <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer">
+        <property name="useLargeIcons" value="true" />
+    </bean>
  
- <util:list id="metsSchemaURLS">        
+    <util:list id="metsSchemaURLS">        
         <value>http://www.loc.gov/METS/</value>
     </util:list>
     <!--mets does not register 'versions' in its namespace, so we try it this way: 1st? => 2th? => 3th? ..-->
@@ -291,18 +274,15 @@
         <value>metadata/xsd/mets/1.2/mets-1.2.xsd</value>
         <value>metadata/xsd/mets/1.1/mets-1.1.xsd</value>
     </util:list>
-    
     <util:list id="forbiddenNamespaces">
         <value>http://www.loc.gov/METS/</value>               
     </util:list>
     <util:map id="namespaceMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="MARC"  />
         <entry key="http://www.loc.gov/mods/v3" value="MODS" />
-        
         <entry key="info:lc/xmlns/premis-v2" value="PREMIS" />
         <entry key="http://www.loc.gov/standards/premis/v1" value="PREMIS" />
-        <entry key="http://www.loc.gov/standards/premis" value="PREMIS" />                     
-        
+        <entry key="http://www.loc.gov/standards/premis" value="PREMIS" />
         <entry key="urn:isbn:1-931666-22-9" value="EAD" />
         <entry key="http://www.loc.gov/METS/" value="METS" />           
         <entry key="http://purl.org/dc/elements/1.1/" value="DC" />         
@@ -316,8 +296,7 @@
         <!--FGDC => heeft geen namespace: http://lab.usgin.org/groups/etl-debug-blog/fgdc-xml-schema-woes-->
         <entry key="http://ltsc.ieee.org/xsd/LOM" value="LOM" />
         <entry key="http://www.tei-c.org/ns/1.0" value="TEIHDR" />
-        <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="METSRIGHTS" />
-        
+        <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="METSRIGHTS" />        
         <!--ISO 19115:2003 NAP => xsd niet gevonden -->
     </util:map>
     
@@ -347,7 +326,7 @@
     <util:map id="xsltMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/marc2oai_dc.xsl" />
         <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MODS3-22OAIDC.xsl" />        
-    </util:map>    
-
- 
+    </util:map>
+    
+    <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />
 </beans>

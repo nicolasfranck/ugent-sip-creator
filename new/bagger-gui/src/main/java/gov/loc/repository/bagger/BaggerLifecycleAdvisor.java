@@ -5,8 +5,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
-import org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor;
-import org.springframework.richclient.application.setup.SetupWizard;
 //import org.springframework.richclient.command.ActionCommand;
 /**
  * Custom application lifecycle implementation that configures the app at well defined points within
@@ -15,8 +13,8 @@ import org.springframework.richclient.application.setup.SetupWizard;
  * @author Jon Steinbach
  */
 public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
-	private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
-	boolean useWizard = true;
+    private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
+    boolean useWizard = true;
 
     /**
      * Show a setup wizard before actual applicationWindow is created. This should happen only on Application

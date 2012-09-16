@@ -68,8 +68,7 @@
   <bean id="lifecycleAdvisor" class="ugent.bagger.app.SimpleLifecycleAdvisor">
     <property name="windowCommandBarDefinitions" value="ui/commands-context.xml" />
     <property name="windowCommandManagerBeanName" value="windowCommandManager" />
-    <property name="menubarBeanName" value="menuBar" />
-    <!--<property name="toolbarBeanName" value="toolBar" />-->
+    <property name="menubarBeanName" value="menuBar" /> 
     <property name="startingPageId" value="renameView" />
     <property name="registerableExceptionHandler" ref="exceptionHandler" />
   </bean>

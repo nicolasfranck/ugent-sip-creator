@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -35,8 +34,7 @@ public class OpenBagHandler extends AbstractAction {
 
     public void openBag() {
         BagView bagView = BagView.getInstance();
-        File selectFile = new File(File.separator+".");
-        JFrame frame = new JFrame();
+        File selectFile = new File(File.separator+".");        
         JFileChooser fo = new JFileChooser(selectFile);
         fo.setDialogType(JFileChooser.OPEN_DIALOG);
         fo.addChoosableFileFilter(bagView.infoInputPane.noFilter);
@@ -44,9 +42,11 @@ public class OpenBagHandler extends AbstractAction {
         fo.addChoosableFileFilter(bagView.infoInputPane.tarFilter);
         fo.setFileFilter(bagView.infoInputPane.noFilter);
         fo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        if (bagView.getBagRootPath() != null) fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
+        if(bagView.getBagRootPath() != null){
+            fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
+        }
         fo.setDialogTitle("Existing Bag Location");
-        int option = fo.showOpenDialog(frame);
+        int option = fo.showOpenDialog(Application.instance().getActiveWindow().getControl());
 
         if (option == JFileChooser.APPROVE_OPTION) {
             File file = fo.getSelectedFile();
@@ -57,82 +57,82 @@ public class OpenBagHandler extends AbstractAction {
 
     public void openExistingBag(File file) {
         BagView bagView = BagView.getInstance();
-    	bagView.infoInputPane.bagInfoInputPane.enableForms(true);
+    	bagView.getInfoInputPane().bagInfoInputPane.enableForms(true);
     	bagView.clearBagHandler.clearExistingBag();
 
-        try {
+        try{
             bagView.clearBagHandler.newDefaultBag(file);
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
-            } catch (Exception ex) {
-            ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());
-    	    //showWarningErrorDialog("Warning - file not opened", "Error trying to open file: " + file + "\n" + ex.getMessage());
+        }catch(Exception ex){
+            ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	    
     	    return;
         }
         DefaultBag bag = bagView.getBag();
-        bagView.infoInputPane.setBagVersion(bag.getVersion());
-        bagView.infoInputPane.setProfile(bag.getProfile().getName());       
+        bagView.getInfoInputPane().setBagVersion(bag.getVersion());
+        bagView.getInfoInputPane().setProfile(bag.getProfile().getName());       
         String fileName = file.getAbsolutePath();
-        bagView.infoInputPane.setBagName(fileName);
+        bagView.getInfoInputPane().setBagName(fileName);
 
     	String s = file.getName();
         int i = s.lastIndexOf('.');
         if (i > 0 && i < s.length() - 1) {
             String sub = s.substring(i + 1).toLowerCase();
             if (sub.contains("gz")) {
-                bagView.infoInputPane.serializeValue.setText(DefaultBag.TAR_GZ_LABEL);                
+                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_GZ_LABEL);                
                 bag.setSerialMode(DefaultBag.TAR_GZ_MODE);
                 bag.isSerial(true);
             } else if (sub.contains("bz2")) {
-                bagView.infoInputPane.serializeValue.setText(DefaultBag.TAR_BZ2_LABEL);                
+                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_BZ2_LABEL);                
                 bag.setSerialMode(DefaultBag.TAR_BZ2_MODE);
                 bag.isSerial(true);
             } else if (sub.contains(DefaultBag.TAR_LABEL)) {
-                bagView.infoInputPane.serializeValue.setText(DefaultBag.TAR_LABEL);                
+                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_LABEL);                
                 bag.setSerialMode(DefaultBag.TAR_MODE);
                 bag.isSerial(true);
             } else if (sub.contains(DefaultBag.ZIP_LABEL)) {
-                bagView.infoInputPane.serializeValue.setText(DefaultBag.ZIP_LABEL);                
+                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.ZIP_LABEL);                
                 bag.setSerialMode(DefaultBag.ZIP_MODE);
                 bag.isSerial(true);
             } else {
-                bagView.infoInputPane.serializeValue.setText(DefaultBag.NO_LABEL);                
+                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.NO_LABEL);                
                 bag.setSerialMode(DefaultBag.NO_MODE);
                 bag.isSerial(false);
             }
         } else {
-            bagView.infoInputPane.serializeValue.setText(DefaultBag.NO_LABEL);            
+            bagView.getInfoInputPane().serializeValue.setText(DefaultBag.NO_LABEL);            
             bag.setSerialMode(DefaultBag.NO_MODE);
             bag.isSerial(false);
         }
-        bagView.infoInputPane.serializeValue.invalidate();
+        bagView.getInfoInputPane().serializeValue.invalidate();
 
         if (bag.isHoley()) {
-            bagView.infoInputPane.setHoley("true");
+            bagView.getInfoInputPane().setHoley("true");
         } else {
-            bagView.infoInputPane.setHoley("false");
+            bagView.getInfoInputPane().setHoley("false");
         }
-        bagView.infoInputPane.holeyValue.invalidate();
+        bagView.getInfoInputPane().holeyValue.invalidate();
 
         bagView.updateBaggerRules();
         bagView.setBagRootPath(file);
-        File rootSrc = new File(file, bag.getDataDirectory());
-        String path = null;
-    	if (bag.getFetchTxt() != null) {
+        
+        File rootSrc;
+        String path;
+    	if(bag.getFetchTxt() != null){
             path = bag.getFetch().getBaseURL();
-            rootSrc = new File(file, bag.getFetchTxt().getFilepath());
-    	} else {
+            rootSrc = new File(file,bag.getFetchTxt().getFilepath());
+    	}else{
             path = AbstractBagConstants.DATA_DIRECTORY;
             rootSrc = new File(file, bag.getDataDirectory());
     	}
-    	bagView.bagPayloadTree.populateNodes(bag, path, rootSrc, true);
-    	bagView.bagPayloadTreePanel.refresh(bagView.bagPayloadTree);
+    	bagView.getBagPayloadTree().populateNodes(bag, path, rootSrc, true);
+    	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.updateManifestPane();
     	bagView.enableBagSettings(true);
         String msgs = bag.validateMetadata();
-        if (msgs != null) {
-                ApplicationContextUtil.addConsoleMessage(msgs);
+        if(msgs != null){
+            ApplicationContextUtil.addConsoleMessage(msgs);
         }
-        bagView.infoInputPane.bagInfoInputPane.populateForms(true);
+        bagView.getInfoInputPane().bagInfoInputPane.populateForms(true);
         bagView.updateOpenBag();        
     }
 }

@@ -25,7 +25,6 @@ import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.image.ImageSource;
 import org.springframework.util.Assert;
 
 public class BagView extends AbstractView {
@@ -41,7 +40,7 @@ public class BagView extends AbstractView {
     //private final Timer timer = new Timer(ONE_SECOND/10, null);    
     private Bagger bagger;
     private DefaultBag bag;
-    public BaggerValidationRulesSource baggerRules;
+    //public BaggerValidationRulesSource baggerRules;
     public BaggerProfileStore profileStore;
     public BagTree bagPayloadTree;
     public BagTree bagTagFileTree;
@@ -57,7 +56,7 @@ public class BagView extends AbstractView {
     public StartNewBagHandler startNewBagHandler;
     public StartExecutor startExecutor = new StartExecutor();
     public OpenBagHandler openBagHandler;
-    public  OpenExecutor openExecutor = new OpenExecutor(this);
+    public OpenExecutor openExecutor = new OpenExecutor(this);
     public CreateBagInPlaceHandler createBagInPlaceHandler;
     public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();    
     public SaveBagHandler2 saveBagHandler;    
@@ -71,7 +70,7 @@ public class BagView extends AbstractView {
     public ClearBagHandler clearBagHandler;
     public ClearBagExecutor clearExecutor = new ClearBagExecutor();
     public AddDataHandler addDataHandler;
-    public  AddDataExecutor addDataExecutor = new AddDataExecutor();
+    public AddDataExecutor addDataExecutor = new AddDataExecutor();
     public RemoveDataHandler removeDataHandler;
     public RemoveTagFileHandler removeTagFileHandler;
     public AddTagFileHandler addTagFileHandler;
@@ -89,10 +88,44 @@ public class BagView extends AbstractView {
     public BagView() {
         instance = this;
     }
+    public JPanel getBagButtonPanel() {
+        if(bagButtonPanel == null){
+            bagButtonPanel = createBagButtonPanel();
+        }
+        return bagButtonPanel;
+    }
+    public void setBagButtonPanel(JPanel bagButtonPanel) {
+        this.bagButtonPanel = bagButtonPanel;
+    }
+    public JPanel getBagTagButtonPanel() {
+        if(bagTagButtonPanel == null){
+            bagTagButtonPanel = createBagTagButtonPanel();
+        }
+        return bagTagButtonPanel;
+    }
 
+    public void setBagTagButtonPanel(JPanel bagTagButtonPanel) {
+        this.bagTagButtonPanel = bagTagButtonPanel;
+    }
+
+    public TagManifestPane getTagManifestPane() {
+        if(tagManifestPane == null){
+            tagManifestPane = new TagManifestPane(this);
+        }
+        return tagManifestPane;
+    }
+
+    public void setTagManifestPane(TagManifestPane tagManifestPane) {
+        this.tagManifestPane = tagManifestPane;
+    }
+    /*
+     * Nicolas Franck: dit wordt niet gevisualiseerd in deze view, maar
+     * dient als panel voor metaView. Op die manier kan men vanuit deze
+     * view de metaView manipuleren     * 
+     */
     public InfoFormsPane getInfoInputPane() {
         if(infoInputPane == null){
-            infoInputPane = new InfoFormsPane(this);
+            infoInputPane = new InfoFormsPane();
         }
         return infoInputPane;
     }
@@ -110,20 +143,23 @@ public class BagView extends AbstractView {
     	return this.bagger;
     }
     
-    public void setBag(DefaultBag baggerBag) {
-        this.bag = baggerBag;
+    public void setBag(DefaultBag bag) {
+        this.bag = bag;
     }
 
     public DefaultBag getBag() {
-        return this.bag;
+        if(bag == null){
+            bag = new DefaultBag();
+        }
+        return bag;
     }
     
-    public void setBagRootPath(File f) {
-    	this.bagRootPath = f;
+    public void setBagRootPath(File bagRootPath) {
+    	this.bagRootPath = bagRootPath;
     }
     
     public File getBagRootPath() {
-    	return this.bagRootPath;
+    	return bagRootPath;
     }
     
     public Dimension getMinimumSize() {
@@ -138,34 +174,58 @@ public class BagView extends AbstractView {
         log.info(s);
     }
 
-    public ImageIcon getPropertyImage(String name) {
-        ImageSource source = getImageSource();
-        Image image = source.getImage(name);
-        ImageIcon imageIcon = new ImageIcon(image);
-        return imageIcon;
+    public ImageIcon getPropertyImage(String name) {        
+        return new ImageIcon(getImageSource().getImage(name));        
     }
 
-    public void setBagPayloadTree(BagTree bagTree) {
-        this.bagPayloadTree = bagTree;
+    public void setBagPayloadTree(BagTree bagPayloadTree) {
+        this.bagPayloadTree = bagPayloadTree;
     }
 
     public BagTree getBagPayloadTree() {
+        if(bagPayloadTree == null){
+            bagPayloadTree = new BagTree(this, AbstractBagConstants.DATA_DIRECTORY, true);
+        }
         return bagPayloadTree;
     }
+
+    public BagTreePanel getBagPayloadTreePanel() {
+        if(bagPayloadTreePanel == null){
+            bagPayloadTreePanel = new BagTreePanel(getBagPayloadTree());
+        }
+        return bagPayloadTreePanel;
+    }
+
+    public void setBagPayloadTreePanel(BagTreePanel bagPayloadTreePanel) {
+        this.bagPayloadTreePanel = bagPayloadTreePanel;
+    }
+
+    public BagTreePanel getBagTagFileTreePanel() {
+        if(bagTagFileTreePanel == null){
+            bagTagFileTreePanel = new BagTreePanel(getBagTagFileTree());
+        }
+        return bagTagFileTreePanel;
+    }
+
+    public void setBagTagFileTreePanel(BagTreePanel bagTagFileTreePanel) {
+        this.bagTagFileTreePanel = bagTagFileTreePanel;
+    }
     
-    public void setBagTagFileTree(BagTree bagTree) {
+    public void setBagTagFileTree(BagTree bagTree) {        
     	this.bagTagFileTree = bagTree;
     }
     
     public BagTree getBagTagFileTree() {
-    	return this.bagTagFileTree;
+        if(bagTagFileTree == null){
+            bagTagFileTree = new BagTree(this, getMessage("bag.label.noname"), false);
+        }
+    	return bagTagFileTree;
     }
 
-    @Override
     // This populates the default view descriptor declared as the startingPageId
     // property in the richclient-application-context.xml file.
-    protected JComponent createControl() {
-    	bag = new DefaultBag();
+    @Override    
+    protected JComponent createControl() {    	
 
         /*
          * Nicolas Franck: vreemd dat dit nergens gebruikt wordt..
@@ -178,7 +238,7 @@ public class BagView extends AbstractView {
 
         ApplicationServices services = getApplicationServices();     
 
-        baggerRules = (BaggerValidationRulesSource) services.getService(org.springframework.rules.RulesSource.class);
+        //baggerRules = (BaggerValidationRulesSource) services.getService(org.springframework.rules.RulesSource.class);
 		
     	Color bgColor = new Color(20,20,100);
     	topButtonPanel = createTopButtonPanel();
@@ -217,29 +277,18 @@ public class BagView extends AbstractView {
     private JSplitPane createBagPanel(){
     	
     	LineBorder border = new LineBorder(Color.GRAY,1);
-    	
-    	bagButtonPanel = createBagButtonPanel();
 
-    	bagTagButtonPanel = createBagTagButtonPanel();
+    	getBagPayloadTree().setEnabled(false);
+        getBagPayloadTreePanel().setEnabled(false);    	
+    	getBagPayloadTreePanel().setBorder(border);
+    	getBagPayloadTreePanel().setToolTipText(getMessage("bagTree.help"));
 
-    	bagPayloadTree = new BagTree(this, AbstractBagConstants.DATA_DIRECTORY, true);
-    	bagPayloadTree.setEnabled(false);
-    
-    	bagPayloadTreePanel = new BagTreePanel(bagPayloadTree);
-    	bagPayloadTreePanel.setEnabled(false);
-    	bagPayloadTreePanel.setBorder(border);
-    	bagPayloadTreePanel.setToolTipText(getMessage("bagTree.help"));
+    	getBagTagFileTree().setEnabled(false);    	
+    	getBagTagFileTreePanel().setEnabled(false);
+    	getBagTagFileTreePanel().setBorder(border);
+    	getBagTagFileTreePanel().setToolTipText(getMessage("bagTree.help"));
 
-    	bagTagFileTree = new BagTree(this, getMessage("bag.label.noname"), false);
-    	bagTagFileTree.setEnabled(false);
-    	bagTagFileTreePanel = new BagTreePanel(bagTagFileTree);
-    	bagTagFileTreePanel.setEnabled(false);
-    	bagTagFileTreePanel.setBorder(border);
-    	bagTagFileTreePanel.setToolTipText(getMessage("bagTree.help"));
-
-    	tagManifestPane = new TagManifestPane(this);
-    	tagManifestPane.setToolTipText(getMessage("compositePane.tab.help"));    	
-
+    	getTagManifestPane().setToolTipText(getMessage("compositePane.tab.help"));    	
 
         JSplitPane splitPane = new JSplitPane();
         splitPane.setResizeWeight(0.5);
@@ -261,9 +310,9 @@ public class BagView extends AbstractView {
         JLabel lblPayloadTree = new JLabel(getMessage("bagView.payloadTree.name"));
         payloadLabelPanel.add(lblPayloadTree);
 
-        payLoadToolBarPanel.add(bagButtonPanel);
+        payLoadToolBarPanel.add(getBagButtonPanel());
 
-        payloadPannel.add(bagPayloadTreePanel, BorderLayout.CENTER);
+        payloadPannel.add(getBagPayloadTreePanel(), BorderLayout.CENTER);
 
         JPanel tagFilePanel = new JPanel();
         splitPane.setRightComponent(tagFilePanel);
@@ -281,11 +330,9 @@ public class BagView extends AbstractView {
         JLabel tagFileTreeLabel = new JLabel(getMessage("bagView.TagFilesTree.name"));
         TagFileLabelPanel.add(tagFileTreeLabel);
 
-        tagFileToolBarPannel.add(bagTagButtonPanel);
+        tagFileToolBarPannel.add(getBagTagButtonPanel());
 
-
-        tagFilePanel.add(bagTagFileTreePanel, BorderLayout.CENTER);
-
+        tagFilePanel.add(getBagTagFileTreePanel(), BorderLayout.CENTER);
 
         return splitPane;
     }
@@ -336,19 +383,21 @@ public class BagView extends AbstractView {
         removeDataToolBarAction.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
-                    if(removeDataToolBarAction.isEnabled())
-                            removeDataHandler.actionPerformed(null);
+                if(removeDataToolBarAction.isEnabled()){
+                    removeDataHandler.actionPerformed(null);
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                    removeDataToolBarAction.setBorder(new LineBorder(removeDataToolBarAction.getBackground(),1));
+                removeDataToolBarAction.setBorder(new LineBorder(removeDataToolBarAction.getBackground(),1));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                    if(removeDataToolBarAction.isEnabled())
-                            removeDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+                if(removeDataToolBarAction.isEnabled()){
+                    removeDataToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+                }
             }
         });
 		
@@ -393,7 +442,7 @@ public class BagView extends AbstractView {
             @Override
             public void mouseEntered(MouseEvent e) {
                 if(viewTagFilesToolbarAction.isEnabled())
-                            viewTagFilesToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
+                    viewTagFilesToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
             }
         });
         buttonPanel.add(viewTagFilesToolbarAction);
@@ -409,7 +458,7 @@ public class BagView extends AbstractView {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(addTagFileToolBarAction.isEnabled())
-                            addTagFileHandler.actionPerformed(null);
+                    addTagFileHandler.actionPerformed(null);
             }
 
             @Override
@@ -420,7 +469,7 @@ public class BagView extends AbstractView {
             @Override
             public void mouseEntered(MouseEvent e) {
                 if(addTagFileToolBarAction.isEnabled())
-                            addTagFileToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+                    addTagFileToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
             }
         });
         buttonPanel.add(addTagFileToolBarAction);
@@ -436,19 +485,19 @@ public class BagView extends AbstractView {
         removeTagFileToolbarAction.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
-                    if(removeTagFileToolbarAction.isEnabled())
-                            removeTagFileHandler.actionPerformed(null);
+                if(removeTagFileToolbarAction.isEnabled())
+                        removeTagFileHandler.actionPerformed(null);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                    removeTagFileToolbarAction.setBorder(new LineBorder(removeTagFileToolbarAction.getBackground(),1));
+                removeTagFileToolbarAction.setBorder(new LineBorder(removeTagFileToolbarAction.getBackground(),1));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                    if(removeTagFileToolbarAction.isEnabled())
-                            removeTagFileToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
+                if(removeTagFileToolbarAction.isEnabled())
+                    removeTagFileToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
             }
         });
 
@@ -462,23 +511,21 @@ public class BagView extends AbstractView {
     }
 
     public void enableBagSettings(boolean b) {
-    	bagPayloadTree.setEnabled(b);
-    	bagPayloadTreePanel.setEnabled(b);
-    	bagTagFileTree.setEnabled(b);
-    	bagTagFileTreePanel.setEnabled(b);
+    	getBagPayloadTree().setEnabled(b);
+    	getBagPayloadTreePanel().setEnabled(b);
+    	getBagTagFileTree().setEnabled(b);
+    	getBagTagFileTreePanel().setEnabled(b);
         getInfoInputPane().bagInfoInputPane.setEnabled(b);
     }
 
     public String updateBaggerRules() {
-        baggerRules.init(!bag.isNoProject(), bag.isHoley());
-        String messages = "";
-        bag.updateStrategy();        
-        return messages;
+        //baggerRules.init(!getBag().isNoProject(),getBag().isHoley());        
+        getBag().updateStrategy();        
+        return "";
     }
 
-    public void showWarningErrorDialog(String title, String msg) {
-    	MessageDialog dialog = new MessageDialog(title, msg);
-        dialog.showDialog();
+    public void showWarningErrorDialog(String title, String msg) {    	
+        new MessageDialog(title,msg).showDialog();
     }
 
     private void initializeCommands() {
@@ -507,7 +554,7 @@ public class BagView extends AbstractView {
     	clearExecutor.setEnabled(false);
     	validateExecutor.setEnabled(false);
     	completeExecutor.setEnabled(false);
-    	bagButtonPanel.invalidate();
+    	getBagButtonPanel().invalidate();
     	topButtonPanel.invalidate();
     }
 
@@ -517,7 +564,7 @@ public class BagView extends AbstractView {
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);
         addTagFileToolBarAction.setEnabled(true);
-        bagButtonPanel.invalidate();
+        getBagButtonPanel().invalidate();
     }
 
     public void updateOpenBag() {
@@ -527,7 +574,7 @@ public class BagView extends AbstractView {
         addTagFileToolBarAction.setEnabled(true);
         viewTagFilesToolbarAction.setEnabled(true);
         saveBagAsExecutor.setEnabled(true);
-        bagButtonPanel.invalidate();
+        getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags
@@ -541,10 +588,10 @@ public class BagView extends AbstractView {
         saveBagAsExecutor.setEnabled(true);
         addTagFileToolBarAction.setEnabled(true);
         viewTagFilesToolbarAction.setEnabled(true);
-        bagButtonPanel.invalidate();
+        getBagButtonPanel().invalidate();
         completeExecutor.setEnabled(true);
         validateExecutor.setEnabled(true);
-        bagButtonPanel.invalidate();
+        getBagButtonPanel().invalidate();
         topButtonPanel.invalidate();
     }
     
@@ -555,7 +602,7 @@ public class BagView extends AbstractView {
         addTagFileToolBarAction.setEnabled(true);
         viewTagFilesToolbarAction.setEnabled(true);
         saveBagAsExecutor.setEnabled(true);
-        bagButtonPanel.invalidate();
+        getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags
@@ -564,18 +611,17 @@ public class BagView extends AbstractView {
     
     public void updateAddData() {
     	saveBagAsExecutor.setEnabled(true);
-    	bagButtonPanel.invalidate();
+    	getBagButtonPanel().invalidate();
     	topButtonPanel.invalidate();
     }
     
     public void updateManifestPane() {
-        bagTagFileTree = new BagTree(this, bag.getName(), false);
-        Collection<BagFile> tags = bag.getTags();
-        for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
-        	BagFile bf = it.next();
-            bagTagFileTree.addNode(bf.getFilepath());
+        bagTagFileTree = new BagTree(this, getBag().getName(), false);
+        Collection<BagFile> tags = getBag().getTags();
+        for(Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {            
+            bagTagFileTree.addNode(it.next().getFilepath());
         }
-        bagTagFileTreePanel.refresh(bagTagFileTree);
+        getBagTagFileTreePanel().refresh(bagTagFileTree);
     }
 
     @Override
@@ -656,8 +702,8 @@ public class BagView extends AbstractView {
                     }
                     for(TreePath path: paths){
                         if(path.getPathCount() == 1){
-                                removeDataToolBarAction.setEnabled(false);
-                                return;
+                            removeDataToolBarAction.setEnabled(false);
+                            return;
                         }
                     }
                     removeDataToolBarAction.setEnabled(true);
@@ -682,19 +728,19 @@ public class BagView extends AbstractView {
     }
     
     public BaggerProfileStore getProfileStore() {
-            return profileStore;
+        return profileStore;
     }
 
     public void setProfileStore(BaggerProfileStore profileStore) {
-            this.profileStore = profileStore;
+        this.profileStore = profileStore;
     }
 
     public static BagView getInstance() {
-            return instance;
+        return instance;
     }
 
     public String getPropertyMessage(String propertyName) {
-            return getMessage(propertyName);
+        return getMessage(propertyName);
     }
 
     /*
@@ -706,7 +752,7 @@ public class BagView extends AbstractView {
         /*
          * Nicolas Franck
          */
-        return (bag.getFetchTxt() != null);
+        return (getBag().getFetchTxt() != null);
         /*
     	if (bag.getFetchTxt() != null)
     		return true;

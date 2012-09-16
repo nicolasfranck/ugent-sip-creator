@@ -455,7 +455,6 @@ public class RenamePanel extends JPanel{
                 renamer.setMatchLowerCase(advancedRenameParams.isMatchLowerCase());
                 renamer.setOverWrite(advancedRenameParams.isOverWrite());            
                 renamer.setRenameDirectories(advancedRenameParams.isRenameDirectories());
-
                 
                 renamer.setRenameListener(new RenameListenerAdapter(){
                     @Override

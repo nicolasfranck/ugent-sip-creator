@@ -1,8 +1,6 @@
-
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-import gov.loc.repository.bagger.ui.BagView;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
@@ -21,18 +19,19 @@ public class HoleyBagHandler extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BagView bagView = BagView.getInstance();
-        this.bag = bagView.getBag();
+        //BagView bagView = BagView.getInstance();
+        //this.bag = bagView.getBag();
 
         JCheckBox cb = (JCheckBox)e.getSource();
 
         // Determine status
-        boolean isSelected = cb.isSelected();
-        if (isSelected) {
-                bag.isHoley(true);
+        //boolean isSelected = cb.isSelected();
+        bag.isHoley(cb.isSelected());
+        /*if (isSelected) {
+            bag.isHoley(true);
         } else {
-                bag.isHoley(false);
-        }
+            bag.isHoley(false);
+        }*/
 /*
 		String messages = "";
 		bagView.updateBaggerRules();

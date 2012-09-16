@@ -22,8 +22,7 @@ public class BbToolBarCommandButtonConfigurer extends ToolBarCommandButtonConfig
    /**
     * Creates this command button configurer.
     */
-   public BbToolBarCommandButtonConfigurer() {
-
+   public BbToolBarCommandButtonConfigurer(){
 	super();
    }
 
@@ -32,7 +31,6 @@ public class BbToolBarCommandButtonConfigurer extends ToolBarCommandButtonConfig
     */
     @Override
    public void configure(AbstractButton button, AbstractCommand command, CommandFaceDescriptor faceDescriptor) {
-
 	super.configure(button, command, faceDescriptor);
 	faceDescriptor.configureIconInfo(button, this.getUseLargeIcons());
    }
@@ -43,12 +41,10 @@ public class BbToolBarCommandButtonConfigurer extends ToolBarCommandButtonConfig
     * @return the useLargeIcons
     */
    public Boolean getUseLargeIcons() {
-
-	if (this.useLargeIcons == null) {
-	    this.setUseLargeIcons(Boolean.TRUE);
+	if(useLargeIcons == null) {
+	    setUseLargeIcons(Boolean.TRUE);
 	}
-
-	return this.useLargeIcons;
+	return useLargeIcons;
    }
 
    /**

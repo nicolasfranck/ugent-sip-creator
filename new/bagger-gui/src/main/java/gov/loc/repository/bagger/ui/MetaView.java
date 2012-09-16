@@ -6,11 +6,11 @@ import javax.swing.JPanel;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
 
-public class MainView extends AbstractView{
+public class MetaView extends AbstractView{
     @Override
     protected JComponent createControl() {
         JPanel bagViewPanel = new JPanel(new BorderLayout(2, 2));        
-        bagViewPanel.add(BagView.getInstance().infoInputPane);
+        bagViewPanel.add(BagView.getInstance().getInfoInputPane());
         return bagViewPanel;
     }
     @Override

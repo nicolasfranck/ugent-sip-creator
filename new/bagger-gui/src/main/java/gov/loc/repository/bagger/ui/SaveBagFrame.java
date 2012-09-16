@@ -56,7 +56,7 @@ import org.springframework.richclient.util.GuiStandardUtils;
 public class SaveBagFrame extends JFrame implements ActionListener {
     private static final Log log = LogFactory.getLog(SaveBagFrame.class);
     private static final long serialVersionUID = 1L;
-    BagView bagView;
+   
     File bagFile;
     String bagFileName = "";
     private Dimension preferredDimension = new Dimension(600, 400);
@@ -84,10 +84,12 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     JComboBox tagAlgorithmList;
     JComboBox payAlgorithmList;
 
-    public SaveBagFrame(BagView bagView, String title) {
-        super(title);
-        this.bagView = bagView;
-        if (bagView != null) {
+    public BagView getBagView(){
+        return BagView.getInstance();
+    }
+    public SaveBagFrame(String title) {
+        super(title);        
+        if (getBagView() != null) {
             getContentPane().removeAll();
             savePanel = createComponents();
         }else{
@@ -157,8 +159,8 @@ public class SaveBagFrame extends JFrame implements ActionListener {
         initStandardCommands();
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
-        titlePane.setTitle(bagView.getPropertyMessage("SaveBagFrame.title"));
-        titlePane.setMessage( new DefaultMessage(bagView.getPropertyMessage("Define the Bag settings")));
+        titlePane.setTitle(getBagView().getPropertyMessage("SaveBagFrame.title"));
+        titlePane.setMessage( new DefaultMessage(getBagView().getPropertyMessage("Define the Bag settings")));
         titlePaneContainer.add(titlePane.getControl());
         titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
         pageControl.add(titlePaneContainer, BorderLayout.NORTH);
@@ -172,7 +174,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
         browseButton.setEnabled(true);
         browseButton.setToolTipText(getMessage("bag.button.browse.help"));
     	String fileName = "";
-    	DefaultBag bag = bagView.getBag();
+    	DefaultBag bag = getBagView().getBag();
     	if (bag != null) {
             fileName = bag.getName();
     	}
@@ -269,7 +271,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
         serializeGroupPanel.add(tarBz2Button);
         serializeGroupPanel.setBorder(border);
         serializeGroupPanel.setEnabled(true);
-        serializeGroupPanel.setToolTipText(bagView.getPropertyMessage("bag.serializetype.help"));
+        serializeGroupPanel.setToolTipText(getBagView().getPropertyMessage("bag.serializetype.help"));
 
         JLabel tagLabel = new JLabel(getMessage("bag.label.istag"));
         tagLabel.setToolTipText(getMessage("bag.label.istag.help"));
@@ -299,7 +301,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
         isPayloadCheckbox.addActionListener(new PayloadManifestHandler());
         isPayloadCheckbox.setToolTipText(getMessage("bag.ispayload.help"));
 
-        JLabel payAlgorithmLabel = new JLabel(bagView.getPropertyMessage("bag.label.payalgorithm"));
+        JLabel payAlgorithmLabel = new JLabel(getBagView().getPropertyMessage("bag.label.payalgorithm"));
         payAlgorithmLabel.setToolTipText(getMessage("bag.payalgorithm.help"));
         payAlgorithmList = new JComboBox(listModel.toArray());
         payAlgorithmList.setName(getMessage("bag.payalgorithmlist"));
@@ -402,6 +404,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     }
     
     public void setBag(DefaultBag bag) {
+        BagView bagView = getBagView();
     	bagNameField.setText(bag.getName());
     	short mode = bag.getSerialMode();
     	if (mode == DefaultBag.NO_MODE) {
@@ -444,31 +447,33 @@ public class SaveBagFrame extends JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JRadioButton cb = (JRadioButton)e.getSource();
             boolean isSel = cb.isSelected();
+            BagView bagView = getBagView();
+            DefaultBag bag = bagView.getBag();
             if (isSel) {
             	if (cb == noneButton) {
-                    bagView.getBag().isSerial(false);
-                    bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
-                    bagView.infoInputPane.serializeValue.setText(DefaultBag.NO_LABEL);
+                    bag.isSerial(false);
+                    bag.setSerialMode(DefaultBag.NO_MODE);
+                    bagView.getInfoInputPane().serializeValue.setText(DefaultBag.NO_LABEL);
             	} else if (cb == zipButton) {
-                    bagView.getBag().isSerial(true);
-                    bagView.getBag().setSerialMode(DefaultBag.ZIP_MODE);
-                    bagView.infoInputPane.serializeValue.setText(DefaultBag.ZIP_LABEL);
+                    bag.isSerial(true);
+                    bag.setSerialMode(DefaultBag.ZIP_MODE);
+                    bagView.getInfoInputPane().serializeValue.setText(DefaultBag.ZIP_LABEL);
             	} else if (cb == tarButton) {
-                    bagView.getBag().isSerial(true);
-                    bagView.getBag().setSerialMode(DefaultBag.TAR_MODE);
-                    bagView.infoInputPane.serializeValue.setText(DefaultBag.TAR_LABEL);
+                    bag.isSerial(true);
+                    bag.setSerialMode(DefaultBag.TAR_MODE);
+                    bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_LABEL);
             	} else if (cb == tarGzButton) {
-                    bagView.getBag().isSerial(true);
-                    bagView.getBag().setSerialMode(DefaultBag.TAR_GZ_MODE);
-                    bagView.infoInputPane.serializeValue.setText(DefaultBag.TAR_GZ_LABEL);
+                    bag.isSerial(true);
+                    bag.setSerialMode(DefaultBag.TAR_GZ_MODE);
+                    bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_GZ_LABEL);
             	} else if (cb == tarBz2Button) {
-                    bagView.getBag().isSerial(true);
-                    bagView.getBag().setSerialMode(DefaultBag.TAR_BZ2_MODE);
-                    bagView.infoInputPane.serializeValue.setText(DefaultBag.TAR_BZ2_LABEL);
+                    bag.isSerial(true);
+                    bag.setSerialMode(DefaultBag.TAR_BZ2_MODE);
+                    bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_BZ2_LABEL);
             	} else {
-                    bagView.getBag().isSerial(false);
-                    bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
-                    bagView.infoInputPane.serializeValue.setText(DefaultBag.NO_LABEL);
+                    bag.isSerial(false);
+                    bag.setSerialMode(DefaultBag.NO_MODE);
+                    bagView.getInfoInputPane().serializeValue.setText(DefaultBag.NO_LABEL);
             	}
             }
         }
@@ -479,6 +484,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            BagView bagView = getBagView();
             File selectFile = new File(File.separator+".");
             JFrame frame = new JFrame();
             JFileChooser fs = new JFileChooser(selectFile);           
@@ -505,7 +511,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
                     fs.setFileFilter(bagView.infoInputPane.tarFilter);
                 }
                 else {
-                        fs.setFileFilter(bagView.infoInputPane.noFilter);
+                    fs.setFileFilter(bagView.infoInputPane.noFilter);
                 }
                 fs.setSelectedFile(new File(selectedName));
             } else {
@@ -531,6 +537,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
 
         @Override
 	public void actionPerformed(ActionEvent e) {
+            BagView bagView = getBagView();
             if (bagNameField.getText().trim().isEmpty() || bagNameField.getText().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
                 bagView.showWarningErrorDialog("Error - bag not saved", "The bag must have a file name.");
                 return;
@@ -573,9 +580,8 @@ public class SaveBagFrame extends JFrame implements ActionListener {
         @Override
     	public void actionPerformed(ActionEvent e) {
             JCheckBox cb = (JCheckBox)e.getSource();
-
             // Determine status 
-            bagView.getBag().isBuildTagManifest(cb.isSelected());
+            getBagView().getBag().isBuildTagManifest(cb.isSelected());
             //Nicolas Franck
             /*
             boolean isSelected = cb.isSelected();
@@ -593,7 +599,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     	public void actionPerformed(ActionEvent e) {
             JComboBox jlist = (JComboBox)e.getSource();
             String alg = (String) jlist.getSelectedItem();
-            bagView.getBag().setTagManifestAlgorithm(alg);
+            getBagView().getBag().setTagManifestAlgorithm(alg);
     	}
     }
     
@@ -601,17 +607,17 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     	private static final long serialVersionUID = 75893358194076314L;
         @Override
     	public void actionPerformed(ActionEvent e) {
-    		JCheckBox cb = (JCheckBox)e.getSource();                
-    		// Determine status    		
-                bagView.getBag().isBuildPayloadManifest(cb.isSelected());
-                //Nicolas Franck
-                /*
-                boolean isSelected = cb.isSelected();
-    		if (isSelected) {
-    			bagView.getBag().isBuildPayloadManifest(true);
-    		} else {
-    			bagView.getBag().isBuildPayloadManifest(false);
-    		}*/
+            JCheckBox cb = (JCheckBox)e.getSource();                
+            // Determine status    		
+            getBagView().getBag().isBuildPayloadManifest(cb.isSelected());
+            //Nicolas Franck
+            /*
+            boolean isSelected = cb.isSelected();
+            if (isSelected) {
+                    bagView.getBag().isBuildPayloadManifest(true);
+            } else {
+                    bagView.getBag().isBuildPayloadManifest(false);
+            }*/
     	}
     }
 
@@ -621,7 +627,7 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     	public void actionPerformed(ActionEvent e) {
             JComboBox jlist = (JComboBox)e.getSource();
             String alg = (String) jlist.getSelectedItem();
-            bagView.getBag().setPayloadManifestAlgorithm(alg);
+            getBagView().getBag().setPayloadManifestAlgorithm(alg);
     	}
     }
     
@@ -665,6 +671,6 @@ public class SaveBagFrame extends JFrame implements ActionListener {
     }
     
     private String getMessage(String property) {
-    	return bagView.getPropertyMessage(property);
+    	return getBagView().getPropertyMessage(property);
     }
 }

@@ -3,12 +3,7 @@ package gov.loc.repository.bagger.ui;
 import gov.loc.repository.bagger.bag.BaggerProfile;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.HierarchicalFormModel;
@@ -17,30 +12,18 @@ import org.springframework.richclient.form.FormModelHelper;
 public final class BagInfoInputPane extends JTabbedPane {
     private static final long serialVersionUID = 1L;
     private static final Log logger = LogFactory.getLog(BagInfoInputPane.class);
-
-    private BagView bagView;
-    private DefaultBag defaultBag;
     private BaggerProfile bagProfile;
-    private BagInfoForm bagInfoForm = null;
-    private OrganizationProfileForm profileForm = null;
-    private HierarchicalFormModel infoFormModel = null;
-    private HierarchicalFormModel profileFormModel = null;
+    private BagInfoForm bagInfoForm;
+    private OrganizationProfileForm profileForm;
+    private HierarchicalFormModel infoFormModel;
+    private HierarchicalFormModel profileFormModel;
 
     public BagView getBagView(){
-        if(bagView == null){
-            bagView = BagView.getInstance();
-        }
-        return bagView;
+        return BagView.getInstance();        
     }   
     public DefaultBag getDefaultBag() {
-        if(defaultBag == null){
-            defaultBag = getBagView().getBag();
-        }
-        return defaultBag;
-    }
-    public void setDefaultBag(DefaultBag defaultBag) {
-        this.defaultBag = defaultBag;
-    }
+        return BagView.getInstance().getBag();
+    }    
     public BaggerProfile getBagProfile() {
         if (bagProfile == null) {
             bagProfile = new BaggerProfile();
@@ -52,7 +35,7 @@ public final class BagInfoInputPane extends JTabbedPane {
     }
     public BagInfoForm getBagInfoForm() {
         if(bagInfoForm == null){            
-            bagInfoForm = new BagInfoForm(FormModelHelper.createChildPageFormModel(getInfoFormModel(), null), getBagView(),getDefaultBag().getInfo().getFieldMap(),false);       
+            bagInfoForm = new BagInfoForm(FormModelHelper.createChildPageFormModel(getInfoFormModel(), null),getDefaultBag().getInfo().getFieldMap(),false);       
         }
         return bagInfoForm;
     }
@@ -61,7 +44,7 @@ public final class BagInfoInputPane extends JTabbedPane {
     }    
     public OrganizationProfileForm getProfileForm() {
         if(profileForm == null){
-            profileForm = new OrganizationProfileForm(FormModelHelper.createChildPageFormModel(getProfileFormModel(), null),getBagView());    	
+            profileForm = new OrganizationProfileForm(FormModelHelper.createChildPageFormModel(getProfileFormModel(), null));    	
         }
         return profileForm;
     }
@@ -85,10 +68,10 @@ public final class BagInfoInputPane extends JTabbedPane {
     }
     public void setProfileFormModel(HierarchicalFormModel profileFormModel) {
         this.profileFormModel = profileFormModel;
-    }   
-
+    }
     public BagInfoInputPane(boolean b){
-    	populateForms(b); 
+    	populateForms(b);       
+        
         InputMap im = this.getInputMap();
         im.put(KeyStroke.getKeyStroke("F2"), "tabNext");
         ActionMap am = this.getActionMap();
@@ -96,6 +79,7 @@ public final class BagInfoInputPane extends JTabbedPane {
             private static final long serialVersionUID = 1L;
             @Override
             public void actionPerformed(ActionEvent evt) {
+                System.out.println("tabNext!!!");
                 try {
                     int selected = getSelectedIndex();
                     int count = getComponentCount();
@@ -106,13 +90,16 @@ public final class BagInfoInputPane extends JTabbedPane {
                     }
                     invalidate();
                     repaint();
-                }catch (Exception e){}
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
-        setActionMap(am);
+        setActionMap(am);                
     }
 
     public void enableForms(boolean b) {
+        System.out.println("enableForms");
     	getProfileForm().setEnabled(b);
     	getProfileForm().getControl().invalidate();
     	getBagInfoForm().setEnabled(b);
@@ -122,6 +109,7 @@ public final class BagInfoInputPane extends JTabbedPane {
     }
     
     public void populateForms(boolean enabled){    	        
+        System.out.println("populateForms");
     	getBagProfile().setOrganization(getDefaultBag().getInfo().getBagOrganization());                
     	getBagProfile().setToContact(getDefaultBag().getInfo().getToContact());    	    	
         createTabbedUiComponentsWithForms();
@@ -129,6 +117,7 @@ public final class BagInfoInputPane extends JTabbedPane {
 
     // Create a tabbed pane for the information forms and checkbox panel
     private void createTabbedUiComponentsWithForms() {
+        System.out.println("createTabbedUiComponentsWithForms()");
         removeAll();     
         validate();
         setName("Profile");
@@ -146,30 +135,37 @@ public final class BagInfoInputPane extends JTabbedPane {
         //addTab(getBagView().getPropertyMessage("newProfileWizard.title"),getProfileForm().getControl());
     }
     public String verifyForms(){
-        String messages = "";
-        if (!getProfileForm().hasErrors()) {
+        System.out.println("verifyForms");        
+        if(!getProfileForm().hasErrors()){            
             getProfileForm().commit();
         }else{
             throw new RuntimeException("Bag-Info has errors");
         }        
-        if (!getBagInfoForm().hasErrors()) {
+        if(!getBagInfoForm().hasErrors()){
             getBagInfoForm().commit();
-        } else {
+        }else{
             throw new RuntimeException("Bag-Info has errors");
         }
-        updateBagInfo(getDefaultBag());
-        return messages;
+        updateBagInfo();
+        return "";
     }    
-    public String updateForms(DefaultBag bag) {        
-        String messages = verifyForms();
+    public String updateForms(){ 
+        System.out.println("BagInfoInputPane::updateForms");
+        String messages = verifyForms();        
         createTabbedUiComponentsWithForms();
         update();        
         return messages;
-    }    
+    } 
+    //Nicolas Franck: wordt nergens gebruikt
+    /*
     public boolean hasFormErrors(DefaultBag bag) {
+        System.out.println("hasFormErrors");
     	return false;
-    }    
-    public void update() {
+    }
+    * 
+    */
+    public void update(){
+        System.out.println("update");        
         java.awt.Component[] components = getBagInfoForm().getControl().getComponents();
         for (int i=0; i<components.length; i++) {
             java.awt.Component c = components[i];
@@ -177,20 +173,22 @@ public final class BagInfoInputPane extends JTabbedPane {
             c.repaint();
         }
         getBagInfoForm().getControl().invalidate();
-        getProfileForm().getControl().invalidate();
+        getProfileForm().getControl().invalidate();        
     	invalidate();
     	repaint();
     }
 
-    public void updateProject(BagView bagView) {       
-    	getBagView().infoInputPane.updateInfoFormsPane(true);
+    public void updateProject() {       
+        System.out.println("updateProject");
+    	getBagView().getInfoInputPane().updateInfoFormsPane(true);
     }    
-    private void updateBagInfo(DefaultBag bag) {
-        HashMap<String,String> map = getBagInfoForm().getBagInfoMap();
-        bag.updateBagInfo(map);
+    private void updateBagInfo() {
+        System.out.println("updateBagInfo");        
+        getDefaultBag().updateBagInfo(getBagInfoForm().getBagInfoMap());
     }
     @Override
-    public void requestFocus() {        
+    public void requestFocus(){        
+        System.out.println("request focus");
     	getBagInfoForm().getControl().requestFocus();        
     }
 }

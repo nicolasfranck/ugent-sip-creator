@@ -10,7 +10,7 @@ bagger-package/target
 bagger-maven/target
 tools/FileTreeMaven/target
 *.class
-*.jar
 /new/bagger-gui/target/
 /new/bagger-business/target/
 /new/bagger-core/target/
+/new/bagger-package/target/

@@ -36,7 +36,7 @@ public class SaveBagHandler2 extends Handler {
     public void actionPerformed(ActionEvent e) {
         BagView bagView = BagView.getInstance();
         DefaultBag bag = bagView.getBag();
-        bagView.infoInputPane.updateBagHandler.updateBag(bag);
+        bagView.getInfoInputPane().updateBagHandler.updateBag();
         if(bagView.getBagRootPath().exists()) {
             tmpRootPath = bagView.getBagRootPath();
             confirmWriteBag();

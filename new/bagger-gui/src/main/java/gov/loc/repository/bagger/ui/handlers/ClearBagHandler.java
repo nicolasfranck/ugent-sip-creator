@@ -1,4 +1,3 @@
-
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
@@ -26,17 +25,19 @@ public class ClearBagHandler extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-            closeExistingBag();
+        closeExistingBag();
     }
 
     public void closeExistingBag() {
     	// Closes Bag without popping up the Save Dialog Box for a Holey and Serialized Bag 
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
-    	if (bagView.getBag().isHoley() || bagView.getBag().isSerial())
+        DefaultBag bag = bagView.getBag();
+    	if(bag.isHoley() || bag.isSerial()){
             clearExistingBag();
-    	else 
+        }else{
             confirmCloseBag();
+        }    
         if (isConfirmSaveFlag()){
             bagView.saveBagHandler.setClearAfterSaving(true);
             bagView.saveBagAsHandler.openSaveBagAsFrame();
@@ -49,12 +50,12 @@ public class ClearBagHandler extends AbstractAction {
         ConfirmationDialog dialog = new ConfirmationDialog() {
             @Override
             protected void onConfirm() {
-                    setConfirmSaveFlag(true);
+                setConfirmSaveFlag(true);
             }
             @Override
             protected void onCancel() {
-                    super.onCancel();
-                    clearExistingBag();
+                super.onCancel();
+                clearExistingBag();
             }
         };
         dialog.setCloseAction(CloseAction.DISPOSE);
@@ -68,13 +69,13 @@ public class ClearBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
     	bag.clear();
-        bagView.baggerRules.clear();
-    	bagView.bagPayloadTree = new BagTree(bagView, AbstractBagConstants.DATA_DIRECTORY, true);
-    	bagView.bagPayloadTreePanel.refresh(bagView.bagPayloadTree);
-    	bagView.bagTagFileTree = new BagTree(bagView, ApplicationContextUtil.getMessage("bag.label.noname"), false);
-    	bagView.bagTagFileTreePanel.refresh(bagView.bagTagFileTree);
-    	bagView.infoInputPane.setBagName(bag.getName());
-    	bagView.infoInputPane.updateInfoForms();
+        //bagView.baggerRules.clear();
+    	bagView.setBagPayloadTree(new BagTree(bagView, AbstractBagConstants.DATA_DIRECTORY, true));
+    	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
+    	bagView.setBagTagFileTree(new BagTree(bagView, ApplicationContextUtil.getMessage("bag.label.noname"), false));
+    	bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
+    	bagView.getInfoInputPane().setBagName(bag.getName());
+    	bagView.getInfoInputPane().updateInfoForms();
     	bagView.updateClearBag();
     }
 
@@ -92,16 +93,14 @@ public class ClearBagHandler extends AbstractAction {
     	} else {
             bagName = f.getName();
             String fileName = f.getAbsolutePath();
-            bagView.infoInputPane.setBagName(fileName);
+            bagView.getInfoInputPane().setBagName(fileName);
     	}
         bag.setName(bagName);
         bagView.setBag(bag);
     }
-
     public void setConfirmSaveFlag(boolean confirmSaveFlag) {
         this.confirmSaveFlag = confirmSaveFlag;
     }
-
     public boolean isConfirmSaveFlag() {
         return confirmSaveFlag;
     }

@@ -32,10 +32,8 @@ public class BaggerApplication {
     private static Log log = LogFactory.getLog(BaggerApplication.class);
 
     public static void main(String[] args) {
-        String rootContextDirectoryClassPath = "/gov/loc/repository/bagger/ctx";
-      
+        String rootContextDirectoryClassPath = "/gov/loc/repository/bagger/ctx";      
         String startupContextPath = rootContextDirectoryClassPath + "/common/richclient-startup-context.xml";
-
         String richclientApplicationContextPath = rootContextDirectoryClassPath
                 + "/common/richclient-application-context.xml";
      
@@ -43,26 +41,27 @@ public class BaggerApplication {
         String businessLayerContextPath = rootContextDirectoryClassPath + "/common/business-layer-context.xml";
 
         try {
-        	new ApplicationLauncher(startupContextPath, new String[] { businessLayerContextPath,richclientApplicationContextPath
-            		 });
+            new ApplicationLauncher(
+                startupContextPath, 
+                new String[] { businessLayerContextPath,richclientApplicationContextPath }
+            );
         } catch (IllegalStateException ex1) {
             log.error("IllegalStateException during startup", ex1);
-            JOptionPane.showMessageDialog(new JFrame(), "An illegal state error occured.\n", "Bagger startup error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "An illegal state error occured.\n", "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         } catch (PropertyAccessException ex) {
             log.error("PropertyAccessException during startup", ex);
-            JOptionPane.showMessageDialog(new JFrame(), "An error occured loading properties.\n", "Bagger startup error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "An error occured loading properties.\n", "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         } catch (RuntimeException e) {
             log.error("RuntimeException during startup", e);
-        	String msg = e.getMessage();
-        	if (msg.contains("SAXParseException")) {
-                JOptionPane.showMessageDialog(new JFrame(), "An error occured parsing application context.  You may have no internet access.\n" , "Bagger startup error!", JOptionPane.ERROR_MESSAGE);
-        	} else {
-                JOptionPane.showMessageDialog(new JFrame(), "An error occured during startup.\n" , "Bagger startup error!", JOptionPane.ERROR_MESSAGE);
-        	}
+            String msg = e.getMessage();
+            if (msg.contains("SAXParseException")){
+            JOptionPane.showMessageDialog(null, "An error occured parsing application context.  You may have no internet access.\n" , "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(null, "An error occured during startup.\n" , "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
+            }
             System.exit(1);
         }
     }
-
 }
