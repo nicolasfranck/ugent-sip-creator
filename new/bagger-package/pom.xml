@@ -67,12 +67,12 @@
     <dependency>
       <groupId>loc-repository</groupId>
       <artifactId>bagger-business</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>loc-repository</groupId>
       <artifactId>bagger-gui</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.jdesktop</groupId>

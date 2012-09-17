@@ -14,7 +14,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
     public BaggerValidationRulesSource() {
         super();
         
-        //ugent bagger          
+        //ugent bagger                  
         Rules advancedRenameParamsRules = new Rules(AdvancedRenameParams.class);
         advancedRenameParamsRules
                 .add(required("sourcePattern"))
@@ -29,7 +29,6 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         Rules mdWrapRules = new Rules(MdSec.MdWrap.class);
         mdWrapRules.add(required("ID"));
         addRules(mdWrapRules);
-       
     }  
     //Nicolas Franck: deze attributen worden nergens gebruikt!
     /*

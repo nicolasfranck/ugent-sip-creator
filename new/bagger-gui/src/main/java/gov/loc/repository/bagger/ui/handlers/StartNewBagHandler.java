@@ -1,4 +1,3 @@
-
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.Profile;
@@ -8,13 +7,10 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.NewBagFrame;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFile;
-
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.swing.AbstractAction;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -47,28 +43,28 @@ public class StartNewBagHandler extends AbstractAction {
     	
     	bagView.clearBagHandler.clearExistingBag();
     	DefaultBag bag = bagView.getBag();
-    	bagView.infoInputPane.bagInfoInputPane.enableForms(true);
+    	bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
 
     	String bagName = bagView.getPropertyMessage("bag.label.noname");
         bag.setName(bagName);
-        bagView.infoInputPane.setBagName(bagName);
+        bagView.getInfoInputPane().setBagName(bagName);
 
-        bagView.bagTagFileTree = new BagTree(bagView, bag.getName(), false);
+        bagView.setBagTagFileTree(new BagTree(bagView, bag.getName(), false));
         Collection<BagFile> tags = bag.getTags();
         for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
             BagFile bf = it.next();
-            bagView.bagTagFileTree.addNode(bf.getFilepath());
+            bagView.getBagTagFileTree().addNode(bf.getFilepath());
         }
-        bagView.bagTagFileTreePanel.refresh(bagView.bagTagFileTree);
+        bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
         bagView.updateBaggerRules();
         bag.setRootDir(bagView.getBagRootPath());
 
-    	bagView.infoInputPane.bagInfoInputPane.populateForms(true);
+    	bagView.getInfoInputPane().getBagInfoInputPane().populateForms(true);
     	ApplicationContextUtil.addConsoleMessage("A new bag has been created in memory.");
     	bagView.updateNewBag();
     	
     	// set bagItVersion
-    	bagView.infoInputPane.bagVersionValue.setText(bagItVersion);
+    	bagView.getInfoInputPane().getBagVersionValue().setText(bagItVersion);
     	
     	// change profile
     	changeProfile(profileName);
@@ -80,7 +76,7 @@ public class StartNewBagHandler extends AbstractAction {
     	Profile profile = bagView.getProfileStore().getProfile(selected);        
         DefaultBag bag = bagView.getBag();
         bag.setProfile(profile, true);
-        bagView.getInfoInputPane().bagInfoInputPane.updateProject();        
+        bagView.getInfoInputPane().getBagInfoInputPane().updateProject();        
         bagView.getInfoInputPane().setProfile(bag.getProfile().getName());
     }
 }

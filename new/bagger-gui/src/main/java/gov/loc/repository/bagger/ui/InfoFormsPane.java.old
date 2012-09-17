@@ -12,7 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
-public final class InfoFormsPane extends JPanel {
+public class InfoFormsPane extends JScrollPane {
     private static final long serialVersionUID = -5988111446773491301L;   
     private JPanel bagSettingsPanel;
     private JPanel infoPanel;
@@ -86,8 +86,7 @@ public final class InfoFormsPane extends JPanel {
     }    
     public InfoFormsPane() {
     	super();       
-        setLayout(new BorderLayout());
-        add(getInfoPanel());       
+        createUiComponent();        
     }    
     public void setProfile(String profileName) {
     	bagProfileValue.setText(profileName);
@@ -113,7 +112,8 @@ public final class InfoFormsPane extends JPanel {
             GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
             infoPanel.add(getBagSettingsPanel(), gbc);
             gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
-            infoPanel.add(getBagInfoInputPane(),gbc);            
+            infoPanel.add(getBagInfoInputPane(),gbc);
+            
         }
         return infoPanel;
     }
@@ -184,8 +184,11 @@ public final class InfoFormsPane extends JPanel {
 
     public void setBagNameValue(JLabel bagNameValue) {
         this.bagNameValue = bagNameValue;
-    }  
+    }
     
+    private void createUiComponent(){        
+        setViewportView(getInfoPanel());        
+    }
     private JPanel createSettingsPanel() {
     	JPanel contentPane = new JPanel(new BorderLayout(5, 5));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));        
@@ -270,10 +273,12 @@ public final class InfoFormsPane extends JPanel {
             return;
         }
     	getBagNameValue().setText(name);
-    }    
+    }
+    
     public String getBagName() {
     	return getBagNameValue().getText();
-    }    
+    }
+    
     public void updateInfoForms() {
     	getBagInfoInputPane().populateForms(false);
     	getBagInfoInputPane().enableForms(false);
@@ -289,5 +294,12 @@ public final class InfoFormsPane extends JPanel {
     	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
         getInfoPanel().add(getBagInfoInputPane(),gbc);
         validate();
-    }     
+    } 
+    //Nicolas Franck: nut??
+    /*
+    public void showTabPane(int i) {
+        getBagInfoInputPane().setSelectedIndex(i);
+    	getBagInfoInputPane().invalidate();        
+    }
+    */ 
 }

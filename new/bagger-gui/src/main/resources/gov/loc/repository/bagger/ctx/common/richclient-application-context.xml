@@ -2,10 +2,14 @@
 <beans 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xmlns="http://www.springframework.org/schema/beans"
-    xmlns:p="http://www.springframework.org/schema/p" 
-    xmlns:util="http://www.springframework.org/schema/util"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans classpath:org/springframework/beans/factory/xml/spring-beans-2.5.xsd http://www.springframework.org/schema/util classpath:org/springframework/beans/factory/xml/spring-util-2.0.xsd" > 
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans classpath:org/springframework/beans/factory/xml/spring-beans-2.5.xsd" > 
 
+    <!--
+            xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans classpath:org/springframework/beans/factory/xml/spring-beans-2.5.xsd http://www.springframework.org/schema/util classpath:org/springframework/beans/factory/xml/spring-util-2.0.xsd" > 
+    -->
+    
   <!--
     Bean: application
     Usage: Platform required
@@ -34,8 +38,8 @@
     Application.  Note the reference to this bean in the constructor
     args in the application bean.
   -->
-  <bean id="applicationDescriptor" class="org.springframework.richclient.application.support.DefaultApplicationDescriptor">   
-  </bean> 
+    <bean id="applicationDescriptor" class="org.springframework.richclient.application.support.DefaultApplicationDescriptor">   
+    </bean> 
   
     <bean id="proxyPage" class="org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor">
         <property name="initialLayout">
@@ -100,10 +104,10 @@
     class="org.springframework.richclient.application.support.DefaultApplicationServices">
     <property name="applicationObjectConfigurerId">
       <idref bean="applicationObjectConfigurer" />
-    </property>   
+    </property>
     <property name="binderSelectionStrategyId">
       <idref bean="binderSelectionStrategy" />
-    </property>
+    </property>    
     <property name="formComponentInterceptorFactoryId">
       <idref bean="formComponentInterceptorFactory" />
     </property>
@@ -115,20 +119,20 @@
     </property>    
     <property name="rulesSourceId">
       <idref bean="rulesSource" />
-    </property>        
+    </property>      
     <property name="registryEntries">
         <map>
            <entry key="org.springframework.richclient.command.CommandServices" value-ref="commandServices" />
         </map>
-     </property>
+     </property>     
   </bean>
 
   <bean id="applicationObjectConfigurer" depends-on="serviceLocator" class="org.springframework.richclient.application.config.DefaultApplicationObjectConfigurer">
   </bean>
 
   <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster" />
-
    
+  
   <bean id="binderSelectionStrategy"
     class="org.springframework.richclient.form.binding.swing.SwingBinderSelectionStrategy">
     <property name="bindersForPropertyTypes">
@@ -142,6 +146,7 @@
       </map>
     </property>
   </bean>
+  
   <bean id="lookAndFeelConfigurer"
     class="org.springframework.richclient.application.config.JGoodiesLooksConfigurer">
     <property name="popupDropShadowEnabled" value="false" />
@@ -181,14 +186,24 @@
                 <bean class="org.springframework.richclient.form.builder.support.ColorValidationInterceptorFactory">
                     <property name="errorColor" value="255,245,245" />
                 </bean>
-                <bean class="org.springframework.richclient.form.builder.support.OverlayValidationInterceptorFactory" />               
+                <!--<bean class="org.springframework.richclient.form.builder.support.OverlayValidationInterceptorFactory" />-->               
                 <bean class="org.springframework.richclient.text.TextComponentPopupInterceptorFactory" />               
                 <bean class="org.springframework.richclient.list.ComboBoxAutoCompletionInterceptorFactory" />
             </list>
         </property>
     </bean>
+    
+    <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />
 
     <bean id="rulesSource" class="gov.loc.repository.bagger.domain.BaggerValidationRulesSource" />
+    
+    <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices">
+        <property name="toolBarButtonConfigurer"> <ref bean="toolBarButtonConfigurer"/> </property>
+    </bean> 
+
+    <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer">
+        <property name="useLargeIcons" value="true" />
+    </bean>
   
     <bean id="applicationPageFactory" depends-on="serviceLocator"
         class="org.springframework.richclient.application.docking.vldocking.VLDockingApplicationPageFactory">
@@ -205,17 +220,14 @@
             <entry key="profileStore" value-ref="profiles" />
         </map>
         </property>
-    </bean>  
-   
+    </bean>     
     <bean id="metaView" 
         class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
         <property name="viewClass" value="gov.loc.repository.bagger.ui.MetaView" />
         <property name="autoHideEnabled" value="true" />
         <property name="floatEnabled" value="true" />
         <property name="maximizeEnabled" value="true"/>
-    </bean> 
-    
-  
+    </bean>
     <bean id="consoleView" 
         class="org.springframework.richclient.application.docking.vldocking.VLDockingViewDescriptor" depends-on="bagView">
         <property name="viewClass" value="gov.loc.repository.bagger.ui.ConsoleView" />
@@ -231,37 +243,15 @@
      <property name="floatEnabled" value="true" />
      <property name="maximizeEnabled" value="true"/>    
   </bean>-->
- 
 
-<!--
-   wizard die de toegang tot de applicatie bewaakt. Enkel indien de licentievoorwaarden worden geaccepteerd,
-   wordt de applicatie geopend
--->
-<!--
-  <bean id="setupWizard" class="org.springframework.richclient.application.setup.SetupWizard">
-    <property name="licenseTextLocation" value="/gov/loc/repository/bagger/license.txt" />
-  </bean>
--->
-  
+    
  <!--
- <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices" p:toolBarButtonConfigurer-ref="toolBarButtonConfigurer"/>
-
- <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer" p:useLargeIcons="true" />
-   
- --> 
- 
-    <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices">
-        <property name="toolBarButtonConfigurer"> <ref bean="toolBarButtonConfigurer"/> </property>
-    </bean> 
-
-    <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.BbToolBarCommandButtonConfigurer">
-        <property name="useLargeIcons" value="true" />
-    </bean>
- 
     <util:list id="metsSchemaURLS">        
         <value>http://www.loc.gov/METS/</value>
     </util:list>
+    -->
     <!--mets does not register 'versions' in its namespace, so we try it this way: 1st? => 2th? => 3th? ..-->
+    <!--
     <util:list id="metsSchemaVersions">
         <value>metadata/xsd/mets/1.9.1/mets-1.9.1.xsd</value>
         <value>metadata/metadata/xsd/mets/1.9/mets-1.9.xsd</value>
@@ -276,7 +266,8 @@
     </util:list>
     <util:list id="forbiddenNamespaces">
         <value>http://www.loc.gov/METS/</value>               
-    </util:list>
+    </util:list>-->
+    <!--
     <util:map id="namespaceMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="MARC"  />
         <entry key="http://www.loc.gov/mods/v3" value="MODS" />
@@ -290,15 +281,15 @@
         <entry key="http://www.loc.gov/mix/v10" value="NISOIMG" />
         <entry key="http://www.loc.gov/AMD/" value="LC-AV" />
         <entry key="http://www.loc.gov/VMD/" value="LC-AV" />
-        <entry key="http://www.vraweb.org/vracore4.htm" value="VRA" />
+        <entry key="http://www.vraweb.org/vracore4.htm" value="VRA" />-->
         <!---->
         <!-- DDI wat onduidelijk: onnoemelijk veel schema's die aan elkaar gekoppeld zijn.. -->
         <!--FGDC => heeft geen namespace: http://lab.usgin.org/groups/etl-debug-blog/fgdc-xml-schema-woes-->
-        <entry key="http://ltsc.ieee.org/xsd/LOM" value="LOM" />
+        <!--<entry key="http://ltsc.ieee.org/xsd/LOM" value="LOM" />
         <entry key="http://www.tei-c.org/ns/1.0" value="TEIHDR" />
-        <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="METSRIGHTS" />        
+        <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="METSRIGHTS" />        -->
         <!--ISO 19115:2003 NAP => xsd niet gevonden -->
-    </util:map>
+    <!--</util:map>
     
     <util:map id="xsdMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xsd/MARC21.xsd" />
@@ -317,16 +308,16 @@
         <entry key="http://ltsc.ieee.org/xsd/LOM" value="http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd" />        
         <entry key="info:lc/xmlns/premis-v2" value="metadata/xsd/premis/premis-2-2.xsd" />
         <entry key="http://www.loc.gov/standards/premis/v1" value="metadata/xsd/premis/premis-1-1.xsd" />
-        <entry key="http://www.loc.gov/standards/premis" value="metadata/xsd/premis/premis-1-1.xsd" />        
+        <entry key="http://www.loc.gov/standards/premis" value="metadata/xsd/premis/premis-1-1.xsd" />        -->
         <!--premis agent|object|event|rights hebben allemaal dezelfde namespace: http://www.loc.gov/standards/premis -->        
-        <entry key="http://www.tei-c.org/ns/1.0" value="metadata/xsd/tei_all.xsd" />
+        <!--<entry key="http://www.tei-c.org/ns/1.0" value="metadata/xsd/tei_all.xsd" />
         <entry key="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" value="metadata/xsd/Spectrum-1.01.xsd" />
         <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="metadata/xsd/METSRights.xsd" />
     </util:map>
     <util:map id="xsltMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/marc2oai_dc.xsl" />
         <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MODS3-22OAIDC.xsl" />        
-    </util:map>
+    </util:map>-->
     
-    <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />
+    
 </beans>

@@ -23,7 +23,7 @@
     <dependency>
       <groupId>loc-repository</groupId>
       <artifactId>bagger-business</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- Dependency injection -->
@@ -41,5 +41,5 @@
     </dependency>
 
   </dependencies>
-
+    
 </project>

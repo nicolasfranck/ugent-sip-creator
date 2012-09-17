@@ -14,6 +14,19 @@
   <description>
     The GUI presentation layer which resides in client, but NOT in the server.
   </description>
+  <build>
+   <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+        <version>2.5.1</version>
+      </plugin>
+    </plugins>
+  </build>
   <repositories>
     <repository>
         <id>in-project</id>
@@ -36,17 +49,17 @@
     <dependency>
       <groupId>loc-repository</groupId>
       <artifactId>bagger-common</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>loc-repository</groupId>
       <artifactId>bagger-core</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>loc-repository</groupId>
       <artifactId>bagger-business</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <!-- Spring rich -->
     <dependency>
@@ -139,6 +152,7 @@
       <version>0.1.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
+ 
 
 </project>
 

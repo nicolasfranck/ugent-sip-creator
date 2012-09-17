@@ -19,6 +19,6 @@ public class UpdateBagHandler extends AbstractAction {
     }
     public void updateBag() {
         System.out.println("UpdateBagHandler::updateBag");
-        BagView.getInstance().getInfoInputPane().bagInfoInputPane.updateForms();
+        BagView.getInstance().getInfoInputPane().getBagInfoInputPane().updateForms();
     }
 }

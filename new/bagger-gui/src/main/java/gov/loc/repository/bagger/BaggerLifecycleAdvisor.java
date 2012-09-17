@@ -5,6 +5,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor;
+import org.springframework.richclient.application.setup.SetupWizard;
 //import org.springframework.richclient.command.ActionCommand;
 /**
  * Custom application lifecycle implementation that configures the app at well defined points within
@@ -14,14 +16,14 @@ import org.springframework.richclient.application.config.DefaultApplicationLifec
  */
 public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
-    boolean useWizard = true;
+    boolean useWizard = false;
 
     /**
      * Show a setup wizard before actual applicationWindow is created. This should happen only on Application
      * startup and only once. (note: for this to happen only once, a state should be preserved, which is not
      * the case with this sample)
      */
-    /*
+    
     @Override
     public void onPreStartup(){   
     	log.debug("BaggerLifeCycleAdvisor.onPreStartup");
@@ -41,13 +43,13 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     	if(getApplication().getApplicationContext().containsBean("proxyPage")){
             VLDockingPageDescriptor dockingPageDesc = (VLDockingPageDescriptor)getApplication().getApplicationContext().getBean("proxyPage");
             try {
-                //dockingPageDesc.getInitialLayout().getFile().setReadOnly();
+                dockingPageDesc.getInitialLayout().getFile().setReadOnly();
             } catch (Exception e) {
                 log.debug("Error setting the view layout page as read-only", e);
             }
     	}
         
-    }*/
+    }
 
     /**
      * Additional window configuration before it is created.

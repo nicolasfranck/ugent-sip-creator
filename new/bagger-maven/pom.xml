@@ -10,8 +10,9 @@
     <spring.version>2.5.1</spring.version>
     <richclient.version>1.0.0</richclient.version>
   </properties>
-  <build>
-    <plugins>
+  <build>   
+   <plugins>
+        <!--test-end-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -23,7 +24,6 @@
     </plugins>
   </build>
   <modules>
-    <!--<module>../bagger-common</module>-->
     <module>../bagger-core</module>
     <module>../bagger-business</module>
     <module>../bagger-gui</module>

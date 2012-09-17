@@ -20,7 +20,7 @@
     <dependency>
       <groupId>loc-repository</groupId>
       <artifactId>bagger-common</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- Dependency injection -->

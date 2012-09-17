@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.Bagger;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-import gov.loc.repository.bagger.domain.BaggerValidationRulesSource;
 import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagger.ui.handlers.*;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
@@ -244,7 +243,7 @@ public class BagView extends AbstractView {
     	topButtonPanel = createTopButtonPanel();
     	topButtonPanel.setBackground(bgColor);
     	
-    	getInfoInputPane().bagInfoInputPane.enableForms(false);
+    	getInfoInputPane().getBagInfoInputPane().enableForms(false);
         JSplitPane bagPanel = createBagPanel();
 
     	GridBagLayout layout = new GridBagLayout();
@@ -485,8 +484,9 @@ public class BagView extends AbstractView {
         removeTagFileToolbarAction.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
-                if(removeTagFileToolbarAction.isEnabled())
-                        removeTagFileHandler.actionPerformed(null);
+                if(removeTagFileToolbarAction.isEnabled()) {
+                    removeTagFileHandler.actionPerformed(null);
+                }
             }
 
             @Override
@@ -496,8 +496,9 @@ public class BagView extends AbstractView {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(removeTagFileToolbarAction.isEnabled())
+                if(removeTagFileToolbarAction.isEnabled()) {
                     removeTagFileToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
+                }
             }
         });
 
@@ -515,7 +516,7 @@ public class BagView extends AbstractView {
     	getBagPayloadTreePanel().setEnabled(b);
     	getBagTagFileTree().setEnabled(b);
     	getBagTagFileTreePanel().setEnabled(b);
-        getInfoInputPane().bagInfoInputPane.setEnabled(b);
+        getInfoInputPane().getBagInfoInputPane().setEnabled(b);
     }
 
     public String updateBaggerRules() {
@@ -542,7 +543,7 @@ public class BagView extends AbstractView {
 
     public void updateClearBag() {
     	enableBagSettings(false);    	
-    	getInfoInputPane().holeyValue.setText("");
+    	getInfoInputPane().getHoleyValue().setText("");
     	addDataToolBarAction.setEnabled(false);
     	removeDataToolBarAction.setEnabled(false);
     	addDataExecutor.setEnabled(false);

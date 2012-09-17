@@ -13,6 +13,6 @@ import org.springframework.richclient.application.support.AbstractView;
 abstract public class DefaultView extends AbstractView{
     @Override
     public void componentFocusGained(){
-        //ugent.bagger.helper.SwingUtils.getFrame().pack();        
+        
     }
 }

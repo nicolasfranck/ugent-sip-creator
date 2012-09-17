@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 
-public class BagInfoForm extends AbstractForm implements FocusListener {
+public final class BagInfoForm extends AbstractForm implements FocusListener {
     private static final long serialVersionUID = -3231249644435262577L;
     public static final String INFO_FORM_PAGE = "infoPage";
     private JComponent focusField;    
@@ -29,32 +29,54 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
 	
     public BagInfoForm(FormModel formModel,HashMap<String, BagInfoField> fieldMap, boolean enabled) {
     	super(formModel, INFO_FORM_PAGE);        
+        setFieldMap(fieldMap);
+    }   
+    public HashMap<String, BagInfoField> getFieldMap() {        
+        return fieldMap;
+    }
+    public void setFieldMap(HashMap<String, BagInfoField> fieldMap) {
         this.fieldMap = fieldMap;
-    }        
+    }    
     public BagView getBagView(){
         return BagView.getInstance();
     }
+    public DefaultBag getBag(){
+        return getBagView().getBag();
+    }
+    public JComponent getForm() {
+        if(form == null){
+            form = createFormFields();
+        }
+        return form;
+    }
+    public void setForm(JComponent form) {
+        this.form = form;
+    }   
+
+    public AddFieldPanel getAddFieldPannel() {
+        if(addFieldPannel == null){
+            addFieldPannel = new AddFieldPanel();
+        }
+        return addFieldPannel;
+    }
+    public void setAddFieldPannel(AddFieldPanel addFieldPannel) {
+        this.addFieldPannel = addFieldPannel;
+    }    
     @Override
     protected JComponent createFormControl() {
     	// add field panel
     	JPanel contentPanel = new JPanel(new GridBagLayout());
     	int row = 0;
     	int col = 0;
-    	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-    	addFieldPannel = new AddFieldPanel();
-    	contentPanel.add(addFieldPannel, gbc);
-    	
+    	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);    	
+    	contentPanel.add(getAddFieldPannel(), gbc);    	
     	gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-    	contentPanel.add(new JSeparator(), gbc);
-    	
-    	// bag-info input form
-    	form = createFormFields();
+    	contentPanel.add(new JSeparator(), gbc);    	
+    	// bag-info input form    	
     	gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
-    	contentPanel.add(form, gbc);
+    	contentPanel.add(getForm(),gbc);
     	return contentPanel;
     }
-
-
     protected JComponent createFormFields() {
     	int rowCount = 0;
         ImageIcon requiredIcon = getBagView().getPropertyImage("bag.required.image");
@@ -98,7 +120,9 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
                             ((NoTabTextArea) textarea).setText(field.getValue());
                             ((NoTabTextArea) textarea).setBorder(new EmptyBorder(1,1,1,1));
                             ((NoTabTextArea) textarea).setLineWrap(true);
-                            if (rowCount == 1) focusField = textarea;
+                            if (rowCount == 1) {
+                                focusField = textarea;
+                            }
                             break;
                         case BagInfoField.TEXTFIELD_COMPONENT:
                             JComponent[] flist = formBuilder.add(field.getName(), field.isRequired(), field.getLabel(), removeButton, "");
@@ -106,7 +130,9 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
                             comp.setEnabled(field.isEnabled());
                             comp.addFocusListener(this);
                             ((JTextField) comp).setText(field.getValue());
-                            if (rowCount == 1) focusField = comp;
+                            if (rowCount == 1) {
+                                focusField = comp;
+                            }
                             break;
                         case BagInfoField.LIST_COMPONENT:
                             List<String> elements = field.getElements();
@@ -117,7 +143,9 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
                             if(field.getValue() != null) {
                                 ((JComboBox) lcomp).setSelectedItem(field.getValue().trim());
                             }
-                            if (rowCount == 1) focusField = lcomp;
+                            if (rowCount == 1) {
+                                focusField = lcomp;
+                            }
                             break;                            
                     }
                 }
@@ -126,9 +154,7 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
                 }
             }
         }
-        JComponent fieldForm = formBuilder.getForm();
-        fieldForm.invalidate();
-        return fieldForm;
+        return formBuilder.getForm();                
     }
     @Override
     public void focusGained(FocusEvent evt){ 
@@ -136,9 +162,8 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
     }    
     @Override
     public void focusLost(FocusEvent evt) {       
-        System.out.println("BagInfoForm::focusLost");
-    	DefaultBag defaultBag = getBagView().getBag();
-    	getBagView().getInfoInputPane().updateBagHandler.updateBag();
+        System.out.println("BagInfoForm::focusLost");           	
+    	getBagView().getInfoInputPane().getUpdateBagHandler().updateBag();        
         //Nicolas Franck: waarom?
 	//getBagView().getInfoInputPane().bagInfoInputPane.setSelectedIndex(0);        
     }
@@ -173,13 +198,15 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
                             BagInfoField field = getField(key);
                             if (field != null) {
                                 // remove field
-                                getBagView().getBag().removeBagInfoField(key);
+                                getBag().removeBagInfoField(key);
                             }
                         }
                     }
                 }
                 getBagView().getInfoInputPane().updateInfoFormsPane(true);
-            }catch (Exception ex) {}
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
        	}
     }
     private BagInfoField getField(String key) {
@@ -195,8 +222,7 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
             }
         }
     	return field;
-    }
-    
+    }    
     public HashMap<String,String> getBagInfoMap() {
         HashMap<String,String> map = new HashMap<String,String>();
         String key = "";
@@ -231,11 +257,11 @@ public class BagInfoForm extends AbstractForm implements FocusListener {
         return map;
     }
     private Component[] getFieldComponents() {
-       return form.getComponents();
+       return getForm().getComponents();
     }
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        addFieldPannel.setEnabled(enabled);
+        getAddFieldPannel().setEnabled(enabled);
     }
 }

@@ -37,10 +37,10 @@ public class OpenBagHandler extends AbstractAction {
         File selectFile = new File(File.separator+".");        
         JFileChooser fo = new JFileChooser(selectFile);
         fo.setDialogType(JFileChooser.OPEN_DIALOG);
-        fo.addChoosableFileFilter(bagView.infoInputPane.noFilter);
-        fo.addChoosableFileFilter(bagView.infoInputPane.zipFilter);
-        fo.addChoosableFileFilter(bagView.infoInputPane.tarFilter);
-        fo.setFileFilter(bagView.infoInputPane.noFilter);
+        fo.addChoosableFileFilter(bagView.getInfoInputPane().getNoFilter());
+        fo.addChoosableFileFilter(bagView.getInfoInputPane().getZipFilter());
+        fo.addChoosableFileFilter(bagView.getInfoInputPane().getTarFilter());
+        fo.setFileFilter(bagView.getInfoInputPane().getNoFilter());
         fo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         if(bagView.getBagRootPath() != null){
             fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
@@ -57,7 +57,7 @@ public class OpenBagHandler extends AbstractAction {
 
     public void openExistingBag(File file) {
         BagView bagView = BagView.getInstance();
-    	bagView.getInfoInputPane().bagInfoInputPane.enableForms(true);
+    	bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
     	bagView.clearBagHandler.clearExistingBag();
 
         try{
@@ -78,39 +78,39 @@ public class OpenBagHandler extends AbstractAction {
         if (i > 0 && i < s.length() - 1) {
             String sub = s.substring(i + 1).toLowerCase();
             if (sub.contains("gz")) {
-                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_GZ_LABEL);                
+                bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);                
                 bag.setSerialMode(DefaultBag.TAR_GZ_MODE);
                 bag.isSerial(true);
             } else if (sub.contains("bz2")) {
-                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_BZ2_LABEL);                
+                bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);                
                 bag.setSerialMode(DefaultBag.TAR_BZ2_MODE);
                 bag.isSerial(true);
             } else if (sub.contains(DefaultBag.TAR_LABEL)) {
-                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.TAR_LABEL);                
+                bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);                
                 bag.setSerialMode(DefaultBag.TAR_MODE);
                 bag.isSerial(true);
             } else if (sub.contains(DefaultBag.ZIP_LABEL)) {
-                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.ZIP_LABEL);                
+                bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);                
                 bag.setSerialMode(DefaultBag.ZIP_MODE);
                 bag.isSerial(true);
             } else {
-                bagView.getInfoInputPane().serializeValue.setText(DefaultBag.NO_LABEL);                
+                bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);                
                 bag.setSerialMode(DefaultBag.NO_MODE);
                 bag.isSerial(false);
             }
         } else {
-            bagView.getInfoInputPane().serializeValue.setText(DefaultBag.NO_LABEL);            
+            bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);            
             bag.setSerialMode(DefaultBag.NO_MODE);
             bag.isSerial(false);
         }
-        bagView.getInfoInputPane().serializeValue.invalidate();
+        bagView.getInfoInputPane().getSerializeValue().invalidate();
 
         if (bag.isHoley()) {
             bagView.getInfoInputPane().setHoley("true");
         } else {
             bagView.getInfoInputPane().setHoley("false");
         }
-        bagView.getInfoInputPane().holeyValue.invalidate();
+        bagView.getInfoInputPane().getHoleyValue().invalidate();
 
         bagView.updateBaggerRules();
         bagView.setBagRootPath(file);
@@ -132,7 +132,7 @@ public class OpenBagHandler extends AbstractAction {
         if(msgs != null){
             ApplicationContextUtil.addConsoleMessage(msgs);
         }
-        bagView.getInfoInputPane().bagInfoInputPane.populateForms(true);
+        bagView.getInfoInputPane().getBagInfoInputPane().populateForms(true);
         bagView.updateOpenBag();        
     }
 }

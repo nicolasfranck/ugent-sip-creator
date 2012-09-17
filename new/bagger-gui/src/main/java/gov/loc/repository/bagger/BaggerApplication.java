@@ -15,19 +15,16 @@
  */
 package gov.loc.repository.bagger;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.PropertyAccessException;
 import org.springframework.richclient.application.ApplicationLauncher;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 /**
  * Main driver that starts the Bagger spring rich client application.
  */
 public class BaggerApplication {
-
 
     private static Log log = LogFactory.getLog(BaggerApplication.class);
 

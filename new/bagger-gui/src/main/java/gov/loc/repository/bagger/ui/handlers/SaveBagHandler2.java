@@ -36,7 +36,7 @@ public class SaveBagHandler2 extends Handler {
     public void actionPerformed(ActionEvent e) {
         BagView bagView = BagView.getInstance();
         DefaultBag bag = bagView.getBag();
-        bagView.getInfoInputPane().updateBagHandler.updateBag();
+        bagView.getInfoInputPane().getUpdateBagHandler().updateBag();
         if(bagView.getBagRootPath().exists()) {
             tmpRootPath = bagView.getBagRootPath();
             confirmWriteBag();
@@ -128,23 +128,23 @@ public class SaveBagHandler2 extends Handler {
         JFileChooser fs = new JFileChooser(selectFile);
     	fs.setDialogType(JFileChooser.SAVE_DIALOG);
     	fs.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    	fs.addChoosableFileFilter(bagView.infoInputPane.noFilter);
-    	fs.addChoosableFileFilter(bagView.infoInputPane.zipFilter);
-        fs.addChoosableFileFilter(bagView.infoInputPane.tarFilter);
+    	fs.addChoosableFileFilter(bagView.getInfoInputPane().getNoFilter());
+    	fs.addChoosableFileFilter(bagView.getInfoInputPane().getZipFilter());
+        fs.addChoosableFileFilter(bagView.getInfoInputPane().getTarFilter());
         fs.setDialogTitle("Save Bag As");
     	fs.setCurrentDirectory(bag.getRootDir());
     	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
             String selectedName = bag.getName();
             if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
                 selectedName += "."+DefaultBag.ZIP_LABEL;
-                fs.setFileFilter(bagView.infoInputPane.zipFilter);
+                fs.setFileFilter(bagView.getInfoInputPane().getZipFilter());
             }
             else if (bag.getSerialMode() == DefaultBag.TAR_MODE) {
                 selectedName += "."+DefaultBag.TAR_LABEL;
-                fs.setFileFilter(bagView.infoInputPane.tarFilter);
+                fs.setFileFilter(bagView.getInfoInputPane().getTarFilter());
             }
             else {
-                fs.setFileFilter(bagView.infoInputPane.noFilter);
+                fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
             }
             fs.setSelectedFile(new File(selectedName));
     	}

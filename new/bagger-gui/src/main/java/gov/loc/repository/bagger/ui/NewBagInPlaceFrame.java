@@ -209,8 +209,8 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
 			// Determine status
 			boolean isSelected = cb.isSelected();
 			if (isSelected) {
-				bagView.getBag().isAddKeepFilesToEmptyFolders(true);
-				bagView.infoInputPane.serializeValue.setText("true");
+				bagView.getBag().isAddKeepFilesToEmptyFolders(true);                                
+				bagView.getInfoInputPane().getSerializeValue().setText("true");
 			} else {
 				bagView.getBag().isAddKeepFilesToEmptyFolders(false);
 			}
@@ -305,51 +305,50 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
     }
 
     private class BrowseFileHandler extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public void actionPerformed(ActionEvent e) {
-			bag = bagView.getBag();
-			File selectFile = new File(File.separator+".");
-	        JFrame frame = new JFrame();
-	        JFileChooser fs = new JFileChooser(selectFile);
-	    	fs.setDialogType(JFileChooser.OPEN_DIALOG);
-	    	fs.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	    	fs.addChoosableFileFilter(bagView.infoInputPane.noFilter);
-			fs.setFileFilter(bagView.infoInputPane.noFilter);
-	        fs.setDialogTitle("Existing Data Location");
-		    if (bagView.getBagRootPath() != null) fs.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
-	    	fs.setCurrentDirectory(bag.getRootDir());
-	    	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
-	    		String selectedName = bag.getName();
-	    		if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
-	    			selectedName += "."+DefaultBag.ZIP_LABEL;
-	    			fs.setFileFilter(bagView.infoInputPane.zipFilter);
-	    		}
-	    		else if (bag.getSerialMode() == DefaultBag.TAR_MODE ||
-	    				bag.getSerialMode() == DefaultBag.TAR_GZ_MODE ||
-	    				bag.getSerialMode() == DefaultBag.TAR_BZ2_MODE) {
-	    			selectedName += "."+DefaultBag.TAR_LABEL;
-	    			fs.setFileFilter(bagView.infoInputPane.tarFilter);
-	    		}
-	    		else {
-	    			fs.setFileFilter(bagView.infoInputPane.noFilter);
-	    		}
-	    		fs.setSelectedFile(new File(selectedName));
-	    	} else {
-    			fs.setFileFilter(bagView.infoInputPane.noFilter);
-	    	}
-	    	int	option = fs.showOpenDialog(frame);
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            bag = bagView.getBag();
+            File selectFile = new File(File.separator+".");
+            JFrame frame = new JFrame();
+            JFileChooser fs = new JFileChooser(selectFile);
+            fs.setDialogType(JFileChooser.OPEN_DIALOG);
+            fs.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fs.addChoosableFileFilter(bagView.getInfoInputPane().getNoFilter());
+            fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+            fs.setDialogTitle("Existing Data Location");
+            if (bagView.getBagRootPath() != null) fs.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
+            fs.setCurrentDirectory(bag.getRootDir());
+            if (bag.getName() != null && !bag.getName().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
+                String selectedName = bag.getName();
+                if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
+                    selectedName += "."+DefaultBag.ZIP_LABEL;
+                    fs.setFileFilter(bagView.getInfoInputPane().getZipFilter());
+                }
+                else if (bag.getSerialMode() == DefaultBag.TAR_MODE || bag.getSerialMode() == DefaultBag.TAR_GZ_MODE || bag.getSerialMode() == DefaultBag.TAR_BZ2_MODE) {                    
+                    selectedName += "."+DefaultBag.TAR_LABEL;
+                    fs.setFileFilter(bagView.getInfoInputPane().getTarFilter());
+                }
+                else {
+                    fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+                }
+                fs.setSelectedFile(new File(selectedName));
+            } else {
+                fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+            }
+            int	option = fs.showOpenDialog(frame);
 
-	        if (option == JFileChooser.APPROVE_OPTION) {
-	            File file = fs.getSelectedFile();
-	            bagFile = file;
-	            bagFileName = bagFile.getAbsolutePath();
-	            // TODO: bag name is bag_<filename>
-	            //bagView.bagNameField.setText(bagFile.getName());
-	            bagNameField.setText(bagFileName);
-	            bagNameField.setCaretPosition(bagFileName.length());
-	            bagNameField.invalidate();
-	        }
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = fs.getSelectedFile();
+                bagFile = file;
+                bagFileName = bagFile.getAbsolutePath();
+                // TODO: bag name is bag_<filename>
+                //bagView.bagNameField.setText(bagFile.getName());
+                bagNameField.setText(bagFileName);
+                bagNameField.setCaretPosition(bagFileName.length());
+                bagNameField.invalidate();
+            }
         }
     }
 
@@ -360,29 +359,28 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
      *  ".keep Files in Empty Folder(s):" Check Box being selected
      */
     private class OkNewBagHandler extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public void actionPerformed(ActionEvent e) {
-			log.info("BagVersionFrame.OkNewBagHandler");
-			setVisible(false);			
-			if (bagView.getBag().isAddKeepFilesToEmptyFolders()) {
-				bagView.createBagInPlaceHandler.createPreBagAddKeepFilesToEmptyFolders(bagFile,
-					    (String)bagVersionList.getSelectedItem(),
-					    (String)profileList.getSelectedItem());					
-			} else {							
-				bagView.createBagInPlaceHandler.createPreBag(bagFile, 
-					(String)bagVersionList.getSelectedItem(),
-					(String)profileList.getSelectedItem());
-			}
+        private static final long serialVersionUID = 1L;
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            log.info("BagVersionFrame.OkNewBagHandler");
+            setVisible(false);			
+            if (bagView.getBag().isAddKeepFilesToEmptyFolders()) {
+                bagView.createBagInPlaceHandler.createPreBagAddKeepFilesToEmptyFolders(bagFile,
+                                (String)bagVersionList.getSelectedItem(),
+                                (String)profileList.getSelectedItem());					
+            } else {							
+                    bagView.createBagInPlaceHandler.createPreBag(bagFile, 
+                            (String)bagVersionList.getSelectedItem(),
+                            (String)profileList.getSelectedItem());
+            }
         }
     }
 
     private class CancelNewBagHandler extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public void actionPerformed(ActionEvent e) {
-			setVisible(false);
+        private static final long serialVersionUID = 1L;
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setVisible(false);
         }
     }
-
 }
