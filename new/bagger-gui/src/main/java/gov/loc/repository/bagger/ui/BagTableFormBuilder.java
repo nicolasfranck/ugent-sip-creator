@@ -100,8 +100,9 @@ public class BagTableFormBuilder extends TableFormBuilder {
             b.setBorderPainted(false);
             reqComp = b;
         }
-
-        reqComp.setFocusable(false);
+        
+        //test!
+        //reqComp.setFocusable(false);
     	layoutBuilder.cell(reqComp, "colSpec=left:pref:noGrow");
         layoutBuilder.cell(component, "colSpec=fill:pref:grow");
         layoutBuilder.labelGapCol();

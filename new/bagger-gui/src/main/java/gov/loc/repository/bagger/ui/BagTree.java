@@ -4,15 +4,9 @@ import gov.loc.repository.bagger.bag.BaggerFileEntity;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.handlers.BagTreeTransferHandler;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
-
 import java.awt.Dimension;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
+import java.util.*;
 import javax.swing.DropMode;
 import javax.swing.JTextField;
 import javax.swing.JTree;
@@ -20,7 +14,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -41,12 +34,12 @@ public class BagTree extends JTree {
     public BagTree(BagView bagView, String path, boolean isPayload) {
         super();
         
-        this.setShowsRootHandles(true);
+        setShowsRootHandles(true);
         /*
          * Nicolas Franck: is het nodig om de root 'data' te tonen?
          * nieuwe bagit supporteert data1, data2 .., maar wij niet
          */
-        this.setRootVisible(false);
+        setRootVisible(false);
         
         basePath = path;
         //i.e. 'data' => maar dit is al hierboven ingesteld??
@@ -93,7 +86,7 @@ public class BagTree extends JTree {
             
         }else{
             log.debug("BagTree.populateNodes listFiles NULL:" );
-            List<String> payload = null;
+            List<String> payload;
             if(!bag.isHoley()){
                 log.debug("BagTree.populateNodes getPayloadPaths:" );
                 payload = bag.getPayloadPaths();
@@ -132,8 +125,9 @@ public class BagTree extends JTree {
 
     public boolean addNodes(File file, boolean isParent) {
         if(!nodeAlreadyExists(file.getName())){
-            DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-            rootNode = createNodeTree(null, null, file);
+            /*DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+            rootNode = createNodeTree(null, null, file);*/           
+            DefaultMutableTreeNode rootNode = createNodeTree(null, null, file);
             //log.info("buildNodes rootNode parent: " + rootNode.getParent());
             //log.info("buildNodes getRoot: " + rootNode.getRoot());
             srcNodes.add(rootNode);
@@ -239,23 +233,5 @@ public class BagTree extends JTree {
 
     public Dimension getTreeSize() {
     	return new Dimension(BAGTREE_WIDTH, BAGTREE_HEIGHT);
-    }
-
-//	private void initListeners() {
-//        addTreeExpansionListener(new TreeExpansionListener() {
-//        	public void treeExpanded(TreeExpansionEvent e) {
-//                int rows = BAGTREE_ROW_MODIFIER * getRowCount();
-//                //log.info("BagTree rows: " + rows);
-//                setPreferredSize(new Dimension(BAGTREE_WIDTH, rows));
-//                invalidate();
-//        	}
-//        	public void treeCollapsed(TreeExpansionEvent e) {
-//                int rows = BAGTREE_ROW_MODIFIER * getRowCount();
-//                //log.info("BagTree rows: " + rows);
-//                setPreferredSize(new Dimension(BAGTREE_WIDTH, rows));
-//                invalidate();
-//        	}
-//        });
-//	}
-    
+    }    
 }

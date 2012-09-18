@@ -17,33 +17,14 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagit.Manifest.Algorithm;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-
-import javax.swing.AbstractAction;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.AbstractCommand;
@@ -53,7 +34,7 @@ import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
 
-public class SaveBagFrame extends JFrame implements ActionListener {
+public final class SaveBagFrame extends JFrame implements ActionListener {
     private static final Log log = LogFactory.getLog(SaveBagFrame.class);
     private static final long serialVersionUID = 1L;
    

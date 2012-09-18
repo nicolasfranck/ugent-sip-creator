@@ -1,46 +1,35 @@
-
 package gov.loc.repository.bagger.ui;
 
 import java.awt.Color;
-import javax.swing.JTextPane;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-import javax.swing.text.StyledDocument;
-
+import javax.swing.JTextPane;
+import javax.swing.text.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class BagTextPane extends JTextPane {
-	private static final long serialVersionUID = -505900021814525136L;
-
-	private static final Log log = LogFactory.getLog(BagTextPane.class);
-
-	private StyledDocument document;
+    private static final long serialVersionUID = -505900021814525136L;
+    private static final Log log = LogFactory.getLog(BagTextPane.class);
+    private StyledDocument document;
     private String message = "";
     private Color textBackground = new Color(240, 240, 240);
 
     public BagTextPane(String message) {
     	super();
-
     	this.message = message;
-    	this.buildDocument();
-        this.setStyledDocument(document);
-        this.setAutoscrolls(true);
-        this.setEditable(false);
-        this.setBackground(textBackground);
+    	buildDocument();
+        setStyledDocument(document);
+        setAutoscrolls(true);
+        setEditable(false);
+        setBackground(textBackground);
     }
     
     public void setMessage(String message) {
     	this.message = message;
-    	this.buildDocument();
-    	this.setStyledDocument(document);
+    	buildDocument();
+    	setStyledDocument(document);
     }
     
     public String getMessage() {
@@ -74,7 +63,7 @@ public class BagTextPane extends JTextPane {
         JLabel label = new JLabel(icon);
         StyleConstants.setComponent(labelStyle, label);
     }
-
+    @Override
     public boolean requestFocusInWindow() {
         //return this.requestFocusInWindow();
         //aanpassing Nicolas

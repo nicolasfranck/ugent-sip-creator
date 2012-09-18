@@ -28,7 +28,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
     private AddFieldPanel addFieldPannel;
 	
     public BagInfoForm(FormModel formModel,HashMap<String, BagInfoField> fieldMap, boolean enabled) {
-    	super(formModel, INFO_FORM_PAGE);        
+    	super(formModel,INFO_FORM_PAGE);        
         setFieldMap(fieldMap);
     }   
     public HashMap<String, BagInfoField> getFieldMap() {        
@@ -69,9 +69,9 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
     	int row = 0;
     	int col = 0;
     	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);    	
-    	contentPanel.add(getAddFieldPannel(), gbc);    	
+    	contentPanel.add(getAddFieldPannel(),gbc);    	
     	gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-    	contentPanel.add(new JSeparator(), gbc);    	
+    	contentPanel.add(new JSeparator(),gbc);    	
     	// bag-info input form    	
     	gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
     	contentPanel.add(getForm(),gbc);
@@ -162,7 +162,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
     }    
     @Override
     public void focusLost(FocusEvent evt) {       
-        System.out.println("BagInfoForm::focusLost");           	
+        System.out.println("BagInfoForm::focusLost"); 
     	getBagView().getInfoInputPane().getUpdateBagHandler().updateBag();        
         //Nicolas Franck: waarom?
 	//getBagView().getInfoInputPane().bagInfoInputPane.setSelectedIndex(0);        
@@ -175,7 +175,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
                 Component selected = (Component) e.getSource();
                 String key = "";
                 Component[] components = getFieldComponents();
-                for (int i=0; i<components.length; i++) {
+                for(int i=0; i<components.length; i++){
                     Component c;
                     // See BagTableFormBuilder.addBinding for component info
                     // Field label
@@ -212,7 +212,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
     private BagInfoField getField(String key) {
     	BagInfoField field = null;
         Set<String> keys = fieldMap.keySet();
-        if (keys != null) {
+        if(keys != null) {
             for (Iterator<String> iter = keys.iterator(); iter.hasNext();) {
                 String keySet = (String) iter.next();
                 if (keySet.equalsIgnoreCase(key)) {
@@ -228,7 +228,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
         String key = "";
         String value = "";
         java.awt.Component[] components = getFieldComponents();
-        for (int i=0; i<components.length; i++) {
+        for(int i=0; i<components.length; i++){
             java.awt.Component c;
             c = components[i];
             if (c instanceof JLabel) {

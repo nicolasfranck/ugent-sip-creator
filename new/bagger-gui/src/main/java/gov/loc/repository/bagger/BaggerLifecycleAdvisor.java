@@ -27,18 +27,17 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     @Override
     public void onPreStartup(){   
     	log.debug("BaggerLifeCycleAdvisor.onPreStartup");
-    	if (useWizard) {
-        	if (getApplication().getApplicationContext().containsBean("setupWizard"))
-            {
+    	if(useWizard){
+            if(getApplication().getApplicationContext().containsBean("setupWizard")){
                 SetupWizard setupWizard = (SetupWizard) getApplication().getApplicationContext().getBean(
-                        "setupWizard", SetupWizard.class);
+                    "setupWizard", SetupWizard.class
+                );
                 setupWizard.execute();
             }
     	}
     	
     	//Make the view layout page as read-only so the user changes to view layout will 
-    	//be reset during restart.        
-        
+    	//be reset during restart.                
        
     	if(getApplication().getApplicationContext().containsBean("proxyPage")){
             VLDockingPageDescriptor dockingPageDesc = (VLDockingPageDescriptor)getApplication().getApplicationContext().getBean("proxyPage");

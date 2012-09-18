@@ -55,7 +55,7 @@ public class BagView extends AbstractView {
     public StartNewBagHandler startNewBagHandler;
     public StartExecutor startExecutor = new StartExecutor();
     public OpenBagHandler openBagHandler;
-    public OpenExecutor openExecutor = new OpenExecutor(this);
+    public OpenExecutor openExecutor = new OpenExecutor();
     public CreateBagInPlaceHandler createBagInPlaceHandler;
     public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();    
     public SaveBagHandler2 saveBagHandler;    

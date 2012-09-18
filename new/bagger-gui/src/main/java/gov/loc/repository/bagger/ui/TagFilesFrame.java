@@ -19,12 +19,11 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 public class TagFilesFrame extends JFrame implements ActionListener {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     public TagFilesFrame(Frame parent, String title) {
         super(title);
@@ -35,11 +34,10 @@ public class TagFilesFrame extends JFrame implements ActionListener {
     	getContentPane().add(tabs, BorderLayout.CENTER);
     	setPreferredSize(tabs.getPreferredSize());
     	pack();
-    }
-    
+    }    
+    @Override
     public void actionPerformed(ActionEvent e) {
     	invalidate();
     	repaint();
     }
-
 }

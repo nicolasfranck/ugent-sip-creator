@@ -1,4 +1,3 @@
-
 package gov.loc.repository.bagger;
 
 import org.apache.commons.logging.Log;

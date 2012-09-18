@@ -5,14 +5,8 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -68,11 +62,4 @@ public class FileChooser extends JFrame implements ActionListener {
             //System.exit(0);
           }
     }
-
-    public static void main(String[] args) {
-        Frame f = new FileChooser();
-        f.toFront();
-        //f.show();
-    }
-
 }

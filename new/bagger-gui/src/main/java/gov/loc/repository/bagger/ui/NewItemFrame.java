@@ -16,42 +16,34 @@
 package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class NewItemFrame extends JFrame implements ActionListener {
-	private static final long serialVersionUID = 1L;
-	BagView bagView;
-	DefaultBag bag = null;
-	private Dimension preferredDimension = new Dimension(550, 200);
-	JPanel addPanel;
-	JButton okButton;
-	JButton cancelButton;
+    private static final long serialVersionUID = 1L;
+    BagView bagView;
+    DefaultBag bag = null;
+    private Dimension preferredDimension = new Dimension(550, 200);
+    JPanel addPanel;
+    JButton okButton;
+    JButton cancelButton;
     JTextField itemName;
     JPanel itemPanel;
     JComboBox itemList;
 
-	public NewItemFrame(BagView bagView, JComboBox itemList, String title) {
+    public NewItemFrame(BagView bagView, JComboBox itemList, String title) {
         super(title);
-		this.bagView = bagView;
-		this.itemList = itemList;
-		bag = bagView.getBag();
-		getContentPane().removeAll();
-		addPanel = createComponents();
+        this.bagView = bagView;
+        this.itemList = itemList;
+        bag = bagView.getBag();
+        getContentPane().removeAll();
+        addPanel = createComponents();
         addPanel.setPreferredSize(preferredDimension);
         getContentPane().add(addPanel, BorderLayout.CENTER);
 
@@ -103,41 +95,44 @@ public class NewItemFrame extends JFrame implements ActionListener {
     	return panel;
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
     	invalidate();
     	repaint();
     }
 
     private class OkAddFieldHandler extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public void actionPerformed(ActionEvent e) {
-    		String name = itemName.getText().trim();
-    		boolean b = false;
-    		for (int i=0; i < itemList.getItemCount(); i++) {
-    			String s = (String) itemList.getItemAt(i);
-    			if (s != null && name.equalsIgnoreCase(s.trim())) {
-    				b = true;
-    				break;
-    			}
-    		}
-    		setVisible(false);
-    		if (b) {
-    			bagView.showWarningErrorDialog("New Item Dialog", "Item already exists!");
-    			return;
-    		} else {
-        		itemList.addItem(name);
-        		itemList.invalidate();
-        		itemList.setSelectedItem(name);
-    		}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = itemName.getText().trim();
+            boolean b = false;
+            for (int i=0; i < itemList.getItemCount(); i++) {
+                String s = (String) itemList.getItemAt(i);
+                if (s != null && name.equalsIgnoreCase(s.trim())) {
+                    b = true;
+                    break;
+                }
+            }
+            setVisible(false);
+            if (b) {
+                bagView.showWarningErrorDialog("New Item Dialog", "Item already exists!");
+                return;
+            } else {
+                itemList.addItem(name);
+                itemList.invalidate();
+                itemList.setSelectedItem(name);
+            }
         }
     }
 
     private class CancelAddFieldHandler extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public void actionPerformed(ActionEvent e) {
-			setVisible(false);
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setVisible(false);
         }
     }
 
@@ -151,5 +146,4 @@ public class NewItemFrame extends JFrame implements ActionListener {
     	gbc.fill = fill; // the way how the control fills cells
     	gbc.anchor = anchor; // alignment
     }
-
 }

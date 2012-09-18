@@ -84,45 +84,47 @@ public final class ConsolePane extends JPanel {
         return statusPanel;
     }
 
-    private JScrollPane createConsoleArea() {
-        serializedArea = new JTextArea();
-        serializedArea.setToolTipText(ApplicationContextUtil.getMessage("consolepane.msg.help"));
-    	serializedArea.setEditable(false);
-    	serializedArea.setLineWrap(true);
-    	serializedArea.setBackground(textBackground);
-    	serializedArea.setWrapStyleWord(true);
-    	serializedArea.setAutoscrolls(true);
-    	serializedArea.setBorder(BorderFactory.createLineBorder(Color.black));    	
-        return new JScrollPane(serializedArea);
-        
+    public JTextArea getSerializedArea() {
+        if(serializedArea == null){
+            serializedArea = new JTextArea();
+            serializedArea.setToolTipText(ApplicationContextUtil.getMessage("consolepane.msg.help"));
+            serializedArea.setEditable(false);
+            serializedArea.setLineWrap(true);
+            serializedArea.setBackground(textBackground);
+            serializedArea.setWrapStyleWord(true);
+            serializedArea.setAutoscrolls(true);
+            serializedArea.setBorder(BorderFactory.createLineBorder(Color.black));
+        }
+        return serializedArea;
     }
-    
+    public void setSerializedArea(JTextArea serializedArea) {
+        this.serializedArea = serializedArea;
+    }
+    private JScrollPane createConsoleArea() {        
+        return new JScrollPane(getSerializedArea());        
+    }    
     @Override
-    public boolean requestFocusInWindow() {
-        //return this.requestFocusInWindow();
-        //aanpassing Nicolas
+    public boolean requestFocusInWindow(){ 
         return super.requestFocusInWindow();
     }
-
     public void addConsoleMessages(String message) {
     	if (message != null && message.trim().length() != 0) {
-            Document consoleMessageDoc = serializedArea.getDocument();
+            Document consoleMessageDoc = getSerializedArea().getDocument();
             String date = new Date().toString();
-            serializedArea.append("\n[" + date + "]: " + message);
+            getSerializedArea().append("\n[" + date + "]: " + message);
 
-            if (consoleMessageDoc.getLength() > MAX_CONSOLE_MESSAGE_LENGTH) {
-                    try {
-                                    consoleMessageDoc.remove(0, consoleMessageDoc.getLength() - MAX_CONSOLE_MESSAGE_LENGTH);
-                            } catch (BadLocationException e) {
-                                    throw new RuntimeException(e);
-                            }
+            if(consoleMessageDoc.getLength() > MAX_CONSOLE_MESSAGE_LENGTH){
+                try {
+                    consoleMessageDoc.remove(0, consoleMessageDoc.getLength() - MAX_CONSOLE_MESSAGE_LENGTH);
+                }catch(BadLocationException e){
+                    throw new RuntimeException(e);
+                }
             }
-            serializedArea.setAutoscrolls(true);
-            serializedArea.setCaretPosition(consoleMessageDoc.getLength());
+            getSerializedArea().setAutoscrolls(true);
+            getSerializedArea().setCaretPosition(consoleMessageDoc.getLength());
     	}
-    } 
-    
+    }     
     public void clearConsoleMessages() {
-    	serializedArea.setText("");
+    	getSerializedArea().setText("");
     }
 }

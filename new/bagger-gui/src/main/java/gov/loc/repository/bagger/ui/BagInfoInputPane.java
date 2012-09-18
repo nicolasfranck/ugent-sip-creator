@@ -24,7 +24,7 @@ public final class BagInfoInputPane extends JTabbedPane {
         return BagView.getInstance();        
     }   
     public DefaultBag getDefaultBag() {
-        return BagView.getInstance().getBag();
+        return getBagView().getBag();
     }    
     public BaggerProfile getBagProfile() {
         if (bagProfile == null) {
@@ -72,10 +72,9 @@ public final class BagInfoInputPane extends JTabbedPane {
         this.profileFormModel = profileFormModel;
     }
     public BagInfoInputPane(boolean b){
-    	populateForms(b);               
-        InputMap im = this.getInputMap();
-        im.put(KeyStroke.getKeyStroke("F2"), "tabNext");
-        ActionMap am = this.getActionMap();
+    	populateForms(b);                       
+        getInputMap().put(KeyStroke.getKeyStroke("F2"), "tabNext");
+        ActionMap am = getActionMap();
         am.put("tabNext", new AbstractAction("tabNext") {
             private static final long serialVersionUID = 1L;
             @Override

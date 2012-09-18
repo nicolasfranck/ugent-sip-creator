@@ -6,49 +6,56 @@ import org.springframework.richclient.application.support.AbstractView;
 
 public class ConsoleView extends AbstractView {
 
-	public static ConsoleView instance;
-	
-	private ConsolePane consolePane;
+    public static ConsoleView instance;
 
-	public ConsoleView() {
-		instance = this;
-	}
+    private ConsolePane consolePane;
 
-	@Override
-	protected JComponent createControl() {
-		consolePane =  new ConsolePane(getInitialConsoleMsg());
-		return consolePane;
-	}
+    public ConsoleView() {
+        instance = this;
+    }
 
     @Override
-	protected void registerLocalCommandExecutors(PageComponentContext context) {
-		context.register("startCommand", BagView.instance.startExecutor);
-		context.register("openCommand", BagView.instance.openExecutor);
-		context.register("createBagInPlaceCommand",
-				BagView.instance.createBagInPlaceExecutor);
-		context.register("clearCommand", BagView.instance.clearExecutor);
-		context.register("validateCommand", BagView.instance.validateExecutor);
-		context.register("completeCommand", BagView.instance.completeExecutor);
-		context.register("addDataCommand", BagView.instance.addDataExecutor);
-		context.register("saveBagCommand", BagView.instance.saveBagExecutor);
-		context
-				.register("saveBagAsCommand",
-						BagView.instance.saveBagAsExecutor);
-	}
+    protected JComponent createControl() {        
+        return getConsolePane();
+    }
 
-	public static ConsoleView getInstance() {
-		return instance;
-	}
-	
-	public void addConsoleMessages(String messages) {
-		consolePane.addConsoleMessages(messages);
+    public ConsolePane getConsolePane() {
+        if(consolePane == null){
+            consolePane =  new ConsolePane(getInitialConsoleMsg());
+        }
+        return consolePane;
+    }
+
+    public void setConsolePane(ConsolePane consolePane) {
+        this.consolePane = consolePane;
+    }
+    
+    @Override
+    protected void registerLocalCommandExecutors(PageComponentContext context) {
+        context.register("startCommand", BagView.instance.startExecutor);
+        context.register("openCommand", BagView.instance.openExecutor);
+        context.register("createBagInPlaceCommand",BagView.instance.createBagInPlaceExecutor);
+        context.register("clearCommand", BagView.instance.clearExecutor);
+        context.register("validateCommand", BagView.instance.validateExecutor);
+        context.register("completeCommand", BagView.instance.completeExecutor);
+        context.register("addDataCommand", BagView.instance.addDataExecutor);
+        context.register("saveBagCommand", BagView.instance.saveBagExecutor);
+        context.register("saveBagAsCommand",BagView.instance.saveBagAsExecutor);
+    }
+
+    public static ConsoleView getInstance() {
+        return instance;
     }
 	
-	public void clearConsoleMessages() {
-		consolePane.clearConsoleMessages();
+    public void addConsoleMessages(String messages) {
+        consolePane.addConsoleMessages(messages);
     }
 	
-	private String getInitialConsoleMsg() {
+    public void clearConsoleMessages() {
+        consolePane.clearConsoleMessages();
+    }
+	
+    private String getInitialConsoleMsg() {
     	StringBuilder buffer = new StringBuilder();
     	buffer.append(getMessage("consolepane.msg.help"));
     	buffer.append("\n\n");

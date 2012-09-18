@@ -119,8 +119,7 @@ public final class AddFieldPanel extends JPanel {
         addFieldButton.addActionListener(new AddFieldAction());
 
         //Nicolas Franck: voeg veld toe bij druk op enter
-        getValueField().addActionListener(new AddFieldAction());
-        //Nicolas Franck
+        //getValueField().addActionListener(new AddFieldAction());        
     }
 	
 	
@@ -130,14 +129,16 @@ public final class AddFieldPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             JCheckBox checkbox = (JCheckBox) e.getSource();
             boolean standardFieldSelected = checkbox.isSelected();
-            if (standardFieldSelected) {
+            if(standardFieldSelected) {
                 getCustomFieldTextField().setVisible(false);
                 getStandardFieldsComboBox().setVisible(true);
-                getStandardFieldsComboBox().requestFocus();
+                //test
+                //getStandardFieldsComboBox().requestFocus();
             } else {
                 getStandardFieldsComboBox().setVisible(false);
                 getCustomFieldTextField().setVisible(true);
-                getCustomFieldTextField().requestFocus();
+                //test
+                //getCustomFieldTextField().requestFocus();
             }
         }
     }
@@ -246,7 +247,7 @@ public final class AddFieldPanel extends JPanel {
          *
          *
          */
-        else if( getValueField().getText() == null || getValueField().getText().trim().isEmpty()){
+        else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){
             bagView.showWarningErrorDialog(dialogTitle,
                  ApplicationContextUtil.getMessage("baginfo.newFieldDialog.error.valueRequired")
             );          
