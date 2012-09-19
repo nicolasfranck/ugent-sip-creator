@@ -3,7 +3,6 @@ package gov.loc.repository.bagger.ui.util;
 import java.awt.GridBagConstraints;
 
 public class LayoutUtil {
-
     public static GridBagConstraints buildGridBagConstraints(int x, int y, int w, int h,
         int wx, int wy, int fill, int anchor) {
         GridBagConstraints gbc = new GridBagConstraints();
@@ -16,8 +15,6 @@ public class LayoutUtil {
         gbc.weighty = wy; // relative vertical size
         gbc.fill = fill; // the way how the control fills cells
         gbc.anchor = anchor; // alignment
-
         return gbc;
     }
-
 }

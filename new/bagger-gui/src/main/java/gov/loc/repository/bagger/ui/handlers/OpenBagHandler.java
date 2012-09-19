@@ -105,13 +105,11 @@ public class OpenBagHandler extends AbstractAction {
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);                
                 bag.setSerialMode(DefaultBag.TAR_MODE);
                 bag.isSerial(true);
-            } else if (extension.contains(DefaultBag.ZIP_LABEL)) {
-                System.out.println("dit is een zip!!");
+            } else if (extension.contains(DefaultBag.ZIP_LABEL)) {                
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);                
                 bag.setSerialMode(DefaultBag.ZIP_MODE);
                 bag.isSerial(true);
-            } else {
-                System.out.println("dit is een map!!");
+            } else {                
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);                
                 bag.setSerialMode(DefaultBag.NO_MODE);
                 bag.isSerial(false);
@@ -141,7 +139,7 @@ public class OpenBagHandler extends AbstractAction {
             path = AbstractBagConstants.DATA_DIRECTORY;
             rootSrc = new File(file,bag.getDataDirectory());
     	}
-    	bagView.getBagPayloadTree().populateNodes(bag,path,rootSrc, true);
+    	bagView.getBagPayloadTree().populateNodes(bag,path,rootSrc,true);
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.updateManifestPane();
     	bagView.enableBagSettings(true);
@@ -150,6 +148,8 @@ public class OpenBagHandler extends AbstractAction {
             ApplicationContextUtil.addConsoleMessage(msgs);
         }
         bagView.getInfoInputPane().getBagInfoInputPane().populateForms(true);
+        bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
+        
         bagView.updateOpenBag();   
         
         //Nicolas Franck: load mets
@@ -167,10 +167,15 @@ public class OpenBagHandler extends AbstractAction {
             mets = MetsUtils.readMets(in);
         }catch(Exception e){
             log.debug(e.getMessage());
+            mets = null;
         }
         if(mets == null){
+            System.out.println("mets is null now!");
             mets = new Mets();
         }
+        try{
+            MetsUtils.writeMets(mets,System.out);
+        }catch(Exception e){}
         
         MetsPanel metsPanel = bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel();
         metsPanel.setMets(mets);

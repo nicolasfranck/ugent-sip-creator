@@ -57,7 +57,10 @@ public class MetsPanel extends JPanel{
     public void setMets(Mets mets) {
         this.mets = mets;
     }
-    public void reset(Mets mets){       
+    public void reset(Mets mets){     
+        if(mets.getMetsHdr() == null){
+            mets.setMetsHdr(new MetsHdr());
+        }        
         getAgentPanel().reset((ArrayList<Agent>)mets.getMetsHdr().getAgent());
         getDmdSecPanel().reset((ArrayList<MdSec>)mets.getDmdSec());
         setMets(mets);

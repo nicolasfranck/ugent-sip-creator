@@ -1,5 +1,8 @@
 package gov.loc.repository.bagger.ui.handlers;
 
+import com.anearalone.mets.FileSec;
+import com.anearalone.mets.FileSec.FileGrp;
+import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
@@ -9,6 +12,7 @@ import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Collection;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import org.apache.commons.logging.Log;
@@ -186,10 +190,11 @@ public class SaveBagHandler2 extends Handler {
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+            BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());                        
 
             final BagView bagView = BagView.getInstance();
-            DefaultBag bag = bagView.getBag();        
+            DefaultBag bag = bagView.getBag(); 
+            
             Writer bagWriter = null;
 
             try {
@@ -215,6 +220,19 @@ public class SaveBagHandler2 extends Handler {
                 } else {
                     bagView.showWarningErrorDialog("Bag saved", "Bag saved successfully.\n" );
                 }                           
+                
+                //write mets after creation bag
+                Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();
+                Collection<FileGrp> fileGroups = mets.getFileSec().getFileGrp();
+                FileGrp fileGroup = new FileGrp();
+                Collection<FileSec.FileGrp.File>files = fileGroup.getFile();
+                for(BagFile bagFile:bag.getPayload()){
+                    FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(bagFile.getFilepath());                    
+                    files.add(metsFile);
+                }
+                fileGroups.add(fileGroup);
+                
+                
                
                 if (bag.isSerialized()) {
                     if (clearAfterSaving){                       
