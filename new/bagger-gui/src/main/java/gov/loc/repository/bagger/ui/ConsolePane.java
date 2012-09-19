@@ -102,11 +102,7 @@ public final class ConsolePane extends JPanel {
     }
     private JScrollPane createConsoleArea() {        
         return new JScrollPane(getSerializedArea());        
-    }    
-    @Override
-    public boolean requestFocusInWindow(){ 
-        return super.requestFocusInWindow();
-    }
+    }        
     public void addConsoleMessages(String message) {
     	if (message != null && message.trim().length() != 0) {
             Document consoleMessageDoc = getSerializedArea().getDocument();

@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
+import ugent.bagger.filters.FileExtensionFilter;
 
 public final class InfoFormsPane extends JPanel {
     private static final long serialVersionUID = -5988111446773491301L;   
@@ -40,19 +41,25 @@ public final class InfoFormsPane extends JPanel {
     /*
      * Nicolas Franck: filters zijn null!! => waarom worden dan gebruikt?
      */
-    public FileFilter getNoFilter() {
+    public FileFilter getNoFilter(){
         return noFilter;
     }
     public void setNoFilter(FileFilter noFilter) {
         this.noFilter = noFilter;
     }
-    public FileFilter getZipFilter() {
+    public FileFilter getZipFilter(){
+        if(zipFilter == null){
+            zipFilter = new FileExtensionFilter(new String [] {"zip"},"zip",true);
+        }
         return zipFilter;
     }
     public void setZipFilter(FileFilter zipFilter) {
         this.zipFilter = zipFilter;
     }
     public FileFilter getTarFilter() {
+        if(tarFilter == null){
+            tarFilter = new FileExtensionFilter(new String [] {"tar","tar.gz"},"tar(.gz)",true);
+        }
         return tarFilter;
     }
     public void setTarFilter(FileFilter tarFilter) {
@@ -64,11 +71,9 @@ public final class InfoFormsPane extends JPanel {
         }
         return holeyValue;
     }
-
     public void setHoleyValue(JLabel holeyValue) {
         this.holeyValue = holeyValue;
-    }
-    
+    }    
     public BagView getBagView(){
         return BagView.getInstance();
     }

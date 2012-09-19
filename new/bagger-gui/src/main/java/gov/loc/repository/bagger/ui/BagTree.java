@@ -81,9 +81,7 @@ public class BagTree extends JTree {
 
         log.debug("BagTree.populateNodes");
         if (bag.getPayload() != null && rootSrc.listFiles() != null) {
-
-            addNodes(rootSrc, isParent);
-            
+            addNodes(rootSrc, isParent);            
         }else{
             log.debug("BagTree.populateNodes listFiles NULL:" );
             List<String> payload;
@@ -124,15 +122,15 @@ public class BagTree extends JTree {
     }
 
     public boolean addNodes(File file, boolean isParent) {
-        if(!nodeAlreadyExists(file.getName())){
-            /*DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-            rootNode = createNodeTree(null, null, file);*/           
-            DefaultMutableTreeNode rootNode = createNodeTree(null, null, file);
-            //log.info("buildNodes rootNode parent: " + rootNode.getParent());
-            //log.info("buildNodes getRoot: " + rootNode.getRoot());
+        if(!nodeAlreadyExists(file.getName())){           
+            DefaultMutableTreeNode rootNode = createNodeTree(null, null, file);            
             srcNodes.add(rootNode);
-            if(isParent)parentNode = rootNode;
-            else parentNode.add(rootNode);
+            if(isParent) {
+                parentNode = rootNode;
+            }
+            else {
+                parentNode.add(rootNode);
+            }
             initialize();
         }else{
             return true;
@@ -140,12 +138,13 @@ public class BagTree extends JTree {
         return false;
     }
 
-    private boolean nodeAlreadyExists(String path) {
-        boolean b = false;
+    private boolean nodeAlreadyExists(String path) {        
         DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(path);
         String node = aNode.toString();
-        b = parentNode.isNodeChild(aNode);
-        if (b) return b;
+        boolean b = parentNode.isNodeChild(aNode);
+        if(b){
+            return b;
+        }
         for (int i=0; i < parentNode.getChildCount(); i++) {
             DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) parentNode.getChildAt(i);
             String child = childNode.toString();
@@ -158,8 +157,7 @@ public class BagTree extends JTree {
     }
 
     public void addNode(String filePath) {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(filePath);
-        //log.info("buildNodes getNode: " + node);
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(filePath);        
         srcNodes.add(node);
         parentNode.add(node);
         initialize();
@@ -189,10 +187,18 @@ public class BagTree extends JTree {
         for (int i = 0; i < ol.size(); i++) {
             String thisObject = (String) ol.elementAt(i);
             String newPath;
-            if (curPath.equals("."))newPath = thisObject;
-            else newPath = curPath + File.separator + thisObject;
-            if ((f = new File(newPath)).isDirectory())createNodeTree(curDir, displayDir, f);
-            else files.addElement(thisObject);
+            if (curPath.equals(".")) {
+                newPath = thisObject;
+            }
+            else {
+                newPath = curPath + File.separator + thisObject;
+            }
+            if ((f = new File(newPath)).isDirectory()) {
+                createNodeTree(curDir, displayDir, f);
+            }
+            else {
+                files.addElement(thisObject);
+            }
         }
         // Pass two: for files.
         //display("createBagManagerTree: files.size: " + files.size());

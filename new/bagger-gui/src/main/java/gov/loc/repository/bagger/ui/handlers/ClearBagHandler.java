@@ -68,8 +68,7 @@ public class ClearBagHandler extends AbstractAction {
     	newDefaultBag(null);
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
-    	bag.clear();
-        //bagView.baggerRules.clear();
+    	bag.clear();        
     	bagView.setBagPayloadTree(new BagTree(bagView, AbstractBagConstants.DATA_DIRECTORY, true));
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.setBagTagFileTree(new BagTree(bagView, ApplicationContextUtil.getMessage("bag.label.noname"), false));
@@ -80,17 +79,18 @@ public class ClearBagHandler extends AbstractAction {
     }
 
     public void newDefaultBag(File f) {
+        System.out.println("ClearBagHandler::newDefaultBag('"+f+"')");
     	DefaultBag bag = null;
     	String bagName = "";
         BagView bagView = BagView.getInstance();
     	try {
-            bag = new DefaultBag(f, bagView.infoInputPane.getBagVersion());
-    	} catch (Exception e) {
-            bag = new DefaultBag(f, null);    		
+            bag = new DefaultBag(f, bagView.infoInputPane.getBagVersion());            
+    	} catch (Exception e) {                        
+            bag = new DefaultBag(f,null);              
     	}
     	if (f == null) {
             bagName = bagView.getPropertyMessage("bag.label.noname");
-    	} else {
+    	}else{
             bagName = f.getName();
             String fileName = f.getAbsolutePath();
             bagView.getInfoInputPane().setBagName(fileName);

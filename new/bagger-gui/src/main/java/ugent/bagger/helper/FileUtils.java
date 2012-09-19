@@ -7,11 +7,16 @@ package ugent.bagger.helper;
 
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileSystemManager;
+import org.apache.commons.vfs.VFS;
 /**
  *
  * @author nicolas
@@ -170,4 +175,15 @@ public class FileUtils {
             }
         }
     }   
+    public static FileSystemManager getFileSystemManager() throws FileSystemException{
+        return VFS.getManager();
+    }
+    public static FileObject resolveFile(String str) throws FileSystemException{
+        return getFileSystemManager().resolveFile(str);
+    }
+    public static InputStream getInputStreamFor(String str) throws FileSystemException{                        
+        FileObject fileObject = resolveFile(str);
+        InputStream in = fileObject.getContent().getInputStream();                    
+        return in;
+    }
 }

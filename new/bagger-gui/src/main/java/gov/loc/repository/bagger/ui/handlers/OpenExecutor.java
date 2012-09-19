@@ -15,6 +15,7 @@ public class OpenExecutor extends AbstractActionCommandExecutor {
     }
     @Override
     public void execute() {
+        System.out.println("openBagHandler:"+BagView.getInstance().openBagHandler);
         BagView.getInstance().openBagHandler.openBag();
     }
 }

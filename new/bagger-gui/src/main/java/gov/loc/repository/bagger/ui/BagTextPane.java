@@ -62,11 +62,5 @@ public class BagTextPane extends JTextPane {
         Icon icon = new ImageIcon("Computer.gif");
         JLabel label = new JLabel(icon);
         StyleConstants.setComponent(labelStyle, label);
-    }
-    @Override
-    public boolean requestFocusInWindow() {
-        //return this.requestFocusInWindow();
-        //aanpassing Nicolas
-        return super.requestFocusInWindow();
-    }
+    }   
 }

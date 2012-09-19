@@ -81,6 +81,9 @@ public class MetsUtils {
     public static Mets readMets(URL url) throws SAXException, ParseException, DatatypeConfigurationException, ParserConfigurationException, IOException{
         return new MetsReader().read(url.openStream());
     }
+    public static Mets readMets(InputStream in) throws ParserConfigurationException, ParserConfigurationException, ParseException, ParserConfigurationException, ParserConfigurationException, ParserConfigurationException, SAXException, IOException, ParserConfigurationException, ParserConfigurationException, DatatypeConfigurationException{
+        return new MetsReader().read(in);
+    }
     public static void writeMets(Mets mets,File file) throws FileNotFoundException, TransformerException, DatatypeConfigurationException, ParserConfigurationException{
         writeMets(mets,new FileOutputStream(file));
     }

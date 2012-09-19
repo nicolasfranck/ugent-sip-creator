@@ -32,8 +32,7 @@ public class BaggerApplication {
         String rootContextDirectoryClassPath = "/gov/loc/repository/bagger/ctx";      
         String startupContextPath = rootContextDirectoryClassPath + "/common/richclient-startup-context.xml";
         String richclientApplicationContextPath = rootContextDirectoryClassPath
-                + "/common/richclient-application-context.xml";
-     
+                + "/common/richclient-application-context.xml";     
        
         String businessLayerContextPath = rootContextDirectoryClassPath + "/common/business-layer-context.xml";
 

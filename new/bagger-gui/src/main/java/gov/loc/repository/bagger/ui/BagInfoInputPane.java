@@ -19,7 +19,27 @@ public final class BagInfoInputPane extends JTabbedPane {
     private OrganizationProfileForm profileForm;
     private HierarchicalFormModel infoFormModel;
     private HierarchicalFormModel profileFormModel;
+    private Mets mets;
+    private MetsPanel metsPanel;
 
+    public MetsPanel getMetsPanel(){
+        if(metsPanel == null){
+            metsPanel = new MetsPanel(getMets());
+        }
+        return metsPanel;
+    }
+    public void setMetsPanel(MetsPanel metsPanel) {
+        this.metsPanel = metsPanel;
+    }    
+    public Mets getMets() {
+        if(mets == null){
+            mets = new Mets();
+        }
+        return mets;
+    }
+    public void setMets(Mets mets) {
+        this.mets = mets;
+    }
     public BagView getBagView(){
         return BagView.getInstance();        
     }   
@@ -125,7 +145,7 @@ public final class BagInfoInputPane extends JTabbedPane {
         getProfileForm().getControl().setToolTipText("Profile Form");
         
         //Nicolas Franck
-        //addTab("mets",new MetsPanel(new Mets()));
+        addTab("mets",getMetsPanel());
         
         //Nicolas Franck
         /* vreemd. ProfileForm wordt hier nergens gebruikt. Waarom bestaat dit?

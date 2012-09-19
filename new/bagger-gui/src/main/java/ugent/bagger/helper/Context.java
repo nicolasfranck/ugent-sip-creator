@@ -39,8 +39,8 @@ public class Context{
         try{
             URL url = new URL(str);            
             in = url.openStream();
-        }catch(MalformedURLException e){}
-         catch(IOException e){}
+        }catch(MalformedURLException e){e.printStackTrace();}
+         catch(IOException e){e.printStackTrace();}
         
         if(in == null){
             in = Context.class.getClassLoader().getResourceAsStream(str);

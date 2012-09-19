@@ -32,7 +32,6 @@ NewFieldFrame.description=Geef details voor nieuw veld op
 EditFieldFrame.title=Pas veld aan
 EditFieldFrame.description=Wijzig details van het veld
 
-#indien geen title of caption, dan wordt geen title bar getoond
 bagView.label=payloads en tagfiles
 bagView.caption=Manage bag
 bagView.description=Bagger Application to demonstrate Spring Rich Client

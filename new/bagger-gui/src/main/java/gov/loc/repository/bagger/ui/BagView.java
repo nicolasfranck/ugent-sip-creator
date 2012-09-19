@@ -4,7 +4,6 @@ import gov.loc.repository.bagger.Bagger;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagger.ui.handlers.*;
-import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.*;
@@ -20,7 +19,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -38,8 +36,7 @@ public class BagView extends AbstractView {
     //public Cancellable longRunningProcess = null;
     //private final Timer timer = new Timer(ONE_SECOND/10, null);    
     private Bagger bagger;
-    private DefaultBag bag;
-    //public BaggerValidationRulesSource baggerRules;
+    private DefaultBag bag;    
     public BaggerProfileStore profileStore;
     public BagTree bagPayloadTree;
     public BagTree bagTagFileTree;
@@ -51,22 +48,22 @@ public class BagView extends AbstractView {
     public BagTreePanel bagTagFileTreePanel;
     private JPanel bagButtonPanel;
     private JPanel bagTagButtonPanel;
-    private JPanel topButtonPanel;
-    public StartNewBagHandler startNewBagHandler;
+    //private JPanel topButtonPanel;
+    public StartNewBagHandler startNewBagHandler = new StartNewBagHandler();
     public StartExecutor startExecutor = new StartExecutor();
-    public OpenBagHandler openBagHandler;
+    public OpenBagHandler openBagHandler = new OpenBagHandler();
     public OpenExecutor openExecutor = new OpenExecutor();
-    public CreateBagInPlaceHandler createBagInPlaceHandler;
+    public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
     public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();    
-    public SaveBagHandler2 saveBagHandler;    
+    public SaveBagHandler2 saveBagHandler = new SaveBagHandler2();    
     public SaveBagExecutor saveBagExecutor = new SaveBagExecutor();
-    public SaveBagAsHandler saveBagAsHandler;
+    public SaveBagAsHandler saveBagAsHandler = new SaveBagAsHandler();
     public SaveBagAsExecutor saveBagAsExecutor = new SaveBagAsExecutor();    
-    public ValidateBagHandler2 validateBagHandler;    
+    public ValidateBagHandler2 validateBagHandler = new ValidateBagHandler2();    
     public ValidateExecutor validateExecutor = new ValidateExecutor();    
-    public CompleteBagHandler2 completeBagHandler;
+    public CompleteBagHandler2 completeBagHandler = new CompleteBagHandler2();
     public CompleteExecutor completeExecutor = new CompleteExecutor();    
-    public ClearBagHandler clearBagHandler;
+    public ClearBagHandler clearBagHandler = new ClearBagHandler();
     public ClearBagExecutor clearExecutor = new ClearBagExecutor();
     public AddDataHandler addDataHandler;
     public AddDataExecutor addDataExecutor = new AddDataExecutor();
@@ -78,6 +75,64 @@ public class BagView extends AbstractView {
     private JLabel viewTagFilesToolbarAction;
     private JLabel addTagFileToolBarAction;
     private JLabel removeTagFileToolbarAction;
+      	    	
+    	    
+    //Nicolas Franck: vldocking sucks!
+    private JSplitPane mainPanel;
+    private JSplitPane leftPanel;
+    private JSplitPane rightPanel;
+    private ConsolePane consolePane;
+
+    public JSplitPane getRightPanel() {
+        if(rightPanel == null){
+            rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,getInfoInputPane(),getConsolePane());
+        }
+        return rightPanel;
+    }
+    public void setRightPanel(JSplitPane rightPanel) {
+        this.rightPanel = rightPanel;
+    }    
+    public JSplitPane getLeftPanel() {
+        if(leftPanel == null){
+            leftPanel = createBagPanel();
+        }
+        return leftPanel;
+    }
+    public void setLeftPanel(JSplitPane leftPanel) {
+        this.leftPanel = leftPanel;
+    }    
+    public JSplitPane getMainPanel() {
+        if(mainPanel == null){
+            mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getRightPanel()); 
+        }
+        return mainPanel;
+    }
+    public void setMainPanel(JSplitPane mainPanel) {
+        this.mainPanel = mainPanel;
+    }    
+    public ConsolePane getConsolePane() {
+        if(consolePane == null){
+            consolePane = new ConsolePane(getInitialConsoleMsg());
+        }
+        return consolePane;
+    }
+    public void setConsolePane(ConsolePane consolePane) {
+        this.consolePane = consolePane;
+    }   
+    public void addConsoleMessages(String messages) {
+        getConsolePane().addConsoleMessages(messages);
+    }	
+    public void clearConsoleMessages() {
+        getConsolePane().clearConsoleMessages();
+    }	
+    private String getInitialConsoleMsg() {
+    	StringBuilder buffer = new StringBuilder();
+    	buffer.append(getMessage("consolepane.msg.help"));
+    	buffer.append("\n\n");
+    	buffer.append(getMessage("consolepane.status.help"));
+    	buffer.append("\n\n");
+    	return buffer.toString();
+    }
 
     /*
      * Nicolas Franck
@@ -125,6 +180,7 @@ public class BagView extends AbstractView {
     public InfoFormsPane getInfoInputPane() {
         if(infoInputPane == null){
             infoInputPane = new InfoFormsPane();
+            infoInputPane.getBagInfoInputPane().enableForms(false);
         }
         return infoInputPane;
     }
@@ -167,12 +223,7 @@ public class BagView extends AbstractView {
 
     public Dimension getPreferredSize() {
         return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
-
-    public void display(String s) {
-        log.info(s);
-    }
-
+    }    
     public ImageIcon getPropertyImage(String name) {        
         return new ImageIcon(getImageSource().getImage(name));        
     }
@@ -220,7 +271,7 @@ public class BagView extends AbstractView {
         }
     	return bagTagFileTree;
     }
-
+    
     // This populates the default view descriptor declared as the startingPageId
     // property in the richclient-application-context.xml file.
     @Override    
@@ -230,26 +281,27 @@ public class BagView extends AbstractView {
          * Nicolas Franck: vreemd dat dit nergens gebruikt wordt..
          * zou handig zijn voor basismap bij selecteren van bestanden (i.p.v root of C:/)
          */
-    	this.userHomeDir = System.getProperty("user.home");
-        display("createControl - User Home Path: "+ userHomeDir);
+    	this.userHomeDir = System.getProperty("user.home");        
         
     	initializeCommands();
 
-        ApplicationServices services = getApplicationServices();     
-
-        //baggerRules = (BaggerValidationRulesSource) services.getService(org.springframework.rules.RulesSource.class);
-		
+        //ApplicationServices services = getApplicationServices();     
+	
+        //Nicolas Franck: rol? nergens wordt dit aan toegevoegd?
+        /*
     	Color bgColor = new Color(20,20,100);
     	topButtonPanel = createTopButtonPanel();
     	topButtonPanel.setBackground(bgColor);
+        */                  	
     	
-    	getInfoInputPane().getBagInfoInputPane().enableForms(false);
-        JSplitPane bagPanel = createBagPanel();
+        return getMainPanel();        
 
+        //Nicolas Franck
+        /*
     	GridBagLayout layout = new GridBagLayout();
-        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 50, 100, GridBagConstraints.BOTH, GridBagConstraints.CENTER);
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 50, 100,GridBagConstraints.BOTH, GridBagConstraints.CENTER);
 
-        layout.setConstraints(bagPanel, glbc);
+        layout.setConstraints(bagPanel,glbc);
 
         JPanel mainPanel = new JPanel(layout);
         mainPanel.add(bagPanel);        
@@ -257,9 +309,10 @@ public class BagView extends AbstractView {
         bagViewPanel.setBackground(bgColor);
     	bagViewPanel.add(mainPanel, BorderLayout.CENTER);
         
-        return bagViewPanel;
+        return bagViewPanel;*/
     }
-    
+    //Nicolas Franck: enig nut van deze panel is de instelling van de handlers blijkbaar
+    /*
     private JPanel createTopButtonPanel(){
     	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
     	startNewBagHandler = new StartNewBagHandler();
@@ -271,7 +324,7 @@ public class BagView extends AbstractView {
     	validateBagHandler = new ValidateBagHandler2();
     	clearBagHandler = new ClearBagHandler();
         return buttonPanel;
-    }
+    }*/
     
     private JSplitPane createBagPanel(){
     	
@@ -362,7 +415,6 @@ public class BagView extends AbstractView {
             public void mouseExited(MouseEvent e) {
                 addDataToolBarAction.setBorder(new LineBorder(addDataToolBarAction.getBackground(),1));
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 if(addDataToolBarAction.isEnabled()){
@@ -519,8 +571,7 @@ public class BagView extends AbstractView {
         getInfoInputPane().getBagInfoInputPane().setEnabled(b);
     }
 
-    public String updateBaggerRules() {
-        //baggerRules.init(!getBag().isNoProject(),getBag().isHoley());        
+    public String updateBaggerRules() {        
         getBag().updateStrategy();        
         return "";
     }
@@ -556,7 +607,7 @@ public class BagView extends AbstractView {
     	validateExecutor.setEnabled(false);
     	completeExecutor.setEnabled(false);
     	getBagButtonPanel().invalidate();
-    	topButtonPanel.invalidate();
+    	//topButtonPanel.invalidate();
     }
 
     public void updateNewBag() {
@@ -579,7 +630,7 @@ public class BagView extends AbstractView {
         clearExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags
-        topButtonPanel.invalidate();
+        //topButtonPanel.invalidate();
     }
     
     public void updateBagInPlace() {
@@ -593,7 +644,7 @@ public class BagView extends AbstractView {
         completeExecutor.setEnabled(true);
         validateExecutor.setEnabled(true);
         getBagButtonPanel().invalidate();
-        topButtonPanel.invalidate();
+        //topButtonPanel.invalidate();
     }
     
     public void updateSaveBag() {
@@ -607,13 +658,13 @@ public class BagView extends AbstractView {
         clearExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags
-        topButtonPanel.invalidate();
+        //topButtonPanel.invalidate();
     }
     
     public void updateAddData() {
     	saveBagAsExecutor.setEnabled(true);
     	getBagButtonPanel().invalidate();
-    	topButtonPanel.invalidate();
+    	//topButtonPanel.invalidate();
     }
     
     public void updateManifestPane() {
@@ -715,7 +766,9 @@ public class BagView extends AbstractView {
                 @Override
                 public void valueChanged(TreeSelectionEvent e){
                     TreePath[] paths = tree.getSelectionPaths();
-                    if(paths == null || paths.length == 0)return;
+                    if(paths == null || paths.length == 0) {
+                        return;
+                    }
                     for(TreePath path: paths){
                         if(path.getPathCount() == 1){
                             removeTagFileToolbarAction.setEnabled(false);
@@ -798,6 +851,17 @@ public class BagView extends AbstractView {
     	else
     		validateExecutor.setEnabled(true);
          * 
-         */
+         */        
     }    
+    @Override
+    public void componentOpened(){        
+        //Nicolas Frank: werkt niet?
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                getMainPanel().setDividerLocation(0.3);
+                getRightPanel().setDividerLocation(0.7);
+            }            
+        });        
+    }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ugent.bagger.filters;
 
 import java.io.File;
@@ -34,7 +29,9 @@ public final class FileExtensionFilter extends FileFilter{
     }
     private boolean extensionValid(String filename){
         int posDot = filename.lastIndexOf(".");
-        if(posDot < 0)return false;
+        if(posDot < 0) {
+            return false;
+        }
         String ext = filename.substring(posDot+1);
         for(String extension:extensions){
             if(ext.compareTo(extension) == 0){
@@ -53,13 +50,11 @@ public final class FileExtensionFilter extends FileFilter{
         setIgnoreCase(ignoreCase);
     }
     @Override
-    public boolean accept(File file) {
-        logger.debug("filtering file: "+file.getAbsolutePath());
+    public boolean accept(File file) {        
         String name = file.getName();
         if(isIgnoreCase()) {
             name = name.toLowerCase();
-        }           
-            
+        }                       
         return file.canRead() && (
             file.isDirectory() ||
             extensionValid(name)            
@@ -73,4 +68,3 @@ public final class FileExtensionFilter extends FileFilter{
         return description;
     }
 }
-

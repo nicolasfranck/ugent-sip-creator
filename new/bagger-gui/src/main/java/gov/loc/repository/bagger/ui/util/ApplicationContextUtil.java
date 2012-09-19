@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui.util;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.ConsoleView;
 import java.awt.Image;
 import java.util.Locale;
 import javax.swing.UIManager;
@@ -27,10 +26,7 @@ public class ApplicationContextUtil {
     }
     public static BagView getBagView() {
         return BagView.getInstance();
-    }
-    public static ConsoleView getConsoleView() {
-        return ConsoleView.getInstance();
-    }
+    }    
     public static DefaultBag getCurrentBag() {
         return getBagView().getBag();
     }
@@ -38,10 +34,10 @@ public class ApplicationContextUtil {
         return ApplicationServicesLocator.services();
     }
     public static void addConsoleMessageByProperty(String messagePropertyName) {
-        getConsoleView().addConsoleMessages(getMessage(messagePropertyName));
+        getBagView().addConsoleMessages(getMessage(messagePropertyName));
     }
     public static void addConsoleMessage(String message) {
-        getConsoleView().addConsoleMessages(message);
+        getBagView().addConsoleMessages(message);
     }
     @SuppressWarnings("unchecked")
     private static Object getService(Class serviceType) {

@@ -4,6 +4,7 @@ import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFactory;
+import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.*;
 import java.awt.event.ActionEvent;
@@ -159,7 +160,9 @@ public class SaveBagHandler2 extends Handler {
     public void save(File file) {
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
-        if (file == null) file = bagView.getBagRootPath();
+        if (file == null) {
+            file = bagView.getBagRootPath();
+        }
         bag.setName(file.getName());
         File bagFile = new File(file, bag.getName());
     	if (bagFile.exists()) {
@@ -211,8 +214,8 @@ public class SaveBagHandler2 extends Handler {
                     bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
                 } else {
                     bagView.showWarningErrorDialog("Bag saved", "Bag saved successfully.\n" );
-                }           
-            
+                }                           
+               
                 if (bag.isSerialized()) {
                     if (clearAfterSaving){                       
                         bagView.clearBagHandler.clearExistingBag();

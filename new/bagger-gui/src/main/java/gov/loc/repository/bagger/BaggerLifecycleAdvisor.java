@@ -5,9 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
-import org.springframework.richclient.application.docking.vldocking.VLDockingPageDescriptor;
-import org.springframework.richclient.application.setup.SetupWizard;
-//import org.springframework.richclient.command.ActionCommand;
+
 /**
  * Custom application lifecycle implementation that configures the app at well defined points within
  * its lifecycle.
@@ -23,7 +21,8 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
      * startup and only once. (note: for this to happen only once, a state should be preserved, which is not
      * the case with this sample)
      */
-    
+    //Nicolas Franck
+    /*
     @Override
     public void onPreStartup(){   
     	log.debug("BaggerLifeCycleAdvisor.onPreStartup");
@@ -48,16 +47,14 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
             }
     	}
         
-    }
+    }*/
 
     /**
      * Additional window configuration before it is created.
      */
     @Override
     public void onPreWindowOpen(ApplicationWindowConfigurer configurer){
-        super.onPreWindowOpen(configurer);
-        // comment out to hide the menubar, or reduce window size...
-        //configurer.setShowMenuBar(false);
+        super.onPreWindowOpen(configurer);      
         configurer.setInitialSize(new Dimension(1024, 768));
     }
     
