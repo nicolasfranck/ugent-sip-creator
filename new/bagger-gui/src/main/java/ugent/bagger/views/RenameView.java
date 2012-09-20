@@ -6,7 +6,7 @@
 package ugent.bagger.views;
 
 import javax.swing.JComponent;
-import ugent.bagger.panels.RenamePanel;
+import ugent.bagger.panels.AdvancedRenamePanel;
 
 
 /**
@@ -14,15 +14,15 @@ import ugent.bagger.panels.RenamePanel;
  * @author nicolas
  */
 public class RenameView extends DefaultView{
-    private RenamePanel renamePanel;
+    private AdvancedRenamePanel renamePanel;
 
-    public RenamePanel getRenamePanel() {
+    public AdvancedRenamePanel getRenamePanel() {
         if(renamePanel == null){
-            renamePanel = new RenamePanel();
+            renamePanel = new AdvancedRenamePanel();
         }
         return renamePanel;
     }
-    public void setRenamePanel(RenamePanel renamePanel) {
+    public void setRenamePanel(AdvancedRenamePanel renamePanel) {
         this.renamePanel = renamePanel;
     }   
     @Override

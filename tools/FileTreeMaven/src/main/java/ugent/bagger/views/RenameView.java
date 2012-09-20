@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ugent.bagger.views;
 
+import javax.swing.JComponent;
 import ugent.bagger.panels.RenamePanel;
-import javax.swing.*;
-import org.springframework.richclient.application.PageComponentContext;
-import treetable.executors.ExpandCollapseTreeExecutor;
-import treetable.executors.ReloadTreeExecutor;
 
 /**
  *
@@ -30,14 +22,5 @@ public class RenameView extends DefaultView{
     @Override
     protected JComponent createControl() {                
         return getRenamePanel();       
-    }
-    @Override
-    protected void registerLocalCommandExecutors(PageComponentContext context){       
-        ExpandCollapseTreeExecutor expand = new ExpandCollapseTreeExecutor(this);
-        ReloadTreeExecutor reload = new ReloadTreeExecutor(this);
-        context.register("expandCollapseTreeCommand",expand);
-        context.register("reloadTreeCommand",reload);
-        expand.setEnabled(true);
-        reload.setEnabled(true);
-    }
+    }   
 }

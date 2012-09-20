@@ -22,25 +22,24 @@ import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
 import treetable.TreeTableModel;
-import ugent.RenameWandLib.*;
 import ugent.bagger.filters.DirectoryFilter;
-import ugent.bagger.forms.AdvancedRenameParamsForm;
+import ugent.bagger.forms.RenameParamsForm;
 import ugent.bagger.helper.Context;
-import ugent.bagger.params.AdvancedRenameParams;
+import ugent.bagger.params.RenameParams;
 import ugent.bagger.workers.DefaultWorker;
+import ugent.rename.*;
 
 /**
  *
  * @author nicolas
  */
 public class RenamePanel extends JPanel{
-    
-    private static Log logger = LogFactory.getLog(RenamePanel.class);
+    private static Log logger = LogFactory.getLog(AdvancedRenamePanel.class);
     
     private JPanel panelTreeTable;
     private JPanel panelModifier;
     private JPanel panelAdvancedRenamer;
-    private JPanel advancedRenameButtonPanel;   
+    private JPanel renameButtonPanel;   
     private JComponent scrollerTreeTable;
     private ArrayList<FileNode>fileNodesSelected = new ArrayList<FileNode>();
     private File lastFile;    
@@ -53,8 +52,8 @@ public class RenamePanel extends JPanel{
     private JTreeTable treeTable;
     private TreeTableModel treeTableModel;
     private boolean treeTableExpanded = false;   
-    private AdvancedRenameParams advancedRenameParams;
-    private AdvancedRenameParamsForm advancedRenameParamsForm;
+    private RenameParams renameParams;
+    private RenameParamsForm renameParamsForm;
    
     private TreeSelectionListener treeTableSelectionListener;
     
@@ -168,34 +167,34 @@ public class RenamePanel extends JPanel{
     public JPanel getNewButtonPanel(){
         return new JPanel(new FlowLayout(FlowLayout.LEFT));
     } 
-    public JPanel getAdvancedRenameButtonPanel() {
-        if(advancedRenameButtonPanel == null) {
-            advancedRenameButtonPanel = getNewButtonPanel();
+    public JPanel getRenameButtonPanel() {
+        if(renameButtonPanel == null) {
+            renameButtonPanel = getNewButtonPanel();
         }
-        return advancedRenameButtonPanel;
+        return renameButtonPanel;
     }
     
-    public void setAdvancedRenameButtonPanel(JPanel advancedRenameButtonPanel) {
-        this.advancedRenameButtonPanel = advancedRenameButtonPanel;
+    public void setRenameButtonPanel(JPanel renameButtonPanel) {
+        this.renameButtonPanel = renameButtonPanel;
     }
-    public AdvancedRenameParams getAdvancedRenameParams() {
-        if(advancedRenameParams == null) {
-            advancedRenameParams = new AdvancedRenameParams();
+    public RenameParams getRenameParams() {
+        if(renameParams == null) {
+            renameParams = new RenameParams();
         }
-        return advancedRenameParams;
+        return renameParams;
     }
-    public void setAdvancedRenameParams(AdvancedRenameParams renameParams) {
-        this.advancedRenameParams = renameParams;
+    public void setRenameParams(RenameParams renameParams) {
+        this.renameParams = renameParams;
     }
 
-    public AdvancedRenameParamsForm getAdvancedRenameParamsForm() {
-        if(advancedRenameParamsForm == null){
-            advancedRenameParamsForm = new AdvancedRenameParamsForm(getAdvancedRenameParams());
+    public RenameParamsForm getRenameParamsForm() {
+        if(renameParamsForm == null){
+            renameParamsForm = new RenameParamsForm(getRenameParams());
         }
-        return advancedRenameParamsForm;
+        return renameParamsForm;
     }
-    public void setAdvancedRenameParamsForm(AdvancedRenameParamsForm renamePairForm) {
-        this.advancedRenameParamsForm = renamePairForm;
+    public void setRenameParamsForm(RenameParamsForm renamePairForm) {
+        this.renameParamsForm = renamePairForm;
     }
     public JTreeTable getCurrentTreeTable(){
         if(treeTable == null){
@@ -265,7 +264,7 @@ public class RenamePanel extends JPanel{
         panelModifier.add(getStatusLabel(),c);
 
         //panel east: tabs: panelRenamer en panelCleaner    
-        panelAdvancedRenamer = getNewAdvancedRenamePanel(); 
+        panelAdvancedRenamer = getNewRenamePanel(); 
 
         //panel east: add tabs
         c.gridy += 1;
@@ -302,13 +301,13 @@ public class RenamePanel extends JPanel{
         return treeTable;
     }
     protected void setFormsEnabled(boolean enabled){
-        getAdvancedRenameParamsForm().setEnabled(enabled);
+        getRenameParamsForm().setEnabled(enabled);
     }    
     protected TreeTableModel getNewTreeTableModel(File file){
         treeTableModel =  new FileSystemModel(file);        
         return treeTableModel;
     }
-    protected JPanel getNewAdvancedRenamePanel(){
+    protected JPanel getNewRenamePanel(){
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = c.weighty = 0.5;
@@ -323,7 +322,7 @@ public class RenamePanel extends JPanel{
         c.gridy += 1;
 
         //form
-        AdvancedRenameParamsForm renameForm = getAdvancedRenameParamsForm();
+        RenameParamsForm renameForm = getRenameParamsForm();
         final ValidatingFormModel renameFormModel = renameForm.getFormModel();
         JComponent componentForm = renameForm.getControl();
 
@@ -332,9 +331,9 @@ public class RenamePanel extends JPanel{
         //buttons
       
         final JButton submitButton = new JButton(Context.getMessage("ok"));
-        getAdvancedRenameButtonPanel().add(submitButton);
+        getRenameButtonPanel().add(submitButton);
         final JButton simulateButton = new JButton(Context.getMessage("simulate"));
-        getAdvancedRenameButtonPanel().add(simulateButton);
+        getRenameButtonPanel().add(simulateButton);
 
         submitButton.setEnabled(false);
         submitButton.addActionListener(new ActionListener(){
@@ -394,7 +393,7 @@ public class RenamePanel extends JPanel{
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.NORTHWEST;
 
-        panel.add(getAdvancedRenameButtonPanel(),c);
+        panel.add(getRenameButtonPanel(),c);
         
         return panel;        
     }
@@ -412,7 +411,7 @@ public class RenamePanel extends JPanel{
         resultTable.setModel(resultTableModel);
     }
     protected void advancedRename(File directory,final boolean simulateOnly){
-        monitor(new TaskAdvancedRename(advancedRenameParams, directory, simulateOnly),"renaming");        
+        monitor(new TaskRename(renameParams),"renaming");        
     }    
     public File getLastFile(){
         if(lastFile == null){
@@ -426,14 +425,10 @@ public class RenamePanel extends JPanel{
     private void monitor(SwingWorker worker,String title){
         ugent.bagger.helper.SwingUtils.monitor(worker,title,"renaming");        
     }    
-    private class TaskAdvancedRename extends DefaultWorker {
-        private AdvancedRenameParams advancedRenameParams;
-        private File directory;
-        private boolean simulateOnly ;
-        public TaskAdvancedRename(AdvancedRenameParams advancedRenameParams,File directory,final boolean simulateOnly){
-            this.advancedRenameParams = advancedRenameParams;
-            this.directory = directory;
-            this.simulateOnly = simulateOnly;
+    private class TaskRename extends DefaultWorker {
+        private RenameParams renameParams;      
+        public TaskRename(RenameParams renameParams){
+            this.renameParams = renameParams;           
         }
         @Override
         protected Void doInBackground() throws Exception {
@@ -444,29 +439,19 @@ public class RenamePanel extends JPanel{
 
             try{
 
-                RenameWand renamer = new RenameWand();
-                renamer.setCurrentDirectory(directory);
-                renamer.setRecurseIntoSubdirectories(advancedRenameParams.isRecurseIntoSubdirectories());
-                renamer.setSourcePatternString(advancedRenameParams.getSourcePattern());
-                renamer.setTargetPatternString(advancedRenameParams.getDestinationPattern());
-                renamer.setCopy(advancedRenameParams.isCopy());
-                renamer.setOnRenameOperationError(advancedRenameParams.getOnErrorAction());
-                renamer.setSimulateOnly(simulateOnly);
-                renamer.setMatchLowerCase(advancedRenameParams.isMatchLowerCase());
-                renamer.setOverWrite(advancedRenameParams.isOverWrite());            
-                renamer.setRenameDirectories(advancedRenameParams.isRenameDirectories());
+                final Renamer renamer = new Renamer();    
+                renamer.setSource(renameParams.getSource());
+                renamer.setDestination(renameParams.getDestination());                
+                renamer.setCopy(renameParams.isCopy());               
+                renamer.setSimulateOnly(renameParams.isSimulateOnly());                
+                renamer.setIgnoreCase(renameParams.isIgnoreCase());
+                renamer.setOverwrite(renameParams.isOverWrite());            
                 
-                renamer.setRenameListener(new RenameListenerAdapter(){
+               
+                
+                renamer.setRenameListener(new RenameListenerAdapter(){                    
                     @Override
-                    public void onInit(final java.util.ArrayList<FileUnit> matchCandidates,final java.util.ArrayList<FileUnit> matches){                         
-                         if(matchCandidates.isEmpty()){
-                             getStatusLabel().setText("geselecteerde map is leeg");
-                         }else if(matches.isEmpty()){
-                             getStatusLabel().setText("geen bestanden gevonden overeenkomstig het bronpatroon");
-                         }
-                    }
-                    @Override
-                    public boolean approveList(final ArrayList<FileUnit> list){
+                    public boolean approveList(final ArrayList<RenameFilePair> list){
                         numToRename = list.size();                       
                         return true;
                     }
@@ -481,7 +466,7 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onRenameEnd(RenameFilePair pair,int index) {
-                        String status = simulateOnly ? "simulatie":(pair.isSuccess() ? "successvol":"error");
+                        String status = renamer.isSimulateOnly() ? "simulatie":(pair.isSuccess() ? "successvol":"error");
                         resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
                             pair,
                             pair,

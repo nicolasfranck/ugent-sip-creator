@@ -10,7 +10,7 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import ugent.bagger.views.RenameView;
+import ugent.bagger.views.AdvancedRenameView;
 import treetable.FileNode;
 
 /**
@@ -24,16 +24,16 @@ import treetable.FileNode;
 // Otherwise, collapses all nodes in the tree.
     
 public class ExpandCollapseTreeExecutor extends AbstractActionCommandExecutor{
-    private RenameView renameView;
+    private AdvancedRenameView renameView;
     private static final Log log = LogFactory.getLog(ExpandCollapseTreeExecutor.class);
 
-    public ExpandCollapseTreeExecutor(RenameView renameView){
+    public ExpandCollapseTreeExecutor(AdvancedRenameView renameView){
         setRenameView(renameView);        
     }
-    private RenameView getRenameView() {
+    private AdvancedRenameView getRenameView() {
         return renameView;
     }
-    private void setRenameView(RenameView renameView) {
+    private void setRenameView(AdvancedRenameView renameView) {
         this.renameView = renameView;
     }    
     @Override

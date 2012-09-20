@@ -11,6 +11,7 @@ import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.MetsHdr.Agent;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
+import ugent.bagger.params.RenameParams;
 
 /**
  *
@@ -37,5 +38,11 @@ public class MyValidationRulesSource extends DefaultRulesSource{
         Rules mdWrapRules = new Rules(MdWrap.class);
         mdWrapRules.add(required("ID"));
         addRules(mdWrapRules);
+        
+        Rules renameParamsRules = new Rules(RenameParams.class);
+        renameParamsRules.add(required("source"));
+        renameParamsRules.add(required("destination"));
+        addRules(renameParamsRules);
+                
     }
 }
