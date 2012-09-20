@@ -5,13 +5,16 @@
 
 package ugent.bagger.helper;
 
+import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
@@ -21,7 +24,7 @@ import org.apache.commons.vfs.VFS;
  *
  * @author nicolas
  */
-public class FileUtils {
+public class FUtils {
     private static final HashMap<String,Double> sizes;
     private static final String [] sizeNames = {        
       "TB","GB","MB","KB","B"
@@ -182,8 +185,22 @@ public class FileUtils {
         return getFileSystemManager().resolveFile(str);
     }
     public static InputStream getInputStreamFor(String str) throws FileSystemException{                        
-        FileObject fileObject = resolveFile(str);
+        FileObject fileObject = resolveFile(str);        
         InputStream in = fileObject.getContent().getInputStream();                    
         return in;
+    }
+    public static String getMimeType(File file){
+        if(file.isFile()){                    
+            Collection mimes = MimeUtil.getMimeTypes(file);
+            if(!mimes.isEmpty()){
+                Iterator it = mimes.iterator();
+                while(it.hasNext()){                          
+                    return ((MimeType)it.next()).toString();
+                }
+            }else{
+                return "application/octet-stream";
+            }
+        }
+        return "";
     }
 }

@@ -2,6 +2,7 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import com.anearalone.mets.FileSec;
 import com.anearalone.mets.FileSec.FileGrp;
+import com.anearalone.mets.FileSec.FileGrp.File.FLocat;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
@@ -12,7 +13,8 @@ import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Collection;
+import java.io.FileOutputStream;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import org.apache.commons.logging.Log;
@@ -21,18 +23,19 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.helper.FUtils;
+import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask2;
 
 public class SaveBagHandler2 extends Handler {
     private static final Log log = LogFactory.getLog(SaveBagHandler2.class);
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 1L;    
     private File tmpRootPath;
     private boolean clearAfterSaving = false;
     private String messages;
-
+    
     public SaveBagHandler2() {
         super();        
     }
@@ -195,6 +198,43 @@ public class SaveBagHandler2 extends Handler {
             final BagView bagView = BagView.getInstance();
             DefaultBag bag = bagView.getBag(); 
             
+            //write mets before creation bag
+            try{              
+                
+                Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();            
+                FileSec fileSec = mets.getFileSec();
+                if(fileSec == null){
+                    fileSec = new FileSec();
+                    mets.setFileSec(fileSec);
+                }                       
+                List<FileGrp> fileGroups = fileSec.getFileGrp();            
+                fileGroups.clear();
+                FileGrp fileGroup = new FileGrp();            
+                fileGroup.setID("DATASTREAMS");
+                List<FileSec.FileGrp.File>files = fileGroup.getFile();            
+                int i = 0;
+                for(BagFile bagFile:bag.getPayload()){                                       
+                    FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File("DS."+i);                                        
+                    metsFile.setSIZE(bagFile.getSize());
+                    metsFile.setMIMETYPE(FUtils.getMimeType(new File(bagFile.getFilepath())));
+                    metsFile.setCHECKSUM(bag.getPayloadManifestAlgorithm());
+                    FLocat flocat = new FLocat();
+                    flocat.setXlinkHREF(bagFile.getFilepath());                 
+                    metsFile.getFLocat().add(flocat);
+                    files.add(metsFile);
+                    log.debug("adding file to fileGrp: "+metsFile);
+                    i++;
+                }
+                fileGroups.add(fileGroup);            
+                File tempFile = new File(System.getProperty("java.io.tmpdir")+"/mets.xml");                
+                tempFile.deleteOnExit();                                                            
+                MetsUtils.writeMets(mets,new FileOutputStream(tempFile));                        
+                bag.addTagFile(tempFile);   
+                
+            }catch(Exception e){
+                log.debug(e.getMessage());                
+            }
+            
             Writer bagWriter = null;
 
             try {
@@ -219,20 +259,7 @@ public class SaveBagHandler2 extends Handler {
                     bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
                 } else {
                     bagView.showWarningErrorDialog("Bag saved", "Bag saved successfully.\n" );
-                }                           
-                
-                //write mets after creation bag
-                Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();
-                Collection<FileGrp> fileGroups = mets.getFileSec().getFileGrp();
-                FileGrp fileGroup = new FileGrp();
-                Collection<FileSec.FileGrp.File>files = fileGroup.getFile();
-                for(BagFile bagFile:bag.getPayload()){
-                    FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(bagFile.getFilepath());                    
-                    files.add(metsFile);
                 }
-                fileGroups.add(fileGroup);
-                
-                
                
                 if (bag.isSerialized()) {
                     if (clearAfterSaving){                       
@@ -252,7 +279,7 @@ public class SaveBagHandler2 extends Handler {
                     bagView.updateManifestPane();
                 }                
             }catch(Exception e){
-                e.printStackTrace();
+                log.debug(e.getMessage());                
             }
             
             BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());

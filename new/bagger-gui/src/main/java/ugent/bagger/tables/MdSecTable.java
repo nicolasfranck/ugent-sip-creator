@@ -1,13 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.tables;
 
-import ugent.bagger.dialogs.EditMdSecDialog;
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
-import ugent.bagger.helper.SwingUtils;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -16,6 +10,8 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
+import ugent.bagger.dialogs.EditMdSecDialog;
+import ugent.bagger.helper.SwingUtils;
 
 /**
  *

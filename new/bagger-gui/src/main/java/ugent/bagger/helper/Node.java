@@ -241,7 +241,7 @@ public final class Node {
             final Node node = new Node(".");
             //write
             System.out.println("writing..");
-            ugent.bagger.helper.FileUtils.listFiles(new File("/usr/local/share"),new IteratorListener(){
+            ugent.bagger.helper.FUtils.listFiles(new File("/usr/local/share"),new IteratorListener(){
             @Override
             public void execute(Object o) {
                     File file = (File)o;                    

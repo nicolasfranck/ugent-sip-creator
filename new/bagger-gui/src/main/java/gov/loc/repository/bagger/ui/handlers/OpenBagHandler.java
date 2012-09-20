@@ -2,24 +2,21 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.ui.BagInfoInputPane;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
-import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
-import ugent.bagger.helper.Context;
-import ugent.bagger.helper.FileUtils;
+import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
-import ugent.bagger.panels.MetsPanel;
 
 public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
@@ -163,22 +160,22 @@ public class OpenBagHandler extends AbstractAction {
             pathMets = "file://"+new File(file,"mets.xml").getAbsolutePath();
         }        
         try{
-            in = FileUtils.getInputStreamFor(pathMets);
+            in = FUtils.getInputStreamFor(pathMets);
             mets = MetsUtils.readMets(in);
         }catch(Exception e){
-            log.debug(e.getMessage());
-            mets = null;
+            log.debug(e.getMessage());            
         }
-        if(mets == null){
-            System.out.println("mets is null now!");
+        if(mets == null){            
             mets = new Mets();
         }
         try{
             MetsUtils.writeMets(mets,System.out);
-        }catch(Exception e){}
+        }catch(Exception e){
+            log.debug(e.getMessage());            
+        }
         
-        MetsPanel metsPanel = bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel();
-        metsPanel.setMets(mets);
-        metsPanel.reset(mets);        
+        BagInfoInputPane bagInfoInputPane = bagView.getInfoInputPane().getBagInfoInputPane();
+        bagInfoInputPane.setMets(mets);
+        bagInfoInputPane.getMetsPanel().reset(mets);        
     }
 }

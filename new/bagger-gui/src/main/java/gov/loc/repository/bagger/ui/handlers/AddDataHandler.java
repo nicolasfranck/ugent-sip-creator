@@ -104,21 +104,25 @@ public class AddDataHandler extends AbstractAction implements Progress {
     	if(files != null){
             for (int i=0; i < files.length; i++) {
                 log.info("addBagData[" + i + "] " + files[i].getName());
-                if (i < files.length-1) addBagData(files[i], false);
-                else addBagData(files[i], true);
+                if (i < files.length-1) {
+                    addBagData(files[i], false);
+                }
+                else {
+                    addBagData(files[i], true);
+                }
             }
     	}
     }
     public void addBagData(File file, boolean lastFileFlag) {
         BagView bagView = BagView.getInstance();
     	BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-        try {
+        try{
             bagView.getBag().addFileToPayload(file);
             boolean alreadyExists = bagView.bagPayloadTree.addNodes(file, false);
             if(alreadyExists) {
                 bagView.showWarningErrorDialog("Warning - file already exists", "File: " + file.getName() + "\n" + "already exists in bag.");
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             log.error("BagView.addBagData: " + e);
             bagView.showWarningErrorDialog("Error - file not added", "Error adding bag file: " + file + "\ndue to:\n" + e.getMessage());
         }

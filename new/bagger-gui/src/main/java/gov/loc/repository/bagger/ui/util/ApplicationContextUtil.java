@@ -2,6 +2,7 @@ package gov.loc.repository.bagger.ui.util;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
+import gov.loc.repository.bagger.ui.ConsoleView;
 import java.awt.Image;
 import java.util.Locale;
 import javax.swing.UIManager;
@@ -32,11 +33,11 @@ public class ApplicationContextUtil {
     }
     private static ApplicationServices getApplicationServices() {
         return ApplicationServicesLocator.services();
-    }
-    public static void addConsoleMessageByProperty(String messagePropertyName) {
+    }    
+    public static void addConsoleMessageByProperty(String messagePropertyName) {     
         getBagView().addConsoleMessages(getMessage(messagePropertyName));
     }
-    public static void addConsoleMessage(String message) {
+    public static void addConsoleMessage(String message) {        
         getBagView().addConsoleMessages(message);
     }
     @SuppressWarnings("unchecked")

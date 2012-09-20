@@ -46,7 +46,7 @@ import java.util.Date;
 import java.util.Iterator;
 import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
-import ugent.bagger.helper.FileUtils;
+import ugent.bagger.helper.FUtils;
 
 /**
  * FileSystemModel is a TreeTableModel representing a hierarchical file 
@@ -115,9 +115,15 @@ public class FileSystemModel extends AbstractTreeTableModel
     public Object getChild(Object node, int i){
         Object [] children = getChildren(node);
         logger.debug("getChild: children: "+children);
-        if(children == null)return new Object [] {};
-        else if(i >= children.length)return new Object [] {};
-        else return children[i];
+        if(children == null) {
+            return new Object [] {};
+        }
+        else if(i >= children.length) {
+            return new Object [] {};
+        }
+        else {
+            return children[i];
+        }
 	//return getChildren(node)[i];
     }
 
@@ -177,25 +183,13 @@ public class FileSystemModel extends AbstractTreeTableModel
 	    case 0:
 		return file.isFile() ? file.getName():"";
 	    case 1:
-                if(file.isFile())return FileUtils.sizePretty(file.length());
+                if(file.isFile())return FUtils.sizePretty(file.length());
                 else if(file.isDirectory()){
                     if(!file.canRead() || listFileNames == null)return "(access denied)";
                     return listFileNames.length+" files";
                 }                
 	    case 2:
-                if(file.isFile()){                    
-                    Collection mimes = MimeUtil.getMimeTypes(file);
-                    if(!mimes.isEmpty()){
-                        Iterator it = mimes.iterator();
-                        while(it.hasNext()){                          
-                            return ((MimeType)it.next()).toString();
-                        }
-                    }else{
-                        return "application/octet-stream";
-                    }
-                }else{
-                    return "";
-                }		
+                return FUtils.getMimeType(file);                
 	    case 3:
 		return new Date(file.lastModified());
 	    }

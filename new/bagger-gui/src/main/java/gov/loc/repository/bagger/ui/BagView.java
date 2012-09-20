@@ -83,6 +83,7 @@ public class BagView extends AbstractView {
     private JSplitPane rightPanel;
     private ConsolePane consolePane;
 
+   
     public JSplitPane getRightPanel() {
         if(rightPanel == null){
             rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,getInfoInputPane(),getConsolePane());
@@ -109,7 +110,8 @@ public class BagView extends AbstractView {
     }
     public void setMainPanel(JSplitPane mainPanel) {
         this.mainPanel = mainPanel;
-    }    
+    } 
+   
     public ConsolePane getConsolePane() {
         if(consolePane == null){
             consolePane = new ConsolePane(getInitialConsoleMsg());
@@ -852,7 +854,7 @@ public class BagView extends AbstractView {
     		validateExecutor.setEnabled(true);
          * 
          */        
-    }    
+    }        
     @Override
     public void componentOpened(){        
         //Nicolas Frank: werkt niet?

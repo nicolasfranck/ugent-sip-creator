@@ -122,6 +122,7 @@ public class MdSecPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 getDmdSecTable().deleteSelectedMdSec();
+                getDmdSecTable().refresh();
             }        
         });     
         
