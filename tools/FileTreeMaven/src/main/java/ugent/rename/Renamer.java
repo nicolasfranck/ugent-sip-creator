@@ -1,108 +1,39 @@
 package ugent.rename;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.io.FileUtils;
 
 /*
  *  Nicolas Franck
  */
 
 
-public class Renamer {
+public class Renamer extends AbstractRenamer{
     private String source;
-    private String destination;
-    private Pattern sourcePattern;   
-    private boolean ignoreCase = false;
-    private ArrayList<File> inputFiles;
-    private boolean simulateOnly = false;
-    private RenameListener renameListener;
-    private boolean copy = false;
-    private boolean copyDirectoryContent = false;
-    private boolean overWrite = false;    
+    private String destination;   
+    private int patternFlags = Pattern.CANON_EQ;       
     
-    public Renamer(){
-        
-    }
-    public void copy(File in,File out) throws FileNotFoundException, IOException{
-        if(in.isFile()){
-            FileUtils.copyFile(in, out);
-        }else if(in.isDirectory()){
-            if(copyDirectoryContent) {
-                FileUtils.copyDirectory(in, out);
-            }
-            else {
-                FileUtils.copyFile(in, out);
-            }
-        }
-    }
-    public boolean isCopyDirectoryContent() {
-        return copyDirectoryContent;
-    }
-    public void setCopyDirectoryContent(boolean copyDirectoryContent) {
-        this.copyDirectoryContent = copyDirectoryContent;
+    public int getPatternFlags() {        
+        return patternFlags;
     }    
-    public boolean isOverWrite() {
-        return overWrite;
-    }
-    public void setOverWrite(boolean overwrite) {
-        this.overWrite = overwrite;
+    public void setPatternFlag(int patternFlag) {        
+        this.patternFlags |= patternFlag;
     }    
-    public boolean isCopy() {
-        return copy;
-    }
-    public void setCopy(boolean copy) {
-        this.copy = copy;
-    }    
-    public boolean isIgnoreCase() {
-        return ignoreCase;
-    }
-    public void setIgnoreCase(boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
-    }
-    
-    public ArrayList<File> getInputFiles() {
-        return inputFiles;
-    }
-    public void setInputFiles(ArrayList<File> inputFiles) {
-        this.inputFiles = inputFiles;
-    }
-
-    public RenameListener getRenameListener() {
-        if(renameListener == null){
-            renameListener = new RenameListenerAdapter();
-        }
-        return renameListener;
-    }
-    public void setRenameListener(RenameListener renameListener) {
-        this.renameListener = renameListener;
+    public void removePatternFlag(int patternFlag){
+        this.patternFlags &= ~patternFlag;
     }   
-    public boolean isSimulateOnly() {
-        return simulateOnly;
-    }
-    public void setSimulateOnly(boolean simulateOnly) {
-        this.simulateOnly = simulateOnly;
-    }
 
-    private Pattern getSourcePattern() {                    
-        try{
-            if(isIgnoreCase()){
-                sourcePattern = Pattern.compile(source,Pattern.CASE_INSENSITIVE);
-            }else{
-                sourcePattern = Pattern.compile(source);               
-            }               
+    private Pattern compileSourcePattern() {                  
+        Pattern sourcePattern = null;
+        try{                        
+            sourcePattern = Pattern.compile(source,getPatternFlags());                           
         }catch(Exception e){
             e.printStackTrace();
         }       
         return sourcePattern;
-    }
-    public void setSourcePattern(Pattern sourcePattern) {
-        this.sourcePattern = sourcePattern;
-    }    
+    }      
     public String getSource() {
         if(source == null){
             source = "";
@@ -121,111 +52,11 @@ public class Renamer {
     public void setDestination(String destination) {
         this.destination = destination;
                
-    }
-    public void rename(){
-        ArrayList<RenameFilePair>pairs = getFilePairs();
-        if(pairs == null){
-            return;
-        }
-        System.out.println("pairs: "+pairs.size());
-        RenameListener l = getRenameListener();
-        if(!l.approveList(pairs)){
-            return;
-        }
-        System.out.println("approved!");
-        int numSuccess = 0;
-        ErrorAction action = ErrorAction.undoAll;
-        for(int i = 0;i < pairs.size();i++){
-            RenameFilePair pair = pairs.get(i);
-            pair.setSuccess(false);
-            l.onRenameStart(pair, i);            
-            try{
-                if(isSimulateOnly()){
-                    if(!isOverWrite() && pair.getTarget().exists()){
-                        pair.setSuccess(false);
-                        action = l.onError(pair,RenameError.TARGET_EXISTS,"target file "+pair.getTarget().getAbsolutePath()+" already exists",i);                        
-                    }else if(!pair.getTarget().getParentFile().canWrite()){
-                        action = l.onError(pair,RenameError.IO_EXCEPTION,"cannot write to "+pair.getTarget().getParentFile().getAbsolutePath(),i);
-                    }else{
-                        pair.setSuccess(true);
-                    }
-                }else{
-                    if(!isOverWrite() && pair.getTarget().exists()){
-                        pair.setSuccess(false);
-                        action = getRenameListener().onError(pair,RenameError.TARGET_EXISTS,"target file "+pair.getTarget().getAbsolutePath()+" already exists",i);
-                    }else{
-                        pair.getTarget().getParentFile().mkdirs();
-                        String error = null;
-                        try{
-                            if(isCopy()){
-                                copy(pair.getSource(),pair.getTarget());
-                            }else{
-                                /*
-                                    *  TODO: in Windows wordt target niet overschreven.
-                                    Zie: http://stackoverflow.com/questions/595631/how-to-atomically-rename-a-file-in-java-even-if-the-dest-file-already-exists
-                                    */                              
-                                pair.setSuccess(pair.getSource().renameTo(pair.getTarget()));                              
-                            }
-                        }catch(Exception e){                            
-                            pair.setSuccess(false);
-                            error = e.getMessage();
-                        }
-                        if(!pair.isSuccess()){
-                            action = getRenameListener().onError(pair,RenameError.SYSTEM_ERROR,error,i);
-                        }
-                    }
-                }
-                if(pair.isSuccess()){
-                    numSuccess++;
-                }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            /* check if renaming operation was successful */
-            if(!pair.isSuccess()){
-                System.out.println("failed!");
-                /* take action */
-                if(action == ErrorAction.retry){
-                    /* retry rename operation */
-                    i--;
-                }else if(action == ErrorAction.skip){
-                    /* skip to next file/directory */
-                    continue;
-                }else if(action == ErrorAction.undoAll){
-
-                    if(!isSimulateOnly()){                        
-                        for(int j = i ; j >= 0; j--){
-                            final RenameFilePair t = pairs.get(j);
-                            if(t.success){
-                                String error = null;
-                                t.source.getParentFile().mkdirs();
-                                try{
-                                    if(isCopy()){
-                                        if(t.target.exists()){
-                                            t.target.delete();
-                                        }
-                                    }else{
-                                        t.success = !t.target.renameTo(t.source);
-                                    }
-                                }catch(SecurityException e){                                      
-                                    t.success = true;
-                                    error = e.getMessage();
-                                }                               
-                            }
-                        }
-                    }
-                    break;
-                }else if(action == ErrorAction.abort){
-                    /* abort */
-                    break;
-                }
-            }
-            l.onRenameEnd(pair, i);
-        }        
-        l.onEnd(pairs,numSuccess);
-    }
-    private ArrayList<RenameFilePair> getFilePairs(){
-        Pattern sp = getSourcePattern();       
+    }   
+    
+    @Override
+    protected ArrayList<RenameFilePair> getFilePairs(){
+        Pattern sp = compileSourcePattern();       
         if(
             sp == null ||             
             getInputFiles().size() <= 0
@@ -246,15 +77,16 @@ public class Renamer {
         }
         return pairs;
     }
-    /*
+    
     public static void main(String [] args){
         Renamer renamer = new Renamer();
         ArrayList<File>files = FUtils.listFiles(new File("/home/nicolas/xml"));
         System.out.println("inputFiles: "+files.size());
         renamer.setInputFiles(files);
-        renamer.setSource("pp.xml");
-        renamer.setDestination(".xml");
-        //renamer.setSimulateOnly(true);
+        renamer.setSource("\\.XML");
+        renamer.setDestination("pp.xml");
+        renamer.setSimulateOnly(true);
+        renamer.setPatternFlag(Pattern.LITERAL);
         renamer.setRenameListener(new RenameListener(){
             @Override
             public boolean approveList(ArrayList<RenameFilePair> list) {
@@ -262,6 +94,7 @@ public class Renamer {
             }
             @Override
             public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr, int index) {
+                System.out.println("error: "+errorStr);
                 return ErrorAction.undoAll;
             }
             @Override
@@ -282,5 +115,5 @@ public class Renamer {
             }            
         });
         renamer.rename();
-    }*/
+    }
 }

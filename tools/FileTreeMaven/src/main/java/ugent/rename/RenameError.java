@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ugent.rename;
 
 /**
@@ -10,5 +5,12 @@ package ugent.rename;
  * @author nicolas
  */
 public enum RenameError {
-    TARGET_EXISTS,SYSTEM_ERROR,UNKNOWN_ERROR,IO_EXCEPTION,SECURITY_EXCEPTION;
+    TARGET_EXISTS,
+    PARENT_NOT_WRITABLE,
+    SYSTEM_ERROR,
+    UNKNOWN_ERROR,
+    FILE_NOT_FOUND,
+    IO_EXCEPTION,
+    UNDO_ERROR,
+    SECURITY_EXCEPTION;
 }

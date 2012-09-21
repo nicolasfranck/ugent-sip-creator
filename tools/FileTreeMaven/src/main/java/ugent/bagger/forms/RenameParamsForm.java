@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ugent.bagger.forms;
 
 import javax.swing.JComboBox;
@@ -44,7 +39,7 @@ public class RenameParamsForm extends AbstractForm{
             builder.row();
         }
         String [] detailFields = {
-            "copy","ignoreCase","overWrite"
+            "copy","overWrite","ignoreCase","regex"
         };
         for(String field:detailFields){
             builder.add(field);

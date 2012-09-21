@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -64,14 +65,12 @@ public class RenamePanel extends JPanel{
         treeTableSelectionListener = new TreeSelectionListener(){
             @Override
             public void valueChanged(TreeSelectionEvent tse) {            
-                fileNodesSelected.clear();               
+                fileNodesSelected.clear();            
                 TreePath [] selectedPaths = tree.getSelectionPaths();
                 logger.debug("RenameView: getNewTreeTableSelectionListener: selectedPaths: "+selectedPaths);
                 if(selectedPaths == null) {
-                    System.out.println("selectedPaths is null!");
                     return;
                 }
-                System.out.println("selectedPaths.size: "+selectedPaths.length);
                 for(int i = 0;i<selectedPaths.length;i++){
                     FileNode fn = (FileNode) selectedPaths[i].getLastPathComponent();
                     fileNodesSelected.add(fn);
@@ -87,7 +86,8 @@ public class RenamePanel extends JPanel{
             resultTable.setFillsViewportHeight(true);
             resultTable.setRowSelectionAllowed(false);
             RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(resultTableModel);
-            resultTable.setRowSorter(sorter);    
+            resultTable.setRowSorter(sorter);
+            
             resultTable.setDefaultRenderer(Object.class,new TableCellRenderer(){
                 @Override
                 public Component getTableCellRendererComponent(JTable jtable, Object o, boolean isSelected, boolean hasFocus, int row, int col) {
@@ -120,10 +120,10 @@ public class RenamePanel extends JPanel{
                             label.setForeground(Color.red);
                         }
                     }
-
                     return label;
                 }
             });
+            
         }
         return resultTable;
     }
@@ -295,7 +295,8 @@ public class RenamePanel extends JPanel{
         final JTree tree = treeTable.getTree();
         tree.setSelectionPath(new TreePath(tree.getModel().getRoot()));
         tree.addTreeSelectionListener(getNewTreeTableSelectionListener(tree));
-        fileNodesSelected.clear();        
+        fileNodesSelected.clear();
+        fileNodesSelected.add(new FileNode(file));
         return treeTable;
     }
     protected void setFormsEnabled(boolean enabled){
@@ -314,7 +315,7 @@ public class RenamePanel extends JPanel{
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        JTextArea descriptionArea = new JTextArea("");
+        JTextArea descriptionArea = new JTextArea();
         descriptionArea.setEditable(false);        
         panel.add(descriptionArea,c);
         c.gridy += 1;
@@ -336,14 +337,13 @@ public class RenamePanel extends JPanel{
         submitButton.setEnabled(false);
         submitButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent ae) {                
                 if(
-                    fileNodesSelected.size() == 0
+                    fileNodesSelected.size() <= 0                    
                 ){
-                    getStatusLabel().setText("choose files!");
+                    getStatusLabel().setText("selecteer bestanden");
                     return;
-                }          
-                renameParams.setSimulateOnly(false);
+                }                
                 renameFormModel.commit();
                 submitButton.setEnabled(false);
                 simulateButton.setEnabled(false);
@@ -366,13 +366,14 @@ public class RenamePanel extends JPanel{
         simulateButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if(
-                    fileNodesSelected.size() == 0
+               
+                if(                    
+                    fileNodesSelected.size() <= 0
+                    
                 ){
-                    getStatusLabel().setText("choose files!");
+                    getStatusLabel().setText("selecteer bestanden");
                     return;
                 }
-                renameParams.setSimulateOnly(true);
                 renameFormModel.commit();
                 submitButton.setEnabled(false);
                 simulateButton.setEnabled(false);
@@ -429,35 +430,43 @@ public class RenamePanel extends JPanel{
             getStatusLabel().setText(null);        
             numRenamedSuccess = 0;
             numRenamedError = 0;
-            
-            ArrayList<File>inputFiles = new ArrayList<File>();
-            for(FileNode fileNode:fileNodesSelected){
-                inputFiles.add(fileNode.getFile());
-            }
-            renameParams.setInputFiles(inputFiles);
 
             try{
 
                 final Renamer renamer = new Renamer();    
+                ArrayList<File>inputFiles = new ArrayList<File>();
+                for(FileNode fileNode:fileNodesSelected){
+                    inputFiles.add(fileNode.getFile());
+                }
+                renamer.setInputFiles(inputFiles);
                 renamer.setSource(renameParams.getSource());
                 renamer.setDestination(renameParams.getDestination());                
                 renamer.setCopy(renameParams.isCopy());               
-                renamer.setSimulateOnly(renameParams.isSimulateOnly());                
-                renamer.setIgnoreCase(renameParams.isIgnoreCase());
-                renamer.setOverWrite(renameParams.isOverWrite());    
-                renamer.setInputFiles(renameParams.getInputFiles());
+                renamer.setSimulateOnly(renameParams.isSimulateOnly());                                
+                renamer.setOverwrite(renameParams.isOverWrite());            
+                if(renameParams.isIgnoreCase()){
+                    renamer.setPatternFlag(Pattern.CASE_INSENSITIVE);
+                }else{
+                    renamer.removePatternFlag((Pattern.CASE_INSENSITIVE));
+                }
+                if(renameParams.isRegex()){
+                    renamer.removePatternFlag(Pattern.LITERAL);
+                }else{
+                    renamer.setPatternFlag(Pattern.LITERAL);
+                }
                
                 
                 renamer.setRenameListener(new RenameListenerAdapter(){                    
                     @Override
                     public boolean approveList(final ArrayList<RenameFilePair> list){
-                        numToRename = list.size();                       
+                        numToRename = list.size();  
+                        System.out.println("num to rename: "+numToRename);
                         return true;
                     }
                     @Override
                     public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr,int index) {
                         numRenamedError++;
-                        return renameParams.getOnErrorAction();
+                        return ErrorAction.skip;
                     }
                     @Override
                     public void onRenameSuccess(RenameFilePair pair,int index) {
@@ -483,7 +492,6 @@ public class RenamePanel extends JPanel{
             }catch(Exception e){
                 logger.debug(e.getMessage());
             }
-            renameParams.setInputFiles(null);
             return null;
         }
     }
