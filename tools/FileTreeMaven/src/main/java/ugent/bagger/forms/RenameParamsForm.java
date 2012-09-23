@@ -31,7 +31,7 @@ public class RenameParamsForm extends AbstractForm{
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");
-        builder.addSeparator(Context.getMessage("common"));
+        builder.addSeparator(Context.getMessage("renameFiles"));
         builder.row();        
         String [] commonFields = {"source","destination"};
         for(String field:commonFields){
@@ -44,9 +44,10 @@ public class RenameParamsForm extends AbstractForm{
         for(String field:detailFields){
             builder.add(field);
             builder.row();
-        }
+        }        
         Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());
+        
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {

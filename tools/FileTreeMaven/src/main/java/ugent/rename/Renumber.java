@@ -10,12 +10,32 @@ import java.util.ArrayList;
 public class Renumber extends AbstractRenamer{    
     private int start = 0;
     private int end = 0;
-    private int incr = 1;
+    private int step = 1;
+    private StartPosType startPosType = StartPosType.ABSOLUTE;
     private int startPos = 0;
+    private StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
     private int padding = 1;
-    private char paddingChar = '0';
-    
+    private String separator = "";
+    private PaddingChar paddingChar = PaddingChar.NULL;
 
+    public StartPosRelative getStartPosRelative() {
+        return startPosRelative;
+    }
+    public void setStartPosRelative(StartPosRelative startPosRelative) {
+        this.startPosRelative = startPosRelative;
+    }
+    public StartPosType getStartPosType() {
+        return startPosType;
+    }
+    public void setStartPosType(StartPosType startPosType) {
+        this.startPosType = startPosType;
+    }
+    public String getSeparator() {
+        return separator;
+    }
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
     public int getStart() {
         return start;
     }
@@ -28,12 +48,12 @@ public class Renumber extends AbstractRenamer{
     public void setEnd(int end) {
         this.end = end;
     }
-    public int getIncr() {
-        return incr;
+    public int getStep() {
+        return step;
     }
-    public void setIncr(int incr) {       
-        this.incr = incr;
-    }
+    public void setStep(int step) {
+        this.step = step;
+    }   
     public int getStartPos() {
         return startPos;
     }
@@ -49,10 +69,10 @@ public class Renumber extends AbstractRenamer{
     public void setPadding(int padding) {
         this.padding = padding;
     }
-    public char getPaddingChar() {
+    public PaddingChar getPaddingChar() {
         return paddingChar;
     }
-    public void setPaddingChar(char paddingChar) {
+    public void setPaddingChar(PaddingChar paddingChar) {
         this.paddingChar = paddingChar;
     }
     private String getFormatString(){
@@ -63,58 +83,66 @@ public class Renumber extends AbstractRenamer{
         formatString += "d";
         return formatString;
     }
-
     @Override
     protected ArrayList<RenameFilePair> getFilePairs() {
         ArrayList<RenameFilePair>pairs = new ArrayList<RenameFilePair>();
         
         int i = start;
         for(File inputFile:getInputFiles()){
-            if(incr >= 0){
+            if(step >= 0){                
                 if(i > end){
-                    break;
+                    break;                
                 }
+            }else if(i < end){
+                break;               
+            }            
+            String nameInputFile = inputFile.getName();
+            
+            int index = 0;           
+            
+            if(startPosType == StartPosType.ABSOLUTE){            
+                if((nameInputFile.length() - 1) < startPos){
+                    //start positie voorbij laatste character
+                    continue;
+                }            
+                index = startPos;
             }else{
-                if(i < end){
-                    break;
+                if(startPosRelative == StartPosRelative.BEGIN){
+                    index = 0;
+                }else if(startPosRelative == StartPosRelative.END){
+                    index = nameInputFile.length() - 1;
+                }else{
+                    int posDot = nameInputFile.lastIndexOf('.');
+                    index = posDot >= 0 ? posDot:nameInputFile.length() - 1;
                 }
             }
-            
-            String nameInputFile = inputFile.getName();            
-            
-            if((nameInputFile.length() - 1) < startPos){
-                //start positie voorbij laatste character
-                continue;
-            }
-            
-            String left = startPos > 0 ? nameInputFile.substring(0,startPos):"";
-            String right = nameInputFile.substring(startPos);
+            String left = index > 0 ? nameInputFile.substring(0,index):"";
+            String right = nameInputFile.substring(index);
             String format = getFormatString();
-            System.out.println("format: "+format);
-            String formattedNumber = String.format(format,i);
-            
-            String nameOutputFile = left+formattedNumber+right;
-            
+            String formattedNumber = String.format(format,i);            
+            String nameOutputFile = left+separator+formattedNumber+separator+right;            
             System.out.println(nameInputFile+" => "+nameOutputFile);
         
             pairs.add(new RenameFilePair(
                 inputFile,
                 new File(inputFile.getParentFile(),nameOutputFile)
             ));
-            i+=incr;
-        }
-        
+            i+=step;
+        }       
+        System.out.println("filePairs.size = "+pairs.size());
         return pairs;
-    }
+    } 
     public static void main(String [] args){
         Renumber renumber = new Renumber();
-        ArrayList<File>files = FUtils.listFiles(new File("/home/nicolas/xml"));
-        renumber.setInputFiles(files);
-        System.out.println("inputFiles: "+files.size());
-      
-        renumber.setSimulateOnly(true);   
-        ArrayList<RenameFilePair> pairs = renumber.getFilePairs();
-        
-        
+        ArrayList<File>inputFiles = FUtils.listFiles("/home/nicolas/c++");
+        System.out.println("num files: "+inputFiles.size());
+        renumber.setInputFiles(inputFiles);
+        renumber.setStartPosType(StartPosType.RELATIVE);
+        renumber.setStartPosRelative(StartPosRelative.BEFORE_EXTENSION);
+        renumber.setStart(0);
+        renumber.setStep(1);
+        renumber.setPadding(4);
+        renumber.setEnd(inputFiles.size() - 1);
+        renumber.rename();
     }
 }

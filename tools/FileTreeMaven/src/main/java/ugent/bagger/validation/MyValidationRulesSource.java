@@ -5,13 +5,14 @@
 
 package ugent.bagger.validation;
 
-import ugent.bagger.params.AdvancedRenameParams;
-import ugent.bagger.params.CleanParams;
 import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.MetsHdr.Agent;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
+import ugent.bagger.params.AdvancedRenameParams;
+import ugent.bagger.params.CleanParams;
 import ugent.bagger.params.RenameParams;
+import ugent.bagger.params.RenumberParams;
 
 /**
  *
@@ -41,8 +42,18 @@ public class MyValidationRulesSource extends DefaultRulesSource{
         
         Rules renameParamsRules = new Rules(RenameParams.class);
         renameParamsRules.add(required("source"));
-        renameParamsRules.add(required("destination"));
+        //renameParamsRules.add(required("destination"));
         addRules(renameParamsRules);
+        
+        Rules renumberParamsRules = new Rules(RenumberParams.class);        
+        renumberParamsRules.add(required("start"));
+        renumberParamsRules.add(required("end"));
+        renumberParamsRules.add(required("startPos"));
+        renumberParamsRules.add(required("padding"));
+        renumberParamsRules.add(required("paddingChar"));
+        
+        
+        addRules(renumberParamsRules);
                 
     }
 }

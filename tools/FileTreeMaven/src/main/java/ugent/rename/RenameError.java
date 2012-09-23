@@ -12,5 +12,5 @@ public enum RenameError {
     FILE_NOT_FOUND,
     IO_EXCEPTION,
     UNDO_ERROR,
-    SECURITY_EXCEPTION;
+    SECURITY_EXCEPTION;    
 }
