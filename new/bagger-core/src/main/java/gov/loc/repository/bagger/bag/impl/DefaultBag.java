@@ -837,4 +837,11 @@ public class DefaultBag {
                 bagInfo.prepareBilBagInfo(bilBag.getBagInfoTxt());
             }
 	}
+        /*
+         * Nicolas Franck         
+        */
+        public Bag getBag(){
+            return bilBag;                    
+        }
+        
 }

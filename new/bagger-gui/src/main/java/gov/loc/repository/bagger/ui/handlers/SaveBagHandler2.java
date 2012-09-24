@@ -3,20 +3,32 @@ package gov.loc.repository.bagger.ui.handlers;
 import com.anearalone.mets.FileSec;
 import com.anearalone.mets.FileSec.FileGrp;
 import com.anearalone.mets.FileSec.FileGrp.File.FLocat;
+import com.anearalone.mets.LocatorElement;
 import com.anearalone.mets.Mets;
+import com.anearalone.mets.SharedEnums;
+import com.anearalone.mets.SharedEnums.CHECKSUMTYPE;
+import com.anearalone.mets.StructMap;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.BagFile;
+import gov.loc.repository.bagit.Manifest;
+import gov.loc.repository.bagit.Manifest.Algorithm;
+import gov.loc.repository.bagit.utilities.MessageDigestHelper;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.*;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -24,6 +36,7 @@ import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.FUtils;
+import ugent.bagger.helper.IteratorListener;
 import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
@@ -196,46 +209,54 @@ public class SaveBagHandler2 extends Handler {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());                        
 
             final BagView bagView = BagView.getInstance();
-            DefaultBag bag = bagView.getBag(); 
+            DefaultBag bag = bagView.getBag();            
             
-            //write mets before creation bag
-            try{              
-                
-                Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();            
-                FileSec fileSec = mets.getFileSec();
-                if(fileSec == null){
-                    fileSec = new FileSec();
-                    mets.setFileSec(fileSec);
-                }                       
-                List<FileGrp> fileGroups = fileSec.getFileGrp();            
-                fileGroups.clear();
-                FileGrp fileGroup = new FileGrp();            
-                fileGroup.setID("DATASTREAMS");
-                List<FileSec.FileGrp.File>files = fileGroup.getFile();            
-                int i = 0;
-                for(BagFile bagFile:bag.getPayload()){                                       
-                    FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File("DS."+i);                                        
-                    metsFile.setSIZE(bagFile.getSize());
-                    metsFile.setMIMETYPE(FUtils.getMimeType(new File(bagFile.getFilepath())));
-                    metsFile.setCHECKSUM(bag.getPayloadManifestAlgorithm());
-                    FLocat flocat = new FLocat();
-                    flocat.setXlinkHREF(bagFile.getFilepath());                 
-                    metsFile.getFLocat().add(flocat);
-                    files.add(metsFile);
-                    log.debug("adding file to fileGrp: "+metsFile);
-                    i++;
-                }
-                fileGroups.add(fileGroup);            
-                File tempFile = new File(System.getProperty("java.io.tmpdir")+"/mets.xml");                
-                tempFile.deleteOnExit();                                                            
-                MetsUtils.writeMets(mets,new FileOutputStream(tempFile));                        
-                bag.addTagFile(tempFile);   
-                
-            }catch(Exception e){
-                log.debug(e.getMessage());                
-            }
             
             Writer bagWriter = null;
+            
+            //Nicolas Franck - begin
+            Algorithm tagManifestAlg = Algorithm.MD5;
+            CHECKSUMTYPE tagManifestChecksumType = CHECKSUMTYPE.MD_5;
+            String tagManifestKey = "md5";
+            if(bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.MD5.bagItAlgorithm) == 0){
+                tagManifestAlg = Algorithm.MD5;
+                tagManifestChecksumType = CHECKSUMTYPE.MD_5;
+                tagManifestKey = "md5";
+            }else if (bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.SHA1.bagItAlgorithm) == 0){
+                tagManifestAlg = Algorithm.SHA1;
+                tagManifestChecksumType = CHECKSUMTYPE.SHA_1;
+                tagManifestKey = "sha1";
+            }else if (bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.SHA256.bagItAlgorithm) == 0){
+                tagManifestAlg = Algorithm.SHA256;
+                tagManifestChecksumType = CHECKSUMTYPE.SHA_256;
+                tagManifestKey = "sha256";
+            }else if(bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.SHA512.bagItAlgorithm) == 0){
+                tagManifestAlg = Algorithm.SHA512;            
+                tagManifestChecksumType = CHECKSUMTYPE.SHA_512;
+                tagManifestKey = "sha256";
+            }
+             
+            Algorithm payloadManifestAlg = Algorithm.MD5;
+            CHECKSUMTYPE payloadManifestChecksumType = CHECKSUMTYPE.MD_5;
+            String payloadManifestKey = "md5";
+            if(bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.MD5.bagItAlgorithm) == 0){
+                payloadManifestAlg = Algorithm.MD5;
+                payloadManifestChecksumType = CHECKSUMTYPE.MD_5;
+                payloadManifestKey = "md5";
+            }else if (bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.SHA1.bagItAlgorithm) == 0){
+                payloadManifestAlg = Algorithm.SHA1;
+                payloadManifestChecksumType = CHECKSUMTYPE.SHA_1;
+                payloadManifestKey = "sha1";
+            }else if (bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.SHA256.bagItAlgorithm) == 0){
+                payloadManifestAlg = Algorithm.SHA256;
+                payloadManifestChecksumType = CHECKSUMTYPE.SHA_256;
+                payloadManifestKey = "sha256";
+            }else if(bag.getTagManifestAlgorithm().compareToIgnoreCase(Algorithm.SHA512.bagItAlgorithm) == 0){
+                payloadManifestAlg = Algorithm.SHA512;            
+                payloadManifestChecksumType = CHECKSUMTYPE.SHA_512;
+                payloadManifestKey = "sha512";
+            }
+            //Nicolas Franck - end
 
             try {
                 BagFactory bagFactory = new BagFactory();
@@ -259,6 +280,93 @@ public class SaveBagHandler2 extends Handler {
                     bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
                 } else {
                     bagView.showWarningErrorDialog("Bag saved", "Bag saved successfully.\n" );
+                }
+                
+                //write mets after creation bag
+                try{              
+                    Manifest payloadManifest = bag.getBag().getPayloadManifest(payloadManifestAlg);
+                    Manifest tagfileManifest = bag.getBag().getTagManifest(tagManifestAlg);
+                    Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();   
+
+                    //fileSec
+                    FileSec fileSec = mets.getFileSec();
+                    if(fileSec == null){
+                        fileSec = new FileSec();
+                        mets.setFileSec(fileSec);
+                    }                       
+                    List<FileGrp> fileGroups = fileSec.getFileGrp();            
+                    fileGroups.clear();
+                    FileGrp fileGroup = new FileGrp();            
+                    fileGroup.setID("CONTENT");
+                    fileGroup.setUse("CONTENT");
+                    List<FileSec.FileGrp.File>files = fileGroup.getFile();            
+
+                    for(BagFile bagFile:bag.getPayload()){                   
+                        
+                        String fileId = bagFile.getFilepath().replace('/','-');
+                        
+                        FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                        
+                        metsFile.setSIZE(bagFile.getSize());
+                        metsFile.setMIMETYPE(FUtils.getMimeType(new File(bagFile.getFilepath())));                                                
+                        String checksumFile = payloadManifest.get(bagFile.getFilepath());         
+                        metsFile.setCHECKSUM(checksumFile);
+                        metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                     
+                        
+                        FLocat flocat = new FLocat();
+                        flocat.setLOCTYPE(LocatorElement.LOCTYPE.URL);
+                        flocat.setXlinkHREF(bagFile.getFilepath());                 
+                        metsFile.getFLocat().add(flocat);
+                        
+                        files.add(metsFile);                                      
+                    }
+                    fileGroups.add(fileGroup);
+
+                    //structMap
+                    DefaultMutableTreeNode rootNodePayloads = bagView.getBagPayloadTree().getParentNode();              
+                    DefaultMutableTreeNode rootNodeTagFiles = bagView.getBagTagFileTree().getParentNode();
+                    StructMap structMapPayloads = MetsUtils.toStructMap(rootNodePayloads);
+                    structMapPayloads.setType("BAGIT_PAYLOAD_TREE");
+                    StructMap structMapTagFiles = MetsUtils.toStructMap(rootNodeTagFiles);
+                    structMapTagFiles.setType("BAGIT_TAGFILE_TREE");
+
+                    mets.getStructMap().clear();
+                    mets.getStructMap().add(structMapPayloads);
+                    mets.getStructMap().add(structMapTagFiles);
+
+                    //write mets                
+                    File tempFile = new File(System.getProperty("java.io.tmpdir")+"/mets.xml");                
+                    tempFile.deleteOnExit();                                                                                            
+                    MetsUtils.writeMets(mets,new FileOutputStream(tempFile));                        
+
+                    //add mets as tagfile to bagit manually
+                    String checksumMetsFile = MessageDigestHelper.generateFixity(tempFile,tagManifestAlg);
+                    System.out.println(tempFile+" has checksum "+tagManifestAlg+" => "+checksumMetsFile);
+                    
+                    tagfileManifest.remove("mets.xml");
+                    tagfileManifest.put("mets.xml",checksumMetsFile);
+                    Iterator it = tagfileManifest.keySet().iterator();
+                    
+                    switch(mode){
+                        case DefaultBag.NO_MODE:                                        
+                            BufferedWriter writer = new BufferedWriter(new PrintWriter(new File(bag.getBagFile(),"tagmanifest-"+tagManifestKey+".txt")));
+                            while(it.hasNext()){                                
+                                writer.write(it.next()+"\n");
+                            }
+                            break;
+                        case DefaultBag.TAR_BZ2_MODE:
+                            break;
+                        case DefaultBag.TAR_GZ_MODE:
+                            break;
+                        case DefaultBag.TAR_MODE:
+                            break;
+                        case DefaultBag.ZIP_MODE:
+                            break;
+                    }
+                    
+                    
+
+                }catch(Exception e){
+                    log.debug(e.getMessage());                
                 }
                
                 if (bag.isSerialized()) {

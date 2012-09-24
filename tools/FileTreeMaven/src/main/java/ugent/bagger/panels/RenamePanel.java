@@ -102,7 +102,7 @@ public class RenamePanel extends JPanel{
                 for(int i = 0;i<selectedPaths.length;i++){
                     FileNode fn = (FileNode) selectedPaths[i].getLastPathComponent();
                     fileNodesSelected.add(fn);
-                }               
+                }                               
             }
         };
         return treeTableSelectionListener;
@@ -143,7 +143,7 @@ public class RenamePanel extends JPanel{
                         if(pair.isSimulateOnly()){                            
                             label.setForeground(Color.DARK_GRAY);
                         }else if(pair.isSuccess()){                            
-                            label.setForeground(Color.green);
+                            label.setForeground(new Color(89,150,59));
                         }else{                             
                             label.setForeground(Color.red);
                         }
@@ -385,11 +385,7 @@ public class RenamePanel extends JPanel{
                 submitRenumberButton.setEnabled(false);
                 simulateRenumberButton.setEnabled(false);  
                 //wordt in achtergrond uitgevoerd, dus liefst geen statements hier achter!
-                renumber();
-                /*
-                reloadTreeTable(getLastFile());
-                submitButton.setEnabled(true);
-                simulateButton.setEnabled(true);*/
+                renumber();               
             }
         });
         getRenumberParamsForm().addValidationListener(new ValidationListener(){
@@ -411,11 +407,9 @@ public class RenamePanel extends JPanel{
                 renumberParams.setSimulateOnly(true);
                 renumberFormModel.commit();
                 submitRenumberButton.setEnabled(false);
-                simulateRenumberButton.setEnabled(false);                
-                renumber();
-                /*
-                submitButton.setEnabled(true);
-                simulateButton.setEnabled(true);*/
+                simulateRenumberButton.setEnabled(false);       
+                //wordt in achtergrond uitgevoerd, dus liefst geen statements hier achter!
+                renumber();               
             }
         });
         c.gridy += 1;
@@ -467,13 +461,8 @@ public class RenamePanel extends JPanel{
                 renameFormModel.commit();
                 submitRenameButton.setEnabled(false);
                 simulateRenameButton.setEnabled(false);
-                rename();
-                /*
-                File f = getLastFile();
-                System.out.println("lastFile: "+f);
-                reloadTreeTable(f);
-                submitButton.setEnabled(true);
-                simulateButton.setEnabled(true);*/
+                //wordt in achtergrond uitgevoerd, dus liefst geen statements hier achter!
+                rename();                
             }
         });
         renameForm.addValidationListener(new ValidationListener(){
@@ -496,10 +485,8 @@ public class RenamePanel extends JPanel{
                 renameFormModel.commit();
                 submitRenameButton.setEnabled(false);
                 simulateRenameButton.setEnabled(false);
-                rename();
-                /*
-                submitButton.setEnabled(true);
-                simulateButton.setEnabled(true);*/
+                //wordt in achtergrond uitgevoerd, dus liefst geen statements hier achter!
+                rename();                
             }
         });
         c.gridy += 1;
@@ -565,13 +552,19 @@ public class RenamePanel extends JPanel{
                 renumber.setCopy(false);               
                 renumber.setSimulateOnly(renumberParams.isSimulateOnly());                                
                 renumber.setOverwrite(renumberParams.isOverWrite());
-                renumber.setStart(renumberParams.getStart());
-                renumber.setEnd(renumberParams.getEnd());
+                renumber.setStart(renumberParams.getStart());              
+                int newEnd = renumberParams.getStart() + inputFiles.size()*renumberParams.getStep() - 1;
+                renumber.setEnd(newEnd);
                 renumber.setStep(renumberParams.getStep());
                 renumber.setStartPos(renumberParams.getStartPos());
                 renumber.setPadding(renumberParams.getPadding());                
                 renumber.setPaddingChar(renumberParams.getPaddingChar());
-                
+                renumber.setStartPosType(renumberParams.getStartPosType());
+                renumber.setStartPosRelative(renumberParams.getStartPosRelative());
+                renumber.setSeparatorBefore(renumberParams.getSeparatorBefore());
+                renumber.setSeparatorAfter(renumberParams.getSeparatorAfter());
+                System.out.println("preSort: "+renumberParams.getPreSort());
+                renumber.setPreSort(renumberParams.getPreSort());
                 
                 renumber.setRenameListener(new RenameListenerAdapter(){                    
                     @Override
@@ -601,10 +594,12 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                        getStatusLabel().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                       
+                        getStatusLabel().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                                               
                         simulateRenumberButton.setEnabled(true);
                         submitRenumberButton.setEnabled(true);
-                        reloadTreeTable(getLastFile());
+                        if(!renumberParams.isSimulateOnly()){
+                            reloadTreeTable(getLastFile());
+                        }                        
                     }
                 });                
                 renumber.rename();                
@@ -682,7 +677,9 @@ public class RenamePanel extends JPanel{
                         getStatusLabel().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                       
                         simulateRenameButton.setEnabled(true);
                         submitRenameButton.setEnabled(true);
-                        reloadTreeTable(getLastFile());
+                        if(!renameParams.isSimulateOnly()){
+                            reloadTreeTable(getLastFile());
+                        }
                     }
                 });
                 renamer.rename();

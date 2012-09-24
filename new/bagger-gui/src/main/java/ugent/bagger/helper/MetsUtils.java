@@ -1,19 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.helper;
 
 
 import com.anearalone.mets.*;
 import com.anearalone.mets.StructMap.Div;
+import com.anearalone.mets.StructMap.Div.Fptr;       
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.UUID;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -95,18 +94,26 @@ public class MetsUtils {
         mets.unmarshal(doc.getDocumentElement());
         return mets;
     }
-    public static StructMap toStructMap(Node node){
-        StructMap struct = new StructMap();        
-        Div div = toDiv(node);
+    public static StructMap toStructMap(DefaultMutableTreeNode node){
+        StructMap struct = new StructMap();                
+        Div div = toDiv(node);        
         struct.setDiv(div);                
         return struct;
     }
-    public static Div toDiv(Node node){
-        Div div = new Div();
-        div.setLabel(node.getObject().toString());
-        for(Node n:node.getChildren()){
-            div.getDiv().add(toDiv(n));
-        }
+    public static Div toDiv(DefaultMutableTreeNode node){
+        Div div = new Div();            
+        div.setLabel(node.getUserObject().toString());        
+        Enumeration enumeration = node.children();
+        while(enumeration.hasMoreElements()){            
+            DefaultMutableTreeNode n = (DefaultMutableTreeNode)enumeration.nextElement();            
+            if(n.isLeaf()){
+                Fptr filePointer = new Fptr();
+                filePointer.setFILEID(n.getUserObject().toString().replace('/','-'));
+                div.getFptr().add(filePointer);
+            }else{
+                div.getDiv().add(toDiv(n));
+            }
+        }        
         return div;
     }
     /*
@@ -138,23 +145,18 @@ public class MetsUtils {
     }
     public static void main(String [] args){
         try{
-            Mets mets = new Mets();
-            ArrayList<Path>paths = Node.structureToList(new File("/tmp/a.txt"));
-            Node node = new Node(".");
-            for(Path path:paths){
-                node.addPath(path);
-                logger.debug("adding path "+path);                
-            }
-            for(Node n:node.getChildren()){
-                mets.getStructMap().add(toStructMap(n));
-            }
+            Mets mets = new Mets();          
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) FUtils.toTreeNode(new File("/home/nicolas/bhsl-pap"));
+            StructMap structMap = toStructMap(node);
+            structMap.setType("BAGIT_PAYLOAD_TREE");
+            structMap.setLabel("BagIt payload directory tree");
+            mets.getStructMap().add(structMap);
             MetsWriter mw = new MetsWriter();
             mw.writeToOutputStream(mets,new FileOutputStream(new File("/tmp/output.txt")));
         }catch(Exception e){
             logger.debug(e.getMessage());            
         }
-    }
-    
+    }    
     public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException{        
         MdSec mdSec = new MdSec(file.getName());                
         mdSec.setMdWrap(createMdWrap(file));                

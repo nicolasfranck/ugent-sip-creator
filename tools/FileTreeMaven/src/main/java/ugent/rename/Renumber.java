@@ -2,6 +2,8 @@ package ugent.rename;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -15,9 +17,24 @@ public class Renumber extends AbstractRenamer{
     private int startPos = 0;
     private StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
     private int padding = 1;
-    private String separator = "";
+    private String separatorBefore = "";
+    private String separatorAfter = "";
     private PaddingChar paddingChar = PaddingChar.NULL;
+    private PreSort preSort = PreSort.NONE;
+    
+    private static Comparator defaultFileSorter =  new Comparator<File>(){
+        @Override
+        public int compare(File f1,File f2){                        
+            return f1.getName().compareToIgnoreCase(f2.getName());
+        }
+    };
 
+    public PreSort getPreSort() {
+        return preSort;
+    }
+    public void setPreSort(PreSort preSort) {
+        this.preSort = preSort;
+    }
     public StartPosRelative getStartPosRelative() {
         return startPosRelative;
     }
@@ -30,12 +47,23 @@ public class Renumber extends AbstractRenamer{
     public void setStartPosType(StartPosType startPosType) {
         this.startPosType = startPosType;
     }
-    public String getSeparator() {
-        return separator;
+
+    public String getSeparatorBefore() {
+        return separatorBefore;
     }
-    public void setSeparator(String separator) {
-        this.separator = separator;
+
+    public void setSeparatorBefore(String separatorBefore) {
+        this.separatorBefore = separatorBefore;
     }
+
+    public String getSeparatorAfter() {
+        return separatorAfter;
+    }
+
+    public void setSeparatorAfter(String separatorAfter) {
+        this.separatorAfter = separatorAfter;
+    }
+    
     public int getStart() {
         return start;
     }
@@ -87,8 +115,16 @@ public class Renumber extends AbstractRenamer{
     protected ArrayList<RenameFilePair> getFilePairs() {
         ArrayList<RenameFilePair>pairs = new ArrayList<RenameFilePair>();
         
+        ArrayList<File>files = getInputFiles();
+        if(preSort.equals(PreSort.FILE_NAME_ASC)){
+            Collections.sort(files,defaultFileSorter);
+        }else if(preSort.equals(PreSort.FILE_NAME_DESC)){
+            Collections.sort(files,defaultFileSorter);
+            Collections.reverse(files);
+        }
+        
         int i = start;
-        for(File inputFile:getInputFiles()){
+        for(File inputFile:files){
             if(step >= 0){                
                 if(i > end){
                     break;                
@@ -120,7 +156,7 @@ public class Renumber extends AbstractRenamer{
             String right = nameInputFile.substring(index);
             String format = getFormatString();
             String formattedNumber = String.format(format,i);            
-            String nameOutputFile = left+separator+formattedNumber+separator+right;            
+            String nameOutputFile = left+separatorBefore+formattedNumber+separatorAfter+right;            
             System.out.println(nameInputFile+" => "+nameOutputFile);
         
             pairs.add(new RenameFilePair(

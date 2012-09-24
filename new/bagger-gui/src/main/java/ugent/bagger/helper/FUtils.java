@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ugent.bagger.helper;
 
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,12 +17,14 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.VFS;
+import sun.security.provider.MD5;
 /**
  *
  * @author nicolas
  */
 public class FUtils {
     private static final HashMap<String,Double> sizes;
+    private static MessageDigest md5DigestInstance;
     private static final String [] sizeNames = {        
       "TB","GB","MB","KB","B"
     };
@@ -124,14 +123,14 @@ public class FUtils {
             
         }
     }
-    public static DefaultMutableTreeNode toTreeNode(FileSource file){
+    public static DefaultMutableTreeNode toTreeNode(File file){
         return toTreeNode(file,-1);
     }
-    public static DefaultMutableTreeNode toTreeNode(FileSource file,int maxdepth){
+    public static DefaultMutableTreeNode toTreeNode(File file,int maxdepth){
         if(file == null || !file.exists()){
             return null;
         }        
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileSource(file));       
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(file);       
         
         if(file.isFile()){
             root.setAllowsChildren(false);
@@ -155,25 +154,24 @@ public class FUtils {
         
         Collections.sort(directories,defaultFileSorter);
         for(File dir:directories){            
-            root.add(toTreeNode(new FileSource(dir),maxdepth-1));
+            root.add(toTreeNode(dir,maxdepth-1));
         }
         Collections.sort(files,defaultFileSorter);
         for(File f:files){            
-           root.add(toTreeNode(new FileSource(f),maxdepth-1));
+           root.add(toTreeNode(f,maxdepth-1));
         }             
         
         return root;
     }
     public static void walkTree(DefaultMutableTreeNode node,IteratorListener il){
-        if(node == null) {
+        if(node == null) {            
             return;
         }
-        if(node.isLeaf()) {
+        if(node.isLeaf()) {            
             il.execute(node.getUserObject());
         }
-        else{
-            int cc = 0;
-            for(int i = 0;i < cc;i++){
+        else{                                  
+            for(int i = 0;i < node.getChildCount();i++){             
                 walkTree((DefaultMutableTreeNode)node.getChildAt(i),il);
             }
         }
@@ -202,5 +200,5 @@ public class FUtils {
             }
         }
         return "";
-    }
+    }    
 }

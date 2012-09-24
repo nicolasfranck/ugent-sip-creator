@@ -12,7 +12,8 @@ import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.image.ImageSource;
 
 
-public class ApplicationContextUtil {	
+public class ApplicationContextUtil {	    
+    
     static {
             UIManager.put("FileChooser.readOnly", Boolean.TRUE);
     }
@@ -31,14 +32,25 @@ public class ApplicationContextUtil {
     public static DefaultBag getCurrentBag() {
         return getBagView().getBag();
     }
+    public static ConsoleView getConsoleView(){        
+        return ConsoleView.getInstance();        
+    }
     private static ApplicationServices getApplicationServices() {
         return ApplicationServicesLocator.services();
     }    
     public static void addConsoleMessageByProperty(String messagePropertyName) {     
-        getBagView().addConsoleMessages(getMessage(messagePropertyName));
+        if(getConsoleView() == null){            
+            ConsoleView.delayedMessages.add(getMessage(messagePropertyName));            
+        }else{                        
+            getConsoleView().addConsoleMessages(getMessage(messagePropertyName));                        
+        }        
     }
     public static void addConsoleMessage(String message) {        
-        getBagView().addConsoleMessages(message);
+        if(getConsoleView() == null){            
+            ConsoleView.delayedMessages.add(message);            
+        }else{                        
+            getConsoleView().addConsoleMessages(message);                       
+        }        
     }
     @SuppressWarnings("unchecked")
     private static Object getService(Class serviceType) {

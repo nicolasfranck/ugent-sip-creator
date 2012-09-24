@@ -1,0 +1,20 @@
+content bundles: fileGrp    
+    attribute USE of fileGrp:
+        if not specified, then place under unlabeled fileGrp "content" (Content Bundle)
+
+eerste structMap is gereserveerd voor de Content Bundle. Deze bestanden worden getoond aan het publiek
+
+BitStream:
+    
+    data waarnaar verwezen wordt, wordt opgenomen:    
+        extern:
+            file => xlink:href
+            mdRef => xlink:href
+        intern: ADMID, DMDID
+    enkel metadatarecord voor het hele DSpace-item (i.e. mets-object) wordt opgenomen in de metadata tabellen (dus niet op stukniveau)
+
+Div:
+
+    1ste structMap:
+        op niveau 0 mag er slechts één Div staan
+        die Div staat voor het DSpace-item zelf, en MOET verwijzingen bevatten naar metadata

@@ -119,7 +119,7 @@ public final class AddFieldPanel extends JPanel {
         addFieldButton.addActionListener(new AddFieldAction());
 
         //Nicolas Franck: voeg veld toe bij druk op enter
-        //getValueField().addActionListener(new AddFieldAction());        
+        getValueField().addActionListener(new AddFieldAction());        
     }
 	
 	

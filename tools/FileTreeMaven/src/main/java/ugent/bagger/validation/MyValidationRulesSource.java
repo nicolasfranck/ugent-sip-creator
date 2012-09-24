@@ -40,17 +40,11 @@ public class MyValidationRulesSource extends DefaultRulesSource{
         mdWrapRules.add(required("ID"));
         addRules(mdWrapRules);
         
-        Rules renameParamsRules = new Rules(RenameParams.class);
-        renameParamsRules.add(required("source"));
-        //renameParamsRules.add(required("destination"));
+        Rules renameParamsRules = new Rules(RenameParams.class);               
         addRules(renameParamsRules);
         
         Rules renumberParamsRules = new Rules(RenumberParams.class);        
-        renumberParamsRules.add(required("start"));
-        renumberParamsRules.add(required("end"));
-        renumberParamsRules.add(required("startPos"));
-        renumberParamsRules.add(required("padding"));
-        renumberParamsRules.add(required("paddingChar"));
+        renumberParamsRules.add(required("start"));                     
         
         
         addRules(renumberParamsRules);

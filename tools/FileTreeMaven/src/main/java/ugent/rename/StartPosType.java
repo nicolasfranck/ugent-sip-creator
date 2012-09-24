@@ -1,7 +1,5 @@
 package ugent.rename;
 
-import ugent.bagger.helper.Context;
-
 /**
  *
  * @author nicolas
@@ -13,11 +11,7 @@ public enum StartPosType {
         this.c = c;
     }
     @Override
-    public String toString(){
-        String s = Context.getMessage(c);
-        if(s == null){
-            s = c;
-        }
-        return s;
+    public String toString(){        
+        return c;
     }
 }

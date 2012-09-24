@@ -79,20 +79,8 @@ public class BagView extends AbstractView {
     	    
     //Nicolas Franck: vldocking sucks!
     private JSplitPane mainPanel;
-    private JSplitPane leftPanel;
-    private JSplitPane rightPanel;
-    private ConsolePane consolePane;
-
-   
-    public JSplitPane getRightPanel() {
-        if(rightPanel == null){
-            rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,getInfoInputPane(),getConsolePane());
-        }
-        return rightPanel;
-    }
-    public void setRightPanel(JSplitPane rightPanel) {
-        this.rightPanel = rightPanel;
-    }    
+    private JSplitPane leftPanel;    
+      
     public JSplitPane getLeftPanel() {
         if(leftPanel == null){
             leftPanel = createBagPanel();
@@ -104,38 +92,14 @@ public class BagView extends AbstractView {
     }    
     public JSplitPane getMainPanel() {
         if(mainPanel == null){
-            mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getRightPanel()); 
+            mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getInfoInputPane()); 
         }
         return mainPanel;
     }
     public void setMainPanel(JSplitPane mainPanel) {
         this.mainPanel = mainPanel;
     } 
-   
-    public ConsolePane getConsolePane() {
-        if(consolePane == null){
-            consolePane = new ConsolePane(getInitialConsoleMsg());
-        }
-        return consolePane;
-    }
-    public void setConsolePane(ConsolePane consolePane) {
-        this.consolePane = consolePane;
-    }   
-    public void addConsoleMessages(String messages) {
-        getConsolePane().addConsoleMessages(messages);
-    }	
-    public void clearConsoleMessages() {
-        getConsolePane().clearConsoleMessages();
-    }	
-    private String getInitialConsoleMsg() {
-    	StringBuilder buffer = new StringBuilder();
-    	buffer.append(getMessage("consolepane.msg.help"));
-    	buffer.append("\n\n");
-    	buffer.append(getMessage("consolepane.status.help"));
-    	buffer.append("\n\n");
-    	return buffer.toString();
-    }
-
+  
     /*
      * Nicolas Franck
      */
@@ -854,16 +818,5 @@ public class BagView extends AbstractView {
     		validateExecutor.setEnabled(true);
          * 
          */        
-    }        
-    @Override
-    public void componentOpened(){        
-        //Nicolas Frank: werkt niet?
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                getMainPanel().setDividerLocation(0.3);
-                getRightPanel().setDividerLocation(0.7);
-            }            
-        });        
-    }
+    }   
 }
