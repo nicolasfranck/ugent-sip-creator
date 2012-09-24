@@ -70,9 +70,7 @@ public class OpenBagHandler extends AbstractAction {
     	bagView.clearBagHandler.clearExistingBag();
 
         try{
-            bagView.clearBagHandler.newDefaultBag(file);
-            System.out.println("file: "+file);
-            System.out.println("file afterwards: "+bag.getBagFile());
+            bagView.clearBagHandler.newDefaultBag(file);           
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
         }catch(Exception ex){
             ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	    
@@ -118,11 +116,8 @@ public class OpenBagHandler extends AbstractAction {
         }
         bagView.getInfoInputPane().getSerializeValue().invalidate();
 
-        if(bag.isHoley()) {
-            bagView.getInfoInputPane().setHoley("true");
-        }else{
-            bagView.getInfoInputPane().setHoley("false");
-        }
+        
+        bagView.getInfoInputPane().setHoley(bag.isHoley() ? "true":"false");        
         bagView.getInfoInputPane().getHoleyValue().invalidate();
         bagView.updateBaggerRules();
         bagView.setBagRootPath(file);

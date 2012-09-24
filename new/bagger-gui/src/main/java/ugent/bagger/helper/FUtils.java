@@ -4,6 +4,7 @@ import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -184,8 +185,11 @@ public class FUtils {
     }
     public static InputStream getInputStreamFor(String str) throws FileSystemException{                        
         FileObject fileObject = resolveFile(str);        
-        InputStream in = fileObject.getContent().getInputStream();                    
-        return in;
+        return fileObject.getContent().getInputStream();                            
+    }
+    public static OutputStream getOutputStreamFor(String str) throws FileSystemException{
+        FileObject fileObject = resolveFile(str);
+        return fileObject.getContent().getOutputStream();
     }
     public static String getMimeType(File file){
         if(file.isFile()){                    

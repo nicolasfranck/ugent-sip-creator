@@ -209,8 +209,7 @@ public class SaveBagHandler2 extends Handler {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());                        
 
             final BagView bagView = BagView.getInstance();
-            DefaultBag bag = bagView.getBag();            
-            
+            DefaultBag bag = bagView.getBag();
             
             Writer bagWriter = null;
             
@@ -282,6 +281,7 @@ public class SaveBagHandler2 extends Handler {
                     bagView.showWarningErrorDialog("Bag saved", "Bag saved successfully.\n" );
                 }
                 
+                //Nicolas Franck - begin
                 //write mets after creation bag
                 try{              
                     Manifest payloadManifest = bag.getBag().getPayloadManifest(payloadManifestAlg);
@@ -331,50 +331,54 @@ public class SaveBagHandler2 extends Handler {
 
                     mets.getStructMap().clear();
                     mets.getStructMap().add(structMapPayloads);
-                    mets.getStructMap().add(structMapTagFiles);
-
-                    //write mets                
-                    File tempFile = new File(System.getProperty("java.io.tmpdir")+"/mets.xml");                
-                    tempFile.deleteOnExit();                                                                                            
-                    MetsUtils.writeMets(mets,new FileOutputStream(tempFile));                        
-
-                    //add mets as tagfile to bagit manually
-                    String checksumMetsFile = MessageDigestHelper.generateFixity(tempFile,tagManifestAlg);
-                    System.out.println(tempFile+" has checksum "+tagManifestAlg+" => "+checksumMetsFile);
+                    mets.getStructMap().add(structMapTagFiles);                                        
                     
-                    tagfileManifest.remove("mets.xml");
-                    tagfileManifest.put("mets.xml",checksumMetsFile);
-                    Iterator it = tagfileManifest.keySet().iterator();
+                    //now write mets and updated tagmanifest to bagit
+                    String pathMets;
+                    String pathTagManifest;
+                    String extension = "";
+                    String name = bag.getBagFile().getName();
+                    int i = name.lastIndexOf('.');
+                    String baseName = (i >= 0) ? name.substring(0,i):name;                    
+                    extension  = (i > 0 && i < name.length() - 1)? name.substring(i + 1).toLowerCase():extension;                    
                     
-                    switch(mode){
-                        case DefaultBag.NO_MODE:                                        
-                            BufferedWriter writer = new BufferedWriter(new PrintWriter(new File(bag.getBagFile(),"tagmanifest-"+tagManifestKey+".txt")));
-                            while(it.hasNext()){                                
-                                writer.write(it.next()+"\n");
-                            }
-                            break;
-                        case DefaultBag.TAR_BZ2_MODE:
-                            break;
-                        case DefaultBag.TAR_GZ_MODE:
-                            break;
-                        case DefaultBag.TAR_MODE:
-                            break;
-                        case DefaultBag.ZIP_MODE:
-                            break;
+                    if(bag.getSerialMode() != DefaultBag.NO_MODE){                        
+                        pathMets = extension+":"+bag.getBagFile().getAbsolutePath()+"!/"+baseName+"/mets.xml";
+                        pathTagManifest = extension+":"+bag.getBagFile().getAbsolutePath()+"!/"+baseName+"/tagmanifest-"+tagManifestKey+".txt";
+                    }else{
+                        pathMets = "file://"+new File(bag.getBagFile(),"mets.xml").getAbsolutePath();
+                        pathTagManifest = "file://"+new File(bag.getBagFile(),"tagmanifest-"+tagManifestKey+".txt").getAbsolutePath();
                     }
                     
+                    //write mets to tag file                    
+                    MetsUtils.writeMets(mets,FUtils.getOutputStreamFor(pathMets));                       
+
+                    //add mets as tagfile to bagit manually
+                    String checksumMetsFile = MessageDigestHelper.generateFixity(FUtils.getInputStreamFor(pathMets),tagManifestAlg);
+                    tagfileManifest.remove("mets.xml");
+                    tagfileManifest.put("mets.xml",checksumMetsFile);
+                    
+                    Iterator it = tagfileManifest.keySet().iterator();                    
+                    
+                    
+                    BufferedWriter writer = new BufferedWriter(new PrintWriter(FUtils.getOutputStreamFor(pathTagManifest)));                                                       
+                    while(it.hasNext()){  
+                        String key = (String)it.next();
+                        writer.write(key+"  "+tagfileManifest.get(key) +"\n");
+                    }                    
                     
 
                 }catch(Exception e){
                     log.debug(e.getMessage());                
                 }
+                //Nicolas Franck - end
                
                 if (bag.isSerialized()) {
-                    if (clearAfterSaving){                       
+                    if(clearAfterSaving){                       
                         bagView.clearBagHandler.clearExistingBag();
                         setClearAfterSaving(false);
-                    } else {
-                        if (bag.isValidateOnSave()) {
+                    }else{
+                        if(bag.isValidateOnSave()) {
                             bagView.validateBagHandler.validateBag();
                         }                     
                         File bagFile = bag.getBagFile();
@@ -388,10 +392,8 @@ public class SaveBagHandler2 extends Handler {
                 }                
             }catch(Exception e){
                 log.debug(e.getMessage());                
-            }
-            
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-            
+            }            
+            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());            
             return null;
         }    
         @Override
