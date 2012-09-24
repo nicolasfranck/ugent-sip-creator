@@ -145,8 +145,7 @@ public class OpenBagHandler extends AbstractAction {
         bagView.updateOpenBag();   
         
         //Nicolas Franck: load mets
-        String pathMets;
-        InputStream in;        
+        String pathMets;            
         Mets mets = null;
         
         if(bag.isSerial()){
@@ -154,21 +153,14 @@ public class OpenBagHandler extends AbstractAction {
         }else{
             pathMets = "file://"+new File(file,"mets.xml").getAbsolutePath();
         }        
-        try{
-            in = FUtils.getInputStreamFor(pathMets);
-            mets = MetsUtils.readMets(in);
+        try{           
+            mets = MetsUtils.readMets(FUtils.getInputStreamFor(pathMets));
         }catch(Exception e){
             log.debug(e.getMessage());            
         }
         if(mets == null){            
             mets = new Mets();
         }
-        try{
-            MetsUtils.writeMets(mets,System.out);
-        }catch(Exception e){
-            log.debug(e.getMessage());            
-        }
-        
         BagInfoInputPane bagInfoInputPane = bagView.getInfoInputPane().getBagInfoInputPane();
         bagInfoInputPane.setMets(mets);
         bagInfoInputPane.getMetsPanel().reset(mets);        

@@ -89,27 +89,25 @@ public class BagTree extends JTree {
                 log.debug("BagTree.populateNodes getPayloadPaths:" );
                 payload = bag.getPayloadPaths();
             }else{
-
                 log.debug("BagTree.populateNodes getFetchPayload:");
                 payload = bag.getPayloadPaths(); //bag.getFetchPayload();
                 //basePath = bag.getFetch().getBaseURL();
-
             }
             for(Iterator<String> it=payload.iterator(); it.hasNext(); ){
                 String filePath = it.next();
                 try{
                     String normalPath;
-                    if (bag.isHoley()) {
+                    if(bag.isHoley()){
                         normalPath = BaggerFileEntity.removeBasePath("data", filePath);
                     }else{
                         normalPath = BaggerFileEntity.removeBasePath(basePath, filePath);
                     }
                     if(!nodeAlreadyExists(normalPath)){
-                        this.addNode(normalPath);
+                        addNode(normalPath);
                     }
                 }catch(Exception e){
                     if(!nodeAlreadyExists(filePath)){
-                        this.addNode(filePath);
+                        addNode(filePath);
                     }
                     log.error("BagTree.populateNodes: " + e.getMessage());
                 }
