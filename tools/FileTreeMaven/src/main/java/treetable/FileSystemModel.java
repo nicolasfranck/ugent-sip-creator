@@ -69,10 +69,12 @@ public class FileSystemModel extends AbstractTreeTableModel
     private static Logger logger = Logger.getLogger(FileSystemModel.class);
 
     // Names of the columns.
-    static protected String[]  cNames = {"Name", "Size", "Type", "Modified"};
+    //static protected String[]  cNames = {"Name", "Size", "Type", "Modified"};
+    static protected String[]  cNames = {"Name","Type"};
 
     // Types of the columns.
-    static protected Class[]  cTypes = {TreeTableModel.class, Integer.class, String.class, Date.class};
+    //static protected Class[]  cTypes = {TreeTableModel.class, Integer.class, String.class, Date.class};
+    static protected Class[]  cTypes = {TreeTableModel.class,String.class};
 
     // The the returned file length for directories. 
     public static final Integer ZERO = new Integer(0); 
@@ -115,9 +117,15 @@ public class FileSystemModel extends AbstractTreeTableModel
     public Object getChild(Object node, int i){
         Object [] children = getChildren(node);
         logger.debug("getChild: children: "+children);
-        if(children == null)return new Object [] {};
-        else if(i >= children.length)return new Object [] {};
-        else return children[i];
+        if(children == null) {
+            return new Object [] {};
+        }
+        else if(i >= children.length) {
+            return new Object [] {};
+        }
+        else {
+            return children[i];
+        }
 	//return getChildren(node)[i];
     }
 
@@ -173,32 +181,54 @@ public class FileSystemModel extends AbstractTreeTableModel
         }
 
 	try {
+            /*
 	    switch(column) {
-	    case 0:
-		return file.isFile() ? file.getName():"";
-	    case 1:
-                if(file.isFile())return FileUtils.sizePretty(file.length());
-                else if(file.isDirectory()){
-                    if(!file.canRead() || listFileNames == null)return "(access denied)";
-                    return listFileNames.length+" files";
-                }                
-	    case 2:
-                if(file.isFile()){                    
-                    Collection mimes = MimeUtil.getMimeTypes(file);
-                    if(!mimes.isEmpty()){
-                        Iterator it = mimes.iterator();
-                        while(it.hasNext()){                          
-                            return ((MimeType)it.next()).toString();
+                case 0:
+                    return file.isFile() ? file.getName():"";
+                case 1:
+                    if(file.isFile())return FileUtils.sizePretty(file.length());
+                    else if(file.isDirectory()){
+                        if(!file.canRead() || listFileNames == null)return "(access denied)";
+                        return listFileNames.length+" files";
+                    }                
+                case 2:
+                    if(file.isFile()){                    
+                        Collection mimes = MimeUtil.getMimeTypes(file);
+                        if(!mimes.isEmpty()){
+                            Iterator it = mimes.iterator();
+                            while(it.hasNext()){                          
+                                return ((MimeType)it.next()).toString();
+                            }
+                        }else{
+                            return "application/octet-stream";
                         }
                     }else{
-                        return "application/octet-stream";
+                        return "";
+                    }		
+                case 3:
+                    return new Date(file.lastModified());
+                }*/
+            switch(column) {
+                case 0:
+                    return file.isFile() ? file.getName():"";                                                   
+                case 1:
+                    if(file.isFile()){                    
+                        Collection mimes = MimeUtil.getMimeTypes(file);
+                        if(!mimes.isEmpty()){
+                            Iterator it = mimes.iterator();
+                            while(it.hasNext()){                          
+                                return ((MimeType)it.next()).toString();
+                            }
+                        }else{
+                            return "application/octet-stream";
+                        }
+                    }else{
+                        return "";
                     }
-                }else{
-                    return "";
-                }		
-	    case 3:
-		return new Date(file.lastModified());
-	    }
+                 break;
+            }
+               
+            
 	}
 	catch(SecurityException se){ 
             se.printStackTrace();

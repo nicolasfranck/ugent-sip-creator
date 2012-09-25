@@ -4,7 +4,6 @@ import com.anearalone.mets.MdSec;
 import com.anearalone.mets.MetsHdr;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
-import ugent.bagger.params.AdvancedRenameParams;
 
 
 public class BaggerValidationRulesSource extends DefaultRulesSource {
@@ -15,11 +14,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         super();
         
         //ugent bagger                  
-        Rules advancedRenameParamsRules = new Rules(AdvancedRenameParams.class);
-        advancedRenameParamsRules
-                .add(required("sourcePattern"))
-                .add(required("destinationPattern"));
-        addRules(advancedRenameParamsRules);
+      
        
         Rules agentRules = new Rules(MetsHdr.Agent.class);
         agentRules

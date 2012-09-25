@@ -7,6 +7,9 @@ import com.anearalone.mets.LocatorElement;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.SharedEnums.CHECKSUMTYPE;
 import com.anearalone.mets.StructMap;
+import de.schlichtherle.truezip.file.TFile;
+import de.schlichtherle.truezip.file.TFileReader;
+import de.schlichtherle.truezip.file.TFileWriter;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
@@ -26,6 +29,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -38,14 +42,14 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask2;
 
-public class SaveBagHandler2 extends Handler {
+public class SaveBagHandler5 extends Handler {
     private static final Log log = LogFactory.getLog(SaveBagHandler2.class);
     private static final long serialVersionUID = 1L;    
     private File tmpRootPath;
     private boolean clearAfterSaving = false;
     private String messages;
     
-    public SaveBagHandler2() {
+    public SaveBagHandler5() {
         super();        
     }
     //wordt uitgevoerd indien men op de toolbarbutton drukt
@@ -330,43 +334,96 @@ public class SaveBagHandler2 extends Handler {
                     mets.getStructMap().add(structMapTagFiles);                                        
                     
                     //now write mets and updated tagmanifest to bagit
+                    /*
                     String pathMets;
                     String pathTagManifest;
                     String extension = "";
                     String name = bag.getBagFile().getName();
                     int i = name.lastIndexOf('.');
                     String baseName = (i >= 0) ? name.substring(0,i):name;                    
-                    extension  = (i > 0 && i < name.length() - 1)? name.substring(i + 1).toLowerCase():extension;                    
+                    extension  = (i > 0 && i < name.length() - 1)? name.substring(i + 1).toLowerCase():extension;*/
                     
                     System.out.println("bagFile: "+bag.getBagFile().getAbsolutePath()+", exists: "+bag.getBagFile().exists());
                     
+                    File tmpdir = new File(System.getProperty("java.io.tmpdir"));
+                    File tempMetsFile = new File(tmpdir,"mets.xml");
+                    MetsUtils.writeMets(mets,tempMetsFile);
+                    
+                    bag.isBuildPayloadManifest(false);
+                    bag.isBuildTagManifest(true);
+                    bag.isValidateOnSave(false);           
+                    
+                    bag.addTagFile(tempMetsFile);
+                    
+                    bag.write(bagWriter);
+                    
+                    /*
                     if(bag.getSerialMode() != DefaultBag.NO_MODE){                        
-                        pathMets = extension+":"+bag.getBagFile().getAbsolutePath()+"!/"+baseName+"/mets.xml";
-                        pathTagManifest = extension+":"+bag.getBagFile().getAbsolutePath()+"!/"+baseName+"/tagmanifest-"+tagManifestKey+".txt";
-                    }else{
-                        pathMets = "file://"+new File(bag.getBagFile(),"mets.xml").getAbsolutePath();
-                        pathTagManifest = "file://"+new File(bag.getBagFile(),"tagmanifest-"+tagManifestKey+".txt").getAbsolutePath();
-                    }
+                        pathMets = bag.getBagFile().getAbsolutePath()+"/"+baseName+"/mets.xml";
+                        pathTagManifest = bag.getBagFile().getAbsolutePath()+"/"+baseName+"/tagmanifest-"+tagManifestKey+".txt";                                               
+                        
+                        System.out.println("pathMets: "+pathMets+", pathTagManifest: "+pathTagManifest);
+                        
+                        //write mets to tag file                          
+                        TFile entryMets = new TFile(pathMets);
+                        TFileWriter metsWriter = new TFileWriter(entryMets);
+                        MetsUtils.writeMets(mets,metsWriter);                        
+                        metsWriter.flush();
+                        metsWriter.close();
+                        
+                        System.out.println("mets written to file");                      
+                        
+                        
+                        //add mets as tagFile   
+                        TFileReader metsFileReader = new TFileReader(entryMets);
+                        System.out.println("metsFileReader created!");
+                        String checksumMetsFile = MessageDigestHelper.generateFixity(new ReaderInputStream(metsFileReader),tagManifestAlg);                        
+                        tagfileManifest.remove("mets.xml");
+                        tagfileManifest.put("mets.xml",checksumMetsFile);
+                        System.out.println("fixity: "+checksumMetsFile);
+                        Iterator it = tagfileManifest.keySet().iterator();                                        
+                        
+                        File entryTagManifest = new TFile(pathTagManifest);
+                        TFileWriter tagManifestWriter = new TFileWriter(entryTagManifest);                    
+                        
+                        while(it.hasNext()){  
+                            String key = (String)it.next();
+                            System.out.println(tagfileManifest.get(key)+"  "+key);
+                            tagManifestWriter.write(tagfileManifest.get(key)+"  "+key+"\n");
+                        }
+                        tagManifestWriter.flush();
+                        tagManifestWriter.close();
+                        
+                        System.out.println("tagmanifest written to file");
+                        
+                        
+                    }else{                        
+                        File metsFile = new File(bag.getBagFile(),"mets.xml");
+                        File tagManifestFile = new File(bag.getBagFile(),"tagmanifest-"+tagManifestKey+".txt");
+                        
+                        System.out.println("metsFile: "+metsFile+", tagManifestFile: "+tagManifestFile);
+                        
+                        //write mets
+                        MetsUtils.writeMets(mets,metsFile);
+                        
+                        //add mets as tagFile                        
+                        String checksumMetsFile = MessageDigestHelper.generateFixity(metsFile,tagManifestAlg);
+                        tagfileManifest.remove("mets.xml");
+                        tagfileManifest.put("mets.xml",checksumMetsFile);
+                        Iterator it = tagfileManifest.keySet().iterator();                                        
                     
-                    //write mets to tag file                    
-                    MetsUtils.writeMets(mets,FUtils.getOutputStreamFor(pathMets));                       
-
-                    //add mets as tagfile to bagit manually
-                    String checksumMetsFile = MessageDigestHelper.generateFixity(FUtils.getInputStreamFor(pathMets),tagManifestAlg);
-                    tagfileManifest.remove("mets.xml");
-                    tagfileManifest.put("mets.xml",checksumMetsFile);
-                    
-                    Iterator it = tagfileManifest.keySet().iterator();                    
-                    
-                    
-                    BufferedWriter writer = new BufferedWriter(new PrintWriter(FUtils.getOutputStreamFor(pathTagManifest)));                                                       
-                    while(it.hasNext()){  
-                        String key = (String)it.next();
-                        writer.write(key+"  "+tagfileManifest.get(key) +"\n");
-                    }                    
+                        BufferedWriter writer = new BufferedWriter(new PrintWriter(tagManifestFile));                                                       
+                        while(it.hasNext()){  
+                            String key = (String)it.next();
+                            System.out.println("key: "+key+", value: "+tagfileManifest.get(key));
+                            writer.write(tagfileManifest.get(key)+"  "+key+"\n");
+                        }
+                        writer.close();
+                    }*/
                     
 
                 }catch(Exception e){
+                    e.printStackTrace();
                     log.debug(e.getMessage());                
                 }
                 //Nicolas Franck - end

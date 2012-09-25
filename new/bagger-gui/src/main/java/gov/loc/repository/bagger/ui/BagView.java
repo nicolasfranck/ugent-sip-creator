@@ -20,11 +20,11 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.PageComponentContext;
-import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
+import ugent.bagger.views.DefaultView;
 
-public class BagView extends AbstractView {
+public class BagView extends DefaultView {
     private static final Log log = LogFactory.getLog(BagView.class);
     public static BagView instance;
     private final static int ONE_SECOND = 1000;
@@ -55,7 +55,7 @@ public class BagView extends AbstractView {
     public OpenExecutor openExecutor = new OpenExecutor();
     public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
     public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();    
-    public SaveBagHandler2 saveBagHandler = new SaveBagHandler2();    
+    public SaveBagHandler5 saveBagHandler = new SaveBagHandler5();    
     public SaveBagExecutor saveBagExecutor = new SaveBagExecutor();
     public SaveBagAsHandler saveBagAsHandler = new SaveBagAsHandler();
     public SaveBagAsExecutor saveBagAsExecutor = new SaveBagAsExecutor();    

@@ -2,9 +2,9 @@ package gov.loc.repository.bagger.ui;
 
 import java.util.ArrayList;
 import javax.swing.JComponent;
-import org.springframework.richclient.application.support.AbstractView;
+import ugent.bagger.views.DefaultView;
 
-public class ConsoleView extends AbstractView {
+public class ConsoleView extends DefaultView {
     public static ConsoleView instance;
     private ConsolePane consolePane;
     public static ArrayList<String>delayedMessages= new ArrayList<String>();
@@ -19,6 +19,7 @@ public class ConsoleView extends AbstractView {
     
     @Override
     public void componentOpened(){
+        super.componentOpened();
         if(delayedMessages.size() > 0){
             for(String message:delayedMessages){
                 getConsolePane().addConsoleMessages(message);

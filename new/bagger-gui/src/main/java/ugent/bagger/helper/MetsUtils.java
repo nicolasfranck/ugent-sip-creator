@@ -17,6 +17,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.validation.Schema;
+import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -86,7 +87,10 @@ public class MetsUtils {
     public static void writeMets(Mets mets,File file) throws FileNotFoundException, TransformerException, DatatypeConfigurationException, ParserConfigurationException{
         writeMets(mets,new FileOutputStream(file));
     }
-    public static void writeMets(Mets mets,OutputStream out) throws ParserConfigurationException, DatatypeConfigurationException, TransformerException{
+    public static void writeMets(Mets mets,Writer writer) throws ParserConfigurationException, DatatypeConfigurationException, TransformerException{
+        writeMets(mets,new WriterOutputStream(writer));
+    }
+    public static void writeMets(Mets mets,OutputStream out) throws ParserConfigurationException, DatatypeConfigurationException, TransformerException{                
         new MetsWriter().writeToOutputStream(mets,out);
     }
     public static Mets documentToMets(Document doc){

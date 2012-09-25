@@ -10,18 +10,16 @@ import com.anearalone.mets.StructMap;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
+import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import gov.loc.repository.bagit.Manifest.Algorithm;
-import gov.loc.repository.bagit.utilities.MessageDigestHelper;
+import gov.loc.repository.bagit.transformer.impl.DefaultCompleter;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.*;
 import java.awt.event.ActionEvent;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -38,14 +36,14 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask2;
 
-public class SaveBagHandler2 extends Handler {
+public class SaveBagHandler3 extends Handler {
     private static final Log log = LogFactory.getLog(SaveBagHandler2.class);
     private static final long serialVersionUID = 1L;    
     private File tmpRootPath;
     private boolean clearAfterSaving = false;
     private String messages;
     
-    public SaveBagHandler2() {
+    public SaveBagHandler3() {
         super();        
     }
     //wordt uitgevoerd indien men op de toolbarbutton drukt
@@ -330,43 +328,53 @@ public class SaveBagHandler2 extends Handler {
                     mets.getStructMap().add(structMapTagFiles);                                        
                     
                     //now write mets and updated tagmanifest to bagit
-                    String pathMets;
-                    String pathTagManifest;
-                    String extension = "";
-                    String name = bag.getBagFile().getName();
-                    int i = name.lastIndexOf('.');
-                    String baseName = (i >= 0) ? name.substring(0,i):name;                    
-                    extension  = (i > 0 && i < name.length() - 1)? name.substring(i + 1).toLowerCase():extension;                    
+                    File tempdir = new File(System.getProperty("java.io.tmpdir"));
+                    File tempFileMets = new File(tempdir,"mets.xml");
+                    tempFileMets.deleteOnExit();                    
                     
-                    System.out.println("bagFile: "+bag.getBagFile().getAbsolutePath()+", exists: "+bag.getBagFile().exists());
+                    //write mets to tag file
+                    System.out.println("writing mets to tempfile "+tempFileMets);
+                    MetsUtils.writeMets(mets,tempFileMets);
                     
-                    if(bag.getSerialMode() != DefaultBag.NO_MODE){                        
-                        pathMets = extension+":"+bag.getBagFile().getAbsolutePath()+"!/"+baseName+"/mets.xml";
-                        pathTagManifest = extension+":"+bag.getBagFile().getAbsolutePath()+"!/"+baseName+"/tagmanifest-"+tagManifestKey+".txt";
-                    }else{
-                        pathMets = "file://"+new File(bag.getBagFile(),"mets.xml").getAbsolutePath();
-                        pathTagManifest = "file://"+new File(bag.getBagFile(),"tagmanifest-"+tagManifestKey+".txt").getAbsolutePath();
-                    }
-                    
-                    //write mets to tag file                    
-                    MetsUtils.writeMets(mets,FUtils.getOutputStreamFor(pathMets));                       
 
-                    //add mets as tagfile to bagit manually
-                    String checksumMetsFile = MessageDigestHelper.generateFixity(FUtils.getInputStreamFor(pathMets),tagManifestAlg);
-                    tagfileManifest.remove("mets.xml");
-                    tagfileManifest.put("mets.xml",checksumMetsFile);
+                    //add mets as tagfile to bagit manually                   
                     
-                    Iterator it = tagfileManifest.keySet().iterator();                    
+                    System.out.println("adding mets as tagFile");
                     
+                    Bag bilBag = bag.getBag();
+                    bilBag.addFileAsTag(tempFileMets);
+                    DefaultCompleter completer = new DefaultCompleter(bagFactory);
+                    //disable non necessary
+                    completer.setUpdatePayloadOxum(false);
+                    completer.setCompletePayloadManifests(false);                    
+                    completer.setGenerateBagInfoTxt(false);                    
+                    //only this should be updated
+                    completer.setGenerateTagManifest(true);
+                    completer.setCompleteTagManifests(true);
+                    completer.setTagManifestAlgorithm(tagManifestAlg);
+                    
+                    
+                    System.out.println("completer completed!");
+                    System.out.println("makeComplete started:");
+                    long start = System.currentTimeMillis();                            
+                    bilBag.makeComplete(completer);
+                    long end = System.currentTimeMillis();                    
+                    System.out.println("makeComplete ended:"+(end - start));
+                    System.out.println("bagFile: "+bag.getBagFile().getAbsolutePath());
+                    
+                    bilBag.write(bagWriter,bag.getBagFile());
+                    
+                    /*Iterator it = tagfileManifest.keySet().iterator();
                     
                     BufferedWriter writer = new BufferedWriter(new PrintWriter(FUtils.getOutputStreamFor(pathTagManifest)));                                                       
                     while(it.hasNext()){  
                         String key = (String)it.next();
                         writer.write(key+"  "+tagfileManifest.get(key) +"\n");
-                    }                    
+                    }*/                    
                     
 
                 }catch(Exception e){
+                    e.printStackTrace();
                     log.debug(e.getMessage());                
                 }
                 //Nicolas Franck - end

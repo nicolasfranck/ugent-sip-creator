@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,11 +13,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileSystemManager;
-import org.apache.commons.vfs.VFS;
-import sun.security.provider.MD5;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.apache.commons.vfs2.VFS;
 /**
  *
  * @author nicolas
@@ -189,6 +187,7 @@ public class FUtils {
     }
     public static OutputStream getOutputStreamFor(String str) throws FileSystemException{
         FileObject fileObject = resolveFile(str);
+        System.out.println("FileObject is writable: "+fileObject.isWriteable());
         return fileObject.getContent().getOutputStream();
     }
     public static String getMimeType(File file){
