@@ -39,6 +39,11 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.anearalone</groupId>
+      <artifactId>mets-api</artifactId>
+      <version>0.1.4-SNAPSHOT</version>
+    </dependency>
   </dependencies>
     
 </project>

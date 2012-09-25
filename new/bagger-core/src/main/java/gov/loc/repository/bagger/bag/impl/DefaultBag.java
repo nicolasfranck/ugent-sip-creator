@@ -6,10 +6,10 @@ import gov.loc.repository.bagger.bag.BaggerFetch;
 import gov.loc.repository.bagger.model.BagStatus;
 import gov.loc.repository.bagger.model.Status;
 import gov.loc.repository.bagger.profile.BaggerProfileStore;
-import gov.loc.repository.bagit.*;
 import gov.loc.repository.bagit.BagFactory.Version;
 import gov.loc.repository.bagit.FetchTxt.FilenameSizeUrl;
 import gov.loc.repository.bagit.Manifest.Algorithm;
+import gov.loc.repository.bagit.*;
 import gov.loc.repository.bagit.transformer.HolePuncher;
 import gov.loc.repository.bagit.transformer.impl.DefaultCompleter;
 import gov.loc.repository.bagit.transformer.impl.HolePuncherImpl;
@@ -73,7 +73,8 @@ public class DefaultBag {
 	private String versionString = null;
 	private File bagFile = null;
 
-	public DefaultBag() {
+        
+	public DefaultBag() {            
             this(null, Version.V0_96.versionString);
 	}
 
@@ -135,7 +136,7 @@ public class DefaultBag {
             }
 	}
 	
-	private void initializeBilBag() {
+	protected void initializeBilBag() {
             BagInfoTxt bagInfoTxt = bilBag.getBagInfoTxt();
             if (bagInfoTxt == null) {
                 bagInfoTxt = bilBag.getBagPartFactory().createBagInfoTxt();
@@ -195,7 +196,7 @@ public class DefaultBag {
 		return bilBag.getBagConstants().getDataDirectory();
 	}
 
-	private void resetStatus() {
+	protected void resetStatus() {
             isComplete(Status.UNKNOWN);
             isValid(Status.UNKNOWN);
             isValidMetadata(Status.UNKNOWN);
@@ -491,6 +492,11 @@ public class DefaultBag {
 
 	public String write(Writer bw) {
             prepareBilBagInfoIfDirty();
+            
+            //Nicolas Franck - start
+            //genereer mets d.m.v callback!
+            
+            //Nicolas Franck - end
 
             generateManifestFiles();
 
@@ -617,12 +623,12 @@ public class DefaultBag {
             return messages;
 	}
 
-	private String fileStripSuffix(String filename) {
+	protected String fileStripSuffix(String filename) {
             StringTokenizer st = new StringTokenizer(filename, ".");
             return st.nextToken();		
 	}
 
-	private String writeBag(Writer bw) {
+	protected String writeBag(Writer bw) {
             String messages = null;
             String bagName = "";
             File bagFile = null;
@@ -737,10 +743,28 @@ public class DefaultBag {
 
             return strategy;
 	}
+        //Nicolas Franck - start
+        public static Algorithm resolveAlgorithm(String algorithm){
+            if(algorithm.equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
+                return Algorithm.MD5;
+            }else if(algorithm.equalsIgnoreCase(Manifest.Algorithm.SHA1.bagItAlgorithm)) {
+                return Algorithm.SHA1;
+            }else if(algorithm.equalsIgnoreCase(Manifest.Algorithm.SHA256.bagItAlgorithm)) {
+                return Algorithm.SHA256;
+            }else if(algorithm.equalsIgnoreCase(Manifest.Algorithm.SHA512.bagItAlgorithm)) {
+                return Algorithm.SHA512;
+            }else{
+                return Algorithm.MD5;
+            }                
+        }
+        //Nicolas Franck - end
 
-	private void generateManifestFiles() {
+	protected void generateManifestFiles() {
             DefaultCompleter completer = new DefaultCompleter(new BagFactory());            
             if (this.isBuildPayloadManifest) {
+                completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));
+                //Nicolas Franck
+                /*
                 if (this.payloadManifestAlgorithm
                                 .equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
                     completer.setPayloadManifestAlgorithm(Algorithm.MD5);
@@ -760,11 +784,15 @@ public class DefaultBag {
                     completer.setClearExistingPayloadManifests(true);
                 } else {
                     completer.setClearExistingPayloadManifests(true);
-                }
+                }*/
             }
             if (this.isBuildTagManifest) {
                 completer.setClearExistingTagManifests(true);
                 completer.setGenerateTagManifest(true);
+                
+                completer.setTagManifestAlgorithm(resolveAlgorithm(tagManifestAlgorithm));
+                //Nicolas Franck
+                /*
                 if (this.tagManifestAlgorithm
                                 .equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
                         completer.setTagManifestAlgorithm(Algorithm.MD5);
@@ -779,7 +807,7 @@ public class DefaultBag {
                         completer.setTagManifestAlgorithm(Algorithm.SHA512);
                 } else {
                         completer.setTagManifestAlgorithm(Algorithm.MD5);
-                }
+                }*/
             }
             if (bilBag.getBagInfoTxt() != null) {
                 completer.setGenerateBagInfoTxt(true);
@@ -834,12 +862,12 @@ public class DefaultBag {
             return bilBag.getFetchTxt();
 	}
 	
-	private void changeToDirty() {
+	protected void changeToDirty() {
             this.dirty = true;
             isValid(Status.UNKNOWN);
 	}
 	
-	private void prepareBilBagInfoIfDirty() {
+	protected void prepareBilBagInfoIfDirty() {
             if (dirty) {
                 bagInfo.prepareBilBagInfo(bilBag.getBagInfoTxt());
             }

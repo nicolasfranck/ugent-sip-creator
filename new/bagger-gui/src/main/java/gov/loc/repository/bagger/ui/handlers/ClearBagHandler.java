@@ -1,6 +1,7 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
@@ -80,13 +81,13 @@ public class ClearBagHandler extends AbstractAction {
 
     public void newDefaultBag(File f) {
         System.out.println("ClearBagHandler::newDefaultBag('"+f+"')");
-    	DefaultBag bag = null;
+    	MetsBag bag = null;
     	String bagName = "";
         BagView bagView = BagView.getInstance();
     	try {
-            bag = new DefaultBag(f, bagView.infoInputPane.getBagVersion());            
+            bag = new MetsBag(f, bagView.infoInputPane.getBagVersion());            
     	} catch (Exception e) {                        
-            bag = new DefaultBag(f,null);              
+            bag = new MetsBag(f,null);              
     	}
     	if (f == null) {
             bagName = bagView.getPropertyMessage("bag.label.noname");

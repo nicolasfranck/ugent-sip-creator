@@ -2,6 +2,7 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.Bagger;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagger.ui.handlers.*;
 import gov.loc.repository.bagit.BagFile;
@@ -36,7 +37,9 @@ public class BagView extends DefaultView {
     //public Cancellable longRunningProcess = null;
     //private final Timer timer = new Timer(ONE_SECOND/10, null);    
     private Bagger bagger;
-    private DefaultBag bag;    
+    //private DefaultBag bag;    
+    //Nicolas Franck
+    private MetsBag bag;
     public BaggerProfileStore profileStore;
     public BagTree bagPayloadTree;
     public BagTree bagTagFileTree;
@@ -55,7 +58,7 @@ public class BagView extends DefaultView {
     public OpenExecutor openExecutor = new OpenExecutor();
     public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
     public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();    
-    public SaveBagHandler5 saveBagHandler = new SaveBagHandler5();    
+    public SaveBagHandler6 saveBagHandler = new SaveBagHandler6();    
     public SaveBagExecutor saveBagExecutor = new SaveBagExecutor();
     public SaveBagAsHandler saveBagAsHandler = new SaveBagAsHandler();
     public SaveBagAsExecutor saveBagAsExecutor = new SaveBagAsExecutor();    
@@ -164,13 +167,13 @@ public class BagView extends DefaultView {
     	return this.bagger;
     }
     
-    public void setBag(DefaultBag bag) {
+    public void setBag(MetsBag bag) {
         this.bag = bag;
     }
 
-    public DefaultBag getBag() {
+    public MetsBag getBag() {
         if(bag == null){
-            bag = new DefaultBag();
+            bag = new MetsBag();
         }
         return bag;
     }
