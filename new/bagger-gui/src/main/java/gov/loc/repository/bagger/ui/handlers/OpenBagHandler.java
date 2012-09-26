@@ -66,9 +66,11 @@ public class OpenBagHandler extends AbstractAction {
         
         BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
         
-        BagView bagView = BagView.getInstance();
-        DefaultBag bag = bagView.getBag();
+        BagView bagView = BagView.getInstance();        
     	bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
+        
+        //opgelet: een nieuw DefaultBag wordt aangemaakt, dus
+        //beter geen referentie bijhouden nu naar de oude
     	bagView.clearBagHandler.clearExistingBag();
         
         System.out.println("old bag cleared");
@@ -88,10 +90,10 @@ public class OpenBagHandler extends AbstractAction {
     	    return;
         }
         
-        System.out.println("version in BAG:"+bag.getVersion());
+        System.out.println("version in BAG:"+bagView.getBag().getVersion());
         
-        bagView.getInfoInputPane().setBagVersion(bag.getVersion());
-        bagView.getInfoInputPane().setProfile(bag.getProfile().getName());       
+        bagView.getInfoInputPane().setBagVersion(bagView.getBag().getVersion());
+        bagView.getInfoInputPane().setProfile(bagView.getBag().getProfile().getName());       
         String fileName = file.getAbsolutePath();
         bagView.getInfoInputPane().setBagName(fileName);
 
@@ -103,54 +105,54 @@ public class OpenBagHandler extends AbstractAction {
             extension = name.substring(i + 1).toLowerCase();
             if (extension.contains("gz")) {
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);                
-                bag.setSerialMode(DefaultBag.TAR_GZ_MODE);
-                bag.isSerial(true);
+                bagView.getBag().setSerialMode(DefaultBag.TAR_GZ_MODE);
+                bagView.getBag().isSerial(true);
             } else if (extension.contains("bz2")) {
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);                
-                bag.setSerialMode(DefaultBag.TAR_BZ2_MODE);
-                bag.isSerial(true);
+                bagView.getBag().setSerialMode(DefaultBag.TAR_BZ2_MODE);
+                bagView.getBag().isSerial(true);
             } else if (extension.contains(DefaultBag.TAR_LABEL)) {
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);                
-                bag.setSerialMode(DefaultBag.TAR_MODE);
-                bag.isSerial(true);
+                bagView.getBag().setSerialMode(DefaultBag.TAR_MODE);
+                bagView.getBag().isSerial(true);
             } else if (extension.contains(DefaultBag.ZIP_LABEL)) {                
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);                
-                bag.setSerialMode(DefaultBag.ZIP_MODE);
-                bag.isSerial(true);
+                bagView.getBag().setSerialMode(DefaultBag.ZIP_MODE);
+                bagView.getBag().isSerial(true);
             } else {                
                 bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);                
-                bag.setSerialMode(DefaultBag.NO_MODE);
-                bag.isSerial(false);
+                bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
+                bagView.getBag().isSerial(false);
             }
         } else {
             bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);            
-            bag.setSerialMode(DefaultBag.NO_MODE);
-            bag.isSerial(false);
+            bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
+            bagView.getBag().isSerial(false);
         }
         bagView.getInfoInputPane().getSerializeValue().invalidate();
         
-        bagView.getInfoInputPane().setHoley(bag.isHoley() ? "true":"false");        
+        bagView.getInfoInputPane().setHoley(bagView.getBag().isHoley() ? "true":"false");        
         bagView.getInfoInputPane().getHoleyValue().invalidate();
         bagView.updateBaggerRules();
         bagView.setBagRootPath(file);
         
         File rootSrc;
         String path;
-    	if(bag.getFetchTxt() != null){
-            path = bag.getFetch().getBaseURL();
-            rootSrc = new File(file,bag.getFetchTxt().getFilepath());
+    	if(bagView.getBag().getFetchTxt() != null){
+            path = bagView.getBag().getFetch().getBaseURL();
+            rootSrc = new File(file,bagView.getBag().getFetchTxt().getFilepath());
     	}else{
             path = AbstractBagConstants.DATA_DIRECTORY;
-            rootSrc = new File(file,bag.getDataDirectory());
+            rootSrc = new File(file,bagView.getBag().getDataDirectory());
     	}
         
-        System.out.println("populateNodes: "+bag+", path:"+path+",rootSrc:"+rootSrc);
+        System.out.println("populateNodes: "+bagView.getBag()+", path:"+path+",rootSrc:"+rootSrc);
         
-    	bagView.getBagPayloadTree().populateNodes(bag,path,rootSrc,true);
+    	bagView.getBagPayloadTree().populateNodes(bagView.getBag(),path,rootSrc,true);
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.updateManifestPane();
     	bagView.enableBagSettings(true);
-        String msgs = bag.validateMetadata();
+        String msgs = bagView.getBag().validateMetadata();
         if(msgs != null){
             ApplicationContextUtil.addConsoleMessage(msgs);
         }
@@ -163,7 +165,7 @@ public class OpenBagHandler extends AbstractAction {
         String pathMets;            
         Mets mets = null;
         
-        if(bag.isSerial()){
+        if(bagView.getBag().isSerial()){
             pathMets = extension+":"+file.getAbsolutePath()+"!/"+baseName+"/mets.xml";
         }else{
             pathMets = "file://"+new File(file,"mets.xml").getAbsolutePath();

@@ -92,10 +92,9 @@ public class ClearBagHandler extends AbstractAction {
     	try {            
             System.out.println("version in infoInputPane: "+bagView.getInfoInputPane().getBagVersion());
             //bag = new MetsBag(f,bagView.getInfoInputPane().getBagVersion());            
-            bag = new MetsBag(f,Version.V0_96.versionString);            
+            bag = new MetsBag(f,null);            
     	} catch (Exception e) {                        
-            e.printStackTrace();
-            bag = new MetsBag(f,null);              
+            e.printStackTrace();            
     	}
     	if (f == null) {
             bagName = bagView.getPropertyMessage("bag.label.noname");
