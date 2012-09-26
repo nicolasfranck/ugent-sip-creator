@@ -1,45 +1,30 @@
 package gov.loc.repository.bagger.ui.handlers;
 
-import com.anearalone.mets.FileSec;
-import com.anearalone.mets.FileSec.FileGrp;
-import com.anearalone.mets.FileSec.FileGrp.File.FLocat;
-import com.anearalone.mets.LocatorElement;
 import com.anearalone.mets.Mets;
-import com.anearalone.mets.SharedEnums.CHECKSUMTYPE;
-import com.anearalone.mets.StructMap;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import gov.loc.repository.bagger.bag.impl.MetsCreator;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
-import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.BagFile;
-import gov.loc.repository.bagit.Manifest;
-import gov.loc.repository.bagit.Manifest.Algorithm;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.BusyIndicator;
-import sun.awt.image.PixelConverter;
-import ugent.bagger.helper.FUtils;
-import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.bagitmetscreators.DSpaceBagItMetsCreator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask2;
 
 public class SaveBagHandler6 extends Handler {
-    private static final Log log = LogFactory.getLog(SaveBagHandler2.class);
+    private static final Log log = LogFactory.getLog(SaveBagHandler6.class);
     private static final long serialVersionUID = 1L;    
     private File tmpRootPath;
     private boolean clearAfterSaving = false;
@@ -99,6 +84,8 @@ public class SaveBagHandler6 extends Handler {
                 if (bag.getSize() > DefaultBag.MAX_SIZE) {
                     confirmAcceptBagSize();
                 } else {
+                    System.out.println("tmpRootPath:"+tmpRootPath);
+                    System.out.println("bagRootPath:"+bagView.getBagRootPath());
                     bagView.setBagRootPath(tmpRootPath);
                     saveBag(bagView.getBagRootPath());
                 }
@@ -194,7 +181,7 @@ public class SaveBagHandler6 extends Handler {
             }
     	}
         String fileName = bagFile.getAbsolutePath();
-        bagView.infoInputPane.setBagName(fileName);
+        bagView.getInfoInputPane().setBagName(fileName);
         bagView.getControl().invalidate();
     }
     
@@ -207,7 +194,7 @@ public class SaveBagHandler6 extends Handler {
             final BagView bagView = BagView.getInstance();
             MetsBag bag = bagView.getBag();
             Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();
-            bag.setMetsCreator(new BagItMetsCreator(mets));
+            bag.setMetsCreator(new DSpaceBagItMetsCreator(mets));
             
             Writer bagWriter = null;
 
@@ -262,84 +249,5 @@ public class SaveBagHandler6 extends Handler {
         public void cancel(){ 
             BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());            
         }    
-    }
-    private class BagItMetsCreator extends MetsCreator{
-        private Mets mets;
-        public BagItMetsCreator(Mets mets){
-            assert(mets != null);
-            this.mets = mets;
-        }
-        @Override
-        public Mets create(Bag bag) {
-            
-            BagView bagView = BagView.getInstance();
-            DefaultBag defaultBag = bagView.getBag();
-            
-            Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(defaultBag.getTagManifestAlgorithm());
-            CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(defaultBag.getTagManifestAlgorithm());                               
-             
-            Algorithm payloadManifestAlg = DefaultBag.resolveAlgorithm(defaultBag.getPayloadManifestAlgorithm());
-            CHECKSUMTYPE payloadManifestChecksumType = resolveChecksumType(defaultBag.getPayloadManifestAlgorithm());             
-            
-            
-            Mets mets = null;
-            try{       
-                
-                Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
-                Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);
-                mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();   
-
-                //fileSec
-                FileSec fileSec = mets.getFileSec();
-                if(fileSec == null){
-                    fileSec = new FileSec();
-                    mets.setFileSec(fileSec);
-                }                       
-                List<FileGrp> fileGroups = fileSec.getFileGrp();            
-                fileGroups.clear();
-                FileGrp fileGroup = new FileGrp();            
-                fileGroup.setID("CONTENT");
-                fileGroup.setUse("CONTENT");
-                List<FileSec.FileGrp.File>files = fileGroup.getFile();            
-
-                for(BagFile bagFile:bag.getPayload()){                   
-
-                    String fileId = bagFile.getFilepath().replace('/','-');
-
-                    FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                        
-                    metsFile.setSIZE(bagFile.getSize());
-                    metsFile.setMIMETYPE(FUtils.getMimeType(new File(bagFile.getFilepath())));                                                
-                    String checksumFile = payloadManifest.get(bagFile.getFilepath());         
-                    metsFile.setCHECKSUM(checksumFile);
-                    metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                     
-
-                    FLocat flocat = new FLocat();
-                    flocat.setLOCTYPE(LocatorElement.LOCTYPE.URL);
-                    flocat.setXlinkHREF(bagFile.getFilepath());                 
-                    metsFile.getFLocat().add(flocat);
-
-                    files.add(metsFile);                                      
-                }
-                fileGroups.add(fileGroup);
-
-                //structMap
-                DefaultMutableTreeNode rootNodePayloads = bagView.getBagPayloadTree().getParentNode();              
-                DefaultMutableTreeNode rootNodeTagFiles = bagView.getBagTagFileTree().getParentNode();
-                StructMap structMapPayloads = MetsUtils.toStructMap(rootNodePayloads);
-                structMapPayloads.setType("BAGIT_PAYLOAD_TREE");
-                StructMap structMapTagFiles = MetsUtils.toStructMap(rootNodeTagFiles);
-                structMapTagFiles.setType("BAGIT_TAGFILE_TREE");
-
-                mets.getStructMap().clear();
-                mets.getStructMap().add(structMapPayloads);
-                mets.getStructMap().add(structMapTagFiles);                    
-
-            }catch(Exception e){
-                e.printStackTrace();
-                log.debug(e.getMessage());                
-            }
-            
-            return mets;
-        }    
-    }
+    }    
 }

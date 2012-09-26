@@ -98,8 +98,7 @@ public final class BagInfoInputPane extends JTabbedPane {
         am.put("tabNext", new AbstractAction("tabNext") {
             private static final long serialVersionUID = 1L;
             @Override
-            public void actionPerformed(ActionEvent evt) {
-                System.out.println("tabNext!!!");
+            public void actionPerformed(ActionEvent evt) {                
                 try {
                     int selected = getSelectedIndex();
                     int count = getComponentCount();
@@ -117,8 +116,7 @@ public final class BagInfoInputPane extends JTabbedPane {
         });
         setActionMap(am);                
     }
-    public void enableForms(boolean b) {
-        System.out.println("enableForms");
+    public void enableForms(boolean b) {        
     	getProfileForm().setEnabled(b);
     	getProfileForm().getControl().invalidate();
     	getBagInfoForm().setEnabled(b);
@@ -126,16 +124,14 @@ public final class BagInfoInputPane extends JTabbedPane {
     	setEnabled(b);
     	invalidate();
     }    
-    public void populateForms(boolean enabled){    	        
-        System.out.println("populateForms");
+    public void populateForms(boolean enabled){    	                
     	getBagProfile().setOrganization(getDefaultBag().getInfo().getBagOrganization());                
     	getBagProfile().setToContact(getDefaultBag().getInfo().getToContact());    	    	        
         createTabbedUiComponentsWithForms();        
     }
 
     // Create a tabbed pane for the information forms and checkbox panel
-    private void createTabbedUiComponentsWithForms() {        
-        System.out.println("createTabbedUiComponentsWithForms()");
+    private void createTabbedUiComponentsWithForms() {                
         removeAll();     
         validate();
         
@@ -154,7 +150,7 @@ public final class BagInfoInputPane extends JTabbedPane {
         //addTab(getBagView().getPropertyMessage("newProfileWizard.title"),getProfileForm().getControl());
     }
     public String verifyForms(){        
-        System.out.println("verifyForms");        
+                
         if(!getProfileForm().hasErrors()){            
             getProfileForm().commit();
         }else{
@@ -169,14 +165,14 @@ public final class BagInfoInputPane extends JTabbedPane {
         return "";
     }    
     public String updateForms(){
-        System.out.println("BagInfoInputPane::updateForms");
+        
         String messages = verifyForms();        
         createTabbedUiComponentsWithForms();
         update();        
         return messages;
     }    
     public void update(){        
-        System.out.println("update");        
+        
         java.awt.Component[] components = getBagInfoForm().getControl().getComponents();
         for (int i=0; i<components.length; i++) {
             java.awt.Component c = components[i];
@@ -189,14 +185,11 @@ public final class BagInfoInputPane extends JTabbedPane {
     	repaint();        
     }
 
-    public void updateProject(){
-        System.out.println("updateProject");
+    public void updateProject(){        
     	getBagView().getInfoInputPane().updateInfoFormsPane(true);        
     }    
-    private void updateBagInfo(){      
-        System.out.println("BagInfoInputPane::updateBagInfo");        
-        getDefaultBag().updateBagInfo(getBagInfoForm().getBagInfoMap());
-        System.out.println("BagInfoInputPane::updateBagInfo done");                
+    private void updateBagInfo(){              
+        getDefaultBag().updateBagInfo(getBagInfoForm().getBagInfoMap());        
     }
     /*
      * Nicolas Franck: evil! Bij meerdere tabs wordt een focus gevraagd op een onderdeel van tab 1!

@@ -138,8 +138,7 @@ public class OrganizationProfileForm extends AbstractForm implements FocusListen
     public void focusGained(FocusEvent evt) {
     }
     @Override
-    public void focusLost(FocusEvent evt) {
-        System.out.println("focus lost!!");        
+    public void focusLost(FocusEvent evt) {             
     	if (getBagView() != null && !hasErrors() && isDirty()) {
             getBagView().getInfoInputPane().getUpdateBagHandler().updateBag();           
     	}

@@ -99,7 +99,9 @@ public class DefaultBag {
                 bilBag = bagFactory.createBag(this.rootDir);
                 versionString = bilBag.getVersion().versionString;
             } else if (versionString != null) {
+                System.out.println("retrieving version of "+versionString);
                 Version version = Version.valueOfString(versionString);
+                System.out.println("retrieved: "+version);
                 bilBag = bagFactory.createBag(version);
             } else {
                 bilBag = bagFactory.createBag();

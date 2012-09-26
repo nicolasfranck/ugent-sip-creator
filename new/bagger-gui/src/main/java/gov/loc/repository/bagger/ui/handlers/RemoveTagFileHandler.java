@@ -31,9 +31,9 @@ public class RemoveTagFileHandler extends AbstractAction {
     	String message = "";
     	DefaultBag bag = bagView.getBag();
 
-    	TreePath[] paths = bagView.bagTagFileTree.getSelectionPaths();
+    	TreePath[] paths = bagView.getBagTagFileTree().getSelectionPaths();
     	if (paths != null) {
-            DefaultTreeModel model = (DefaultTreeModel)bagView.bagTagFileTree.getModel();
+            DefaultTreeModel model = (DefaultTreeModel)bagView.getBagTagFileTree().getModel();
             for (int i=0; i < paths.length; i++) {
                 TreePath path = paths[i];
                 Object node = path.getLastPathComponent();
@@ -55,8 +55,8 @@ public class RemoveTagFileHandler extends AbstractAction {
                     bagView.showWarningErrorDialog("Error - file not removed", "Error trying to remove file: " + node + "\n" + e.getMessage());
                 }
             }
-            bagView.bagTagFileTree.removeSelectionPaths(paths);
-            bagView.bagTagFileTreePanel.refresh(bagView.bagTagFileTree);
+            bagView.getBagTagFileTree().removeSelectionPaths(paths);
+            bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
     	}
     }
 }

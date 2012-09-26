@@ -30,12 +30,12 @@ public class ShowTagFilesHandler extends AbstractAction {
     public void showTagFiles(){
         BagView bagView = BagView.getInstance();
     	bag = bagView.getBag();
-    	bagView.tagManifestPane.updateCompositePaneTabs(bag);
+    	bagView.getTagManifestPane().updateCompositePaneTabs(bag);
     	ApplicationWindow window = Application.instance().getActiveWindow();
     	JFrame f = window.getControl();
         tagFilesFrame = new TagFilesFrame(f, bagView.getPropertyMessage("bagView.tagFrame.title"));
-        tagFilesFrame.addComponents(bagView.tagManifestPane);
-    	tagFilesFrame.addComponents(bagView.tagManifestPane);
+        tagFilesFrame.addComponents(bagView.getTagManifestPane());
+    	tagFilesFrame.addComponents(bagView.getTagManifestPane());
     	tagFilesFrame.setVisible(true);
     	tagFilesFrame.setAlwaysOnTop(true);
     }

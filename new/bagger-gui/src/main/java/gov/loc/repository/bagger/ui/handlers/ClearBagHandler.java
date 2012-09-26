@@ -5,6 +5,8 @@ import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
+import gov.loc.repository.bagit.BagFactory;
+import gov.loc.repository.bagit.BagFactory.Version;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -70,9 +72,9 @@ public class ClearBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
     	bag.clear();        
-    	bagView.setBagPayloadTree(new BagTree(bagView, AbstractBagConstants.DATA_DIRECTORY, true));
+    	bagView.setBagPayloadTree(new BagTree(AbstractBagConstants.DATA_DIRECTORY, true));
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
-    	bagView.setBagTagFileTree(new BagTree(bagView, ApplicationContextUtil.getMessage("bag.label.noname"), false));
+    	bagView.setBagTagFileTree(new BagTree(ApplicationContextUtil.getMessage("bag.label.noname"), false));
     	bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
     	bagView.getInfoInputPane().setBagName(bag.getName());
     	bagView.getInfoInputPane().updateInfoForms();
@@ -80,13 +82,19 @@ public class ClearBagHandler extends AbstractAction {
     }
 
     public void newDefaultBag(File f) {
-        System.out.println("ClearBagHandler::newDefaultBag('"+f+"')");
+        
     	MetsBag bag = null;
     	String bagName = "";
         BagView bagView = BagView.getInstance();
-    	try {
-            bag = new MetsBag(f, bagView.infoInputPane.getBagVersion());            
+        
+        System.out.println("ClearBagHandler::newDefaultBag('"+f+"')");
+        
+    	try {            
+            System.out.println("version in infoInputPane: "+bagView.getInfoInputPane().getBagVersion());
+            //bag = new MetsBag(f,bagView.getInfoInputPane().getBagVersion());            
+            bag = new MetsBag(f,Version.V0_96.versionString);            
     	} catch (Exception e) {                        
+            e.printStackTrace();
             bag = new MetsBag(f,null);              
     	}
     	if (f == null) {

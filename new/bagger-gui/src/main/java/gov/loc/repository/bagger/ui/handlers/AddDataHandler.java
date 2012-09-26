@@ -73,7 +73,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
             	addBagData(file, true);
             	ApplicationContextUtil.addConsoleMessage(message + " " + file.getAbsolutePath());
             }
-            bagView.bagPayloadTreePanel.refresh(bagView.bagPayloadTree);
+            bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
             bagView.updateAddData();
         }
         /*
@@ -118,7 +118,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
     	BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
         try{
             bagView.getBag().addFileToPayload(file);
-            boolean alreadyExists = bagView.bagPayloadTree.addNodes(file, false);
+            boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);
             if(alreadyExists) {
                 bagView.showWarningErrorDialog("Warning - file already exists", "File: " + file.getName() + "\n" + "already exists in bag.");
             }

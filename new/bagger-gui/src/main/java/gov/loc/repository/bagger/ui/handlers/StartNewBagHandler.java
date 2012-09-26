@@ -49,7 +49,7 @@ public class StartNewBagHandler extends AbstractAction {
         bag.setName(bagName);
         bagView.getInfoInputPane().setBagName(bagName);
 
-        bagView.setBagTagFileTree(new BagTree(bagView, bag.getName(), false));
+        bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
         Collection<BagFile> tags = bag.getTags();
         for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
             BagFile bf = it.next();

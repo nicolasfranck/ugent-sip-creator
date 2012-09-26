@@ -8,7 +8,6 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.InputStream;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
@@ -64,18 +63,32 @@ public class OpenBagHandler extends AbstractAction {
     }
 
     public void openExistingBag(File file) {
+        
+        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+        
         BagView bagView = BagView.getInstance();
         DefaultBag bag = bagView.getBag();
     	bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
     	bagView.clearBagHandler.clearExistingBag();
+        
+        System.out.println("old bag cleared");
 
         try{
-            bagView.clearBagHandler.newDefaultBag(file);           
+            System.out.println("loading new file "+file);
+            bagView.clearBagHandler.newDefaultBag(file);      
+            System.out.println("bag was opened!");
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
         }catch(Exception ex){
             ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	    
+            
+            ex.printStackTrace();                   
+            
+            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+            
     	    return;
         }
+        
+        System.out.println("version in BAG:"+bag.getVersion());
         
         bagView.getInfoInputPane().setBagVersion(bag.getVersion());
         bagView.getInfoInputPane().setProfile(bag.getProfile().getName());       
@@ -115,7 +128,6 @@ public class OpenBagHandler extends AbstractAction {
             bag.isSerial(false);
         }
         bagView.getInfoInputPane().getSerializeValue().invalidate();
-
         
         bagView.getInfoInputPane().setHoley(bag.isHoley() ? "true":"false");        
         bagView.getInfoInputPane().getHoleyValue().invalidate();
@@ -131,6 +143,9 @@ public class OpenBagHandler extends AbstractAction {
             path = AbstractBagConstants.DATA_DIRECTORY;
             rootSrc = new File(file,bag.getDataDirectory());
     	}
+        
+        System.out.println("populateNodes: "+bag+", path:"+path+",rootSrc:"+rootSrc);
+        
     	bagView.getBagPayloadTree().populateNodes(bag,path,rootSrc,true);
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.updateManifestPane();
@@ -164,5 +179,7 @@ public class OpenBagHandler extends AbstractAction {
         BagInfoInputPane bagInfoInputPane = bagView.getInfoInputPane().getBagInfoInputPane();
         bagInfoInputPane.setMets(mets);
         bagInfoInputPane.getMetsPanel().reset(mets);        
+        
+        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
 }

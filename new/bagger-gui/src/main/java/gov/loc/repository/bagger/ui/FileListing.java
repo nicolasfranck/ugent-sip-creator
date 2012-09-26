@@ -1,7 +1,7 @@
 package gov.loc.repository.bagger.ui;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 /**
 * Recursive file listing under a specified directory.

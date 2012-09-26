@@ -505,7 +505,7 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
                 bagFile = file;
                 bagFileName = bagFile.getAbsolutePath();
                 String name = bagFileName; 
-                bagView.infoInputPane.setBagName(name);
+                bagView.getInfoInputPane().setBagName(name);
                 bagNameField.setText(bagFileName);
                 bagNameField.setCaretPosition(bagFileName.length());
                 bagNameField.invalidate();

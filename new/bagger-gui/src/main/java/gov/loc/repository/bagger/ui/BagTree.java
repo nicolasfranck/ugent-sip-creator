@@ -29,9 +29,14 @@ public class BagTree extends JTree {
     private TreePath rootPath;
     private String basePath;
     private DefaultMutableTreeNode parentNode = new DefaultMutableTreeNode(AbstractBagConstants.DATA_DIRECTORY);
-    private ArrayList<DefaultMutableTreeNode> srcNodes = new ArrayList<DefaultMutableTreeNode>();
+    
+    //Nicolas Franck: nergens gebruikt
+    //private ArrayList<DefaultMutableTreeNode> srcNodes = new ArrayList<DefaultMutableTreeNode>();
 	
-    public BagTree(BagView bagView, String path, boolean isPayload) {
+    public BagView getBagView(){
+        return BagView.getInstance();
+    }
+    public BagTree(String path, boolean isPayload) {
         super();
         
         setShowsRootHandles(true);
@@ -59,7 +64,7 @@ public class BagTree extends JTree {
         this.setDropMode(DropMode.ON_OR_INSERT);
         this.setTransferHandler(new BagTreeTransferHandler(isPayload));
         this.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-        bagView.registerTreeListener(path,this);
+        getBagView().registerTreeListener(path,this);
     }
 	
     private void initialize() {
@@ -80,17 +85,30 @@ public class BagTree extends JTree {
         basePath = path;
 
         log.debug("BagTree.populateNodes");
+        
+        System.out.println("bag.payload:"+bag.getPayload());
+        System.out.println("rootSrc.listFiles:"+rootSrc.listFiles());
+        
         if (bag.getPayload() != null && rootSrc.listFiles() != null) {
             addNodes(rootSrc, isParent);            
         }else{
             log.debug("BagTree.populateNodes listFiles NULL:" );
+            
+            /*  
+             * Nicolas Franck: indien geen map, wordt een platte lijst van de entries weergegeven
+             */
+            
             List<String> payload;
             if(!bag.isHoley()){
+                System.out.println("bag not holey");
                 log.debug("BagTree.populateNodes getPayloadPaths:" );
                 payload = bag.getPayloadPaths();
+                System.out.println("payloads.size:"+payload.size());
+                System.out.println("payloads.size in real bag:"+bag.getBag().getPayload().size());
             }else{
                 log.debug("BagTree.populateNodes getFetchPayload:");
                 payload = bag.getPayloadPaths(); //bag.getFetchPayload();
+                
                 //basePath = bag.getFetch().getBaseURL();
             }
             for(Iterator<String> it=payload.iterator(); it.hasNext(); ){
@@ -122,7 +140,8 @@ public class BagTree extends JTree {
     public boolean addNodes(File file, boolean isParent) {
         if(!nodeAlreadyExists(file.getName())){           
             DefaultMutableTreeNode rootNode = createNodeTree(null, null, file);            
-            srcNodes.add(rootNode);
+            //Nicolas Franck: nergens gebruikt
+            //srcNodes.add(rootNode);
             if(isParent) {
                 parentNode = rootNode;
             }
@@ -156,7 +175,8 @@ public class BagTree extends JTree {
 
     public void addNode(String filePath) {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(filePath);        
-        srcNodes.add(node);
+        //Nicolas Franck: nooit gebruikt
+        //srcNodes.add(node);
         parentNode.add(node);
         initialize();
     }
@@ -171,19 +191,31 @@ public class BagTree extends JTree {
             curTop.add(curDir);
             displayTop.add(displayDir);
         }
-        Vector<String> ol = new Vector<String>();
+        
+        ArrayList<String>ol = new ArrayList<String>();
+        
+        //Nicolas Franck: obsolete in this context: vector are synchronized version of arraylist
+        //Vector<String> ol = new Vector<String>();
         //display("addNodes: " + dir.list());
         String[] tmp = dir.list();
         if (tmp != null && tmp.length > 0) {
-            for (int i = 0; i < tmp.length; i++)ol.addElement(tmp[i]);
+            //for (int i = 0; i < tmp.length; i++)ol.addElement(tmp[i]);
+            ol.addAll(Arrays.asList(tmp));
         }
 
         Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
         File f;
-        Vector<String> files = new Vector<String>();
+        
+        //Nicolas Franck: obsolete in this context: vector are synchronized version of arraylist
+        //Vector<String> files = new Vector<String>();
+        ArrayList<String> files = new ArrayList<String>();
+        
         // Make two passes, one for Dirs and one for Files. This is #1.
         for (int i = 0; i < ol.size(); i++) {
-            String thisObject = (String) ol.elementAt(i);
+            //String thisObject = (String) ol.elementAt(i);
+            
+            String thisObject = (String) ol.get(i);
+            
             String newPath;
             if (curPath.equals(".")) {
                 newPath = thisObject;
@@ -195,13 +227,16 @@ public class BagTree extends JTree {
                 createNodeTree(curDir, displayDir, f);
             }
             else {
-                files.addElement(thisObject);
+                //files.addElement(thisObject);
+                files.add(thisObject);
             }
         }
         // Pass two: for files.
         //display("createBagManagerTree: files.size: " + files.size());
         for(int fnum = 0; fnum < files.size(); fnum++){
-            String elem = files.elementAt(fnum);
+            //String elem = files.elementAt(fnum);
+            String elem = files.get(fnum);
+            
             DefaultMutableTreeNode elemNode = new DefaultMutableTreeNode(elem);
             curDir.add(elemNode);
             displayDir.add(elemNode);

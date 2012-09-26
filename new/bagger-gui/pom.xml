@@ -164,40 +164,16 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>de.schlichtherle</groupId>
-      <artifactId>truezip</artifactId>
-      <version>6.8.4</version>
-    </dependency>
-    <dependency>
-      <groupId>de.schlichtherle.truezip</groupId>
-      <artifactId>truezip-file</artifactId>
-      <version>7.6</version>
-    </dependency>
-    <dependency>
-      <groupId>de.schlichtherle.io</groupId>
-      <artifactId>truezip</artifactId>
-      <version>6.6</version>
-    </dependency>
-    <dependency>
       <groupId>de.schlichtherle.truezip</groupId>
       <artifactId>truezip-driver</artifactId>
       <version>7.6</version>
       <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>de.schlichtherle.truezip</groupId>
-      <artifactId>truezip-driver-tar</artifactId>
-      <version>7.6</version>
-    </dependency>
-    <dependency>
-      <groupId>de.schlichtherle.truezip</groupId>
-      <artifactId>truezip-driver-tzp</artifactId>
-      <version>7.6</version>
-    </dependency>
-    <dependency>
-      <groupId>de.schlichtherle.truezip</groupId>
-      <artifactId>truezip-driver-zip</artifactId>
-      <version>7.6</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>truezip-kernel</artifactId>
+          <groupId>de.schlichtherle.truezip</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
  

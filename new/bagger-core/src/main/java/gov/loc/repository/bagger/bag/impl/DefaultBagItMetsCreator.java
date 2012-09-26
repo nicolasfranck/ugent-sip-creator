@@ -11,7 +11,7 @@ import gov.loc.repository.bagit.Bag;
  *
  * @author nicolas
  */
-public class DefaultMetsCreator extends MetsCreator{
+public class DefaultBagItMetsCreator extends BagItMetsCreator{
     @Override
     public Mets create(Bag bag) {
         return new Mets();

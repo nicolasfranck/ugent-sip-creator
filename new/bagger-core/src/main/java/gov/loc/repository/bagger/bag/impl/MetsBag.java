@@ -1,15 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package gov.loc.repository.bagger.bag.impl;
-
 
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsWriter;
-import gov.loc.repository.bagger.util.FileUtililties;
 import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.Manifest;
 import gov.loc.repository.bagit.Manifest.Algorithm;
 import gov.loc.repository.bagit.utilities.MessageDigestHelper;
@@ -21,23 +14,21 @@ import java.io.File;
  * @author nicolas
  */
 public class MetsBag extends DefaultBag{
-    private MetsCreator metsCreator;
+    private BagItMetsCreator metsCreator;
     
     public MetsBag() {  
         super();            
     }
-
     public MetsBag(File rootDir, String version) {
         super(rootDir,version);        
-    }
-    
-    public MetsCreator getMetsCreator() {
+    }    
+    public BagItMetsCreator getMetsCreator() {
         if(metsCreator == null){
-            metsCreator = new DefaultMetsCreator();
+            metsCreator = new DefaultBagItMetsCreator();
         }
         return metsCreator;
     }
-    public void setMetsCreator(MetsCreator metsCreator) {
+    public void setMetsCreator(BagItMetsCreator metsCreator) {
         this.metsCreator = metsCreator;
     }  
     @Override
@@ -65,12 +56,10 @@ public class MetsBag extends DefaultBag{
             tagManifest.remove("mets.xml");
             tagManifest.put("mets.xml",checksumMets);
             
-        }catch(Exception e){
+        }catch(Exception e){            
             e.printStackTrace();            
-        }
-        
+        }        
         String messages = writeBag(bw);
-
         if (bw.isCancelled()) {
             return "Save cancelled.";
         }

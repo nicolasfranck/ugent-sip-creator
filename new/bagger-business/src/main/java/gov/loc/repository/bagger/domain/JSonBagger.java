@@ -39,10 +39,9 @@ import org.apache.commons.logging.LogFactory;
 public class JSonBagger implements Bagger {
 
     private final Log logger = LogFactory.getLog(getClass());
-	private File profilesFolder;
+    private File profilesFolder;
     
-    public JSonBagger()
-    {
+    public JSonBagger(){
     	String homeDir = System.getProperty("user.home");
     	String profilesPath = homeDir+File.separator+"bagger";
     	profilesFolder = new File(profilesPath);
@@ -51,105 +50,96 @@ public class JSonBagger implements Bagger {
     }
     
   
-    public void copyDefautprofilesToUserFolder(String baggerJarPath, File profilesFolder)
-	{
-    	if(!profilesFolder.exists())
-    	{
-    		profilesFolder.mkdirs();
+    public void copyDefautprofilesToUserFolder(String baggerJarPath, File profilesFolder){
+    	if(!profilesFolder.exists()){
+            profilesFolder.mkdirs();
     	}
 
     	if(baggerJarPath != null && !baggerJarPath.endsWith(".jar")){
 
-    		String name = new String("gov.loc.repository.bagger.profiles");
-    		if (!name.startsWith("/")) {
-    		name = "/" + name;
-    		}
-    		name = name.replace('.','/');
+            String name = new String("gov.loc.repository.bagger.profiles");
+            if (!name.startsWith("/")){
+                name = "/" + name;
+            }
+            name = name.replace('.','/');
 
 
 
-    		// Get a File object for the package
-    		URL url = JSonBagger.class.getResource(name);
-    		File directory = new File(url.getFile());
-    		// New code
-    		// ======
-    		if (directory.exists()) {
-    			// Get the list of the files contained in the package
-    			File [] files = directory.listFiles();
-    			for(File file : files)
-    			{
-    				try {
-    					FileInputStream fileInputStream = new FileInputStream(file);
+            // Get a File object for the package
+            URL url = JSonBagger.class.getResource(name);
+            File directory = new File(url.getFile());
+            // New code
+            // ======
+            if (directory.exists()) {
+                // Get the list of the files contained in the package
+                File [] files = directory.listFiles();
+                for(File file : files){
+                    try {
+                        FileInputStream fileInputStream = new FileInputStream(file);
 
-    					String entryName = file.getName();
-    					String fileName = entryName.substring(entryName.lastIndexOf("/")+1, entryName.length());
-    					File outFile = new File(profilesFolder +File.separator+ fileName);
-    					FileOutputStream os = new FileOutputStream(outFile);
-    					int content = fileInputStream.read();
-    					while(content != -1)
-    					{
-    						os.write(content);
-    						content = fileInputStream.read();
-    					}
-    					os.flush();
-    					os.close();
-    					
-
-
-
-    				} catch (FileNotFoundException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				} catch (IOException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}
-
-    			}
-    			return;
-
-    		}
+                        String entryName = file.getName();
+                        String fileName = entryName.substring(entryName.lastIndexOf("/")+1, entryName.length());
+                        File outFile = new File(profilesFolder +File.separator+ fileName);
+                        FileOutputStream os = new FileOutputStream(outFile);
+                        int content = fileInputStream.read();
+                        while(content != -1)
+                        {
+                                os.write(content);
+                                content = fileInputStream.read();
+                        }
+                        os.flush();
+                        os.close();
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                return;
+            }
     	}
-    	else
-    	{
-    		try {
-    			baggerJarPath = URLDecoder.decode(baggerJarPath, "UTF-8");
-    			java.util.jar.JarFile jf = new java.util.jar.JarFile(baggerJarPath);
-    			Enumeration<JarEntry> resources = jf.entries();
-    			while ( resources.hasMoreElements() ) {
-    				java.util.jar.JarEntry je = (java.util.jar.JarEntry) resources.nextElement();
-    				if ( je.getName().matches(".*\\.json") ) {
-    					try {
-    						InputStream is = jf.getInputStream(je);
-    						String entryName = je.getName();
-    						String fileName = entryName.substring(entryName.lastIndexOf("/")+1, entryName.length());
-    						File file = new File(profilesFolder +File.separator+ fileName);
-    						FileOutputStream os = new FileOutputStream(file);
-    						int content = is.read();
-    						while(content != -1)
-    						{
-    							os.write(content);
-    							content = is.read();
-    						}
-    						os.flush();
-    						os.close();
-    					} catch (IOException e) {
-    						e.printStackTrace();
-    					}
-    				}
-    			}
-    		} catch (java.io.IOException e) {
-    			e.printStackTrace();
-    		}
+    	else{
+            try {
+                baggerJarPath = URLDecoder.decode(baggerJarPath, "UTF-8");
+                java.util.jar.JarFile jf = new java.util.jar.JarFile(baggerJarPath);
+                Enumeration<JarEntry> resources = jf.entries();
+                while( resources.hasMoreElements() ){
+                    java.util.jar.JarEntry je = (java.util.jar.JarEntry) resources.nextElement();
+                    if ( je.getName().matches(".*\\.json") ) {
+                            try {
+                                    InputStream is = jf.getInputStream(je);
+                                    String entryName = je.getName();
+                                    String fileName = entryName.substring(entryName.lastIndexOf("/")+1, entryName.length());
+                                    File file = new File(profilesFolder +File.separator+ fileName);
+                                    FileOutputStream os = new FileOutputStream(file);
+                                    int content = is.read();
+                                    while(content != -1)
+                                    {
+                                            os.write(content);
+                                            content = is.read();
+                                    }
+                                    os.flush();
+                                    os.close();
+                            } catch (IOException e) {
+                                    e.printStackTrace();
+                            }
+                    }
+                }
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
     	}
-	}
+    }
     
+    @Override
 	public void loadProfile(String profileName) {	
 	}
 
+    @Override
 	public List<Profile> loadProfiles() {
-            System.err.println("\nprofilesFolder: "+profilesFolder);
-            System.err.flush();
+            
 		File[] profilesFiles  = profilesFolder.listFiles();
 		List<Profile>  profilesToReturn = new ArrayList<Profile>();
 		for(File file:profilesFiles)
@@ -164,8 +154,7 @@ public class JSonBagger implements Bagger {
                     if(!file.getName().endsWith("-profile.json")){
                         continue;
                     }
-                    System.err.println("\nreading file "+file);
-                    System.err.flush();
+                    
 			try {                            
 				FileReader reader = new FileReader(file);
 				Profile profile = loadProfile(reader,file.getName());
@@ -183,7 +172,7 @@ public class JSonBagger implements Bagger {
                              * Nicolas Franck: deze exception werd vaak gegooid, maar
                              * nooit opgevangen..
                              */
-                            System.err.println("exception occurred!:"+e.getMessage());
+                            e.printStackTrace();
                             continue;
                         }
 		}
@@ -236,9 +225,7 @@ public class JSonBagger implements Bagger {
      * @param jsonFileName A JSON file name
      */
 	private String getprofileName(String jsonFileName)
-	{
-                System.err.println("jsonFilename: "+jsonFileName);
-                System.err.flush();
+	{                
 		return jsonFileName.substring(0, jsonFileName.indexOf("-profile.json"));
 	}		
 	

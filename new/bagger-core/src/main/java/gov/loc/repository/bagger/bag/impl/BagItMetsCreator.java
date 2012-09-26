@@ -10,7 +10,7 @@ import gov.loc.repository.bagit.Manifest;
  *
  * @author nicolas
  */
-public abstract class MetsCreator {
+public abstract class BagItMetsCreator {
     public static SharedEnums.CHECKSUMTYPE resolveChecksumType(String algorithm){
         if(algorithm.equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
             return CHECKSUMTYPE.MD_5;

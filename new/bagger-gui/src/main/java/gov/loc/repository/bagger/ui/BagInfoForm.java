@@ -157,12 +157,10 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
         return formBuilder.getForm();                
     }
     @Override
-    public void focusGained(FocusEvent evt){ 
-        System.out.println("BagInfoForm::focusGained");
+    public void focusGained(FocusEvent evt){         
     }    
     @Override
-    public void focusLost(FocusEvent evt) {       
-        System.out.println("BagInfoForm::focusLost"); 
+    public void focusLost(FocusEvent evt) {               
     	getBagView().getInfoInputPane().getUpdateBagHandler().updateBag();        
         //Nicolas Franck: waarom?
 	//getBagView().getInfoInputPane().bagInfoInputPane.setSelectedIndex(0);        

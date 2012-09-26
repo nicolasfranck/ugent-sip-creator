@@ -58,13 +58,13 @@ public class AddTagFileHandler extends AbstractAction {
             File file = fo.getSelectedFile();            
 
             bag.addTagFile(file);
-            bagView.bagTagFileTree = new BagTree(bagView, bag.getName(), false);
+            bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
             Collection<BagFile> tags = bag.getTags();
             for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
             	BagFile bf = it.next();
-            	bagView.bagTagFileTree.addNode(bf.getFilepath());
+            	bagView.getBagTagFileTree().addNode(bf.getFilepath());
             }
-            bagView.bagTagFileTreePanel.refresh(bagView.bagTagFileTree);
+            bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
             ApplicationContextUtil.addConsoleMessage("Tag file added: " + file.getAbsolutePath());
         }
 
@@ -79,19 +79,19 @@ public class AddTagFileHandler extends AbstractAction {
     public void addTagFiles(List<File> files) {
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
-    	if(bagView.bagTagFileTree.isEnabled()) {
+    	if(bagView.getBagTagFileTree().isEnabled()) {
             if(files != null){
                 for (int i=0; i < files.size(); i++) {
                     //log.info("addBagData[" + i + "] " + files.get(i).getName());
                     bag.addTagFile(files.get(i));
                 }
-                bagView.bagTagFileTree = new BagTree(bagView, bag.getName(), false);
+                bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
                 Collection<BagFile> tags = bag.getTags();
                 for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
                     BagFile bf = it.next();
-                    bagView.bagTagFileTree.addNode(bf.getFilepath());
+                    bagView.getBagTagFileTree().addNode(bf.getFilepath());
                 }
-                bagView.bagTagFileTreePanel.refresh(bagView.bagTagFileTree);
+                bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
             }
             ApplicationContextUtil.addConsoleMessage("Tag files changed.");
     	}

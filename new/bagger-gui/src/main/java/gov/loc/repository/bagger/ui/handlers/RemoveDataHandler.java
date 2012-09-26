@@ -35,10 +35,10 @@ public class RemoveDataHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
 
-    	TreePath[] paths = bagView.bagPayloadTree.getSelectionPaths();
+    	TreePath[] paths = bagView.getBagPayloadTree().getSelectionPaths();
     	
     	if (paths != null) {
-            DefaultTreeModel model = (DefaultTreeModel)bagView.bagPayloadTree.getModel();
+            DefaultTreeModel model = (DefaultTreeModel)bagView.getBagPayloadTree().getModel();
             for (int i=0; i < paths.length; i++) {
                 TreePath path = paths[i];
                 Object node = path.getLastPathComponent();
@@ -82,8 +82,8 @@ public class RemoveDataHandler extends AbstractAction {
                 }
             }
 
-            bagView.bagPayloadTree.removeSelectionPaths(paths);
-            bagView.bagPayloadTreePanel.refresh(bagView.bagPayloadTree);
+            bagView.getBagPayloadTree().removeSelectionPaths(paths);
+            bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	}
     }
 }

@@ -19,6 +19,7 @@ public class SaveBagExecutor extends AbstractActionCommandExecutor {
     @Override
     public void execute() {
         BagView bagView = BagView.getInstance();
+        System.out.println("bag root path:"+bagView.getBagRootPath()+", exists:"+(bagView.getBagRootPath().exists()? "yes":"no"));
         if(bagView.getBagRootPath().exists()) {
             bagView.saveBagHandler.setTmpRootPath(bagView.getBagRootPath());
             bagView.saveBagHandler.confirmWriteBag();

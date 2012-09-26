@@ -82,7 +82,7 @@ public class SwingUtils {
         monitor(component,worker,title,note,new ArrayList<PropertyChangeListener>());
     }
     public static void monitor(Component component,SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
-        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                
+        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                        
         progressMonitor.setProgress(0);
         progressMonitor.setMillisToDecideToPopup(0);
         progressMonitor.setMillisToPopup(0);        

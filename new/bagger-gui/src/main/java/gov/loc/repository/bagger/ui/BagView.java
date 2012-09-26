@@ -1,7 +1,6 @@
 package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.Bagger;
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagger.ui.handlers.*;
@@ -40,15 +39,15 @@ public class BagView extends DefaultView {
     //private DefaultBag bag;    
     //Nicolas Franck
     private MetsBag bag;
-    public BaggerProfileStore profileStore;
-    public BagTree bagPayloadTree;
-    public BagTree bagTagFileTree;
+    private BaggerProfileStore profileStore;
+    private BagTree bagPayloadTree;
+    private BagTree bagTagFileTree;
     private File bagRootPath;
     private String userHomeDir;
-    public TagManifestPane tagManifestPane;
-    public InfoFormsPane infoInputPane;
-    public BagTreePanel bagPayloadTreePanel;
-    public BagTreePanel bagTagFileTreePanel;
+    private TagManifestPane tagManifestPane;
+    private InfoFormsPane infoInputPane;
+    private BagTreePanel bagPayloadTreePanel;
+    private BagTreePanel bagTagFileTreePanel;
     private JPanel bagButtonPanel;
     private JPanel bagTagButtonPanel;
     //private JPanel topButtonPanel;
@@ -78,11 +77,11 @@ public class BagView extends DefaultView {
     private JLabel viewTagFilesToolbarAction;
     private JLabel addTagFileToolBarAction;
     private JLabel removeTagFileToolbarAction;
-      	    	
-    	    
     //Nicolas Franck: vldocking sucks!
     private JSplitPane mainPanel;
     private JSplitPane leftPanel;    
+    
+    
       
     public JSplitPane getLeftPanel() {
         if(leftPanel == null){
@@ -203,7 +202,7 @@ public class BagView extends DefaultView {
 
     public BagTree getBagPayloadTree() {
         if(bagPayloadTree == null){
-            bagPayloadTree = new BagTree(this, AbstractBagConstants.DATA_DIRECTORY, true);
+            bagPayloadTree = new BagTree(AbstractBagConstants.DATA_DIRECTORY, true);
         }
         return bagPayloadTree;
     }
@@ -236,7 +235,7 @@ public class BagView extends DefaultView {
     
     public BagTree getBagTagFileTree() {
         if(bagTagFileTree == null){
-            bagTagFileTree = new BagTree(this, getMessage("bag.label.noname"), false);
+            bagTagFileTree = new BagTree(getMessage("bag.label.noname"), false);
         }
     	return bagTagFileTree;
     }
@@ -637,7 +636,7 @@ public class BagView extends DefaultView {
     }
     
     public void updateManifestPane() {
-        bagTagFileTree = new BagTree(this, getBag().getName(), false);
+        bagTagFileTree = new BagTree(getBag().getName(), false);
         Collection<BagFile> tags = getBag().getTags();
         for(Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {            
             bagTagFileTree.addNode(it.next().getFilepath());

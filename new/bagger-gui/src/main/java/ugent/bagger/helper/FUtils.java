@@ -2,12 +2,12 @@ package ugent.bagger.helper;
 
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
+
 /**
  *
  * @author nicolas
@@ -190,18 +191,32 @@ public class FUtils {
         System.out.println("FileObject is writable: "+fileObject.isWriteable());
         return fileObject.getContent().getOutputStream();
     }
-    public static String getMimeType(File file){
-        if(file.isFile()){                    
-            Collection mimes = MimeUtil.getMimeTypes(file);
-            if(!mimes.isEmpty()){
-                Iterator it = mimes.iterator();
-                while(it.hasNext()){                          
-                    return ((MimeType)it.next()).toString();
-                }
-            }else{
-                return "application/octet-stream";
-            }
+    public static String getMimeType(File file){                
+        Iterator it = MimeUtil.getMimeTypes(file).iterator();
+        //steeds application/octet-stream indien bestand niet gevonden
+        while(it.hasNext()){                          
+            return ((MimeType)it.next()).toString();            
         }
-        return "";
+        return "application/octet-stream";
+    }    
+    public static String getMimeType(InputStream in){
+        String mimeType = "application/octet-stream";        
+        try{            
+            //buffering is belangrijk: enkel mimetype herkenning van inputstream indien deze mark ondersteund!              
+            if(!in.markSupported()){
+                byte [] buf = new byte[8192];
+                int bytesRead = in.read(buf);
+                in = new ByteArrayInputStream(buf,0,bytesRead);                              
+            }                       
+            Iterator it = MimeUtil.getMimeTypes(in).iterator();
+            while(it.hasNext()){                          
+                mimeType = ((MimeType)it.next()).toString();
+                break;
+            }            
+        }catch(Exception e){
+            //als inputstream geen mark ondersteund, dan wordt een Exception geworpen
+            e.printStackTrace();
+        }
+        return mimeType;        
     }    
 }
