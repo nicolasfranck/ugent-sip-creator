@@ -15,10 +15,8 @@
  */
 package gov.loc.repository.bagger.ui;
 
-import gov.loc.repository.bagger.Profile;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.BagFactory.Version;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -26,16 +24,12 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -49,37 +43,101 @@ import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
 
 public class NewBagFrame extends JFrame implements ActionListener {
-	private static final Log log = LogFactory.getLog(NewBagFrame.class);
-	private static final long serialVersionUID = 1L;
-	private BagView bagView;
-	private JComboBox bagVersionList;
-	private JComboBox profileList;
-
-	public NewBagFrame(BagView bagView, String title) {
-        super(title);
+    private static final Log log = LogFactory.getLog(NewBagFrame.class);
+    private static final long serialVersionUID = 1L;
+    private BagView bagView;
+    private JComboBox bagVersionList;
+    private JComboBox profileList;
+    protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
+    protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";
+    private ActionCommand finishCommand;
+    private ActionCommand cancelCommand;
+   
+    public NewBagFrame(BagView bagView, String title) {     
+        super(title);        
+        
         JPanel createPanel;
         Application app = Application.instance();
         ApplicationPage page = app.getActiveWindow().getPage();
-        PageComponent component = page.getActiveComponent();
+        PageComponent component = page.getActiveComponent();        
 
-        if (component != null) this.bagView = BagView.instance;
-        else this.bagView = bagView;
+        this.bagView = (component != null) ? bagView.getInstance() : bagView;
+
+        //Nicolas Franck
+        /*
+        if (component != null) {
+            this.bagView = BagView.instance;
+        }
+        else {
+            this.bagView = bagView;
+        }*/
+
         if (bagView != null) {
-        getContentPane().removeAll();
-        createPanel = createComponents();
+            getContentPane().removeAll();
+            createPanel = createComponents();
         } else {
-                createPanel = new JPanel();
+            createPanel = new JPanel();
         }
         getContentPane().add(createPanel, BorderLayout.CENTER);
-        
+
         setPreferredSize(new Dimension(400, 200));
         setLocation(300, 200);
-        pack();
+        
+        //Nicolas Franck: als je dit hier doet, krijg je in Ubuntu een X11 error. Beter: bij oproepende code
+        //pack();
     }
 
+    public ActionCommand getFinishCommand() {
+        if(finishCommand == null){
+            finishCommand = new ActionCommand(getFinishCommandId()) {
+                @Override
+                public void doExecuteCommand() {
+                    log.info("BagVersionFrame.OkNewBagHandler");
+                    NewBagFrame.this.setVisible(false);
+                    bagView.startNewBagHandler.createNewBag(
+                        (String)bagVersionList.getSelectedItem(),
+                        (String)profileList.getSelectedItem()
+                    );
+                }
+            };
+        }
+        return finishCommand;
+    }
+    public void setFinishCommand(ActionCommand finishCommand) {
+        this.finishCommand = finishCommand;
+    }
+    public ActionCommand getCancelCommand() {
+        if(cancelCommand == null){
+            cancelCommand = new ActionCommand(getCancelCommandId()) {
+                @Override
+                public void doExecuteCommand() {
+                    NewBagFrame.this.setVisible(false);
+                }
+            };
+        }
+        return cancelCommand;
+    }
+    public void setCancelCommand(ActionCommand cancelCommand) {
+        this.cancelCommand = cancelCommand;
+    }
+
+    public JComboBox getProfileList() {
+        if(profileList == null){
+            profileList = new JComboBox(bagView.getProfileStore().getProfileNames());
+            profileList.setName(bagView.getPropertyMessage("bag.label.projectlist"));
+            profileList.setSelectedItem(bagView.getPropertyMessage("bag.project.noproject"));
+            profileList.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
+        }
+        return profileList;
+    }
+
+    public void setProfileList(JComboBox profileList) {
+        this.profileList = profileList;
+    }
+    
     private JPanel createComponents() {
     	TitlePane titlePane = new TitlePane();
-        initStandardCommands();
+        //initStandardCommands();
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
         titlePane.setTitle(bagView.getPropertyMessage("NewBagFrame.title"));
@@ -104,118 +162,106 @@ public class NewBagFrame extends JFrame implements ActionListener {
         JComponent buttonBar = createButtonBar();
         pageControl.add(buttonBar,BorderLayout.SOUTH);
 
-        this.pack();
+        //Nicolas Franck: als je dit hier doet, krijg je in Ubuntu een X11 error. Beter: bij oproepende code
+        //this.pack();
         return pageControl;
     }
 
 	
 
-	private void layoutBagVersionSelection(JPanel contentPane, int row) {
-		//contents
-		// Bag version dropdown list
-		JLabel bagVersionLabel = new JLabel(bagView.getPropertyMessage("bag.label.version"));
+    private void layoutBagVersionSelection(JPanel contentPane, int row) {
+        //contents
+        // Bag version dropdown list
+        JLabel bagVersionLabel = new JLabel(bagView.getPropertyMessage("bag.label.version"));
         bagVersionLabel.setToolTipText(bagView.getPropertyMessage("bag.versionlist.help"));
         ArrayList<String> versionModel = new ArrayList<String>();
         Version[] vals = Version.values();
         for (int i=0; i < vals.length; i++) {
-        	versionModel.add(vals[i].versionString);
+            versionModel.add(vals[i].versionString);
         }
-
         bagVersionList = new JComboBox(versionModel.toArray());
         bagVersionList.setName(bagView.getPropertyMessage("bag.label.versionlist"));
         bagVersionList.setSelectedItem(Version.V0_96.versionString);
         bagVersionList.setToolTipText(bagView.getPropertyMessage("bag.versionlist.help"));
-		
-        GridBagConstraints glbc = null;
 
         JLabel spacerLabel = new JLabel();
-        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         contentPane.add(bagVersionLabel, glbc);
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 40, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
         contentPane.add(bagVersionList, glbc);
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
         contentPane.add(spacerLabel, glbc);
-	}
+    }
 	
-	private void layoutProfileSelection(JPanel contentPane, int row) {
-		// content
-		// profile selection
-		JLabel bagProfileLabel = new JLabel(bagView.getPropertyMessage("Select Profile:"));
-		bagProfileLabel.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
-        
+    private void layoutProfileSelection(JPanel contentPane, int row) {
+        // content
+        // profile selection
+        JLabel bagProfileLabel = new JLabel(bagView.getPropertyMessage("Select Profile:"));
+        bagProfileLabel.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
+
+        //Nicolas Franck
+        /*
         profileList = new JComboBox(bagView.getProfileStore().getProfileNames());
         profileList.setName(bagView.getPropertyMessage("bag.label.projectlist"));
         profileList.setSelectedItem(bagView.getPropertyMessage("bag.project.noproject"));
-        profileList.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
-		
-        GridBagConstraints glbc = new GridBagConstraints();
+        profileList.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));*/
 
         JLabel spacerLabel = new JLabel();
-        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         contentPane.add(bagProfileLabel, glbc);
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 40, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-        contentPane.add(profileList, glbc);
+        contentPane.add(getProfileList(), glbc);
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
         contentPane.add(spacerLabel, glbc);
-	}
+    }
     
-	protected JComponent createButtonBar() {
-		CommandGroup dialogCommandGroup = CommandGroup.createCommandGroup(null, getCommandGroupMembers());
-		JComponent buttonBar = dialogCommandGroup.createButtonBar();
-		GuiStandardUtils.attachDialogBorder(buttonBar);
-		return buttonBar;
-	}
+    protected JComponent createButtonBar() {
+        CommandGroup dialogCommandGroup = CommandGroup.createCommandGroup(null, getCommandGroupMembers());
+        JComponent buttonBar = dialogCommandGroup.createButtonBar();
+        GuiStandardUtils.attachDialogBorder(buttonBar);
+        return buttonBar;
+    }	
 	
-	
-	protected Object[] getCommandGroupMembers() {
-		return new AbstractCommand[] { finishCommand, cancelCommand };
-	}
+    protected Object[] getCommandGroupMembers() {
+        return new AbstractCommand[] { getFinishCommand(), getCancelCommand() };
+    }
 	
 	
     /**
 	 * Initialize the standard commands needed on a Dialog: Ok/Cancel.
 	 */
-	private void initStandardCommands() {
-		finishCommand = new ActionCommand(getFinishCommandId()) {
-			public void doExecuteCommand() {
-				
-				log.info("BagVersionFrame.OkNewBagHandler");
-				NewBagFrame.this.setVisible(false);
-				bagView.startNewBagHandler.createNewBag((String)bagVersionList.getSelectedItem(),
-						(String)profileList.getSelectedItem());
-			}
-		};
-
-
-		cancelCommand = new ActionCommand(getCancelCommandId()) {
-			public void doExecuteCommand() {
-				NewBagFrame.this.setVisible(false);
-			}
-		};
-	}
+    //Nicolas Franck: zie getter en setter
+    /*
+    private void initStandardCommands() {
+        finishCommand = new ActionCommand(getFinishCommandId()) {
+            @Override
+            public void doExecuteCommand() {
+                log.info("BagVersionFrame.OkNewBagHandler");
+                NewBagFrame.this.setVisible(false);
+                bagView.startNewBagHandler.createNewBag(
+                    (String)bagVersionList.getSelectedItem(),
+                    (String)profileList.getSelectedItem()
+                );
+            }
+        };
+        cancelCommand = new ActionCommand(getCancelCommandId()) {
+            @Override
+            public void doExecuteCommand() {
+                NewBagFrame.this.setVisible(false);
+            }
+        };
+    }*/
 	
+    protected String getFinishCommandId() {
+        return DEFAULT_FINISH_COMMAND_ID;
+    }
 	
-	protected String getFinishCommandId() {
-		return DEFAULT_FINISH_COMMAND_ID;
-	}
-	
-	protected String getCancelCommandId() {
-		return DEFAULT_CANCEL_COMMAND_ID;
-	}
-	
-	protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
-
-	protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";
-	
-	private ActionCommand finishCommand;
-
-	private ActionCommand cancelCommand;
-
+    protected String getCancelCommandId() {
+        return DEFAULT_CANCEL_COMMAND_ID;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
     	invalidate();
     	repaint();
     }
-   
-
 }

@@ -8,6 +8,7 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.InputStream;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
@@ -73,24 +74,17 @@ public class OpenBagHandler extends AbstractAction {
         //beter geen referentie bijhouden nu naar de oude
     	bagView.clearBagHandler.clearExistingBag();
         
-        System.out.println("old bag cleared");
-
         try{
             System.out.println("loading new file "+file);
             bagView.clearBagHandler.newDefaultBag(file);      
             System.out.println("bag was opened!");
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
         }catch(Exception ex){
-            ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	    
-            
-            ex.printStackTrace();                   
-            
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-            
+            ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	                
+            log.debug(ex.getMessage());                                     
+            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());            
     	    return;
         }
-        
-        System.out.println("version in BAG:"+bagView.getBag().getVersion());
         
         bagView.getInfoInputPane().setBagVersion(bagView.getBag().getVersion());
         bagView.getInfoInputPane().setProfile(bagView.getBag().getProfile().getName());       
@@ -146,8 +140,6 @@ public class OpenBagHandler extends AbstractAction {
             rootSrc = new File(file,bagView.getBag().getDataDirectory());
     	}
         
-        System.out.println("populateNodes: "+bagView.getBag()+", path:"+path+",rootSrc:"+rootSrc);
-        
     	bagView.getBagPayloadTree().populateNodes(bagView.getBag(),path,rootSrc,true);
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.updateManifestPane();
@@ -163,16 +155,17 @@ public class OpenBagHandler extends AbstractAction {
         
         //Nicolas Franck: load mets
         String pathMets;            
-        Mets mets = null;
+        Mets mets = null;        
         
-        if(bagView.getBag().isSerial()){
-            pathMets = extension+":"+file.getAbsolutePath()+"!/"+baseName+"/mets.xml";
+        if(bagView.getBag().getSerialMode() != DefaultBag.NO_MODE){            
+            pathMets = FUtils.getEntryStringFor(file.getAbsolutePath(),bagView.getBag().getName()+"/mets.xml");
         }else{
-            pathMets = "file://"+new File(file,"mets.xml").getAbsolutePath();
+            pathMets = FUtils.getEntryStringFor(file.getAbsolutePath(),"mets.xml");            
         }        
-        try{           
+        try{
             mets = MetsUtils.readMets(FUtils.getInputStreamFor(pathMets));
-        }catch(Exception e){
+        }catch(Exception e){            
+            e.printStackTrace();
             log.debug(e.getMessage());            
         }
         if(mets == null){            
@@ -183,5 +176,5 @@ public class OpenBagHandler extends AbstractAction {
         bagInfoInputPane.getMetsPanel().reset(mets);        
         
         BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-    }
+    }    
 }

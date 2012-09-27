@@ -18,7 +18,6 @@ package gov.loc.repository.bagger.ui;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.BagFactory.Version;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -27,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -40,7 +38,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -54,44 +51,127 @@ import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
 
 public class NewBagInPlaceFrame extends JFrame implements ActionListener {
-	private static final Log log = LogFactory.getLog(NewBagFrame.class);
-	private static final long serialVersionUID = 1L;
-	private BagView bagView;
-	private DefaultBag bag = null;
-	private Dimension preferredDimension = new Dimension(400, 230);
-	private JPanel createPanel;
-	private JTextField bagNameField;
-	private File bagFile;
-	private String bagFileName = "";
-	private JButton saveAsButton;
-	private JComboBox bagVersionList;
-	private JComboBox profileList;
-	private JCheckBox addKeepFilesToEmptyFoldersCheckBox;
+    private static final Log log = LogFactory.getLog(NewBagFrame.class);
+    private static final long serialVersionUID = 1L;
+    private BagView bagView;
+    private DefaultBag bag = null;
+    private Dimension preferredDimension = new Dimension(400, 230);
+    private JPanel createPanel;
+    private JTextField bagNameField;
+    private File bagFile;
+    private String bagFileName = "";
+    private JButton saveAsButton;
+    private JComboBox bagVersionList;
+    private JComboBox profileList;
+    private JCheckBox addKeepFilesToEmptyFoldersCheckBox;
+    protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
+    protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";	
+    private ActionCommand finishCommand;
+    private ActionCommand cancelCommand;
 
-	public NewBagInPlaceFrame(BagView bagView, String title) {
+    public NewBagInPlaceFrame(BagView bagView, String title) {
         super(title);
-		Application app = Application.instance();
-		ApplicationPage page = app.getActiveWindow().getPage();
-		PageComponent component = page.getActiveComponent();
-		if (component != null) this.bagView = BagView.instance;
-		else this.bagView = bagView;
-		if (bagView != null) {
-			bag = bagView.getBag();
-	        getContentPane().removeAll();
-	        createPanel = createComponents();
-		} else {
-			createPanel = new JPanel();
-		}
+        
+        Application app = Application.instance();
+        ApplicationPage page = app.getActiveWindow().getPage();
+        PageComponent component = page.getActiveComponent();        
+        
+        this.bagView = (component != null) ? BagView.instance : bagView;
+        
+        //Nicolas Franck
+        /*if (component != null) this.bagView = BagView.instance;
+        else this.bagView = bagView;*/
+        
+        if (bagView != null) {
+            bag = bagView.getBag();        
+            getContentPane().removeAll();        
+            createPanel = createComponents();            
+        } else {
+            createPanel = new JPanel();
+        }
+        
         getContentPane().add(createPanel, BorderLayout.CENTER);
         setPreferredSize(preferredDimension);
         setLocation(200, 100);
-        pack();
+        
+        //Nicolas Franck: als je dit hier doet, krijg je in Ubuntu een X11 error. Beter: bij oproepende code
+        //pack();
     }
 
+    public JButton getSaveAsButton() {
+        if(saveAsButton == null){
+            saveAsButton = new JButton(bagView.getPropertyMessage("bag.button.browse"));
+            saveAsButton.addActionListener(new BrowseFileHandler());
+            saveAsButton.setEnabled(true);
+            saveAsButton.setToolTipText(bagView.getPropertyMessage("bag.button.browse.help"));
+        }
+        return saveAsButton;
+    }
+    public void setSaveAsButton(JButton saveAsButton) {
+        this.saveAsButton = saveAsButton;
+    }   
+
+    public ActionCommand getFinishCommand() {
+        if(finishCommand == null){
+            finishCommand = new ActionCommand(getFinishCommandId()) {
+                @Override
+                public void doExecuteCommand() {
+                    new OkNewBagHandler().actionPerformed(null);
+                }
+            };
+        }
+        return finishCommand;
+    }
+    public void setFinishCommand(ActionCommand finishCommand) {
+        this.finishCommand = finishCommand;
+    }
+    public ActionCommand getCancelCommand() {
+        if(cancelCommand == null){
+            cancelCommand = new ActionCommand(getCancelCommandId()) {
+                @Override
+                public void doExecuteCommand() {
+                    new CancelNewBagHandler().actionPerformed(null);
+                }
+            };
+        }
+        return cancelCommand;
+    }
+    public void setCancelCommand(ActionCommand cancelCommand) {
+        this.cancelCommand = cancelCommand;
+    }
+
+    public JComboBox getProfileList() {
+        if(profileList == null){
+            profileList = new JComboBox(bagView.getProfileStore().getProfileNames());
+            profileList.setName(bagView.getPropertyMessage("bag.label.projectlist"));
+            profileList.setSelectedItem(bagView.getPropertyMessage("bag.project.noproject"));
+            profileList.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
+        }
+        return profileList;
+    }
+
+    public void setProfileList(JComboBox profileList) {
+        this.profileList = profileList;
+    }
+
+    public JCheckBox getAddKeepFilesToEmptyFoldersCheckBox() {
+        if(addKeepFilesToEmptyFoldersCheckBox == null){
+            addKeepFilesToEmptyFoldersCheckBox = new JCheckBox(bagView.getPropertyMessage(""));
+            addKeepFilesToEmptyFoldersCheckBox.setSelected(bag.isAddKeepFilesToEmptyFolders());
+            addKeepFilesToEmptyFoldersCheckBox.addActionListener(new AddKeepFilesToEmptyFoldersHandler());
+        }
+        return addKeepFilesToEmptyFoldersCheckBox;
+    }
+
+    public void setAddKeepFilesToEmptyFoldersCheckBox(JCheckBox addKeepFilesToEmptyFoldersCheckBox) {
+        this.addKeepFilesToEmptyFoldersCheckBox = addKeepFilesToEmptyFoldersCheckBox;
+    }
+    
+    
     private JPanel createComponents() {
 
     	TitlePane titlePane = new TitlePane();
-    	initStandardCommands();
+    	//initStandardCommands();
     	JPanel pageControl = new JPanel(new BorderLayout());
     	JPanel titlePaneContainer = new JPanel(new BorderLayout());
     	titlePane.setTitle(bagView.getPropertyMessage("NewBagInPlace.title"));
@@ -111,37 +191,48 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
         layoutSpacer(contentPanel, row++);
         
         GuiStandardUtils.attachDialogBorder(contentPanel);
-		pageControl.add(contentPanel);
-		JComponent buttonBar = createButtonBar();
-		pageControl.add(buttonBar,BorderLayout.SOUTH);
-	
-		this.pack();
-		return pageControl;
+        pageControl.add(contentPanel);
+        JComponent buttonBar = createButtonBar();
+        pageControl.add(buttonBar,BorderLayout.SOUTH);
+
+        //Nicolas Franck: als je dit hier doet, krijg je in Ubuntu een X11 error. Beter: bij oproepende code
+        //pack();
+        return pageControl;
         
     }
     
-	private void layoutSelectDataContent(JPanel contentPanel, int row) {
-		GridBagConstraints glbc = new GridBagConstraints();
+    private void layoutSelectDataContent(JPanel contentPanel, int row) {
+        
     	JLabel location = new JLabel("Select Data:");
+        
+        //Nicolas Franck
+        /*
     	saveAsButton = new JButton(bagView.getPropertyMessage("bag.button.browse"));
     	saveAsButton.addActionListener(new BrowseFileHandler());
     	saveAsButton.setEnabled(true);
-    	saveAsButton.setToolTipText(bagView.getPropertyMessage("bag.button.browse.help"));
+    	saveAsButton.setToolTipText(bagView.getPropertyMessage("bag.button.browse.help"));*/
     	
-    	String fileName = "";
-    	if (bag != null) fileName = bag.getName();
+    	//String fileName = "";
+        
+        String fileName = (bag != null)? bag.getName():"";
+        
+        //Nicolas Franck
+        /*
+    	if (bag != null) {
+            fileName = bag.getName();
+        }*/
     	bagNameField = new JTextField(fileName);
         bagNameField.setCaretPosition(fileName.length());
         bagNameField.setEditable(false);
         bagNameField.setEnabled(false);
-
-        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         contentPanel.add(location, glbc);
         
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.EAST); 
         glbc.ipadx=5;
         glbc.ipadx=0;
-        contentPanel.add(saveAsButton, glbc);
+        contentPanel.add(getSaveAsButton(), glbc);
         
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         glbc.ipadx=5;
@@ -149,10 +240,9 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
         contentPanel.add(bagNameField, glbc);
     }
 	
-	private void layoutBagVersionContent(JPanel contentPanel, int row) {
-		GridBagConstraints glbc = new GridBagConstraints();
-		
-		JLabel bagVersionLabel = new JLabel(bagView.getPropertyMessage("bag.label.version"));
+    private void layoutBagVersionContent(JPanel contentPanel, int row) {
+        
+        JLabel bagVersionLabel = new JLabel(bagView.getPropertyMessage("bag.label.version"));
         bagVersionLabel.setToolTipText(bagView.getPropertyMessage("bag.versionlist.help"));
         ArrayList<String> versionModel = new ArrayList<String>();
         Version[] vals = Version.values();
@@ -163,142 +253,132 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
         bagVersionList = new JComboBox(versionModel.toArray());
         bagVersionList.setName(bagView.getPropertyMessage("bag.label.versionlist"));
         bagVersionList.setSelectedItem(Version.V0_96.versionString);
-        bagVersionList.setToolTipText(bagView.getPropertyMessage("bag.versionlist.help"));
-        
+        bagVersionList.setToolTipText(bagView.getPropertyMessage("bag.versionlist.help"));        
 		
-        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         contentPanel.add(bagVersionLabel, glbc);
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST); 
         contentPanel.add(bagVersionList, glbc);
-	}
+    }
 	
-	private void layoutProfileSelectionContent(JPanel contentPane, int row) {
-		// content
-		// profile selection
-		JLabel bagProfileLabel = new JLabel(bagView.getPropertyMessage("Select Profile:"));
-		bagProfileLabel.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
-       
+    private void layoutProfileSelectionContent(JPanel contentPane, int row) {
+        // content
+        // profile selection
+        JLabel bagProfileLabel = new JLabel(bagView.getPropertyMessage("Select Profile:"));
+        bagProfileLabel.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
+
+        //Nicolas Franck
+        /*
         profileList = new JComboBox(bagView.getProfileStore().getProfileNames());
         profileList.setName(bagView.getPropertyMessage("bag.label.projectlist"));
         profileList.setSelectedItem(bagView.getPropertyMessage("bag.project.noproject"));
-        profileList.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
-		
-        GridBagConstraints glbc = new GridBagConstraints();
-
+        profileList.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));*/
+	
         JLabel spacerLabel = new JLabel();
-        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         contentPane.add(bagProfileLabel, glbc);
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 40, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-        contentPane.add(profileList, glbc);
+        contentPane.add(getProfileList(), glbc);
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
         contentPane.add(spacerLabel, glbc);
-	}
+    }
 
     /*
      *  The actionPerformed method in this class
      *  is called each time the ".keep Files in Empty Folder(s):" Check Box
      *  is Selected
      */   
-	private class AddKeepFilesToEmptyFoldersHandler extends AbstractAction {	       	
-		private static final long serialVersionUID = 1L;
-
-		public void actionPerformed(ActionEvent e) {			
-
-			JCheckBox cb = (JCheckBox)e.getSource();
-
-			// Determine status
-			boolean isSelected = cb.isSelected();
-			if (isSelected) {
-				bagView.getBag().isAddKeepFilesToEmptyFolders(true);                                
-				bagView.getInfoInputPane().getSerializeValue().setText("true");
-			} else {
-				bagView.getBag().isAddKeepFilesToEmptyFolders(false);
-			}
-		}
-	}
+    private class AddKeepFilesToEmptyFoldersHandler extends AbstractAction {	       	
+        private static final long serialVersionUID = 1L;
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JCheckBox cb = (JCheckBox)e.getSource();
+            // Determine status
+            boolean isSelected = cb.isSelected();
+            if (isSelected) {
+                bagView.getBag().isAddKeepFilesToEmptyFolders(true);                                
+                bagView.getInfoInputPane().getSerializeValue().setText("true");
+            } else {
+                bagView.getBag().isAddKeepFilesToEmptyFolders(false);
+            }
+        }
+    }
 	
 	/*
      *  Setting and displaying the ".keep Files in Empty Folder(s):" Check Box 
      *  on the Create Bag In Place Pane
      */
-	private void layoutAddKeepFilesToEmptyCheckBox(JPanel contentPane, int row) {
-		// Delete Empty Folder(s)
-		JLabel addKeepFilesToEmptyFoldersCheckBoxLabel = new JLabel(bagView.getPropertyMessage("bag.label.addkeepfilestoemptyfolders"));
-		addKeepFilesToEmptyFoldersCheckBoxLabel.setToolTipText(bagView.getPropertyMessage("bag.addkeepfilestoemptyfolders.help"));
-       addKeepFilesToEmptyFoldersCheckBox = new JCheckBox(bagView.getPropertyMessage(""));
-       addKeepFilesToEmptyFoldersCheckBox.setSelected(bag.isAddKeepFilesToEmptyFolders());
-       addKeepFilesToEmptyFoldersCheckBox.addActionListener(new AddKeepFilesToEmptyFoldersHandler());
-       
-       GridBagConstraints glbc = new GridBagConstraints();
-
-       JLabel spacerLabel = new JLabel();
-       glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-       contentPane.add(addKeepFilesToEmptyFoldersCheckBoxLabel, glbc);
-       glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 40, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-       contentPane.add(addKeepFilesToEmptyFoldersCheckBox, glbc);
-       glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
-       contentPane.add(spacerLabel, glbc);
-	}
+    private void layoutAddKeepFilesToEmptyCheckBox(JPanel contentPane, int row) {
+        // Delete Empty Folder(s)
+        JLabel addKeepFilesToEmptyFoldersCheckBoxLabel = new JLabel(bagView.getPropertyMessage("bag.label.addkeepfilestoemptyfolders"));
+        addKeepFilesToEmptyFoldersCheckBoxLabel.setToolTipText(bagView.getPropertyMessage("bag.addkeepfilestoemptyfolders.help"));
+        
+        //Nicolas Franck
+        /*
+        addKeepFilesToEmptyFoldersCheckBox = new JCheckBox(bagView.getPropertyMessage(""));
+        addKeepFilesToEmptyFoldersCheckBox.setSelected(bag.isAddKeepFilesToEmptyFolders());
+        addKeepFilesToEmptyFoldersCheckBox.addActionListener(new AddKeepFilesToEmptyFoldersHandler());*/
+               
+        JLabel spacerLabel = new JLabel();
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+        contentPane.add(addKeepFilesToEmptyFoldersCheckBoxLabel, glbc);
+        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 40, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
+        contentPane.add(getAddKeepFilesToEmptyFoldersCheckBox(), glbc);
+        glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
+        contentPane.add(spacerLabel, glbc);
+    }
 	
-	private void layoutSpacer(JPanel contentPanel, int row) {
-		GridBagConstraints glbc = new GridBagConstraints();
-		glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+    private void layoutSpacer(JPanel contentPanel, int row) {        
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         JLabel spacerLabel = new JLabel("");
         contentPanel.add(spacerLabel, glbc);
-	}
+    }
 
-	protected JComponent createButtonBar() {
-		CommandGroup dialogCommandGroup = CommandGroup.createCommandGroup(null, getCommandGroupMembers());
-		JComponent buttonBar = dialogCommandGroup.createButtonBar();
-		GuiStandardUtils.attachDialogBorder(buttonBar);
-		return buttonBar;
-	}
+    protected JComponent createButtonBar() {
+        CommandGroup dialogCommandGroup = CommandGroup.createCommandGroup(null, getCommandGroupMembers());
+        JComponent buttonBar = dialogCommandGroup.createButtonBar();
+        GuiStandardUtils.attachDialogBorder(buttonBar);
+        return buttonBar;
+    }
 	
-	protected Object[] getCommandGroupMembers() {
-		return new AbstractCommand[] { finishCommand, cancelCommand };
-	}
+    protected Object[] getCommandGroupMembers() {
+        return new AbstractCommand[] { getFinishCommand(), getCancelCommand() };
+    }
 	
     /**
 	 * Initialize the standard commands needed on a Dialog: Ok/Cancel.
 	 */
-	private void initStandardCommands() {
-		finishCommand = new ActionCommand(getFinishCommandId()) {
-			public void doExecuteCommand() {
-				
-				new OkNewBagHandler().actionPerformed(null);
-
-			}
-		};
-
-
-		cancelCommand = new ActionCommand(getCancelCommandId()) {
-			public void doExecuteCommand() {
-				new CancelNewBagHandler().actionPerformed(null);
-			}
-		};
-	}
+    
+    //Nicolas Franck: zie getter en setter
+    /*
+    private void initStandardCommands() {
+        finishCommand = new ActionCommand(getFinishCommandId()) {
+            @Override
+            public void doExecuteCommand() {
+                new OkNewBagHandler().actionPerformed(null);
+            }
+        };
+        cancelCommand = new ActionCommand(getCancelCommandId()) {
+            @Override
+            public void doExecuteCommand() {
+                new CancelNewBagHandler().actionPerformed(null);
+            }
+        };
+    }*/
 	
-	protected String getFinishCommandId() {
-		return DEFAULT_FINISH_COMMAND_ID;
-	}
-	
-	protected String getCancelCommandId() {
-		return DEFAULT_CANCEL_COMMAND_ID;
-	}
-	
-	protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
-
-	protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";
-	
-	private ActionCommand finishCommand;
-
-	private ActionCommand cancelCommand;
+    protected String getFinishCommandId() {
+        return DEFAULT_FINISH_COMMAND_ID;
+    }
+    protected String getCancelCommandId() {
+        return DEFAULT_CANCEL_COMMAND_ID;
+    }
 
     public void setBag(DefaultBag bag) {
     	this.bag = bag;
     	createPanel.invalidate();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
     	invalidate();
     	repaint();
@@ -318,7 +398,9 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
             fs.addChoosableFileFilter(bagView.getInfoInputPane().getNoFilter());
             fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
             fs.setDialogTitle("Existing Data Location");
-            if (bagView.getBagRootPath() != null) fs.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
+            if (bagView.getBagRootPath() != null) {
+                fs.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
+            }
             fs.setCurrentDirectory(bag.getRootDir());
             if (bag.getName() != null && !bag.getName().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
                 String selectedName = bag.getName();
@@ -365,17 +447,20 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
             log.info("BagVersionFrame.OkNewBagHandler");
             setVisible(false);			
             if (bagView.getBag().isAddKeepFilesToEmptyFolders()) {
-                bagView.createBagInPlaceHandler.createPreBagAddKeepFilesToEmptyFolders(bagFile,
-                                (String)bagVersionList.getSelectedItem(),
-                                (String)profileList.getSelectedItem());					
+                bagView.createBagInPlaceHandler.createPreBagAddKeepFilesToEmptyFolders(
+                    bagFile,
+                    (String)bagVersionList.getSelectedItem(),
+                    (String)profileList.getSelectedItem()
+                );					
             } else {							
-                    bagView.createBagInPlaceHandler.createPreBag(bagFile, 
-                            (String)bagVersionList.getSelectedItem(),
-                            (String)profileList.getSelectedItem());
+                bagView.createBagInPlaceHandler.createPreBag(
+                    bagFile, 
+                    (String)bagVersionList.getSelectedItem(),
+                    (String)profileList.getSelectedItem()
+                );
             }
         }
     }
-
     private class CancelNewBagHandler extends AbstractAction {
         private static final long serialVersionUID = 1L;
         @Override

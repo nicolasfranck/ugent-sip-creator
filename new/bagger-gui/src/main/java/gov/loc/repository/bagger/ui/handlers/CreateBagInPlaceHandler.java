@@ -41,23 +41,25 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
     }
 
     public void createBagInPlace() {
-        BagView bagView = BagView.getInstance();
-    	NewBagInPlaceFrame newBagInPlaceFrame = new NewBagInPlaceFrame(bagView, bagView.getPropertyMessage("bag.frame.newbaginplace"));
-        newBagInPlaceFrame.setBag(bagView.getBag());
+        BagView bagView = BagView.getInstance();        
+    	NewBagInPlaceFrame newBagInPlaceFrame = new NewBagInPlaceFrame(bagView, bagView.getPropertyMessage("bag.frame.newbaginplace"));        
+        newBagInPlaceFrame.setBag(bagView.getBag());        
         newBagInPlaceFrame.setVisible(true);
+        newBagInPlaceFrame.pack();        
     }
 
     public void createPreBag(File dataFile, String bagItVersion, final String profileName) {
         BagView bagView = BagView.getInstance();
-    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null))
-    		log.info("Creating a new bag in place with data: " + dataFile.getName()
-    				+ ", version: " + bagItVersion + ", profile: " + profileName);
+    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {
+            log.info("Creating a new bag in place with data: " + dataFile.getName()
+                            + ", version: " + bagItVersion + ", profile: " + profileName);
+        }
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-    		bagView.getBag().createPreBag(dataFile, bagItVersion);
+            bagView.getBag().createPreBag(dataFile, bagItVersion);
     	} catch (Exception e) {
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");
-    		return;
+            return;
     	}
     	DefaultBag bag = bagView.getBag();
     	

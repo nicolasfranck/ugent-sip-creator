@@ -35,6 +35,7 @@ public class StartNewBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();
     	NewBagFrame newBagFrame = new NewBagFrame(bagView, bagView.getPropertyMessage("bag.frame.new"));
         newBagFrame.setVisible(true);
+        newBagFrame.pack();
     }
 
     public void createNewBag(String bagItVersion, String profileName) {

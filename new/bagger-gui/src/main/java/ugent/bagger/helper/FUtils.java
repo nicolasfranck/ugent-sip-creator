@@ -215,4 +215,29 @@ public class FUtils {
         }
         return mimeType;        
     }    
+    public static String getEntryStringFor(String source,String entry){
+        String entryString = null;
+        
+        if(source.endsWith(".tar.gz")){
+            entryString = "tgz:file://"+source+"!/"+entry;
+        }else if(source.endsWith(".tar")){
+            entryString = "tar:file://"+source+"!/"+entry;
+        }else if(source.endsWith(".tar.bz2")){
+            entryString = "tbz2:file://"+source+"!/"+entry;
+        }else if(source.endsWith(".zip")){
+            entryString = "zip:file://"+source+"!/"+entry;
+        }else if(source.endsWith(".tgz")){
+            entryString = "tgz:file://"+source+"!/"+entry;
+        }else if(source.endsWith(".tbz2")){
+            entryString = "tbz2:file://"+source+"!/"+entry;
+        }else if(source.endsWith(".bz2")){
+            entryString = "bz2:file://"+source+"!/"+entry;
+        }else if(source.endsWith(".gz")){
+            entryString = "gz:file://"+source+"!/"+entry;
+        }else{
+            entryString = "file://"+source+"/"+entry;
+        }
+        
+        return entryString;        
+    }
 }
