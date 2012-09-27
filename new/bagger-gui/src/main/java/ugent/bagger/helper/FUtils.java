@@ -23,8 +23,7 @@ public class FUtils {
     private static MessageDigest md5DigestInstance;
     private static final String [] sizeNames = {        
       "TB","GB","MB","KB","B"
-    };
-   
+    };   
     private static Comparator defaultFileSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1, File f2){
@@ -46,7 +45,9 @@ public class FUtils {
             ){                 
                 double d = sizes.get(sizeNames[i]).doubleValue();               
                 int n = (int) Math.round(size / d);                
-                if(n > 0)return ""+n+sizeNames[i];
+                if(n > 0) {
+                    return ""+n+sizeNames[i];
+                }
             }
         }
         return ((long)size)+"B";
@@ -178,14 +179,11 @@ public class FUtils {
     public static FileObject resolveFile(String str) throws FileSystemException{
         return getFileSystemManager().resolveFile(str);
     }
-    public static InputStream getInputStreamFor(String str) throws FileSystemException{                        
-        FileObject fileObject = resolveFile(str);        
-        return fileObject.getContent().getInputStream();                            
+    public static InputStream getInputStreamFor(String str) throws FileSystemException{                                
+        return resolveFile(str).getContent().getInputStream();                            
     }
-    public static OutputStream getOutputStreamFor(String str) throws FileSystemException{
-        FileObject fileObject = resolveFile(str);
-        System.out.println("FileObject is writable: "+fileObject.isWriteable());
-        return fileObject.getContent().getOutputStream();
+    public static OutputStream getOutputStreamFor(String str) throws FileSystemException{           
+        return resolveFile(str).getContent().getOutputStream();
     }
     public static String getMimeType(File file){                
         Iterator it = MimeUtil.getMimeTypes(file).iterator();

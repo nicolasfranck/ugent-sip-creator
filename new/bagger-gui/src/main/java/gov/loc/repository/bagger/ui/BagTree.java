@@ -2,28 +2,24 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.BaggerFileEntity;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-import gov.loc.repository.bagger.ui.handlers.BagTreeTransferHandler;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.*;
-import javax.swing.DropMode;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class BagTree extends JTree {
+public final class BagTree extends JTree {
     private static final long serialVersionUID = -5361474872106399068L;
     private static final Log log = LogFactory.getLog(BagTree.class);
     private int BAGTREE_WIDTH = 400;
     private int BAGTREE_HEIGHT = 160;
     private int BAGTREE_ROW_MODIFIER = 22;
-
     private File bagDir;
     private DefaultTreeModel bagTreeModel;
     private TreePath rootPath;
@@ -60,10 +56,12 @@ public class BagTree extends JTree {
          * Nicolas Franck: dragEnabled enkel nuttig indien de interne nodelist naar buiten geëxporteerd kan worden!
          * kan volgens BagTreeTransferHandler, maar wat houdt dat precies in?
          */
+        /*
         this.setDragEnabled(true);
         this.setDropMode(DropMode.ON_OR_INSERT);
         this.setTransferHandler(new BagTreeTransferHandler(isPayload));
         this.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+        */
         getBagView().registerTreeListener(path,this);
     }
 	
@@ -84,33 +82,30 @@ public class BagTree extends JTree {
     public void populateNodes(DefaultBag bag, String path, File rootSrc, boolean isParent) {
         basePath = path;
 
-        log.debug("BagTree.populateNodes");
-        
-        System.out.println("bag.payload:"+bag.getPayload());
-        System.out.println("rootSrc.listFiles:"+rootSrc.listFiles());
-        
+        log.debug("BagTree.populateNodes");        
+       
         if (bag.getPayload() != null && rootSrc.listFiles() != null) {
             addNodes(rootSrc, isParent);            
         }else{
             log.debug("BagTree.populateNodes listFiles NULL:" );
             
-            /*  
+            /*              * 
              * Nicolas Franck: indien geen map, wordt een platte lijst van de entries weergegeven
+             * TODO: ook structuur maken indien geen map zodat presentatie consequent blijft
              */
             
-            List<String> payload;
-            if(!bag.isHoley()){
-                System.out.println("bag not holey");
+            List<String> payload = bag.getPayloadPaths();
+            
+            //Nicolas Franck
+            /*
+            if(!bag.isHoley()){                
                 log.debug("BagTree.populateNodes getPayloadPaths:" );
-                payload = bag.getPayloadPaths();
-                System.out.println("payloads.size:"+payload.size());
-                System.out.println("payloads.size in real bag:"+bag.getBag().getPayload().size());
+                payload = bag.getPayloadPaths();                
             }else{
                 log.debug("BagTree.populateNodes getFetchPayload:");
-                payload = bag.getPayloadPaths(); //bag.getFetchPayload();
-                
+                payload = bag.getPayloadPaths(); //bag.getFetchPayload();                
                 //basePath = bag.getFetch().getBaseURL();
-            }
+            }*/
             for(Iterator<String> it=payload.iterator(); it.hasNext(); ){
                 String filePath = it.next();
                 try{
@@ -235,8 +230,7 @@ public class BagTree extends JTree {
         //display("createBagManagerTree: files.size: " + files.size());
         for(int fnum = 0; fnum < files.size(); fnum++){
             //String elem = files.elementAt(fnum);
-            String elem = files.get(fnum);
-            
+            String elem = files.get(fnum);            
             DefaultMutableTreeNode elemNode = new DefaultMutableTreeNode(elem);
             curDir.add(elemNode);
             displayDir.add(elemNode);
@@ -248,28 +242,22 @@ public class BagTree extends JTree {
 
     public void setParentNode(DefaultMutableTreeNode parent) {
         this.parentNode = parent;
-    }
-	
+    }	
     public DefaultMutableTreeNode getParentNode() {
-        return this.parentNode;
+        return parentNode;
     }
-
     public File getBagDir() {
-        return this.bagDir;
+        return bagDir;
     }
-
     public void setBagDir(File file) {
         this.bagDir = file;
     }
-
     public DefaultTreeModel getBagTreeModel() {
-        return this.bagTreeModel;
+        return bagTreeModel;
     }
-
     public void setBagTreeModel(DefaultTreeModel model) {
         this.bagTreeModel = model;
     }
-
     public Dimension getTreeSize() {
     	return new Dimension(BAGTREE_WIDTH, BAGTREE_HEIGHT);
     }    

@@ -1,6 +1,5 @@
 package ugent.bagger.helper;
 
-
 import com.anearalone.mets.*;
 import com.anearalone.mets.StructMap.Div;
 import com.anearalone.mets.StructMap.Div.Fptr;       
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,6 +36,7 @@ public class MetsUtils {
     private static HashMap<String,String> xsltMap = null;
     private static HashMap<String,String> namespaceMap = null;
     private static ArrayList<String>forbiddenNamespaces = null;
+    private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");
     
     private static Log logger = LogFactory.getLog(MetsUtils.class);
 
@@ -112,7 +113,9 @@ public class MetsUtils {
             DefaultMutableTreeNode n = (DefaultMutableTreeNode)enumeration.nextElement();            
             if(n.isLeaf()){
                 Fptr filePointer = new Fptr();
-                filePointer.setFILEID(n.getUserObject().toString().replace('/','-'));
+                String id = ncname_forbidden.matcher(n.getUserObject().toString()).replaceAll("-");
+                filePointer.setFILEID(id);
+                //filePointer.setFILEID(n.getUserObject().toString().replace('/','-'));
                 div.getFptr().add(filePointer);
             }else{
                 div.getDiv().add(toDiv(n));

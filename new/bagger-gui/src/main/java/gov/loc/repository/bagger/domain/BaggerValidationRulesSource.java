@@ -1,7 +1,6 @@
 package gov.loc.repository.bagger.domain;
 
 import com.anearalone.mets.MdSec;
-import com.anearalone.mets.MetsHdr;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
 
@@ -13,14 +12,8 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
     public BaggerValidationRulesSource() {
         super();
         
-        //ugent bagger                  
-      
-       
-        Rules agentRules = new Rules(MetsHdr.Agent.class);
-        agentRules
-                .add(required("name"))
-                .add(required("ID"));
-        addRules(agentRules);        
+        //ugent bagger       
+        
         Rules mdWrapRules = new Rules(MdSec.MdWrap.class);
         mdWrapRules.add(required("ID"));
         addRules(mdWrapRules);

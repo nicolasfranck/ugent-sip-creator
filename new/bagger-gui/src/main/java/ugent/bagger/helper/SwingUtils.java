@@ -12,16 +12,13 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 
 /**
  *
  * @author nicolas
  */
-public class SwingUtils {
-    private static Log logger = LogFactory.getLog(SwingUtils.class);
+public class SwingUtils {    
     private static JFileChooser createFileChooser(String title,FileFilter [] filters,int mode,boolean multiSelectionEnabled){
         JFileChooser fileChooser = new JFileChooser();              
         fileChooser.setDialogTitle(title);            
@@ -128,13 +125,10 @@ public class SwingUtils {
         return node;
     }
     public static DefaultMutableTreeNode structMapToTreeNode(StructMap struct){
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(struct.getLabel());
-        
-        return node; 
+        return new DefaultMutableTreeNode(struct.getLabel());        
     }
     public static DefaultMutableTreeNode divToTreeNode(Div div){
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(div.getLabel());
-        return node; 
+        return new DefaultMutableTreeNode(div.getLabel());        
     }
     public static JFrame getFrame(){
         return Application.instance().getActiveWindow().getControl();

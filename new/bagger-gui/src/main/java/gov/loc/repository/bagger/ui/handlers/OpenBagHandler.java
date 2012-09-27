@@ -74,10 +74,8 @@ public class OpenBagHandler extends AbstractAction {
         //beter geen referentie bijhouden nu naar de oude
     	bagView.clearBagHandler.clearExistingBag();
         
-        try{
-            System.out.println("loading new file "+file);
-            bagView.clearBagHandler.newDefaultBag(file);      
-            System.out.println("bag was opened!");
+        try{            
+            bagView.clearBagHandler.newDefaultBag(file);                  
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
         }catch(Exception ex){
             ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	                
@@ -164,8 +162,7 @@ public class OpenBagHandler extends AbstractAction {
         }        
         try{
             mets = MetsUtils.readMets(FUtils.getInputStreamFor(pathMets));
-        }catch(Exception e){            
-            e.printStackTrace();
+        }catch(Exception e){                        
             log.debug(e.getMessage());            
         }
         if(mets == null){            

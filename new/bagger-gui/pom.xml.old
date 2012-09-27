@@ -2,35 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>loc-repository</groupId>    
+  <parent>
+    <groupId>loc-repository</groupId>
+    <artifactId>bagger-maven</artifactId>
+    <version>2.1.2-SNAPSHOT</version>
+  </parent>
+
   <artifactId>bagger-gui</artifactId>
-  <version>2.1.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Spring richclient bagger GUI ADAPTION</name>
   <description>
     The GUI presentation layer which resides in client, but NOT in the server.
   </description>
-  <properties>
-    <spring.version>2.5.1</spring.version>
-    <richclient.version>1.0.0</richclient.version>
-  </properties>
   <build>
    <plugins>
-      <!--test-start-->
-      <plugin>
-          <artifactId>maven-assembly-plugin</artifactId>
-              <configuration>
-                  <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                  </descriptorRefs>
-                  <archive>
-                    <manifest>
-                      <mainClass>gov.loc.repository.bagger.app.BaggerApplication</mainClass>
-                    </manifest>
-                  </archive>
-            </configuration>
-      </plugin>
-      <!--test-end-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -42,12 +27,19 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+        <id>in-project</id>
+        <name>In Project Repo</name>
+        <url>file://${project.basedir}/libs</url>
+    </repository>
+  </repositories>
   <dependencies>
+
     <!-- Internal -->
     <dependency>
       <groupId>gov.loc</groupId>
       <artifactId>bagit</artifactId>
-      <version>3.13</version>
       <exclusions>
         <exclusion>
           <artifactId>dom4j</artifactId>
@@ -55,72 +47,70 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!--
+    <dependency>
+      <groupId>loc-repository</groupId>
+      <artifactId>bagger-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>loc-repository</groupId>
+      <artifactId>bagger-business</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    -->
     <!-- Spring rich -->
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-resources</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-core</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-binding</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-form</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-support</artifactId>
-      <version>${richclient.version}</version>
       <exclusions>
         <exclusion>
           <artifactId>forms</artifactId>
-          <groupId>com.jgoodies</groupId>          
+          <groupId>com.jgoodies</groupId>
         </exclusion>
       </exclusions>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-jdk5</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-jdk6</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-sandbox</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
+
+    <!-- Dependency injection -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aop</artifactId>
-      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>com.jgoodies</groupId>
@@ -161,73 +151,25 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>de.schlichtherle.truezip</groupId>
+      <artifactId>truezip-driver</artifactId>
+      <version>7.6</version>
+      <type>pom</type>
+      <exclusions>
+        <exclusion>
+          <artifactId>truezip-kernel</artifactId>
+          <groupId>de.schlichtherle.truezip</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>jgoodies</groupId>
       <artifactId>forms</artifactId>
       <version>1.0.5</version>
     </dependency>
-    <dependency>
-      <groupId>spring</groupId>
-      <artifactId>spring-aop</artifactId>
-      <version>1.0.2</version>
-    </dependency>
-    <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.17</version>
-    </dependency>
   </dependencies>
+ 
 
-  <repositories>
-    <repository>
-        <id>in-project</id>
-        <name>In Project Repo</name>
-        <url>file://${project.basedir}/libs</url>
-    </repository>
-    <repository>
-          <id>springRichclientRepository</id>
-          <name>Spring rich client repository</name>
-          <url>http://spring-rich-c.sourceforge.net/maven2repository</url>
-      </repository>
-      <repository>
-          <id>central</id>
-          <name>Maven Repository Switchboard</name>
-          <layout>default</layout>
-          <url>http://repo1.maven.org/maven2</url>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-      </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <releases/>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>proxy-releases</id>
-      <name>Proxy releases</name>
-      <url>http://repo.maven.apache.org/maven2/org/apache/maven/plugins</url>
-    </pluginRepository>
-    <pluginRepository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots/>
-      <id>proxy-snapshots</id>
-      <name>Proxy snapshots</name>
-      <url>http://repo.maven.apache.org/maven2/org/apache/maven/plugins</url>
-    </pluginRepository>
-  </pluginRepositories>
-  <distributionManagement>
-    <repository>
-      <id>rdc-releases</id>
-      <url>dav:http://archiva.rdc.lctl.gov:8080/archiva/repository/rdc-releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>rdc-snapshots</id>
-      <url>dav:http://archiva.rdc.lctl.gov:8080/archiva/repository/rdc-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
 
 

@@ -19,15 +19,14 @@ public final class FileListing {
         * directory that can be read.
         */
     public static void main(String... aArgs) throws FileNotFoundException {
-            File startingDirectory= new File(aArgs[0]);
-            List<File> files = FileListing.getFileListing(startingDirectory);
+        File startingDirectory= new File(aArgs[0]);
+        List<File> files = FileListing.getFileListing(startingDirectory);
 
-            //print out all file names, in the the order of File.compareTo()
-            for(File file : files ){
-                    System.out.println(file);
-            }
+        //print out all file names, in the the order of File.compareTo()
+        for(File file : files ){
+            System.out.println(file);
+        }
     }
-
     /**
         * Recursively walk a directory tree and return a List of all
         * Files found; the List is sorted using File.compareTo().
@@ -35,17 +34,19 @@ public final class FileListing {
         * @param aStartingDir is a valid directory, which can be read.
         */
     static public List<File> getFileListing(File aStartingDir) throws FileNotFoundException {
-            validateDirectory(aStartingDir);
-            List<File> result = getFileListingNoSort(aStartingDir);
-            Collections.sort(result);
-            return result;
+        validateDirectory(aStartingDir);
+        List<File> result = getFileListingNoSort(aStartingDir);
+        Collections.sort(result);
+        return result;
     }
 
     // PRIVATE //
     static private List<File> getFileListingNoSort(File aStartingDir) throws FileNotFoundException {
         List<File> result = new ArrayList<File>();
         File[] filesAndDirs = aStartingDir.listFiles();
-        if (filesAndDirs == null) return result;
+        if (filesAndDirs == null) {
+            return result;
+        }
         try {
             List<File> filesDirs = Arrays.asList(filesAndDirs);
             for(File file : filesDirs) {
@@ -58,7 +59,7 @@ public final class FileListing {
                     }
             }
         } catch (Exception e) {
-                //System.out.println("FileListing: " + e);
+            //System.out.println("FileListing: " + e);
         }
         return result;
     }
@@ -68,16 +69,16 @@ public final class FileListing {
         */
     static private void validateDirectory (File aDirectory) throws FileNotFoundException {
         if (aDirectory == null) {
-                throw new IllegalArgumentException("Directory should not be null.");
+            throw new IllegalArgumentException("Directory should not be null.");
         }
         if (!aDirectory.exists()) {
-                throw new FileNotFoundException("Directory does not exist: " + aDirectory);
+            throw new FileNotFoundException("Directory does not exist: " + aDirectory);
         }
         if (!aDirectory.isDirectory()) {
-                throw new IllegalArgumentException("Is not a directory: " + aDirectory);
+            throw new IllegalArgumentException("Is not a directory: " + aDirectory);
         }
         if (!aDirectory.canRead()) {
-                throw new IllegalArgumentException("Directory cannot be read: " + aDirectory);
+            throw new IllegalArgumentException("Directory cannot be read: " + aDirectory);
         }
     }
 }
