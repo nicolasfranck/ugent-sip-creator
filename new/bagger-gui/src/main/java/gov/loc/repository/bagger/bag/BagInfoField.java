@@ -1,4 +1,3 @@
-
 package gov.loc.repository.bagger.bag;
 
 import gov.loc.repository.bagger.ProfileField;
@@ -16,7 +15,6 @@ public final class BagInfoField {
     public static final String TEXTFIELD_CODE = "TF";
     public static final String TEXTAREA_CODE = "TA";
     public static final int MAX_VALUE = 32;
-
     private String name = "";
     private String label = "";
     private String value = "";

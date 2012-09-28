@@ -12,24 +12,20 @@ public final class BagTreePanel extends JScrollPane {
     public BagTreePanel(BagTree bagTree){    	
         setBagTree(bagTree);    	
     	init();
-    }
-    
+    }    
     private void init() {
     	log.debug("BagTreePanel.init");        
         setViewportView(bagTree);       
         setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         setPreferredSize(bagTree.getTreeSize());
-    }
-    
+    }    
     public void setBagTree(BagTree bagTree) {
     	this.bagTree = bagTree;
-    }
-    
+    }    
     public BagTree getBagTree() {
     	return bagTree;
-    }
-    
+    }    
     public void refresh(BagTree bagTree) {
     	this.bagTree = bagTree;        
     	if(getComponentCount() > 0){

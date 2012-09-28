@@ -122,12 +122,26 @@ public class FUtils {
     }
     public static DefaultMutableTreeNode toTreeNode(File file){
         return toTreeNode(file,-1);
-    }
+    }    
     public static DefaultMutableTreeNode toTreeNode(File file,int maxdepth){
+        return toTreeNode(file,maxdepth,null);        
+    }
+    public static DefaultMutableTreeNode toTreeNode(File file,int maxdepth,String removePath){
+        System.out.println("getting treeNode for file: "+file);
+        
         if(file == null || !file.exists()){
             return null;
-        }        
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(file);       
+        }     
+        
+        String path = file.toString();
+        
+        if(removePath != null){
+            System.out.println("removing "+removePath+" from "+path);
+            path = path.replaceAll(removePath,"");
+            System.out.println("path now: "+path);
+        }
+        
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new TNode(path,file.getName()));       
         
         if(file.isFile()){
             root.setAllowsChildren(false);
@@ -151,15 +165,16 @@ public class FUtils {
         
         Collections.sort(directories,defaultFileSorter);
         for(File dir:directories){            
-            root.add(toTreeNode(dir,maxdepth-1));
+            root.add(toTreeNode(dir,maxdepth-1,removePath));
         }
         Collections.sort(files,defaultFileSorter);
         for(File f:files){            
-           root.add(toTreeNode(f,maxdepth-1));
+           root.add(toTreeNode(f,maxdepth-1,removePath));
         }             
         
         return root;
     }
+    
     public static void walkTree(DefaultMutableTreeNode node,IteratorListener il){
         if(node == null) {            
             return;
@@ -237,5 +252,5 @@ public class FUtils {
         }
         
         return entryString;        
-    }
+    }   
 }

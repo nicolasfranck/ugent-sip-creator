@@ -80,7 +80,7 @@ import java.util.Map;
  * @author JSON.org
  * @version 2009-04-14
  */
-public class JSONArray {
+public final class JSONArray {
 
 
     /**
@@ -163,14 +163,14 @@ public class JSONArray {
      * @param collection     A Collection.
      */
     public JSONArray(Collection collection) {
-		this.myArrayList = new ArrayList();
-		if (collection != null) {
-			Iterator iter = collection.iterator();;
-			while (iter.hasNext()) {
-			    Object o = iter.next();
+        this.myArrayList = new ArrayList();
+        if (collection != null) {
+            Iterator iter = collection.iterator();;
+            while (iter.hasNext()) {
+                Object o = iter.next();
                 this.myArrayList.add(JSONObject.wrap(o));  
-			}
-		}
+            }
+        }
     }
 
     
@@ -183,7 +183,7 @@ public class JSONArray {
         if (array.getClass().isArray()) {
             int length = Array.getLength(array);
             for (int i = 0; i < length; i += 1) {
-                this.put(JSONObject.wrap(Array.get(array, i)));
+                put(JSONObject.wrap(Array.get(array, i)));
             }
         } else {
             throw new JSONException("JSONArray initial value should be a string or collection or array.");

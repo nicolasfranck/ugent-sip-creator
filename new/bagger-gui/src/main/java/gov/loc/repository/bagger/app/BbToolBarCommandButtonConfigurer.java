@@ -31,7 +31,7 @@ public class BbToolBarCommandButtonConfigurer extends ToolBarCommandButtonConfig
     @Override
    public void configure(AbstractButton button, AbstractCommand command, CommandFaceDescriptor faceDescriptor) {
 	super.configure(button, command, faceDescriptor);
-	faceDescriptor.configureIconInfo(button, this.getUseLargeIcons());
+	faceDescriptor.configureIconInfo(button,getUseLargeIcons());
    }
 
    /**

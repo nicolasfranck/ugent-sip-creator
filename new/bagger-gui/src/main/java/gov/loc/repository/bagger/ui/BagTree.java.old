@@ -13,8 +13,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import ugent.bagger.helper.FUtils;
-import ugent.bagger.helper.TNode;
 
 public final class BagTree extends JTree {
     private static final long serialVersionUID = -5361474872106399068L;
@@ -45,9 +43,6 @@ public final class BagTree extends JTree {
         setRootVisible(false);
         
         basePath = path;
-        
-        System.out.println("basePath: "+basePath);
-        
         //i.e. 'data' => maar dit is al hierboven ingesteld??
         //parentNode = new DefaultMutableTreeNode(basePath);
         initialize();
@@ -87,8 +82,7 @@ public final class BagTree extends JTree {
     public void populateNodes(DefaultBag bag, String path, File rootSrc, boolean isParent) {
         basePath = path;
 
-        log.debug("BagTree.populateNodes");  
-        System.out.println("path: "+path+", rootSrc: "+rootSrc);
+        log.debug("BagTree.populateNodes");        
        
         if (bag.getPayload() != null && rootSrc.listFiles() != null) {
             addNodes(rootSrc, isParent);            
@@ -140,15 +134,7 @@ public final class BagTree extends JTree {
 
     public boolean addNodes(File file, boolean isParent) {
         if(!nodeAlreadyExists(file.getName())){           
-            
-            //Nicolas Franck
-            //DefaultMutableTreeNode node = createNodeTree(null, null, file);            
-            
-            System.out.println("addNodes => file: "+file);
-            String removePath = file.getAbsolutePath().replaceFirst("data$","");
-            System.out.println("removePath: "+removePath);
-            DefaultMutableTreeNode node = FUtils.toTreeNode(file,-1,removePath);
-            
+            DefaultMutableTreeNode node = createNodeTree(null, null, file);            
             //Nicolas Franck: nergens gebruikt
             //srcNodes.add(node);
             if(isParent) {
@@ -183,7 +169,7 @@ public final class BagTree extends JTree {
     }
 
     public void addNode(String filePath) {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(new TNode(filePath,filePath));        
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(filePath);        
         //Nicolas Franck: nooit gebruikt
         //srcNodes.add(node);
         parentNode.add(node);
@@ -191,9 +177,6 @@ public final class BagTree extends JTree {
     }
 	
     /** Add nodes from under "dir" into curTop. Highly recursive. */
-    
-    //Nicolas Franck: vervangen door FUtils.toTreeNode(File file)
-    /*
     private DefaultMutableTreeNode createNodeTree(DefaultMutableTreeNode curTop, DefaultMutableTreeNode displayTop, File dir) {
         String curPath = dir.getPath();
         String displayPath = dir.getName();
@@ -255,7 +238,7 @@ public final class BagTree extends JTree {
 
         //return curDir;
         return displayDir;
-    }*/
+    }
 
     public void setParentNode(DefaultMutableTreeNode parent) {
         this.parentNode = parent;

@@ -8,7 +8,6 @@ import java.util.*;
 public class BaggerProfileStore {
 	
     private static BaggerProfileStore instance;
-
     private HashMap<String, Profile> userProfiles = new HashMap<String, Profile>();
     private HashMap<String, List<ProfileField>> profileFieldsMap = new HashMap<String, List<ProfileField>>();
 

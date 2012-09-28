@@ -132,12 +132,12 @@ public final class AddFieldPanel extends JPanel {
             if(standardFieldSelected) {
                 getCustomFieldTextField().setVisible(false);
                 getStandardFieldsComboBox().setVisible(true);
-                //test
+                //Nicolas Franck
                 //getStandardFieldsComboBox().requestFocus();
             } else {
                 getStandardFieldsComboBox().setVisible(false);
                 getCustomFieldTextField().setVisible(true);
-                //test
+                //Nicolas Franck
                 //getCustomFieldTextField().requestFocus();
             }
         }

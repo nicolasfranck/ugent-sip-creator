@@ -98,10 +98,8 @@ public class DefaultBag {
         if (!newBag) {
             bilBag = bagFactory.createBag(this.rootDir);
             versionString = bilBag.getVersion().versionString;
-        } else if (versionString != null) {
-            System.out.println("retrieving version of "+versionString);
-            Version version = Version.valueOfString(versionString);
-            System.out.println("retrieved: "+version);
+        } else if (versionString != null) {            
+            Version version = Version.valueOfString(versionString);            
             bilBag = bagFactory.createBag(version);
         } else {
             bilBag = bagFactory.createBag();
@@ -361,7 +359,7 @@ public class DefaultBag {
     public String getBagInfoContent() {
         String bicontent = new String();
         if (this.bagInfo != null) {
-                bicontent = this.bagInfo.toString();
+            bicontent = this.bagInfo.toString();
         }
         return bicontent;
     }
@@ -463,9 +461,8 @@ public class DefaultBag {
         ArrayList<String> pathList = new ArrayList<String>();
         Collection<BagFile> payload = bilBag.getPayload();
         if (payload != null) {
-            for (Iterator<BagFile> it = payload.iterator(); it.hasNext();) {
-                    BagFile bf = it.next();
-                    pathList.add(bf.getFilepath());
+            for (Iterator<BagFile> it = payload.iterator(); it.hasNext();) {                
+                pathList.add(it.next().getFilepath());
             }
         }
         return pathList;
@@ -728,7 +725,7 @@ public class DefaultBag {
         }
         String[] rules = new String[rulesList.size()];
         for (int i = 0; i < rulesList.size(); i++) {
-            rules[i] = new String(rulesList.get(i));
+            rules[i] = rulesList.get(i);
         }
         Verifier strategy = new RequiredBagInfoTxtFieldsVerifier(rules);
 

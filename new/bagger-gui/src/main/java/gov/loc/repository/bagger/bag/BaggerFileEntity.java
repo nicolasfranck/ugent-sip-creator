@@ -46,7 +46,7 @@ public class BaggerFileEntity {
         this.normalizedName = removeBasePath(rootParent.getAbsolutePath(), rootSrc.getAbsolutePath());
         this.bagSrc = new File(bagDataDir, normalizedName);
         if (this.rootSrc.getAbsolutePath().equalsIgnoreCase(this.bagSrc.getAbsolutePath())) {
-                isInBag = true;
+            isInBag = true;
         }
     }
 
@@ -55,7 +55,7 @@ public class BaggerFileEntity {
         this.rootSrc = rootSrc;
         this.bagSrc = bagSrc;
         if (this.rootSrc.getAbsolutePath().equalsIgnoreCase(this.bagSrc.getAbsolutePath())) {
-                isInBag = true;
+            isInBag = true;
         }
     }
 

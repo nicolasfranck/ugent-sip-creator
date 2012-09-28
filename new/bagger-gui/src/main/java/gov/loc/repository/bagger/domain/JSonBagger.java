@@ -1,4 +1,3 @@
-
 package gov.loc.repository.bagger.domain;
 
 import gov.loc.repository.bagger.Bagger;
@@ -7,7 +6,6 @@ import gov.loc.repository.bagger.json.JSONException;
 import gov.loc.repository.bagger.json.JSONObject;
 import gov.loc.repository.bagger.json.JSONTokener;
 import gov.loc.repository.bagger.json.JSONWriter;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Praveen Bokka
  */
-public class JSonBagger implements Bagger {
+public final class JSonBagger implements Bagger {
 
     private final Log logger = LogFactory.getLog(getClass());
     private File profilesFolder;
@@ -46,18 +43,18 @@ public class JSonBagger implements Bagger {
     	String profilesPath = homeDir+File.separator+"bagger";
     	profilesFolder = new File(profilesPath);
     	String baggerJarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-    	copyDefautprofilesToUserFolder(baggerJarPath, profilesFolder);
+    	copyDefaultprofilesToUserFolder(baggerJarPath, profilesFolder);
     }
     
   
-    public void copyDefautprofilesToUserFolder(String baggerJarPath, File profilesFolder){
+    public void copyDefaultprofilesToUserFolder(String baggerJarPath, File profilesFolder){
     	if(!profilesFolder.exists()){
             profilesFolder.mkdirs();
     	}
 
     	if(baggerJarPath != null && !baggerJarPath.endsWith(".jar")){
 
-            String name = new String("gov.loc.repository.bagger.profiles");
+            String name = "gov.loc.repository.bagger.profiles";
             if (!name.startsWith("/")){
                 name = "/" + name;
             }
@@ -108,23 +105,23 @@ public class JSonBagger implements Bagger {
                 while( resources.hasMoreElements() ){
                     java.util.jar.JarEntry je = (java.util.jar.JarEntry) resources.nextElement();
                     if ( je.getName().matches(".*\\.json") ) {
-                            try {
-                                    InputStream is = jf.getInputStream(je);
-                                    String entryName = je.getName();
-                                    String fileName = entryName.substring(entryName.lastIndexOf("/")+1, entryName.length());
-                                    File file = new File(profilesFolder +File.separator+ fileName);
-                                    FileOutputStream os = new FileOutputStream(file);
-                                    int content = is.read();
-                                    while(content != -1)
-                                    {
-                                            os.write(content);
-                                            content = is.read();
-                                    }
-                                    os.flush();
-                                    os.close();
-                            } catch (IOException e) {
-                                    e.printStackTrace();
+                        try {
+                            InputStream is = jf.getInputStream(je);
+                            String entryName = je.getName();
+                            String fileName = entryName.substring(entryName.lastIndexOf("/")+1, entryName.length());
+                            File file = new File(profilesFolder +File.separator+ fileName);
+                            FileOutputStream os = new FileOutputStream(file);
+                            int content = is.read();
+                            while(content != -1)
+                            {
+                                os.write(content);
+                                content = is.read();
                             }
+                            os.flush();
+                            os.close();
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
                     }
                 }
             } catch (java.io.IOException e) {
@@ -134,115 +131,117 @@ public class JSonBagger implements Bagger {
     }
     
     @Override
-	public void loadProfile(String profileName) {	
-	}
+    public void loadProfile(String profileName) {	
+    }
 
     @Override
-	public List<Profile> loadProfiles() {
-            
-		File[] profilesFiles  = profilesFolder.listFiles();
-		List<Profile>  profilesToReturn = new ArrayList<Profile>();
-		for(File file:profilesFiles)
-		{
+    public List<Profile> loadProfiles() {
+
+        File[] profilesFiles  = profilesFolder.listFiles();
+        List<Profile>  profilesToReturn = new ArrayList<Profile>();
+        for(File file:profilesFiles)
+        {
+            /*
+             * Nicolas Franck: filter op -profile.json
+             * want anders faalt getprofileName
+             */
+            if(!file.isFile()){
+                continue;
+            }
+            if(!file.getName().endsWith("-profile.json")){
+                continue;
+            }
+
+                try {                            
+                    FileReader reader = new FileReader(file);
+                    Profile profile = loadProfile(reader,file.getName());
+                    profilesToReturn.add(profile);
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    continue;
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    continue;
+                } catch(Exception e){
                     /*
-                     * Nicolas Franck: filter op -profile.json
-                     * want anders faalt getprofileName
+                     * Nicolas Franck: deze exception werd vaak gegooid, maar
+                     * nooit opgevangen..
                      */
-                    if(!file.isFile()){
-                        continue;
-                    }
-                    if(!file.getName().endsWith("-profile.json")){
-                        continue;
-                    }
-                    
-			try {                            
-				FileReader reader = new FileReader(file);
-				Profile profile = loadProfile(reader,file.getName());
-				profilesToReturn.add(profile);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-                                continue;
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-                                continue;
-			} catch(Exception e){
-                            /*
-                             * Nicolas Franck: deze exception werd vaak gegooid, maar
-                             * nooit opgevangen..
-                             */
-                            e.printStackTrace();
-                            continue;
-                        }
-		}
+                    e.printStackTrace();
+                    continue;
+                }
+            }
+
+            //<no profile>
+            Profile profile = new Profile();
+            profile.setName(Profile.NO_PROFILE_NAME);
+            profile.setIsDefault(true);
+            profilesToReturn.add(profile);
+            return profilesToReturn;
+    }
 	
-		//<no profile>
-		Profile profile = new Profile();
-		profile.setName(Profile.NO_PROFILE_NAME);
-		profile.setIsDefault(true);
-		profilesToReturn.add(profile);
-		return profilesToReturn;
-	}
-	
-	private Profile loadProfile(FileReader reader, String jsonFileName) throws JSONException {
-		JSONTokener tokenizer = new JSONTokener(reader);
-		JSONObject jsonObject = null;		
-		try {
-			jsonObject = new JSONObject(tokenizer);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Profile profile = Profile.createProfile(jsonObject, getprofileName(jsonFileName));
-		return profile;
-	}
-	
-	public void saveProfile(Profile profile) {
-		if(profile.getName().equals("<no profile>"))
-			return;
-		try {
-			String fileName = getJsonFileName(profile.getName());
-			FileWriter writer = new FileWriter(profilesFolder.getAbsolutePath() +File.separator+ fileName);
-			StringWriter stringWriter = new StringWriter();
-			JSONWriter jsonWriter = new JSONWriter(stringWriter);
-			profile.serialize(jsonWriter);
-			JSONObject jsonObject = new JSONObject(new JSONTokener(stringWriter.toString()));
-			writer.write(jsonObject.toString(4));
-			writer.flush();
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    private Profile loadProfile(FileReader reader, String jsonFileName) throws JSONException {
+        JSONTokener tokenizer = new JSONTokener(reader);
+        JSONObject jsonObject = null;		
+        try {
+            jsonObject = new JSONObject(tokenizer);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Profile profile = Profile.createProfile(jsonObject, getprofileName(jsonFileName));
+        return profile;
+    }
+
+    @Override
+    public void saveProfile(Profile profile) {
+        if(profile.getName().equals("<no profile>")) {
+            return;
+        }
+        try {
+            String fileName = getJsonFileName(profile.getName());
+            FileWriter writer = new FileWriter(profilesFolder.getAbsolutePath() +File.separator+ fileName);
+            StringWriter stringWriter = new StringWriter();
+            JSONWriter jsonWriter = new JSONWriter(stringWriter);
+            profile.serialize(jsonWriter);
+            JSONObject jsonObject = new JSONObject(new JSONTokener(stringWriter.toString()));
+            writer.write(jsonObject.toString(4));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 	
     /**
      * Returns Profile Name from a JSON File Name.
      * @param jsonFileName A JSON file name
      */
-	private String getprofileName(String jsonFileName)
-	{                
-		return jsonFileName.substring(0, jsonFileName.indexOf("-profile.json"));
-	}		
-	
-	private String getJsonFileName(String name)
-	{
-		return name+"-profile.json";
-	}
+    private String getprofileName(String jsonFileName)
+    {                
+        return jsonFileName.substring(0, jsonFileName.indexOf("-profile.json"));
+    }		
+
+    private String getJsonFileName(String name)
+    {
+        return name+"-profile.json";
+    }
 	
     @Override
-	public void removeProfile(Profile profile) {
-		String homeDir = System.getProperty("user.home");
+    public void removeProfile(Profile profile) {
+        String homeDir = System.getProperty("user.home");
     	String profilesPath = homeDir+File.separator+"bagger";
     	profilesFolder = new File(profilesPath);
     	String profileFielName = getJsonFileName(profile.getName());
     	File file = new File(profilesFolder,profileFielName);
-    	if(file.exists())
-    		file.delete();
-	}
-	
+    	if(file.exists()) {
+            file.delete();
+        }
+    }	
 }

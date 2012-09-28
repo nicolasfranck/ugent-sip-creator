@@ -19,11 +19,16 @@ public class DefaultBagInfo {
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(DefaultBagInfo.class);
     public static final String FIELD_LC_PROJECT = "Profile Name";
-    private static final String[] ORGANIZATION_CONTACT_FIELDS = {BagInfoTxtImpl.FIELD_SOURCE_ORGANIZATION, 
-            BagInfoTxtImpl.FIELD_ORGANIZATION_ADDRESS, BagInfoTxtImpl.FIELD_CONTACT_NAME, 
-            BagInfoTxtImpl.FIELD_CONTACT_PHONE, BagInfoTxtImpl.FIELD_CONTACT_EMAIL, 
-    Contact.FIELD_TO_CONTACT_NAME,  Contact.FIELD_TO_CONTACT_PHONE,  Contact.FIELD_TO_CONTACT_EMAIL};
-
+    private static final String[] ORGANIZATION_CONTACT_FIELDS = {
+        BagInfoTxtImpl.FIELD_SOURCE_ORGANIZATION, 
+        BagInfoTxtImpl.FIELD_ORGANIZATION_ADDRESS, 
+        BagInfoTxtImpl.FIELD_CONTACT_NAME, 
+        BagInfoTxtImpl.FIELD_CONTACT_PHONE, 
+        BagInfoTxtImpl.FIELD_CONTACT_EMAIL,
+        Contact.FIELD_TO_CONTACT_NAME,  
+        Contact.FIELD_TO_CONTACT_PHONE,  
+        Contact.FIELD_TO_CONTACT_EMAIL
+    };
     private static final HashSet<String> ORGANIZATION_CONTACT_FIELD_SET = new HashSet<String>(Arrays.asList(ORGANIZATION_CONTACT_FIELDS));	
     private BaggerSourceOrganization sourceOrganization = new BaggerSourceOrganization();
     private Contact toContact = new Contact(true);
@@ -51,28 +56,33 @@ public class DefaultBagInfo {
         toContact = new Contact(true);
         if (bagInfoTxt.containsKey(Contact.FIELD_TO_CONTACT_NAME)) {
             toContact.setContactName(ProfileField.createProfileField(
-                                Contact.FIELD_TO_CONTACT_NAME, bagInfoTxt
-                                                .get(Contact.FIELD_TO_CONTACT_NAME)));
+                Contact.FIELD_TO_CONTACT_NAME, 
+                bagInfoTxt.get(Contact.FIELD_TO_CONTACT_NAME)
+            ));
         } else {
             ProfileField.createProfileField(Contact.FIELD_TO_CONTACT_NAME, "");
         }
 
         if (bagInfoTxt.containsKey(Contact.FIELD_TO_CONTACT_PHONE)) {
             toContact.setTelephone(ProfileField.createProfileField(
-                                Contact.FIELD_TO_CONTACT_PHONE, bagInfoTxt
-                                                .get(Contact.FIELD_TO_CONTACT_PHONE)));
+                Contact.FIELD_TO_CONTACT_PHONE, 
+                bagInfoTxt.get(Contact.FIELD_TO_CONTACT_PHONE)
+            ));
         } else {
-            toContact.setTelephone(ProfileField.createProfileField(
-                                Contact.FIELD_TO_CONTACT_PHONE, ""));
+            toContact.setTelephone(ProfileField.createProfileField(Contact.FIELD_TO_CONTACT_PHONE, ""));
         }
 
         if (bagInfoTxt.containsKey(Contact.FIELD_TO_CONTACT_EMAIL)) {
             toContact.setEmail(ProfileField.createProfileField(
-                                Contact.FIELD_TO_CONTACT_EMAIL, bagInfoTxt
-                                                .get(Contact.FIELD_TO_CONTACT_EMAIL)));
+                Contact.FIELD_TO_CONTACT_EMAIL, 
+                bagInfoTxt.get(Contact.FIELD_TO_CONTACT_EMAIL)
+            ));
         } else {
-            toContact.setEmail(ProfileField.createProfileField(
-                                Contact.FIELD_TO_CONTACT_EMAIL, ""));
+            toContact.setEmail(
+                ProfileField.createProfileField(
+                    Contact.FIELD_TO_CONTACT_EMAIL, ""
+                )
+            );
         }
 
         for (String key : bagInfoTxt.keySet()) {
@@ -104,16 +114,18 @@ public class DefaultBagInfo {
         if (newBag) {
             // if this is a new bag, populate organization and contacts with profile info
             Contact person = profile.getSendToContact();
-            if (person == null)
-                    person = new Contact(true);
+            if (person == null) {
+                person = new Contact(true);
+            }
             Contact contact = profile.getSendFromContact();
             if (contact == null) {
                     contact = new Contact(false);
             }
             sourceOrganization.setContact(contact);
             Organization org = profile.getOrganization();
-            if (org == null)
-                    org = new Organization();
+            if (org == null) {
+                org = new Organization();
+            }
             sourceOrganization.setOrganizationName(org.getName().getFieldValue());
             sourceOrganization.setOrganizationAddress(org.getAddress().getFieldValue());
 
@@ -126,7 +138,7 @@ public class DefaultBagInfo {
     private void applyProfileToFieldMap(Profile profile){
         if (profile.isNoProfile()) {
             if (fieldMap.containsKey(DefaultBagInfo.FIELD_LC_PROJECT)) {
-                    fieldMap.remove(DefaultBagInfo.FIELD_LC_PROJECT);
+                fieldMap.remove(DefaultBagInfo.FIELD_LC_PROJECT);
             }
         }
 
@@ -188,8 +200,9 @@ public class DefaultBagInfo {
                         field.isRequired(projectProfile.getIsRequired());
                         field.setValue(projectProfile.getFieldValue());
                         //field.setValue("");
-                        if(projectProfile.isReadOnly())
-                                field.isEnabled(false);
+                        if(projectProfile.isReadOnly()) {
+                            field.isEnabled(false);
+                        }
                         field.buildElements(projectProfile.getElements());
                         if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTFIELD_CODE)) {
                                 field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
@@ -207,8 +220,9 @@ public class DefaultBagInfo {
 	
     public HashMap<String, ProfileField> convertToMap(List<ProfileField> profileFields){
     	HashMap<String, ProfileField> filedsToReturn = new HashMap<String, ProfileField>();
-    	if(profileFields == null)
-    		return filedsToReturn;
+    	if(profileFields == null) {
+            return filedsToReturn;
+        }
     	for(ProfileField profileFiled: profileFields)
     	{
     		filedsToReturn.put(profileFiled.getFieldName(),profileFiled);
@@ -290,8 +304,9 @@ public class DefaultBagInfo {
         for (Iterator<String> iter = keys.iterator(); iter.hasNext();) {
             String key = (String) iter.next();
             String value = (String) map.get(key);
-            if (fieldMap.get(key) != null)
-                    fieldMap.get(key).setValue(value);
+            if (fieldMap.get(key) != null) {
+                fieldMap.get(key).setValue(value);
+            }
         }
     }
 	

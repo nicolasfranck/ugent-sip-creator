@@ -14,7 +14,7 @@ import org.springframework.richclient.application.config.DefaultApplicationLifec
  */
 public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
-    boolean useWizard = false;
+    //boolean useWizard = false;
 
     /**
      * Show a setup wizard before actual applicationWindow is created. This should happen only on Application

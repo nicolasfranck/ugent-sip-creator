@@ -711,7 +711,7 @@ public class BagView extends DefaultView {
     	BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());    	
     }*/ 
     
-    public void registerTreeListener(String label, final JTree tree){
+    public void registerTreeListener(String label,final JTree tree){
     	if(AbstractBagConstants.DATA_DIRECTORY.equals(label)){
             tree.addTreeSelectionListener(new TreeSelectionListener(){
                 @Override

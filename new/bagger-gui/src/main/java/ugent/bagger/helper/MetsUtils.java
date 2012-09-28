@@ -100,27 +100,33 @@ public class MetsUtils {
         return mets;
     }
     public static StructMap toStructMap(DefaultMutableTreeNode node){
-        StructMap struct = new StructMap();                
-        Div div = toDiv(node);        
-        struct.setDiv(div);                
-        return struct;
+        return toStructMap(node,new DefaultMetsCallback());
     }
-    public static Div toDiv(DefaultMutableTreeNode node){
-        Div div = new Div();            
+    public static StructMap toStructMap(DefaultMutableTreeNode node,MetsCallback metsCallback){
+        StructMap struct = new StructMap();                
+        struct.setDiv(toDiv(node,metsCallback));                
+        metsCallback.onCreateStructMap(struct);
+        return struct;
+    } 
+    public static Div toDiv(DefaultMutableTreeNode node){        
+        return toDiv(node,new DefaultMetsCallback());
+    }
+    public static Div toDiv(DefaultMutableTreeNode node,MetsCallback metsCallback){
+        Div div = new Div();
         div.setLabel(node.getUserObject().toString());        
         Enumeration enumeration = node.children();
         while(enumeration.hasMoreElements()){            
             DefaultMutableTreeNode n = (DefaultMutableTreeNode)enumeration.nextElement();            
             if(n.isLeaf()){
                 Fptr filePointer = new Fptr();
-                String id = ncname_forbidden.matcher(n.getUserObject().toString()).replaceAll("-");
-                filePointer.setFILEID(id);
-                //filePointer.setFILEID(n.getUserObject().toString().replace('/','-'));
+                TNode tnode = (TNode)n.getUserObject();
+                filePointer.setFILEID(tnode.getObject().toString());               
                 div.getFptr().add(filePointer);
             }else{
-                div.getDiv().add(toDiv(n));
+                div.getDiv().add(toDiv(n,metsCallback));
             }
-        }        
+        }                
+        metsCallback.onCreateDiv(div);
         return div;
     }
     /*
@@ -150,20 +156,7 @@ public class MetsUtils {
             throw new MdRefException("MdRef not allowed. XML need to be wrapped in a xmlData element");
         }
     }
-    public static void main(String [] args){
-        try{
-            Mets mets = new Mets();          
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) FUtils.toTreeNode(new File("/home/nicolas/bhsl-pap"));
-            StructMap structMap = toStructMap(node);
-            structMap.setType("BAGIT_PAYLOAD_TREE");
-            structMap.setLabel("BagIt payload directory tree");
-            mets.getStructMap().add(structMap);
-            MetsWriter mw = new MetsWriter();
-            mw.writeToOutputStream(mets,new FileOutputStream(new File("/tmp/output.txt")));
-        }catch(Exception e){
-            logger.debug(e.getMessage());            
-        }
-    }    
+   
     public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException{        
         MdSec mdSec = new MdSec(file.getName());                
         mdSec.setMdWrap(createMdWrap(file));                
@@ -187,16 +180,12 @@ public class MetsUtils {
             throw new IllegalNamespaceException("namespace "+namespace+" is forbidden in mdWrap",namespace);
         }
         //indien XSD bekend, dan validatie hierop       
-        if(getXsdMap().containsKey(namespace)){
-            logger.debug("validating against "+(String)getXsdMap().get(namespace));            
-            URL schemaURL = Context.getResource((String)getXsdMap().get(namespace));                    
-            logger.debug("creating schema");            
-            logger.debug("url of schema: "+schemaURL);
-            Schema schema = ugent.bagger.helper.XML.createSchema(schemaURL);            
-            logger.debug("creating schema done!");
-            ugent.bagger.helper.XML.validate(doc,schema);            
+        if(getXsdMap().containsKey(namespace)){            
+            URL schemaURL = Context.getResource((String)getXsdMap().get(namespace));                                
+            Schema schema = ugent.bagger.helper.XML.createSchema(schemaURL);                        
+            XML.validate(doc,schema);            
         } 
-        logger.debug("validation successfull");
+        
         MdSec.MDTYPE mdType = null;
         try{                     
             mdType = MdSec.MDTYPE.fromValue(getNamespaceMap().get(namespace));                              
@@ -213,6 +202,6 @@ public class MetsUtils {
     }
     public static MdSec.MdWrap createMdWrap(File file) throws ParserConfigurationException, SAXException, IOException, IllegalNamespaceException, NoNamespaceException{           
         //Valideer xml, en geef W3C-document terug
-        return createMdWrap(ugent.bagger.helper.XML.XMLToDocument(file));
-    }
+        return createMdWrap(XML.XMLToDocument(file));
+    }    
 }

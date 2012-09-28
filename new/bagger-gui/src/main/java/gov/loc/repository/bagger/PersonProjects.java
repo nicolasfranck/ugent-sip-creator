@@ -9,31 +9,31 @@ package gov.loc.repository.bagger;
  * @author Jon Steinbach
  */
 public class PersonProjects {
-	private int id = -1;
-	private int personId;
-	private int projectId;
+    private int id = -1;
+    private int personId;
+    private int projectId;
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public int getId() {
-		return this.id;
-	}
-	
-	public void setPersonId(int id) {
-		this.personId = id;
-	}
+    public void setId(int id) {
+            this.id = id;
+    }
 
-	public int getPersonId() {
-		return this.personId;
-	}
+    public int getId() {
+            return this.id;
+    }
 
-	public void setProjectId(int id) {
-		this.projectId = id;
-	}
+    public void setPersonId(int id) {
+            this.personId = id;
+    }
 
-	public int getProjectId() {
-		return this.projectId;
-	}
+    public int getPersonId() {
+            return this.personId;
+    }
+
+    public void setProjectId(int id) {
+            this.projectId = id;
+    }
+
+    public int getProjectId() {
+            return this.projectId;
+    }
 }

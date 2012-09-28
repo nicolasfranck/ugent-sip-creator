@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -25,16 +24,23 @@ public class AddDataHandler extends AbstractAction implements Progress {
         super();        
     }
     @Override
-    public void execute() {
-        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-        addData();
-        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+    public void execute() {        
+        System.out.println("AddDataHandler::execute");
+        addData();        
     }
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("AddDataHandler::actionPerformed");
+        System.out.println("BusyIndicator.showAt");
+        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
         execute();        
+        System.out.println("BusyIndicator.clearAt");
+        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
     public void addData(){ 
+        
+        System.out.println("AddDataHandler::addData");
+        
         BagView bagView = BagView.getInstance();
         /*
          * Nicolas Franck: default directory
@@ -47,7 +53,9 @@ public class AddDataHandler extends AbstractAction implements Progress {
 
         //File selectFile = new File(File.separator+".");
 
-        JFrame frame = new JFrame();
+        
+        //Nicolas Franck: een frame die niet gebruikt wordt heeft geen effect!
+        //JFrame frame = new JFrame();
         //JFileChooser fc = new JFileChooser(selectFile);
         JFileChooser fc = new JFileChooser(dir);
 
@@ -60,7 +68,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
          */
         fc.setDialogTitle(ApplicationContextUtil.getMessage("bag.message.addfiles"));
         //fc.setDialogTitle("Add File or Directory");
-    	int option = fc.showOpenDialog(frame);
+    	int option = fc.showOpenDialog(Application.instance().getActiveWindow().getControl());
 
         if (option == JFileChooser.APPROVE_OPTION) {
             File[] files = fc.getSelectedFiles();
@@ -83,6 +91,9 @@ public class AddDataHandler extends AbstractAction implements Progress {
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
     }
     private String getFileNames(File[] files) {
+        
+        System.out.println("AddDataHandler::getFileNames");
+        
     	StringBuilder stringBuff = new StringBuilder();
     	int totalFileCount = files.length;
     	int displayCount = 20;
@@ -91,7 +102,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
     	}
     	for (int i = 0; i < displayCount; i++) {
             if (i != 0) {
-                    stringBuff.append("\n");
+                stringBuff.append("\n");
             }
             stringBuff.append(files[i].getAbsolutePath());
     	}
@@ -101,21 +112,30 @@ public class AddDataHandler extends AbstractAction implements Progress {
         return stringBuff.toString();
     }
     public void addBagData(File[] files) {
+        
+        System.out.println("AddDataHandler::addBagData(file)");
+        
     	if(files != null){
             for (int i=0; i < files.length; i++) {
                 log.info("addBagData[" + i + "] " + files[i].getName());
+                
+                addBagData(files[i],!(i < files.length-1));
+                //Nicolas Franck
+                /*
                 if (i < files.length-1) {
                     addBagData(files[i], false);
                 }
                 else {
                     addBagData(files[i], true);
-                }
+                }*/
             }
     	}
     }
     public void addBagData(File file, boolean lastFileFlag) {
-        BagView bagView = BagView.getInstance();
-    	BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+        
+        System.out.println("AddDataHandler::addBagData(file,last)");
+        
+        BagView bagView = BagView.getInstance();    	
         try{
             bagView.getBag().addFileToPayload(file);
             boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);
@@ -125,7 +145,6 @@ public class AddDataHandler extends AbstractAction implements Progress {
         }catch (Exception e){
             log.error("BagView.addBagData: " + e);
             bagView.showWarningErrorDialog("Error - file not added", "Error adding bag file: " + file + "\ndue to:\n" + e.getMessage());
-        }
-    	BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+        }    	
     }    
 }

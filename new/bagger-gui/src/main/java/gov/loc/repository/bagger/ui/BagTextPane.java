@@ -9,7 +9,7 @@ import javax.swing.text.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class BagTextPane extends JTextPane {
+public final class BagTextPane extends JTextPane {
     private static final long serialVersionUID = -505900021814525136L;
     private static final Log log = LogFactory.getLog(BagTextPane.class);
     private StyledDocument document;
@@ -18,9 +18,14 @@ public class BagTextPane extends JTextPane {
 
     public BagTextPane(String message) {
     	super();
-    	this.message = message;
+        
+        setMessage(message);
+        
+        //Nicolas Franck: één call naar setMessage doet hetzelfde
+    	/*this.message = message;
     	buildDocument();
-        setStyledDocument(document);
+        setStyledDocument(document);*/
+        
         setAutoscrolls(true);
         setEditable(false);
         setBackground(textBackground);
@@ -33,7 +38,7 @@ public class BagTextPane extends JTextPane {
     }
     
     public String getMessage() {
-    	return this.message;
+    	return message;
     }
     
     private void buildDocument() {
