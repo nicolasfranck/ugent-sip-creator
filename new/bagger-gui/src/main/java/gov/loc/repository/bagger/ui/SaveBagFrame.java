@@ -64,6 +64,11 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
     JCheckBox isPayloadCheckbox;
     JComboBox tagAlgorithmList;
     JComboBox payAlgorithmList;
+    
+    protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
+    protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";
+    private ActionCommand finishCommand;
+    private ActionCommand cancelCommand;
 
     public BagView getBagView(){
         return BagView.getInstance();
@@ -123,15 +128,6 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
     protected String getCancelCommandId() {
         return DEFAULT_CANCEL_COMMAND_ID;
     }
-    protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
-
-    protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";
-
-    private ActionCommand finishCommand;
-
-    private ActionCommand cancelCommand;
-	
-	
 
     private JPanel createComponents() {
         Border border = new EmptyBorder(5, 5, 5, 5);
@@ -265,9 +261,9 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
         JLabel tagAlgorithmLabel = new JLabel(getMessage("bag.label.tagalgorithm"));
         tagAlgorithmLabel.setToolTipText(getMessage("bag.label.tagalgorithm.help"));
         ArrayList<String> listModel = new ArrayList<String>();
-		for(Algorithm algorithm : Algorithm.values()) {
-			listModel.add(algorithm.bagItAlgorithm);
-		}
+        for(Algorithm algorithm : Algorithm.values()) {
+            listModel.add(algorithm.bagItAlgorithm);
+        }
         tagAlgorithmList = new JComboBox(listModel.toArray());
         tagAlgorithmList.setName(getMessage("bag.tagalgorithmlist"));
         tagAlgorithmList.setSelectedItem(bag.getTagManifestAlgorithm());

@@ -83,10 +83,10 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
     				+ ", version: " + bagItVersion + ", profile: " + profileName);
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-    		bagView.getBag().createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion);
+            bagView.getBag().createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion);
     	} catch (Exception e) {
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");
-    		return;
+            return;
     	}
     	DefaultBag bag = bagView.getBag();
     	

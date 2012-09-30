@@ -56,7 +56,7 @@ public class MetsBag extends DefaultBag{
             tagManifest.remove("mets.xml");
             tagManifest.put("mets.xml",checksumMets);
             
-        }catch(Exception e){            
+        }catch(Exception e){              
             e.printStackTrace();            
         }        
         String messages = writeBag(bw);

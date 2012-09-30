@@ -6,15 +6,7 @@ import gov.loc.repository.bagger.json.JSONException;
 import gov.loc.repository.bagger.json.JSONObject;
 import gov.loc.repository.bagger.json.JSONTokener;
 import gov.loc.repository.bagger.json.JSONWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -44,8 +36,7 @@ public final class JSonBagger implements Bagger {
     	profilesFolder = new File(profilesPath);
     	String baggerJarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
     	copyDefaultprofilesToUserFolder(baggerJarPath, profilesFolder);
-    }
-    
+    }   
   
     public void copyDefaultprofilesToUserFolder(String baggerJarPath, File profilesFolder){
     	if(!profilesFolder.exists()){
@@ -59,8 +50,6 @@ public final class JSonBagger implements Bagger {
                 name = "/" + name;
             }
             name = name.replace('.','/');
-
-
 
             // Get a File object for the package
             URL url = JSonBagger.class.getResource(name);
@@ -79,19 +68,18 @@ public final class JSonBagger implements Bagger {
                         File outFile = new File(profilesFolder +File.separator+ fileName);
                         FileOutputStream os = new FileOutputStream(outFile);
                         int content = fileInputStream.read();
-                        while(content != -1)
-                        {
-                                os.write(content);
-                                content = fileInputStream.read();
+                        while(content != -1){
+                            os.write(content);
+                            content = fileInputStream.read();
                         }
-                        os.flush();
+                        //os.flush();
                         os.close();
                     } catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        logger.debug(e.getMessage());
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        logger.debug(e.getMessage());
                     }
                 }
                 return;
@@ -117,15 +105,15 @@ public final class JSonBagger implements Bagger {
                                 os.write(content);
                                 content = is.read();
                             }
-                            os.flush();
+                            //os.flush();
                             os.close();
                         } catch (IOException e) {
-                                e.printStackTrace();
+                            logger.debug(e.getMessage());
                         }
                     }
                 }
             } catch (java.io.IOException e) {
-                e.printStackTrace();
+                logger.debug(e.getMessage());
             }
     	}
     }
@@ -139,8 +127,7 @@ public final class JSonBagger implements Bagger {
 
         File[] profilesFiles  = profilesFolder.listFiles();
         List<Profile>  profilesToReturn = new ArrayList<Profile>();
-        for(File file:profilesFiles)
-        {
+        for(File file:profilesFiles){
             /*
              * Nicolas Franck: filter op -profile.json
              * want anders faalt getprofileName
@@ -158,18 +145,18 @@ public final class JSonBagger implements Bagger {
                     profilesToReturn.add(profile);
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    logger.debug(e.getMessage());                    
                     continue;
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    logger.debug(e.getMessage());
                     continue;
                 } catch(Exception e){
                     /*
                      * Nicolas Franck: deze exception werd vaak gegooid, maar
                      * nooit opgevangen..
                      */
-                    e.printStackTrace();
+                    logger.debug(e.getMessage());
                     continue;
                 }
             }
@@ -189,10 +176,13 @@ public final class JSonBagger implements Bagger {
             jsonObject = new JSONObject(tokenizer);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
+        return Profile.createProfile(jsonObject, getprofileName(jsonFileName));
+        //Nicolas Franck
+        /*
         Profile profile = Profile.createProfile(jsonObject, getprofileName(jsonFileName));
-        return profile;
+        return profile;*/
     }
 
     @Override
@@ -208,14 +198,14 @@ public final class JSonBagger implements Bagger {
             profile.serialize(jsonWriter);
             JSONObject jsonObject = new JSONObject(new JSONTokener(stringWriter.toString()));
             writer.write(jsonObject.toString(4));
-            writer.flush();
+            //writer.flush();
             writer.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.debug(e.getMessage());            
         } catch (JSONException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.debug(e.getMessage());            
         }
     }
 	
@@ -223,13 +213,11 @@ public final class JSonBagger implements Bagger {
      * Returns Profile Name from a JSON File Name.
      * @param jsonFileName A JSON file name
      */
-    private String getprofileName(String jsonFileName)
-    {                
+    private String getprofileName(String jsonFileName){                
         return jsonFileName.substring(0, jsonFileName.indexOf("-profile.json"));
     }		
 
-    private String getJsonFileName(String name)
-    {
+    private String getJsonFileName(String name){
         return name+"-profile.json";
     }
 	

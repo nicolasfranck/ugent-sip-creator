@@ -61,8 +61,7 @@ public class ValidateBagHandler2 extends Handler {
                     }
                 });                
                    
-            }catch (Exception e){                
-                e.printStackTrace();
+            }catch (Exception e){                                                
                 if (isCancelled()) {
                     bagView.showWarningErrorDialog("Validation cancelled", "Validation cancelled.");
                 } else {

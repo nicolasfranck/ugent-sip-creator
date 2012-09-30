@@ -13,7 +13,6 @@ public class CompleteExecutor extends AbstractActionCommandExecutor {
     public CompleteExecutor() {
         super();		
     }
-
     @Override
     public void execute(){        
         BagView.getInstance().completeBagHandler.completeBag();

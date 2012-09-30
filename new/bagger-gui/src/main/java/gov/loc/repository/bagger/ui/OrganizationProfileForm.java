@@ -12,8 +12,8 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 
 public class OrganizationProfileForm extends AbstractForm implements FocusListener {
+    
     public static final String PROFILE_FORM_PAGE = "profilePage";
-
     private JComponent form;
     private JComponent contactName;
     private JComponent field;  

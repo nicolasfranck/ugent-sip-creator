@@ -1,6 +1,5 @@
 package gov.loc.repository.bagger.ui;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;

@@ -15,7 +15,7 @@ import org.springframework.richclient.image.ImageSource;
 public class ApplicationContextUtil {	    
     
     static {
-            UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+        UIManager.put("FileChooser.readOnly", Boolean.TRUE);
     }
     public static String getMessage(String propertyName) {                
         return Application.instance().getApplicationContext().getMessage(

@@ -14,8 +14,7 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class DefaultBagInfo {
-    
+public class DefaultBagInfo {    
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(DefaultBagInfo.class);
     public static final String FIELD_LC_PROJECT = "Profile Name";
@@ -37,19 +36,15 @@ public class DefaultBagInfo {
     public DefaultBagInfo(Bag bag) {
         log.debug("DefaultBagInfo");
     }
-
     public BaggerSourceOrganization getBagOrganization() {
         return sourceOrganization;
     }
-
     public HashMap<String, BagInfoField> getFieldMap() {
         return fieldMap;
     }
-
     public void addField(BagInfoField field) {
         fieldMap.put(field.getName(),field);
     }
-
     public void update(BagInfoTxt bagInfoTxt) {
         updateBagInfoFieldMapFromBilBag(bagInfoTxt);
         sourceOrganization = new BaggerSourceOrganization(bagInfoTxt);
@@ -94,8 +89,7 @@ public class DefaultBagInfo {
             infoField.isEnabled(true);
             fieldMap.put(key, infoField);
         }		
-    }
-	
+    }	
     private void updateBagInfoFieldMapFromBilBag(BagInfoTxt bagInfoTxt) {
         if (fieldMap != null) {
             Set<String> keys = fieldMap.keySet();
@@ -108,8 +102,7 @@ public class DefaultBagInfo {
                 fieldMap.put(label, field);
             }
         }
-    }
-	
+    }	
     public void setProfile(Profile profile, boolean newBag) {
         if (newBag) {
             // if this is a new bag, populate organization and contacts with profile info
@@ -133,8 +126,7 @@ public class DefaultBagInfo {
         } 
 
         applyProfileToFieldMap(profile);
-    }
-	
+    }	
     private void applyProfileToFieldMap(Profile profile){
         if (profile.isNoProfile()) {
             if (fieldMap.containsKey(DefaultBagInfo.FIELD_LC_PROJECT)) {
@@ -216,8 +208,7 @@ public class DefaultBagInfo {
                 }
             }
         }
-    }
-	
+    }	
     public HashMap<String, ProfileField> convertToMap(List<ProfileField> profileFields){
     	HashMap<String, ProfileField> filedsToReturn = new HashMap<String, ProfileField>();
     	if(profileFields == null) {
@@ -228,21 +219,16 @@ public class DefaultBagInfo {
     		filedsToReturn.put(profileFiled.getFieldName(),profileFiled);
     	}
     	return filedsToReturn;
-    }
-	
+    }	
     public void clearFields() {
         fieldMap = new HashMap<String, BagInfoField>();
     }
-
     public void removeField(String key) {
         fieldMap.remove(key);
     }
-
     public static boolean isOrganizationContactField(String fieldName) {
         return ORGANIZATION_CONTACT_FIELD_SET.contains(fieldName);
     }
-
-
     public void prepareBilBagInfo(BagInfoTxt bagInfoTxt) {
         bagInfoTxt.clear();
 
@@ -252,7 +238,6 @@ public class DefaultBagInfo {
 
         updateBagInfoTxtWithOrganizationInformation(bagInfoTxt);
     }
-
     private void updateBagInfoTxtWithOrganizationInformation(BagInfoTxt bagInfoTxt) {
         if (!sourceOrganization.getOrganizationName().trim().isEmpty()) {
                 bagInfoTxt.setSourceOrganization(
@@ -288,17 +273,12 @@ public class DefaultBagInfo {
                                 toContact.getEmail().getFieldValue().trim());
         }
     }
-
     public Contact getToContact() {
         return toContact;
     }
-
-
     public void setToContact(Contact toContact) {
         this.toContact = toContact;
     }
-
-
     public void update(Map<String, String> map) {
         Set<String> keys = map.keySet();
         for (Iterator<String> iter = keys.iterator(); iter.hasNext();) {

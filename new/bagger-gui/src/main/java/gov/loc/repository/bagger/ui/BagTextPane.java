@@ -52,7 +52,7 @@ public final class BagTextPane extends JTextPane {
         StyleConstants.setSpaceBelow(style, 4);
         // Insert content
         try {
-          document.insertString(document.getLength(), message, style);
+            document.insertString(document.getLength(), message, style);
         } catch (BadLocationException badLocationException) {
             log.error(badLocationException.getMessage());
         }

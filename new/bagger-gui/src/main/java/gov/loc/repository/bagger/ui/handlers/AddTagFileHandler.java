@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
+import org.springframework.richclient.application.Application;
 
 public class AddTagFileHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;   
@@ -42,7 +42,7 @@ public class AddTagFileHandler extends AbstractAction {
         }
 
         //File selectFile = new File(File.separator+".");
-        JFrame frame = new JFrame();
+        //JFrame frame = new JFrame();
         //JFileChooser fo = new JFileChooser(selectFile);
 
         JFileChooser fo = new JFileChooser(dir);
@@ -53,7 +53,10 @@ public class AddTagFileHandler extends AbstractAction {
             fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
         }
         fo.setDialogTitle("Tag File Chooser");
-    	int option = fo.showOpenDialog(frame);
+        
+        int option = fo.showOpenDialog(Application.instance().getActiveWindow().getControl());
+        //Nicolas Franck
+    	//int option = fo.showOpenDialog(frame);
         
         if(option == JFileChooser.APPROVE_OPTION){
             DefaultBag bag = bagView.getBag();

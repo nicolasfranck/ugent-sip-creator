@@ -57,7 +57,6 @@ public class DefaultBag {
     // Bag state flags
     private boolean isValidateOnSave = false;
     private boolean isSerialized = false;
-
     private boolean dirty = false;
 
     private File rootDir = null;
@@ -171,9 +170,9 @@ public class DefaultBag {
     }
 
     /*
- * Makes BIL API call to create Bag in place and 
- * adding .keep files in empty Pay load folders 
-*/
+    * Makes BIL API call to create Bag in place and 
+    * adding .keep files in empty Pay load folders 
+    */
     public void createPreBagAddKeepFilesToEmptyFolders(File data, String version) {
         BagFactory bagFactory = new BagFactory();
         PreBag preBag = bagFactory.createPreBag(data);
@@ -204,8 +203,8 @@ public class DefaultBag {
         isValidMetadata(Status.UNKNOWN);
     }
 
-    public void setVersion(String v) {
-        this.versionString = v;
+    public void setVersion(String versionString) {
+        this.versionString = versionString;
     }
 
     public String getVersion() {
@@ -221,7 +220,7 @@ public class DefaultBag {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setSize(long size) {
@@ -229,7 +228,7 @@ public class DefaultBag {
     }
 
     public long getSize() {
-        return this.size;
+        return size;
     }
 
     // This directory contains either the bag directory or serialized bag file
@@ -238,92 +237,92 @@ public class DefaultBag {
     }
 
     public File getRootDir() {
-        return this.rootDir;
+        return rootDir;
     }
 
 
-    public void isHoley(boolean b) {
-        this.isHoley = b;
+    public void isHoley(boolean isHoley) {
+        this.isHoley = isHoley;
     }
 
     public boolean isHoley() {
-        return this.isHoley;
+        return isHoley;
     }
 
-    public void isSerial(boolean b) {
-        this.isSerial = b;
+    public void isSerial(boolean isSerial) {
+        this.isSerial = isSerial;
     }
 
     public boolean isSerial() {
-        return this.isSerial;
+        return isSerial;
     }
 
-    public void setSerialMode(short m) {
-        this.serialMode = m;
+    public void setSerialMode(short serialMode) {
+        this.serialMode = serialMode;
     }
 
     public short getSerialMode() {
-        return this.serialMode;
+        return serialMode;
     }
 
     public boolean isNoProject() {
         return profile.isNoProfile();
     }
 
-    public void isBuildTagManifest(boolean b) {
-        this.isBuildTagManifest = b;
+    public void isBuildTagManifest(boolean isBuildTagManifest) {
+        this.isBuildTagManifest = isBuildTagManifest;
     }
 
     public boolean isBuildTagManifest() {
-        return this.isBuildTagManifest;
+        return isBuildTagManifest;
     }
 
-    public void isBuildPayloadManifest(boolean b) {
-        this.isBuildPayloadManifest = b;
+    public void isBuildPayloadManifest(boolean isBuildPayloadManifest) {
+        this.isBuildPayloadManifest = isBuildPayloadManifest;
     }
 
     public boolean isBuildPayloadManifest() {
-        return this.isBuildPayloadManifest;
+        return isBuildPayloadManifest;
     }
 
-    public void setTagManifestAlgorithm(String s) {
-        this.tagManifestAlgorithm = s;
+    public void setTagManifestAlgorithm(String tagManifestAlgorithm) {
+        this.tagManifestAlgorithm = tagManifestAlgorithm;
     }
 
     public String getTagManifestAlgorithm() {
-        return this.tagManifestAlgorithm;
+        return tagManifestAlgorithm;
     }
 
-    public void setPayloadManifestAlgorithm(String s) {
-        this.payloadManifestAlgorithm = s;
+    public void setPayloadManifestAlgorithm(String payloadManifestAlgorithm) {
+        this.payloadManifestAlgorithm = payloadManifestAlgorithm;
     }
 
     public String getPayloadManifestAlgorithm() {
-        return this.payloadManifestAlgorithm;
+        return payloadManifestAlgorithm;
     }
 
     /*
- *  Setter Method 
- *  for the passed value associated with the ".keep Files in Empty Folder(s):" Check Box 
-*/	
-    public void isAddKeepFilesToEmptyFolders(boolean b) {
-        this.isAddKeepFilesToEmptyFolders = b;
+    *  Setter Method 
+    *  for the passed value associated with the ".keep Files in Empty Folder(s):" Check Box 
+    */	
+    public void isAddKeepFilesToEmptyFolders(boolean isAddKeepFilesToEmptyFolders) {
+        this.isAddKeepFilesToEmptyFolders = isAddKeepFilesToEmptyFolders;
     }
 
     /*
- *  Getter Method 
- *  for the value return value associated with the "Add .keep Files To Empty Folder" Check Box 
-*/
+    *  Getter Method 
+    *  for the value return value associated with the "Add .keep Files To Empty Folder" Check Box 
+    */
     public boolean isAddKeepFilesToEmptyFolders() {
-        return this.isAddKeepFilesToEmptyFolders;
+        return isAddKeepFilesToEmptyFolders;
     }	
 
-    public void isValidateOnSave(boolean b) {
-        this.isValidateOnSave = b;
+    public void isValidateOnSave(boolean isValidateOnSave) {
+        this.isValidateOnSave = isValidateOnSave;
     }
 
     public boolean isValidateOnSave() {
-        return this.isValidateOnSave;
+        return isValidateOnSave;
     }
 
     private void isComplete(Status status) {
@@ -338,12 +337,12 @@ public class DefaultBag {
         BagStatus.getInstance().getProfileComplianceStatus().setStatus(status);
     }
 
-    public void isSerialized(boolean b) {
-        this.isSerialized = b;
+    public void isSerialized(boolean isSerialized) {
+        this.isSerialized = isSerialized;
     }
 
     public boolean isSerialized() {
-        return this.isSerialized;
+        return isSerialized;
     }
 
     public void updateBagInfo(Map<String, String> map) {
@@ -353,15 +352,17 @@ public class DefaultBag {
     }	
 
     public DefaultBagInfo getInfo() {
-        return this.bagInfo;
+        return bagInfo;
     }
 
     public String getBagInfoContent() {
-        String bicontent = new String();
-        if (this.bagInfo != null) {
-            bicontent = this.bagInfo.toString();
+        return bagInfo != null ? bagInfo.toString():"";
+        /*
+        String bicontent = "";
+        if (bagInfo != null) {
+            bicontent = bagInfo.toString();
         }
-        return bicontent;
+        return bicontent;*/
     }
 
     public String getBaseUrl(FetchTxt fetchTxt) {
@@ -398,17 +399,14 @@ public class DefaultBag {
         if (fetch == null){
             fetch = new BaggerFetch();
         }
-        return this.fetch;
+        return fetch;
     }
 
     public List<String> getFetchPayload() {
         List<String> list = new ArrayList<String>();
 
-        FetchTxt fetchTxt = this.bilBag.getFetchTxt();
-        if (fetchTxt == null) {
-            return list;
-        }
-        if (fetchTxt != null) {
+        FetchTxt fetchTxt = bilBag.getFetchTxt();
+        if(fetchTxt != null){
             for (int i = 0; i < fetchTxt.size(); i++) {
                 FilenameSizeUrl f = fetchTxt.get(i);                
                 display("DefaultBag.getFetchPayload: " + f.toString());
@@ -416,6 +414,23 @@ public class DefaultBag {
             }
         }
         return list;
+        //Nicolas Franck
+        /*
+        List<String> list = new ArrayList<String>();
+        FetchTxt fetchTxt = bilBag.getFetchTxt();
+        if(fetchTxt == null){
+            return list;
+        }
+        if(fetchTxt != null){
+            for (int i = 0; i < fetchTxt.size(); i++) {
+                FilenameSizeUrl f = fetchTxt.get(i);                
+                display("DefaultBag.getFetchPayload: " + f.toString());
+                list.add(f.getFilename());
+            }
+        }
+        return list;
+        */
+        
     }
 
     public String getDataContent() {
@@ -423,7 +438,7 @@ public class DefaultBag {
         StringBuilder dcontent = new StringBuilder();
         dcontent.append(getDataDirectory() + "/");
         dcontent.append('\n');
-        Collection<BagFile> files = this.bilBag.getPayload();
+        Collection<BagFile> files = bilBag.getPayload();
         if (files != null) {
             for (Iterator<BagFile> it = files.iterator(); it.hasNext();) {
                 try {
@@ -438,21 +453,21 @@ public class DefaultBag {
                 }
             }
         }
-        this.setSize(totalSize);
+        setSize(totalSize);
         return dcontent.toString();
     }
     public long getDataSize() {
-        return this.totalSize;
+        return totalSize;
     }
     public int getDataNumber() {
-        return this.bilBag.getPayload().size();
+        return bilBag.getPayload().size();
     }
     public void clearProfile() {
-        setProfile(BaggerProfileStore.getInstance().getProfile(Profile.NO_PROFILE_NAME), false);
+        setProfile(BaggerProfileStore.getInstance().getProfile(Profile.NO_PROFILE_NAME),false);
     }
     public void setProfile(Profile profile, boolean newBag) {
         this.profile = profile;
-        bagInfo.setProfile(profile, newBag);
+        bagInfo.setProfile(profile,newBag);
     }
     public Profile getProfile() {
         return profile;
@@ -460,7 +475,7 @@ public class DefaultBag {
     public List<String> getPayloadPaths() {
         ArrayList<String> pathList = new ArrayList<String>();
         Collection<BagFile> payload = bilBag.getPayload();
-        if (payload != null) {
+        if(payload != null) {
             for (Iterator<BagFile> it = payload.iterator(); it.hasNext();) {                
                 pathList.add(it.next().getFilepath());
             }
@@ -488,8 +503,8 @@ public class DefaultBag {
        
         generateManifestFiles();
 
-        if (this.isHoley) {
-            if (this.getFetch().getBaseURL() != null) {
+        if (isHoley) {
+            if (getFetch().getBaseURL() != null) {
                 BagInfoTxt bagInfoTxt = bilBag.getBagInfoTxt();
 
                 List<Manifest> manifests = bilBag.getPayloadManifests();
@@ -528,8 +543,8 @@ public class DefaultBag {
         String messages = null;
         SimpleResult result = completeVerifier.verify(bilBag);
 
-        if (completeVerifier.isCancelled()) {
-            this.isComplete(Status.UNKNOWN);
+        if(completeVerifier.isCancelled()) {
+            isComplete(Status.UNKNOWN);
             return "Completeness check cancelled.";
         } 
 
@@ -537,8 +552,8 @@ public class DefaultBag {
             messages = "Bag is not complete:\n";
             messages += result.toString();
         }
-        this.isComplete(result.isSuccess()? Status.PASS : Status.FAILURE);
-        if (!isNoProject()) {
+        isComplete(result.isSuccess()? Status.PASS : Status.FAILURE);
+        if(!isNoProject()){
             try {
                 String msgs = validateMetadata();
                 if (msgs != null) {
@@ -549,10 +564,9 @@ public class DefaultBag {
                         messages = msgs;
                     }
                 }
-            } catch (Exception ex) {
+            }catch(Exception ex) {
                 ex.printStackTrace();
-                String msgs = "ERROR validating bag: \n" + ex.getMessage()
-                                + "\n";
+                String msgs = "ERROR validating bag: \n" + ex.getMessage()+"\n";
                 if (messages != null) {
                     messages += msgs;
                 }
@@ -569,12 +583,12 @@ public class DefaultBag {
 
         String messages = null;
         updateStrategy();
-        SimpleResult result = this.bilBag.verify(bagStrategy);
+        SimpleResult result = bilBag.verify(bagStrategy);
         if (result.toString() != null && !result.isSuccess()) {
             messages = "Bag-info fields are not all present for the project selected.\n";
             messages += result.toString();
         }
-        this.isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
+        isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
         return messages;
     }
 
@@ -584,26 +598,26 @@ public class DefaultBag {
         String messages = null;
         SimpleResult result = validVerifier.verify(bilBag);
 
-        if (validVerifier.isCancelled()) {
+        if(validVerifier.isCancelled()) {
             isValid(Status.UNKNOWN);
             return "Validation check cancelled.";
         } 
 
-        if (!result.isSuccess()) {
+        if(!result.isSuccess()){
             messages = "Bag is not valid:\n";
             messages += result.toString();
         }
-        this.isValid(result.isSuccess()? Status.PASS : Status.FAILURE);
-        if (result.isSuccess()) {
+        isValid(result.isSuccess()? Status.PASS : Status.FAILURE);
+        if(result.isSuccess()){
             isComplete(Status.PASS);
         }
-        if (!isNoProject()) {
+        if(!isNoProject()){
             String msgs = validateMetadata();
-            if (msgs != null) {
-                if (messages != null) {
+            if(msgs != null){
+                if(messages != null){
                     messages += msgs;
                 }
-                else {
+                else{
                     messages = msgs;
                 }
             }
@@ -612,44 +626,45 @@ public class DefaultBag {
     }
 
     protected String fileStripSuffix(String filename) {
+        return new StringTokenizer(filename,".").nextToken();
+        //Nicolas Franck
+        /*
         StringTokenizer st = new StringTokenizer(filename, ".");
-        return st.nextToken();		
+        return st.nextToken();*/
     }
 
     protected String writeBag(Writer bw) {
-        String messages = null;
-        String bagName = "";
-        File bagFile = null;
-        File parentDir = null;
-        bagName = fileStripSuffix(getRootDir().getName());
-        parentDir = getRootDir().getParentFile();
-        log.debug("DefaultBag.writeBag parentDir: " + parentDir + ", bagName: "
-                        + bagName);
+        String messages = null;        
+        File bagFile = null;        
+        String bagName = fileStripSuffix(getRootDir().getName());
+        File parentDir = getRootDir().getParentFile();
+        
+        log.debug("DefaultBag.writeBag parentDir: " + parentDir + ", bagName: "+bagName);
 
-        this.setName(bagName);
-        if (this.serialMode == NO_MODE) {
-            bagFile = new File(parentDir, this.getName());
-        } else if (this.serialMode == ZIP_MODE) {
-            String s = bagName;
-            int i = s.lastIndexOf('.');
-            if (i > 0 && i < s.length() - 1) {
-                String sub = s.substring(i + 1);
+        setName(bagName);
+        if(serialMode == NO_MODE) {
+            bagFile = new File(parentDir,getName());
+        } else if (serialMode == ZIP_MODE) {
+            //String s = bagName;
+            int i = bagName.lastIndexOf('.');
+            if (i > 0 && i < bagName.length() - 1) {
+                String sub = bagName.substring(i + 1);
                 if (!sub.equalsIgnoreCase(ZIP_LABEL)) {
-                        bagName += "." + ZIP_LABEL;
+                    bagName += "." + ZIP_LABEL;
                 }
             } else {
                 bagName += "." + ZIP_LABEL;
             }
-            bagFile = new File(parentDir, bagName);
+            bagFile = new File(parentDir,bagName);
             /*long zipSize = this.getSize() / MB;
             if (zipSize > 100) {
                     messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
             }*/
-        } else if (this.serialMode == TAR_MODE) {
-            String s = bagName;
-            int i = s.lastIndexOf('.');
-            if (i > 0 && i < s.length() - 1) {
-                if (!s.substring(i + 1).toLowerCase().equals(TAR_LABEL)) {
+        } else if (serialMode == TAR_MODE) {
+            //String s = bagName;
+            int i = bagName.lastIndexOf('.');
+            if (i > 0 && i < bagName.length() - 1) {
+                if (!bagName.substring(i + 1).toLowerCase().equals(TAR_LABEL)) {
                     bagName += "." + TAR_LABEL;
                 }
             } else {
@@ -660,11 +675,11 @@ public class DefaultBag {
             if (zipSize > 100) {
                     messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
             }*/
-        } else if (this.serialMode == TAR_GZ_MODE) {
-            String s = bagName;
-            int i = s.lastIndexOf('.');
-            if (i > 0 && i < s.length() - 1) {
-                if (!s.substring(i + 1).toLowerCase().equals(TAR_GZ_LABEL)) {
+        } else if (serialMode == TAR_GZ_MODE) {
+            //String s = bagName;
+            int i = bagName.lastIndexOf('.');
+            if (i > 0 && i < bagName.length() - 1) {
+                if (!bagName.substring(i + 1).toLowerCase().equals(TAR_GZ_LABEL)) {
                     bagName += "." + TAR_GZ_LABEL;
                 }
             } else {
@@ -676,10 +691,10 @@ public class DefaultBag {
                     messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
             }*/
         } else if (this.serialMode == TAR_BZ2_MODE) {
-            String s = bagName;
-            int i = s.lastIndexOf('.');
-            if (i > 0 && i < s.length() - 1) {
-                if (!s.substring(i + 1).toLowerCase().equals(TAR_BZ2_LABEL)) {
+            //String s = bagName;
+            int i = bagName.lastIndexOf('.');
+            if (i > 0 && i < bagName.length() - 1) {
+                if (!bagName.substring(i + 1).toLowerCase().equals(TAR_BZ2_LABEL)) {
                     bagName += "." + TAR_BZ2_LABEL;
                 }
             } else {
@@ -701,7 +716,7 @@ public class DefaultBag {
         if (newBag != null) {
             bilBag = newBag;
             // write successful
-            this.isSerialized(true);
+            isSerialized(true);
         }
         return messages;
     }
@@ -712,14 +727,14 @@ public class DefaultBag {
 
     protected Verifier getBagInfoStrategy() {
         List<String> rulesList = new ArrayList<String>();
-        HashMap<String, BagInfoField> fieldMap = this.getInfo().getFieldMap();
+        HashMap<String, BagInfoField> fieldMap = getInfo().getFieldMap();
         if (fieldMap != null) {
             Set<String> keys = fieldMap.keySet();
             for (Iterator<String> iter = keys.iterator(); iter.hasNext();) {
                 String label = (String) iter.next();
                 BagInfoField field = fieldMap.get(label);
-                if (field.isRequired()) {
-                        rulesList.add(field.getLabel());
+                if(field.isRequired()) {
+                    rulesList.add(field.getLabel());
                 }
             }
         }

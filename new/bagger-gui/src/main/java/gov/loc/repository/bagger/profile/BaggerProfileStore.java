@@ -17,7 +17,7 @@ public class BaggerProfileStore {
     }
 
     public Profile getProfile(String name) {
-    	return this.userProfiles.get(name);
+    	return userProfiles.get(name);
     }
     private void initializeProfile(Bagger bagger) {
     	Collection<Profile> profiles = bagger.loadProfiles();

@@ -35,7 +35,7 @@ public final class TagManifestPane extends JTabbedPane {
     }
 
     private void init() {
-    	this.setPreferredSize(preferredDimension);
+    	setPreferredSize(preferredDimension);
         ChangeListener changeListener = new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent changeEvent) {
@@ -97,8 +97,8 @@ public final class TagManifestPane extends JTabbedPane {
     	dataScrollPane.setViewportView(dataPane);
     	dataScrollPane.setToolTipText(parentView.getPropertyMessage("compositePane.tab.data.help"));
     	dataScrollPane.setForeground(selectedColor);
-    	if (!this.defaultBag.isHoley()) {
-        	addTab(parentView.getPropertyMessage("compositePane.tab.data"), dataScrollPane);
+    	if (!defaultBag.isHoley()) {
+            addTab(parentView.getPropertyMessage("compositePane.tab.data"),dataScrollPane);
     	}
         init();
     }
@@ -106,25 +106,25 @@ public final class TagManifestPane extends JTabbedPane {
     // setBag must be called before updateTabs is called
     public void updateCompositePaneTabs(DefaultBag defaultBag) {
         setBag(defaultBag);
-    	if (this.getComponentCount() > 0) {
-    		this.removeAll();
-            this.invalidate();
+    	if(getComponentCount() > 0){
+            removeAll();
+            invalidate();
     	}
         populateBagPane();
-        int count = this.getTabCount();
-        int selected = this.getSelectedIndex();
+        int count = getTabCount();
+        int selected = getSelectedIndex();
         for (int i = 0; i < count; ++i) {
             Color c = (i == selected) ? unselectedColor : selectedColor;
-            this.setBackgroundAt(i, c);
-            this.setForegroundAt(i, c);
+            setBackgroundAt(i,c);
+            setForegroundAt(i,c);
         }
-        this.invalidate();
+        invalidate();
     }
     
     private String tokenFormat(String content) {
     	StringBuilder buffer = new StringBuilder();    	
-        StringTokenizer st = new StringTokenizer(content, ",", false);
-        while (st.hasMoreTokens()) {
+        StringTokenizer st = new StringTokenizer(content,",", false);
+        while(st.hasMoreTokens()) {
             String s=st.nextToken();
             buffer.append(s);
             buffer.append('\n');

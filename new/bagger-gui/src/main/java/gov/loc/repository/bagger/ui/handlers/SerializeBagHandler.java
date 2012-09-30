@@ -1,13 +1,11 @@
-
 package gov.loc.repository.bagger.ui.handlers;
 
+/*
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
-
 import java.awt.event.ActionEvent;
-
 import javax.swing.AbstractAction;
-import javax.swing.JRadioButton;
+import javax.swing.JRadioButton;*/
 
 /*
  * Nicolas Franck: is geïmplementeerd als inner class van SaveBagFrame
