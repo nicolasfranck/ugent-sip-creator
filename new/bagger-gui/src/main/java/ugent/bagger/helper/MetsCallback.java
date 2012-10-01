@@ -9,6 +9,7 @@ import com.anearalone.mets.MetsHdr;
 import com.anearalone.mets.StructLink;
 import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  *
@@ -20,8 +21,8 @@ public interface MetsCallback {
     void onCreateDmdSec(MdSec mdSec);
     void onCreateAmdSec(AmdSec mdSec);    
     void onCreateFileSec(FileSec fileSec);
-    void onCreateStructMap(StructMap structMap);
+    void onCreateStructMap(StructMap structMap,DefaultMutableTreeNode node);
     void onCreateStructLink(StructLink structLink);
     void onCreateBehaviorSec(BehaviorSec behaviorSec);
-    void onCreateDiv(Div div);
+    void onCreateDiv(Div div,DefaultMutableTreeNode node);
 }

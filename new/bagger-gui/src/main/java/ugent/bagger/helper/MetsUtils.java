@@ -105,7 +105,7 @@ public class MetsUtils {
     public static StructMap toStructMap(DefaultMutableTreeNode node,MetsCallback metsCallback){
         StructMap struct = new StructMap();                
         struct.setDiv(toDiv(node,metsCallback));                
-        metsCallback.onCreateStructMap(struct);
+        metsCallback.onCreateStructMap(struct,node);
         return struct;
     } 
     public static Div toDiv(DefaultMutableTreeNode node){        
@@ -118,15 +118,15 @@ public class MetsUtils {
         while(enumeration.hasMoreElements()){            
             DefaultMutableTreeNode n = (DefaultMutableTreeNode)enumeration.nextElement();            
             if(n.isLeaf()){
-                Fptr filePointer = new Fptr();
-                TNode tnode = (TNode)n.getUserObject();
-                filePointer.setFILEID(tnode.getObject().toString());               
+                Fptr filePointer = new Fptr(); 
+                String fileID = ArrayUtils.join(n.getUserObjectPath(),File.separator);                
+                filePointer.setFILEID(fileID);
                 div.getFptr().add(filePointer);
             }else{
                 div.getDiv().add(toDiv(n,metsCallback));
             }
-        }                
-        metsCallback.onCreateDiv(div);
+        }                        
+        metsCallback.onCreateDiv(div,node);
         return div;
     }
     /*

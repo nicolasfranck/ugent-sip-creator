@@ -152,14 +152,14 @@ public class DSpaceBagItMetsCreator extends BagItMetsCreator{
             fileGroups.add(tagFileGroup);
             
 
-            //structMap
+            //structMaps
             DefaultMutableTreeNode rootNodePayloads = bagView.getBagPayloadTree().getParentNode();              
             DefaultMutableTreeNode rootNodeTagFiles = bagView.getBagTagFileTree().getParentNode();            
-            //StructMap structMapPayloads = MetsUtils.toStructMap(rootNodePayloads);
             
+            //structmap payloads
             StructMap structMapPayloads = MetsUtils.toStructMap(rootNodePayloads,new DefaultMetsCallback(){
                 @Override
-                public void onCreateDiv(Div div){
+                public void onCreateDiv(Div div,DefaultMutableTreeNode node){
                     for(int i = 0;i<div.getFptr().size();i++){
                         Fptr filePointer = div.getFptr().get(i);
                         System.out.println("looking for key "+filePointer.getFILEID());
@@ -170,14 +170,13 @@ public class DSpaceBagItMetsCreator extends BagItMetsCreator{
                         }                        
                     }
                 }
-            });
+            });            
+            structMapPayloads.setType("BAGIT_PAYLOAD_TREE");             
             
-            structMapPayloads.setType("BAGIT_PAYLOAD_TREE");
-            //StructMap structMapTagFiles = MetsUtils.toStructMap(rootNodeTagFiles);            
-            
+            //structmap tagfiles
             StructMap structMapTagFiles = MetsUtils.toStructMap(rootNodeTagFiles,new DefaultMetsCallback(){
                 @Override
-                public void onCreateDiv(Div div){
+                public void onCreateDiv(Div div,DefaultMutableTreeNode node){
                     int indexMetsXML = -1;
                     for(int i = 0;i<div.getFptr().size();i++){
                         Fptr filePointer = div.getFptr().get(i);
@@ -192,16 +191,9 @@ public class DSpaceBagItMetsCreator extends BagItMetsCreator{
                         div.getFptr().remove(indexMetsXML);
                     }
                 }
-            });
-            
-            structMapTagFiles.setType("BAGIT_TAGFILE_TREE");
-            
-            //reset FILEID
-            //resetDiv(structMapPayloads.getDiv(),fileIdMap);
-            //resetDiv(structMapTagFiles.getDiv(),fileIdMap);
-            
-            
-
+            });            
+            structMapTagFiles.setType("BAGIT_TAGFILE_TREE");           
+        
             mets.getStructMap().clear();
             mets.getStructMap().add(structMapPayloads);
             mets.getStructMap().add(structMapTagFiles);                    
@@ -210,23 +202,5 @@ public class DSpaceBagItMetsCreator extends BagItMetsCreator{
             e.printStackTrace();            
         }            
         return mets;
-    }   
-    public static void resetDiv(Div div,HashMap<String,String>fileIdMap){
-        int indexMetsXML = -1;
-        for(int i = 0;i<div.getFptr().size();i++){
-            Fptr filePointer = div.getFptr().get(i);
-            String fileId = filePointer.getFILEID();
-            if(fileId.compareTo("mets.xml") == 0){
-                indexMetsXML = i;
-            }else if(fileIdMap.containsKey(fileId)){
-                filePointer.setFILEID(fileIdMap.get(fileId));
-            }
-        }
-        if(indexMetsXML >= 0){
-            div.getFptr().remove(indexMetsXML);
-        }
-        for(Div d:div.getDiv()){
-            resetDiv(d,fileIdMap);
-        }
-    }
+    }      
 }

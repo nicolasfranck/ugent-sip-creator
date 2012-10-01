@@ -1,6 +1,7 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import com.anearalone.mets.Mets;
+import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagInfoInputPane;
 import gov.loc.repository.bagger.ui.BagView;
@@ -15,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.bagitmetscreators.DSpaceBagItMets;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
 
@@ -152,6 +154,12 @@ public class OpenBagHandler extends AbstractAction {
         bagView.updateOpenBag();   
         
         //Nicolas Franck: load mets
+        
+        BagItMets bagitMets = new DSpaceBagItMets();
+        
+        Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());
+        
+        /*
         String pathMets;            
         Mets mets = null;        
         
@@ -167,10 +175,11 @@ public class OpenBagHandler extends AbstractAction {
         }
         if(mets == null){            
             mets = new Mets();
-        }
+        }*/
+        
         BagInfoInputPane bagInfoInputPane = bagView.getInfoInputPane().getBagInfoInputPane();
         bagInfoInputPane.setMets(mets);
-        bagInfoInputPane.getMetsPanel().reset(mets);        
+        bagInfoInputPane.getMetsPanel().reset(mets);
         
         BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }    

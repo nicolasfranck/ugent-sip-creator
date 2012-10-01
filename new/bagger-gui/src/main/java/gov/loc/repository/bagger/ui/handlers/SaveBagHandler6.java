@@ -18,6 +18,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.bagitmetscreators.DSpaceBagItMets;
 import ugent.bagger.bagitmetscreators.DSpaceBagItMetsCreator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
@@ -194,7 +195,8 @@ public class SaveBagHandler6 extends Handler {
             final BagView bagView = BagView.getInstance();
             MetsBag bag = bagView.getBag();
             Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();
-            bag.setMetsCreator(new DSpaceBagItMetsCreator(mets));
+            
+            bag.setBagItMets(new DSpaceBagItMets());
             
             Writer bagWriter = null;
 

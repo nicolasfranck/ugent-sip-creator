@@ -1,6 +1,5 @@
 package gov.loc.repository.bagger.ui;
 
-import gov.loc.repository.bagger.bag.BaggerFileEntity;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.Dimension;
@@ -14,7 +13,6 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.FUtils;
-import ugent.bagger.helper.TNode;
 
 public final class BagTree extends JTree {
     private static final long serialVersionUID = -5361474872106399068L;
@@ -95,11 +93,6 @@ public final class BagTree extends JTree {
         }else{
             log.debug("BagTree.populateNodes listFiles NULL:" );
             
-            /*              * 
-             * Nicolas Franck: indien geen map, wordt een platte lijst van de entries weergegeven
-             * TODO: ook structuur maken indien geen map zodat presentatie consequent blijft
-             */
-            
             List<String> payload = bag.getPayloadPaths();
             
             //Nicolas Franck
@@ -111,7 +104,19 @@ public final class BagTree extends JTree {
                 log.debug("BagTree.populateNodes getFetchPayload:");
                 payload = bag.getPayloadPaths(); //bag.getFetchPayload();                
                 //basePath = bag.getFetch().getBaseURL();
-            }*/
+            }*/            
+                        
+            List<DefaultMutableTreeNode>structuredList = FUtils.listToStructure(payload.toArray(new String [] {}));                        
+            if(isParent) {
+                parentNode = structuredList.get(0);
+            }
+            else {
+                parentNode.add(structuredList.get(0));
+            }
+            initialize();            
+            
+            //Nicolas Franck: toon structuur ipv lijst
+            /*
             for(Iterator<String> it=payload.iterator(); it.hasNext(); ){
                 String filePath = it.next();
                 try{
@@ -130,7 +135,7 @@ public final class BagTree extends JTree {
                     }
                     log.error("BagTree.populateNodes: " + e.getMessage());
                 }
-            }
+            }*/
             log.debug("BagTree rows: " + payload.size());
             BAGTREE_HEIGHT = BAGTREE_ROW_MODIFIER * (payload.size() + 1);
             //setPreferredSize(getTreeSize());
@@ -144,9 +149,7 @@ public final class BagTree extends JTree {
             //Nicolas Franck
             //DefaultMutableTreeNode node = createNodeTree(null, null, file);            
             
-            System.out.println("addNodes => file: "+file);
-            String removePath = file.getAbsolutePath().replaceFirst("data$","");
-            System.out.println("removePath: "+removePath);
+            String removePath = file.getAbsolutePath().replaceFirst("data$","");            
             DefaultMutableTreeNode node = FUtils.toTreeNode(file,-1,removePath);
             
             //Nicolas Franck: nergens gebruikt
@@ -183,7 +186,8 @@ public final class BagTree extends JTree {
     }
 
     public void addNode(String filePath) {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(new TNode(filePath,filePath));        
+        //DefaultMutableTreeNode node = new DefaultMutableTreeNode(new TNode(filePath,filePath));        
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(filePath);        
         //Nicolas Franck: nooit gebruikt
         //srcNodes.add(node);
         parentNode.add(node);

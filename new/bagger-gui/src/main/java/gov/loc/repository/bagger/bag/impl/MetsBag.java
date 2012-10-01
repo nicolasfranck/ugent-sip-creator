@@ -2,6 +2,7 @@ package gov.loc.repository.bagger.bag.impl;
 
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsWriter;
+import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.Manifest;
 import gov.loc.repository.bagit.Manifest.Algorithm;
@@ -14,7 +15,7 @@ import java.io.File;
  * @author nicolas
  */
 public class MetsBag extends DefaultBag{
-    private BagItMetsCreator metsCreator;
+    private BagItMets bagItMets;
     
     public MetsBag() {  
         super();            
@@ -22,22 +23,27 @@ public class MetsBag extends DefaultBag{
     public MetsBag(File rootDir, String version) {
         super(rootDir,version);        
     }    
-    public BagItMetsCreator getMetsCreator() {
-        if(metsCreator == null){
-            metsCreator = new DefaultBagItMetsCreator();
-        }
-        return metsCreator;
+
+    public BagItMets getBagItMets() {        
+        return bagItMets;
     }
-    public void setMetsCreator(BagItMetsCreator metsCreator) {
-        this.metsCreator = metsCreator;
-    }  
+
+    public void setBagItMets(BagItMets bagItMets) {
+        this.bagItMets = bagItMets;
+    }
+     
     @Override
     public String write(Writer bw){        
         prepareBilBagInfoIfDirty();
         generateManifestFiles();
         
-        Bag bag = getBag();
-        Mets mets = getMetsCreator().create(bag);
+        Bag bag = getBag();        
+        
+        Mets mets = getBagItMets().onSaveBag(
+            bag,
+            BagView.getInstance().getInfoInputPane().getBagInfoInputPane().getMets()
+        );
+        
         if(mets == null){
             mets = new Mets();
         }

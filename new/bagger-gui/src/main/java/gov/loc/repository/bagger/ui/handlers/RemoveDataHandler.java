@@ -46,14 +46,16 @@ public class RemoveDataHandler extends AbstractAction {
                 log.debug("removeData pathCount: " + path.getPathCount());
                 File filePath = null;
                 String fileName = null;
-                if (path.getPathCount() > 0) {
+                if (path.getPathCount() > 0){                    
                     filePath = new File(""+path.getPathComponent(0));
                     for (int j=1; j<path.getPathCount(); j++) {
                         filePath = new File(filePath, ""+path.getPathComponent(j));
                         log.debug("\t" + filePath);
                     }
                 }
-                if (filePath != null) fileName = BaggerFileEntity.normalize(filePath.getPath());
+                if (filePath != null) {
+                    fileName = BaggerFileEntity.normalize(filePath.getPath());
+                }
                 log.debug("removeData filePath: " + fileName);
                 if (fileName != null && !fileName.isEmpty()) {
                     try {
@@ -66,7 +68,9 @@ public class RemoveDataHandler extends AbstractAction {
                             model.removeNodeFromParent((MutableTreeNode)aNode);
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         try {
+                            e.printStackTrace();
                             bag.removePayloadDirectory(fileName);
                             if (node instanceof MutableTreeNode) {
                                 model.removeNodeFromParent((MutableTreeNode)node);

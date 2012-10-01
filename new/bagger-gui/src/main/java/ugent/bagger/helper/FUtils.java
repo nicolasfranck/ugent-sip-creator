@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -141,7 +143,8 @@ public class FUtils {
             System.out.println("path now: "+path);
         }
         
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new TNode(path,file.getName()));       
+        //DefaultMutableTreeNode root = new DefaultMutableTreeNode(new TNode(path,file.getName()));       
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(file.getName());       
         
         if(file.isFile()){
             root.setAllowsChildren(false);
@@ -180,7 +183,7 @@ public class FUtils {
             return;
         }
         if(node.isLeaf()) {            
-            il.execute(node.getUserObject());
+            il.execute(node);
         }
         else{                                  
             for(int i = 0;i < node.getChildCount();i++){             
@@ -229,8 +232,7 @@ public class FUtils {
         return mimeType;        
     }    
     public static String getEntryStringFor(String source,String entry){
-        String entryString = null;
-        
+        String entryString = null;        
         if(source.endsWith(".tar.gz")){
             entryString = "tgz:file://"+source+"!/"+entry;
         }else if(source.endsWith(".tar")){
@@ -249,8 +251,122 @@ public class FUtils {
             entryString = "gz:file://"+source+"!/"+entry;
         }else{
             entryString = "file://"+source+"/"+entry;
-        }
-        
+        }        
         return entryString;        
     }   
+    public static List<DefaultMutableTreeNode>listToStructure(String [] list){
+        List<DefaultMutableTreeNode>structuredList = new ArrayList<DefaultMutableTreeNode>();
+        
+        for(String entry:list){            
+            String [] components = entry.split(File.separator);            
+          
+            if(structuredList.isEmpty()){                
+                structuredList.add(componentsToTreeNode(components));                
+            }else{
+                //zoek entry in list
+                DefaultMutableTreeNode existingNode = null;
+                for(DefaultMutableTreeNode n:structuredList){
+                    if(hasUserObject(n,components[0])){
+                        existingNode = n;                        
+                        break;
+                    }
+                }
+                //vul aan of voeg toe
+                if(existingNode != null){        
+                    addComponents(existingNode,components,1);
+                }else{        
+                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(components[0]);
+                    if(components.length > 1){
+                        addComponents(newNode,components,1);
+                    }
+                    structuredList.add(newNode); 
+                }
+            }
+                        
+        }        
+        return structuredList;
+    }
+    public static int indexUserObjectChild(DefaultMutableTreeNode node,Object o){
+        for(int i = 0;i < node.getChildCount();i++){
+            DefaultMutableTreeNode tnode = (DefaultMutableTreeNode) node.getChildAt(i);        
+            if(tnode.getUserObject().equals(o)){
+                return i;
+            }
+        }
+        return -1;
+    }
+    public static boolean hasUserObject(DefaultMutableTreeNode node,Object o){
+        return node.getUserObject().equals(o);
+    }
+    public static void addComponents(DefaultMutableTreeNode node,Object [] components){
+        addComponents(node,components,0);
+    }
+    public static void addComponents(DefaultMutableTreeNode node,Object [] components,int offset){
+        if(offset > (components.length - 1) || components == null || components.length == 0){
+            return;
+        }
+        
+        
+        int indexChild = indexUserObjectChild(node,components[offset]);
+        if(indexChild < 0){            
+            DefaultMutableTreeNode newNode = componentsToTreeNode(components,offset);            
+            node.add(newNode);
+        }else{
+            addComponents((DefaultMutableTreeNode)node.getChildAt(indexChild),components,offset + 1);
+        }
+    }
+    public static DefaultMutableTreeNode componentsToTreeNode(Object [] components){
+        return componentsToTreeNode(components,0);
+    }
+    public static DefaultMutableTreeNode componentsToTreeNode(Object [] components,int offset){
+        if(components == null || components.length == 0 || offset > (components.length - 1)){
+            return null;
+        }
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(components[offset]);        
+        if((offset + 1) <= (components.length - 1)){            
+            node.add(componentsToTreeNode(components,offset + 1));
+        }
+        return node;
+    }
+    public static void main(String [] args){
+        String [] flatList = new String [] {
+            "a/b/c","a","a/b","a/b/c/d/e","a/c","b/d"
+        };
+        List<DefaultMutableTreeNode>structuredList = listToStructure(flatList);
+        
+        for(DefaultMutableTreeNode node:structuredList){
+            recurseTree(node);
+        }
+        try{
+            ArrayList<String>flist = new ArrayList<String>();
+            ZipFile zip = new ZipFile(new File("/home/nicolas/data.zip"));
+            for(Enumeration e = zip.entries(); e.hasMoreElements(); ) {
+                ZipEntry entry = (ZipEntry) e.nextElement();
+                System.out.println("zip entry: "+entry.getName());
+                flist.add(entry.getName());
+            }            
+            List<DefaultMutableTreeNode>slist = listToStructure(flist.toArray(new String [] {}));
+            System.out.println("recurse zip tree: ");
+            for(DefaultMutableTreeNode node:slist){
+                recurseTree(node);
+            }
+            
+                
+                
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public static void recurseTree(DefaultMutableTreeNode node){
+        recurseTree(node,0);
+    }
+    public static void recurseTree(DefaultMutableTreeNode node,int tab){
+        for(int i = 0;i<tab;i++){
+            System.out.print(" ");
+        }
+        System.out.println(node.getUserObject());                
+        for(int i = 0;i<node.getChildCount();i++){                       
+            recurseTree((DefaultMutableTreeNode)node.getChildAt(i),tab+1);
+        }
+    }
 }

@@ -9,6 +9,7 @@ import com.anearalone.mets.MetsHdr;
 import com.anearalone.mets.StructLink;
 import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  *
@@ -36,7 +37,7 @@ public class DefaultMetsCallback implements MetsCallback{
         
     }
     @Override
-    public void onCreateStructMap(StructMap structMap) {
+    public void onCreateStructMap(StructMap structMap,DefaultMutableTreeNode node) {
         
     }
     @Override
@@ -48,7 +49,7 @@ public class DefaultMetsCallback implements MetsCallback{
         
     }
     @Override
-    public void onCreateDiv(Div div) {
+    public void onCreateDiv(Div div,DefaultMutableTreeNode node) {
  
     }
 }
