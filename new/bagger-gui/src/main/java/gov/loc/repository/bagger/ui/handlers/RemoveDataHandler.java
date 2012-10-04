@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -67,18 +68,26 @@ public class RemoveDataHandler extends AbstractAction {
                             DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(node);
                             model.removeNodeFromParent((MutableTreeNode)aNode);
                         }
-                    } catch (Exception e) {
+                    } catch (Exception e) {                        
                         e.printStackTrace();
                         try {
                             e.printStackTrace();
                             bag.removePayloadDirectory(fileName);
+                            File file = new File(bag.getRootDir(),fileName);                            
+                            if(file.exists()){
+                                if(file.isFile()){
+                                    file.delete();                                    
+                                }else{
+                                    FileUtils.deleteDirectory(file);
+                                }
+                            }                            
                             if (node instanceof MutableTreeNode) {
                                 model.removeNodeFromParent((MutableTreeNode)node);
                             } else {
                                 DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(node);
                                 model.removeNodeFromParent((MutableTreeNode)aNode);
                             }
-                        } catch (Exception ex) {
+                        } catch (Exception ex) {                            
                             message = "Error trying to remove: " + fileName + "\n";
                             bagView.showWarningErrorDialog("Error - file not removed", message + ex.getMessage());
                         }

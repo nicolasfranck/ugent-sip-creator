@@ -286,11 +286,14 @@ public final class InfoFormsPane extends JPanel {
     }
 
     public void updateInfoFormsPane(boolean enabled) {
-    	// need to remove something?        
+        System.out.println("InfoFormsPane::updateInfoFormsPane");
+    	// need to remove something?         
+        
         getInfoPanel().remove(getBagInfoInputPane());
         getInfoPanel().validate();      
     	setBagInfoInputPane(new BagInfoInputPane(enabled));
     	getBagInfoInputPane().setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
+        
     	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
         getInfoPanel().add(getBagInfoInputPane(),gbc);
         validate();

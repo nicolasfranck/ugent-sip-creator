@@ -158,19 +158,22 @@ public class MetsUtils {
     }
    
     public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException{        
-        MdSec mdSec = new MdSec(file.getName());                
-        mdSec.setMdWrap(createMdWrap(file));                
-        mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString()); 
-        return mdSec;
+        return createMdSec(XML.XMLToDocument(file));        
     }
     public static MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException{
-        MdSec mdSec = new MdSec(UUID.randomUUID().toString());        
-        mdSec.setGROUPID(UUID.randomUUID().toString()); 
+        MdSec mdSec = new MdSec(UUID.randomUUID().toString());                
         mdSec.setMdWrap(createMdWrap(doc));
+        mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString()); 
+        if(mdSec.getCREATED() == null){
+            try{
+                mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
+            }catch(Exception e){}            
+        }
         return mdSec;
     }
     public static MdSec.MdWrap createMdWrap(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException{
-        String namespace = doc.getDocumentElement().getNamespaceURI();      
+        String namespace = doc.getDocumentElement().getNamespaceURI();            
+        
         //elke xml moet namespace bevatten (geen oude DOCTYPE!)
         if(namespace == null || namespace.isEmpty()){
             throw new NoNamespaceException("no namespace could be found");
@@ -196,12 +199,14 @@ public class MetsUtils {
         if(mdType == MdSec.MDTYPE.OTHER){
             mdWrap.setOTHERMDTYPE(namespace);
         } 
-        mdWrap.setMIMETYPE("text/xml");
+        mdWrap.setMIMETYPE("text/xml");        
         mdWrap.getXmlData().add(doc.getDocumentElement());                
         return mdWrap;
     }
     public static MdSec.MdWrap createMdWrap(File file) throws ParserConfigurationException, SAXException, IOException, IllegalNamespaceException, NoNamespaceException{           
         //Valideer xml, en geef W3C-document terug
-        return createMdWrap(XML.XMLToDocument(file));
-    }    
+        MdSec.MdWrap mdWrap = createMdWrap(XML.XMLToDocument(file));
+        mdWrap.setLabel(file.getName());
+        return mdWrap;
+    }        
 }

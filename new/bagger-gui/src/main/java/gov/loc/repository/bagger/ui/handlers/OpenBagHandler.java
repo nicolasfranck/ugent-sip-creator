@@ -9,16 +9,13 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.InputStream;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
-import ugent.bagger.bagitmetscreators.DSpaceBagItMets;
-import ugent.bagger.helper.FUtils;
-import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.bagitmets.DSpaceBagItMets;
 
 public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
@@ -35,7 +32,9 @@ public class OpenBagHandler extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+        System.out.println("before openBag()");
         openBag();
+        System.out.println("after openBag()");
         BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
 
@@ -66,7 +65,7 @@ public class OpenBagHandler extends AbstractAction {
     }
 
     public void openExistingBag(File file) {
-        
+        System.out.println("OpenBagHandler::openExistingBag('"+file+"')");
         BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
         
         BagView bagView = BagView.getInstance();        
@@ -76,15 +75,20 @@ public class OpenBagHandler extends AbstractAction {
         //beter geen referentie bijhouden nu naar de oude
     	bagView.clearBagHandler.clearExistingBag();
         
+        System.out.println("test 1");
+        
         try{            
             bagView.clearBagHandler.newDefaultBag(file);                  
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
         }catch(Exception ex){
+            System.out.println("test 2");
             ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	                
             log.debug(ex.getMessage());                                     
             BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());            
     	    return;
         }
+        
+        System.out.println("test 3");
         
         bagView.getInfoInputPane().setBagVersion(bagView.getBag().getVersion());
         bagView.getInfoInputPane().setProfile(bagView.getBag().getProfile().getName());       
@@ -157,29 +161,14 @@ public class OpenBagHandler extends AbstractAction {
         
         BagItMets bagitMets = new DSpaceBagItMets();
         
-        Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());
-        
-        /*
-        String pathMets;            
-        Mets mets = null;        
-        
-        if(bagView.getBag().getSerialMode() != DefaultBag.NO_MODE){            
-            pathMets = FUtils.getEntryStringFor(file.getAbsolutePath(),bagView.getBag().getName()+"/mets.xml");
-        }else{
-            pathMets = FUtils.getEntryStringFor(file.getAbsolutePath(),"mets.xml");            
-        }        
-        try{
-            mets = MetsUtils.readMets(FUtils.getInputStreamFor(pathMets));
-        }catch(Exception e){                        
-            log.debug(e.getMessage());            
-        }
-        if(mets == null){            
-            mets = new Mets();
-        }*/
+        Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());       
+       
         
         BagInfoInputPane bagInfoInputPane = bagView.getInfoInputPane().getBagInfoInputPane();
         bagInfoInputPane.setMets(mets);
         bagInfoInputPane.getMetsPanel().reset(mets);
+        
+        System.out.println("test 4");
         
         BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }    

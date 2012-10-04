@@ -105,7 +105,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
                     if(field.getValue() != null && field.getValue().length() > 30){
                         field.setComponentType(BagInfoField.TEXTAREA_COMPONENT);
                     }
-                    if (field.isRequired()) {
+                    if(field.isRequired()){
                         removeButton = new JButton();
                         removeButton.setOpaque(false);
                         removeButton.setBorderPainted(false);
@@ -225,9 +225,9 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
         HashMap<String,String> map = new HashMap<String,String>();
         String key = "";
         String value = "";
-        java.awt.Component[] components = getFieldComponents();
+        Component[] components = getFieldComponents();
         for(int i=0; i<components.length; i++){
-            java.awt.Component c;
+            Component c;
             c = components[i];
             if (c instanceof JLabel) {
                 JLabel label = (JLabel) c;

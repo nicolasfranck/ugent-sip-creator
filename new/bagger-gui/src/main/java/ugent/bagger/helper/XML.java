@@ -86,7 +86,7 @@ public class XML {
     }    
     public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException{
         if(db == null){
-            db = getDocumentBuilderFactory().newDocumentBuilder();   
+            db = getDocumentBuilderFactory().newDocumentBuilder();               
             db.setEntityResolver(new EntityResolver() {
                 @Override
                 public InputSource resolveEntity(String publicId, String systemId)throws SAXException, IOException {
@@ -142,6 +142,18 @@ public class XML {
     public static void validate(Source source,Schema schema) throws SAXException, IOException{
         Validator validator = schema.newValidator();
         validator.validate(source);
+    }
+    public static void validateAgainstDTD(InputStream in) throws ParserConfigurationException, SAXException, IOException{
+        validateAgainstDTD(new InputSource(in));
+    }
+    public static void validateAgainstDTD(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException{
+        DocumentBuilder builder = getDocumentBuilderFactory().newDocumentBuilder();
+        builder.parse(inputSource);
+    }
+    public static void validateAgainstDTD(File file) throws ParserConfigurationException, SAXException, IOException{
+        //now the entity resolver MUST be on!
+        DocumentBuilder builder = getDocumentBuilderFactory().newDocumentBuilder();
+        builder.parse(file);
     }
     public static Schema createSchema(URL schemaURL) throws SAXException, IOException{        
         return createSchema(schemaURL.openStream());        
@@ -222,86 +234,15 @@ public class XML {
         return serializer.writeToString(node);
     }
     public static void main(String [] args){
-        /*try{
-            File file = new File("/tmp/bag-info.txt");
-            Importer importer = ImporterFactory.createImporter(file);
-            if(importer == null){
-                System.out.println("no importer found for "+file);                    
-            }
-            System.out.println("importing from file "+file);
-            Document doc = importer.performImport(file);
-           
-            System.out.println("importing from file "+file+" successfull");
-            try{
-                XML.DocumentToXML(doc,new java.io.FileOutputStream(new File("/tmp/dc.xml")),true);
-            }catch(Exception e){
-                e.printStackTrace();
-            }           
-            Schema schema = XML.createSchema(new URL("http://www.openarchives.org/OAI/2.0/oai_dc.xsd"));
-            System.out.println("schema created");
-            XML.validate(
-                doc,
-                schema
-            );
-            System.out.println("validation successfull");
-        }catch(Exception e){
-            e.printStackTrace();
-        }*/
-        String []  metsSchemaUrls = new String [] {
-            "http://www.loc.gov/METS/"
-        };
-        String [] versions = new String [] {
-            "file:../../doc/metadata/xsd/mets/1.9.1/mets-1.9.1.xsd",
-            "file:../../doc/metadata/xsd/mets/1.9/mets-1.9.xsd",
-            "file:../../doc/metadata/xsd/mets/1.8/mets-1.8.xsd",
-            "file:../../doc/metadata/xsd/mets/1.7/mets-1.7.xsd",
-            "file:../../doc/metadata/xsd/mets/1.6/mets-1.6.xsd",
-            "file:../../doc/metadata/xsd/mets/1.5/mets-1.5.xsd",
-            "file:../../doc/metadata/xsd/mets/1.4/mets-1.4.xsd",
-            "file:../../doc/metadata/xsd/mets/1.3/mets-1.3.xsd",
-            "file:../../doc/metadata/xsd/mets/1.2/mets-1.2.xsd",
-            "file:../../doc/metadata/xsd/mets/1.1/mets-1.1.xsd"            
-        };
+      
+     
         try{
-            File file = new File("/tmp/mets.xml");
-            Document doc = ugent.bagger.helper.XML.XMLToDocument(file);        
-            String namespace = doc.getDocumentElement().getNamespaceURI();
-            log.debug("namespace:"+namespace);
-            boolean namespaceFound = false;
-            for(String ns:metsSchemaUrls){
-                if(ns.equals(namespace)){
-                    namespaceFound = true;
-                    break;
-                }
-            }
-            if(!namespaceFound){               
-                throw new Exception("xml file has incorrect namespace");
-            }
-            log.debug("namespace found");
-
-            //stap 3
-
-            //valideer doc tegen schema mets (Mets api doet dit niet)            
-            boolean success = false;
-            for(String version:versions){                
-                try{
-                    log.debug("validating against "+version);
-                    Schema schema = XML.createSchema(new URL(version));                            
-                    ugent.bagger.helper.XML.validate(doc,schema);                    
-                    success = true;
-                }catch(Exception e){
-                    e.printStackTrace();                    
-                }
-                if(success){
-                    break;
-                }
-            }                               
-            if(success){                
-                System.out.println("validation successfull");
-            }
-
+            System.out.println("creating document");
+            validateAgainstDTD(new File("/home/nicolas/EAD/VEA_000005_A/ead.xml"));;
+            System.out.println("document created");            
         }catch(Exception e){
             e.printStackTrace();
         }
+
     }
 }

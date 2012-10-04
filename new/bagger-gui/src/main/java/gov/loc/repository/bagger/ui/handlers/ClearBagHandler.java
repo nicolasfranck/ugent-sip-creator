@@ -1,5 +1,6 @@
 package gov.loc.repository.bagger.ui.handlers;
 
+import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagTree;
@@ -13,6 +14,7 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
+import ugent.bagger.helper.SwingUtils;
 
 public class ClearBagHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;   
@@ -41,10 +43,10 @@ public class ClearBagHandler extends AbstractAction {
         }else{
             confirmCloseBag();
         }    
-        if (isConfirmSaveFlag()){
+        if (isConfirmSaveFlag()){            
             bagView.saveBagHandler.setClearAfterSaving(true);
             bagView.saveBagAsHandler.openSaveBagAsFrame();
-            setConfirmSaveFlag(false);
+            setConfirmSaveFlag(false);            
         }
     }
 
@@ -78,6 +80,10 @@ public class ClearBagHandler extends AbstractAction {
     	bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
     	bagView.getInfoInputPane().setBagName(bag.getName());
     	bagView.getInfoInputPane().updateInfoForms();
+        Mets mets = new Mets();
+        bagView.getInfoInputPane().getBagInfoInputPane().setMets(mets);
+        bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().reset(mets);      
+        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().getDmdSecPanel().getButtonPanel(),false);        
     	bagView.updateClearBag();
     }
 
@@ -87,10 +93,8 @@ public class ClearBagHandler extends AbstractAction {
     	String bagName = "";
         BagView bagView = BagView.getInstance();
         
-        System.out.println("ClearBagHandler::newDefaultBag('"+f+"')");
         
-    	try {            
-            System.out.println("version in infoInputPane: "+bagView.getInfoInputPane().getBagVersion());
+    	try {                    
             //bag = new MetsBag(f,bagView.getInfoInputPane().getBagVersion());            
             bag = new MetsBag(f,null);            
     	} catch (Exception e) {                        
@@ -105,6 +109,8 @@ public class ClearBagHandler extends AbstractAction {
     	}
         bag.setName(bagName);
         bagView.setBag(bag);
+        
+        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().getDmdSecPanel().getButtonPanel(),true);
     }
     public void setConfirmSaveFlag(boolean confirmSaveFlag) {
         this.confirmSaveFlag = confirmSaveFlag;

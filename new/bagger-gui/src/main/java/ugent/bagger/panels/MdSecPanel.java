@@ -144,6 +144,10 @@ public class MdSecPanel extends JPanel{
                 monitor(new TaskAddMdSecFromTransform(),"transforming..");               
             }
         });
+        addButton.setEnabled(false);
+        removeButton.setEnabled(false);
+        importButton.setEnabled(false);
+        transformButton.setEnabled(false);
         return panel;
     }
     private void monitor(SwingWorker worker,String title){

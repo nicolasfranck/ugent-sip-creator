@@ -13,6 +13,9 @@ import java.util.Iterator;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.helper.SwingUtils;
 
 public class StartNewBagHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;
@@ -33,9 +36,11 @@ public class StartNewBagHandler extends AbstractAction {
 
     public void newBag() {
         BagView bagView = BagView.getInstance();
+        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
     	NewBagFrame newBagFrame = new NewBagFrame(bagView, bagView.getPropertyMessage("bag.frame.new"));
         newBagFrame.setVisible(true);
         newBagFrame.pack();
+        
     }
 
     public void createNewBag(String bagItVersion, String profileName) {
@@ -69,6 +74,10 @@ public class StartNewBagHandler extends AbstractAction {
     	
     	// change profile
     	changeProfile(profileName);
+        
+        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().getDmdSecPanel().getButtonPanel(),true);        
+        
+        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
     
     // TODO refactor

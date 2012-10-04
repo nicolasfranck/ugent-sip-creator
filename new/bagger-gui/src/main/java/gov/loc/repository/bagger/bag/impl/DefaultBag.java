@@ -853,6 +853,7 @@ public class DefaultBag {
     public void removePayloadDirectory(String fileName) {
         changeToDirty();
         isComplete(Status.UNKNOWN);
+        System.out.println("DefaultBag::removePayloadDirectory('"+fileName+"')");        
         bilBag.removePayloadDirectory(fileName);
     }
     public Collection<BagFile> getPayload() {

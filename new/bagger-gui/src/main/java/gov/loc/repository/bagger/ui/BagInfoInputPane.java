@@ -3,6 +3,8 @@ package gov.loc.repository.bagger.ui;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.BaggerProfile;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import org.apache.commons.logging.Log;
@@ -24,7 +26,7 @@ public final class BagInfoInputPane extends JTabbedPane {
 
     public MetsPanel getMetsPanel(){
         if(metsPanel == null){
-            metsPanel = new MetsPanel(getMets());
+            metsPanel = new MetsPanel(getMets());            
         }
         return metsPanel;
     }
@@ -135,19 +137,21 @@ public final class BagInfoInputPane extends JTabbedPane {
         removeAll();     
         validate();
         
-        setName("Profile");
-        getBagInfoForm().getControl().setToolTipText(getBagView().getPropertyMessage("infoinputpane.tab.details.help"));
-        addTab(getBagView().getPropertyMessage("infoInputPane.tab.details"),getBagInfoForm().getControl());
-        getProfileForm().getControl().setToolTipText("Profile Form");
-        
         //Nicolas Franck
-        addTab("mets",getMetsPanel());
+        addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());
+        
+        //bag-info
+        //setName("Profile");
+        //getBagInfoForm().getControl().setToolTipText(getBagView().getPropertyMessage("infoinputpane.tab.details.help"));
+        addTab(getBagView().getPropertyMessage("infoInputPane.tab.details"),getBagInfoForm().getControl());
+        //getProfileForm().getControl().setToolTipText("Profile Form");
         
         //Nicolas Franck
         /* vreemd. ProfileForm wordt hier nergens gebruikt. Waarom bestaat dit?
          * 
          */
-        //addTab(getBagView().getPropertyMessage("newProfileWizard.title"),getProfileForm().getControl());
+        //addTab(getBagView().getPropertyMessage("newProfileWizard.title"),getProfileForm().getControl());        
+        
     }
     public String verifyForms(){        
                 
@@ -164,18 +168,16 @@ public final class BagInfoInputPane extends JTabbedPane {
         updateBagInfo();        
         return "";
     }    
-    public String updateForms(){
-        
+    public String updateForms(){        
         String messages = verifyForms();        
         createTabbedUiComponentsWithForms();
         update();        
         return messages;
     }    
-    public void update(){        
-        
-        java.awt.Component[] components = getBagInfoForm().getControl().getComponents();
+    public void update(){       
+        Component[] components = getBagInfoForm().getControl().getComponents();
         for (int i=0; i<components.length; i++) {
-            java.awt.Component c = components[i];
+            Component c = components[i];
             c.invalidate();
             c.repaint();
         }

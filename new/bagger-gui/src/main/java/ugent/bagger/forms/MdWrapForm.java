@@ -36,13 +36,9 @@ public class MdWrapForm extends AbstractForm{
         
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
 
-        TableFormBuilder builder = new TableFormBuilder(bf);       
-        System.out.println("label attributes: "+builder.getLabelAttributes());
+        TableFormBuilder builder = new TableFormBuilder(bf);               
         
-        builder.setLabelAttributes("colSpan=1 align=left");
-        
-        builder.addSeparator("data");
-        builder.row();
+        builder.setLabelAttributes("colSpan=1 align=left");        
         
         builder.add("ID");
         builder.row();

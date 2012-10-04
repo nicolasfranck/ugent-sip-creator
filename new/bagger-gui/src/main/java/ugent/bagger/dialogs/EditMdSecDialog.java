@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.dialogs;
 
-import ugent.bagger.panels.EditMdSecPanel;
 import com.anearalone.mets.MdSec;
 import java.awt.Frame;
 import javax.swing.JDialog;
+import ugent.bagger.panels.EditMdSecPanel;
 
 /**
  *

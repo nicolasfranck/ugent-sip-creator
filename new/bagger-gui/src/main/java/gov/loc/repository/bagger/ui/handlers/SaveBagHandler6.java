@@ -18,8 +18,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.BusyIndicator;
-import ugent.bagger.bagitmetscreators.DSpaceBagItMets;
-import ugent.bagger.bagitmetscreators.DSpaceBagItMetsCreator;
+import ugent.bagger.bagitmets.DSpaceBagItMets;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask2;
@@ -84,9 +83,7 @@ public class SaveBagHandler6 extends Handler {
                 DefaultBag bag = bagView.getBag();
                 if (bag.getSize() > DefaultBag.MAX_SIZE) {
                     confirmAcceptBagSize();
-                } else {
-                    System.out.println("tmpRootPath:"+tmpRootPath);
-                    System.out.println("bagRootPath:"+bagView.getBagRootPath());
+                } else {                    
                     bagView.setBagRootPath(tmpRootPath);
                     saveBag(bagView.getBagRootPath());
                 }

@@ -2,9 +2,12 @@ package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -19,29 +22,49 @@ import ugent.bagger.helper.SwingUtils;
  */
 public class MdSecTable extends AbstractObjectTable{    
     private ArrayList<MdSec>data;
+    private ActionCommandExecutor openDialogExecutor;
     
     public MdSecTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         
         setData(data);             
-        setDoubleClickHandler(new ActionCommandExecutor(){
-            @Override
-            public void execute() {
-                try{
-                    MdSec mdSec = getSelected(); 
-                    JDialog dialog = new EditMdSecDialog(
-                        SwingUtils.getFrame(),
-                        getSelected()
-                    );
-                    dialog.pack();
-                    dialog.setVisible(true);                    
-                }catch(Exception e){
-                    logger.debug(e.getMessage());                    
+        setDoubleClickHandler(getOpenDialogExecutor());
+    }    
+
+    public ActionCommandExecutor getOpenDialogExecutor() {
+        if(openDialogExecutor == null){
+            openDialogExecutor = new ActionCommandExecutor(){
+                @Override
+                public void execute() {
+                    try{
+                        MdSec mdSec = getSelected(); 
+                        JDialog dialog = new EditMdSecDialog(
+                            SwingUtils.getFrame(),
+                            getSelected()
+                        );                    
+                        dialog.setSize(new Dimension(500,600));   
+                        dialog.setResizable(false);
+                        dialog.setLocationRelativeTo(MdSecTable.this.getTable());
+                        dialog.setVisible(true);                    
+                    }catch(Exception e){
+                        logger.debug(e.getMessage());                    
+                    }
                 }
-            }
-        });
+            };
+        }
+        return openDialogExecutor;
+    }
+    public void setOpenDialogExecutor(ActionCommandExecutor openDialogExecutor) {
+        this.openDialogExecutor = openDialogExecutor;
     }    
     @Override
-    protected void configureTable(JTable table){        
+    protected void configureTable(JTable table){          
+        //replace default action on enter
+        table.getActionMap().put("selectNextRowCell",new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {                
+            }
+        });
+        
         table.addKeyListener(new KeyListener(){
             @Override
             public void keyTyped(KeyEvent ke) {                             
@@ -50,11 +73,18 @@ public class MdSecTable extends AbstractObjectTable{
             public void keyPressed(KeyEvent ke) {                
             }
             @Override
-            public void keyReleased(KeyEvent ke) {               
-                if(ke.getKeyCode() == 127){                    
-                    deleteSelectedMdSec(); 
-                    refresh();
-                }
+            public void keyReleased(KeyEvent ke) {                               
+                switch(ke.getKeyCode()){
+                    //press enter
+                    case 10:
+                        getOpenDialogExecutor().execute();
+                        break;
+                    //press delete
+                    case 127:
+                        deleteSelectedMdSec(); 
+                        refresh();
+                        break;
+                }                
             }            
         });                 
     }

@@ -134,7 +134,7 @@ public final class AddFieldPanel extends JPanel {
                 getStandardFieldsComboBox().setVisible(true);
                 //Nicolas Franck
                 //getStandardFieldsComboBox().requestFocus();
-            } else {
+            }else{
                 getStandardFieldsComboBox().setVisible(false);
                 getCustomFieldTextField().setVisible(true);
                 //Nicolas Franck
@@ -196,6 +196,8 @@ public final class AddFieldPanel extends JPanel {
             if(field != null) {
                 bagView.getBag().addField(field);
                 // TODO use observer pattern
+                //verwijdert de volledige infoFormsPane, en hertekent alles
+                //nadeel: wijzingen in metsTab zijn weg!
                 bagView.getInfoInputPane().updateInfoFormsPane(true);
 
                 //Nicolas Franck: todo => request leads to never ending blocking state blocking state (deadlock?)

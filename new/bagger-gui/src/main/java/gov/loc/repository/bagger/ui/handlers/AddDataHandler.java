@@ -39,7 +39,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
     }
     public void addData(){ 
         
-        System.out.println("AddDataHandler::addData");
+        System.out.println("AddDataHandler::addData start");
         
         BagView bagView = BagView.getInstance();
         /*
@@ -89,6 +89,8 @@ public class AddDataHandler extends AbstractAction implements Progress {
          */
         String lastDir = fc.getCurrentDirectory().getAbsolutePath();
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
+        
+        System.out.println("AddDataHandler::addData end");
     }
     private String getFileNames(File[] files) {
         
