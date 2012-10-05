@@ -94,6 +94,7 @@ public class DSpaceBagItMets extends BagItMets{
                 //xsd:ID moet NCName zijn                    
                 String fileId = UUID.randomUUID().toString();                        
                 
+                //houd mapping filepath <=> fileid bij
                 fileIdMap.put(bagFile.getFilepath(),fileId);                                
                 
                 //SIZE
@@ -117,20 +118,16 @@ public class DSpaceBagItMets extends BagItMets{
                 
                 //CHECKSUM en CHECKSUMTYPE
                 metsFile.setCHECKSUM(checksumFile);
-                metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                     
+                metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                                            
                 
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
                 try{
-                    System.out.println("payloadFile: "+payloadFile+", rootDir: "+rootDir);
-                    if(payloadFile.isFile()){
-                        System.out.println("payload.isFile: yes");                        
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));
-                        System.out.println("date set: "+DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));
-                    }else if(rootDir.exists()){
-                        System.out.println("payload.isFile: no");
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;
-                        System.out.println("date set: "+DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));
+                    
+                    if(payloadFile.isFile()){                    
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
+                    }else if(rootDir.exists()){                        
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;                        
                     }else{
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());;
                     }
@@ -138,9 +135,12 @@ public class DSpaceBagItMets extends BagItMets{
                     e.printStackTrace();
                 }
 
+                //FLocat
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();
                 flocat.setLOCTYPE(LocatorElement.LOCTYPE.URL);
                 flocat.setXlinkHREF(bagFile.getFilepath());                 
+                flocat.setXlinkTitle(bagFile.getFilepath().replaceFirst("data/",""));
+                
                 metsFile.getFLocat().add(flocat);
                 
                 payloadFiles.add(metsFile);                                      
@@ -211,8 +211,7 @@ public class DSpaceBagItMets extends BagItMets{
                 tagFiles.add(metsFile);  
             }
             
-            fileGroups.add(tagFileGroup);
-            
+            fileGroups.add(tagFileGroup);            
 
             //structMaps
             DefaultMutableTreeNode rootNodePayloads = bagView.getBagPayloadTree().getParentNode();              
@@ -264,8 +263,9 @@ public class DSpaceBagItMets extends BagItMets{
         
             mets.getStructMap().clear();
             mets.getStructMap().add(structMapPayloads);
-            mets.getStructMap().add(structMapTagFiles);     
+            mets.getStructMap().add(structMapTagFiles);
             
+            //structMap payloads moet verwijzingen bevatten naar metadata voor het volledige dspace item            
             List<String>dmdList = structMapPayloads.getDiv().getDMDID();
             for(MdSec mdSec:mets.getDmdSec()){
                 structMapPayloads.getDiv().getDMDID().add(mdSec.getID());

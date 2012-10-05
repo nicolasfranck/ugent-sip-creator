@@ -5,6 +5,10 @@ import gov.loc.repository.bagger.ui.BagView;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
+/*
+ * Nicolas Franck: gebruik?
+ */
+
 public class EditTagFilesHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;    
     DefaultBag bag;

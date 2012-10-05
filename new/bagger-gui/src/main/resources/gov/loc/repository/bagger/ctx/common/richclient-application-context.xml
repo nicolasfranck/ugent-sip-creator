@@ -187,7 +187,7 @@
     </bean>  
  
     <bean id="bagView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
-        <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView" />                
+        <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView"/>                                
         <property name="viewProperties">
         <map>
             <entry key="bagger" value-ref="bagger" />
@@ -216,7 +216,7 @@
         <value>metadata/xsd/mets/1/2/mets-1.2.xsd</value>
         <value>metadata/xsd/mets/1/1/mets-1.1.xsd</value>
     </util:list>
-    <util:list id="forbiddenNamespaces">
+    <util:list id="forbiddenNamespaces" scope="singleton">
         <value>http://www.loc.gov/METS/</value>               
     </util:list>   
     
@@ -229,7 +229,7 @@
         ISO 19115:2003 NAP => xsd niet gevonden 
     -->
     
-    <util:map id="namespaceMap">
+    <util:map id="namespaceMap" map-class="java.util.HashMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="MARC"  />
         <entry key="http://www.loc.gov/mods/v3" value="MODS" />
         <entry key="info:lc/xmlns/premis-v2" value="PREMIS" />
@@ -245,9 +245,25 @@
         <entry key="http://www.vraweb.org/vracore4.htm" value="VRA" />
     </util:map>
     
+    <util:map id="typeMap" map-class="java.util.HashMap">
+        <entry value="http://www.loc.gov/MARC21/slim" key="MARC"/>
+        <entry value="http://www.loc.gov/mods/v3" key="MODS" />
+        <entry value="info:lc/xmlns/premis-v2" key="PREMIS" />
+        <entry value="http://www.loc.gov/standards/premis/v1" key="PREMIS" />
+        <entry value="http://www.loc.gov/standards/premis" key="PREMIS" />
+        <entry value="urn:isbn:1-931666-22-9" key="EAD" />
+        <entry value="http://www.loc.gov/METS/" key="METS" />           
+        <entry value="http://purl.org/dc/elements/1.1/" key="DC" />         
+        <entry value="http://www.loc.gov/mix/v20" key="NISOIMG" />
+        <entry value="http://www.loc.gov/mix/v10" key="NISOIMG" />
+        <entry value="http://www.loc.gov/AMD/" key="LC-AV" />
+        <entry value="http://www.loc.gov/VMD/" key="LC-AV" />
+        <entry value="http://www.vraweb.org/vracore4.htm" key="VRA" />
+    </util:map>
+    
     
     <!--premis agent|object|event|rights hebben allemaal dezelfde namespace: http://www.loc.gov/standards/premis -->    
-    <util:map id="xsdMap">
+    <util:map id="xsdMap" map-class="java.util.HashMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xsd/MARC21.xsd" />
         <entry key="http://www.loc.gov/mods/v3" value="metadata/xsd/mods.xsd" />        
         <entry key="info:lc/xmlns/premis-v2" value="metadata/xsd/premis.xsd" />        
@@ -270,8 +286,22 @@
         <entry key="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" value="metadata/xsd/Spectrum-1.01.xsd" />
         <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="metadata/xsd/METSRights.xsd" />
     </util:map>
-    <util:map id="xsltMap">
+    
+    <util:map id="xsltMap" map-class="java.util.HashMap">
         <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/marc2oai_dc.xsl" />
         <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MODS3-22OAIDC.xsl" />        
-    </util:map>  
+    </util:map>
+    <util:map id="crosswalk" map-class="java.util.HashMap">
+        <entry key="http://www.loc.gov/MARC21/slim">
+            <util:map map-class="java.util.HashMap">
+                <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MARC21slim2MODS3.xsl" />        
+                <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/marc2oai_dc.xsl" />
+            </util:map>                
+        </entry>
+        <entry key="http://www.loc.gov/mods/v3">
+            <util:map map-class="java.util.HashMap">
+                <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/MODS3-22OAIDC.xsl" />
+            </util:map>
+        </entry>
+    </util:map>
 </beans>

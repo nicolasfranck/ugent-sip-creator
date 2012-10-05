@@ -1,7 +1,6 @@
 package gov.loc.repository.bagger.ui;
 
 import com.anearalone.mets.Mets;
-import gov.loc.repository.bagger.bag.BaggerProfile;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
@@ -13,14 +12,18 @@ import org.springframework.binding.form.HierarchicalFormModel;
 import org.springframework.richclient.form.FormModelHelper;
 import ugent.bagger.panels.MetsPanel;
 
-public final class BagInfoInputPane extends JTabbedPane {
+/*
+ * Nicolas Franck: renamed from "BagInfoInputPane" to "InfoInputPane"
+ */
+public final class InfoInputPane extends JTabbedPane {
     private static final long serialVersionUID = 1L;
-    private static final Log logger = LogFactory.getLog(BagInfoInputPane.class);
-    private BaggerProfile bagProfile;
-    private BagInfoForm bagInfoForm;
-    private OrganizationProfileForm profileForm;
-    private HierarchicalFormModel infoFormModel;
-    private HierarchicalFormModel profileFormModel;
+    private static final Log logger = LogFactory.getLog(InfoInputPane.class);
+    //Nicolas Franck: profile niet nuttig
+    //private BaggerProfile bagProfile;
+    //private OrganizationProfileForm profileForm;
+    //private HierarchicalFormModel profileFormModel;
+    private BagInfoForm bagInfoForm;    
+    private HierarchicalFormModel infoFormModel;    
     private Mets mets;
     private MetsPanel metsPanel;
 
@@ -48,6 +51,8 @@ public final class BagInfoInputPane extends JTabbedPane {
     public DefaultBag getDefaultBag() {
         return getBagView().getBag();
     }    
+    //Nicolas Franck: profile niet nuttig
+    /*
     public BaggerProfile getBagProfile() {
         if (bagProfile == null) {
             bagProfile = new BaggerProfile();
@@ -56,16 +61,22 @@ public final class BagInfoInputPane extends JTabbedPane {
     }
     public void setBagProfile(BaggerProfile bagProfile) {
         this.bagProfile = bagProfile;
-    }
+    }*/
     public BagInfoForm getBagInfoForm() {
         if(bagInfoForm == null){            
-            bagInfoForm = new BagInfoForm(FormModelHelper.createChildPageFormModel(getInfoFormModel(), null),getDefaultBag().getInfo().getFieldMap(),false);       
+            bagInfoForm = new BagInfoForm(
+                FormModelHelper.createChildPageFormModel(getInfoFormModel(), null),
+                getDefaultBag().getInfo().getFieldMap(),
+                false
+            );       
         }
         return bagInfoForm;
     }
     public void setBagInfoForm(BagInfoForm bagInfoForm) {
         this.bagInfoForm = bagInfoForm;
-    }    
+    } 
+    //Nicolas Franck: profile niet nuttig
+    /*
     public OrganizationProfileForm getProfileForm() {
         if(profileForm == null){
             profileForm = new OrganizationProfileForm(FormModelHelper.createChildPageFormModel(getProfileFormModel(), null));    	
@@ -74,7 +85,7 @@ public final class BagInfoInputPane extends JTabbedPane {
     }
     public void setProfileForm(OrganizationProfileForm profileForm) {
         this.profileForm = profileForm;
-    }
+    }*/
     public HierarchicalFormModel getInfoFormModel() {
         if(infoFormModel == null){
             infoFormModel = FormModelHelper.createCompoundFormModel(getDefaultBag().getInfo());
@@ -84,6 +95,8 @@ public final class BagInfoInputPane extends JTabbedPane {
     public void setInfoFormModel(HierarchicalFormModel infoFormModel) {        
         this.infoFormModel = infoFormModel;
     }
+    //Nicolas Franck: profile niet nuttig
+    /*
     public HierarchicalFormModel getProfileFormModel() {
         if(profileFormModel == null){
             profileFormModel = FormModelHelper.createCompoundFormModel(getBagProfile());
@@ -92,8 +105,8 @@ public final class BagInfoInputPane extends JTabbedPane {
     }
     public void setProfileFormModel(HierarchicalFormModel profileFormModel) {
         this.profileFormModel = profileFormModel;
-    }
-    public BagInfoInputPane(boolean b){
+    }*/
+    public InfoInputPane(boolean b){
     	populateForms(b);                       
         getInputMap().put(KeyStroke.getKeyStroke("F2"), "tabNext");
         ActionMap am = getActionMap();
@@ -118,17 +131,18 @@ public final class BagInfoInputPane extends JTabbedPane {
         });
         setActionMap(am);                
     }
-    public void enableForms(boolean b) {        
-    	getProfileForm().setEnabled(b);
+    public void enableForms(boolean b) {      
+        //Nicolas Franck: profile niet nuttig
+    	/*getProfileForm().setEnabled(b);
     	getProfileForm().getControl().invalidate();
-    	getBagInfoForm().setEnabled(b);
+    	getBagInfoForm().setEnabled(b);*/
     	getBagInfoForm().getControl().invalidate();
     	setEnabled(b);
     	invalidate();
     }    
     public void populateForms(boolean enabled){    	                
-    	getBagProfile().setOrganization(getDefaultBag().getInfo().getBagOrganization());                
-    	getBagProfile().setToContact(getDefaultBag().getInfo().getToContact());    	    	        
+    	/*getBagProfile().setOrganization(getDefaultBag().getInfo().getBagOrganization());                
+    	getBagProfile().setToContact(getDefaultBag().getInfo().getToContact());*/    	    	        
         createTabbedUiComponentsWithForms();        
     }
 
@@ -140,6 +154,7 @@ public final class BagInfoInputPane extends JTabbedPane {
         //Nicolas Franck
         addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());
         
+        //Nicolas Franck: profile niet nuttig
         //bag-info
         //setName("Profile");
         //getBagInfoForm().getControl().setToolTipText(getBagView().getPropertyMessage("infoinputpane.tab.details.help"));
@@ -154,12 +169,12 @@ public final class BagInfoInputPane extends JTabbedPane {
         
     }
     public String verifyForms(){        
-                
+        /*        
         if(!getProfileForm().hasErrors()){            
             getProfileForm().commit();
         }else{
             throw new RuntimeException("Bag-Info has errors");
-        }        
+        }*/        
         if(!getBagInfoForm().hasErrors()){
             getBagInfoForm().commit();
         }else{
@@ -182,7 +197,7 @@ public final class BagInfoInputPane extends JTabbedPane {
             c.repaint();
         }
         getBagInfoForm().getControl().invalidate();
-        getProfileForm().getControl().invalidate();        
+        //getProfileForm().getControl().invalidate();        
     	invalidate();
     	repaint();        
     }

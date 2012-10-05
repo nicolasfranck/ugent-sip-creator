@@ -8,7 +8,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class StatusImageLabel extends JLabel implements PropertyChangeListener {
+public final class StatusImageLabel extends JLabel implements PropertyChangeListener {
 
     private static final long serialVersionUID = 1L;
     public static final String PASS_STATUS_ICON = "status.success.icon";

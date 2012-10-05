@@ -8,8 +8,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,7 +17,8 @@ import javax.swing.border.EmptyBorder;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 
-public final class BagInfoForm extends AbstractForm implements FocusListener {
+//Nicolas Franck: FocusListener heeft geen toegevoegde waarde
+public final class BagInfoForm extends AbstractForm /*implements FocusListener*/ {
     private static final long serialVersionUID = -3231249644435262577L;
     public static final String INFO_FORM_PAGE = "infoPage";
     private JComponent focusField;    
@@ -116,7 +115,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
                             JComponent[] tlist = formBuilder.addTextArea(field.getName(), field.isRequired(), field.getLabel(), removeButton, "");
                             JComponent textarea = tlist[index];
                             textarea.setEnabled(field.isEnabled());
-                            textarea.addFocusListener(this);
+                            //textarea.addFocusListener(this);
                             ((NoTabTextArea) textarea).setText(field.getValue());
                             ((NoTabTextArea) textarea).setBorder(new EmptyBorder(1,1,1,1));
                             ((NoTabTextArea) textarea).setLineWrap(true);
@@ -128,7 +127,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
                             JComponent[] flist = formBuilder.add(field.getName(), field.isRequired(), field.getLabel(), removeButton, "");
                             JComponent comp = flist[index];
                             comp.setEnabled(field.isEnabled());
-                            comp.addFocusListener(this);
+                            //comp.addFocusListener(this);
                             ((JTextField) comp).setText(field.getValue());
                             if (rowCount == 1) {
                                 focusField = comp;
@@ -139,7 +138,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
                             JComponent[] llist = formBuilder.addList(field.getName(), field.isRequired(), field.getLabel(), elements, field.getValue(), removeButton, "");
                             JComponent lcomp = llist[index];
                             lcomp.setEnabled(field.isEnabled());
-                            lcomp.addFocusListener(this);
+                            //lcomp.addFocusListener(this);
                             if(field.getValue() != null) {
                                 ((JComboBox) lcomp).setSelectedItem(field.getValue().trim());
                             }
@@ -156,6 +155,8 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
         }
         return formBuilder.getForm();                
     }
+    //Nicolas Franck: focus listener heeft geen toegevoegde waarde
+    /*
     @Override
     public void focusGained(FocusEvent evt){         
     }    
@@ -164,7 +165,7 @@ public final class BagInfoForm extends AbstractForm implements FocusListener {
     	getBagView().getInfoInputPane().getUpdateBagHandler().updateBag();        
         //Nicolas Franck: waarom?
 	//getBagView().getInfoInputPane().bagInfoInputPane.setSelectedIndex(0);        
-    }
+    }*/
     private class RemoveFieldHandler extends AbstractAction {
        	private static final long serialVersionUID = 1L;
         @Override

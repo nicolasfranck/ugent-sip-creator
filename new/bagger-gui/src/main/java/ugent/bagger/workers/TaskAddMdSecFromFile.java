@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.workers;
 
 import com.anearalone.mets.MdSec;
@@ -14,6 +10,8 @@ import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.helper.SwingUtils;
 
 /**
  *
@@ -23,7 +21,7 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
     @Override
     @SuppressWarnings("empty-statement")
     protected Void doInBackground() throws Exception {
-        File [] files = ugent.bagger.helper.SwingUtils.chooseFiles(
+        File [] files = SwingUtils.chooseFiles(
             "Select xml file",
             new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
             JFileChooser.FILES_ONLY,
@@ -34,7 +32,7 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
         for(int i = 0;i<files.length;i++){                                                        
             File file = files[i];
             try{
-                MdSec mdSec = ugent.bagger.helper.MetsUtils.createMdSec(file);                        
+                MdSec mdSec = MetsUtils.createMdSec(file);                        
                 send(mdSec);                    
                 succeeded++;
             }catch(IOException e){  
@@ -44,23 +42,23 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                 }));                    
             }catch(SAXException e){  
                 e.printStackTrace();
-                log(ugent.bagger.helper.Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
                     file,e.getMessage()
                 })+"\n");                                                    
             }catch(ParserConfigurationException e){  
                 e.printStackTrace();
-                log(ugent.bagger.helper.Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
                     e.getMessage()
                 })+"\n");                    
             }catch(IllegalNamespaceException e){
                 e.printStackTrace();
-                log(ugent.bagger.helper.Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
                     file,e.getNamespace()
                 })+"\n");
             }
             catch(NoNamespaceException e){          
                 e.printStackTrace();
-                log(ugent.bagger.helper.Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
                     file
                 })+"\n");                                
             }                            

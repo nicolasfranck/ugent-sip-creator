@@ -38,32 +38,32 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
     private static final Log log = LogFactory.getLog(SaveBagFrame.class);
     private static final long serialVersionUID = 1L;
    
-    File bagFile;
-    String bagFileName = "";
-    private Dimension preferredDimension = new Dimension(600, 400);
-    JPanel savePanel;
-    JPanel serializeGroupPanel;
-    JTextField bagNameField;
+    private File bagFile;
+    private String bagFileName = "";
+    private final Dimension preferredDimension = new Dimension(600, 400);
+    private JPanel savePanel;
+    private JPanel serializeGroupPanel;
+    private JTextField bagNameField;
     
     //Nicolas Franck: disable make holey
     //JLabel urlLabel;
     //JTextField urlField;
     
-    JButton browseButton;
-    JButton okButton;
-    JButton cancelButton;
-    JRadioButton noneButton;
-    JRadioButton zipButton;
-    JRadioButton tarButton;
-    JRadioButton tarGzButton;
-    JRadioButton tarBz2Button;
+    private JButton browseButton;
+    private JButton okButton;
+    private JButton cancelButton;
+    private JRadioButton noneButton;
+    private JRadioButton zipButton;
+    private JRadioButton tarButton;
+    private JRadioButton tarGzButton;
+    private JRadioButton tarBz2Button;
 
     //Nicolas Franck: disable make holey
     //JCheckBox holeyCheckbox;
-    JCheckBox isTagCheckbox;
-    JCheckBox isPayloadCheckbox;
-    JComboBox tagAlgorithmList;
-    JComboBox payAlgorithmList;
+    private JCheckBox isTagCheckbox;
+    private JCheckBox isPayloadCheckbox;
+    private JComboBox tagAlgorithmList;
+    private JComboBox payAlgorithmList;
     
     protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
     protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";
@@ -99,13 +99,41 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
 
 
     protected Object[] getCommandGroupMembers() {
-        return new AbstractCommand[] { finishCommand, cancelCommand };
+        return new AbstractCommand[] { getFinishCommand(), getCancelCommand() };
     }
-	
-	
+    public ActionCommand getFinishCommand() {
+        if(finishCommand == null){
+            finishCommand = new ActionCommand(getFinishCommandId()) {
+                @Override
+                public void doExecuteCommand(){
+                    new OkSaveBagHandler().actionPerformed(null);
+                }
+            };
+        }
+        return finishCommand;
+    }
+    public void setFinishCommand(ActionCommand finishCommand) {
+        this.finishCommand = finishCommand;
+    }
+    public ActionCommand getCancelCommand() {
+        if(cancelCommand == null){
+            cancelCommand = new ActionCommand(getCancelCommandId()){
+                @Override
+                public void doExecuteCommand(){
+                    new CancelSaveBagHandler().actionPerformed(null);
+                }
+            };
+        }
+        return cancelCommand;
+    }
+    public void setCancelCommand(ActionCommand cancelCommand) {
+        this.cancelCommand = cancelCommand;
+    }
+    //Nicolas Franck: vervangen door lazy get-methoden voor cancelCommand en finishCommand
     /**
     * Initialize the standard commands needed on a Dialog: Ok/Cancel.
     */
+    /*
     private void initStandardCommands() {
         finishCommand = new ActionCommand(getFinishCommandId()) {
             @Override
@@ -120,7 +148,7 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
                 new CancelSaveBagHandler().actionPerformed(null);
             }
         };
-    }
+    }*/
     
     protected String getFinishCommandId() {
         return DEFAULT_FINISH_COMMAND_ID;
@@ -133,7 +161,7 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
         Border border = new EmptyBorder(5, 5, 5, 5);
         
         TitlePane titlePane = new TitlePane();
-        initStandardCommands();
+        //initStandardCommands();
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
         titlePane.setTitle(getBagView().getPropertyMessage("SaveBagFrame.title"));
@@ -220,17 +248,17 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
 
         short mode = bag.getSerialMode();
     	if (mode == DefaultBag.NO_MODE) {
-            this.noneButton.setEnabled(true);
+            noneButton.setEnabled(true);
     	} else if (mode == DefaultBag.ZIP_MODE) {
-            this.zipButton.setEnabled(true);
+            zipButton.setEnabled(true);
     	} else if (mode == DefaultBag.TAR_MODE) {
-            this.tarButton.setEnabled(true);
+            tarButton.setEnabled(true);
     	} else if (mode == DefaultBag.TAR_GZ_MODE) {
-            this.tarGzButton.setEnabled(true);
+            tarGzButton.setEnabled(true);
     	} else if (mode == DefaultBag.TAR_BZ2_MODE) {
-            this.tarBz2Button.setEnabled(true);
+            tarBz2Button.setEnabled(true);
     	} else {
-            this.noneButton.setEnabled(true);
+            noneButton.setEnabled(true);
     	}
         
         ButtonGroup serializeGroup = new ButtonGroup();

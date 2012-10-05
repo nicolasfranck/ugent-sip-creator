@@ -32,14 +32,34 @@ import ugent.bagger.exceptions.NoNamespaceException;
  */
 public class MetsUtils {
     
+    private static HashMap<String,HashMap<String,String>>crosswalk;
     private static HashMap<String,String> xsdMap = null;
     private static HashMap<String,String> xsltMap = null;
     private static HashMap<String,String> namespaceMap = null;
+    private static HashMap<String,String> typeMap = null;
     private static ArrayList<String>forbiddenNamespaces = null;
-    private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");
-    
+    private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
     private static Log logger = LogFactory.getLog(MetsUtils.class);
 
+    public static HashMap<String, HashMap<String, String>> getCrosswalk() {
+        if(crosswalk == null){
+            crosswalk = (HashMap<String,HashMap<String,String>>) Beans.getBean("crosswalk");
+        }
+        return crosswalk;
+    }
+    public static void setCrosswalk(HashMap<String, HashMap<String, String>> crosswalk) {
+        MetsUtils.crosswalk = crosswalk;
+    }
+    public static HashMap<String, String> getTypeMap() {
+        if(typeMap == null){
+            typeMap = (HashMap<String,String>) Beans.getBean("typeMap");
+        }
+        return typeMap;
+    }
+    public static void setTypeMap(HashMap<String, String> typeMap) {
+        MetsUtils.typeMap = typeMap;
+    }    
+    
     public static HashMap<String, String> getXsdMap() {
         if(xsdMap == null){
             xsdMap = (HashMap<String,String>) Beans.getBean("xsdMap");

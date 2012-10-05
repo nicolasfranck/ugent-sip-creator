@@ -3,7 +3,7 @@ package gov.loc.repository.bagger.ui.handlers;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-import gov.loc.repository.bagger.ui.BagInfoInputPane;
+import gov.loc.repository.bagger.ui.InfoInputPane;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
@@ -69,7 +69,7 @@ public class OpenBagHandler extends AbstractAction {
         BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
         
         BagView bagView = BagView.getInstance();        
-    	bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
+    	bagView.getInfoInputPane().getInfoInputPane().enableForms(true);
         
         //opgelet: een nieuw DefaultBag wordt aangemaakt, dus
         //beter geen referentie bijhouden nu naar de oude
@@ -152,8 +152,8 @@ public class OpenBagHandler extends AbstractAction {
         if(msgs != null){
             ApplicationContextUtil.addConsoleMessage(msgs);
         }
-        bagView.getInfoInputPane().getBagInfoInputPane().populateForms(true);
-        bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
+        bagView.getInfoInputPane().getInfoInputPane().populateForms(true);
+        bagView.getInfoInputPane().getInfoInputPane().enableForms(true);
         
         bagView.updateOpenBag();   
         
@@ -164,7 +164,7 @@ public class OpenBagHandler extends AbstractAction {
         Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());       
        
         
-        BagInfoInputPane bagInfoInputPane = bagView.getInfoInputPane().getBagInfoInputPane();
+        InfoInputPane bagInfoInputPane = bagView.getInfoInputPane().getInfoInputPane();
         bagInfoInputPane.setMets(mets);
         bagInfoInputPane.getMetsPanel().reset(mets);
         

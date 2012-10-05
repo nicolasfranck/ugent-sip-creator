@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  * @author nicolas
  */
 public class MetsPanel extends JPanel{    
-    private DmdSecPanel dmdSecPanel;
+    private DmdSecPropertiesPanel dmdSecPropertiesPanel;
     private Mets mets;
     
     public MetsPanel(Mets mets){
@@ -25,17 +25,17 @@ public class MetsPanel extends JPanel{
             mets.setMetsHdr(new MetsHdr());
         }        
         setMets(mets);                
-        setDmdSecPanel(new DmdSecPanel(((ArrayList<MdSec>)mets.getDmdSec())));        
-        add(getDmdSecPanel());
+        setDmdSecPropertiesPanel(new DmdSecPropertiesPanel(((ArrayList<MdSec>)mets.getDmdSec())));        
+        add(getDmdSecPropertiesPanel());
     }    
-    public DmdSecPanel getDmdSecPanel() {
-        if(dmdSecPanel == null){
-            dmdSecPanel = new DmdSecPanel(((ArrayList<MdSec>)mets.getDmdSec()));
+    public DmdSecPropertiesPanel getDmdSecPropertiesPanel() {
+        if(dmdSecPropertiesPanel == null){
+            dmdSecPropertiesPanel = new DmdSecPropertiesPanel(((ArrayList<MdSec>)mets.getDmdSec()));
         }
-        return dmdSecPanel;
+        return dmdSecPropertiesPanel;
     }
-    public void setDmdSecPanel(DmdSecPanel dmdSecPanel) {
-        this.dmdSecPanel = dmdSecPanel;
+    public void setDmdSecPropertiesPanel(DmdSecPropertiesPanel dmdSecPanel) {
+        this.dmdSecPropertiesPanel = dmdSecPanel;
     }    
     public Mets getMets() {        
         return mets;
@@ -47,7 +47,7 @@ public class MetsPanel extends JPanel{
         if(mets.getMetsHdr() == null){
             mets.setMetsHdr(new MetsHdr());
         }                
-        getDmdSecPanel().reset((ArrayList<MdSec>)mets.getDmdSec());
+        getDmdSecPropertiesPanel().reset((ArrayList<MdSec>)mets.getDmdSec());
         setMets(mets);
     }    
 }

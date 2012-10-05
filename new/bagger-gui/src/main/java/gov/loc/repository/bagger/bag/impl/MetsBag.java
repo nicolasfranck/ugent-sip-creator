@@ -41,7 +41,7 @@ public class MetsBag extends DefaultBag{
         
         Mets mets = getBagItMets().onSaveBag(
             bag,
-            BagView.getInstance().getInfoInputPane().getBagInfoInputPane().getMets()
+            BagView.getInstance().getInfoInputPane().getInfoInputPane().getMets()
         );
         
         if(mets == null){

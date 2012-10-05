@@ -39,8 +39,7 @@ public class StartNewBagHandler extends AbstractAction {
         BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
     	NewBagFrame newBagFrame = new NewBagFrame(bagView, bagView.getPropertyMessage("bag.frame.new"));
         newBagFrame.setVisible(true);
-        newBagFrame.pack();
-        
+        newBagFrame.pack();        
     }
 
     public void createNewBag(String bagItVersion, String profileName) {
@@ -49,7 +48,7 @@ public class StartNewBagHandler extends AbstractAction {
     	
     	bagView.clearBagHandler.clearExistingBag();
     	DefaultBag bag = bagView.getBag();
-    	bagView.getInfoInputPane().getBagInfoInputPane().enableForms(true);
+    	bagView.getInfoInputPane().getInfoInputPane().enableForms(true);
 
     	String bagName = bagView.getPropertyMessage("bag.label.noname");
         bag.setName(bagName);
@@ -65,7 +64,7 @@ public class StartNewBagHandler extends AbstractAction {
         bagView.updateBaggerRules();
         bag.setRootDir(bagView.getBagRootPath());
 
-    	bagView.getInfoInputPane().getBagInfoInputPane().populateForms(true);
+    	bagView.getInfoInputPane().getInfoInputPane().populateForms(true);
     	ApplicationContextUtil.addConsoleMessage("A new bag has been created in memory.");
     	bagView.updateNewBag();
     	
@@ -75,7 +74,7 @@ public class StartNewBagHandler extends AbstractAction {
     	// change profile
     	changeProfile(profileName);
         
-        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().getDmdSecPanel().getButtonPanel(),true);        
+        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);        
         
         BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
@@ -86,7 +85,7 @@ public class StartNewBagHandler extends AbstractAction {
     	Profile profile = bagView.getProfileStore().getProfile(selected);        
         DefaultBag bag = bagView.getBag();
         bag.setProfile(profile, true);
-        bagView.getInfoInputPane().getBagInfoInputPane().updateProject();        
+        bagView.getInfoInputPane().getInfoInputPane().updateProject();        
         bagView.getInfoInputPane().setProfile(bag.getProfile().getName());
     }
 }

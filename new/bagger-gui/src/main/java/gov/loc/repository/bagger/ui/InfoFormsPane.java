@@ -18,7 +18,7 @@ public final class InfoFormsPane extends JPanel {
     private JPanel bagSettingsPanel;
     private JPanel infoPanel;
     protected JPanel serializeGroupPanel;
-    private BagInfoInputPane bagInfoInputPane;
+    private InfoInputPane infoInputPane;
     private UpdateBagHandler updateBagHandler;
     protected JLabel bagNameValue;
     private JButton removeProjectButton;
@@ -118,7 +118,7 @@ public final class InfoFormsPane extends JPanel {
             GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
             infoPanel.add(getBagSettingsPanel(), gbc);
             gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
-            infoPanel.add(getBagInfoInputPane(),gbc);            
+            infoPanel.add(getInfoInputPane(),gbc);            
         }
         return infoPanel;
     }
@@ -126,16 +126,16 @@ public final class InfoFormsPane extends JPanel {
         this.infoPanel = infoPanel;
     }  
 
-    public BagInfoInputPane getBagInfoInputPane() {
-        if(bagInfoInputPane == null){
-            bagInfoInputPane = new BagInfoInputPane(false);
-            bagInfoInputPane.setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
-            bagInfoInputPane.setEnabled(false);
+    public InfoInputPane getInfoInputPane() {
+        if(infoInputPane == null){
+            infoInputPane = new InfoInputPane(false);
+            infoInputPane.setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
+            infoInputPane.setEnabled(false);
         }
-        return bagInfoInputPane;
+        return infoInputPane;
     }
-    public void setBagInfoInputPane(BagInfoInputPane bagInfoInputPane) {
-        this.bagInfoInputPane = bagInfoInputPane;
+    public void setInfoInputPane(InfoInputPane bagInfoInputPane) {
+        this.infoInputPane = bagInfoInputPane;
     }
     public JPanel getBagSettingsPanel() {
         if(bagSettingsPanel == null){
@@ -280,22 +280,37 @@ public final class InfoFormsPane extends JPanel {
     	return getBagNameValue().getText();
     }    
     public void updateInfoForms() {
-    	getBagInfoInputPane().populateForms(false);
-    	getBagInfoInputPane().enableForms(false);
-    	getBagInfoInputPane().invalidate();
+    	getInfoInputPane().populateForms(false);
+    	getInfoInputPane().enableForms(false);
+    	getInfoInputPane().invalidate();
     }
 
     public void updateInfoFormsPane(boolean enabled) {
-        System.out.println("InfoFormsPane::updateInfoFormsPane");
-    	// need to remove something?         
         
-        getInfoPanel().remove(getBagInfoInputPane());
+        //Nicolas Franck: plaatst nu enkel baginfo-form opnieuw
+        for(int i = 0;i< getInfoInputPane().getComponentCount();i++){                      
+            if(getInfoInputPane().getComponentAt(i) == getInfoInputPane().getBagInfoForm().getControl()){
+                //ervoor zorgen dat get-methode 'getBagInfoForm' zichzelf opnieuw initialiseert!
+                getInfoInputPane().setBagInfoForm(null);
+                getInfoInputPane().setComponentAt(i,getInfoInputPane().getBagInfoForm().getControl());
+                break;
+            }
+        }        
+        getInfoInputPane().validate();        
+        validate();
+        
+        //Nicolas Franck: verwijdert volledige inputpane, inclusief mets-tab
+    	// need to remove something?
+        /*
+        getInfoPanel().remove(getInfoInputPane());
         getInfoPanel().validate();      
-    	setBagInfoInputPane(new BagInfoInputPane(enabled));
-    	getBagInfoInputPane().setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
+    	setInfoInputPane(new InfoInputPane(enabled));
+    	getInfoInputPane().setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
         
     	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
-        getInfoPanel().add(getBagInfoInputPane(),gbc);
+        getInfoPanel().add(getInfoInputPane(),gbc);
         validate();
+        */
+        
     }     
 }

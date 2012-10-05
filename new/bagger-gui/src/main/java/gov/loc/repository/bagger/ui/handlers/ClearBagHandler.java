@@ -6,8 +6,6 @@ import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.BagFactory.Version;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -81,9 +79,9 @@ public class ClearBagHandler extends AbstractAction {
     	bagView.getInfoInputPane().setBagName(bag.getName());
     	bagView.getInfoInputPane().updateInfoForms();
         Mets mets = new Mets();
-        bagView.getInfoInputPane().getBagInfoInputPane().setMets(mets);
-        bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().reset(mets);      
-        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().getDmdSecPanel().getButtonPanel(),false);        
+        bagView.getInfoInputPane().getInfoInputPane().setMets(mets);
+        bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().reset(mets);      
+        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
     	bagView.updateClearBag();
     }
 
@@ -110,7 +108,7 @@ public class ClearBagHandler extends AbstractAction {
         bag.setName(bagName);
         bagView.setBag(bag);
         
-        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getBagInfoInputPane().getMetsPanel().getDmdSecPanel().getButtonPanel(),true);
+        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
     }
     public void setConfirmSaveFlag(boolean confirmSaveFlag) {
         this.confirmSaveFlag = confirmSaveFlag;

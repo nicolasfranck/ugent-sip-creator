@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.importers.Importer;
 import ugent.bagger.importers.ImporterFactory;
 
@@ -46,7 +47,7 @@ public class TaskAddMdSecFromImport extends DefaultWorker {
                     continue;
                 }
 
-                MdSec mdSec = ugent.bagger.helper.MetsUtils.createMdSec(doc);                        
+                MdSec mdSec = MetsUtils.createMdSec(doc);                        
                 
                 send(mdSec);
                 
@@ -65,7 +66,7 @@ public class TaskAddMdSecFromImport extends DefaultWorker {
                 })+"\n");                
             }
             catch(NoNamespaceException e){                                               
-                log(ugent.bagger.helper.Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
                     file
                 })+"\n");                    
             }                        

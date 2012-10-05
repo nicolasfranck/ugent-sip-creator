@@ -15,20 +15,21 @@ import java.util.List;
 import javax.swing.*;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
+import ugent.bagger.dialogs.XMLTransformDialog;
 import ugent.bagger.forms.MdSecForm;
 import ugent.bagger.forms.MdWrapForm;
 import ugent.bagger.helper.Context;
-import ugent.bagger.tables.DmdSecTable;
-import ugent.bagger.tables.MdSecTable;
+import ugent.bagger.tables.DmdSecPropertiesTable;
+import ugent.bagger.tables.MdSecPropertiesTable;
 import ugent.bagger.workers.*;
 
 /**
  *
  * @author nicolas
  */
-public class MdSecPanel extends JPanel{
+public class MdSecPropertiesPanel extends JPanel{
     private JComponent buttonPanel;
-    private MdSecTable dmdSecTable;         
+    private MdSecPropertiesTable dmdSecPropertiesTable;         
     private ArrayList<MdSec>data; 
     private MdSecForm mdSecForm;
     private MdWrapForm mdWrapForm;
@@ -39,7 +40,7 @@ public class MdSecPanel extends JPanel{
     private JButton importButton;
     private JButton transformButton;
     
-    public MdSecPanel(final ArrayList<MdSec>data){        
+    public MdSecPropertiesPanel(final ArrayList<MdSec>data){        
         assert(data != null);
         this.data = data;         
         setLayout(new BorderLayout());
@@ -73,8 +74,8 @@ public class MdSecPanel extends JPanel{
     public void setMdSecForm(MdSecForm mdSecForm) {
         this.mdSecForm = mdSecForm;
     }    
-    public void reset(final ArrayList<MdSec>data){                
-        getDmdSecTable().reset(data);
+    public void reset(final ArrayList<MdSec>data){                       
+        getDmdSecPropertiesTable().reset(data);
         this.data = data;        
     }
     public JComponent getButtonPanel() {
@@ -86,21 +87,21 @@ public class MdSecPanel extends JPanel{
     public void setButtonPanel(JPanel buttonPanel) {
         this.buttonPanel = buttonPanel;
     }        
-    public MdSecTable getDmdSecTable() {
-        if(dmdSecTable == null){
-            dmdSecTable = createMdSecTable();
+    public MdSecPropertiesTable getDmdSecPropertiesTable() {
+        if(dmdSecPropertiesTable == null){
+            dmdSecPropertiesTable = createMdSecPropertiesTable();
         }
-        return dmdSecTable;
+        return dmdSecPropertiesTable;
     }
-    public DmdSecTable createMdSecTable(){                
-        return new DmdSecTable(data,new String [] {"ID","GROUPID","STATUS","CREATED"},"mdSecTable");
+    public DmdSecPropertiesTable createMdSecPropertiesTable(){                        
+        return new DmdSecPropertiesTable(data,new String [] {"namespace","label","MDTYPE","OTHERMDTYPE"},"mdSecTable");
     }
-    public void setMdSecTable(DmdSecTable dmdSecTable) {
-        this.dmdSecTable = dmdSecTable;
+    public void setMdSecPropertiesTable(DmdSecPropertiesTable dmdSecTable) {
+        this.dmdSecPropertiesTable = dmdSecTable;
     }  
     protected JComponent createContentPane() {
         JPanel panel = new JPanel(new BorderLayout());        
-        panel.add(new JScrollPane(getDmdSecTable().getControl()));        
+        panel.add(new JScrollPane(getDmdSecPropertiesTable().getControl()));        
         panel.add(getButtonPanel(),BorderLayout.NORTH);        
         return panel;
     }
@@ -113,16 +114,31 @@ public class MdSecPanel extends JPanel{
         transformButton = new JButton(Context.getMessage("MdSecPanel.transformButton.label"));
         transformButton.setToolTipText(Context.getMessage("MdSecPanel.transformButton.toolTip"));        
         
+        JButton testButton = new JButton("test");
+        testButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JDialog dialog = new XMLTransformDialog();                
+                dialog.pack();
+                dialog.setLocationRelativeTo(panel);
+                dialog.setVisible(true);
+            }
+            
+        });
+        panel.add(testButton);
+        
         panel.add(addButton);                
         panel.add(importButton);        
         panel.add(removeButton);
         panel.add(transformButton);
         
+        
+        
         removeButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                getDmdSecTable().deleteSelectedMdSec();
-                getDmdSecTable().refresh();
+                getDmdSecPropertiesTable().deleteSelectedMdSec();
+                getDmdSecPropertiesTable().refresh();
             }        
         });     
         
@@ -163,12 +179,12 @@ public class MdSecPanel extends JPanel{
                 }else if(pce.getPropertyName().equals("log")){
                     ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){
-                    getDmdSecTable().addMdSec((MdSec)pce.getNewValue());
+                    getDmdSecPropertiesTable().addMdSec((MdSec)pce.getNewValue());
                 }else if(
                     pce.getPropertyName().equals("report") && 
                     pce.getNewValue().toString().compareTo("success") == 0
                 ){
-                    getDmdSecTable().refresh();
+                    getDmdSecPropertiesTable().refresh();
                 }
             }
         };

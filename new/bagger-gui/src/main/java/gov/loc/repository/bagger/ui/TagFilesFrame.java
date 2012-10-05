@@ -22,6 +22,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
+/*
+ * Nicolas Franck: tagfiles kunnen vanalles zijn, dus de view hierop is dus onbepaald => afschaffen?
+ */
+
 public class TagFilesFrame extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
 

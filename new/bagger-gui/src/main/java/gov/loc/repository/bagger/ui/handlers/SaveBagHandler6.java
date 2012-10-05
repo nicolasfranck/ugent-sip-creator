@@ -191,7 +191,7 @@ public class SaveBagHandler6 extends Handler {
 
             final BagView bagView = BagView.getInstance();
             MetsBag bag = bagView.getBag();
-            Mets mets = bagView.getInfoInputPane().getBagInfoInputPane().getMets();
+            Mets mets = bagView.getInfoInputPane().getInfoInputPane().getMets();
             
             bag.setBagItMets(new DSpaceBagItMets());
             

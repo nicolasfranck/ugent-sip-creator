@@ -690,7 +690,7 @@ public class DefaultBag {
             if (zipSize > 100) {
                     messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
             }*/
-        } else if (this.serialMode == TAR_BZ2_MODE) {
+        } else if (serialMode == TAR_BZ2_MODE) {
             //String s = bagName;
             int i = bagName.lastIndexOf('.');
             if (i > 0 && i < bagName.length() - 1) {

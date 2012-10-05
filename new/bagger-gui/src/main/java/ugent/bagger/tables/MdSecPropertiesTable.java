@@ -15,16 +15,24 @@ import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import ugent.bagger.dialogs.EditMdSecDialog;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.properties.MdSecProperties;
 
 /**
  *
  * @author nicolas
  */
-public class MdSecTable extends AbstractObjectTable{    
+public class MdSecPropertiesTable extends AbstractObjectTable{        
     private ArrayList<MdSec>data;
     private ActionCommandExecutor openDialogExecutor;
     
-    public MdSecTable(final ArrayList<MdSec>data,String [] cols,String id){
+    public static ArrayList<MdSecProperties> toProperties(final ArrayList<MdSec>data){
+        ArrayList<MdSecProperties>props = new ArrayList<MdSecProperties>();
+        for(MdSec m:data){
+            props.add(new MdSecProperties(m));
+        }
+        return props;
+    }
+    public MdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         
         setData(data);             
         setDoubleClickHandler(getOpenDialogExecutor());
@@ -35,15 +43,14 @@ public class MdSecTable extends AbstractObjectTable{
             openDialogExecutor = new ActionCommandExecutor(){
                 @Override
                 public void execute() {
-                    try{
-                        MdSec mdSec = getSelected(); 
+                    try{                        
                         JDialog dialog = new EditMdSecDialog(
                             SwingUtils.getFrame(),
-                            getSelected()
+                            getSelected().getMdSec()
                         );                    
                         dialog.setSize(new Dimension(500,600));   
                         dialog.setResizable(false);
-                        dialog.setLocationRelativeTo(MdSecTable.this.getTable());
+                        dialog.setLocationRelativeTo(MdSecPropertiesTable.this.getTable());
                         dialog.setVisible(true);                    
                     }catch(Exception e){
                         logger.debug(e.getMessage());                    
@@ -90,7 +97,7 @@ public class MdSecTable extends AbstractObjectTable{
     }
     @Override
     protected Object[] getDefaultInitialData(){                       
-        return getData().toArray();         
+        return toProperties(getData()).toArray();         
     }
     protected ArrayList<MdSec> getData() {
         return data;
@@ -107,11 +114,11 @@ public class MdSecTable extends AbstractObjectTable{
         rows.getReadWriteLock().writeLock().lock();        
         try {
             rows.clear();
-            rows.addAll(getData());                       
+            rows.addAll(toProperties(getData()));                       
         } finally {
            rows.getReadWriteLock().writeLock().unlock();
            //belangrijk!
-           ((AbstractTableModel)this.getTable().getModel()).fireTableDataChanged();
+           ((AbstractTableModel)getTable().getModel()).fireTableDataChanged();
         }
     }
     public void addMdSec(MdSec mdSec){        
@@ -119,8 +126,8 @@ public class MdSecTable extends AbstractObjectTable{
     }   
     public void deleteSelectedMdSec(){
         if(getTable().getSelectedRows().length > 0){
-            for(MdSec mdSec:getSelections()){
-                deleteMdSec(mdSec);
+            for(MdSecProperties mdSecProperties:getSelections()){
+                deleteMdSec(mdSecProperties.getMdSec());
             }            
         }
     }  
@@ -128,19 +135,19 @@ public class MdSecTable extends AbstractObjectTable{
     public void deleteMdSec(MdSec mdSec){
         getData().remove(mdSec);
     }
-    public MdSec [] getSelections(){
+    public MdSecProperties [] getSelections(){
         int[] selected = getTable().getSelectedRows();
         if(selected == null){
             return null;
         }
-        MdSec [] mds = new MdSec[selected.length];
+        MdSecProperties [] mds = new MdSecProperties[selected.length];
         for (int i = 0; i < selected.length; i++) {
-            mds[i] = (MdSec) getTableModel().getElementAt(selected[i]);
+            mds[i] = (MdSecProperties) getTableModel().getElementAt(selected[i]);
         }
         return mds;
     }
-    public MdSec getSelected(){
-        MdSec [] mds = getSelections();
+    public MdSecProperties getSelected(){
+        MdSecProperties [] mds = getSelections();
         if(mds == null || mds.length == 0){
             return null;
         }else{

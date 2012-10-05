@@ -15,6 +15,7 @@ import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.helper.XSLT;
 
@@ -40,11 +41,11 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
                 Document inputDoc = XML.XMLToDocument(file);
                 String namespace = inputDoc.getDocumentElement().getNamespaceURI();
 
-                if(!ugent.bagger.helper.MetsUtils.getXsltMap().containsKey(namespace)){
+                if(!MetsUtils.getXsltMap().containsKey(namespace)){
                     System.out.println("no transformation found for "+file);
                     continue;
                 }
-                URL url = Context.getResource(ugent.bagger.helper.MetsUtils.getXsltMap().get(namespace));                        
+                URL url = Context.getResource(MetsUtils.getXsltMap().get(namespace));                        
                 Document xsltDoc = XML.XMLToDocument(url);
                 if(xsltDoc == null){
                     continue;
@@ -54,7 +55,7 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
                 if(outDoc == null){
                     continue;
                 }
-                MdSec mdSec = ugent.bagger.helper.MetsUtils.createMdSec(outDoc);                        
+                MdSec mdSec = MetsUtils.createMdSec(outDoc);                        
 
                 send(mdSec);                    
 

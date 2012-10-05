@@ -79,9 +79,7 @@ public class BagView extends DefaultView {
     private JLabel removeTagFileToolbarAction;
     //Nicolas Franck: vldocking sucks!
     private JSplitPane mainPanel;
-    private JSplitPane leftPanel;    
-    
-    
+    private JSplitPane leftPanel;
       
     public JSplitPane getLeftPanel() {
         if(leftPanel == null){
@@ -105,9 +103,11 @@ public class BagView extends DefaultView {
     /*
      * Nicolas Franck
      */
-    //private final TimerListener timerListener = new TimerListener();
-	
+    //private final TimerListener timerListener = new TimerListener();    
+    
     public BagView() {
+        //verhinder twee instantie
+        Assert.isNull(instance);
         instance = this;
     }
     public JPanel getBagButtonPanel() {
@@ -148,7 +148,7 @@ public class BagView extends DefaultView {
     public InfoFormsPane getInfoInputPane() {
         if(infoInputPane == null){
             infoInputPane = new InfoFormsPane();
-            infoInputPane.getBagInfoInputPane().enableForms(false);
+            infoInputPane.getInfoInputPane().enableForms(false);
         }
         return infoInputPane;
     }
@@ -476,8 +476,9 @@ public class BagView extends DefaultView {
         addTagFileToolBarAction.addMouseListener(new MouseAdapter(){			
             @Override
             public void mousePressed(MouseEvent e) {
-                if(addTagFileToolBarAction.isEnabled())
+                if(addTagFileToolBarAction.isEnabled()) {
                     addTagFileHandler.actionPerformed(null);
+                }
             }
 
             @Override
@@ -487,8 +488,9 @@ public class BagView extends DefaultView {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(addTagFileToolBarAction.isEnabled())
+                if(addTagFileToolBarAction.isEnabled()) {
                     addTagFileToolBarAction.setBorder(new LineBorder(Color.GRAY,1));
+                }
             }
         });
         buttonPanel.add(addTagFileToolBarAction);
@@ -536,7 +538,7 @@ public class BagView extends DefaultView {
     	getBagPayloadTreePanel().setEnabled(b);
     	getBagTagFileTree().setEnabled(b);
     	getBagTagFileTreePanel().setEnabled(b);
-        getInfoInputPane().getBagInfoInputPane().setEnabled(b);
+        getInfoInputPane().getInfoInputPane().setEnabled(b);
     }
 
     public String updateBaggerRules() {        
