@@ -45,7 +45,7 @@ public class BagView extends DefaultView {
     private File bagRootPath;
     private String userHomeDir;
     private TagManifestPane tagManifestPane;
-    private InfoFormsPane infoInputPane;
+    private InfoFormsPane infoFormsPane;
     private BagTreePanel bagPayloadTreePanel;
     private BagTreePanel bagTagFileTreePanel;
     private JPanel bagButtonPanel;
@@ -92,7 +92,7 @@ public class BagView extends DefaultView {
     }    
     public JSplitPane getMainPanel() {
         if(mainPanel == null){
-            mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getInfoInputPane()); 
+            mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getInfoFormsPane()); 
         }
         return mainPanel;
     }
@@ -145,16 +145,16 @@ public class BagView extends DefaultView {
      * dient als panel voor metaView. Op die manier kan men vanuit deze
      * view de metaView manipuleren     * 
      */
-    public InfoFormsPane getInfoInputPane() {
-        if(infoInputPane == null){
-            infoInputPane = new InfoFormsPane();
-            infoInputPane.getInfoInputPane().enableForms(false);
+    public InfoFormsPane getInfoFormsPane() {
+        if(infoFormsPane == null){
+            infoFormsPane = new InfoFormsPane();
+            infoFormsPane.getInfoInputPane().enableForms(false);
         }
-        return infoInputPane;
+        return infoFormsPane;
     }
 
-    public void setInfoInputPane(InfoFormsPane infoInputPane) {
-        this.infoInputPane = infoInputPane;
+    public void setInfoFormsPane(InfoFormsPane infoFormsPane) {
+        this.infoFormsPane = infoFormsPane;
     }
     
     public void setBagger(Bagger bagger) {
@@ -538,7 +538,7 @@ public class BagView extends DefaultView {
     	getBagPayloadTreePanel().setEnabled(b);
     	getBagTagFileTree().setEnabled(b);
     	getBagTagFileTreePanel().setEnabled(b);
-        getInfoInputPane().getInfoInputPane().setEnabled(b);
+        getInfoFormsPane().getInfoInputPane().setEnabled(b);
     }
 
     public String updateBaggerRules() {        
@@ -564,7 +564,7 @@ public class BagView extends DefaultView {
 
     public void updateClearBag() {
     	enableBagSettings(false);    	
-    	getInfoInputPane().getHoleyValue().setText("");
+    	getInfoFormsPane().getHoleyValue().setText("");
     	addDataToolBarAction.setEnabled(false);
     	removeDataToolBarAction.setEnabled(false);
     	addDataExecutor.setEnabled(false);

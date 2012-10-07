@@ -198,7 +198,7 @@ public final class AddFieldPanel extends JPanel {
                 // TODO use observer pattern
                 //verwijdert de volledige infoFormsPane, en hertekent alles
                 //nadeel: wijzingen in metsTab zijn weg!
-                bagView.getInfoInputPane().updateInfoFormsPane(true);
+                bagView.getInfoFormsPane().updateInfoFormsPane(true);
 
                 //Nicolas Franck: todo => request leads to never ending blocking state blocking state (deadlock?)
                 //volgens documentatie is requestFocusInWindow veiliger (focus enkel wanneer niet in huidige window => mss wacht hij op parent,

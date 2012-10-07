@@ -76,12 +76,12 @@ public class ClearBagHandler extends AbstractAction {
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.setBagTagFileTree(new BagTree(ApplicationContextUtil.getMessage("bag.label.noname"), false));
     	bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
-    	bagView.getInfoInputPane().setBagName(bag.getName());
-    	bagView.getInfoInputPane().updateInfoForms();
+    	bagView.getInfoFormsPane().setBagName(bag.getName());
+    	bagView.getInfoFormsPane().updateInfoForms();
         Mets mets = new Mets();
-        bagView.getInfoInputPane().getInfoInputPane().setMets(mets);
-        bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().reset(mets);      
-        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
+        bagView.getInfoFormsPane().getInfoInputPane().setMets(mets);
+        bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().reset(mets);      
+        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
     	bagView.updateClearBag();
     }
 
@@ -103,12 +103,12 @@ public class ClearBagHandler extends AbstractAction {
     	}else{
             bagName = f.getName();
             String fileName = f.getAbsolutePath();
-            bagView.getInfoInputPane().setBagName(fileName);
+            bagView.getInfoFormsPane().setBagName(fileName);
     	}
         bag.setName(bagName);
         bagView.setBag(bag);
         
-        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
+        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
     }
     public void setConfirmSaveFlag(boolean confirmSaveFlag) {
         this.confirmSaveFlag = confirmSaveFlag;

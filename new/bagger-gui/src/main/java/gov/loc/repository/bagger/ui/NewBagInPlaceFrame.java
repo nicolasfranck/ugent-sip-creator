@@ -287,7 +287,7 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
             boolean isSelected = cb.isSelected();
             if (isSelected) {
                 bagView.getBag().isAddKeepFilesToEmptyFolders(true);                                
-                bagView.getInfoInputPane().getSerializeValue().setText("true");
+                bagView.getInfoFormsPane().getSerializeValue().setText("true");
             } else {
                 bagView.getBag().isAddKeepFilesToEmptyFolders(false);
             }
@@ -385,8 +385,8 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
             JFileChooser fs = new JFileChooser(selectFile);
             fs.setDialogType(JFileChooser.OPEN_DIALOG);
             fs.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fs.addChoosableFileFilter(bagView.getInfoInputPane().getNoFilter());
-            fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+            fs.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
+            fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
             fs.setDialogTitle("Existing Data Location");
             if (bagView.getBagRootPath() != null) {
                 fs.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
@@ -396,18 +396,18 @@ public class NewBagInPlaceFrame extends JFrame implements ActionListener {
                 String selectedName = bag.getName();
                 if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
                     selectedName += "."+DefaultBag.ZIP_LABEL;
-                    fs.setFileFilter(bagView.getInfoInputPane().getZipFilter());
+                    fs.setFileFilter(bagView.getInfoFormsPane().getZipFilter());
                 }
                 else if (bag.getSerialMode() == DefaultBag.TAR_MODE || bag.getSerialMode() == DefaultBag.TAR_GZ_MODE || bag.getSerialMode() == DefaultBag.TAR_BZ2_MODE) {                    
                     selectedName += "."+DefaultBag.TAR_LABEL;
-                    fs.setFileFilter(bagView.getInfoInputPane().getTarFilter());
+                    fs.setFileFilter(bagView.getInfoFormsPane().getTarFilter());
                 }
                 else {
-                    fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+                    fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
                 }
                 fs.setSelectedFile(new File(selectedName));
             } else {
-                fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+                fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
             }
             int	option = fs.showOpenDialog(frame);
 

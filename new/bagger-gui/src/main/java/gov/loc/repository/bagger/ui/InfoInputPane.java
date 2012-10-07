@@ -5,7 +5,10 @@ import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.HierarchicalFormModel;
@@ -201,10 +204,10 @@ public final class InfoInputPane extends JTabbedPane {
     	invalidate();
     	repaint();        
     }
-
+    
     public void updateProject(){        
-    	getBagView().getInfoInputPane().updateInfoFormsPane(true);        
-    }    
+    	getBagView().getInfoFormsPane().updateInfoFormsPane(true);        
+    }
     private void updateBagInfo(){              
         getDefaultBag().updateBagInfo(getBagInfoForm().getBagInfoMap());        
     }

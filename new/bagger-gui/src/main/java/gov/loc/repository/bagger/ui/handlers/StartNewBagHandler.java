@@ -48,11 +48,11 @@ public class StartNewBagHandler extends AbstractAction {
     	
     	bagView.clearBagHandler.clearExistingBag();
     	DefaultBag bag = bagView.getBag();
-    	bagView.getInfoInputPane().getInfoInputPane().enableForms(true);
+    	bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
 
     	String bagName = bagView.getPropertyMessage("bag.label.noname");
         bag.setName(bagName);
-        bagView.getInfoInputPane().setBagName(bagName);
+        bagView.getInfoFormsPane().setBagName(bagName);
 
         bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
         Collection<BagFile> tags = bag.getTags();
@@ -64,17 +64,17 @@ public class StartNewBagHandler extends AbstractAction {
         bagView.updateBaggerRules();
         bag.setRootDir(bagView.getBagRootPath());
 
-    	bagView.getInfoInputPane().getInfoInputPane().populateForms(true);
+    	bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
     	ApplicationContextUtil.addConsoleMessage("A new bag has been created in memory.");
     	bagView.updateNewBag();
     	
     	// set bagItVersion
-    	bagView.getInfoInputPane().getBagVersionValue().setText(bagItVersion);
+    	bagView.getInfoFormsPane().getBagVersionValue().setText(bagItVersion);
     	
     	// change profile
     	changeProfile(profileName);
         
-        SwingUtils.setJComponentEnabled(bagView.getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);        
+        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);        
         
         BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
     }
@@ -84,8 +84,8 @@ public class StartNewBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();
     	Profile profile = bagView.getProfileStore().getProfile(selected);        
         DefaultBag bag = bagView.getBag();
-        bag.setProfile(profile, true);
-        bagView.getInfoInputPane().getInfoInputPane().updateProject();        
-        bagView.getInfoInputPane().setProfile(bag.getProfile().getName());
+        bag.setProfile(profile, true);        
+        bagView.getInfoFormsPane().getInfoInputPane().updateProject();        
+        bagView.getInfoFormsPane().setProfile(bag.getProfile().getName());
     }
 }

@@ -202,7 +202,7 @@ public final class BagInfoForm extends AbstractForm /*implements FocusListener*/
                         }
                     }
                 }
-                getBagView().getInfoInputPane().updateInfoFormsPane(true);
+                getBagView().getInfoFormsPane().updateInfoFormsPane(true);
             }catch (Exception ex){
                 ex.printStackTrace();
             }

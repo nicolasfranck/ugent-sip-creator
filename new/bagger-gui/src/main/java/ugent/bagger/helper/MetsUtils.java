@@ -205,7 +205,7 @@ public class MetsUtils {
         //indien XSD bekend, dan validatie hierop       
         if(getXsdMap().containsKey(namespace)){            
             URL schemaURL = Context.getResource((String)getXsdMap().get(namespace));                                
-            Schema schema = ugent.bagger.helper.XML.createSchema(schemaURL);                        
+            Schema schema = XML.createSchema(schemaURL);                        
             XML.validate(doc,schema);            
         } 
         

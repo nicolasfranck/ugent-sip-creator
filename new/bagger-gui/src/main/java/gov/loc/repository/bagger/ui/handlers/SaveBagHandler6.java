@@ -38,7 +38,7 @@ public class SaveBagHandler6 extends Handler {
     public void actionPerformed(ActionEvent e) {
         BagView bagView = BagView.getInstance();
         DefaultBag bag = bagView.getBag();
-        bagView.getInfoInputPane().getUpdateBagHandler().updateBag();
+        bagView.getInfoFormsPane().getUpdateBagHandler().updateBag();
         if(bagView.getBagRootPath().exists()) {
             tmpRootPath = bagView.getBagRootPath();
             confirmWriteBag();
@@ -130,23 +130,23 @@ public class SaveBagHandler6 extends Handler {
         JFileChooser fs = new JFileChooser(selectFile);
     	fs.setDialogType(JFileChooser.SAVE_DIALOG);
     	fs.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    	fs.addChoosableFileFilter(bagView.getInfoInputPane().getNoFilter());
-    	fs.addChoosableFileFilter(bagView.getInfoInputPane().getZipFilter());
-        fs.addChoosableFileFilter(bagView.getInfoInputPane().getTarFilter());
+    	fs.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
+    	fs.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
+        fs.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
         fs.setDialogTitle("Save Bag As");
     	fs.setCurrentDirectory(bag.getRootDir());
     	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
             String selectedName = bag.getName();
             if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
                 selectedName += "."+DefaultBag.ZIP_LABEL;
-                fs.setFileFilter(bagView.getInfoInputPane().getZipFilter());
+                fs.setFileFilter(bagView.getInfoFormsPane().getZipFilter());
             }
             else if (bag.getSerialMode() == DefaultBag.TAR_MODE) {
                 selectedName += "."+DefaultBag.TAR_LABEL;
-                fs.setFileFilter(bagView.getInfoInputPane().getTarFilter());
+                fs.setFileFilter(bagView.getInfoFormsPane().getTarFilter());
             }
             else {
-                fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+                fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
             }
             fs.setSelectedFile(new File(selectedName));
     	}
@@ -179,7 +179,7 @@ public class SaveBagHandler6 extends Handler {
             }
     	}
         String fileName = bagFile.getAbsolutePath();
-        bagView.getInfoInputPane().setBagName(fileName);
+        bagView.getInfoFormsPane().setBagName(fileName);
         bagView.getControl().invalidate();
     }
     
@@ -191,7 +191,7 @@ public class SaveBagHandler6 extends Handler {
 
             final BagView bagView = BagView.getInstance();
             MetsBag bag = bagView.getBag();
-            Mets mets = bagView.getInfoInputPane().getInfoInputPane().getMets();
+            Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
             
             bag.setBagItMets(new DSpaceBagItMets());
             

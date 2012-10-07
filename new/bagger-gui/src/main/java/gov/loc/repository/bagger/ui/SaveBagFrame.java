@@ -415,27 +415,27 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
     	if (mode == DefaultBag.NO_MODE) {
             noneButton.setEnabled(true);
             noneButton.setSelected(true);
-            bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
+            bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
     	} else if (mode == DefaultBag.ZIP_MODE) {
             zipButton.setEnabled(true);
             zipButton.setSelected(true);
-            bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);
+            bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);
     	} else if (mode == DefaultBag.TAR_MODE) {
             tarButton.setEnabled(true);
             tarButton.setSelected(true);
-            bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);
+            bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);
     	} else if (mode == DefaultBag.TAR_GZ_MODE) {
             tarGzButton.setEnabled(true);
             tarGzButton.setSelected(true);
-            bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);
+            bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);
     	} else if (mode == DefaultBag.TAR_BZ2_MODE) {
             tarBz2Button.setEnabled(true);
             tarBz2Button.setSelected(true);
-            bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);
+            bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);
     	} else {
             noneButton.setEnabled(true);
             noneButton.setSelected(true);
-            bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
+            bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
     	}
     	savePanel.invalidate();
     }
@@ -458,27 +458,27 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
             	if (cb == noneButton) {
                     bag.isSerial(false);
                     bag.setSerialMode(DefaultBag.NO_MODE);
-                    bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
+                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
             	} else if (cb == zipButton) {
                     bag.isSerial(true);
                     bag.setSerialMode(DefaultBag.ZIP_MODE);
-                    bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);
+                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);
             	} else if (cb == tarButton) {
                     bag.isSerial(true);
                     bag.setSerialMode(DefaultBag.TAR_MODE);
-                    bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);
+                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);
             	} else if (cb == tarGzButton) {
                     bag.isSerial(true);
                     bag.setSerialMode(DefaultBag.TAR_GZ_MODE);
-                    bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);
+                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);
             	} else if (cb == tarBz2Button) {
                     bag.isSerial(true);
                     bag.setSerialMode(DefaultBag.TAR_BZ2_MODE);
-                    bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);
+                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);
             	} else {
                     bag.isSerial(false);
                     bag.setSerialMode(DefaultBag.NO_MODE);
-                    bagView.getInfoInputPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
+                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);
             	}
             }
         }
@@ -495,9 +495,9 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
             JFileChooser fs = new JFileChooser(selectFile);           
             fs.setDialogType(JFileChooser.SAVE_DIALOG);
             fs.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            fs.addChoosableFileFilter(bagView.getInfoInputPane().getNoFilter());
-            fs.addChoosableFileFilter(bagView.getInfoInputPane().getZipFilter());
-            fs.addChoosableFileFilter(bagView.getInfoInputPane().getTarFilter());
+            fs.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
+            fs.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
+            fs.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
             fs.setDialogTitle("Save Bag As");
             DefaultBag bag = bagView.getBag();
             fs.setCurrentDirectory(bag.getRootDir());
@@ -505,7 +505,7 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
                 String selectedName = bag.getName();
                 if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
                     selectedName += "."+DefaultBag.ZIP_LABEL;
-                    fs.setFileFilter(bagView.getInfoInputPane().getZipFilter());
+                    fs.setFileFilter(bagView.getInfoFormsPane().getZipFilter());
                 }
                 else if (
                     bag.getSerialMode() == DefaultBag.TAR_MODE ||
@@ -513,14 +513,14 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
                     bag.getSerialMode() == DefaultBag.TAR_BZ2_MODE
                 ){
                     selectedName += "."+DefaultBag.TAR_LABEL;
-                    fs.setFileFilter(bagView.getInfoInputPane().getTarFilter());
+                    fs.setFileFilter(bagView.getInfoFormsPane().getTarFilter());
                 }
                 else {
-                    fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+                    fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
                 }
                 fs.setSelectedFile(new File(selectedName));
             } else {
-                fs.setFileFilter(bagView.getInfoInputPane().getNoFilter());
+                fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
             }
             int	option = fs.showSaveDialog(frame);
 
@@ -529,7 +529,7 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
                 bagFile = file;
                 bagFileName = bagFile.getAbsolutePath();
                 String name = bagFileName; 
-                bagView.getInfoInputPane().setBagName(name);
+                bagView.getInfoFormsPane().setBagName(name);
                 bagNameField.setText(bagFileName);
                 bagNameField.setCaretPosition(bagFileName.length());
                 bagNameField.invalidate();
@@ -547,7 +547,7 @@ public final class SaveBagFrame extends JFrame implements ActionListener {
                 bagView.showWarningErrorDialog("Error - bag not saved", "The bag must have a file name.");
                 return;
             }
-            bagView.getInfoInputPane().getHoleyValue().setText("false");
+            bagView.getInfoFormsPane().getHoleyValue().setText("false");
             /*
              * Nicolas Franck: disable make holey
              */

@@ -65,7 +65,7 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
     	
     	String bagFileName = dataFile.getName();
         bag.setName(bagFileName);
-        bagView.getInfoInputPane().setBagName(bagFileName);
+        bagView.getInfoFormsPane().setBagName(bagFileName);
         
         setProfile(profileName);
         
@@ -93,7 +93,7 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
     	
     	String bagFileName = dataFile.getName();
         bag.setName(bagFileName);
-        bagView.getInfoInputPane().setBagName(bagFileName);        
+        bagView.getInfoFormsPane().setBagName(bagFileName);        
         setProfile(profileName);        
         bagView.saveBagHandler.save(dataFile);
     }    

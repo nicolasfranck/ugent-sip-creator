@@ -19,9 +19,11 @@ import ugent.bagger.dialogs.XMLTransformDialog;
 import ugent.bagger.forms.MdSecForm;
 import ugent.bagger.forms.MdWrapForm;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.tables.DmdSecPropertiesTable;
 import ugent.bagger.tables.MdSecPropertiesTable;
-import ugent.bagger.workers.*;
+import ugent.bagger.workers.TaskAddMdSecFromFile;
+import ugent.bagger.workers.TaskAddMdSecFromImport;
 
 /**
  *
@@ -38,7 +40,7 @@ public class MdSecPropertiesPanel extends JPanel{
     private JButton removeButton;
     private JButton addButton;
     private JButton importButton;
-    private JButton transformButton;
+    private JButton crosswalkButton;
     
     public MdSecPropertiesPanel(final ArrayList<MdSec>data){        
         assert(data != null);
@@ -107,15 +109,16 @@ public class MdSecPropertiesPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        
+        //creatie buttons
         addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                
         importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
         importButton.setToolTipText(Context.getMessage("MdSecPanel.importButton.toolTip"));
         removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));  
-        transformButton = new JButton(Context.getMessage("MdSecPanel.transformButton.label"));
-        transformButton.setToolTipText(Context.getMessage("MdSecPanel.transformButton.toolTip"));        
+        crosswalkButton = new JButton("crosswalk..");                
         
-        JButton testButton = new JButton("test");
-        testButton.addActionListener(new ActionListener(){
+        //action listeners
+        crosswalkButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 JDialog dialog = new XMLTransformDialog();                
@@ -125,23 +128,13 @@ public class MdSecPropertiesPanel extends JPanel{
             }
             
         });
-        panel.add(testButton);
-        
-        panel.add(addButton);                
-        panel.add(importButton);        
-        panel.add(removeButton);
-        panel.add(transformButton);
-        
-        
-        
         removeButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 getDmdSecPropertiesTable().deleteSelectedMdSec();
                 getDmdSecPropertiesTable().refresh();
             }        
-        });     
-        
+        });
         addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){                                
@@ -154,20 +147,23 @@ public class MdSecPropertiesPanel extends JPanel{
                 monitor(new TaskAddMdSecFromImport(),"importing..");
             }
         });
-        transformButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                monitor(new TaskAddMdSecFromTransform(),"transforming..");               
-            }
-        });
+        
+        //default niet ingeschakeld
         addButton.setEnabled(false);
         removeButton.setEnabled(false);
         importButton.setEnabled(false);
-        transformButton.setEnabled(false);
+        crosswalkButton.setEnabled(false);
+        
+        //voeg toe
+        panel.add(addButton);                
+        panel.add(importButton); 
+        panel.add(crosswalkButton);
+        panel.add(removeButton); 
+        
         return panel;
     }
     private void monitor(SwingWorker worker,String title){
-        ugent.bagger.helper.SwingUtils.monitor(worker,title,"trying to import",getPropertyListeners());        
+        SwingUtils.monitor(worker,title,"working..",getPropertyListeners());        
     }   
     private List<PropertyChangeListener> getPropertyListeners(){        
         PropertyChangeListener listener = new PropertyChangeListener() {

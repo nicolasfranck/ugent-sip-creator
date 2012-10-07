@@ -86,7 +86,7 @@ public class XML {
     }    
     public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException{
         if(db == null){
-            db = getDocumentBuilderFactory().newDocumentBuilder();               
+            db = getDocumentBuilderFactory().newDocumentBuilder();
             db.setEntityResolver(new EntityResolver() {
                 @Override
                 public InputSource resolveEntity(String publicId, String systemId)throws SAXException, IOException {

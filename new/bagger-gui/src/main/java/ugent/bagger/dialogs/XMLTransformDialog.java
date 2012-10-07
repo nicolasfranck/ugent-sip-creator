@@ -30,12 +30,14 @@ import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.helper.XSLT;
+import ugent.bagger.panels.MdSecPropertiesPanel;
+import ugent.bagger.tables.MdSecPropertiesTable;
 
 /**
  *
  * @author nicolas
  */
-public class XMLTransformDialog extends JDialog{
+public final class XMLTransformDialog extends JDialog{
     private File file;        
     private JTextField fileField;
     private String transformFromNamespace;
@@ -48,6 +50,7 @@ public class XMLTransformDialog extends JDialog{
     public JComponent createContentPane(){
         
         JPanel mainPanel = new JPanel(new GridLayout(0,1));        
+        final MdSecPropertiesTable mdSecPropertiesTable = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getDmdSecPropertiesTable();
         
         //buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -68,22 +71,25 @@ public class XMLTransformDialog extends JDialog{
                 if(file == null || transformFromNamespace == null || transformToNamespace == null){
                     return;
                 }
+                BusyIndicator.showAt(SwingUtils.getFrame());
                 try{
                     String filename = MetsUtils.getCrosswalk().get(transformFromNamespace).get(transformToNamespace);
                     Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));
                     Document sourceDoc = XML.XMLToDocument(file);
-                    Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc);
+                    Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc); 
                     
-                    MdSec mdSec = MetsUtils.createMdSec(transformedDoc); 
+                    XML.DocumentToXML(transformedDoc,System.out);
                     
-                    BagView.getInstance().getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getDmdSecPropertiesTable().addMdSec(mdSec);
-                    BagView.getInstance().getInfoInputPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getDmdSecPropertiesTable().refresh();
+                    MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                     
+                    mdSecPropertiesTable.addMdSec(mdSec);
+                    mdSecPropertiesTable.refresh();                    
                     
-                    JOptionPane.showMessageDialog(XMLTransformDialog.this,"You did it!");
-                    XMLTransformDialog.this.dispose();
-                }catch(Exception e){                                                    
+                }catch(Exception e){              
+                    JOptionPane.showMessageDialog(null,e.getMessage());
                     e.printStackTrace();
                 }
+                XMLTransformDialog.this.dispose();
+                BusyIndicator.clearAt(SwingUtils.getFrame());
             }            
         });
         
