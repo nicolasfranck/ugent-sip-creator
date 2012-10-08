@@ -562,9 +562,15 @@ public class RenamePanel extends JPanel{
                 renumber.setStartPosType(renumberParams.getStartPosType());
                 renumber.setStartPosRelative(renumberParams.getStartPosRelative());
                 renumber.setSeparatorBefore(renumberParams.getSeparatorBefore());
-                renumber.setSeparatorAfter(renumberParams.getSeparatorAfter());
-                System.out.println("preSort: "+renumberParams.getPreSort());
+                renumber.setSeparatorAfter(renumberParams.getSeparatorAfter());                
                 renumber.setPreSort(renumberParams.getPreSort());
+                if(renumberParams.getRadix() == Radix.ALPHABETHICAL){
+                    renumber.setSequence(new AlphaSequence());
+                }else if(renumberParams.getRadix() == Radix.HEXADECIMAL){
+                    renumber.setSequence(new HexadecimalSequence());
+                }else{
+                    renumber.setSequence(new DecimalSequence());
+                }                
                 
                 renumber.setRenameListener(new RenameListenerAdapter(){                    
                     @Override

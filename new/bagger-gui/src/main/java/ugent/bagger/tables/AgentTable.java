@@ -6,6 +6,7 @@ package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MetsHdr.Agent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -26,13 +27,7 @@ public final class AgentTable extends AbstractObjectTable{
     }    
     @Override
     protected void configureTable(JTable table){
-        table.addKeyListener(new KeyListener(){
-            @Override
-            public void keyTyped(KeyEvent ke) {                             
-            }
-            @Override
-            public void keyPressed(KeyEvent ke) {                
-            }
+        table.addKeyListener(new KeyAdapter(){            
             @Override
             public void keyReleased(KeyEvent ke) {               
                 if(ke.getKeyCode() == 127){                    

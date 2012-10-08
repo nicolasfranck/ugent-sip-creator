@@ -37,6 +37,8 @@ public class RemoveDataHandler extends AbstractAction {
     	DefaultBag bag = bagView.getBag();
 
     	TreePath[] paths = bagView.getBagPayloadTree().getSelectionPaths();
+        
+        System.out.println("RemoveDataHandler::removeData => paths: "+paths);
     	
     	if (paths != null) {
             DefaultTreeModel model = (DefaultTreeModel)bagView.getBagPayloadTree().getModel();
@@ -97,6 +99,12 @@ public class RemoveDataHandler extends AbstractAction {
 
             bagView.getBagPayloadTree().removeSelectionPaths(paths);
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
+            
+            //Nicolas Franck: geen validate of complete nuttig
+            bagView.validateExecutor.setEnabled(false);
+            bagView.validateBagHandler.setEnabled(false);
+            bagView.completeExecutor.setEnabled(false);
+            bagView.completeBagHandler.setEnabled(false);
     	}
     }
 }

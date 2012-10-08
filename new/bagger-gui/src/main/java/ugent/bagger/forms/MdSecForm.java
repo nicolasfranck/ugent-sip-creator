@@ -38,7 +38,7 @@ public class MdSecForm extends AbstractForm{
         
         builder.setLabelAttributes("colSpan=1 align=left");
         
-        String [] fields = {"ID","GROUPID","STATUS"};
+        String [] fields = {"GROUPID","STATUS"};
         //CREATED lukt niet want setCREATED vereist een speciale behandeling
         for(String field:fields){
             builder.add(field);

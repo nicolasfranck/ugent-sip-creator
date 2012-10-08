@@ -22,12 +22,13 @@ public class MdSecProperties {
     public void setMdSec(MdSec mdSec) {
         this.mdSec = mdSec;
     }    
+    /*
     public String getID(){                
         return mdSec.getID();
     }
     public void setID(String id){
         mdSec.setID(id);
-    }
+    }*/
     public String getGROUPID(){
         return mdSec.getGROUPID();
     }

@@ -123,15 +123,19 @@ public class DSpaceBagItMets extends BagItMets{
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
                 try{
-                    
-                    if(payloadFile.isFile()){                    
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
-                    }else if(rootDir.exists()){                        
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;                        
+                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                     }else{
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender());;
+                        if(payloadFile.isFile()){                    
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
+                        }else if(rootDir.exists()){                        
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;                        
+                        }else{
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());;
+                        }    
                     }
                 }catch(Exception e){
+                    System.out.println("SOMETHING happened!");
                     e.printStackTrace();
                 }
 
@@ -192,14 +196,19 @@ public class DSpaceBagItMets extends BagItMets{
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
                 try{
-                    if(tagFile.isFile()){
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(tagFile.lastModified())));
-                    }else if(rootDir.exists()){
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;
-                    }else{                     
-                        metsFile.setCREATED(DateUtils.DateToGregorianCalender());;                    
+                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender());
+                    }else{
+                        if(tagFile.isFile()){
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(tagFile.lastModified())));
+                        }else if(rootDir.exists()){
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;
+                        }else{                     
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());;                    
+                        }
                     }
                 }catch(Exception e){
+                    System.out.println("SOMETHING happened!");
                     e.printStackTrace();
                 }
 

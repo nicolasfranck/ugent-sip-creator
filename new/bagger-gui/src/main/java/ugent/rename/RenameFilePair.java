@@ -31,60 +31,43 @@ import java.io.File;
 /**
  * Represent a source-target pair for renaming a file/directory.
  */
-public class RenameFilePair
-{
-	/** source file/directory */
-	File source;
-
-	/** target file/directory */
-	File target;
-
-	/** true if rename operation is successful; false otherwise */
-	boolean success = false;
-
-        /*
-         * Nicolas Franck
-         */
-        boolean simulateOnly = false;
-
-        public boolean isSimulateOnly() {
-            return simulateOnly;
-        }
-        public void setSimulateOnly(boolean simulateOnly) {
-            this.simulateOnly = simulateOnly;
-        }
-
-	/**
-	 * Constructor.
-	 *
-	 * @param source
-	 *     Source file/directory.
-	 * @param target
-	 *     Target file/directory.
-	 */
-	public RenameFilePair(
-			File source,
-			File target)
-	{
-		this.source = source;
-		this.target = target;
-	}
-
-        public File getSource() {
-            return source;
-        }
-
-        public boolean isSuccess() {
-            return success;
-        }
-
-        public void setSuccess(boolean success) {
-            this.success = success;
-        }
-        
-
-        public File getTarget() {
-            return target;
-        }
-
+public class RenameFilePair{
+    /** source file/directory */
+    File source;
+    /** target file/directory */
+    File target;
+    /** true if rename operation is successful; false otherwise */
+    boolean success = false;
+    /** Nicolas Franck*/
+    boolean simulateOnly = false;
+    /**
+        * Constructor.
+        *
+        * @param source
+        *     Source file/directory.
+        * @param target
+        *     Target file/directory.
+        */
+    public RenameFilePair(File source,File target){
+        this.source = source;
+        this.target = target;
+    }
+    public boolean isSimulateOnly() {
+        return simulateOnly;
+    }
+    public void setSimulateOnly(boolean simulateOnly) {
+        this.simulateOnly = simulateOnly;
+    } 
+    public File getSource() {
+        return source;
+    }
+    public boolean isSuccess() {
+        return success;
+    }
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+    public File getTarget() {
+        return target;
+    }
 }

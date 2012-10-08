@@ -13,10 +13,12 @@ import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.JSpinnerNumberBinding;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.RenumberParams;
 import ugent.rename.ErrorAction;
 import ugent.rename.PaddingChar;
 import ugent.rename.PreSort;
+import ugent.rename.Radix;
 import ugent.rename.StartPosRelative;
 import ugent.rename.StartPosType;
 
@@ -54,6 +56,11 @@ public class RenumberParamsForm extends AbstractForm{
         ));              
         builder.row(); 
         
+        final Binding radixBinding = bf.createBoundComboBox("radix",Radix.values());
+        builder.add(radixBinding); 
+        builder.row();        
+        
+        
         builder.add("separatorBefore");   
         builder.row();
         builder.add("separatorAfter");
@@ -66,7 +73,7 @@ public class RenumberParamsForm extends AbstractForm{
         final JComponent [] startPosComponents = builder.add(new JSpinnerNumberBinding(
             getFormModel(),"startPos",renumberParams.getStartPos(),0,Integer.MAX_VALUE,1
         ));              
-        builder.row();        
+        builder.row();
         
         final Binding startPosRelativeBinding = bf.createBoundComboBox("startPosRelative",StartPosRelative.values());
         builder.add(startPosRelativeBinding); 
@@ -114,15 +121,28 @@ public class RenumberParamsForm extends AbstractForm{
         builder.row();
                 
         
-        builder.add(new JSpinnerNumberBinding(
+        final JComponent [] paddingComponents = builder.add(new JSpinnerNumberBinding(
             getFormModel(),"padding",renumberParams.getPadding(),0,Integer.MAX_VALUE,1
         ));              
         builder.row();
               
         //paddingChar
-        Binding paddingCharBinding = bf.createBoundComboBox("paddingChar",PaddingChar.values());        
+        final Binding paddingCharBinding = bf.createBoundComboBox("paddingChar",PaddingChar.values());        
         builder.add(paddingCharBinding);
         builder.row();
+        
+        getFormModel().getValueModel("radix").addValueChangeListener(new PropertyChangeListener(){
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                Radix radix = (Radix) pce.getNewValue();
+                boolean isEnabled = radix != Radix.ALPHABETHICAL;
+                for(JComponent component:paddingComponents){
+                    component.setEnabled(isEnabled);
+                }
+                SwingUtils.setJComponentEnabled(paddingCharBinding.getControl(),isEnabled);
+            }
+            
+        });
         
         //overWrite
         builder.add("overWrite");

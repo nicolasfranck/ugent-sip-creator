@@ -7,8 +7,12 @@ import gov.loc.repository.bagger.ui.handlers.*;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
+import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
@@ -80,7 +85,15 @@ public class BagView extends DefaultView {
     //Nicolas Franck: vldocking sucks!
     private JSplitPane mainPanel;
     private JSplitPane leftPanel;
-      
+    //interpretatie van file attribuut 'CREATED' (CURRENT_DATE,LAST_MODIFIED)
+    private MetsFileDateCreated metsFileDateCreated = MetsFileDateCreated.CURRENT_DATE;
+
+    public MetsFileDateCreated getMetsFileDateCreated() {
+        return metsFileDateCreated;
+    }
+    public void setMetsFileDateCreated(MetsFileDateCreated metsFileDateCreated) {
+        this.metsFileDateCreated = metsFileDateCreated;
+    }
     public JSplitPane getLeftPanel() {
         if(leftPanel == null){
             leftPanel = createBagPanel();
@@ -203,6 +216,20 @@ public class BagView extends DefaultView {
     public BagTree getBagPayloadTree() {
         if(bagPayloadTree == null){
             bagPayloadTree = new BagTree(AbstractBagConstants.DATA_DIRECTORY, true);
+            System.out.println("initializing bagPayloadTree");            
+            //Nicolas Franck    
+            ActionMap actionMap = bagPayloadTree.getActionMap();                        
+            actionMap.put("removeData",new AbstractAction(){
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    System.out.println("delete pressed!");
+                    removeDataHandler.removeData();
+                }               
+            });
+            
+            InputMap inputMap = bagPayloadTree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);                        
+            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,KeyEvent.META_MASK),"removeData");            
+                                   
         }
         return bagPayloadTree;
     }
@@ -236,6 +263,16 @@ public class BagView extends DefaultView {
     public BagTree getBagTagFileTree() {
         if(bagTagFileTree == null){
             bagTagFileTree = new BagTree(getMessage("bag.label.noname"), false);
+            //Nicolas Franck    
+            InputMap inputMap = bagTagFileTree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,KeyEvent.META_MASK),"removeTagfile");
+            ActionMap actionMap = bagTagFileTree.getActionMap();
+            actionMap.put("removeTagfile",new AbstractAction(){
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    removeTagFileHandler.removeTagFile();
+                }               
+            }); 
         }
     	return bagTagFileTree;
     }

@@ -30,20 +30,19 @@ import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.helper.XSLT;
-import ugent.bagger.panels.MdSecPropertiesPanel;
 import ugent.bagger.tables.MdSecPropertiesTable;
 
 /**
  *
  * @author nicolas
  */
-public final class XMLTransformDialog extends JDialog{
+public final class XMLCrosswalkDialog extends JDialog{
     private File file;        
     private JTextField fileField;
     private String transformFromNamespace;
     private String transformToNamespace;
     
-    public XMLTransformDialog(){
+    public XMLCrosswalkDialog(){
         getContentPane().add(createContentPane());
         setTitle("Crosswalk");
     }
@@ -62,7 +61,7 @@ public final class XMLTransformDialog extends JDialog{
         cancelButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                XMLTransformDialog.this.dispose();
+                XMLCrosswalkDialog.this.dispose();
             }            
         });
         okButton.addActionListener(new ActionListener(){
@@ -88,7 +87,7 @@ public final class XMLTransformDialog extends JDialog{
                     JOptionPane.showMessageDialog(null,e.getMessage());
                     e.printStackTrace();
                 }
-                XMLTransformDialog.this.dispose();
+                XMLCrosswalkDialog.this.dispose();
                 BusyIndicator.clearAt(SwingUtils.getFrame());
             }            
         });
@@ -167,7 +166,7 @@ public final class XMLTransformDialog extends JDialog{
                         invalidate();                                               
                         
                     }catch(Exception e){
-                        JOptionPane.showMessageDialog(XMLTransformDialog.this,e.getMessage());                                               
+                        JOptionPane.showMessageDialog(XMLCrosswalkDialog.this,e.getMessage());                                               
                     }                    
                 }
                 BusyIndicator.clearAt(SwingUtils.getFrame());

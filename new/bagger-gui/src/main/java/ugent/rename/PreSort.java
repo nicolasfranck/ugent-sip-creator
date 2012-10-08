@@ -4,10 +4,10 @@ package ugent.rename;
  *
  * @author nicolas
  */
-public enum Radix {
-    DECIMAL("decimaal"),ALPHABETHICAL("alfabetisch"),HEXADECIMAL("hexadecimaal");
+public enum PreSort {
+    NONE("no sorting"),FILE_NAME_ASC("file name ascending"),FILE_NAME_DESC("file name descending");
     private String c;
-    private Radix(String c){
+    private PreSort(String c){
         this.c = c;
     }
     @Override

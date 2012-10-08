@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.workers;
 
 import com.anearalone.mets.MdSec;
@@ -14,6 +10,7 @@ import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.importers.Importer;
 import ugent.bagger.importers.ImporterFactory;
 
@@ -21,14 +18,15 @@ import ugent.bagger.importers.ImporterFactory;
  *
  * @author nicolas
  */
-public class TaskAddMdSecFromImport extends DefaultWorker {
+public class TaskAddMdSecFromImport extends DefaultWorker {    
     @Override
     protected Void doInBackground() throws Exception {
-        File [] files = ugent.bagger.helper.SwingUtils.chooseFiles(
+        File [] files = SwingUtils.chooseFiles(
             "Select file",
             null,
             JFileChooser.FILES_ONLY,
-            true
+            true,
+            SwingUtils.getFrame()
         );
         int succeeded = 0;
 

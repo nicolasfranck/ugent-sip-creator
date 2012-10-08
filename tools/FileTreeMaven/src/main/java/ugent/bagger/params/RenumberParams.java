@@ -3,6 +3,7 @@ package ugent.bagger.params;
 import ugent.rename.ErrorAction;
 import ugent.rename.PaddingChar;
 import ugent.rename.PreSort;
+import ugent.rename.Radix;
 import ugent.rename.StartPosRelative;
 import ugent.rename.StartPosType;
 
@@ -22,10 +23,17 @@ public class RenumberParams {
     private ErrorAction onErrorAction = ErrorAction.skip;
     private StartPosType startPosType = StartPosType.RELATIVE;
     private StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
-    private String separatorBefore = "";
+    private String separatorBefore = "-";
     private String separatorAfter = "";
     private PreSort preSort = PreSort.NONE;
+    private Radix radix = Radix.DECIMAL;
 
+    public Radix getRadix() {
+        return radix;
+    }
+    public void setRadix(Radix radix) {
+        this.radix = radix;
+    }    
     public PreSort getPreSort() {
         return preSort;
     }

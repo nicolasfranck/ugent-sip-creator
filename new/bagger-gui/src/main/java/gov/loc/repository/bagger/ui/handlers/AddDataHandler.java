@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.helper.SwingUtils;
 
 public class AddDataHandler extends AbstractAction implements Progress {
     private static final Log log = LogFactory.getLog(AddDataHandler.class);
@@ -24,24 +25,18 @@ public class AddDataHandler extends AbstractAction implements Progress {
         super();        
     }
     @Override
-    public void execute() {        
-        System.out.println("AddDataHandler::execute");
+    public void execute() {                
         addData();        
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("AddDataHandler::actionPerformed");
-        System.out.println("BusyIndicator.showAt");
-        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-        execute();        
-        System.out.println("BusyIndicator.clearAt");
-        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+    public void actionPerformed(ActionEvent e) {        
+        BusyIndicator.showAt(SwingUtils.getFrame());
+        execute();                
+        BusyIndicator.clearAt(SwingUtils.getFrame());
     }
     public void addData(){ 
         
-        System.out.println("AddDataHandler::addData start");
-        
-        BagView bagView = BagView.getInstance();
+        final BagView bagView = BagView.getInstance();
         /*
          * Nicolas Franck: default directory
          * homedir default, en indien opgegeven lastDir? 
@@ -52,7 +47,6 @@ public class AddDataHandler extends AbstractAction implements Progress {
         }
 
         //File selectFile = new File(File.separator+".");
-
         
         //Nicolas Franck: een frame die niet gebruikt wordt heeft geen effect!
         //JFrame frame = new JFrame();
@@ -83,6 +77,12 @@ public class AddDataHandler extends AbstractAction implements Progress {
             }
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
             bagView.updateAddData();
+            
+            //Nicolas Franck: geen validate of complete nuttig
+            bagView.validateExecutor.setEnabled(false);
+            bagView.validateBagHandler.setEnabled(false);
+            bagView.completeExecutor.setEnabled(false);
+            bagView.completeBagHandler.setEnabled(false);
         }
         /*
          * Nicolas Franck
@@ -90,11 +90,8 @@ public class AddDataHandler extends AbstractAction implements Progress {
         String lastDir = fc.getCurrentDirectory().getAbsolutePath();
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
         
-        System.out.println("AddDataHandler::addData end");
     }
     private String getFileNames(File[] files) {
-        
-        System.out.println("AddDataHandler::getFileNames");
         
     	StringBuilder stringBuff = new StringBuilder();
     	int totalFileCount = files.length;
@@ -113,9 +110,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
     	}
         return stringBuff.toString();
     }
-    public void addBagData(File[] files) {
-        
-        System.out.println("AddDataHandler::addBagData(file)");
+    public void addBagData(File[] files) {        
         
     	if(files != null){
             for (int i=0; i < files.length; i++) {
@@ -135,9 +130,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
     }
     public void addBagData(File file, boolean lastFileFlag) {
         
-        System.out.println("AddDataHandler::addBagData(file,last)");
-        
-        BagView bagView = BagView.getInstance();    	
+        final BagView bagView = BagView.getInstance();    	
         try{
             bagView.getBag().addFileToPayload(file);
             boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);

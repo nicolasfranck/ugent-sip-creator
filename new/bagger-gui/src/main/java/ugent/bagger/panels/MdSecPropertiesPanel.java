@@ -15,7 +15,8 @@ import java.util.List;
 import javax.swing.*;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
-import ugent.bagger.dialogs.XMLTransformDialog;
+import ugent.bagger.dialogs.ImportDialog;
+import ugent.bagger.dialogs.XMLCrosswalkDialog;
 import ugent.bagger.forms.MdSecForm;
 import ugent.bagger.forms.MdWrapForm;
 import ugent.bagger.helper.Context;
@@ -23,7 +24,6 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.tables.DmdSecPropertiesTable;
 import ugent.bagger.tables.MdSecPropertiesTable;
 import ugent.bagger.workers.TaskAddMdSecFromFile;
-import ugent.bagger.workers.TaskAddMdSecFromImport;
 
 /**
  *
@@ -121,7 +121,7 @@ public class MdSecPropertiesPanel extends JPanel{
         crosswalkButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                JDialog dialog = new XMLTransformDialog();                
+                JDialog dialog = new XMLCrosswalkDialog();                
                 dialog.pack();
                 dialog.setLocationRelativeTo(panel);
                 dialog.setVisible(true);
@@ -138,13 +138,16 @@ public class MdSecPropertiesPanel extends JPanel{
         addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){                                
-                monitor(new TaskAddMdSecFromFile(),"importing..");                
+                monitor(new TaskAddMdSecFromFile(),"inserting..");                
             }
         });
         importButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {                
-                monitor(new TaskAddMdSecFromImport(),"importing..");
+                JDialog dialog = new ImportDialog();                
+                dialog.pack();
+                dialog.setLocationRelativeTo(panel);
+                dialog.setVisible(true);
             }
         });
         

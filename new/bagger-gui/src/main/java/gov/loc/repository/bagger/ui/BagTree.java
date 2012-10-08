@@ -64,8 +64,9 @@ public final class BagTree extends JTree {
         this.setDropMode(DropMode.ON_OR_INSERT);
         this.setTransferHandler(new BagTreeTransferHandler(isPayload));
         this.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-        */
-        getBagView().registerTreeListener(path,this);
+        */        
+        getBagView().registerTreeListener(path,this);        
+        
     }
 	
     private void initialize() {
@@ -80,6 +81,7 @@ public final class BagTree extends JTree {
         //setPreferredSize(getTreeSize());
         requestFocus();
         //setScrollsOnExpand(true);
+        
     }
 	
     public void populateNodes(DefaultBag bag, String path, File rootSrc, boolean isParent) {
