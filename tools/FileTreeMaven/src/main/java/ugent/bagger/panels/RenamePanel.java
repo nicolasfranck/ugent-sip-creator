@@ -27,6 +27,7 @@ import ugent.bagger.filters.DirectoryFilter;
 import ugent.bagger.forms.RenameParamsForm;
 import ugent.bagger.forms.RenumberParamsForm;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.RenameParams;
 import ugent.bagger.params.RenumberParams;
 import ugent.bagger.workers.DefaultWorker;
@@ -37,7 +38,7 @@ import ugent.rename.*;
  * @author nicolas
  */
 public class RenamePanel extends JPanel{
-    private static Log logger = LogFactory.getLog(AdvancedRenamePanel.class);
+    private static Log logger = LogFactory.getLog(RenamePanel.class);
     
     private JPanel panelTreeTable;
     private JPanel panelModifier;
@@ -575,7 +576,7 @@ public class RenamePanel extends JPanel{
                 renumber.setRenameListener(new RenameListenerAdapter(){                    
                     @Override
                     public boolean approveList(final ArrayList<RenameFilePair> list){
-                        numToRename = list.size();                          
+                        numToRename = list.size();  
                         return true;
                     }
                     @Override
@@ -655,8 +656,36 @@ public class RenamePanel extends JPanel{
                 renamer.setRenameListener(new RenameListenerAdapter(){                    
                     @Override
                     public boolean approveList(final ArrayList<RenameFilePair> list){
-                        numToRename = list.size();                          
-                        return true;
+                        numToRename = list.size();  
+                        if(renameParams.isOverWrite()){
+                            return true;
+                        }
+                        //controleer of er geen risico is op overschrijving                        
+                        ArrayList<String>seen = new ArrayList<String>();
+                        int numFound = 0;
+                        for(RenameFilePair pair:list){
+                            if(!seen.contains(pair.getSource().getAbsolutePath())){
+                                seen.add(pair.getSource().getAbsolutePath());
+                            }else{
+                                numFound++;
+                            }
+                            if(!seen.contains(pair.getTarget().getAbsolutePath())){
+                                seen.add(pair.getTarget().getAbsolutePath());
+                            }else{
+                                numFound++;
+                            }
+                        }                       
+                        
+                        boolean approved = true;
+                        if(numFound > 0){
+                            int answer = JOptionPane.showConfirmDialog(SwingUtils.getFrame(),"Waarschuwing: één of meerdere bestanden zullen overschreven worden. Bent u zeker?");
+                            approved = answer == JOptionPane.OK_OPTION;
+                            renamer.setOverwrite(approved);
+                            getRenameParamsForm().getValueModel("overWrite").setValue(new Boolean(true));
+                            getRenameParamsForm().commit();
+                            System.out.println("is overwrite now: "+(renamer.isOverwrite() ? "yes":"no"));
+                        }
+                        return approved;
                     }
                     @Override
                     public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr,int index) {

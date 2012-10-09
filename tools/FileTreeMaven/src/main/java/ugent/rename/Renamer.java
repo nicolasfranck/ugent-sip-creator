@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+import ugent.bagger.helper.SwingUtils;
 
 /*
  *  Nicolas Franck
@@ -50,8 +52,7 @@ public class Renamer extends AbstractRenamer{
         return destination;
     }
     public void setDestination(String destination) {
-        this.destination = destination;
-               
+        this.destination = destination;               
     }   
     
     @Override
@@ -80,38 +81,58 @@ public class Renamer extends AbstractRenamer{
     
     public static void main(String [] args){
         Renamer renamer = new Renamer();
-        ArrayList<File>files = FUtils.listFiles(new File("/home/nicolas/xml"));
+        String [] inputFiles = new String [] {
+            "/pruts/a-2.txt","/pruts/b-3.txt"
+        };
+        ArrayList<File>files = new ArrayList<File>();
+        for(String s:inputFiles){
+            files.add(new File(s));
+        }
+        
         System.out.println("inputFiles: "+files.size());
         renamer.setInputFiles(files);
-        renamer.setSource("\\.XML");
-        renamer.setDestination("pp.xml");
-        renamer.setSimulateOnly(true);
-        renamer.setPatternFlag(Pattern.LITERAL);
-        renamer.setRenameListener(new RenameListener(){
+        renamer.setSource("\\d+");
+        renamer.setDestination("");        
+        renamer.setSimulateOnly(true);        
+        renamer.setPatternFlag(Pattern.CANON_EQ);
+        renamer.setRenameListener(new RenameListenerAdapter(){            
             @Override
-            public boolean approveList(ArrayList<RenameFilePair> list) {
-                return true;
+            public boolean approveList(final ArrayList<RenameFilePair> list){
+                System.out.println("approveList");
+                //controleer of target niet voorkomt in source list
+                int numFound = 0;
+                ArrayList<String>seen = new ArrayList<String>();
+                for(RenameFilePair pair:list){
+                    if(!seen.contains(pair.getSource().getAbsolutePath())){
+                        seen.add(pair.getSource().getAbsolutePath());
+                    }else{
+                        numFound++;
+                    }
+                    if(!seen.contains(pair.getTarget().getAbsolutePath())){
+                        seen.add(pair.getTarget().getAbsolutePath());
+                    }else{
+                        numFound++;
+                    }
+                }
+                System.out.println("equals? "+("a".equals("a") ? "yes":"no"));
+                System.out.println("seen.size: "+seen.size());
+                System.out.println("numFound: "+numFound);
+                boolean approved = true;
+                if(numFound > 0){
+                    int answer = JOptionPane.showConfirmDialog(SwingUtils.getFrame(),"Waarschuwing: "+numFound+" dreigen overschreven te worden. Bent u zeker?");
+                    approved = answer == JOptionPane.OK_OPTION;
+                }
+                return approved;
             }
             @Override
             public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr, int index) {
                 System.out.println("error: "+errorStr);
-                return ErrorAction.undoAll;
+                //return ErrorAction.undoAll;
+                return ErrorAction.ignore;
             }
             @Override
             public void onRenameStart(RenameFilePair pair, int index) {
                 System.out.println("source: "+pair.getSource()+" => "+pair.getTarget());
-            }
-            @Override
-            public void onRenameSuccess(RenameFilePair pair, int index) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-            @Override
-            public void onRenameEnd(RenameFilePair pair, int index) {
-                
-            }
-            @Override
-            public void onEnd(ArrayList<RenameFilePair> list, int numSuccess) {
-                
             }            
         });
         renamer.rename();

@@ -9,7 +9,6 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import ugent.bagger.helper.Context;
 import ugent.bagger.params.RenameParams;
 import ugent.rename.ErrorAction;
 
@@ -28,11 +27,10 @@ public class RenameParamsForm extends AbstractForm{
     @Override
     protected JComponent createFormControl() {
 
-        SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
+        SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();        
         TableFormBuilder builder = new TableFormBuilder(bf);        
-        builder.setLabelAttributes("colSpan=1 align=left");
-        builder.addSeparator(Context.getMessage("common"));
-        builder.row();        
+        builder.setLabelAttributes("colSpan=1 align=left");        
+       
         String [] commonFields = {"source","destination"};
         for(String field:commonFields){
             builder.add(field);
@@ -44,9 +42,10 @@ public class RenameParamsForm extends AbstractForm{
         for(String field:detailFields){
             builder.add(field);
             builder.row();
-        }
+        }        
         Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
         final JComboBox comboBox = ((JComboBox)b.getControl());
+        
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {

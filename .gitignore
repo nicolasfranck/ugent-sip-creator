@@ -15,3 +15,4 @@ tools/FileTreeMaven/target
 /new/bagger-core/target/
 /new/bagger-package/target/
 /new/bagger-maven/target/
+/tools/bagit/target/

@@ -42,11 +42,9 @@ import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
-import ugent.bagger.helper.FUtils;
 
 /**
  * FileSystemModel is a TreeTableModel representing a hierarchical file 
@@ -69,10 +67,12 @@ public class FileSystemModel extends AbstractTreeTableModel
     private static Logger logger = Logger.getLogger(FileSystemModel.class);
 
     // Names of the columns.
-    static protected String[]  cNames = {"Name", "Size", "Type", "Modified"};
+    //static protected String[]  cNames = {"Name", "Size", "Type", "Modified"};
+    static protected String[]  cNames = {"Name","Type"};
 
     // Types of the columns.
-    static protected Class[]  cTypes = {TreeTableModel.class, Integer.class, String.class, Date.class};
+    //static protected Class[]  cTypes = {TreeTableModel.class, Integer.class, String.class, Date.class};
+    static protected Class[]  cTypes = {TreeTableModel.class,String.class};
 
     // The the returned file length for directories. 
     public static final Integer ZERO = new Integer(0); 
@@ -179,20 +179,54 @@ public class FileSystemModel extends AbstractTreeTableModel
         }
 
 	try {
+            /*
 	    switch(column) {
-	    case 0:
-		return file.isFile() ? file.getName():"";
-	    case 1:
-                if(file.isFile())return FUtils.sizePretty(file.length());
-                else if(file.isDirectory()){
-                    if(!file.canRead() || listFileNames == null)return "(access denied)";
-                    return listFileNames.length+" files";
-                }                
-	    case 2:
-                return FUtils.getMimeType(file);                
-	    case 3:
-		return new Date(file.lastModified());
-	    }
+                case 0:
+                    return file.isFile() ? file.getName():"";
+                case 1:
+                    if(file.isFile())return FileUtils.sizePretty(file.length());
+                    else if(file.isDirectory()){
+                        if(!file.canRead() || listFileNames == null)return "(access denied)";
+                        return listFileNames.length+" files";
+                    }                
+                case 2:
+                    if(file.isFile()){                    
+                        Collection mimes = MimeUtil.getMimeTypes(file);
+                        if(!mimes.isEmpty()){
+                            Iterator it = mimes.iterator();
+                            while(it.hasNext()){                          
+                                return ((MimeType)it.next()).toString();
+                            }
+                        }else{
+                            return "application/octet-stream";
+                        }
+                    }else{
+                        return "";
+                    }		
+                case 3:
+                    return new Date(file.lastModified());
+                }*/
+            switch(column) {
+                case 0:
+                    return file.isFile() ? file.getName():"";                                                   
+                case 1:
+                    if(file.isFile()){                    
+                        Collection mimes = MimeUtil.getMimeTypes(file);
+                        if(!mimes.isEmpty()){
+                            Iterator it = mimes.iterator();
+                            while(it.hasNext()){                          
+                                return ((MimeType)it.next()).toString();
+                            }
+                        }else{
+                            return "application/octet-stream";
+                        }
+                    }else{
+                        return "";
+                    }
+                 break;
+            }
+               
+            
 	}
 	catch(SecurityException se){ 
             se.printStackTrace();

@@ -63,7 +63,9 @@ public class AddTagFileHandler extends AbstractAction {
             File file = fo.getSelectedFile();            
 
             bag.addTagFile(file);
+            
             bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
+            
             Collection<BagFile> tags = bag.getTags();
             for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
             	BagFile bf = it.next();
@@ -89,7 +91,10 @@ public class AddTagFileHandler extends AbstractAction {
                 for(int i=0; i < files.size(); i++){                    
                     bag.addTagFile(files.get(i));
                 }
-                bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
+                //Nicolas Franck
+                //bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
+                bagView.setBagPayloadTree(bagView.createBagPayloadTree(bag.getName(),false));
+                
                 Collection<BagFile> tags = bag.getTags();
                 for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
                     BagFile bf = it.next();

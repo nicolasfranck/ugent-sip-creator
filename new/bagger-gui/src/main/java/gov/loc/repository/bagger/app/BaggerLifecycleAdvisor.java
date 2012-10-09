@@ -55,7 +55,8 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     @Override
     public void onPreWindowOpen(ApplicationWindowConfigurer configurer){
         super.onPreWindowOpen(configurer);      
-        configurer.setInitialSize(new Dimension(1024, 768));
+        //Nicolas Franck: elke view past grootte aan
+        //configurer.setInitialSize(new Dimension(1024, 768));
     }
     
     /**

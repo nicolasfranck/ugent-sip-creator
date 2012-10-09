@@ -4,7 +4,6 @@ import com.anearalone.mets.MdSec;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -14,6 +13,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -44,7 +45,8 @@ public final class ImportDialog extends JDialog{
     }
     public JComponent createContentPane(){
         
-        JPanel mainPanel = new JPanel(new GridLayout(0,1)); 
+        JPanel mainPanel = new JPanel(); 
+        mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
         final BagView bagView = BagView.getInstance();
         final MdSecPropertiesTable mdSecPropertiesTable = bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getDmdSecPropertiesTable();
         
@@ -131,6 +133,7 @@ public final class ImportDialog extends JDialog{
         mainPanel.add(importTypePanel);
         mainPanel.add(buttonPanel);
         
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         
         return mainPanel;
     }

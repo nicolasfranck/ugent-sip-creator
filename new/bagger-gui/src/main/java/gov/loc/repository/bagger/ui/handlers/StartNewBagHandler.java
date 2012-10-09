@@ -8,6 +8,8 @@ import gov.loc.repository.bagger.ui.NewBagFrame;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFile;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.AbstractAction;
@@ -36,9 +38,15 @@ public class StartNewBagHandler extends AbstractAction {
 
     public void newBag() {
         BagView bagView = BagView.getInstance();
-        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-    	NewBagFrame newBagFrame = new NewBagFrame(bagView, bagView.getPropertyMessage("bag.frame.new"));
+        BusyIndicator.showAt(SwingUtils.getFrame());
+    	NewBagFrame newBagFrame = new NewBagFrame(bagView,bagView.getPropertyMessage("bag.frame.new"));
         newBagFrame.setVisible(true);
+        newBagFrame.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e){
+                BusyIndicator.clearAt(SwingUtils.getFrame());
+            }
+        });
         newBagFrame.pack();        
     }
 

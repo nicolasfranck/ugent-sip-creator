@@ -4,16 +4,17 @@ import gov.loc.repository.bagger.Bagger;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagger.ui.handlers.*;
+import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
+import gov.loc.repository.bagit.impl.FileBagFile;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.*;
@@ -23,10 +24,12 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
+import ugent.bagger.popupmenus.FileManipulatePopupMenu;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
@@ -212,24 +215,61 @@ public class BagView extends DefaultView {
     public void setBagPayloadTree(BagTree bagPayloadTree) {
         this.bagPayloadTree = bagPayloadTree;
     }
+    public BagTree createBagPayloadTree(String path, boolean isPayload){
+        final BagTree tree = new BagTree(path,isPayload);
+        System.out.println("initializing bagPayloadTree");            
+        //Nicolas Franck    
+        ActionMap actionMap = tree.getActionMap();                        
+        actionMap.put("removeData",new AbstractAction(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                System.out.println("delete pressed!");
+                removeDataHandler.removeData();
+            }               
+        });
+        InputMap inputMap = tree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);                                
+        inputMap.put(KeyStroke.getKeyStroke('r'),"removeData");            
 
+        tree.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(final MouseEvent e){
+                if(!SwingUtilities.isRightMouseButton(e)){
+                    return;
+                }
+                
+                final TreePath[] tpaths = tree.getSelectionPaths();                    
+                Bag bag = getBag().getBag();                
+                if(tpaths == null){
+                    return;
+                }
+                final ArrayList<File>list = new ArrayList<File>();                
+                
+                for(TreePath tpath:tpaths){
+                    String name = StringUtils.join(tpath.getPath(),File.separator);                
+                    BagFile bagFile = bag.getBagFile(name);
+                    if(bagFile instanceof FileBagFile){                        
+                        list.add(((FileBagFile)bagFile).getFile());
+                    }
+                }                
+                SwingUtilities.invokeLater(new Runnable(){
+                    @Override
+                    public void run() {
+                        FileManipulatePopupMenu popup = new FileManipulatePopupMenu(
+                            list.toArray(new File [] {}),
+                            tpaths.length == list.size()
+                        );      
+                        System.out.println("CONTROL: "+getControl());
+                        popup.show(getControl(),e.getX(),e.getY());                                                
+                        popup.pack();
+                    }                    
+                });
+            }
+        });
+        return tree;
+    }
     public BagTree getBagPayloadTree() {
-        if(bagPayloadTree == null){
-            bagPayloadTree = new BagTree(AbstractBagConstants.DATA_DIRECTORY, true);
-            System.out.println("initializing bagPayloadTree");            
-            //Nicolas Franck    
-            ActionMap actionMap = bagPayloadTree.getActionMap();                        
-            actionMap.put("removeData",new AbstractAction(){
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    System.out.println("delete pressed!");
-                    removeDataHandler.removeData();
-                }               
-            });
-            
-            InputMap inputMap = bagPayloadTree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);                        
-            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,KeyEvent.META_MASK),"removeData");            
-                                   
+        if(bagPayloadTree == null){            
+            bagPayloadTree = createBagPayloadTree(AbstractBagConstants.DATA_DIRECTORY, true);                       
         }
         return bagPayloadTree;
     }

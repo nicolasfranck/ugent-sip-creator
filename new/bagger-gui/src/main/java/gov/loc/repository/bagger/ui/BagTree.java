@@ -44,8 +44,6 @@ public final class BagTree extends JTree {
         
         basePath = path;
         
-        System.out.println("basePath: "+basePath);
-        
         //i.e. 'data' => maar dit is al hierboven ingesteld??
         //parentNode = new DefaultMutableTreeNode(basePath);
         initialize();

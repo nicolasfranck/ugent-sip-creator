@@ -72,7 +72,10 @@ public class ClearBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
     	bag.clear();        
-    	bagView.setBagPayloadTree(new BagTree(AbstractBagConstants.DATA_DIRECTORY, true));
+    	//bagView.setBagPayloadTree(new BagTree(AbstractBagConstants.DATA_DIRECTORY, true));
+        //Nicolas Franck
+        bagView.setBagPayloadTree(bagView.createBagPayloadTree(AbstractBagConstants.DATA_DIRECTORY, true));
+        
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.setBagTagFileTree(new BagTree(ApplicationContextUtil.getMessage("bag.label.noname"), false));
     	bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());

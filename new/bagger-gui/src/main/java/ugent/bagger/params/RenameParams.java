@@ -43,6 +43,12 @@ public class RenameParams {
     public String getDestination() {
         return destination;
     }
+    public void setDestination(String destination) {
+        if(destination == null){
+            destination = "";
+        }
+        this.destination = destination;
+    }    
     public void setDestinationPattern(String destination) {
         this.destination = destination;
     }    
@@ -62,6 +68,9 @@ public class RenameParams {
         return source;
     }
     public void setSource(String source) {
+        if(source == null){
+            source = "";
+        }
         this.source = source;
     }    
 }

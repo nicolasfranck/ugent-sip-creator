@@ -49,7 +49,7 @@ public class NewBagFrame extends JFrame implements ActionListener {
     private ActionCommand cancelCommand;
    
     public NewBagFrame(BagView bagView, String title) {     
-        super(title);        
+        super(title);                
         
         JPanel createPanel;
         Application app = Application.instance();
@@ -79,7 +79,8 @@ public class NewBagFrame extends JFrame implements ActionListener {
         setLocation(300, 200);
         
         //Nicolas Franck: als je dit hier doet, krijg je in Ubuntu een X11 error. Beter: bij oproepende code
-        //pack();
+        //pack();       
+        
     }
 
     public ActionCommand getFinishCommand() {

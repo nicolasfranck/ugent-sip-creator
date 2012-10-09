@@ -199,6 +199,11 @@
     <bean id="consoleView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
         <property name="viewClass" value="gov.loc.repository.bagger.ui.ConsoleView" />                       
     </bean>
+    <!--
+    <bean id="renameView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
+        <property name="viewClass" value="ugent.bagger.views.RenameView" />                       
+    </bean>
+    -->
  
     <util:list id="metsSchemaURLS">        
         <value>http://www.loc.gov/METS/</value>

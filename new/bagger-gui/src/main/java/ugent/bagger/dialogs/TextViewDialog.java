@@ -12,7 +12,7 @@ import javax.swing.*;
  *
  * @author nicolas
  */
-public class TextViewDialog extends JDialog {      
+public final class TextViewDialog extends JDialog {      
     private String [] data;
     public TextViewDialog(Frame parentFrame,String [] data){
         super(parentFrame,true);        

@@ -5,6 +5,7 @@
 package ugent.bagger.views;
 
 import org.springframework.richclient.application.support.AbstractView;
+import ugent.bagger.helper.SwingUtils;
 
 /**
  *
@@ -13,6 +14,6 @@ import org.springframework.richclient.application.support.AbstractView;
 abstract public class DefaultView extends AbstractView{
     @Override
     public void componentFocusGained(){
-        ugent.bagger.helper.SwingUtils.getFrame().pack();        
+        SwingUtils.getFrame().pack();        
     }
 }

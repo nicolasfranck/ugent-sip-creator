@@ -78,12 +78,14 @@ abstract public class AbstractRenamer {
             return;
         }
         
-        RenameListener l = getRenameListener();
-        if(!l.approveList(pairs)){
-            return;
-        }
-        
         int numSuccess = 0;
+        RenameListener l = getRenameListener();
+        
+        if(!l.approveList(pairs)){
+            l.onEnd(pairs,numSuccess);
+            return;
+        }        
+        
         ErrorAction action = ErrorAction.undoAll;
         for(int i = 0;i < pairs.size();i++){
             RenameFilePair pair = pairs.get(i);
@@ -168,7 +170,6 @@ abstract public class AbstractRenamer {
             l.onRenameEnd(pair, i);
         }        
         l.onEnd(pairs,numSuccess);
-    }
-    
+    }    
     abstract protected ArrayList<RenameFilePair> getFilePairs();
 }
