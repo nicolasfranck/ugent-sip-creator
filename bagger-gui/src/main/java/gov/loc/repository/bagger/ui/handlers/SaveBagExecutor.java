@@ -1,29 +1,30 @@
-
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
-
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 
 public class SaveBagExecutor extends AbstractActionCommandExecutor {
-   	private static final long serialVersionUID = 1L;
-	BagView bagView;
-	DefaultBag bag;
+    private static final long serialVersionUID = 1L;   
+    DefaultBag bag;
 
-	public SaveBagExecutor(BagView bagView) {
-		super();
-		this.bagView = bagView;
-	}
+    /*
+     * Nicolas Franck: public <init>(BagView bagView)
+     * removed, because BagView instance is available in BagView.getInstance()
+     */
+    public SaveBagExecutor() {
+        super();        
+    }
 
     @Override
-	public void execute() {
-		if (bagView.getBagRootPath().exists()) {
-			bagView.saveBagHandler.setTmpRootPath(bagView.getBagRootPath());
-			bagView.saveBagHandler.confirmWriteBag();
-		} else {
-			bagView.saveBagHandler.saveBag(bagView.getBagRootPath());
-		}
-	}
-
+    public void execute() {
+        BagView bagView = BagView.getInstance();
+        System.out.println("bag root path:"+bagView.getBagRootPath()+", exists:"+(bagView.getBagRootPath().exists()? "yes":"no"));
+        if(bagView.getBagRootPath().exists()) {
+            bagView.saveBagHandler.setTmpRootPath(bagView.getBagRootPath());
+            bagView.saveBagHandler.confirmWriteBag();
+        } else {
+            bagView.saveBagHandler.saveBag(bagView.getBagRootPath());
+        }
+    }
 }

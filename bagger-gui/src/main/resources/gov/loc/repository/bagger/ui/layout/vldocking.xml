@@ -3,16 +3,16 @@
     <DockingDesktop name="proxyPage">
         <DockingPanel>
             <Split orientation="1" location="0.29">              
-               <Dockable>
+                <Dockable>
                     <Key dockName="bagView"/>
-                </Dockable>
-                 <Split orientation="0" location="0.7">
-                 <Dockable>
-                    <Key dockName="profilesView"/>
-                </Dockable>
-                 <Dockable>
-                    <Key dockName="consoleView"/>
                 </Dockable>                
+                <Split orientation="0" location="0.7">                    
+                    <Dockable>
+                        <Key dockName="metaView"/>
+                    </Dockable>                    
+                    <Dockable>
+                        <Key dockName="consoleView"/>
+                    </Dockable>                
                  </Split>               
             </Split>
         </DockingPanel>

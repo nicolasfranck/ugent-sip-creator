@@ -1,22 +1,17 @@
 package gov.loc.repository.bagger.ui;
 
+import gov.loc.repository.bagit.ProgressListener;
 import java.text.MessageFormat;
-
 import javax.swing.ProgressMonitor;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import gov.loc.repository.bagit.ProgressListener;
-
 public class LongTask implements ProgressListener {
 	
-    private static final Log log = LogFactory.getLog(LongTask.class);
-	
+    private static final Log log = LogFactory.getLog(LongTask.class);	
     private boolean done = false;
     private Progress progress;
-    private ProgressMonitor progressMonitor;
-    
+    private ProgressMonitor progressMonitor;    
     private String activityMonitored;
 
     public LongTask() {
@@ -84,19 +79,17 @@ public class LongTask implements ProgressListener {
         } else {
             if (activityMonitored == null || activityMonitored.equals(activity)) {
                 String message = MessageFormat.format("{0} ({2} of {3}) {1} ", activity, item, count, total);
-                this.progressMonitor.setNote(message);
-                this.progressMonitor.setMaximum(total.intValue());
-                this.progressMonitor.setProgress(count.intValue());
+                progressMonitor.setNote(message);
+                progressMonitor.setMaximum(total.intValue());
+                progressMonitor.setProgress(count.intValue());
             }
         }
     }
 
     public String getActivityMonitored() {
-            return activityMonitored;
+        return activityMonitored;
     }
-
     public void setActivityMonitored(String activityMonitored) {
-            this.activityMonitored = activityMonitored;
-    }
-	
+        this.activityMonitored = activityMonitored;
+    }	
 }

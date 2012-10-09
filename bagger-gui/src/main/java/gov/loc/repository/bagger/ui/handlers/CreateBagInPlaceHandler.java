@@ -1,4 +1,3 @@
-
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.Profile;
@@ -7,58 +6,66 @@ import gov.loc.repository.bagger.bag.impl.DefaultBagInfo;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.NewBagInPlaceFrame;
 import gov.loc.repository.bagger.ui.Progress;
-
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.AbstractAction;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.progress.BusyIndicator;
 
 public class CreateBagInPlaceHandler extends AbstractAction implements Progress {
-   	private static final long serialVersionUID = 1L;
-   	private static final Log log = LogFactory.getLog(StartNewBagHandler.class);
-	private BagView bagView;
+    private static final long serialVersionUID = 1L;
+    private static final Log log = LogFactory.getLog(StartNewBagHandler.class);   
 
-	public CreateBagInPlaceHandler(BagView bagView) {
-		super();
-		this.bagView = bagView;
-	}
+    /*
+     * Nicolas Franck: public <init>(BagView bagView)
+     * removed, because BagView instance is available in BagView.getInstance()
+     */
+    public CreateBagInPlaceHandler() {
+        super();           
+    }
 
-	public void actionPerformed(ActionEvent e) {
-		createBagInPlace();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        execute();
+    }
 
-
-	public void execute() {
-		bagView.statusBarEnd();
-	}
+    @Override
+    public void execute() {
+        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+        createBagInPlace();
+        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+    }
 
     public void createBagInPlace() {
-    	NewBagInPlaceFrame newBagInPlaceFrame = new NewBagInPlaceFrame(bagView, bagView.getPropertyMessage("bag.frame.newbaginplace"));
-        newBagInPlaceFrame.setBag(bagView.getBag());
+        BagView bagView = BagView.getInstance();        
+    	NewBagInPlaceFrame newBagInPlaceFrame = new NewBagInPlaceFrame(bagView, bagView.getPropertyMessage("bag.frame.newbaginplace"));        
+        newBagInPlaceFrame.setBag(bagView.getBag());        
         newBagInPlaceFrame.setVisible(true);
+        newBagInPlaceFrame.pack();        
     }
 
     public void createPreBag(File dataFile, String bagItVersion, final String profileName) {
-    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null))
-    		log.info("Creating a new bag in place with data: " + dataFile.getName()
-    				+ ", version: " + bagItVersion + ", profile: " + profileName);
+        BagView bagView = BagView.getInstance();
+    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {
+            log.info("Creating a new bag in place with data: " + dataFile.getName()
+                            + ", version: " + bagItVersion + ", profile: " + profileName);
+        }
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-    		bagView.getBag().createPreBag(dataFile, bagItVersion);
+            bagView.getBag().createPreBag(dataFile, bagItVersion);
     	} catch (Exception e) {
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");
-    		return;
+            return;
     	}
     	DefaultBag bag = bagView.getBag();
     	
     	String bagFileName = dataFile.getName();
         bag.setName(bagFileName);
-        bagView.infoInputPane.setBagName(bagFileName);
+        bagView.getInfoFormsPane().setBagName(bagFileName);
         
         setProfile(profileName);
         
@@ -70,34 +77,33 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
      * adding .keep files in Empty Pay load Folder(s) 
     */
     public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion, final String profileName) {
-    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null))
-    		log.info("Creating a new bag in place with data: " + dataFile.getName()
-    				+ ", version: " + bagItVersion + ", profile: " + profileName);
+        BagView bagView = BagView.getInstance();
+    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {
+            log.info("Creating a new bag in place with data: " + dataFile.getName()
+                            + ", version: " + bagItVersion + ", profile: " + profileName);
+        }
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-    		bagView.getBag().createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion);
+            bagView.getBag().createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion);
     	} catch (Exception e) {
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");
-    		return;
+            return;
     	}
     	DefaultBag bag = bagView.getBag();
     	
     	String bagFileName = dataFile.getName();
         bag.setName(bagFileName);
-        bagView.infoInputPane.setBagName(bagFileName);
-        
-        setProfile(profileName);
-        
+        bagView.getInfoFormsPane().setBagName(bagFileName);        
+        setProfile(profileName);        
         bagView.saveBagHandler.save(dataFile);
     }    
     
     private void setProfile(String selected) {
+        BagView bagView = BagView.getInstance();
         Profile profile = bagView.getProfileStore().getProfile(selected);
-		log.info("bagProject: " + profile.getName());
-		
-		Map<String, String> map = new HashMap<String, String>();
-		map.put(DefaultBagInfo.FIELD_LC_PROJECT, profile.getName());
-		bagView.getBag().updateBagInfo(map);
+        log.info("bagProject: " + profile.getName());
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DefaultBagInfo.FIELD_LC_PROJECT, profile.getName());
+        bagView.getBag().updateBagInfo(map);
     }
-
 }

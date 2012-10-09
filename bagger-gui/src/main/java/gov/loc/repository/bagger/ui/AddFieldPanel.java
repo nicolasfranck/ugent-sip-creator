@@ -5,7 +5,6 @@ import gov.loc.repository.bagger.bag.impl.DefaultBagInfo;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.impl.BagInfoTxtImpl;
-
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,7 +13,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,19 +21,70 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class AddFieldPanel extends JPanel {
+public final class AddFieldPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(AddFieldPanel.class);
-
     private JCheckBox standardCheckBox;
     private JComboBox standardFieldsComboBox;
     private JTextField customFieldTextField;
     private JTextField valueField;
+
+    public JCheckBox getStandardCheckBox() {
+        if(standardCheckBox == null){
+            standardCheckBox = new JCheckBox("Standard");
+            standardCheckBox.setSelected(true);
+            standardCheckBox.addActionListener(new StandardFieldCheckBoxAction());
+        }
+        return standardCheckBox;
+    }
+
+    public void setStandardCheckBox(JCheckBox standardCheckBox) {
+        this.standardCheckBox = standardCheckBox;
+    }
+
+    public JComboBox getStandardFieldsComboBox() {
+        if(standardFieldsComboBox == null){
+            List<String> listModel = getStandardBagFields();        
+            standardFieldsComboBox = new JComboBox(listModel.toArray());
+            standardFieldsComboBox.setName(ApplicationContextUtil.getMessage("baginfo.field.fieldlist"));
+            standardFieldsComboBox.setSelectedItem("");
+            standardFieldsComboBox.setToolTipText(ApplicationContextUtil.getMessage("baginfo.field.fieldlist.help"));
+        }
+        return standardFieldsComboBox;
+    }
+
+    public void setStandardFieldsComboBox(JComboBox standardFieldsComboBox) {
+        this.standardFieldsComboBox = standardFieldsComboBox;
+    }
+
+    public JTextField getCustomFieldTextField() {
+        if(customFieldTextField == null){
+            customFieldTextField = new JTextField(17);
+            customFieldTextField.setToolTipText(ApplicationContextUtil.getMessage("baginfo.field.name.help"));
+            customFieldTextField.setVisible(false);
+        }
+        return customFieldTextField;
+    }
+
+    public void setCustomFieldTextField(JTextField customFieldTextField) {
+        this.customFieldTextField = customFieldTextField;
+    }
+
+    public JTextField getValueField() {
+        if(valueField == null){
+            valueField = new JTextField();
+        }
+        return valueField;
+    }
+
+    public void setValueField(JTextField valueField) {
+        this.valueField = valueField;
+    }  
+    
 	
     public AddFieldPanel() {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -44,36 +93,24 @@ public class AddFieldPanel extends JPanel {
         int row = 0;
         int col = 0;
 
-        // standard field checkbox
-        standardCheckBox = new JCheckBox("Standard");
-        standardCheckBox.setSelected(true);
-        standardCheckBox.addActionListener(new StandardFieldCheckBoxAction());
+        // standard field checkbox        
         GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
-        add(standardCheckBox, gbc);
+        add(getStandardCheckBox(), gbc);
 
-        // standard field dropdown menu
-        List<String> listModel = getStandardBagFields();        
-        standardFieldsComboBox = new JComboBox(listModel.toArray());
-        standardFieldsComboBox.setName(ApplicationContextUtil.getMessage("baginfo.field.fieldlist"));
-        standardFieldsComboBox.setSelectedItem("");
-        standardFieldsComboBox.setToolTipText(ApplicationContextUtil.getMessage("baginfo.field.fieldlist.help"));
+        // standard field dropdown menu        
         gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
-        add(standardFieldsComboBox, gbc);
+        add(getStandardFieldsComboBox(), gbc);
 
-        // custom field name
-        customFieldTextField = new JTextField(17);
-        customFieldTextField.setToolTipText(ApplicationContextUtil.getMessage("baginfo.field.name.help"));
-        customFieldTextField.setVisible(false);
+        // custom field name        
         gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
-        add(customFieldTextField, gbc);
+        add(getCustomFieldTextField(), gbc);
 
         // field value
         gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         add(new JLabel(" : "), gbc);
-
-        valueField = new JTextField();
+        
         gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-        add(valueField, gbc);
+        add(getValueField(), gbc);
 
         // add field button
         JButton addFieldButton = new JButton("Add");
@@ -82,8 +119,7 @@ public class AddFieldPanel extends JPanel {
         addFieldButton.addActionListener(new AddFieldAction());
 
         //Nicolas Franck: voeg veld toe bij druk op enter
-        valueField.addActionListener(new AddFieldAction());
-        //Nicolas Franck
+        getValueField().addActionListener(new AddFieldAction());        
     }
 	
 	
@@ -93,14 +129,16 @@ public class AddFieldPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             JCheckBox checkbox = (JCheckBox) e.getSource();
             boolean standardFieldSelected = checkbox.isSelected();
-            if (standardFieldSelected) {
-                customFieldTextField.setVisible(false);
-                standardFieldsComboBox.setVisible(true);
-                standardFieldsComboBox.requestFocus();
-            } else {
-                standardFieldsComboBox.setVisible(false);
-                customFieldTextField.setVisible(true);
-                customFieldTextField.requestFocus();
+            if(standardFieldSelected) {
+                getCustomFieldTextField().setVisible(false);
+                getStandardFieldsComboBox().setVisible(true);
+                //Nicolas Franck
+                //getStandardFieldsComboBox().requestFocus();
+            }else{
+                getStandardFieldsComboBox().setVisible(false);
+                getCustomFieldTextField().setVisible(true);
+                //Nicolas Franck
+                //getCustomFieldTextField().requestFocus();
             }
         }
     }
@@ -112,9 +150,8 @@ public class AddFieldPanel extends JPanel {
         // Standard Fields from BagInfoTxt
         // TODO fix it when BIL has the functionality
         Field[] fields = BagInfoTxtImpl.class.getFields();
-        for (Field field : fields) {
-            if (Modifier.isStatic(field.getModifiers())
-                            && field.getName().startsWith("FIELD_")) {
+        for(Field field : fields){
+            if(Modifier.isStatic(field.getModifiers()) && field.getName().startsWith("FIELD_")){
                 try {
                     String standardFieldName = (String) field.get(null);
                     // Removes BagInfo.txt default values from the Standard item drop down list on the Bag-Info tab.
@@ -159,7 +196,9 @@ public class AddFieldPanel extends JPanel {
             if(field != null) {
                 bagView.getBag().addField(field);
                 // TODO use observer pattern
-                bagView.infoInputPane.updateInfoFormsPane(true);
+                //verwijdert de volledige infoFormsPane, en hertekent alles
+                //nadeel: wijzingen in metsTab zijn weg!
+                bagView.getInfoFormsPane().updateInfoFormsPane(true);
 
                 //Nicolas Franck: todo => request leads to never ending blocking state blocking state (deadlock?)
                 //volgens documentatie is requestFocusInWindow veiliger (focus enkel wanneer niet in huidige window => mss wacht hij op parent,
@@ -183,11 +222,11 @@ public class AddFieldPanel extends JPanel {
          */
         BagInfoField field = new BagInfoField();
 
-        String fieldName = null;
+        String fieldName;
         if (isStandardField()) {
-            fieldName = (String)standardFieldsComboBox.getSelectedItem();
+            fieldName = (String)getStandardFieldsComboBox().getSelectedItem();
         } else {
-            fieldName = customFieldTextField.getText();
+            fieldName = getCustomFieldTextField().getText();
         }
 
         String dialogTitle = ApplicationContextUtil.getMessage("baginfo.newFieldDialog.title");
@@ -210,11 +249,10 @@ public class AddFieldPanel extends JPanel {
          *
          *
          */
-        else if( valueField.getText() == null || valueField.getText().trim().isEmpty()){
+        else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){
             bagView.showWarningErrorDialog(dialogTitle,
                  ApplicationContextUtil.getMessage("baginfo.newFieldDialog.error.valueRequired")
-            );
-            //bagView.showWarningErrorDialog("New Field Dialog", "Value must be specified!");
+            );          
             return null;
         }
 
@@ -222,12 +260,12 @@ public class AddFieldPanel extends JPanel {
 
         field.setName(fieldName);
         field.setLabel(fieldName);
-        field.setValue(valueField.getText().trim());
+        field.setValue(getValueField().getText().trim());
         field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
 		
     	return field;
     }
     private boolean isStandardField() {
-        return standardCheckBox.isSelected();
+        return getStandardCheckBox().isSelected();
     }	    
 }

@@ -72,7 +72,7 @@
         <value>addDataCommand</value>
         <value>saveBagCommand</value>
         <value>saveBagAsCommand</value>
-        <bean class="gov.loc.repository.bagger.BaggerExit" />
+        <bean class="gov.loc.repository.bagger.app.BaggerExit" />
       </list>
     </property>
   </bean>

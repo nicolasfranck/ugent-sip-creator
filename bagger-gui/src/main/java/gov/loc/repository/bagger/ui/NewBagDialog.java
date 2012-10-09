@@ -13,6 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
+/*
+ * Nicolas Franck: code based on NewBagFrame
+ */
 package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
@@ -27,9 +31,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.ApplicationPage;
-import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
@@ -37,10 +38,9 @@ import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
 
-public class NewBagFrame extends JFrame implements ActionListener {
-    private static final Log log = LogFactory.getLog(NewBagFrame.class);
-    private static final long serialVersionUID = 1L;
-    private BagView bagView;
+public class NewBagDialog extends JDialog implements ActionListener {
+    private static final Log log = LogFactory.getLog(NewBagDialog.class);
+    private static final long serialVersionUID = 1L;    
     private JComboBox bagVersionList;
     private JComboBox profileList;
     protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
@@ -48,15 +48,12 @@ public class NewBagFrame extends JFrame implements ActionListener {
     private ActionCommand finishCommand;
     private ActionCommand cancelCommand;
    
-    public NewBagFrame(BagView bagView, String title) {     
-        super(title);                
-        
-        JPanel createPanel;
-        Application app = Application.instance();
-        ApplicationPage page = app.getActiveWindow().getPage();
-        PageComponent component = page.getActiveComponent();        
-
-        this.bagView = (component != null) ? BagView.getInstance() : bagView;
+    public BagView getBagView(){
+        return BagView.getInstance();
+    }
+    public NewBagDialog(JFrame frame,boolean isModal, String title) {     
+        super(frame,isModal);                        
+        setTitle(title);
 
         //Nicolas Franck
         /*
@@ -67,7 +64,8 @@ public class NewBagFrame extends JFrame implements ActionListener {
             this.bagView = bagView;
         }*/
 
-        if(bagView != null){
+        JPanel createPanel;
+        if(getBagView() != null){
             getContentPane().removeAll();
             createPanel = createComponents();
         } else {
@@ -89,8 +87,8 @@ public class NewBagFrame extends JFrame implements ActionListener {
                 @Override
                 public void doExecuteCommand() {
                     log.info("BagVersionFrame.OkNewBagHandler");
-                    NewBagFrame.this.setVisible(false);
-                    bagView.startNewBagHandler.createNewBag(
+                    NewBagDialog.this.setVisible(false);
+                    getBagView().startNewBagHandler.createNewBag(
                         (String)bagVersionList.getSelectedItem(),
                         (String)profileList.getSelectedItem()
                     );
@@ -107,7 +105,7 @@ public class NewBagFrame extends JFrame implements ActionListener {
             cancelCommand = new ActionCommand(getCancelCommandId()) {
                 @Override
                 public void doExecuteCommand() {
-                    NewBagFrame.this.setVisible(false);
+                    NewBagDialog.this.setVisible(false);
                 }
             };
         }
@@ -119,10 +117,10 @@ public class NewBagFrame extends JFrame implements ActionListener {
 
     public JComboBox getProfileList() {
         if(profileList == null){
-            profileList = new JComboBox(bagView.getProfileStore().getProfileNames());
-            profileList.setName(bagView.getPropertyMessage("bag.label.projectlist"));
-            profileList.setSelectedItem(bagView.getPropertyMessage("bag.project.noproject"));
-            profileList.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
+            profileList = new JComboBox(getBagView().getProfileStore().getProfileNames());
+            profileList.setName(getBagView().getPropertyMessage("bag.label.projectlist"));
+            profileList.setSelectedItem(getBagView().getPropertyMessage("bag.project.noproject"));
+            profileList.setToolTipText(getBagView().getPropertyMessage("bag.projectlist.help"));
         }
         return profileList;
     }
@@ -136,8 +134,8 @@ public class NewBagFrame extends JFrame implements ActionListener {
         //initStandardCommands();
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
-        titlePane.setTitle(bagView.getPropertyMessage("NewBagFrame.title"));
-        titlePane.setMessage( new DefaultMessage(bagView.getPropertyMessage("NewBagFrame.description")));
+        titlePane.setTitle(getBagView().getPropertyMessage("NewBagFrame.title"));
+        titlePane.setMessage( new DefaultMessage(getBagView().getPropertyMessage("NewBagFrame.description")));
         titlePaneContainer.add(titlePane.getControl());
         titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
         pageControl.add(titlePaneContainer, BorderLayout.NORTH);
@@ -168,17 +166,17 @@ public class NewBagFrame extends JFrame implements ActionListener {
     private void layoutBagVersionSelection(JPanel contentPane, int row) {
         //contents
         // Bag version dropdown list
-        JLabel bagVersionLabel = new JLabel(bagView.getPropertyMessage("bag.label.version"));
-        bagVersionLabel.setToolTipText(bagView.getPropertyMessage("bag.versionlist.help"));
+        JLabel bagVersionLabel = new JLabel(getBagView().getPropertyMessage("bag.label.version"));
+        bagVersionLabel.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
         ArrayList<String> versionModel = new ArrayList<String>();
         Version[] vals = Version.values();
         for (int i=0; i < vals.length; i++) {
             versionModel.add(vals[i].versionString);
         }
         bagVersionList = new JComboBox(versionModel.toArray());
-        bagVersionList.setName(bagView.getPropertyMessage("bag.label.versionlist"));
+        bagVersionList.setName(getBagView().getPropertyMessage("bag.label.versionlist"));
         bagVersionList.setSelectedItem(Version.V0_96.versionString);
-        bagVersionList.setToolTipText(bagView.getPropertyMessage("bag.versionlist.help"));
+        bagVersionList.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
 
         JLabel spacerLabel = new JLabel();
         GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
@@ -192,8 +190,8 @@ public class NewBagFrame extends JFrame implements ActionListener {
     private void layoutProfileSelection(JPanel contentPane, int row) {
         // content
         // profile selection
-        JLabel bagProfileLabel = new JLabel(bagView.getPropertyMessage("Select Profile:"));
-        bagProfileLabel.setToolTipText(bagView.getPropertyMessage("bag.projectlist.help"));
+        JLabel bagProfileLabel = new JLabel(getBagView().getPropertyMessage("Select Profile:"));
+        bagProfileLabel.setToolTipText(getBagView().getPropertyMessage("bag.projectlist.help"));
 
         //Nicolas Franck
         /*

@@ -3,43 +3,40 @@ package gov.loc.repository.bagger.ui.handlers;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.Progress;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
-
 import java.awt.event.ActionEvent;
 import java.io.File;
-
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.helper.SwingUtils;
 
 public class AddDataHandler extends AbstractAction implements Progress {
     private static final Log log = LogFactory.getLog(AddDataHandler.class);
-    private static final long serialVersionUID = 1L;
-    BagView bagView;
+    private static final long serialVersionUID = 1L;    
 
-    public AddDataHandler(BagView bagView) {
-        super();
-        this.bagView = bagView;
+    /*
+     * Nicolas Franck: public <init>(BagView bagView)
+     * removed, because BagView instance is available in BagView.getInstance()
+     */
+    public AddDataHandler() {
+        super();        
     }
     @Override
-    public void execute() {
-        bagView.statusBarEnd();
+    public void execute() {                
+        addData();        
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
-        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-        addData();
-        BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+    public void actionPerformed(ActionEvent e) {        
+        BusyIndicator.showAt(SwingUtils.getFrame());
+        execute();                
+        BusyIndicator.clearAt(SwingUtils.getFrame());
     }
-    public void addData() {
-        /*
-         * Nicolas Franck: waarom wordt de filechooser voortdurend opnieuw gemaakt? Geheugen besparen wanneer die niet actief is?
-         */
+    public void addData(){ 
         
+        final BagView bagView = BagView.getInstance();
         /*
          * Nicolas Franck: default directory
          * homedir default, en indien opgegeven lastDir? 
@@ -50,8 +47,9 @@ public class AddDataHandler extends AbstractAction implements Progress {
         }
 
         //File selectFile = new File(File.separator+".");
-
-        JFrame frame = new JFrame();
+        
+        //Nicolas Franck: een frame die niet gebruikt wordt heeft geen effect!
+        //JFrame frame = new JFrame();
         //JFileChooser fc = new JFileChooser(selectFile);
         JFileChooser fc = new JFileChooser(dir);
 
@@ -64,7 +62,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
          */
         fc.setDialogTitle(ApplicationContextUtil.getMessage("bag.message.addfiles"));
         //fc.setDialogTitle("Add File or Directory");
-    	int option = fc.showOpenDialog(frame);
+    	int option = fc.showOpenDialog(Application.instance().getActiveWindow().getControl());
 
         if (option == JFileChooser.APPROVE_OPTION) {
             File[] files = fc.getSelectedFiles();
@@ -77,16 +75,24 @@ public class AddDataHandler extends AbstractAction implements Progress {
             	addBagData(file, true);
             	ApplicationContextUtil.addConsoleMessage(message + " " + file.getAbsolutePath());
             }
-            bagView.bagPayloadTreePanel.refresh(bagView.bagPayloadTree);
+            bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
             bagView.updateAddData();
+            
+            //Nicolas Franck: geen validate of complete nuttig
+            bagView.validateExecutor.setEnabled(false);
+            bagView.validateBagHandler.setEnabled(false);
+            bagView.completeExecutor.setEnabled(false);
+            bagView.completeBagHandler.setEnabled(false);
         }
         /*
          * Nicolas Franck
          */
         String lastDir = fc.getCurrentDirectory().getAbsolutePath();
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
+        
     }
     private String getFileNames(File[] files) {
+        
     	StringBuilder stringBuff = new StringBuilder();
     	int totalFileCount = files.length;
     	int displayCount = 20;
@@ -95,7 +101,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
     	}
     	for (int i = 0; i < displayCount; i++) {
             if (i != 0) {
-                    stringBuff.append("\n");
+                stringBuff.append("\n");
             }
             stringBuff.append(files[i].getAbsolutePath());
     	}
@@ -104,27 +110,36 @@ public class AddDataHandler extends AbstractAction implements Progress {
     	}
         return stringBuff.toString();
     }
-    public void addBagData(File[] files) {
+    public void addBagData(File[] files) {        
+        
     	if(files != null){
             for (int i=0; i < files.length; i++) {
                 log.info("addBagData[" + i + "] " + files[i].getName());
-                if (i < files.length-1) addBagData(files[i], false);
-                else addBagData(files[i], true);
+                
+                addBagData(files[i],!(i < files.length-1));
+                //Nicolas Franck
+                /*
+                if (i < files.length-1) {
+                    addBagData(files[i], false);
+                }
+                else {
+                    addBagData(files[i], true);
+                }*/
             }
     	}
     }
     public void addBagData(File file, boolean lastFileFlag) {
-    	BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-        try {
+        
+        final BagView bagView = BagView.getInstance();    	
+        try{
             bagView.getBag().addFileToPayload(file);
-            boolean alreadyExists = bagView.bagPayloadTree.addNodes(file, false);
+            boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);
             if(alreadyExists) {
                 bagView.showWarningErrorDialog("Warning - file already exists", "File: " + file.getName() + "\n" + "already exists in bag.");
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             log.error("BagView.addBagData: " + e);
             bagView.showWarningErrorDialog("Error - file not added", "Error adding bag file: " + file + "\ndue to:\n" + e.getMessage());
-        }
-    	BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+        }    	
     }    
 }
