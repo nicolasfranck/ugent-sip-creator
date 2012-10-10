@@ -69,7 +69,7 @@ public final class RenameDialog extends JDialog{
         cancelButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                RenameDialog.this.dispose();
+                RenameDialog.this.dispose();              
             }            
         });
         okButton.addActionListener(new ActionListener(){

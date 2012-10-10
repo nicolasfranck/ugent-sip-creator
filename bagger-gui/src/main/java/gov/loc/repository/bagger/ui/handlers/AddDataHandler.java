@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -29,12 +30,13 @@ public class AddDataHandler extends AbstractAction implements Progress {
         addData();        
     }
     @Override
-    public void actionPerformed(ActionEvent e) {        
-        BusyIndicator.showAt(SwingUtils.getFrame());
-        execute();                
-        BusyIndicator.clearAt(SwingUtils.getFrame());
+    public void actionPerformed(ActionEvent e) {                
+        execute();                        
     }
-    public void addData(){ 
+    public void addData(){
+        System.out.println("is event thread: "+(SwingUtilities.isEventDispatchThread() ? "yes":"no"));       
+        
+        System.out.println("AddDataHandler::addData() start");
         
         final BagView bagView = BagView.getInstance();
         /*
@@ -65,6 +67,9 @@ public class AddDataHandler extends AbstractAction implements Progress {
     	int option = fc.showOpenDialog(Application.instance().getActiveWindow().getControl());
 
         if (option == JFileChooser.APPROVE_OPTION) {
+            
+            BusyIndicator.showAt(SwingUtils.getFrame());
+            
             File[] files = fc.getSelectedFiles();
             String message = ApplicationContextUtil.getMessage("bag.message.filesadded");
             if (files != null && files.length >0) {
@@ -83,12 +88,16 @@ public class AddDataHandler extends AbstractAction implements Progress {
             bagView.validateBagHandler.setEnabled(false);
             bagView.completeExecutor.setEnabled(false);
             bagView.completeBagHandler.setEnabled(false);
+            
+            BusyIndicator.clearAt(SwingUtils.getFrame());
         }
         /*
          * Nicolas Franck
          */
         String lastDir = fc.getCurrentDirectory().getAbsolutePath();
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
+        
+        System.out.println("AddDataHandler::addData() end");
         
     }
     private String getFileNames(File[] files) {
@@ -106,7 +115,7 @@ public class AddDataHandler extends AbstractAction implements Progress {
             stringBuff.append(files[i].getAbsolutePath());
     	}
     	if(totalFileCount > displayCount){
-            stringBuff.append("\n" + (totalFileCount - displayCount) + " more...");
+            stringBuff.append("\n").append(totalFileCount - displayCount).append(" more...");
     	}
         return stringBuff.toString();
     }

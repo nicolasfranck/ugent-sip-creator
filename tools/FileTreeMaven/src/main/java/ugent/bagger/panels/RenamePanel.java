@@ -39,9 +39,9 @@ import ugent.rename.*;
  */
 public class RenamePanel extends JPanel{
     private static Log logger = LogFactory.getLog(RenamePanel.class);
-    
-    private JPanel panelTreeTable;
-    private JPanel panelModifier;
+    private static final int BORDERWIDTH = 10;    
+    private JPanel panelWest;
+    private JPanel panelEast;
     private JPanel panelRenamer;
     private JPanel panelRenumber;
     private JPanel renameButtonPanel;  
@@ -58,15 +58,14 @@ public class RenamePanel extends JPanel{
     private int numToRename = 0;
     private int numRenamedSuccess = 0;
     private int numRenamedError = 0;
-    private JLabel statusLabel;
+    private JTextArea statusTextArea;
     private JTreeTable treeTable;
     private TreeTableModel treeTableModel;
     private boolean treeTableExpanded = false;   
     private RenameParams renameParams;
     private RenameParamsForm renameParamsForm;    
     private RenumberParams renumberParams;
-    private RenumberParamsForm renumberParamsForm;
-      
+    private RenumberParamsForm renumberParamsForm;      
     private TreeSelectionListener treeTableSelectionListener;
     
     public RenamePanel(){
@@ -183,15 +182,19 @@ public class RenamePanel extends JPanel{
     public void setResultTableModel(DefaultTableModel resultTableModel) {
         this.resultTableModel = resultTableModel;
     }
-    public JLabel getStatusLabel() {
-        if(statusLabel == null) {
-            statusLabel = new JLabel();
+
+    public JTextArea getStatusTextArea() {
+        if(statusTextArea == null){
+            statusTextArea = new JTextArea();
+            statusTextArea.setEditable(false);            
         }
-        return statusLabel;
+        return statusTextArea;
     }
-    public void setStatusLabel(JLabel statusLabel) {
-        this.statusLabel = statusLabel;
+
+    public void setStatusTextArea(JTextArea statusTextArea) {
+        this.statusTextArea = statusTextArea;
     }
+    
     public JPanel getNewButtonPanel(){
         return new JPanel(new FlowLayout(FlowLayout.LEFT));
     } 
@@ -245,30 +248,25 @@ public class RenamePanel extends JPanel{
         return treeTableModel;
     }    
     private void init() {
+        //split pane
         JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
         //panel west: file tree
-        panelTreeTable = new JPanel();
-        panelTreeTable.setLayout(new BorderLayout());
+        panelWest = new JPanel();
+        panelWest.setLayout(new BorderLayout());
         scrollerTreeTable = new JScrollPane(getCurrentTreeTable());
-
-        panelTreeTable.add(scrollerTreeTable,BorderLayout.CENTER);
+        panelWest.add(scrollerTreeTable,BorderLayout.CENTER);
         
         //add panel west to split pane
-        splitter.add(panelTreeTable);        
+        splitter.add(panelWest);        
         
         //panel east: modifier
-        panelModifier = new JPanel();
-        panelModifier.setLayout(new GridBagLayout());
-        
-        GridBagConstraints c = new GridBagConstraints();        
-        c.gridx = c.gridy = 0;                
-        c.gridwidth = GridBagConstraints.REMAINDER;        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.NORTHWEST;
-        c.weightx = c.weighty = 0.5;
+        panelEast = new JPanel();
+        panelEast.setLayout(new BoxLayout(panelEast,BoxLayout.PAGE_AXIS));        
 
         //panel east: modifier: choose directory
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        
         JButton chooseButton = new JButton(Context.getMessage("renameView.chooseFileButton.label"));
         chooseButton.addActionListener(new ActionListener(){
             @Override
@@ -282,65 +280,62 @@ public class RenamePanel extends JPanel{
                 
                 if(files.length == 0){
                     return;
-                }      
-                //TODO
-                //getStatusBar().getProgressMonitor().taskStarted("test",0);
+                }                      
                 setLastFile(files[0]);                
-                reloadTreeTable(files[0]);                
-                //getStatusBar().getProgressMonitor().done();                                 
+                reloadTreeTable(files[0]);                                
             }
-        });
+        });        
+        
+        buttonPanel.add(chooseButton);
+        
+        panelEast.add(buttonPanel);
 
-        c.gridy = 0;
-        c.fill = GridBagConstraints.NONE;
-        panelModifier.add(chooseButton,c);
-
-        //panel east: modifier: status label
-        c.gridy++;
-        c.fill = GridBagConstraints.HORIZONTAL;        
-        panelModifier.add(getStatusLabel(),c);
+        //panel east: modifier: status label        
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        getStatusTextArea().setPreferredSize(new Dimension(500,50));
+        getStatusTextArea().setBorder(BorderFactory.createLineBorder(Color.CYAN));
+        statusPanel.add(getStatusTextArea());
+        panelEast.add(statusPanel);
+        
+        //panel east: add tabs
+        JTabbedPane tabs = new JTabbedPane();                  
 
         //panel renamer
-        panelRenamer = getNewRenamePanel();         
-
-        //panel east: add tabs
-        c.gridy++;
-        panelModifier.add(panelRenamer,c);  
+        panelRenamer = getNewRenamePanel();                 
+        //panel renumber        
+        panelRenumber = getNewRenumberPanel();        
         
-        //panel renumber
-        c.gridy++;
-        panelRenumber = getNewRenumberPanel();
-        panelModifier.add(panelRenumber,c);        
+        tabs.addTab("rename",panelRenamer);
+        tabs.addTab("renumber",panelRenumber);        
         
-        //result tabel      
-        c.gridy += 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.gridheight = 2;      
+        tabs.setBorder(BorderFactory.createLineBorder(Color.RED));
+        
+        panelEast.add(tabs);
         
         
+        
+        //result tabel
         JScrollPane scrollerResultTable = new JScrollPane(getResultTable());
-        scrollerResultTable.setPreferredSize(new Dimension(500,300));        
-        panelModifier.add(scrollerResultTable,c);
+        scrollerResultTable.setPreferredSize(new Dimension(500,200));    
         
-        c.gridheight = 2;
+        panelEast.add(scrollerResultTable);               
         
         //add panel east to split pane
-        JScrollPane scrollerPanelModifier = new JScrollPane(panelModifier);
+        JScrollPane scrollerPanelModifier = new JScrollPane(panelEast);
         splitter.add(scrollerPanelModifier);
         
         splitter.setDividerLocation(0.7);
-        splitter.setResizeWeight(0.7);        
+        splitter.setResizeWeight(0.7);                
         
+        splitter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         
         add(splitter);        
     }
     protected JTreeTable getNewTreeTable(File file) {
         treeTable = new JTreeTable(getNewTreeTableModel(file));
-        final JTree tree = treeTable.getTree();
-        tree.setSelectionPath(new TreePath(tree.getModel().getRoot()));
+        final JTree tree = treeTable.getTree();        
         tree.addTreeSelectionListener(getNewTreeTableSelectionListener(tree));
-        fileNodesSelected.clear();
-        fileNodesSelected.add(new FileNode(file));
+        fileNodesSelected.clear();        
         return treeTable;
     }
     protected void setFormsEnabled(boolean enabled){
@@ -351,23 +346,16 @@ public class RenamePanel extends JPanel{
         return treeTableModel;
     }
     protected JPanel getNewRenumberPanel(){
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = c.weighty = 0.5;
-        c.insets = new Insets(5,5,5,5);
-        c.gridx = c.gridy = 0;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
 
-        //form
-        
+        //form        
         final ValidatingFormModel renumberFormModel = getRenumberParamsForm().getFormModel();
         JComponent componentForm = getRenumberParamsForm().getControl();
 
-        panel.add(componentForm,c);        
+        panel.add(componentForm);        
         
-        //buttons
-      
+        //buttons      
         submitRenumberButton = new JButton(Context.getMessage("ok"));
         getRenumberButtonPanel().add(submitRenumberButton);
         simulateRenumberButton = new JButton(Context.getMessage("simulate"));
@@ -378,7 +366,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {                
                 if(fileNodesSelected.size() <= 0){
-                    getStatusLabel().setText("selecteer bestanden");
+                    getStatusTextArea().setText("selecteer bestanden");
                     return;
                 }
                 renumberParams.setSimulateOnly(false);
@@ -402,7 +390,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae){               
                 if(fileNodesSelected.size() <= 0){
-                    getStatusLabel().setText("selecteer bestanden");
+                    getStatusTextArea().setText("selecteer bestanden");
                     return;
                 }               
                 renumberParams.setSimulateOnly(true);
@@ -412,36 +400,30 @@ public class RenamePanel extends JPanel{
                 //wordt in achtergrond uitgevoerd, dus liefst geen statements hier achter!
                 renumber();               
             }
-        });
-        c.gridy += 1;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.NORTHWEST;
+        });    
 
-        panel.add(getRenumberButtonPanel(),c);
+        panel.add(getRenumberButtonPanel());
+        
+        panel.setBorder(BorderFactory.createEmptyBorder(BORDERWIDTH,BORDERWIDTH,BORDERWIDTH,BORDERWIDTH));
         
         return panel; 
     }
     protected JPanel getNewRenamePanel(){
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = c.weighty = 0.5;
-        c.insets = new Insets(5,5,5,5);
-        c.gridx = c.gridy = 0;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        JPanel panel = new JPanel();        
+        panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
 
         JTextArea descriptionArea = new JTextArea();
-        descriptionArea.setEditable(false);        
-        panel.add(descriptionArea,c);
-        c.gridy += 1;
+        descriptionArea.setEditable(false);  
+        
+        JPanel panelDescription = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(panelDescription);        
 
         //form
         RenameParamsForm renameForm = getRenameParamsForm();
         final ValidatingFormModel renameFormModel = renameForm.getFormModel();
         JComponent componentForm = renameForm.getControl();
 
-        panel.add(componentForm,c);        
+        panel.add(componentForm);        
         
         //buttons
       
@@ -455,7 +437,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {                
                 if(fileNodesSelected.size() <= 0){
-                    getStatusLabel().setText("selecteer bestanden");
+                    getStatusTextArea().setText("selecteer bestanden");
                     return;
                 }           
                 renameParams.setSimulateOnly(false);
@@ -479,7 +461,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae){               
                 if(fileNodesSelected.size() <= 0){
-                    getStatusLabel().setText("selecteer bestanden");
+                    getStatusTextArea().setText("selecteer bestanden");
                     return;
                 }
                 renameParams.setSimulateOnly(true);
@@ -489,22 +471,20 @@ public class RenamePanel extends JPanel{
                 //wordt in achtergrond uitgevoerd, dus liefst geen statements hier achter!
                 rename();                
             }
-        });
-        c.gridy += 1;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.NORTHWEST;
+        });       
 
-        panel.add(getRenameButtonPanel(),c);
+        panel.add(getRenameButtonPanel());
+        
+        panel.setBorder(BorderFactory.createEmptyBorder(BORDERWIDTH,BORDERWIDTH,BORDERWIDTH,BORDERWIDTH));
         
         return panel;        
     }
     public void reloadTreeTable(File file){        
-        panelTreeTable.remove(scrollerTreeTable);
+        panelWest.remove(scrollerTreeTable);
         scrollerTreeTable = new JScrollPane(getNewTreeTable(file));
-        panelTreeTable.add(scrollerTreeTable,BorderLayout.CENTER);
-        panelTreeTable.revalidate();
-        panelTreeTable.repaint();
+        panelWest.add(scrollerTreeTable,BorderLayout.CENTER);
+        panelWest.revalidate();
+        panelWest.repaint();
     }    
     protected void clearResultTable(){
         resultTableModel.getDataVector().clear();
@@ -538,7 +518,7 @@ public class RenamePanel extends JPanel{
         @Override
         protected Void doInBackground(){
             clearResultTable();
-            getStatusLabel().setText(null);        
+            getStatusTextArea().setText(null);        
             numRenamedSuccess = 0;
             numRenamedError = 0;
             
@@ -601,7 +581,7 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                        getStatusLabel().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                                               
+                        getStatusTextArea().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                                               
                         simulateRenumberButton.setEnabled(true);
                         submitRenumberButton.setEnabled(true);
                         if(!renumberParams.isSimulateOnly()){
@@ -626,7 +606,7 @@ public class RenamePanel extends JPanel{
         @Override
         protected Void doInBackground(){
             clearResultTable();
-            getStatusLabel().setText(null);        
+            getStatusTextArea().setText(null);        
             numRenamedSuccess = 0;
             numRenamedError = 0;
             try{
@@ -681,9 +661,8 @@ public class RenamePanel extends JPanel{
                             int answer = JOptionPane.showConfirmDialog(SwingUtils.getFrame(),"Waarschuwing: één of meerdere bestanden zullen overschreven worden. Bent u zeker?");
                             approved = answer == JOptionPane.OK_OPTION;
                             renamer.setOverwrite(approved);
-                            getRenameParamsForm().getValueModel("overWrite").setValue(new Boolean(true));
-                            getRenameParamsForm().commit();
-                            System.out.println("is overwrite now: "+(renamer.isOverwrite() ? "yes":"no"));
+                            getRenameParamsForm().getValueModel("overWrite").setValue(new Boolean(approved));
+                            getRenameParamsForm().commit();                            
                         }
                         return approved;
                     }
@@ -709,7 +688,7 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                        getStatusLabel().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                       
+                        getStatusTextArea().setText("totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                       
                         simulateRenameButton.setEnabled(true);
                         submitRenameButton.setEnabled(true);
                         if(!renameParams.isSimulateOnly()){

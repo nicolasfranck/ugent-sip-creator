@@ -15,6 +15,8 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,8 @@ import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.DefaultMetsCallback;
 import ugent.bagger.helper.FUtils;
+import ugent.bagger.helper.IteratorHierarchyListener;
+import ugent.bagger.helper.IteratorListener;
 import ugent.bagger.helper.MetsUtils;
 
 /**
@@ -57,7 +61,7 @@ public class DSpaceBagItMets extends BagItMets{
     }
 
     @Override
-    public Mets onSaveBag(Bag bag, Mets mets) {
+    public Mets onSaveBag(Bag bag,Mets mets) {
         BagView bagView = BagView.getInstance();
         DefaultBag defaultBag = bagView.getBag();
 
@@ -73,6 +77,10 @@ public class DSpaceBagItMets extends BagItMets{
 
             Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
             Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);            
+            
+            
+            Collection<BagFile>payloads = bag.getPayload();
+            Collection<BagFile>tags = bag.getTags();
 
             //fileSec
             FileSec fileSec = mets.getFileSec();
@@ -89,7 +97,7 @@ public class DSpaceBagItMets extends BagItMets{
             payloadGroup.setUse("Content");
             List<FileSec.FileGrp.File>payloadFiles = payloadGroup.getFile();            
 
-            for(BagFile bagFile:bag.getPayload()){
+            for(BagFile bagFile:payloads){
 
                 //xsd:ID moet NCName zijn                    
                 String fileId = UUID.randomUUID().toString();                        
@@ -129,14 +137,13 @@ public class DSpaceBagItMets extends BagItMets{
                         if(payloadFile.isFile()){                    
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
                         }else if(rootDir.exists()){                        
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;                        
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));                  
                         }else{
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());;
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                         }    
                     }
                 }catch(Exception e){
-                    System.out.println("SOMETHING happened!");
-                    e.printStackTrace();
+                    log.debug(e.getMessage());                    
                 }
 
                 //FLocat
@@ -157,7 +164,7 @@ public class DSpaceBagItMets extends BagItMets{
             tagFileGroup.setUse("Tags");
             List<FileSec.FileGrp.File>tagFiles = tagFileGroup.getFile();
             
-            for(BagFile bagFile:bag.getTags()){
+            for(BagFile bagFile:tags){
                 
                 if(bagFile.getFilepath().equals("mets.xml")){
                     //je kan niet verwijzen naar jezelf
@@ -202,14 +209,13 @@ public class DSpaceBagItMets extends BagItMets{
                         if(tagFile.isFile()){
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(tagFile.lastModified())));
                         }else if(rootDir.exists()){
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));;
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));
                         }else{                     
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());;                    
+                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                         }
                     }
                 }catch(Exception e){
-                    System.out.println("SOMETHING happened!");
-                    e.printStackTrace();
+                    log.debug(e.getMessage());                    
                 }
 
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();
@@ -221,10 +227,36 @@ public class DSpaceBagItMets extends BagItMets{
             }
             
             fileGroups.add(tagFileGroup);            
+            
+            //make node trees
+            //Nicolas Franck: can be done this way, but this is not always available!
+            //DefaultMutableTreeNode rootNodePayloads = bagView.getBagPayloadTree().getParentNode();                                      
+            //DefaultMutableTreeNode rootNodeTagFiles = bagView.getBagTagFileTree().getParentNode();            
+            DefaultMutableTreeNode rootNodePayloads;              
+            DefaultMutableTreeNode rootNodeTagFiles;            
+            
+            String [] payloadPaths = new String [payloads.size()];
+            int i = 0;
+            for(BagFile payload:payloads){            
+                payloadPaths[i++] = payload.getFilepath();
+            }            
+            List<DefaultMutableTreeNode> listNodes = FUtils.listToStructure(payloadPaths);            
+            rootNodePayloads = listNodes.get(0);            
+            
+            String [] tagPaths = new String [tags.size()];
+            i = 0;
+            for(BagFile tag:tags){            
+                tagPaths[i++] = tag.getFilepath();
+            }            
+            listNodes = FUtils.listToStructure(tagPaths);            
+            
+            rootNodeTagFiles = new DefaultMutableTreeNode(".");
+            for(DefaultMutableTreeNode n:listNodes){
+                rootNodeTagFiles.add(n);
+            }
+            
 
             //structMaps
-            DefaultMutableTreeNode rootNodePayloads = bagView.getBagPayloadTree().getParentNode();              
-            DefaultMutableTreeNode rootNodeTagFiles = bagView.getBagTagFileTree().getParentNode();            
             
             //structmap payloads
             StructMap structMapPayloads = MetsUtils.toStructMap(rootNodePayloads,new DefaultMetsCallback(){
@@ -249,7 +281,7 @@ public class DSpaceBagItMets extends BagItMets{
                     int indexTagmanifest = -1;
                     for(int i = 0;i<div.getFptr().size();i++){                        
                         Fptr filePointer = div.getFptr().get(i);                                               
-                        String fileId = filePointer.getFILEID().replaceFirst("^data\\/","");                                                     
+                        String fileId = filePointer.getFILEID().replaceFirst("^\\.\\/","");                                                     
                        
                         if(fileId.compareTo("mets.xml") == 0){
                             indexMetsXML = i;

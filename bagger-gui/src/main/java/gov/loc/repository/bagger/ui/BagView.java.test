@@ -225,13 +225,68 @@ public class BagView extends DefaultView {
         ActionMap actionMap = tree.getActionMap();                        
         actionMap.put("removeData",new AbstractAction(){
             @Override
-            public void actionPerformed(ActionEvent ae) {                
+            public void actionPerformed(ActionEvent ae) {
+                System.out.println("delete pressed!");
                 removeDataHandler.removeData();
             }               
         });
         InputMap inputMap = tree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);                                        
         inputMap.put(KeyStroke.getKeyStroke((char)127),"removeData");            
-       
+
+        tree.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(final MouseEvent e){
+                if(!SwingUtilities.isRightMouseButton(e)){
+                    return;
+                }
+                
+                final TreePath[] tpaths = tree.getSelectionPaths();                    
+                Bag bag = getBag().getBag();                
+                if(tpaths == null){
+                    return;
+                }
+                final ArrayList<File>list = new ArrayList<File>();                
+                
+                for(TreePath tpath:tpaths){
+                    String name = StringUtils.join(tpath.getPath(),File.separator);                                                        
+                    BagFile bagFile = bag.getBagFile(name);       
+                    
+                    //file die in de queue staat om toegevoegd te worden
+                    if(bagFile instanceof FileBagFile){                        
+                        list.add(((FileBagFile)bagFile).getFile());
+                    }
+                    //file die reeds in de bag zat bij het inladen
+                    else if(bagFile instanceof VFSBagFile){
+                        VFSBagFile vbagFile = (VFSBagFile)bagFile;                        
+                        String fileURI = vbagFile.getFileURI();                        
+                        if(fileURI.startsWith("file://")){
+                            String path = fileURI.substring("file://".length());
+                            list.add(new File(path));
+                        }                                                
+                    }
+                }    
+                if(tpaths.length == list.size()){
+                    SwingUtilities.invokeLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            FileManipulatePopupMenu popup = new FileManipulatePopupMenu(
+                                list.toArray(new File [] {}),
+                                tpaths.length == list.size()
+                            );                              
+                            popup.show(getControl(),e.getX(),e.getY());                        
+                            popup.pack();
+                        }                    
+                    });
+                }else{                    
+                    JOptionPane.showMessageDialog(
+                        SwingUtils.getFrame(),
+                        "no legal files found!",
+                        "warning!",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }                
+            }
+        });
         return tree;
     }
     public BagTree getBagPayloadTree() {

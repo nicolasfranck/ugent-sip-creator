@@ -166,6 +166,48 @@ public class FUtils {
         
         return root;
     }
+    public static DefaultMutableTreeNode getFileTree(File file){
+        return getFileTree(file,-1);
+    }
+    public static DefaultMutableTreeNode getFileTree(File file,int maxdepth){
+         if(file == null || !file.exists()){
+            return null;
+        }
+         
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new FileNode(file));       
+        
+        if(file.isFile()){
+            root.setAllowsChildren(false);
+            return root;
+        }
+        root.setAllowsChildren(true);
+        if(maxdepth == 0){
+            return root;
+        }
+        
+        ArrayList<File>files = new ArrayList<File>();
+        ArrayList<File>directories = new ArrayList<File>();
+        
+        for(File sb:file.listFiles()){
+            if(sb.isDirectory()) {
+                directories.add(sb);
+            }
+            else {
+                files.add(sb);
+            }         
+        }
+        
+        Collections.sort(directories,defaultFileSorter);
+        for(File dir:directories){            
+            root.add(toTreeNode(dir,maxdepth-1));
+        }
+        Collections.sort(files,defaultFileSorter);
+        for(File f:files){            
+           root.add(toTreeNode(f,maxdepth-1));
+        }             
+        
+        return root;
+    }
     public static void walkTree(DefaultMutableTreeNode node,IteratorHierarchyListener il){
         walkTree(node,il,0);
     }

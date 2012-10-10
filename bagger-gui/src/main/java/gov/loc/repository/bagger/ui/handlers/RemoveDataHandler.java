@@ -14,6 +14,8 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.helper.SwingUtils;
 
 public class RemoveDataHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(RemoveDataHandler.class);
@@ -32,14 +34,13 @@ public class RemoveDataHandler extends AbstractAction {
     }
 
     public void removeData() {
-    	String message = "";
+    	BusyIndicator.showAt(SwingUtils.getFrame());
+        
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
 
     	TreePath[] paths = bagView.getBagPayloadTree().getSelectionPaths();
         
-        System.out.println("RemoveDataHandler::removeData => paths: "+paths);
-    	
     	if (paths != null) {
             DefaultTreeModel model = (DefaultTreeModel)bagView.getBagPayloadTree().getModel();
             for (int i=0; i < paths.length; i++) {
@@ -90,7 +91,7 @@ public class RemoveDataHandler extends AbstractAction {
                                 model.removeNodeFromParent((MutableTreeNode)aNode);
                             }
                         } catch (Exception ex) {                            
-                            message = "Error trying to remove: " + fileName + "\n";
+                            String message = "Error trying to remove: " + fileName + "\n";
                             bagView.showWarningErrorDialog("Error - file not removed", message + ex.getMessage());
                         }
                     }
@@ -104,7 +105,9 @@ public class RemoveDataHandler extends AbstractAction {
             bagView.validateExecutor.setEnabled(false);
             bagView.validateBagHandler.setEnabled(false);
             bagView.completeExecutor.setEnabled(false);
-            bagView.completeBagHandler.setEnabled(false);
+            bagView.completeBagHandler.setEnabled(false);            
     	}
+        
+        BusyIndicator.clearAt(SwingUtils.getFrame());
     }
 }

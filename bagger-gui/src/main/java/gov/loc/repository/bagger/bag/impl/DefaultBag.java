@@ -161,11 +161,9 @@ public class DefaultBag {
         BagFactory bagFactory = new BagFactory();
         PreBag preBag = bagFactory.createPreBag(data);
         if (version == null) {
-            Bag bag = preBag.makeBagInPlace(BagFactory.LATEST, false);
-            bilBag = bag;
+            bilBag = preBag.makeBagInPlace(BagFactory.LATEST, false);            
         } else {
-            Bag bag = preBag.makeBagInPlace(Version.valueOfString(version),false);
-            bilBag = bag;
+            bilBag = preBag.makeBagInPlace(Version.valueOfString(version),false);            
         }
     }
 
@@ -176,12 +174,10 @@ public class DefaultBag {
     public void createPreBagAddKeepFilesToEmptyFolders(File data, String version) {
         BagFactory bagFactory = new BagFactory();
         PreBag preBag = bagFactory.createPreBag(data);
-        if (version == null) {
-            Bag bag = preBag.makeBagInPlace(BagFactory.LATEST, false, true);
-            bilBag = bag;
-        } else {
-            Bag bag = preBag.makeBagInPlace(Version.valueOfString(version),false, true);
-            bilBag = bag;
+        if(version == null){
+            bilBag = preBag.makeBagInPlace(BagFactory.LATEST, false, true);            
+        }else{
+            bilBag = preBag.makeBagInPlace(Version.valueOfString(version),false, true);            
         }
     }	
 
@@ -436,7 +432,7 @@ public class DefaultBag {
     public String getDataContent() {
         totalSize = 0;
         StringBuilder dcontent = new StringBuilder();
-        dcontent.append(getDataDirectory() + "/");
+        dcontent.append(getDataDirectory()).append("/");
         dcontent.append('\n');
         Collection<BagFile> files = bilBag.getPayload();
         if (files != null) {

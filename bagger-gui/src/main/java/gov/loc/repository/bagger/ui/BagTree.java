@@ -86,7 +86,7 @@ public final class BagTree extends JTree {
         basePath = path;
 
         log.debug("BagTree.populateNodes");  
-        System.out.println("path: "+path+", rootSrc: "+rootSrc);
+        
        
         if (bag.getPayload() != null && rootSrc.listFiles() != null) {
             addNodes(rootSrc, isParent);            
@@ -147,10 +147,9 @@ public final class BagTree extends JTree {
         if(!nodeAlreadyExists(file.getName())){           
             
             //Nicolas Franck
-            //DefaultMutableTreeNode node = createNodeTree(null, null, file);            
+            //DefaultMutableTreeNode node = createNodeTree(null, null, file);                        
             
-            String removePath = file.getAbsolutePath().replaceFirst("data$","");            
-            DefaultMutableTreeNode node = FUtils.toTreeNode(file,-1,removePath);
+            DefaultMutableTreeNode node = FUtils.toTreeNode(file);
             
             //Nicolas Franck: nergens gebruikt
             //srcNodes.add(node);

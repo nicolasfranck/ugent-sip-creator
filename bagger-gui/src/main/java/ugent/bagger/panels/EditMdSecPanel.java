@@ -84,7 +84,10 @@ final public class EditMdSecPanel extends JPanel{
         JPanel panel = new JPanel(new BorderLayout());                                
                           
         panel.add(getButtonPanel(),BorderLayout.NORTH);                         
-        panel.add(new JScrollPane(getMdSecForm().getControl()),BorderLayout.CENTER);     
+        panel.add(getMdSecForm().getControl(),BorderLayout.CENTER);     
+        
+        final int w = 10;
+        panel.setBorder(BorderFactory.createEmptyBorder(w,w,w,w));
         
         splitter.setTopComponent(panel);
         splitter.setBottomComponent(new JScrollPane(getTextArea()));        

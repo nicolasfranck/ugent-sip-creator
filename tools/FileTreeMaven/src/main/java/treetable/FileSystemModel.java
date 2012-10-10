@@ -70,7 +70,7 @@ public class FileSystemModel extends AbstractTreeTableModel
 
     // Names of the columns.
     //static protected String[]  cNames = {"Name", "Size", "Type", "Modified"};
-    static protected String[]  cNames = {"Name","Type"};
+    static final protected String[]  cNames = {"Name","Type"};
 
     // Types of the columns.
     //static protected Class[]  cTypes = {TreeTableModel.class, Integer.class, String.class, Date.class};
@@ -158,15 +158,11 @@ public class FileSystemModel extends AbstractTreeTableModel
  
     @Override
     public Object getValueAt(Object node, int column) {
-	File file = getFile(node);
-        
-        logger.debug("getValueAt: node: "+node);
-        logger.debug("getValueAt: column: "+column);
-        logger.debug("getValueAt: file: "+file);
-        logger.debug("getValueAt: file.path: "+file.getAbsolutePath());
-        logger.debug("getValueAt: file.list: "+file.list());
+	File file = getFile(node);        
 
-        if(file == null)return null;
+        if(file == null) {
+            return null;
+        }
         else if(!file.exists()){
             this.fireTreeNodesRemoved(this,new TreePath(this.getRoot()).getPath(),new int [] {},new Object [] {});
             return null;

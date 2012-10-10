@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package treetable;
 
 import javax.swing.JTable;
@@ -38,5 +33,4 @@ public class RenameResultTable extends AbstractObjectTable {
     protected Object[] getDefaultInitialData() {
         return new Object [] {};
     }
-
 }

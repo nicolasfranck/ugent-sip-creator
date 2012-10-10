@@ -212,9 +212,9 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>ugent.bagit</groupId>
-      <artifactId>ugent.bagit</artifactId>
-      <version>1.0</version>
+      <groupId>gov.loc</groupId>
+      <artifactId>bagit</artifactId>
+      <version>3.13</version>
     </dependency>
   </dependencies>
 

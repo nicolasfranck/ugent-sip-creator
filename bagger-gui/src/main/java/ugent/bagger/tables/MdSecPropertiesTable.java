@@ -55,6 +55,7 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
                         dialog.setSize(new Dimension(500,600));   
                         dialog.setResizable(false);
                         dialog.setLocationRelativeTo(MdSecPropertiesTable.this.getTable());
+                        dialog.pack();
                         dialog.setVisible(true);                        
                     }catch(Exception e){
                         logger.debug(e.getMessage());                    
