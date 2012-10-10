@@ -11,6 +11,7 @@ import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import treetable.FileLazyTreeModel.Mode;
 
 /**
  *
@@ -26,8 +27,10 @@ public class LazyTree {
         LazyTreeNode rootNode = new LazyTreeNode(rootFile.getAbsolutePath(),new FileNode(rootFile),rootFile.isDirectory());
         
         
-        tree.setModel(new FileLazyTreeModel(rootNode,tree));
-        tree.setCellRenderer(new LazyFileTreeCellRenderer());
+        tree.setModel(new FileLazyTreeModel(rootNode,tree,Mode.FILES_ONLY));
+        tree.setRootVisible(true);
+        tree.setShowsRootHandles(true);
+        //tree.setCellRenderer(new LazyFileTreeCellRenderer());
         /*
         tree.addTreeWillExpandListener(new TreeWillExpandListener() {
             @Override

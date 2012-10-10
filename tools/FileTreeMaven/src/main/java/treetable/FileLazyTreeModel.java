@@ -12,6 +12,7 @@ import javax.swing.tree.TreeNode;
  * @author nicolas
  */
 public class FileLazyTreeModel extends LazyTreeModel{
+    private Mode mode = Mode.FILES_AND_DIRECTORIES;
     private static Comparator defaultFileSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1, File f2){
@@ -19,7 +20,11 @@ public class FileLazyTreeModel extends LazyTreeModel{
         }
     };
     public FileLazyTreeModel(TreeNode root, JTree tree){
+        this(root,tree,Mode.FILES_AND_DIRECTORIES);
+    }
+    public FileLazyTreeModel(TreeNode root, JTree tree,Mode mode){
         super(root,tree);
+        this.mode = mode;
     }
     @Override
     public LazyTreeNode[] loadChildren(LazyTreeNode parentNode) {
@@ -31,9 +36,13 @@ public class FileLazyTreeModel extends LazyTreeModel{
 
         for(File sb:selectedFile.listFiles()){
             if(sb.isDirectory()) {
-                directories.add(sb);
+                if(mode == Mode.DIRECTORIES_ONLY || mode == Mode.FILES_AND_DIRECTORIES){
+                    directories.add(sb);
+                }                
             }else{
-                files.add(sb);
+                if(mode == Mode.FILES_ONLY || mode == Mode.FILES_AND_DIRECTORIES){
+                    files.add(sb);
+                }                
             }         
         }
         Collections.sort(directories,defaultFileSorter);        
@@ -47,5 +56,8 @@ public class FileLazyTreeModel extends LazyTreeModel{
             children.add(new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),false));            
         }
         return children.toArray(new LazyTreeNode [] {});
+    }
+    public enum Mode {
+        FILES_ONLY,DIRECTORIES_ONLY,FILES_AND_DIRECTORIES
     }
 }        
