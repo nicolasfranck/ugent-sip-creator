@@ -169,10 +169,8 @@ public class Renumber extends AbstractRenamer{
             String formattedNumber = String.format(format,i);
             
             formattedNumber = sequence.next();
-            
-            
             String nameOutputFile = left+separatorBefore+formattedNumber+separatorAfter+right;            
-            System.out.println(nameInputFile+" => "+nameOutputFile);
+
         
             pairs.add(new RenameFilePair(
                 inputFile,
@@ -181,7 +179,7 @@ public class Renumber extends AbstractRenamer{
             
             i+=step;             
         }       
-        System.out.println("filePairs.size = "+pairs.size());
+
         return pairs;
     } 
     public static void main(String [] args){

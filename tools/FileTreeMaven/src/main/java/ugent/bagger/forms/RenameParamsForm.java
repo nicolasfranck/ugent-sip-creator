@@ -30,9 +30,8 @@ public class RenameParamsForm extends AbstractForm{
 
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);        
-        builder.setLabelAttributes("colSpan=1 align=left");
-        builder.addSeparator(Context.getMessage("renameFiles"));
-        builder.row();        
+        builder.setLabelAttributes("colSpan=1 align=left");        
+        
         String [] commonFields = {"source","destination"};
         for(String field:commonFields){
             builder.add(field);

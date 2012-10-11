@@ -33,8 +33,10 @@ public class FileNode {
      * Returns the the string to be used to display this leaf in the JTree.
      */
     @Override
-    public String toString() {         
-	return file.getName();
+    public String toString() {
+        //Nicolas Franck: root van het filesysteem heeft geen naam
+        String name = file.getName();
+	return (name != null && !name.equals("")) ? name:File.separator;
     }
 
     public File getFile() {

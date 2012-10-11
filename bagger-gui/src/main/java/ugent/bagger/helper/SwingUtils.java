@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ugent.bagger.helper;
 
 import com.anearalone.mets.StructMap;
@@ -12,31 +16,31 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 
 /**
  *
  * @author nicolas
  */
-public class SwingUtils {    
-    private static JFileChooser createFileChooser(String title,FileFilter [] filters,int mode,boolean multiSelectionEnabled){
+public class SwingUtils {
+    private static Log logger = LogFactory.getLog(SwingUtils.class);
+    private static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
         JFileChooser fileChooser = new JFileChooser();              
         fileChooser.setDialogTitle(title);            
-        fileChooser.setFileFilter(null);            
-        if(filters != null){
-            for(FileFilter filter:filters){
-                fileChooser.addChoosableFileFilter(filter);
-            }
-        }
+        fileChooser.setFileFilter(filter);            
         fileChooser.setFileSelectionMode(mode);
         fileChooser.setMultiSelectionEnabled(multiSelectionEnabled);        
         return fileChooser;
     }        
     public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
-        return chooseFiles(title,new FileFilter [] {filter},mode,multiSelectionEnabled,SwingUtils.getFrame());
+        return chooseFiles(title,filter,mode,multiSelectionEnabled,SwingUtils.getFrame());
     }
-    public static File [] chooseFiles(String title,FileFilter [] filters,int mode,boolean multiSelectionEnabled,Component component){        
-        JFileChooser fchooser = createFileChooser(title,filters,mode,multiSelectionEnabled);        
+    public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,Component component){        
+        JFileChooser fchooser = createFileChooser(title,filter,mode,multiSelectionEnabled);        
         
         int freturn = fchooser.showOpenDialog(component);
         File [] files = {};
@@ -69,7 +73,7 @@ public class SwingUtils {
             button.removeActionListener(l);
         }
     }    
-    public static void monitor(SwingWorker worker,String title,String note){      
+    public static void monitor(SwingWorker worker,String title,String note){
         monitor(getFrame(),worker,title,note);
     }
     public static void monitor(SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
@@ -79,10 +83,10 @@ public class SwingUtils {
         monitor(component,worker,title,note,new ArrayList<PropertyChangeListener>());
     }
     public static void monitor(Component component,SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
-        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                        
+        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                
         progressMonitor.setProgress(0);
-        progressMonitor.setMillisToDecideToPopup(0);
-        progressMonitor.setMillisToPopup(0);        
+        progressMonitor.setMillisToDecideToPopup(100);
+        progressMonitor.setMillisToPopup(0);
         worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
         if(listeners != null){
             for(PropertyChangeListener listener:listeners){
@@ -93,18 +97,17 @@ public class SwingUtils {
     }
     private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor){
         return new PropertyChangeListener() {
-            private String lastNote = "";
             @Override
-            public void propertyChange(PropertyChangeEvent evt) {                                                       
-                if("note".compareTo(evt.getPropertyName()) == 0){                    
-                    lastNote = (String) evt.getNewValue();
-                }else if("progress".compareTo(evt.getPropertyName())==0){                            
+            public void propertyChange(PropertyChangeEvent evt) {                        
+                logger.debug("property change event: "+evt.getPropertyName());
+                logger.debug("property value:"+evt.getNewValue());                
+                if("progress".compareTo(evt.getPropertyName())==0){                            
                     int progress = (Integer) evt.getNewValue();                            
                     progressMonitor.setProgress(progress);                              
-                    progressMonitor.setNote(lastNote+": "+progress+"%");                                          
+                    progressMonitor.setNote(progress+"%");                    
                 }else if(
                     "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue() == SwingWorker.StateValue.DONE
-                ){  
+                ){                    
                     progressMonitor.close();
                 }
             }
@@ -125,12 +128,20 @@ public class SwingUtils {
         return node;
     }
     public static DefaultMutableTreeNode structMapToTreeNode(StructMap struct){
-        return new DefaultMutableTreeNode(struct.getLabel());        
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(struct.getLabel());        
+        return node; 
     }
     public static DefaultMutableTreeNode divToTreeNode(Div div){
-        return new DefaultMutableTreeNode(div.getLabel());        
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(div.getLabel());
+        return node; 
     }
     public static JFrame getFrame(){
         return Application.instance().getActiveWindow().getControl();
+    }
+    public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node){
+        tree.expandPath(new TreePath(node.getPath()));        
+        for(int i = 0;i < node.getChildCount();i++){
+            expandTreeNode(tree,(DefaultMutableTreeNode) node.getChildAt(i));
+        }        
     }
 }

@@ -40,11 +40,7 @@ public class RenumberParamsForm extends AbstractForm{
         RenumberParams renumberParams = (RenumberParams)getFormObject();
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);        
-        builder.setLabelAttributes("colSpan=1 align=left");
-        
-        
-        builder.addSeparator(Context.getMessage("renumberFiles"));
-        builder.row();
+        builder.setLabelAttributes("colSpan=1 align=left");        
                    
         builder.add(new JSpinnerNumberBinding(
             getFormModel(),"start",renumberParams.getStart(),0,Integer.MAX_VALUE,1
@@ -58,8 +54,7 @@ public class RenumberParamsForm extends AbstractForm{
         
         final Binding radixBinding = bf.createBoundComboBox("radix",Radix.values());
         builder.add(radixBinding); 
-        builder.row();        
-        
+        builder.row();
         
         builder.add("separatorBefore");   
         builder.row();

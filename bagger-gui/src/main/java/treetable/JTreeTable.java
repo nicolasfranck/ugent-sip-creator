@@ -142,10 +142,11 @@ public final class JTreeTable extends JTable {
 						       boolean isSelected,
 						       boolean hasFocus,
 						       int row, int column) {
-	    if(isSelected)
-		setBackground(table.getSelectionBackground());
-	    else
-		setBackground(table.getBackground());
+	    if(isSelected) {
+                setBackground(table.getSelectionBackground());
+            }else{
+                setBackground(table.getBackground());
+            }
        
 	    visibleRow = row;
 	    return this;
@@ -168,4 +169,3 @@ public final class JTreeTable extends JTable {
     }
 
 }
-

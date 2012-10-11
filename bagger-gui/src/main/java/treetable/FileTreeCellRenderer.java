@@ -26,13 +26,18 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
     @Override
     public Component getTreeCellRendererComponent(
-            JTree tree,
-            Object value, boolean sel, boolean expanded, boolean leaf,
-            int row, boolean hasFocus
+        JTree tree,
+        Object value, 
+        boolean sel, 
+        boolean expanded, 
+        boolean leaf,
+        int row, 
+        boolean hasFocus
     ){
 
         JLabel renderer = (JLabel)super.getTreeCellRendererComponent(
-                tree, value, sel, expanded, leaf, row, hasFocus);
+            tree, value, sel, expanded, leaf, row, hasFocus
+        );
 
         FileNode node = (FileNode)value;
         File currentFile = (File)node.getFile();

@@ -40,10 +40,8 @@
 package treetable;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
-import ugent.bagger.helper.FileUtils;
 import java.io.File;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;

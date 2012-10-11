@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
@@ -126,8 +128,7 @@ public class SwingUtils {
         return node;
     }
     public static DefaultMutableTreeNode structMapToTreeNode(StructMap struct){
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(struct.getLabel());
-        
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(struct.getLabel());        
         return node; 
     }
     public static DefaultMutableTreeNode divToTreeNode(Div div){
@@ -136,5 +137,11 @@ public class SwingUtils {
     }
     public static JFrame getFrame(){
         return Application.instance().getActiveWindow().getControl();
+    }
+    public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node){
+        tree.expandPath(new TreePath(node.getPath()));        
+        for(int i = 0;i < node.getChildCount();i++){
+            expandTreeNode(tree,(DefaultMutableTreeNode) node.getChildAt(i));
+        }        
     }
 }
