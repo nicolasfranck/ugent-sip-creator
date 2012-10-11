@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import javax.swing.filechooser.FileSystemView;
 import org.apache.log4j.Logger;
 
 /* A FileNode is a derivative of the File class - though we delegate to 
@@ -14,6 +15,9 @@ import org.apache.log4j.Logger;
 public class FileNode { 
     File     file; 
     Object[] children;
+    
+    
+    private static FileSystemView fsv = FileSystemView.getFileSystemView();
 
     private static Logger logger = Logger.getLogger(FileNode.class);
 
@@ -34,9 +38,18 @@ public class FileNode {
      */
     @Override
     public String toString() {
-        //Nicolas Franck: root van het filesysteem heeft geen naam
-        String name = file.getName();
-	return (name != null && !name.equals("")) ? name:File.separator;
+        //Nicolas Franck: root van het filesysteem heeft geen naam        
+        /*file.getName(): <leeg>        
+          file.getAbsolutePath():
+            Linux: /
+            Windows: A: t.e.m. Z:
+          fsv.getSystemDisplayName(file) :
+            Linux: /
+            Windows: Data (C:)
+          fsv.isComputerNode(file) : altijd false (geen info beschikbaar)
+          fsv.isDrive(file) : altijd false (geen info beschikbaar)
+        */
+        return fsv.isFileSystemRoot(file) ? file.getAbsolutePath():file.getName();                
     }
 
     public File getFile() {
