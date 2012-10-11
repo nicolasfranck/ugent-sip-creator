@@ -107,7 +107,13 @@ public class RenamePanel extends JPanel{
                     fn,
                     file.isDirectory()
                 );    
-                for(File child:file.listFiles()){                
+                System.out.println("root: "+file);
+                File [] children = file.listFiles();
+                if(children == null){
+                    continue;
+                }
+                for(File child:children){                
+                    System.out.println("\tchild: "+child);
                     LazyTreeNode childNode = new LazyTreeNode(
                         child.getAbsolutePath(), 
                         new FileNode(child), 
