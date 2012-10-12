@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.helper;
 
 import com.anearalone.mets.StructMap;
@@ -16,7 +12,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -143,5 +138,14 @@ public class SwingUtils {
         for(int i = 0;i < node.getChildCount();i++){
             expandTreeNode(tree,(DefaultMutableTreeNode) node.getChildAt(i));
         }        
+    }
+    public static void ShowMessage(String title,String message){
+        ShowMessage(title,message,JOptionPane.INFORMATION_MESSAGE);
+    }
+    public static void ShowError(String title,String message){
+        ShowMessage(title,message,JOptionPane.ERROR_MESSAGE);
+    }
+    public static void ShowMessage(String title,String message,int type){
+        JOptionPane.showMessageDialog(getFrame(),message,title,type);
     }
 }

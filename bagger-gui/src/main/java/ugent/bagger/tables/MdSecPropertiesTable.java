@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
@@ -52,10 +51,11 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
                             getSelected().getMdSec()
                         );                    
                         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        dialog.setSize(new Dimension(500,600));   
+                        dialog.setPreferredSize(new Dimension(400,500));   
                         dialog.setResizable(false);
                         dialog.setLocationRelativeTo(MdSecPropertiesTable.this.getTable());
                         dialog.pack();
+                        
                         dialog.setVisible(true);                        
                     }catch(Exception e){
                         logger.debug(e.getMessage());                    

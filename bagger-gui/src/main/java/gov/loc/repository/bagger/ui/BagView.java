@@ -4,19 +4,13 @@ import gov.loc.repository.bagger.Bagger;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagger.ui.handlers.*;
-import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
-import gov.loc.repository.bagit.impl.FileBagFile;
-import gov.loc.repository.bagit.impl.VFSBagFile;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.*;
@@ -26,13 +20,10 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.plexus.util.StringUtils;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
-import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.popupmenus.FileManipulatePopupMenu;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
@@ -68,6 +59,11 @@ public class BagView extends DefaultView {
     public OpenExecutor openExecutor = new OpenExecutor();
     public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
     public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();    
+    
+    //Nicolas Franck: creëer meerdere bags in place
+    public CreateBagsInPlaceHandler createBagsInPlaceHandler = new CreateBagsInPlaceHandler();
+    public CreateBagsInPlaceExecutor createBagsInPlaceExecutor = new CreateBagsInPlaceExecutor();    
+    
     public SaveBagHandler6 saveBagHandler = new SaveBagHandler6();    
     public SaveBagExecutor saveBagExecutor = new SaveBagExecutor();
     public SaveBagAsHandler saveBagAsHandler = new SaveBagAsHandler();
@@ -598,6 +594,9 @@ public class BagView extends DefaultView {
     	startExecutor.setEnabled(true);
     	openExecutor.setEnabled(true);
     	createBagInPlaceExecutor.setEnabled(true);
+        
+        createBagsInPlaceExecutor.setEnabled(true);
+        
     	clearExecutor.setEnabled(false);
         validateExecutor.setEnabled(false);
         completeExecutor.setEnabled(false);
@@ -695,6 +694,9 @@ public class BagView extends DefaultView {
     	context.register("startCommand", startExecutor);
     	context.register("openCommand", openExecutor);
     	context.register("createBagInPlaceCommand", createBagInPlaceExecutor);
+        
+        context.register("createBagsInPlaceCommand", createBagsInPlaceExecutor);
+        
     	context.register("clearCommand", clearExecutor);
     	context.register("validateCommand", validateExecutor);
     	context.register("completeCommand", completeExecutor);

@@ -30,6 +30,7 @@ import ugent.bagger.tables.MdSecPropertiesTable;
 public final class XMLCrosswalkDialog extends JDialog{
     private File file;        
     private JTextField fileField;
+    private JTextField transformFromNameSpaceField;
     private String transformFromNamespace;
     private String transformToNamespace;
     
@@ -115,7 +116,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                     "Select xml file",
                     new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
                     JFileChooser.FILES_ONLY,
-                    true
+                    false
                 );
                 BusyIndicator.showAt(SwingUtils.getFrame());
                 if(selectedFiles.length > 0){
@@ -152,6 +153,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         //set combobox
                         transformComboBox.setEnabled(true);                        
                         
+                        getTransformFromNameSpaceField().setText(MetsUtils.getNamespaceMap().get(transformFromNamespace));
                         getFileField().setText(selectedFiles[0].getAbsolutePath());
                         setFile(selectedFiles[0]);
                         okButton.setEnabled(true);                        
@@ -169,8 +171,13 @@ public final class XMLCrosswalkDialog extends JDialog{
         filePanel.add(getFileField());
         filePanel.add(fileButton);
         
+        JPanel transformFromPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        transformFromPanel.add(new JLabel("transforming from:"));
+        transformFromPanel.add(getTransformFromNameSpaceField());
+        
         //voeg alles samen
         mainPanel.add(filePanel);
+        mainPanel.add(transformFromPanel);
         mainPanel.add(transformPanel);
         mainPanel.add(buttonPanel);
         
@@ -209,6 +216,15 @@ public final class XMLCrosswalkDialog extends JDialog{
     }
     public void setTransformToNamespace(String transformToNamespace) {
         this.transformToNamespace = transformToNamespace;
-    }   
-    
+    }
+    public JTextField getTransformFromNameSpaceField() {
+        if(transformFromNameSpaceField == null){
+            transformFromNameSpaceField = new JTextField();            
+            transformFromNameSpaceField.setEditable(false);
+        }
+        return transformFromNameSpaceField;        
+    }
+    public void setTransformFromNameSpaceField(JTextField transformFromNameSpaceField) {
+        this.transformFromNameSpaceField = transformFromNameSpaceField;
+    }
 }

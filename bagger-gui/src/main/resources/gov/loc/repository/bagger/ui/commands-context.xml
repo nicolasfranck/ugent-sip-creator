@@ -10,6 +10,7 @@
         <value>startCommand</value>
         <value>openCommand</value>
         <value>createBagInPlaceCommand</value>
+        <value>createBagsInPlaceCommand</value>
         <value>validateCommand</value>
         <value>completeCommand</value>
         <value>clearCommand</value>
@@ -51,6 +52,7 @@
         <value>startCommand</value>
         <value>openCommand</value>
         <value>createBagInPlaceCommand</value>
+        <value>createBagsInPlaceCommand</value>
         <value>validateCommand</value>
         <value>completeCommand</value>
         <value>clearCommand</value>
@@ -66,6 +68,7 @@
         <value>startCommand</value>
         <value>openCommand</value>
         <value>createBagInPlaceCommand</value>
+        <value>createBagsInPlaceCommand</value>
         <value>validateCommand</value>
         <value>completeCommand</value>
         <value>clearCommand</value>

@@ -3,6 +3,9 @@ package ugent.rename;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.OverlappingFileLockException;
 import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 
@@ -87,8 +90,10 @@ abstract public class AbstractRenamer {
         }        
         
         ErrorAction action = ErrorAction.undoAll;
+        System.out.println("AbstractRenamer::rename => pair.size() is "+pairs.size());
         for(int i = 0;i < pairs.size();i++){
             RenameFilePair pair = pairs.get(i);
+            System.out.println(pair.getSource()+" => "+pair.getTarget());
             pair.setSuccess(false);
             l.onRenameStart(pair,i);            
             try{
@@ -101,13 +106,23 @@ abstract public class AbstractRenamer {
                         pair.setSuccess(true);
                     }
                 }else{
+                    //zorg ervoor dat geen enkel ander process bezig is met deze bestanden!
+                    //vooral van belang in Windows, niet in Linux
+                    //FileChannel channelSource = new RandomAccessFile(pair.getSource(),"rw").getChannel();                                        
+                    //channelSource.lock();                    
+                    
                     if(!isOverwrite() && pair.getTarget().exists()){
+                        System.out.println("target file "+pair.getTarget().getAbsolutePath()+" already exists");
                         throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
                     }else{
+                        System.out.println("making target directories");
                         pair.getTarget().getParentFile().mkdirs();                                           
+                        System.out.println("making target directories ok");
                         if(isCopy()){
+                            System.out.println("copy!");
                             copy(pair.getSource(),pair.getTarget());
                         }else{
+                            System.out.println("move!");
                             /*
                                 *  TODO: in Windows wordt target niet overschreven.
                                 Zie: http://stackoverflow.com/questions/595631/how-to-atomically-rename-a-file-in-java-even-if-the-dest-file-already-exists
@@ -120,18 +135,40 @@ abstract public class AbstractRenamer {
                     numSuccess++;
                 }
             }catch(TargetExistsException e){
+                System.out.println("error occurred: "+e.getMessage());
+                e.printStackTrace();
                 action = l.onError(pair,RenameError.TARGET_EXISTS,e.getMessage(),i);                                        
             }catch(ParentNotWritableException e){                
+                System.out.println("error occurred: "+e.getMessage());
+                e.printStackTrace();
                 action = l.onError(pair,RenameError.PARENT_NOT_WRITABLE,e.getMessage(),i);
             }catch(FileNotFoundException e){
+                System.out.println("error occurred: "+e.getMessage());
+                e.printStackTrace();
                 action = l.onError(pair,RenameError.FILE_NOT_FOUND,e.getMessage(),i);
             }catch(IOException e){
+                System.out.println("error occurred: "+e.getMessage());
+                e.printStackTrace();
                 action = l.onError(pair,RenameError.IO_EXCEPTION,e.getMessage(),i);
             }catch(SecurityException e){
+                System.out.println("error occurred: "+e.getMessage());
+                e.printStackTrace();
                 action = l.onError(pair,RenameError.SECURITY_EXCEPTION,e.getMessage(),i);
-            }catch(Exception e){
+            }
+            /*
+            catch(OverlappingFileLockException e){
+                System.out.println("error occurred: "+e.getMessage());
+                e.printStackTrace();
+                action = l.onError(pair,RenameError.FILELOCK_EXCEPTION,e.getMessage(),i);
+        }*/
+            catch(Exception e){
+                System.out.println("error occurred: "+e.getMessage());
+                e.printStackTrace();
                 action = l.onError(pair,RenameError.UNKNOWN_ERROR,e.getMessage(),i);
             }
+            System.out.println("is Success: "+(pair.isSuccess() ? "yes":"no"));
+            System.out.println("target "+pair.getTarget()+" exists: "+(pair.getTarget().exists()));
+            System.out.println("action to take:" + action);
             /* check if renaming operation was successful */
             if(!pair.isSuccess()){                    
                 /* take action */
@@ -161,9 +198,11 @@ abstract public class AbstractRenamer {
                             }
                         }
                     }
+                    l.onRenameEnd(pair, i);
                     break;
                 }else if(action == ErrorAction.abort){
                     /* abort */
+                    l.onRenameEnd(pair, i);
                     break;
                 }
             }

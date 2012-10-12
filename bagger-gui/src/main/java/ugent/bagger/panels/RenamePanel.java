@@ -85,16 +85,7 @@ public class RenamePanel extends JPanel{
     
     public RenamePanel(){
         init();
-    }
-    public void ShowMessage(String title,String message){
-        ShowMessage(title,message,JOptionPane.INFORMATION_MESSAGE);
-    }
-    public void ShowError(String title,String message){
-        ShowMessage(title,message,JOptionPane.ERROR_MESSAGE);
-    }
-    public void ShowMessage(String title,String message,int type){
-        JOptionPane.showMessageDialog(this,message,title,type);
-    }
+    }   
     public LazyTreeNode getFileSystemTreeNode() {
         if(fileSystemTreeNode == null){
             //root is geen echte file, eerder een plaatsvervanger die niet mag getoond worden
@@ -184,7 +175,7 @@ public class RenamePanel extends JPanel{
                     File file = fileNode.getFile();                
                     if(file.isDirectory()){                    
                         if(!file.canRead()){
-                            ShowError(null,""+file+" is not readable!");                            
+                            SwingUtils.ShowError(null,""+file+" is not readable!");                            
                             throw new ExpandVetoException(tee);
                         }else if(!file.canWrite()){
                             getStatusTextArea().setText("kan niet schrijven in "+file.getAbsolutePath());                            
@@ -421,15 +412,18 @@ public class RenamePanel extends JPanel{
         
         //panel north: fileSystemTree and file tree
         JPanel panelNorth = new JPanel(new GridLayout(1,2));
+        panelNorth.setPreferredSize(new Dimension(1024,300));
+        
        
         //panel west in panelNorth: fileSystemTree
         JPanel panelFileSystemTree = new JPanel(new BorderLayout());
         panelFileSystemTree.add(new JScrollPane(getFileSystemTree()));
-        
+        panelFileSystemTree.setPreferredSize(new Dimension(512,300));
         
         //panel east in panelNorth: file tree
         panelFileTree = new JPanel();
         panelFileTree.setLayout(new BorderLayout());
+        panelFileTree.setPreferredSize(new Dimension(512,300));
         scrollerTreeTable = new JScrollPane(getCurrentTreeTable());
         panelFileTree.add(scrollerTreeTable,BorderLayout.SOUTH);        
         panelFileTree.add(getStatusTextArea(),BorderLayout.NORTH);
@@ -442,24 +436,27 @@ public class RenamePanel extends JPanel{
         
         //panel south: modifier
         panelSouth = new JPanel(new GridLayout(1,2));        
+        panelSouth.setPreferredSize(new Dimension(1024,350));
         
         //panel tabs
         JTabbedPane tabs = new JTabbedPane();                          
+        tabs.setPreferredSize(new Dimension(512,350));
 
         //panel renamer
         panelRenamer = getNewRenamePanel();                 
         //panel renumber        
         panelRenumber = getNewRenumberPanel();        
         
-        tabs.addTab("rename",panelRenamer);
-        tabs.addTab("renumber",panelRenumber);                        
+        tabs.addTab("rename",new JScrollPane(panelRenamer));
+        tabs.addTab("renumber",new JScrollPane(panelRenumber));                        
         
         panelSouth.add(tabs);       
         
         
         //result tabel
         JScrollPane scrollerResultTable = new JScrollPane(getResultTable());
-        scrollerResultTable.setPreferredSize(new Dimension(500,200));    
+        getResultTable().setPreferredSize(new Dimension(512,350));
+        scrollerResultTable.setPreferredSize(new Dimension(512,350));    
         
         panelSouth.add(scrollerResultTable);               
         
@@ -521,7 +518,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {                
                 if(fileNodesSelected.size() <= 0){     
-                    ShowError(null,"selecteer bestanden");                    
+                    SwingUtils.ShowError(null,"selecteer bestanden");                    
                     return;
                 }
                 renumberParams.setSimulateOnly(false);
@@ -545,7 +542,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae){               
                 if(fileNodesSelected.size() <= 0){
-                    ShowError(null,"selecteer bestanden");                      
+                    SwingUtils.ShowError(null,"selecteer bestanden");                      
                     return;
                 }               
                 renumberParams.setSimulateOnly(true);
@@ -592,7 +589,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {                
                 if(fileNodesSelected.size() <= 0){
-                    ShowError(null,"selecteer bestanden");                      
+                    SwingUtils.ShowError(null,"selecteer bestanden");                      
                     return;
                 }           
                 renameParams.setSimulateOnly(false);
@@ -616,7 +613,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae){               
                 if(fileNodesSelected.size() <= 0){
-                    ShowError(null,"selecteer bestanden");                      
+                    SwingUtils.ShowError(null,"selecteer bestanden");                      
                     return;
                 }
                 renameParams.setSimulateOnly(true);
@@ -736,7 +733,7 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                        ShowMessage(null,"totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                         
+                        SwingUtils.ShowMessage(null,"totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                         
                         simulateRenumberButton.setEnabled(true);
                         submitRenumberButton.setEnabled(true);
                         if(!renumberParams.isSimulateOnly()){
@@ -812,6 +809,7 @@ public class RenamePanel extends JPanel{
                         }                       
                         
                         boolean approved = true;
+                        System.out.println("RenameListenerAdapter::approveList => numFound: "+numFound);
                         if(numFound > 0){
                             int answer = JOptionPane.showConfirmDialog(SwingUtils.getFrame(),"Waarschuwing: één of meerdere bestanden zullen overschreven worden. Bent u zeker?");
                             approved = answer == JOptionPane.OK_OPTION;
@@ -843,7 +841,7 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                        ShowMessage(null,"totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);
+                        SwingUtils.ShowMessage(null,"totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);
                         simulateRenameButton.setEnabled(true);
                         submitRenameButton.setEnabled(true);
                         if(!renameParams.isSimulateOnly()){
