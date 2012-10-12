@@ -93,7 +93,7 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
     private void setLoading(final LazyTreeNode parentNode, final boolean reload) {
         if (SwingUtilities.isEventDispatchThread()) {
             setLoading2(parentNode, reload);
-        } else {
+        }else{
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     @Override
@@ -104,7 +104,6 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
             } catch (Exception e) {
                 e.printStackTrace();
             }            
-
         }
     }
 

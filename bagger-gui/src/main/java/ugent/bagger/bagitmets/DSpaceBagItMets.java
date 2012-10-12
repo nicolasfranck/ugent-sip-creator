@@ -263,11 +263,17 @@ public class DSpaceBagItMets extends BagItMets{
                 @Override
                 public void onCreateDiv(Div div,DefaultMutableTreeNode node){                   
                     for(int i = 0;i<div.getFptr().size();i++){                        
-                        Fptr filePointer = div.getFptr().get(i);                                                                                           
-                        String fileId = fileIdMap.get(filePointer.getFILEID());                        
+                        Fptr filePointer = div.getFptr().get(i);                                       
+                        System.out.println("FILEID: "+filePointer.getFILEID());
+                        String fid = filePointer.getFILEID().replaceAll("\\\\","/");                                                    
+                        System.out.println("fid: "+fid);
+                        String fileId = fileIdMap.get(fid);                                                
                         if(fileId != null){
+                            System.out.println("id found!");
                             filePointer.setFILEID(fileId);
-                        }                        
+                        }else{
+                            System.out.println("id NOT found!");
+                        }                    
                     }                   
                 }
             });            
@@ -281,7 +287,7 @@ public class DSpaceBagItMets extends BagItMets{
                     int indexTagmanifest = -1;
                     for(int i = 0;i<div.getFptr().size();i++){                        
                         Fptr filePointer = div.getFptr().get(i);                                               
-                        String fileId = filePointer.getFILEID().replaceFirst("^\\.\\/","");                                                     
+                        String fileId = filePointer.getFILEID().replaceFirst("^\\.\\/","").replaceFirst("^\\.\\\\","");                                                     
                        
                         if(fileId.compareTo("mets.xml") == 0){
                             indexMetsXML = i;

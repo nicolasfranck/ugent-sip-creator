@@ -15,6 +15,7 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -247,9 +248,16 @@ public class FUtils {
     }   
     public static List<DefaultMutableTreeNode>listToStructure(String [] list){
         List<DefaultMutableTreeNode>structuredList = new ArrayList<DefaultMutableTreeNode>();
+
+        System.out.println("List:");
+        for(String entry:list){
+            System.out.println("entry: "+entry);
+        }
         
         for(String entry:list){            
-            String [] components = entry.split(File.separator);            
+            //steeds / gebruikt als separator in bagit!
+            String [] components = entry.split("/");
+           
           
             if(structuredList.isEmpty()){                
                 structuredList.add(componentsToTreeNode(components));                
@@ -275,6 +283,11 @@ public class FUtils {
             }
                         
         }        
+        System.out.println("tree node structures:");
+        for(DefaultMutableTreeNode n:structuredList){
+            recurseTree(n);
+            System.out.println();
+        }
         return structuredList;
     }
     public static int indexUserObjectChild(DefaultMutableTreeNode node,Object o){

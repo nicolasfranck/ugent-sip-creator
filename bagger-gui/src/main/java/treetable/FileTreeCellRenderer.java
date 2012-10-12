@@ -10,6 +10,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import org.apache.log4j.Logger;
 
@@ -18,11 +19,15 @@ import org.apache.log4j.Logger;
  * @author nicolas
  */
 public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
-    private Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
-    private Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
-    private Icon errorIcon = (Icon) UIManager.getIcon("fileView.errorIcon");
+    
+    private static Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
+    private static Icon fileIcon = UIManager.getIcon("FileView.fileIcon");
+    private static Icon errorIcon = UIManager.getIcon("FileView.errorIcon");
+    private static Icon computerIcon = UIManager.getIcon( "FileView.computerIcon" );    
+    private static Icon diskIcon = UIManager.getIcon( "FileView.hardDriveIcon" );
 
     private static Logger logger = Logger.getLogger(FileTreeCellRenderer.class);
+    private static FileSystemView fsv = FileSystemView.getFileSystemView();
 
     @Override
     public Component getTreeCellRendererComponent(
@@ -44,8 +49,10 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
         logger.debug("getTreeCellRendererComponent: currentFile: "+currentFile);
 
-
-        if (currentFile.isDirectory()){
+        if(fsv.isFileSystemRoot(currentFile)){
+            logger.debug("getTreeCellRendererComponent: isFileSystemRoot");
+            renderer.setIcon(diskIcon);
+        }else if (currentFile.isDirectory()){
             logger.debug("getTreeCellRendererComponent: isDirectory");
             renderer.setIcon(directoryIcon);
         }else{

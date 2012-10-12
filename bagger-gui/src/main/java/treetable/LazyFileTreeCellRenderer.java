@@ -6,18 +6,21 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
-
 
 /**
  *
  * @author nicolas
  */
 public class LazyFileTreeCellRenderer extends DefaultTreeCellRenderer {
-    private Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
-    private Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
-
+    private static Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
+    private static Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
+    private static Icon errorIcon = UIManager.getIcon("FileView.errorIcon");
+    private static Icon computerIcon = UIManager.getIcon( "FileView.computerIcon" );    
+    private static Icon diskIcon = UIManager.getIcon( "FileView.hardDriveIcon" );
+    private static FileSystemView fsv = FileSystemView.getFileSystemView();
 
     @Override
     public Component getTreeCellRendererComponent(
@@ -27,37 +30,39 @@ public class LazyFileTreeCellRenderer extends DefaultTreeCellRenderer {
     ){
        
         JLabel renderer = (JLabel)super.getTreeCellRendererComponent(
-                tree, value, sel, expanded, leaf, row, hasFocus);
-        
-        
-        System.out.println("tree: "+tree);
-        System.out.println("value: "+value);
-        System.out.println("sel: "+sel);
-        System.out.println("expanded: "+expanded);
-        System.out.println("leaf: "+leaf);
-        System.out.println("row: "+row);
-        System.out.println("hasFocus: "+hasFocus);
+            tree, value, sel, expanded, leaf, row, hasFocus
+        );        
         
         TreePath tpath = tree.getPathForRow(row);  
         
-        if(tpath == null){
-            return null;
-        }
-        
-        System.out.println("path component: "+tpath.getLastPathComponent());
-        LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
-        
-        System.out.println("node: "+node);
-        System.out.println("node user object: "+node.getUserObject());
-        FileNode fnode = (FileNode)node.getUserObject();
-        System.out.println("fnode: "+fnode);
-        File currentFile = fnode.getFile();
-        System.out.println("currentFile: "+currentFile);
-
-        if (currentFile.isDirectory()){
+        if(tpath == null){     
+            //enkel directories leveren een loading icon op => zet op voorhand op directoryIcon
+            //errorIcon levert ".." op totdat je op de directory klikt..
             renderer.setIcon(directoryIcon);
+            return renderer;
         }
-        else{          
+        
+        
+        LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();                
+        System.err.println("node.userObject: "+node.getUserObject());
+        
+        if(!(node.getUserObject() instanceof FileNode)){
+            System.err.println("node.userObject is not an instance of FileNode");
+            renderer.setIcon(directoryIcon);
+            return renderer;
+        }
+        
+        FileNode fnode = (FileNode)node.getUserObject();        
+        File currentFile = fnode.getFile();
+
+        if(fsv.isFileSystemRoot(currentFile)){
+            System.err.println(currentFile+" is filesystem root");
+            renderer.setIcon(diskIcon);
+        }else if (currentFile.isDirectory()){
+            System.err.println(currentFile+" is directory");
+            renderer.setIcon(directoryIcon);
+        }else{          
+            System.err.println(currentFile+" is file");
             renderer.setIcon(fileIcon);
         }
         return renderer;

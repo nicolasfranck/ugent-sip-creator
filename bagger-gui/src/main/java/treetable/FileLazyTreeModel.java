@@ -34,16 +34,19 @@ public class FileLazyTreeModel extends LazyTreeModel{
         ArrayList<File>files = new ArrayList<File>();
         ArrayList<File>directories = new ArrayList<File>();
 
-        for(File sb:selectedFile.listFiles()){
-            if(sb.isDirectory()) {
-                if(mode == Mode.DIRECTORIES_ONLY || mode == Mode.FILES_AND_DIRECTORIES){
-                    directories.add(sb);
-                }                
-            }else{
-                if(mode == Mode.FILES_ONLY || mode == Mode.FILES_AND_DIRECTORIES){
-                    files.add(sb);
-                }                
-            }         
+        File [] list = selectedFile.listFiles();
+        if(list != null){
+            for(File sb:list){
+                if(sb.isDirectory()) {
+                    if(mode == Mode.DIRECTORIES_ONLY || mode == Mode.FILES_AND_DIRECTORIES){
+                        directories.add(sb);
+                    }                
+                }else{
+                    if(mode == Mode.FILES_ONLY || mode == Mode.FILES_AND_DIRECTORIES){
+                        files.add(sb);
+                    }                
+                }         
+            }
         }
         Collections.sort(directories,defaultFileSorter);        
         Collections.sort(files,defaultFileSorter);              

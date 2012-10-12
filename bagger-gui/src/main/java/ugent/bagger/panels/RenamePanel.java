@@ -13,6 +13,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeWillExpandListener;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
@@ -29,6 +30,7 @@ import treetable.FileLazyTreeModel.Mode;
 import treetable.FileNode;
 import treetable.FileSystemModel;
 import treetable.JTreeTable;
+import treetable.LazyFileTreeCellRenderer;
 import treetable.LazyTreeModel;
 import treetable.LazyTreeNode;
 import treetable.TreeTableModel;
@@ -79,6 +81,7 @@ public class RenamePanel extends JPanel{
     private LazyTreeModel fileSystemModel;
     private JTree fileSystemTree;
     private LazyTreeNode fileSystemTreeNode;
+    private static FileSystemView fsv = FileSystemView.getFileSystemView();
     
     public RenamePanel(){
         init();
@@ -100,14 +103,24 @@ public class RenamePanel extends JPanel{
             fileSystemTreeNode = new LazyTreeNode("",new FileNode(rootFile),true);
         
             //sommige systemen hebben meerdere roots (C:/, D:/)
-            for(File file:File.listRoots()){            
+            for(File file:File.listRoots()){
+                
+                System.out.println("root: "+file);
+                
+                if(!fsv.isFileSystemRoot(file)){  
+                    System.out.println("root: "+file+" is NOT a file system root");
+                    continue;
+                }
+                
+                System.out.println("root: "+file+" is a file system root");
+                
                 FileNode fn = new FileNode(file);
                 final LazyTreeNode node = new LazyTreeNode(
                     file.getAbsolutePath(),
                     fn,
                     file.isDirectory()
                 );    
-                System.out.println("root: "+file);
+                
                 File [] children = file.listFiles();
                 if(children == null){
                     continue;
@@ -144,7 +157,8 @@ public class RenamePanel extends JPanel{
         if(fileSystemTree == null){
             fileSystemTree = new JTree(); 
             fileSystemModel = new FileLazyTreeModel(getFileSystemTreeNode(),fileSystemTree,Mode.DIRECTORIES_ONLY);
-            fileSystemTree.setModel(fileSystemModel);
+            fileSystemTree.setModel(fileSystemModel);            
+            fileSystemTree.setCellRenderer(new LazyFileTreeCellRenderer());
             fileSystemTree.setRootVisible(false);
             fileSystemTree.setShowsRootHandles(false);
             fileSystemTree.addMouseListener(new MouseAdapter(){
@@ -174,6 +188,8 @@ public class RenamePanel extends JPanel{
                             throw new ExpandVetoException(tee);
                         }else if(!file.canWrite()){
                             getStatusTextArea().setText("kan niet schrijven in "+file.getAbsolutePath());                            
+                        }else{
+                            getStatusTextArea().setText(file.getAbsolutePath());                            
                         }
                     }                    
                     setFormsEnabled(file.isDirectory() && file.canWrite());                                        
@@ -492,7 +508,7 @@ public class RenamePanel extends JPanel{
         final ValidatingFormModel renumberFormModel = getRenumberParamsForm().getFormModel();
         JComponent componentForm = getRenumberParamsForm().getControl();
 
-        panel.add(componentForm);        
+        panel.add(new JScrollPane(componentForm));        
         
         //buttons      
         submitRenumberButton = new JButton(Context.getMessage("ok"));
@@ -562,7 +578,7 @@ public class RenamePanel extends JPanel{
         final ValidatingFormModel renameFormModel = renameForm.getFormModel();
         JComponent componentForm = renameForm.getControl();
 
-        panel.add(componentForm);        
+        panel.add(new JScrollPane(componentForm));        
         
         //buttons
       
