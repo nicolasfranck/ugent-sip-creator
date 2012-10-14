@@ -22,7 +22,6 @@ package gov.loc.repository.bagger.ui;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.BagFactory.Version;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -73,9 +72,9 @@ public class NewBagDialog extends JDialog implements ActionListener {
         }
         getContentPane().add(createPanel, BorderLayout.CENTER);
 
-        setPreferredSize(new Dimension(400, 200));
-        setLocation(300, 200);
-        
+        //Nicolas Franck: eerder iets wat je extern wil controleren
+        //setPreferredSize(new Dimension(400, 200));
+        //setLocation(300, 200);        
         //Nicolas Franck: als je dit hier doet, krijg je in Ubuntu een X11 error. Beter: bij oproepende code
         //pack();       
         
@@ -147,8 +146,8 @@ public class NewBagDialog extends JDialog implements ActionListener {
         layoutBagVersionSelection(contentPane, row++);
         layoutProfileSelection(contentPane, row++);
 
-        if (getPreferredSize() != null) {
-                contentPane.setPreferredSize(getPreferredSize());
+        if(getPreferredSize() != null){
+            contentPane.setPreferredSize(getPreferredSize());
         }
 		
         GuiStandardUtils.attachDialogBorder(contentPane);
@@ -168,6 +167,9 @@ public class NewBagDialog extends JDialog implements ActionListener {
         // Bag version dropdown list
         JLabel bagVersionLabel = new JLabel(getBagView().getPropertyMessage("bag.label.version"));
         bagVersionLabel.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
+        
+        //Nicolas Franck: zie getBagVersionList()
+        /*
         ArrayList<String> versionModel = new ArrayList<String>();
         Version[] vals = Version.values();
         for (int i=0; i < vals.length; i++) {
@@ -176,15 +178,35 @@ public class NewBagDialog extends JDialog implements ActionListener {
         bagVersionList = new JComboBox(versionModel.toArray());
         bagVersionList.setName(getBagView().getPropertyMessage("bag.label.versionlist"));
         bagVersionList.setSelectedItem(Version.V0_96.versionString);
-        bagVersionList.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
+        bagVersionList.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));        
+        */
 
         JLabel spacerLabel = new JLabel();
         GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         contentPane.add(bagVersionLabel, glbc);
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 40, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-        contentPane.add(bagVersionList, glbc);
+        contentPane.add(getBagVersionList(), glbc);
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
         contentPane.add(spacerLabel, glbc);
+    }
+
+    public JComboBox getBagVersionList() {
+        if(bagVersionList == null){
+            ArrayList<String> versionModel = new ArrayList<String>();
+            Version[] vals = Version.values();
+            for (int i=0; i < vals.length; i++) {
+                versionModel.add(vals[i].versionString);
+            }
+            bagVersionList = new JComboBox(versionModel.toArray());
+            bagVersionList.setName(getBagView().getPropertyMessage("bag.label.versionlist"));
+            bagVersionList.setSelectedItem(Version.V0_96.versionString);
+            bagVersionList.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
+        }
+        return bagVersionList;
+    }
+
+    public void setBagVersionList(JComboBox bagVersionList) {
+        this.bagVersionList = bagVersionList;
     }
 	
     private void layoutProfileSelection(JPanel contentPane, int row) {
@@ -193,7 +215,7 @@ public class NewBagDialog extends JDialog implements ActionListener {
         JLabel bagProfileLabel = new JLabel(getBagView().getPropertyMessage("Select Profile:"));
         bagProfileLabel.setToolTipText(getBagView().getPropertyMessage("bag.projectlist.help"));
 
-        //Nicolas Franck
+        //Nicolas Franck: zie getProfileList()
         /*
         profileList = new JComboBox(bagView.getProfileStore().getProfileNames());
         profileList.setName(bagView.getPropertyMessage("bag.label.projectlist"));

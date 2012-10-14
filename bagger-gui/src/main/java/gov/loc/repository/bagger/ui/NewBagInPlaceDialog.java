@@ -117,8 +117,10 @@ public final class NewBagInPlaceDialog extends JDialog implements ActionListener
         }*/
         
         getContentPane().add(getContentPanel(), BorderLayout.CENTER);
-        setPreferredSize(preferredDimension);
-        setLocation(200, 100);
+        
+        //Nicolas Franck: liefst extern in te stellen
+        /*setPreferredSize(preferredDimension);
+        setLocation(200, 100);*/
         
         //Nicolas Franck: als je dit hier doet, krijg je in Ubuntu een X11 error. Beter: bij oproepende code
         //pack();

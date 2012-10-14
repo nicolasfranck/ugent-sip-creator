@@ -91,8 +91,9 @@ public final class NewBagsInPlaceDialog extends JDialog implements ActionListene
         super(frame,isModal);
         setTitle(title);
         getContentPane().add(getContentPanel(), BorderLayout.CENTER);
-        setPreferredSize(preferredDimension);
-        setLocation(200, 100);        
+        
+        //Nicolas Franck: bepaal je best extern
+        //setPreferredSize(preferredDimension);        
     }
 
     public JButton getSaveAsButton() {
