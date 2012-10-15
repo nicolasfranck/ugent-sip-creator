@@ -1,8 +1,8 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.Profile;
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.DefaultBagInfo;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.NewBagInPlaceDialog;
 import gov.loc.repository.bagger.ui.Progress;
@@ -15,6 +15,7 @@ import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.bagitmets.DSpaceBagItMets;
 import ugent.bagger.helper.SwingUtils;
 
 public class CreateBagInPlaceHandler extends AbstractAction implements Progress {
@@ -61,26 +62,29 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
     }
 
     public void createPreBag(File dataFile, String bagItVersion, final String profileName) {
-        BagView bagView = BagView.getInstance();
-        DefaultBag bag = bagView.getBag();
+        BagView bagView = BagView.getInstance();        
+        MetsBag bag = bagView.getBag();        
+        
     	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {
             log.info("Creating a new bag in place with data: " + dataFile.getName()
                             + ", version: " + bagItVersion + ", profile: " + profileName);
         }
+        
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-            bag.createPreBag(dataFile,bagItVersion);
+            bag.setBagItMets(new DSpaceBagItMets());            
+            bag.setRootDir(dataFile);
+            bag.createPreBag(dataFile,bagItVersion);                      
     	} catch (Exception e) {
+            e.printStackTrace();
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");
             return;
     	}    	
-    	
+        
     	String bagFileName = dataFile.getName();
         bag.setName(bagFileName);
-        bagView.getInfoFormsPane().setBagName(bagFileName);
-        
+        bagView.getInfoFormsPane().setBagName(bagFileName);        
         setProfile(profileName);
-        
         bagView.saveBagHandler.save(dataFile);
     }
     
@@ -90,7 +94,7 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
     */
     public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion, final String profileName) {
         BagView bagView = BagView.getInstance();
-        DefaultBag bag = bagView.getBag();
+        MetsBag bag = bagView.getBag();
         
     	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {
             log.info("Creating a new bag in place with data: " + dataFile.getName()
@@ -98,16 +102,20 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
         }
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-            bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion);
+            bag.setBagItMets(new DSpaceBagItMets());            
+            bag.setRootDir(dataFile);
+            bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion);            
     	} catch (Exception e) {
+            e.printStackTrace();
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");
             return;
-    	}    	
-    	
+    	}
+        
     	String bagFileName = dataFile.getName();
         bag.setName(bagFileName);
         bagView.getInfoFormsPane().setBagName(bagFileName);        
         setProfile(profileName);        
+        
         bagView.saveBagHandler.save(dataFile);
     }    
     

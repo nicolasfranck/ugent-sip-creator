@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import ugent.bagger.dialogs.ImportDialog;
 import ugent.bagger.dialogs.XMLCrosswalkDialog;
+import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.forms.MdSecForm;
 import ugent.bagger.forms.MdWrapForm;
 import ugent.bagger.helper.Context;
@@ -140,7 +142,15 @@ public class MdSecPropertiesPanel extends JPanel{
         addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){                                
-                monitor(new TaskAddMdSecFromFile(),"inserting..");                
+                File [] files = SwingUtils.chooseFiles(
+                    "Select xml file",
+                    new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
+                    JFileChooser.FILES_ONLY,
+                    true
+                );
+                if(files.length > 0){
+                    monitor(new TaskAddMdSecFromFile(files),"inserting..");                
+                }                
             }
         });
         importButton.addActionListener(new ActionListener(){

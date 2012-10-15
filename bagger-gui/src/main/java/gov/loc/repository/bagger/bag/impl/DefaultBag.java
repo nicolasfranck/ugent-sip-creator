@@ -43,34 +43,34 @@ public class DefaultBag {
     public static final String TAR_BZ2_LABEL = "tar.bz2";
 
     // Bag option flags
-    private boolean isHoley = false;
-    private boolean isSerial = true;
-    private boolean isAddKeepFilesToEmptyFolders = false;
+    protected boolean isHoley = false;
+    protected boolean isSerial = true;
+    protected boolean isAddKeepFilesToEmptyFolders = false;
 
     // bag building (saving) options
-    private boolean isBuildTagManifest = true;
-    private boolean isBuildPayloadManifest = true;
-    private String tagManifestAlgorithm;
-    private String payloadManifestAlgorithm;
-    private short serialMode = NO_MODE;
+    protected boolean isBuildTagManifest = true;
+    protected boolean isBuildPayloadManifest = true;
+    protected String tagManifestAlgorithm;
+    protected String payloadManifestAlgorithm;
+    protected short serialMode = NO_MODE;
 
     // Bag state flags
-    private boolean isValidateOnSave = false;
-    private boolean isSerialized = false;
-    private boolean dirty = false;
+    protected boolean isValidateOnSave = false;
+    protected boolean isSerialized = false;
+    protected boolean dirty = false;
 
-    private File rootDir = null;
-    private String name = "bag_";
-    private long size;
-    private long totalSize = 0;
+    protected File rootDir = null;
+    protected String name = "bag_";
+    protected long size;
+    protected long totalSize = 0;
 
-    private Bag bilBag;
-    private DefaultBagInfo bagInfo = null;
-    private Verifier bagStrategy;
-    private BaggerFetch fetch;
-    private Profile profile;
-    private String versionString = null;
-    private File bagFile = null;
+    protected Bag bilBag;
+    protected DefaultBagInfo bagInfo = null;
+    protected Verifier bagStrategy;
+    protected BaggerFetch fetch;
+    protected Profile profile;
+    protected String versionString = null;
+    protected File bagFile = null;
 
 
     public DefaultBag() {            
@@ -161,8 +161,10 @@ public class DefaultBag {
         BagFactory bagFactory = new BagFactory();
         PreBag preBag = bagFactory.createPreBag(data);
         if (version == null) {
+            System.out.println("no version supplied, so using latest");
             bilBag = preBag.makeBagInPlace(BagFactory.LATEST, false);            
         } else {
+            System.out.println("version supplied: "+Version.valueOfString(version));
             bilBag = preBag.makeBagInPlace(Version.valueOfString(version),false);            
         }
     }
@@ -758,9 +760,10 @@ public class DefaultBag {
     }
     //Nicolas Franck - end
 
-    protected void generateManifestFiles() {
+    public void generateManifestFiles() {
         DefaultCompleter completer = new DefaultCompleter(new BagFactory());            
-        if (this.isBuildPayloadManifest) {
+        if (isBuildPayloadManifest) {
+            System.out.println("generating payload manifest");
             completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));
             //Nicolas Franck
             /*
@@ -785,7 +788,8 @@ public class DefaultBag {
                 completer.setClearExistingPayloadManifests(true);
             }*/
         }
-        if (this.isBuildTagManifest) {
+        if (isBuildTagManifest) {
+            System.out.println("generating tag manifest");
             completer.setClearExistingTagManifests(true);
             completer.setGenerateTagManifest(true);
 

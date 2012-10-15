@@ -18,15 +18,18 @@ import ugent.bagger.helper.SwingUtils;
  * @author nicolas
  */
 public class TaskAddMdSecFromFile extends DefaultWorker {    
+    private File [] files;
+    public TaskAddMdSecFromFile(File [] files){
+        this.files = files;
+    }
     @Override
     @SuppressWarnings("empty-statement")
     protected Void doInBackground() throws Exception {
-        File [] files = SwingUtils.chooseFiles(
-            "Select xml file",
-            new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
-            JFileChooser.FILES_ONLY,
-            true
-        );
+        if(files == null){
+            return null;
+        }
+        
+        
         int succeeded = 0;
 
         for(int i = 0;i<files.length;i++){                                                        

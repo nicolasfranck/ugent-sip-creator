@@ -57,12 +57,15 @@ public class BagView extends DefaultView {
     public StartExecutor startExecutor = new StartExecutor();
     public OpenBagHandler openBagHandler = new OpenBagHandler();
     public OpenExecutor openExecutor = new OpenExecutor();
-    public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
-    public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();    
     
-    //Nicolas Franck: creëer meerdere bags in place
-    public CreateBagsInPlaceHandler createBagsInPlaceHandler = new CreateBagsInPlaceHandler();
-    public CreateBagsInPlaceExecutor createBagsInPlaceExecutor = new CreateBagsInPlaceExecutor();    
+    //Nicolas Franck: ondersteunt enkel één bag in place per keer
+    
+    public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
+    public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();
+    
+    //Nicolas Franck: creëer meerdere bags in place of door copy
+    public CreateBagsHandler createBagsHandler = new CreateBagsHandler();
+    public CreateBagsExecutor createBagsExecutor = new CreateBagsExecutor();    
     
     public SaveBagHandler6 saveBagHandler = new SaveBagHandler6();    
     public SaveBagExecutor saveBagExecutor = new SaveBagExecutor();
@@ -593,9 +596,9 @@ public class BagView extends DefaultView {
     private void initializeCommands() {
     	startExecutor.setEnabled(true);
     	openExecutor.setEnabled(true);
-    	createBagInPlaceExecutor.setEnabled(true);
+    	//createBagInPlaceExecutor.setEnabled(true);
         
-        createBagsInPlaceExecutor.setEnabled(true);
+        createBagsExecutor.setEnabled(true);
         
     	clearExecutor.setEnabled(false);
         validateExecutor.setEnabled(false);
@@ -693,9 +696,9 @@ public class BagView extends DefaultView {
     protected void registerLocalCommandExecutors(PageComponentContext context) {
     	context.register("startCommand", startExecutor);
     	context.register("openCommand", openExecutor);
-    	context.register("createBagInPlaceCommand", createBagInPlaceExecutor);
+    	//context.register("createBagInPlaceCommand", createBagInPlaceExecutor);
         
-        context.register("createBagsInPlaceCommand", createBagsInPlaceExecutor);
+        context.register("createBagsInPlaceCommand", createBagsExecutor);
         
     	context.register("clearCommand", clearExecutor);
     	context.register("validateCommand", validateExecutor);

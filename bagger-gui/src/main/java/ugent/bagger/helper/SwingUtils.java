@@ -3,6 +3,7 @@ package ugent.bagger.helper;
 import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -78,10 +79,11 @@ public class SwingUtils {
         monitor(component,worker,title,note,new ArrayList<PropertyChangeListener>());
     }
     public static void monitor(Component component,SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
-        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                
-        progressMonitor.setProgress(0);
-        progressMonitor.setMillisToDecideToPopup(100);
-        progressMonitor.setMillisToPopup(0);
+        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                        
+        progressMonitor.setMillisToDecideToPopup(0);
+        progressMonitor.setMillisToPopup(0);        
+        progressMonitor.setProgress(0);        
+        
         worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
         if(listeners != null){
             for(PropertyChangeListener listener:listeners){
@@ -147,5 +149,12 @@ public class SwingUtils {
     }
     public static void ShowMessage(String title,String message,int type){
         JOptionPane.showMessageDialog(getFrame(),message,title,type);
+    }
+    public static void centerAt(Component parent,Component child){
+        Dimension parentDim = parent.getSize();
+        Dimension childDim = child.getSize();
+        int x = (int) Math.ceil((parentDim.getWidth() - childDim.getWidth()) / 2.0);
+        int y = (int) Math.ceil((parentDim.getHeight() - childDim.getHeight()) / 2.0);        
+        child.setLocation(x,y);
     }
 }

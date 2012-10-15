@@ -7,8 +7,8 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.NewBagDialog;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFile;
-import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
@@ -41,8 +41,10 @@ public class StartNewBagHandler extends AbstractAction {
             true, 
             bagView.getPropertyMessage("bag.frame.new")
         );
+        dialog.setPreferredSize(new Dimension(400, 200));
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);               
         dialog.setLocationRelativeTo(SwingUtils.getFrame());         
+        SwingUtils.centerAt(SwingUtils.getFrame(),dialog);
         dialog.pack();
         dialog.setVisible(true);
         

@@ -15,7 +15,6 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,8 +26,6 @@ import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.DefaultMetsCallback;
 import ugent.bagger.helper.FUtils;
-import ugent.bagger.helper.IteratorHierarchyListener;
-import ugent.bagger.helper.IteratorListener;
 import ugent.bagger.helper.MetsUtils;
 
 /**
@@ -76,7 +73,7 @@ public class DSpaceBagItMets extends BagItMets{
         try{       
 
             Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
-            Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);            
+            Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);         
             
             
             Collection<BagFile>payloads = bag.getPayload();
@@ -131,20 +128,21 @@ public class DSpaceBagItMets extends BagItMets{
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
                 try{
-                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){
+                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){                        
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
-                    }else{
-                        if(payloadFile.isFile()){                    
+                    }else{                        
+                        if(payloadFile.isFile()){                                              
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
-                        }else if(rootDir.exists()){                        
+                        }else if(rootDir != null && rootDir.exists()){                                                    
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));                  
-                        }else{
+                        }else{                            
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                         }    
                     }
                 }catch(Exception e){
+                    e.printStackTrace();
                     log.debug(e.getMessage());                    
-                }
+                }                
 
                 //FLocat
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();
@@ -203,21 +201,23 @@ public class DSpaceBagItMets extends BagItMets{
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
                 try{
-                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){
+                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){                        
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
-                    }else{
+                    }else{                        
                         if(tagFile.isFile()){
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(tagFile.lastModified())));
-                        }else if(rootDir.exists()){
+                        }else if(rootDir != null && rootDir.exists()){
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));
                         }else{                     
                             metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                         }
                     }
                 }catch(Exception e){
+                    e.printStackTrace();
                     log.debug(e.getMessage());                    
                 }
-
+                
+                
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();
                 flocat.setLOCTYPE(LocatorElement.LOCTYPE.URL);
                 flocat.setXlinkHREF(bagFile.getFilepath());                 
@@ -228,10 +228,7 @@ public class DSpaceBagItMets extends BagItMets{
             
             fileGroups.add(tagFileGroup);            
             
-            //make node trees
-            //Nicolas Franck: can be done this way, but this is not always available!
-            //DefaultMutableTreeNode rootNodePayloads = bagView.getBagPayloadTree().getParentNode();                                      
-            //DefaultMutableTreeNode rootNodeTagFiles = bagView.getBagTagFileTree().getParentNode();            
+            //make node trees            
             DefaultMutableTreeNode rootNodePayloads;              
             DefaultMutableTreeNode rootNodeTagFiles;            
             
@@ -263,17 +260,12 @@ public class DSpaceBagItMets extends BagItMets{
                 @Override
                 public void onCreateDiv(Div div,DefaultMutableTreeNode node){                   
                     for(int i = 0;i<div.getFptr().size();i++){                        
-                        Fptr filePointer = div.getFptr().get(i);                                       
-                        System.out.println("FILEID: "+filePointer.getFILEID());
-                        String fid = filePointer.getFILEID().replaceAll("\\\\","/");                                                    
-                        System.out.println("fid: "+fid);
+                        Fptr filePointer = div.getFptr().get(i);                                                               
+                        String fid = filePointer.getFILEID().replaceAll("\\\\","/");                                                                            
                         String fileId = fileIdMap.get(fid);                                                
-                        if(fileId != null){
-                            System.out.println("id found!");
+                        if(fileId != null){                            
                             filePointer.setFILEID(fileId);
-                        }else{
-                            System.out.println("id NOT found!");
-                        }                    
+                        }           
                     }                   
                 }
             });            
