@@ -40,7 +40,7 @@ public class FUtils {
         sizes.put("MB",new Double(1024*1024));       
         sizes.put("GB",new Double(1024*1024*1024));        
         sizes.put("TB",new Double(1024*1024*1024*1024));        
-    }
+    }    
     public static String sizePretty(double size){       
         for(int i = 0;i < sizeNames.length;i++){
             if(
@@ -53,7 +53,12 @@ public class FUtils {
                 }
             }
         }
+       
         return ((long)size)+"B";
+    }
+    public static boolean hasChildren(File file){
+        
+        return file != null && file.listFiles() != null && file.listFiles().length > 0;
     }
     public static ArrayList<File> listFiles(String fn){
         return listFiles(new File(fn));

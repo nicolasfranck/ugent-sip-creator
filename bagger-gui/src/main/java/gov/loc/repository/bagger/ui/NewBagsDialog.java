@@ -21,8 +21,12 @@
 package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
+import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.BagFactory.Version;
+import gov.loc.repository.bagit.writer.Writer;
+import gov.loc.repository.bagit.writer.impl.FileSystemWriter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -44,7 +48,9 @@ import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.util.GuiStandardUtils;
+import ugent.bagger.bagitmets.DSpaceBagItMets;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
+import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.LongTask2;
 
@@ -55,6 +61,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     private JPanel contentPanel;
     private JTextField selectionInfoField;    
     private ArrayList<File>selectedDirectories = new ArrayList<File>();    
+    private boolean bagInPlace = true;
+    private File outputDir;
     private JButton saveAsButton;
     private JComboBox bagVersionList;
     private JComboBox profileList;
@@ -83,17 +91,26 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         }
         return contentPanel;
     }
-
     public void setContentPanel(JPanel contentPanel) {
         this.contentPanel = contentPanel;
-    }
-    
+    }    
     public NewBagsDialog(JFrame frame,boolean isModal, String title) {
         super(frame,isModal);
         setTitle(title);
         getContentPane().add(getContentPanel(), BorderLayout.CENTER);       
     }
-
+    public boolean isBagInPlace() {
+        return bagInPlace;
+    }
+    public void setBagInPlace(boolean bagInPlace) {
+        this.bagInPlace = bagInPlace;
+    }
+    public File getOutputDir() {
+        return outputDir;
+    }
+    public void setOutputDir(File outputDir) {
+        this.outputDir = outputDir;
+    }
     public JButton getSaveAsButton() {
         if(saveAsButton == null){
             saveAsButton = new JButton(getBagView().getPropertyMessage("bag.button.browse"));
@@ -172,8 +189,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 public void itemStateChanged(ItemEvent ie) {
                     if(ie.getStateChange() != ItemEvent.SELECTED){
                         return;
-                    }
-                    BagView.getInstance().setMetsFileDateCreated((MetsFileDateCreated)ie.getItem());
+                    }                    
+                    getBagView().setMetsFileDateCreated((MetsFileDateCreated)ie.getItem());
                 }
 
             });
@@ -240,13 +257,84 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         layoutAddKeepFilesToEmptyCheckBox(panel,row++);
         layoutSpacer(panel,row++);
        
+        //metsFileDateCreated
         row++;
-        JLabel metsFileDateCreatedLabel = new JLabel("Date created:");        
-       
+        JLabel metsFileDateCreatedLabel = new JLabel("Date created:");  
         GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         panel.add(metsFileDateCreatedLabel, glbc);
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST); 
         panel.add(getMetsFileDateCreatedCombobox(), glbc);
+        
+        //bagInPlace
+        row++;
+        JLabel bagInPlaceLabel = new JLabel("Bag in place:");  
+        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        panel.add(bagInPlaceLabel, glbc);
+        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);         
+        final JCheckBox bagInPlaceCheckBox = new JCheckBox();
+        bagInPlaceCheckBox.setSelected(bagInPlace);                
+        panel.add(bagInPlaceCheckBox,glbc);        
+        
+        
+        //outputDir
+        row++;
+        
+        final JLabel outputDirLabel = new JLabel("schrijf naar map:");        
+        outputDirLabel.setEnabled(!bagInPlace);
+        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST);
+        panel.add(outputDirLabel,glbc);
+        
+        final JTextField outputDirTextField = new JTextField(15);
+        outputDirTextField.setEnabled(!bagInPlace);
+        outputDirTextField.setEditable(false);
+        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        glbc.ipadx=5;
+        glbc.ipadx=0;
+        panel.add(outputDirTextField,glbc);
+        
+        final JButton outputDirBrowseButton = new JButton("browse");
+        outputDirBrowseButton.setEnabled(!bagInPlace);        
+        glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.EAST);
+        glbc.ipadx=5;
+        glbc.ipadx=0;
+        panel.add(outputDirBrowseButton,glbc);
+        
+        //relatie bagInPlace - outputDir
+        bagInPlaceCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {                
+                bagInPlace = bagInPlaceCheckBox.isSelected();
+                outputDirLabel.setEnabled(!bagInPlace);
+                outputDirTextField.setEnabled(!bagInPlace);
+                outputDirBrowseButton.setEnabled(!bagInPlace);
+            }
+        });
+        outputDirBrowseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                File [] selectedFiles = SwingUtils.chooseFiles(
+                    "Creëer map",
+                    null,
+                    JFileChooser.DIRECTORIES_ONLY,
+                    false,
+                    SwingUtils.getFrame(),
+                    JFileChooser.SAVE_DIALOG
+                );                
+                if(selectedFiles.length == 0){
+                    SwingUtils.ShowError("","Gelieve een map te selecteren");
+                }else if(!selectedFiles[0].canWrite()){
+                    SwingUtils.ShowError("","Systeem kan niet schrijven naar "+selectedFiles[0].getAbsolutePath());
+                }else if(selectedFiles[0].listFiles().length > 0){
+                    SwingUtils.ShowError("",selectedFiles[0].getAbsolutePath()+" moet leeg zijn");
+                }else{                
+                    outputDirTextField.setText(selectedFiles[0].getAbsolutePath());                    
+                    outputDir = selectedFiles[0];
+                    outputDirTextField.invalidate();
+                }                
+            }
+        });
+        
+        
         
         GuiStandardUtils.attachDialogBorder(panel);
         pageControl.add(panel);        
@@ -301,6 +389,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
         contentPane.add(spacerLabel, glbc);
     }
+    
 
     /*
      *  The actionPerformed method in this class
@@ -439,9 +528,19 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         private static final long serialVersionUID = 1L;
         @Override
         public void actionPerformed(ActionEvent e) {            
-            NewBagsInPlaceWorker worker = new NewBagsInPlaceWorker(getSelectedDirectories(),(String)bagVersionList.getSelectedItem(),(String)profileList.getSelectedItem());
-            NewBagsDialog.this.dispose();                        
-            SwingUtils.monitor(worker,"bag in place","making bag in place: ");                   
+            
+            if(bagInPlace){
+                NewBagsInPlaceWorker worker = new NewBagsInPlaceWorker(getSelectedDirectories(),(String)bagVersionList.getSelectedItem(),(String)profileList.getSelectedItem());
+                NewBagsDialog.this.dispose();                        
+                SwingUtils.monitor(worker,"bag in place","making bag in place: ");                   
+            }else if(!(outputDir != null && outputDir.isDirectory() && outputDir.canWrite() && !FUtils.hasChildren(outputDir))){
+                System.out.println("outputDir = "+outputDir);
+                SwingUtils.ShowError("","Gelieve een bestemmingsmap op te geven, die geen onderliggende bestanden of mappen bevat");
+            }else{
+                NewBagsWorker worker = new NewBagsWorker(getSelectedDirectories(),getOutputDir(),(String)bagVersionList.getSelectedItem(),(String)profileList.getSelectedItem());
+                NewBagsDialog.this.dispose();
+                SwingUtils.monitor(worker,"bag in place","making bags..");                                   
+            }
         }
     }
     private class CancelNewBagHandler extends AbstractAction {
@@ -483,11 +582,9 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             
             try{
                
-                for(int i = 0; i< getSelectedDirectories().size();i++){                                
+                for(int i = 0; i< files.size();i++){                                
                     
-                    File file = getSelectedDirectories().get(i);
-                    
-                    System.out.println("working on "+file);
+                    File file = files.get(i);                    
                     
                     if(bag.isAddKeepFilesToEmptyFolders()){                    
                         bagView.createBagsHandler.createPreBagAddKeepFilesToEmptyFolders(
@@ -508,7 +605,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 }
                 
             }catch(Exception e){
-                throw e;
+                e.printStackTrace();
             }
             
             BusyIndicator.clearAt(SwingUtils.getFrame());
@@ -526,6 +623,93 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         @Override
         public void cancel() {
             System.out.println("this is mine to finish!");
+        }        
+    }
+    
+    private class NewBagsWorker extends LongTask2 {
+        private ArrayList<File>files = new ArrayList<File>();
+        private File dir;
+        private String version;
+        private String profile;  
+        
+        public NewBagsWorker(ArrayList<File>files,File dir,String version,String profile){
+            this.files = files;
+            this.dir = dir;
+            this.version = version;
+            this.profile = profile;
+        }        
+        
+        @Override
+        protected Object doInBackground() throws Exception {
+            
+            BusyIndicator.showAt(SwingUtils.getFrame());
+            
+            ArrayList<Integer>succeeded = new ArrayList<Integer>();
+            BagView bagView = getBagView();
+            MetsBag bag = bagView.getBag(); 
+            
+            try{
+                
+                for(int i = 0; i< files.size();i++){                                                    
+                    File inputDir = files.get(i);
+                    File out = new File(dir,inputDir.getName());
+                    
+                    System.out.println("adding files from "+inputDir+" to "+out);
+                    
+                    bag.clear();
+                    bag.clearProfile();
+                    bag.setRootDir(out);
+                    bag.setName(out.getName());
+                    bag.setVersion(version);
+                    
+                    
+                    ArrayList<File>listPayloads = FUtils.listFiles(inputDir);
+                    
+                    for(File file:listPayloads){
+                        if(file.isFile()){
+                            System.out.println("\t"+file);
+                            bag.addFileToPayload(file);
+                        }
+                    }
+                    
+                    bag.setBagItMets(new DSpaceBagItMets());
+                    
+                    Writer writer = new FileSystemWriter(new BagFactory());
+                    
+                    String messages = bag.write(writer);
+
+                    if(messages != null && !messages.trim().isEmpty()){
+                        bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
+                    }
+               
+                    if(bag.isSerialized()){
+                        System.out.println("successfull: "+i);
+                        succeeded.add(i);
+                    }
+                    
+                    int percent = (int)Math.floor( ((i+1) / ((float)getSelectedDirectories().size()))*100);                                                                        
+                    setProgress(percent);                     
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            
+            System.out.println("DONE!");
+            
+            BusyIndicator.clearAt(SwingUtils.getFrame());
+            
+            //open laatste geslaagde bagit
+            System.out.println("num succeeded: "+succeeded.size());
+            if(succeeded.size() > 0){
+                int last = succeeded.get(succeeded.size() - 1);
+                File file = files.get(last);
+                bagView.openBagHandler.openExistingBag(file);
+            }
+            
+            return null;
+        }
+        @Override
+        public void cancel() {         
         }        
     }
 }

@@ -24,19 +24,20 @@ import org.springframework.richclient.application.Application;
  */
 public class SwingUtils {
     private static Log logger = LogFactory.getLog(SwingUtils.class);
-    private static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
-        JFileChooser fileChooser = new JFileChooser();              
+    public static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,int dialogType){
+        JFileChooser fileChooser = new JFileChooser();           
         fileChooser.setDialogTitle(title);            
         fileChooser.setFileFilter(filter);            
-        fileChooser.setFileSelectionMode(mode);
+        fileChooser.setFileSelectionMode(mode);        
+        fileChooser.setDialogType(dialogType);
         fileChooser.setMultiSelectionEnabled(multiSelectionEnabled);        
         return fileChooser;
     }        
     public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
-        return chooseFiles(title,filter,mode,multiSelectionEnabled,SwingUtils.getFrame());
+        return chooseFiles(title,filter,mode,multiSelectionEnabled,SwingUtils.getFrame(),JFileChooser.OPEN_DIALOG);
     }
-    public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,Component component){        
-        JFileChooser fchooser = createFileChooser(title,filter,mode,multiSelectionEnabled);        
+    public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,Component component,int dialogType){        
+        JFileChooser fchooser = createFileChooser(title,filter,mode,multiSelectionEnabled,dialogType);        
         
         int freturn = fchooser.showOpenDialog(component);
         File [] files = {};

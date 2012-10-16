@@ -105,7 +105,8 @@ public final class ImportDialog extends JDialog{
                     null,
                     JFileChooser.FILES_ONLY,
                     true,
-                    SwingUtils.getFrame()
+                    SwingUtils.getFrame(),
+                    JFileChooser.OPEN_DIALOG
                 );                
                 if(selectedFiles.length > 0){
                     setFiles(selectedFiles);

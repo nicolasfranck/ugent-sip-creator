@@ -1,10 +1,16 @@
 package gov.loc.repository.bagger.app;
 
+import java.awt.Dialog;
 import java.awt.Dimension;
+import javax.swing.JDialog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import ugent.bagger.dialogs.CreateBagsDialog;
+import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.params.CreateBagsParams;
 
 /**
  * Custom application lifecycle implementation that configures the app at well defined points within
@@ -56,8 +62,17 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     public void onPreWindowOpen(ApplicationWindowConfigurer configurer){
         super.onPreWindowOpen(configurer);      
         //Nicolas Franck: elke view past grootte aan
-        //configurer.setInitialSize(new Dimension(1024, 768));
+        //configurer.setInitialSize(new Dimension(1024, 768));        
+        
     }
+    @Override
+    public void onWindowOpened(ApplicationWindow window){
+        JDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),new CreateBagsParams());
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.pack();
+        dialog.setVisible(true);
+    }
+            
     
     /**
      * When commands are created, lookup the login command and execute it.

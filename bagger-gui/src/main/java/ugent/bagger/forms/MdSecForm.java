@@ -16,6 +16,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
+import ugent.bagger.helper.SwingUtils;
 /**
  *
  * @author nicolas
@@ -57,14 +58,14 @@ public class MdSecForm extends AbstractForm{
         
         final JComponent [] componentsOtherMdType = builder.add("mdWrap.OTHERMDTYPE");
         
-        ugent.bagger.helper.SwingUtils.setJComponentsEnabled(componentsOtherMdType,mdSec.getMdWrap().getMDTYPE() == MdSec.MDTYPE.OTHER);
+        SwingUtils.setJComponentsEnabled(componentsOtherMdType,mdSec.getMdWrap().getMDTYPE() == MdSec.MDTYPE.OTHER);
         builder.row();        
         
         getFormModel().getValueModel("mdWrap.MDTYPE").addValueChangeListener(new PropertyChangeListener(){
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
                 MdSec.MDTYPE mdType = (MdSec.MDTYPE) pce.getNewValue();                   
-                ugent.bagger.helper.SwingUtils.setJComponentsEnabled(componentsOtherMdType,mdType == MdSec.MDTYPE.OTHER);                 
+                SwingUtils.setJComponentsEnabled(componentsOtherMdType,mdType == MdSec.MDTYPE.OTHER);                 
             }
         }); 
         

@@ -10,7 +10,6 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.bagitmets.DSpaceBagItMets;
 import ugent.bagger.helper.SwingUtils;
 
