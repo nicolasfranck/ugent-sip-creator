@@ -1,17 +1,20 @@
 package ugent.rename;
 
+import ugent.bagger.helper.Context;
+
 /**
  *
  * @author nicolas
  */
 public enum Radix {
-    DECIMAL("decimaal"),ALPHABETHICAL("alfabetisch"),HEXADECIMAL("hexadecimaal");
+    DECIMAL("DECIMAL"),ALPHABETHICAL("ALPHABETHICAL"),HEXADECIMAL("HEXADECIMAL");
     private String c;
     private Radix(String c){
         this.c = c;
     }
     @Override
     public String toString(){
-        return c;
+        String translated = Context.getMessage("Radix."+c);
+        return translated != null ? translated : c;        
     }
 }

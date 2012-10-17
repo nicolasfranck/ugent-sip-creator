@@ -36,6 +36,7 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
+import ugent.bagger.helper.Context;
 
 public class NewBagDialog extends JDialog implements ActionListener {
     private static final Log log = LogFactory.getLog(NewBagDialog.class);
@@ -117,9 +118,9 @@ public class NewBagDialog extends JDialog implements ActionListener {
     public JComboBox getProfileList() {
         if(profileList == null){
             profileList = new JComboBox(getBagView().getProfileStore().getProfileNames());
-            profileList.setName(getBagView().getPropertyMessage("bag.label.projectlist"));
-            profileList.setSelectedItem(getBagView().getPropertyMessage("bag.project.noproject"));
-            profileList.setToolTipText(getBagView().getPropertyMessage("bag.projectlist.help"));
+            profileList.setName(Context.getMessage("bag.label.projectlist"));
+            profileList.setSelectedItem(Context.getMessage("bag.project.noproject"));
+            profileList.setToolTipText(Context.getMessage("bag.projectlist.help"));
         }
         return profileList;
     }
@@ -133,8 +134,8 @@ public class NewBagDialog extends JDialog implements ActionListener {
         //initStandardCommands();
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
-        titlePane.setTitle(getBagView().getPropertyMessage("NewBagFrame.title"));
-        titlePane.setMessage( new DefaultMessage(getBagView().getPropertyMessage("NewBagFrame.description")));
+        titlePane.setTitle(Context.getMessage("NewBagFrame.title"));
+        titlePane.setMessage( new DefaultMessage(Context.getMessage("NewBagFrame.description")));
         titlePaneContainer.add(titlePane.getControl());
         titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
         pageControl.add(titlePaneContainer, BorderLayout.NORTH);
@@ -165,8 +166,8 @@ public class NewBagDialog extends JDialog implements ActionListener {
     private void layoutBagVersionSelection(JPanel contentPane, int row) {
         //contents
         // Bag version dropdown list
-        JLabel bagVersionLabel = new JLabel(getBagView().getPropertyMessage("bag.label.version"));
-        bagVersionLabel.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
+        JLabel bagVersionLabel = new JLabel(Context.getMessage("bag.label.version"));
+        bagVersionLabel.setToolTipText(Context.getMessage("bag.versionlist.help"));
         
         //Nicolas Franck: zie getBagVersionList()
         /*
@@ -176,9 +177,9 @@ public class NewBagDialog extends JDialog implements ActionListener {
             versionModel.add(vals[i].versionString);
         }
         bagVersionList = new JComboBox(versionModel.toArray());
-        bagVersionList.setName(getBagView().getPropertyMessage("bag.label.versionlist"));
+        bagVersionList.setName(Context.getMessage("bag.label.versionlist"));
         bagVersionList.setSelectedItem(Version.V0_96.versionString);
-        bagVersionList.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));        
+        bagVersionList.setToolTipText(Context.getMessage("bag.versionlist.help"));        
         */
 
         JLabel spacerLabel = new JLabel();
@@ -198,9 +199,9 @@ public class NewBagDialog extends JDialog implements ActionListener {
                 versionModel.add(vals[i].versionString);
             }
             bagVersionList = new JComboBox(versionModel.toArray());
-            bagVersionList.setName(getBagView().getPropertyMessage("bag.label.versionlist"));
+            bagVersionList.setName(Context.getMessage("bag.label.versionlist"));
             bagVersionList.setSelectedItem(Version.V0_96.versionString);
-            bagVersionList.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
+            bagVersionList.setToolTipText(Context.getMessage("bag.versionlist.help"));
         }
         return bagVersionList;
     }
@@ -212,8 +213,8 @@ public class NewBagDialog extends JDialog implements ActionListener {
     private void layoutProfileSelection(JPanel contentPane, int row) {
         // content
         // profile selection
-        JLabel bagProfileLabel = new JLabel(getBagView().getPropertyMessage("Select Profile:"));
-        bagProfileLabel.setToolTipText(getBagView().getPropertyMessage("bag.projectlist.help"));
+        JLabel bagProfileLabel = new JLabel(Context.getMessage("Select Profile:"));
+        bagProfileLabel.setToolTipText(Context.getMessage("bag.projectlist.help"));
 
         //Nicolas Franck: zie getProfileList()
         /*

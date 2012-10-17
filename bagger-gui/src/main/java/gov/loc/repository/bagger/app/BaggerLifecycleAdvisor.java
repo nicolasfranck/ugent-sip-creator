@@ -67,10 +67,11 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     }
     @Override
     public void onWindowOpened(ApplicationWindow window){
+        /*
         JDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),new CreateBagsParams());
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         dialog.pack();
-        dialog.setVisible(true);
+        dialog.setVisible(true);*/
     }
             
     

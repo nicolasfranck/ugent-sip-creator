@@ -150,7 +150,7 @@ public class BagView extends DefaultView {
 
     public TagManifestPane getTagManifestPane() {
         if(tagManifestPane == null){
-            tagManifestPane = new TagManifestPane(this);
+            tagManifestPane = new TagManifestPane();
         }
         return tagManifestPane;
     }

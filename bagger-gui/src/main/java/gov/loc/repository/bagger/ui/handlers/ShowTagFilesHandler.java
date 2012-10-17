@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
+import ugent.bagger.helper.Context;
 
 /*
  * Nicolas Franck: behouden of niet? Heeft weinig toegevoegde waarde!
@@ -37,7 +38,7 @@ public class ShowTagFilesHandler extends AbstractAction {
     	bagView.getTagManifestPane().updateCompositePaneTabs(bag);
     	ApplicationWindow window = Application.instance().getActiveWindow();
     	JFrame f = window.getControl();
-        tagFilesFrame = new TagFilesFrame(f, bagView.getPropertyMessage("bagView.tagFrame.title"));
+        tagFilesFrame = new TagFilesFrame(f,Context.getMessage("bagView.tagFrame.title"));
         tagFilesFrame.addComponents(bagView.getTagManifestPane());
     	tagFilesFrame.addComponents(bagView.getTagManifestPane());
     	tagFilesFrame.setVisible(true);

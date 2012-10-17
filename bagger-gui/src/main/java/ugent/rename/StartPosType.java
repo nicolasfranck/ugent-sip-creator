@@ -1,17 +1,20 @@
 package ugent.rename;
 
+import ugent.bagger.helper.Context;
+
 /**
  *
  * @author nicolas
  */
 public enum StartPosType {
-    ABSOLUTE("absolute"),RELATIVE("relative");
+    ABSOLUTE("ABSOLUTE"),RELATIVE("RELATIVE");
     private String c;
     private StartPosType(String c){
         this.c = c;
     }
     @Override
     public String toString(){        
-        return c;
+        String translated = Context.getMessage("StartPosType."+c);
+        return translated != null ? translated : c;
     }
 }

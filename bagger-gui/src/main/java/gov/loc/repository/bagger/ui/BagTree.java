@@ -105,8 +105,10 @@ public final class BagTree extends JTree {
                 payload = bag.getPayloadPaths(); //bag.getFetchPayload();                
                 //basePath = bag.getFetch().getBaseURL();
             }*/            
-                        
+            
+            
             List<DefaultMutableTreeNode>structuredList = FUtils.listToStructure(payload.toArray(new String [] {}));                        
+            
             if(isParent) {
                 parentNode = structuredList.get(0);
             }

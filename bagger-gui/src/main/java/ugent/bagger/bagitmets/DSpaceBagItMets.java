@@ -119,7 +119,8 @@ public class DSpaceBagItMets extends BagItMets{
                 }
 
                 metsFile.setMIMETYPE(mimeType);                                                                    
-                String checksumFile = payloadManifest.get(bagFile.getFilepath());                         
+                
+                String checksumFile = payloadManifest.get(bagFile.getFilepath());                                         
                 
                 //CHECKSUM en CHECKSUMTYPE
                 metsFile.setCHECKSUM(checksumFile);
@@ -148,7 +149,7 @@ public class DSpaceBagItMets extends BagItMets{
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();
                 flocat.setLOCTYPE(LocatorElement.LOCTYPE.URL);
                 flocat.setXlinkHREF(bagFile.getFilepath());                 
-                flocat.setXlinkTitle(bagFile.getFilepath().replaceFirst("data/",""));
+                flocat.setXlinkTitle(bagFile.getFilepath());
                 
                 metsFile.getFLocat().add(flocat);
                 

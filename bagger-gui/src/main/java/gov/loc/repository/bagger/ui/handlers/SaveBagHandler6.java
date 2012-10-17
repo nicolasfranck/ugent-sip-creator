@@ -19,6 +19,7 @@ import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.bagitmets.DSpaceBagItMets;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask2;
@@ -98,8 +99,8 @@ public class SaveBagHandler6 extends Handler {
             }
         };
         dialog.setCloseAction(CloseAction.DISPOSE);
-        dialog.setTitle(bagView.getPropertyMessage("bag.dialog.title.create"));
-        dialog.setConfirmationMessage(bagView.getPropertyMessage("bag.dialog.message.create"));
+        dialog.setTitle(Context.getMessage("bag.dialog.title.create"));
+        dialog.setConfirmationMessage(Context.getMessage("bag.dialog.message.create"));
         dialog.showDialog();
     }
 
@@ -117,8 +118,8 @@ public class SaveBagHandler6 extends Handler {
             }
         };
         dialog.setCloseAction(CloseAction.DISPOSE);
-        dialog.setTitle(bagView.getPropertyMessage("bag.dialog.title.create"));
-        dialog.setConfirmationMessage(bagView.getPropertyMessage("bag.dialog.message.accept"));
+        dialog.setTitle(Context.getMessage("bag.dialog.title.create"));
+        dialog.setConfirmationMessage(Context.getMessage("bag.dialog.message.accept"));
         dialog.showDialog();
     }
 
@@ -135,7 +136,7 @@ public class SaveBagHandler6 extends Handler {
         fs.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
         fs.setDialogTitle("Save Bag As");
     	fs.setCurrentDirectory(bag.getRootDir());
-    	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
+    	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
             String selectedName = bag.getName();
             if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
                 selectedName += "."+DefaultBag.ZIP_LABEL;

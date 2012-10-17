@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import ugent.bagger.filters.FileExtensionFilter;
+import ugent.bagger.helper.Context;
 
 public final class InfoFormsPane extends JPanel {
     private static final long serialVersionUID = -5988111446773491301L;   
@@ -112,7 +113,7 @@ public final class InfoFormsPane extends JPanel {
     public JPanel getInfoPanel() {
         if(infoPanel == null){
             infoPanel = new JPanel(new GridBagLayout());
-            infoPanel.setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
+            infoPanel.setToolTipText(Context.getMessage("bagView.bagInfoInputPane.help"));
             Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
             infoPanel.setBorder(emptyBorder);
             GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
@@ -129,7 +130,7 @@ public final class InfoFormsPane extends JPanel {
     public InfoInputPane getInfoInputPane() {
         if(infoInputPane == null){
             infoInputPane = new InfoInputPane(false);
-            infoInputPane.setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
+            infoInputPane.setToolTipText(Context.getMessage("bagView.bagInfoInputPane.help"));
             infoInputPane.setEnabled(false);
         }
         return infoInputPane;
@@ -159,8 +160,8 @@ public final class InfoFormsPane extends JPanel {
 
     public JLabel getSerializeLabel() {
         if(serializeLabel == null){
-            serializeLabel = new JLabel(getBagView().getPropertyMessage("bag.label.ispackage"));
-            serializeLabel.setToolTipText(getBagView().getPropertyMessage("bag.serializetype.help"));
+            serializeLabel = new JLabel(Context.getMessage("bag.label.ispackage"));
+            serializeLabel.setToolTipText(Context.getMessage("bag.serializetype.help"));
         }
         return serializeLabel;
     }
@@ -182,7 +183,7 @@ public final class InfoFormsPane extends JPanel {
 
     public JLabel getBagNameValue() {
         if(bagNameValue == null){
-            bagNameValue = new JLabel(getBagView().getPropertyMessage("bag.label.noname"));
+            bagNameValue = new JLabel(Context.getMessage("bag.label.noname"));
         }
         return bagNameValue;
     }
@@ -204,7 +205,7 @@ public final class InfoFormsPane extends JPanel {
 
         // bag name
         int row = 0;
-        JLabel lblBagName = new JLabel(getBagView().getPropertyMessage("bag.label.name"));
+        JLabel lblBagName = new JLabel(Context.getMessage("bag.label.name"));
         GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(lblBagName, gbc);
@@ -225,8 +226,8 @@ public final class InfoFormsPane extends JPanel {
         pane.add(getBagProfileValue(), gbc);
 
         // bag version
-        JLabel bagVersionLabel = new JLabel(getBagView().getPropertyMessage("bag.label.version"));
-    	bagVersionLabel.setToolTipText(getBagView().getPropertyMessage("bag.versionlist.help"));
+        JLabel bagVersionLabel = new JLabel(Context.getMessage("bag.label.version"));
+    	bagVersionLabel.setToolTipText(Context.getMessage("bag.versionlist.help"));
     	gbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(bagVersionLabel, gbc);
@@ -237,8 +238,8 @@ public final class InfoFormsPane extends JPanel {
 
         // is Holey bag?
         row++;
-        JLabel holeyLabel = new JLabel(getBagView().getPropertyMessage("bag.label.isholey"));
-        holeyLabel.setToolTipText(getBagView().getPropertyMessage("bag.isholey.help"));
+        JLabel holeyLabel = new JLabel(Context.getMessage("bag.label.isholey"));
+        holeyLabel.setToolTipText(Context.getMessage("bag.isholey.help"));
     	gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(holeyLabel, gbc);
@@ -305,7 +306,7 @@ public final class InfoFormsPane extends JPanel {
         getInfoPanel().remove(getInfoInputPane());
         getInfoPanel().validate();      
     	setInfoInputPane(new InfoInputPane(enabled));
-    	getInfoInputPane().setToolTipText(getBagView().getPropertyMessage("bagView.bagInfoInputPane.help"));
+    	getInfoInputPane().setToolTipText(Context.getMessage("bagView.bagInfoInputPane.help"));
         
     	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
         getInfoPanel().add(getInfoInputPane(),gbc);

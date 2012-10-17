@@ -39,13 +39,14 @@ import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
+import ugent.bagger.helper.Context;
 
 public final class SaveBagDialog extends JDialog implements ActionListener {
     private static final Log log = LogFactory.getLog(SaveBagDialog.class);
     private static final long serialVersionUID = 1L;   
     private File bagFile;
     private String bagFileName = "";
-    private final Dimension preferredDimension = new Dimension(600, 400);
+    private final Dimension preferredDimension = new Dimension(500,350);
     private JPanel savePanel;
     private JPanel serializeGroupPanel;
     private JTextField bagNameField;    
@@ -57,8 +58,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     private JRadioButton tarButton;
     private JRadioButton tarGzButton;
     private JRadioButton tarBz2Button;
-    private JCheckBox isTagCheckbox;
-    private JCheckBox isPayloadCheckbox;
+    //private JCheckBox isTagCheckbox;
+    //private JCheckBox isPayloadCheckbox;
     private JComboBox tagAlgorithmList;
     private JComboBox payAlgorithmList;        
     private JComboBox metsFileDateCreatedCombobox;    
@@ -70,7 +71,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     public BagView getBagView(){
         return BagView.getInstance();
     }
-    public SaveBagDialog(JFrame frame,boolean isModal,String title) {
+    public SaveBagDialog(final JFrame frame,boolean isModal,String title) {
         super(frame,isModal);
         setTitle(title);
              
@@ -80,10 +81,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         }else{
             savePanel = new JPanel();
         }
-        getContentPane().add(savePanel, BorderLayout.CENTER);
-        setPreferredSize(preferredDimension);
-        setBounds(300,200, 600, 400);
-       
+        getContentPane().add(savePanel, BorderLayout.CENTER);        
+        setPreferredSize(preferredDimension);        
     }
 
     protected JComponent createButtonBar() {
@@ -138,8 +137,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         TitlePane titlePane = new TitlePane();     
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
-        titlePane.setTitle(getBagView().getPropertyMessage("SaveBagFrame.title"));
-        titlePane.setMessage(new DefaultMessage(getBagView().getPropertyMessage("Define the Bag settings")));
+        titlePane.setTitle(Context.getMessage("SaveBagFrame.title"));
+        titlePane.setMessage(new DefaultMessage(Context.getMessage("Define the Bag settings")));
         titlePaneContainer.add(titlePane.getControl());
         titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
         pageControl.add(titlePaneContainer, BorderLayout.NORTH);
@@ -148,10 +147,10 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         // TODO: Add bag name field
     	// TODO: Add save name file selection button
         JLabel location = new JLabel("Save in:");
-    	browseButton = new JButton(getMessage("bag.button.browse"));
+    	browseButton = new JButton(Context.getMessage("bag.button.browse"));
     	browseButton.addActionListener(new SaveBagAsHandler());
         browseButton.setEnabled(true);
-        browseButton.setToolTipText(getMessage("bag.button.browse.help"));
+        browseButton.setToolTipText(Context.getMessage("bag.button.browse.help"));
     	String fileName = "";
     	DefaultBag bag = getBagView().getBag();
     	if (bag != null) {
@@ -164,35 +163,35 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         
         // TODO: Add format label
     	JLabel serializeLabel;
-        serializeLabel = new JLabel(getMessage("bag.label.ispackage"));
-        serializeLabel.setToolTipText(getMessage("bag.serializetype.help"));
+        serializeLabel = new JLabel(Context.getMessage("bag.label.ispackage"));
+        serializeLabel.setToolTipText(Context.getMessage("bag.serializetype.help"));
 
     	// TODO: Add format selection panel
-        noneButton = new JRadioButton(getMessage("bag.serializetype.none"));
+        noneButton = new JRadioButton(Context.getMessage("bag.serializetype.none"));
         noneButton.setEnabled(true);
         AbstractAction serializeListener = new SerializeBagHandler();
         noneButton.addActionListener(serializeListener);
-        noneButton.setToolTipText(getMessage("bag.serializetype.none.help"));
+        noneButton.setToolTipText(Context.getMessage("bag.serializetype.none.help"));
 
-        zipButton = new JRadioButton(getMessage("bag.serializetype.zip"));
+        zipButton = new JRadioButton(Context.getMessage("bag.serializetype.zip"));
         zipButton.setEnabled(true);
         zipButton.addActionListener(serializeListener);
-        zipButton.setToolTipText(getMessage("bag.serializetype.zip.help"));
+        zipButton.setToolTipText(Context.getMessage("bag.serializetype.zip.help"));
 
-        tarButton = new JRadioButton(getMessage("bag.serializetype.tar"));
+        tarButton = new JRadioButton(Context.getMessage("bag.serializetype.tar"));
         tarButton.setEnabled(true);
         tarButton.addActionListener(serializeListener);
-        tarButton.setToolTipText(getMessage("bag.serializetype.tar.help"));
+        tarButton.setToolTipText(Context.getMessage("bag.serializetype.tar.help"));
         
-        tarGzButton = new JRadioButton(getMessage("bag.serializetype.targz"));
+        tarGzButton = new JRadioButton(Context.getMessage("bag.serializetype.targz"));
         tarGzButton.setEnabled(true);
         tarGzButton.addActionListener(serializeListener);
-        tarGzButton.setToolTipText(getMessage("bag.serializetype.targz.help"));
+        tarGzButton.setToolTipText(Context.getMessage("bag.serializetype.targz.help"));
         
-        tarBz2Button = new JRadioButton(getMessage("bag.serializetype.tarbz2"));
+        tarBz2Button = new JRadioButton(Context.getMessage("bag.serializetype.tarbz2"));
         tarBz2Button.setEnabled(true);
         tarBz2Button.addActionListener(serializeListener);
-        tarBz2Button.setToolTipText(getMessage("bag.serializetype.tarbz2.help"));
+        tarBz2Button.setToolTipText(Context.getMessage("bag.serializetype.tarbz2.help"));
 
         short mode = bag.getSerialMode();
     	if (mode == DefaultBag.NO_MODE) {
@@ -224,43 +223,49 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         serializeGroupPanel.add(tarBz2Button);
         serializeGroupPanel.setBorder(border);
         serializeGroupPanel.setEnabled(true);
-        serializeGroupPanel.setToolTipText(getBagView().getPropertyMessage("bag.serializetype.help"));
+        serializeGroupPanel.setToolTipText(Context.getMessage("bag.serializetype.help"));
 
+        //Nicolas Franck: tag manifest moet altijd aangemaakt worden
+        getBagView().getBag().isBuildTagManifest(true);
+        /*
         JLabel tagLabel = new JLabel(getMessage("bag.label.istag"));
         tagLabel.setToolTipText(getMessage("bag.label.istag.help"));
         isTagCheckbox = new JCheckBox();
         isTagCheckbox.setBorder(border);
         isTagCheckbox.setSelected(bag.isBuildTagManifest());
         isTagCheckbox.addActionListener(new TagManifestHandler());
-        isTagCheckbox.setToolTipText(getMessage("bag.checkbox.istag.help"));
+        isTagCheckbox.setToolTipText(getMessage("bag.checkbox.istag.help"));*/
 
-        JLabel tagAlgorithmLabel = new JLabel(getMessage("bag.label.tagalgorithm"));
-        tagAlgorithmLabel.setToolTipText(getMessage("bag.label.tagalgorithm.help"));
+        JLabel tagAlgorithmLabel = new JLabel(Context.getMessage("bag.label.tagalgorithm"));
+        tagAlgorithmLabel.setToolTipText(Context.getMessage("bag.label.tagalgorithm.help"));
         ArrayList<String> listModel = new ArrayList<String>();
         for(Algorithm algorithm : Algorithm.values()) {
             listModel.add(algorithm.bagItAlgorithm);
         }
         tagAlgorithmList = new JComboBox(listModel.toArray());
-        tagAlgorithmList.setName(getMessage("bag.tagalgorithmlist"));
+        tagAlgorithmList.setName(Context.getMessage("bag.tagalgorithmlist"));
         tagAlgorithmList.setSelectedItem(bag.getTagManifestAlgorithm());
         tagAlgorithmList.addActionListener(new TagAlgorithmListHandler());
-        tagAlgorithmList.setToolTipText(getMessage("bag.tagalgorithmlist.help"));
+        tagAlgorithmList.setToolTipText(Context.getMessage("bag.tagalgorithmlist.help"));
     	
+        //Nicolas Franck: payload manifest moet altijd aangemaakt worden
+        getBagView().getBag().isBuildPayloadManifest(true);
+        /*
         JLabel payloadLabel = new JLabel(getMessage("bag.label.ispayload"));
         payloadLabel.setToolTipText(getMessage("bag.ispayload.help"));
         isPayloadCheckbox = new JCheckBox();
         isPayloadCheckbox.setBorder(border);
         isPayloadCheckbox.setSelected(bag.isBuildPayloadManifest());
         isPayloadCheckbox.addActionListener(new PayloadManifestHandler());
-        isPayloadCheckbox.setToolTipText(getMessage("bag.ispayload.help"));
+        isPayloadCheckbox.setToolTipText(getMessage("bag.ispayload.help"));*/
 
-        JLabel payAlgorithmLabel = new JLabel(getBagView().getPropertyMessage("bag.label.payalgorithm"));
-        payAlgorithmLabel.setToolTipText(getMessage("bag.payalgorithm.help"));
+        JLabel payAlgorithmLabel = new JLabel(Context.getMessage("bag.label.payalgorithm"));
+        payAlgorithmLabel.setToolTipText(Context.getMessage("bag.payalgorithm.help"));
         payAlgorithmList = new JComboBox(listModel.toArray());
-        payAlgorithmList.setName(getMessage("bag.payalgorithmlist"));
+        payAlgorithmList.setName(Context.getMessage("bag.payalgorithmlist"));
         payAlgorithmList.setSelectedItem(bag.getPayloadManifestAlgorithm());
         payAlgorithmList.addActionListener(new PayAlgorithmListHandler());
-        payAlgorithmList.setToolTipText(getMessage("bag.payalgorithmlist.help"));
+        payAlgorithmList.setToolTipText(Context.getMessage("bag.payalgorithmlist.help"));
         
     	GridBagLayout layout = new GridBagLayout();
         GridBagConstraints glbc = new GridBagConstraints();
@@ -308,13 +313,16 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST); 
         layout.setConstraints(serializeGroupPanel, glbc);
     	panel.add(serializeGroupPanel);
+        
+        /*
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         layout.setConstraints(tagLabel, glbc);
     	panel.add(tagLabel);
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
         layout.setConstraints(isTagCheckbox, glbc);
-    	panel.add(isTagCheckbox);
+    	panel.add(isTagCheckbox);*/
+        
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         layout.setConstraints(tagAlgorithmLabel, glbc);
@@ -322,13 +330,16 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
         layout.setConstraints(tagAlgorithmList, glbc);
     	panel.add(tagAlgorithmList);
+        
+        /*
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         layout.setConstraints(payloadLabel, glbc);
     	panel.add(payloadLabel);
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
         layout.setConstraints(isPayloadCheckbox, glbc);
-    	panel.add(isPayloadCheckbox);
+    	panel.add(isPayloadCheckbox);*/
+        
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         layout.setConstraints(payAlgorithmLabel, glbc);
@@ -455,7 +466,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
             fs.setDialogTitle("Save Bag As");
             DefaultBag bag = bagView.getBag();
             fs.setCurrentDirectory(bag.getRootDir());
-            if (bag.getName() != null && !bag.getName().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
+            if (bag.getName() != null && !bag.getName().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
                 String selectedName = bag.getName();
                 if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
                     selectedName += "."+DefaultBag.ZIP_LABEL;
@@ -497,7 +508,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         @Override
 	public void actionPerformed(ActionEvent e) {
             BagView bagView = getBagView();
-            if (bagNameField.getText().trim().isEmpty() || bagNameField.getText().equalsIgnoreCase(bagView.getPropertyMessage("bag.label.noname"))) {
+            if (bagNameField.getText().trim().isEmpty() || bagNameField.getText().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
                 bagView.showWarningErrorDialog("Error - bag not saved", "The bag must have a file name.");
                 return;
             }
@@ -566,9 +577,5 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     	gbc.weighty = wy; // relative vertical size
     	gbc.fill = fill; // the way how the control fills cells
     	gbc.anchor = anchor; // alignment
-    }
-    
-    private String getMessage(String property) {
-    	return getBagView().getPropertyMessage(property);
-    }
+    }    
 }

@@ -11,13 +11,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.helper.Context;
 
 public final class TagManifestPane extends JTabbedPane {
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(TagManifestPane.class);
     public static final String TAGMANIFEST_PANE = "tagManifestPane";
     private String messages = new String();
-    private BagView parentView;
+    //Nicolas Franck: algemeen beschikbaar!
+    //private BagView parentView;
     private DefaultBag defaultBag;
     private BagTextPane dataPane;
     private JScrollPane dataScrollPane;
@@ -27,10 +29,13 @@ public final class TagManifestPane extends JTabbedPane {
     private Color selectedColor = Color.lightGray; //new Color(180, 180, 200);
     private Color unselectedColor = Color.black; //new Color(180, 180, 160);
 
-    public TagManifestPane(BagView bagView) {
+    public BagView getBagView(){
+        return BagView.getInstance();
+    }
+    public TagManifestPane() {
         super();
-        this.parentView = bagView;
-        this.defaultBag = bagView.getBag();
+        //this.parentView = bagView;
+        this.defaultBag = getBagView().getBag();
         populateBagPane();
     }
 
@@ -49,7 +54,7 @@ public final class TagManifestPane extends JTabbedPane {
                 }
             }
         };
-        this.addChangeListener(changeListener);
+        addChangeListener(changeListener);
     }
 
     public void setBag(DefaultBag bag) {
@@ -76,14 +81,17 @@ public final class TagManifestPane extends JTabbedPane {
         for (Iterator<BagFile> it=list.iterator(); it.hasNext(); ) {
             BagFile bf = it.next();
             String content = "";
-            if (bf.getFilepath().contains("manifest")) content = bf.toString();
-            else content = tokenFormat(bf.toString());
+            if (bf.getFilepath().contains("manifest")) {
+                content = bf.toString();
+            }else{
+                content = tokenFormat(bf.toString());
+            }
             log.debug("BagFile: " + bf.getFilepath() + "::" + content);
             BagTextPane manifestPane = new BagTextPane(content);
             manifestPaneList.add(manifestPane);
             JScrollPane manifestScrollPane = new JScrollPane();
             manifestScrollPane.setViewportView(manifestPane);
-            manifestScrollPane.setToolTipText(parentView.getPropertyMessage("compositePane.tab.manifest.help"));
+            manifestScrollPane.setToolTipText(Context.getMessage("compositePane.tab.manifest.help"));
             manifestScrollPane.setForeground(selectedColor);
             manifestScrollPaneList.add(manifestScrollPane);
             String tabName = bf.getFilepath();
@@ -95,10 +103,10 @@ public final class TagManifestPane extends JTabbedPane {
     	String dataContent = defaultBag.getDataContent();
     	dataPane = new BagTextPane(dataContent);
     	dataScrollPane.setViewportView(dataPane);
-    	dataScrollPane.setToolTipText(parentView.getPropertyMessage("compositePane.tab.data.help"));
+    	dataScrollPane.setToolTipText(Context.getMessage("compositePane.tab.data.help"));
     	dataScrollPane.setForeground(selectedColor);
     	if (!defaultBag.isHoley()) {
-            addTab(parentView.getPropertyMessage("compositePane.tab.data"),dataScrollPane);
+            addTab(Context.getMessage("compositePane.tab.data"),dataScrollPane);
     	}
         init();
     }

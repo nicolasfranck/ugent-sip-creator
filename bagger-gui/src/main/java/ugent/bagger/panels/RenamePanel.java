@@ -76,8 +76,7 @@ public class RenamePanel extends JPanel{
     private RenameParamsForm renameParamsForm;    
     private RenumberParams renumberParams;
     private RenumberParamsForm renumberParamsForm;      
-    private TreeSelectionListener treeTableSelectionListener;
-    
+    private TreeSelectionListener treeTableSelectionListener;    
     private LazyTreeModel fileSystemModel;
     private JTree fileSystemTree;
     private LazyTreeNode fileSystemTreeNode;
@@ -175,10 +174,20 @@ public class RenamePanel extends JPanel{
                     File file = fileNode.getFile();                
                     if(file.isDirectory()){                    
                         if(!file.canRead()){
-                            SwingUtils.ShowError(null,""+file+" is not readable!");                            
+                            SwingUtils.ShowError(
+                                null,
+                                Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
+                                    file.getAbsolutePath()
+                                })
+                            );
+                                    
                             throw new ExpandVetoException(tee);
                         }else if(!file.canWrite()){
-                            getStatusTextArea().setText("kan niet schrijven in "+file.getAbsolutePath());                            
+                            getStatusTextArea().setText(
+                                Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
+                                    file.getAbsolutePath()
+                                })
+                            );                            
                         }else{
                             getStatusTextArea().setText(file.getAbsolutePath());                            
                         }
@@ -254,7 +263,11 @@ public class RenamePanel extends JPanel{
                 File currentDir = getLastFile();
                 
                 if(currentDir.isDirectory() && !currentDir.canWrite()){
-                    getStatusTextArea().setText("kan niet schrijven in "+currentDir.getAbsolutePath());
+                    getStatusTextArea().setText(
+                        Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
+                            currentDir.getAbsolutePath()
+                        })
+                    );
                 }
                 
                 boolean formsEnabled = currentDir.isDirectory() && currentDir.canWrite() && selectedPaths != null && selectedPaths.length > 0;                
@@ -518,7 +531,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {                
                 if(fileNodesSelected.size() <= 0){     
-                    SwingUtils.ShowError(null,"selecteer bestanden");                    
+                    SwingUtils.ShowError(null,Context.getMessage("RenamePanel.error.selectFiles"));                    
                     return;
                 }
                 renumberParams.setSimulateOnly(false);
@@ -542,7 +555,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae){               
                 if(fileNodesSelected.size() <= 0){
-                    SwingUtils.ShowError(null,"selecteer bestanden");                      
+                    SwingUtils.ShowError(null,Context.getMessage("RenamePanel.error.selectFiles"));                          
                     return;
                 }               
                 renumberParams.setSimulateOnly(true);
@@ -589,7 +602,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {                
                 if(fileNodesSelected.size() <= 0){
-                    SwingUtils.ShowError(null,"selecteer bestanden");                      
+                    SwingUtils.ShowError(null,Context.getMessage("RenamePanel.error.selectFiles"));                            
                     return;
                 }           
                 renameParams.setSimulateOnly(false);
@@ -613,7 +626,7 @@ public class RenamePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae){               
                 if(fileNodesSelected.size() <= 0){
-                    SwingUtils.ShowError(null,"selecteer bestanden");                      
+                    SwingUtils.ShowError(null,Context.getMessage("RenamePanel.error.selectFiles"));                            
                     return;
                 }
                 renameParams.setSimulateOnly(true);
@@ -660,7 +673,7 @@ public class RenamePanel extends JPanel{
         this.lastFile = lastFile;
     }   
     private void monitor(SwingWorker worker,String title){
-        ugent.bagger.helper.SwingUtils.monitor(worker,title,"renaming");        
+        SwingUtils.monitor(worker,title,"renaming");        
     } 
     private class TaskRenumber extends DefaultWorker {
         private RenumberParams renumberParams;
@@ -721,8 +734,7 @@ public class RenamePanel extends JPanel{
                         numRenamedSuccess++;
                     }
                     @Override
-                    public void onRenameEnd(RenameFilePair pair,int index) {
-                        String status = renumber.isSimulateOnly() ? "simulatie":(pair.isSuccess() ? "successvol":"error");
+                    public void onRenameEnd(RenameFilePair pair,int index) {                        
                         resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
                             pair,
                             pair,
@@ -733,7 +745,12 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                        SwingUtils.ShowMessage(null,"totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);                         
+                        SwingUtils.ShowMessage(
+                            null,
+                            Context.getMessage("RenamePanel.renumberParamsForm.result",new Object [] {
+                                new Integer(renamePairs.size()),new Integer(numSuccess)
+                            })                            
+                        );                         
                         simulateRenumberButton.setEnabled(true);
                         submitRenumberButton.setEnabled(true);
                         if(!renumberParams.isSimulateOnly()){
@@ -806,12 +823,13 @@ public class RenamePanel extends JPanel{
                             }else{
                                 numFound++;
                             }
-                        }                       
-                        
-                        boolean approved = true;
-                        System.out.println("RenameListenerAdapter::approveList => numFound: "+numFound);
+                        }                                               
+                        boolean approved = true;                      
                         if(numFound > 0){
-                            int answer = JOptionPane.showConfirmDialog(SwingUtils.getFrame(),"Waarschuwing: één of meerdere bestanden zullen overschreven worden. Bent u zeker?");
+                            int answer = JOptionPane.showConfirmDialog(
+                                SwingUtils.getFrame(),
+                                Context.getMessage("RenamePanel.renameParamsForm.warning.overwrite")                                
+                            );
                             approved = answer == JOptionPane.OK_OPTION;
                             renamer.setOverwrite(approved);
                             getRenameParamsForm().getValueModel("overWrite").setValue(new Boolean(approved));
@@ -829,8 +847,7 @@ public class RenamePanel extends JPanel{
                         numRenamedSuccess++;
                     }
                     @Override
-                    public void onRenameEnd(RenameFilePair pair,int index) {
-                        String status = renamer.isSimulateOnly() ? "simulatie":(pair.isSuccess() ? "successvol":"error");
+                    public void onRenameEnd(RenameFilePair pair,int index) {                        
                         resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
                             pair,
                             pair,
@@ -841,7 +858,12 @@ public class RenamePanel extends JPanel{
                     }
                     @Override
                     public void onEnd(ArrayList<RenameFilePair>renamePairs,int numSuccess){
-                        SwingUtils.ShowMessage(null,"totaal matches:"+renamePairs.size()+"\naantal geslaagd: "+numSuccess);
+                        SwingUtils.ShowMessage(
+                            null,
+                            Context.getMessage("RenamePanel.renameParamsForm.result",new Object [] {
+                                new Integer(renamePairs.size()),new Integer(numSuccess)
+                            })                            
+                        );                        
                         simulateRenameButton.setEnabled(true);
                         submitRenameButton.setEnabled(true);
                         if(!renameParams.isSimulateOnly()){

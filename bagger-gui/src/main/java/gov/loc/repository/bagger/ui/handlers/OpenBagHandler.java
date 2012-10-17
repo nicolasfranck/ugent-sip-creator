@@ -139,6 +139,7 @@ public class OpenBagHandler extends AbstractAction {
             path = AbstractBagConstants.DATA_DIRECTORY;
             rootSrc = new File(file,bagView.getBag().getDataDirectory());
     	}
+
         
     	bagView.getBagPayloadTree().populateNodes(bagView.getBag(),path,rootSrc,true);
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());

@@ -15,6 +15,7 @@ import java.util.Iterator;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
 public class StartNewBagHandler extends AbstractAction {
@@ -39,7 +40,7 @@ public class StartNewBagHandler extends AbstractAction {
         NewBagDialog dialog = new NewBagDialog(
             SwingUtils.getFrame(), 
             true, 
-            bagView.getPropertyMessage("bag.frame.new")
+            Context.getMessage("bag.frame.new")
         );
         dialog.setPreferredSize(new Dimension(400, 200));
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);               
@@ -51,7 +52,7 @@ public class StartNewBagHandler extends AbstractAction {
         //Nicolas Franck
         /*
                 
-        NewBagFrame newBagFrame = new NewBagFrame(bagView,bagView.getPropertyMessage("bag.frame.new"));
+        NewBagFrame newBagFrame = new NewBagFrame(bagView,Context.getMessage("bag.frame.new"));
         newBagFrame.setVisible(true);        
         newBagFrame.pack();*/        
     }
@@ -64,7 +65,7 @@ public class StartNewBagHandler extends AbstractAction {
     	DefaultBag bag = bagView.getBag();
     	bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
 
-    	String bagName = bagView.getPropertyMessage("bag.label.noname");
+    	String bagName = Context.getMessage("bag.label.noname");
         bag.setName(bagName);
         bagView.getInfoFormsPane().setBagName(bagName);
 

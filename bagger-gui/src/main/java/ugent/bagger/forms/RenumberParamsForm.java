@@ -12,7 +12,6 @@ import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.JSpinnerNumberBinding;
-import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.RenumberParams;
 import ugent.rename.ErrorAction;
@@ -156,8 +155,7 @@ public class RenumberParamsForm extends AbstractForm{
         builder.add(onErrorActionBinding);
         builder.row();
         
-        //TODO: pre-sort        
-       
+        //TODO: pre-sort
         
         //valideer huidige toestand?        
         getFormModel().commit();       

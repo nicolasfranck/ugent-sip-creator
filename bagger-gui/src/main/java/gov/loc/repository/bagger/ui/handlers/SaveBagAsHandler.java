@@ -25,10 +25,10 @@ public class SaveBagAsHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();    
         
         SaveBagDialog dialog = new SaveBagDialog(SwingUtils.getFrame(),true,bagView.getPropertyMessage("bag.frame.save"));
-        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);               
-        dialog.setLocationRelativeTo(SwingUtils.getFrame());         
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);                               
+        dialog.pack();     
+        dialog.setLocationRelativeTo(SwingUtils.getFrame());              
         SwingUtils.centerAt(SwingUtils.getFrame(),dialog);
-        dialog.pack();
         dialog.setVisible(true);
         
         //Nicolas Franck

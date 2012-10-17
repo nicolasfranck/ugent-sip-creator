@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.helper.Context;
 
 public class ClearBagHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;   
@@ -62,8 +63,8 @@ public class ClearBagHandler extends AbstractAction {
             }
         };
         dialog.setCloseAction(CloseAction.DISPOSE);
-        dialog.setTitle(bagView.getPropertyMessage("bag.dialog.title.close"));
-        dialog.setConfirmationMessage(bagView.getPropertyMessage("bag.dialog.message.close"));
+        dialog.setTitle(Context.getMessage("bag.dialog.title.close"));
+        dialog.setConfirmationMessage(Context.getMessage("bag.dialog.message.close"));
         dialog.showDialog();
     }
     
@@ -102,7 +103,7 @@ public class ClearBagHandler extends AbstractAction {
             e.printStackTrace();            
     	}
     	if (f == null) {
-            bagName = bagView.getPropertyMessage("bag.label.noname");
+            bagName = Context.getMessage("bag.label.noname");
     	}else{
             bagName = f.getName();
             String fileName = f.getAbsolutePath();

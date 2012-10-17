@@ -4,6 +4,7 @@ import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -151,11 +152,11 @@ public class SwingUtils {
     public static void ShowMessage(String title,String message,int type){
         JOptionPane.showMessageDialog(getFrame(),message,title,type);
     }
-    public static void centerAt(Component parent,Component child){
-        Dimension parentDim = parent.getSize();
-        Dimension childDim = child.getSize();
-        int x = (int) Math.ceil((parentDim.getWidth() - childDim.getWidth()) / 2.0);
-        int y = (int) Math.ceil((parentDim.getHeight() - childDim.getHeight()) / 2.0);        
-        child.setLocation(x,y);
+    public static void centerAt(Component parent,Component child){        
+        Dimension parentDim = parent.getPreferredSize();
+        Dimension childDim = child.getPreferredSize();
+        int innerX = (int) Math.ceil((parentDim.getWidth() - childDim.getWidth()) / 2.0);
+        int innerY = (int) Math.ceil((parentDim.getHeight() - childDim.getHeight()) / 2.0);                        
+        child.setLocation(innerX,innerY);
     }
 }

@@ -8,14 +8,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -253,16 +250,10 @@ public class FUtils {
     }   
     public static List<DefaultMutableTreeNode>listToStructure(String [] list){
         List<DefaultMutableTreeNode>structuredList = new ArrayList<DefaultMutableTreeNode>();
-
-        System.out.println("List:");
-        for(String entry:list){
-            System.out.println("entry: "+entry);
-        }
         
         for(String entry:list){            
             //steeds / gebruikt als separator in bagit!
-            String [] components = entry.split("/");
-           
+            String [] components = entry.split("/");           
           
             if(structuredList.isEmpty()){                
                 structuredList.add(componentsToTreeNode(components));                
@@ -288,11 +279,7 @@ public class FUtils {
             }
                         
         }        
-        System.out.println("tree node structures:");
-        for(DefaultMutableTreeNode n:structuredList){
-            recurseTree(n);
-            System.out.println();
-        }
+        
         return structuredList;
     }
     public static int indexUserObjectChild(DefaultMutableTreeNode node,Object o){
@@ -338,14 +325,10 @@ public class FUtils {
         return node;
     }
     public static void main(String [] args){
-        
-        try{
-            FileObject fobject = getFileSystemManager().resolveFile("zip:file:///home/nicolas/baggie.zip!/");
-            for(FileObject child:fobject.getChildren()){
-                System.out.println(child.getName().toString());
-            }
-        }catch(Exception e){
-            e.printStackTrace();
+        ArrayList<File>nonWritable = getBadDirs(new File("/home/nicolas"));        
+        System.out.println("not writable: ");
+        for(File file:nonWritable){
+            System.out.println("\t"+file);
         }
     }
     public static void recurseTree(DefaultMutableTreeNode node){
@@ -359,5 +342,19 @@ public class FUtils {
         for(int i = 0;i<node.getChildCount();i++){                       
             recurseTree((DefaultMutableTreeNode)node.getChildAt(i),tab+1);
         }
+    }
+    public static ArrayList<File> getBadDirs(File file){
+        ArrayList<File>badDirs = new ArrayList<File>();
+        
+        if(file.isDirectory()){
+            if(!file.canRead() || !file.canWrite()){
+                badDirs.add(file);
+            }else{
+                for(File f:file.listFiles()){  
+                    badDirs.addAll(getBadDirs(f));
+                }
+            }
+        }
+        return badDirs;
     }
 }

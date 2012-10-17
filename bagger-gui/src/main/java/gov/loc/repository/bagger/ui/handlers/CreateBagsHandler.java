@@ -11,6 +11,7 @@ import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.bagitmets.DSpaceBagItMets;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
 //Nicolas Franck: based on code of CreateBagInPlaceHandler, but for creation of multiple bagits at once
@@ -39,7 +40,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
         NewBagsDialog dialog = new NewBagsDialog(
             SwingUtils.getFrame(),
             true,
-            bagView.getPropertyMessage("bag.frame.newbaginplace")
+            Context.getMessage("NewBagsDialog.title")
         );
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         SwingUtils.centerAt(SwingUtils.getFrame(),dialog);
@@ -51,9 +52,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
         BagView bagView = BagView.getInstance();        
         MetsBag bag = bagView.getBag();        
         
-        System.out.println("creating prebag!!");
-        
-    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {
+    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {            
             log.info("Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion + ", profile: " + profileName);
         }    
     
@@ -62,7 +61,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
             bag.setRootDir(dataFile);
             bag.createPreBag(dataFile,bagItVersion);                      
     	} catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);            
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");            
     	}            
     }
@@ -84,7 +83,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
             bag.setRootDir(dataFile);
             bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion);                      
     	} catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);            
     	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");            
     	}
     }        
