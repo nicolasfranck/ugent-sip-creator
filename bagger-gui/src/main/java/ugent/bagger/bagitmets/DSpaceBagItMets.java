@@ -3,6 +3,7 @@ package ugent.bagger.bagitmets;
 import com.anearalone.mets.FileSec;
 import com.anearalone.mets.LocatorElement;
 import com.anearalone.mets.MdSec;
+import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.SharedEnums;
 import com.anearalone.mets.StructMap;
@@ -15,6 +16,7 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,14 +24,20 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.DefaultMetsCallback;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.helper.XML;
+import ugent.bagger.helper.XSLT;
 
 /**
  *
@@ -70,7 +78,60 @@ public class DSpaceBagItMets extends BagItMets{
     public Mets onSaveBag(Bag bag,Mets mets) {
         BagView bagView = BagView.getInstance();
         DefaultBag defaultBag = bagView.getBag();
+        
+        //metadata: controleer of er een Dublin Core record aan toegevoegd is
+        int dcFound = -1;
+        for(int i = 0;i< mets.getDmdSec().size();i++){
+            MdSec mdSec = mets.getDmdSec().get(i);
+            MdWrap mdWrap = mdSec.getMdWrap();
+            if(mdWrap == null){
+                continue;
+            }
+            Element element = mdWrap.getXmlData().get(0);
+            if(element == null || element.getOwnerDocument() == null){
+                continue;
+            }
+            Document doc = element.getOwnerDocument();
+            if(
+                doc.getNamespaceURI().compareTo("http://purl.org/dc/elements/1.1/") == 0 ||
+                doc.getNamespaceURI().compareTo("http://www.openarchives.org/OAI/2.0/oai_dc/") == 0    
+            ){
+                dcFound = i;
+                break;
+            }
+        }
+        //niet gevonden? Ga op zoek naar crosswalk voor 1ste element die er een heeft => TODO!
+        if(mets.getDmdSec().size() >  0 && dcFound < 0){
+            HashMap<String, HashMap<String, String>> crosswalk = MetsUtils.getCrosswalk();
+            String xsltPath = null;
+            for(HashMap<String, String> entry:crosswalk.values()){
+                if(xsltPath != null){
+                    break;
+                }
+                Set<String>keys = entry.keySet();
+                for(String key:keys){
+                    if(
+                        key.compareTo("http://purl.org/dc/elements/1.1/") == 0 ||
+                        key.compareTo("http://www.openarchives.org/OAI/2.0/oai_dc/") == 0
+                    ){
+                        xsltPath = entry.get(key);                        
+                        break;
+                    }
+                }                
+            }
+            if(xsltPath != null){
+                try{
+                    URL xsltURL = Context.getResource(xsltPath);
+                    Document xsltDoc = XML.XMLToDocument(xsltURL);
+                    
+                }catch(Exception e){
+                    e.printStackTrace();
+                    log.error(e);
+                }                
+            }
+        }
 
+        //files
         Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(defaultBag.getTagManifestAlgorithm());            
         SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(defaultBag.getTagManifestAlgorithm());                                           
 
@@ -85,8 +146,7 @@ public class DSpaceBagItMets extends BagItMets{
             Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);                     
             
             Collection<BagFile>payloads = bag.getPayload();            
-            Collection<BagFile>tags = bag.getTags();
-            
+            Collection<BagFile>tags = bag.getTags();            
 
             //fileSec
             FileSec fileSec = mets.getFileSec();

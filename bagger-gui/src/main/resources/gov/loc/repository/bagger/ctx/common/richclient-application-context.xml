@@ -285,8 +285,7 @@
         <entry key="http://ltsc.ieee.org/xsd/LOM" value="http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd" />        
         <entry key="info:lc/xmlns/premis-v2" value="metadata/xsd/premis/premis-2-2.xsd" />
         <entry key="http://www.loc.gov/standards/premis/v1" value="metadata/xsd/premis/premis-1-1.xsd" />
-        <entry key="http://www.loc.gov/standards/premis" value="metadata/xsd/premis/premis-1-1.xsd" />
-                
+        <entry key="http://www.loc.gov/standards/premis" value="metadata/xsd/premis/premis-1-1.xsd" />                
         <entry key="http://www.tei-c.org/ns/1.0" value="metadata/xsd/tei_all.xsd" />
         <entry key="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" value="metadata/xsd/Spectrum-1.01.xsd" />
         <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="metadata/xsd/METSRights.xsd" />
