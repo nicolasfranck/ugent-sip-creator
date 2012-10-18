@@ -20,6 +20,8 @@
 
 package gov.loc.repository.bagger.ui;
 
+import com.anearalone.mets.MdSec;
+import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
@@ -37,8 +39,11 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.AbstractCommand;
@@ -52,6 +57,7 @@ import ugent.bagger.bagitmets.DSpaceBagItMets;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
+import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.LongTask2;
 
@@ -73,7 +79,25 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     private ActionCommand finishCommand;
     private ActionCommand cancelCommand;    
     private JComboBox metsFileDateCreatedCombobox;
-
+    private ArrayList<String> metadataPaths = new ArrayList<String>();
+    
+    protected void parseMetadataPaths(String text){        
+        String [] data = text.replaceAll("\\s","").split(",");
+        if(data == null){
+            data = new String [] {};
+        }                
+        getMetadataPaths().clear();
+        getMetadataPaths().addAll(Arrays.asList(data));
+    }
+    public ArrayList<String> getMetadataPaths() {
+        if(metadataPaths == null){
+            metadataPaths = new ArrayList<String>();
+        }
+        return metadataPaths;
+    }
+    public void setMetadataPaths(ArrayList<String> metadataPaths) {
+        this.metadataPaths = metadataPaths;
+    }
     public BagView getBagView(){
         return BagView.getInstance();
     }
@@ -264,6 +288,31 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST); 
         panel.add(getMetsFileDateCreatedCombobox(), glbc);
         
+        //metadata paths
+        row++;
+        JLabel metadataPathsLabel = new JLabel(Context.getMessage("NewBagsDialog.metadataPaths.label"));
+        metadataPathsLabel.setToolTipText(Context.getMessage("NewBagsDialog.metadataPaths.tooltip"));
+        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        panel.add(metadataPathsLabel, glbc);
+        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        glbc.ipadx=5;
+        glbc.ipadx=0;
+        final JTextField metadataPathTextField = new JTextField(15);
+        panel.add(metadataPathTextField,glbc);
+        metadataPathTextField.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent de) {                
+                parseMetadataPaths(metadataPathTextField.getText());                
+            }
+            @Override
+            public void removeUpdate(DocumentEvent de) {  
+                parseMetadataPaths(metadataPathTextField.getText());                
+            }
+            @Override
+            public void changedUpdate(DocumentEvent de) {                
+            }            
+        });
+        
         //bagInPlace
         row++;
         JLabel bagInPlaceLabel = new JLabel(Context.getMessage("NewBagsDialog.bagInPlace.label"));  
@@ -274,10 +323,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         bagInPlaceCheckBox.setSelected(bagInPlace);                
         panel.add(bagInPlaceCheckBox,glbc);        
         
-        
         //outputDir
-        row++;
-        
+        row++;        
         final JLabel outputDirLabel = new JLabel(Context.getMessage("NewBagsDialog.outputDir.label"));        
         outputDirLabel.setEnabled(!bagInPlace);
         glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST);
@@ -345,8 +392,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 }                
             }
         });
-        
-        
         
         GuiStandardUtils.attachDialogBorder(panel);
         pageControl.add(panel);        
@@ -520,9 +565,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             if(option == JFileChooser.APPROVE_OPTION){                
                 if(fs.getSelectedFiles() != null){
                     selectedDirectories.clear();
-                    for(File file:fs.getSelectedFiles()){                        
-                        selectedDirectories.add(file);
-                    }
+                    selectedDirectories.addAll(Arrays.asList(fs.getSelectedFiles()));
                     selectionInfoField.setText(
                         Context.getMessage("NewBagsDialog.selectInfoField.label",new String [] {
                             ""+fs.getSelectedFiles().length
@@ -625,31 +668,58 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     badDirs.addAll(getBadRWDirs(file));
                 }
                 if(!badDirs.isEmpty()){                    
-                    SwingUtils.ShowError("",""+badDirs.size()+" mappen zijn onleesbaar of kunnen niet beschreven worden");
+                    SwingUtils.ShowError(null,
+                        Context.getMessage("NewBagsDialog.NewBagsInPlaceWorker.error.badrwdirs",new Object [] {
+                            new Integer(badDirs.size())
+                        })                            
+                    );
                     BusyIndicator.clearAt(SwingUtils.getFrame());
                     return null;
                 }
                 
-                
                 ArrayList<Integer>succeeded = new ArrayList<Integer>();
                 BagView bagView = getBagView();
-                DefaultBag bag = bagView.getBag(); 
+                MetsBag bag = bagView.getBag();                 
                
                 for(int i = 0; i< files.size();i++){                                
                     
+                    //ledig mets
+                    bagView.getInfoFormsPane().getInfoInputPane().setMets(new Mets());
+                    Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
+                    
                     File file = files.get(i);                    
+                    
+                    //zoek metadata bestanden (todo: haal die uit payload lijst)
+                    for(String metadataPath:getMetadataPaths()){
+                        File metadataFile = new File(file,metadataPath);                   
+                    
+                        if(metadataFile.exists() && metadataFile.isFile()){                            
+                            try{
+                                if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
+                                    MdSec mdSec = MetsUtils.createMdSec(metadataFile);                                    
+                                    mets.getDmdSec().add(mdSec);
+                                }else if(metadataFile.getAbsolutePath().endsWith(".csv")){
+                                
+                                }
+                            }catch(Exception e){                                
+                                log.debug(e);
+                            }
+                        }
+                    }
                     
                     if(bag.isAddKeepFilesToEmptyFolders()){                    
                         bagView.createBagsHandler.createPreBagAddKeepFilesToEmptyFolders(
                             file,
                             version,
-                            profile
+                            profile,
+                            getMetadataPaths().toArray(new String [] {})
                         );					
                     }else{							
                         bagView.createBagsHandler.createPreBag(
                             file, 
                             version,
-                            profile
+                            profile,
+                            getMetadataPaths().toArray(new String [] {})
                         );
                     }
                     int percent = (int)Math.floor( ((i+1) / ((float)getSelectedDirectories().size()))*100);                                                                        
@@ -665,7 +735,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 }
                 
             }catch(Exception e){
-                e.printStackTrace();
+                log.error(e);                
             }
             
             BusyIndicator.clearAt(SwingUtils.getFrame());
@@ -699,24 +769,54 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             try{
             
                 ArrayList<File>succeeded = new ArrayList<File>();
-                BagView bagView = getBagView();
-                MetsBag bag = bagView.getBag();
+                BagView bagView = getBagView();                
+                MetsBag bag = bagView.getBag(); 
+                
                 
                 for(int i = 0; i< files.size();i++){                                                                        
+                    
+                    //ledig mets
+                    bagView.getInfoFormsPane().getInfoInputPane().setMets(new Mets());
+                    Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
+                    
                     File inputDir = files.get(i);
                     File out = new File(dir,inputDir.getName());
                     
+                    //clear huidige toestand
                     bag.clear();
                     bag.clearProfile();
                     bag.setRootDir(out);
                     bag.setName(out.getName());
                     bag.setVersion(version);                    
                     
+                    //voeg payloads toe
                     ArrayList<File>listPayloads = FUtils.listFiles(inputDir);
                     
                     for(File file:listPayloads){
                         if(file.isFile()){                            
                             bag.addFileToPayload(file);
+                        }
+                    }
+                    
+                    //zoek metadata bestanden (todo: haal die uit payload lijst)
+                    for(String metadataPath:getMetadataPaths()){
+                        File metadataFile = new File(inputDir,metadataPath);                       
+                    
+                        if(metadataFile.exists() && metadataFile.isFile()){                            
+                            //voeg toe aan mets
+                            try{
+                                if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
+                                    MdSec mdSec = MetsUtils.createMdSec(metadataFile);                                    
+                                    mets.getDmdSec().add(mdSec);
+                                }else if(metadataFile.getAbsolutePath().endsWith(".csv")){
+                                
+                                }
+                            }catch(Exception e){                               
+                                log.debug(e);
+                            }
+                            //haal uit payload lijst
+                            String path = "data/"+metadataPath;                            
+                            bag.removeBagFile(path);
                         }
                     }
                     
@@ -740,11 +840,11 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 
                 //open laatste geslaagde bagit
                 if(succeeded.size() > 0){                                
-                   File file = succeeded.get(succeeded.size()-1);            
+                    File file = succeeded.get(succeeded.size()-1);            
                     bagView.openBagHandler.openExistingBag(file);                                    
                 }
             }catch(Exception e){
-                e.printStackTrace();
+                log.error(e);                
             }
             
             BusyIndicator.clearAt(SwingUtils.getFrame());

@@ -47,8 +47,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
         dialog.pack();
         dialog.setVisible(true);        
     }
-
-    public void createPreBag(File dataFile, String bagItVersion, final String profileName) {
+    public void createPreBag(File dataFile, String bagItVersion, final String profileName,String [] ignoreFiles) {
         BagView bagView = BagView.getInstance();        
         MetsBag bag = bagView.getBag();        
         
@@ -59,18 +58,18 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
     	try {
             bag.setBagItMets(new DSpaceBagItMets());            
             bag.setRootDir(dataFile);
-            bag.createPreBag(dataFile,bagItVersion);                      
+            bag.createPreBag(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
-            log.error(e);            
-    	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");            
-    	}            
+            log.error(e);      
+            SwingUtils.ShowError("Error - bagging in place","No file or directory selection was made!\n");
+    	    //bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");            
+    	}
+    }
+    public void createPreBag(File dataFile, String bagItVersion, final String profileName) {
+        createPreBag(dataFile, bagItVersion, profileName,new String [] {});            
     }
     
-	/*
-     * Prepares the call to Create Bag in Place and 
-     * adding .keep files in Empty Pay load Folder(s) 
-    */
-    public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion, final String profileName) {
+    public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion, final String profileName,String [] ignoreFiles){
         BagView bagView = BagView.getInstance();        
         MetsBag bag = bagView.getBag();        
         
@@ -81,10 +80,19 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
     	try {
             bag.setBagItMets(new DSpaceBagItMets());            
             bag.setRootDir(dataFile);
-            bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion);                      
+            bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
-            log.error(e);            
-    	    bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");            
+            log.error(e);   
+            SwingUtils.ShowError("Error - bagging in place","No file or directory selection was made!\n");
+    	    //bagView.showWarningErrorDialog("Error - bagging in place", "No file or directory selection was made!\n");            
     	}
+    }
+    
+	/*
+     * Prepares the call to Create Bag in Place and 
+     * adding .keep files in Empty Pay load Folder(s) 
+    */
+    public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion, final String profileName) {
+        createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion, profileName,new String [] {});
     }        
 }

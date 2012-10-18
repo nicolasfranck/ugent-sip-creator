@@ -15,7 +15,10 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +59,12 @@ public class DSpaceBagItMets extends BagItMets{
         }
         return mets;
     }
+    private static Comparator defaultBagFileSorter =  new Comparator<BagFile>(){
+        @Override
+        public int compare(BagFile f1, BagFile f2){
+            return f1.getFilepath().compareToIgnoreCase(f2.getFilepath());            
+        }
+    };
 
     @Override
     public Mets onSaveBag(Bag bag,Mets mets) {
@@ -73,11 +82,11 @@ public class DSpaceBagItMets extends BagItMets{
         try{       
 
             Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
-            Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);         
+            Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);                     
             
-            
-            Collection<BagFile>payloads = bag.getPayload();
+            Collection<BagFile>payloads = bag.getPayload();            
             Collection<BagFile>tags = bag.getTags();
+            
 
             //fileSec
             FileSec fileSec = mets.getFileSec();
@@ -103,7 +112,7 @@ public class DSpaceBagItMets extends BagItMets{
                 fileIdMap.put(bagFile.getFilepath(),fileId);                                
                 
                 //SIZE
-                FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                                            
+                FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                                                            
                 metsFile.setSIZE(bagFile.getSize());                    
 
                 //MIMETYPE

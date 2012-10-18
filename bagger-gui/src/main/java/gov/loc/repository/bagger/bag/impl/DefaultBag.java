@@ -25,7 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class DefaultBag {
-    private static final Log log = LogFactory.getLog(DefaultBag.class);
+    protected static final Log log = LogFactory.getLog(DefaultBag.class);
     public static final long KB = 1024;
     public static final long MB = 1048576;
     public static final long GB = 1073741824;
