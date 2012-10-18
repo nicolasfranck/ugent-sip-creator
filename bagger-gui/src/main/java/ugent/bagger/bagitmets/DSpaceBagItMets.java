@@ -80,56 +80,65 @@ public class DSpaceBagItMets extends BagItMets{
         DefaultBag defaultBag = bagView.getBag();
         
         //metadata: controleer of er een Dublin Core record aan toegevoegd is
-        int dcFound = -1;
-        for(int i = 0;i< mets.getDmdSec().size();i++){
-            MdSec mdSec = mets.getDmdSec().get(i);
+        
+        HashMap<String, HashMap<String, String>> crosswalk = MetsUtils.getCrosswalk();
+        
+        System.out.println("iterating dmdSec");
+        for(MdSec mdSec:mets.getDmdSec()){
+            
             MdWrap mdWrap = mdSec.getMdWrap();
             if(mdWrap == null){
                 continue;
             }
+            System.out.println("dmdSec has mdWrap");
             Element element = mdWrap.getXmlData().get(0);
             if(element == null || element.getOwnerDocument() == null){
                 continue;
             }
+            
+            System.out.println("dmdSec has Element");
             Document doc = element.getOwnerDocument();
-            if(
-                doc.getNamespaceURI().compareTo("http://purl.org/dc/elements/1.1/") == 0 ||
-                doc.getNamespaceURI().compareTo("http://www.openarchives.org/OAI/2.0/oai_dc/") == 0    
-            ){
-                dcFound = i;
+            
+            String ns = doc.getDocumentElement().getNamespaceURI();
+            
+            if(ns == null){
+                continue;
+            }
+            
+            System.out.println("dmdSec has ns: "+ns);
+            //dc gevonden
+            if(                
+                ns.compareTo("http://purl.org/dc/elements/1.1/") == 0 ||
+                ns.compareTo("http://www.openarchives.org/OAI/2.0/oai_dc/") == 0    
+            ){                
+                System.out.println("DC found!");
                 break;
             }
-        }
-        //niet gevonden? Ga op zoek naar crosswalk voor 1ste element die er een heeft => TODO!
-        if(mets.getDmdSec().size() >  0 && dcFound < 0){
-            HashMap<String, HashMap<String, String>> crosswalk = MetsUtils.getCrosswalk();
-            String xsltPath = null;
-            for(HashMap<String, String> entry:crosswalk.values()){
+            //crosswalk naar dc gevonden
+            else if(crosswalk.containsKey(ns)){
+                String xsltPath = null;
+                if(crosswalk.get(ns).containsKey("http://purl.org/dc/elements/1.1/")){
+                    xsltPath = crosswalk.get(ns).get("http://purl.org/dc/elements/1.1/");
+                }else if(crosswalk.get(ns).containsKey("http://www.openarchives.org/OAI/2.0/oai_dc/")){
+                    xsltPath = crosswalk.get(ns).get("http://www.openarchives.org/OAI/2.0/oai_dc/");
+                }
+                System.out.println("xsltPath: "+xsltPath);
                 if(xsltPath != null){
+                    try{
+                        URL xsltURL = Context.getResource(xsltPath);
+                        System.out.println("xsltURL: "+xsltURL);
+                        Document xsltDoc = XML.XMLToDocument(xsltURL);
+                        Document outDoc = XSLT.transform(doc,xsltDoc);
+                        mets.getDmdSec().add(MetsUtils.createMdSec(outDoc));
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        log.error(e);
+                    }
                     break;
                 }
-                Set<String>keys = entry.keySet();
-                for(String key:keys){
-                    if(
-                        key.compareTo("http://purl.org/dc/elements/1.1/") == 0 ||
-                        key.compareTo("http://www.openarchives.org/OAI/2.0/oai_dc/") == 0
-                    ){
-                        xsltPath = entry.get(key);                        
-                        break;
-                    }
-                }                
-            }
-            if(xsltPath != null){
-                try{
-                    URL xsltURL = Context.getResource(xsltPath);
-                    Document xsltDoc = XML.XMLToDocument(xsltURL);
-                    
-                }catch(Exception e){
-                    e.printStackTrace();
-                    log.error(e);
-                }                
             }
         }
+        
 
         //files
         Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(defaultBag.getTagManifestAlgorithm());            
