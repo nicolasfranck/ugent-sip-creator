@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.transform.dom.DOMSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -101,7 +102,7 @@ public class DSpaceBagItMets extends BagItMets{
         
         System.out.println("iterating dmdSec");
         Document dcDoc = null;
-        
+        int dcFound = -1;
         
         ArrayList<Element>dcElements = new ArrayList<Element>();
         ArrayList<Element>dcCandidates = new ArrayList<Element>();
@@ -113,23 +114,37 @@ public class DSpaceBagItMets extends BagItMets{
             if(mdWrap == null){
                 continue;
             }
+            System.out.println("dmdSec has mdWrap");
+            Element element = mdWrap.getXmlData().get(0);
             
-            Element element = mdWrap.getXmlData().get(0);           
             
             if(element == null || element.getOwnerDocument() == null){
                 continue;
-            }            
+            }
             
-            String ns = element.getNamespaceURI();            
-            Document doc = element.getOwnerDocument();            
-            ns = (ns != null) ? ns : doc.getDocumentElement().getNamespaceURI();            
+            String ns = element.getNamespaceURI();
+            
+            System.out.println("element.namespaceURI: "+element.getNamespaceURI());
+            
+            System.out.println("dmdSec has Element");
+            Document doc = element.getOwnerDocument();
+            
+            ns = (ns != null) ? ns : doc.getDocumentElement().getNamespaceURI();
+            
             if(ns == null){
                 continue;
-            }            
+            }
+            
+            System.out.println("dmdSec has ns: "+ns);
             
             //dc gevonden
-            if(ns.compareTo(NAMESPACE_DC) == 0 || ns.compareTo(NAMESPACE_OAI_DC) == 0){            
-                dcElements.add(element);                            
+            if(                
+                ns.compareTo(NAMESPACE_DC) == 0 ||
+                ns.compareTo(NAMESPACE_OAI_DC) == 0    
+            ){                
+                dcDoc = doc;
+                System.out.println("DC found!");                
+                break;
             }
             //crosswalk naar dc gevonden
             else if(crosswalk.containsKey(ns)){
@@ -138,41 +153,36 @@ public class DSpaceBagItMets extends BagItMets{
                     xsltPath = crosswalk.get(ns).get(NAMESPACE_DC);
                 }else if(crosswalk.get(ns).containsKey(NAMESPACE_OAI_DC)){
                     xsltPath = crosswalk.get(ns).get(NAMESPACE_OAI_DC);
-                }                
+                }
+                System.out.println("xsltPath: "+xsltPath);
                 if(xsltPath != null){
-                    dcCandidates.add(element);                  
+                    try{
+                        URL xsltURL = Context.getResource(xsltPath);
+                        System.out.println("xsltURL: "+xsltURL);
+                        Document xsltDoc = XML.XMLToDocument(xsltURL);
+                        System.out.println("xsltDoc created");
+                        System.out.println("Doc output:");
+                        XML.ElementToXML(element,System.out);
+                        Document outDoc = XSLT.transform(element,xsltDoc);
+                        System.out.println("print to outputstream");
+                        XML.DocumentToXML(outDoc,System.out,true);
+                        mets.getDmdSec().add(MetsUtils.createMdSec(outDoc));
+                        dcDoc = outDoc;                        
+                        break;
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        log.error(e);
+                    }            
                 }
             } 
         }
         //voeg DC toe indien nodig
-        if(dcElements.size() <= 0 && dcCandidates.size() > 0){
-            Element element = dcCandidates.get(0);
-            String ns = element.getNamespaceURI();
-            ns = (ns != null) ? ns : element.getOwnerDocument().getDocumentElement().getNamespaceURI();
-            String xsltPath = null;
-            try{
-                if(crosswalk.get(ns).containsKey(NAMESPACE_DC)){
-                    xsltPath = crosswalk.get(ns).get(NAMESPACE_DC);
-                }else if(crosswalk.get(ns).containsKey(NAMESPACE_OAI_DC)){
-                    xsltPath = crosswalk.get(ns).get(NAMESPACE_OAI_DC);
-                }
-                URL xsltURL = Context.getResource(xsltPath);
-                System.out.println("xsltURL: "+xsltURL);
-                Document xsltDoc = XML.XMLToDocument(xsltURL);
-                System.out.println("xsltDoc created");
-                System.out.println("Doc output:");
-                XML.ElementToXML(element,System.out);
-                Document outDoc = XSLT.transform(element,xsltDoc);
-                System.out.println("print to outputstream");
-                XML.DocumentToXML(outDoc,System.out,true);
-                mets.getDmdSec().add(MetsUtils.createMdSec(outDoc));
-                dcDoc = outDoc;                                        
-            }catch(Exception e){
-                e.printStackTrace();
-                log.error(e);
+        if(dcFound < 0){
+            for(int i = 0;i< mets.getDmdSec().size();i++){
+                MdSec mdSec = mets.getDmdSec().get(i);
+                
             }
         }
-        
         //schrijf naar bag-info.txt
         if(dcDoc != null){
             try{                

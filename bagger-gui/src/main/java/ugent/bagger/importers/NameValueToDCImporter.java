@@ -86,7 +86,7 @@ public class NameValueToDCImporter implements Importer{
     }
     public static void main(String [] args){
         try{
-            Document doc = new NameValueToDCImporter().performImport(new File("/tmp/bag-info.txt"));
+            Document doc = new NameValueToDCImporter().performImport(new File("/home/nicolas/bag-info.txt"));
             XML.DocumentToXML(doc,System.out,true);
             Schema schema = XML.createSchema(new File("/home/nicolas/xsd/dc.xsd"));
             XML.validate(doc, schema);

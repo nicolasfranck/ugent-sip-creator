@@ -762,7 +762,7 @@ public class DefaultBag {
 
     public void generateManifestFiles() {
         DefaultCompleter completer = new DefaultCompleter(new BagFactory());            
-        if (isBuildPayloadManifest) {
+        if (isBuildPayloadManifest) {  
             System.out.println("generating payload manifest");
             completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));
             //Nicolas Franck
@@ -790,6 +790,7 @@ public class DefaultBag {
         }
         if (isBuildTagManifest) {
             System.out.println("generating tag manifest");
+            
             completer.setClearExistingTagManifests(true);
             completer.setGenerateTagManifest(true);
 

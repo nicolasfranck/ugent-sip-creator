@@ -7,6 +7,8 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import org.apache.commons.logging.Log;
@@ -72,7 +74,7 @@ public final class InfoInputPane extends JTabbedPane {
                 FormModelHelper.createChildPageFormModel(getInfoFormModel(), null),
                 getDefaultBag().getInfo().getFieldMap(),
                 false
-            );       
+            );                   
         }
         return bagInfoForm;
     }
@@ -129,7 +131,7 @@ public final class InfoInputPane extends JTabbedPane {
                     invalidate();
                     repaint();
                 }catch (Exception e){
-                    e.printStackTrace();
+                    logger.error(e);                    
                 }
             }
         });
@@ -162,7 +164,9 @@ public final class InfoInputPane extends JTabbedPane {
         //bag-info
         //setName("Profile");
         //getBagInfoForm().getControl().setToolTipText(Context.getMessage("infoinputpane.tab.details.help"));
-        addTab(Context.getMessage("infoInputPane.tab.details"),getBagInfoForm().getControl());
+        JComponent bagInfoComponent = getBagInfoForm().getControl();
+        bagInfoComponent.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        addTab(Context.getMessage("infoInputPane.tab.details"),bagInfoComponent);
         //getProfileForm().getControl().setToolTipText("Profile Form");
         
         //Nicolas Franck

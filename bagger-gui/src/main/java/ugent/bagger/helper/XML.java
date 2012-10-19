@@ -16,6 +16,8 @@ import javax.xml.validation.Validator;
 import org.apache.log4j.Logger;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
@@ -175,7 +177,7 @@ public class XML {
         validate(sourceURL.openStream());
     }
     public static void validate(java.io.File sourceF) throws ParserConfigurationException, MalformedURLException, IOException, SAXException{
-        validate(new java.io.FileInputStream(sourceF));
+        validate(new FileInputStream(sourceF));
     }
     public static void validate(InputStream sourceIS) throws IOException, SAXException, ParserConfigurationException{
         XMLToDocument(sourceIS);
@@ -188,7 +190,7 @@ public class XML {
      * convert XML input to W3C Document object
      */
     public static Document XMLToDocument(java.io.File file) throws ParserConfigurationException, SAXException, IOException{      
-        return XMLToDocument(new java.io.FileInputStream(file));
+        return XMLToDocument(new FileInputStream(file));
     }
     public static Document XMLToDocument(URL sourceURL) throws ParserConfigurationException, SAXException, IOException{
         return XMLToDocument(sourceURL.openStream());
@@ -203,8 +205,26 @@ public class XML {
     /*
      * convert W3C Document object to XML
      */
+    public static void ElementToXML(Element element,OutputStream out) throws ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        ElementToXML(element,out,false);              
+    }
+    public static void ElementToXML(Element element,OutputStream out,boolean pretty) throws ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        Document doc = createDocument();
+        Node node = doc.importNode(element,true);
+        doc.appendChild(node);
+        DocumentToXML(doc,out,pretty);
+    }
+    public static void ElementToXML(Element element,Writer out) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException{
+        ElementToXML(element,out,false);
+    }
+    public static void ElementToXML(Element element,Writer out,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException{
+        Document doc = createDocument();
+        Node node = doc.importNode(element,true);
+        doc.appendChild(node);
+        DocumentToXML(doc,out,pretty);
+    }
     public static void DocumentToXML(Document doc,OutputStream out) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-        DocumentToXML(doc,createLSOutput(out));
+        DocumentToXML(doc,out,false);
     }
      public static void DocumentToXML(Document doc,OutputStream out,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         DocumentToXML(doc,createLSOutput(out),pretty);
@@ -221,16 +241,16 @@ public class XML {
     public static void DocumentToXML(Document doc,LSOutput lsout,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         LSSerializer serializer = createLSSerializer();
         DOMConfiguration conf = serializer.getDomConfig();                
-        conf.setParameter("format-pretty-print",new Boolean(pretty));
+        conf.setParameter("format-pretty-print",pretty);
         serializer.write(doc,lsout);
     }
-    public static String NodeToXML(org.w3c.dom.Node node) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+    public static String NodeToXML(Node node) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         return NodeToXML(node,false);
     }
-    public static String NodeToXML(org.w3c.dom.Node node,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+    public static String NodeToXML(Node node,boolean pretty) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         LSSerializer serializer = createLSSerializer();
         DOMConfiguration conf = serializer.getDomConfig();                
-        conf.setParameter("format-pretty-print",new Boolean(pretty));
+        conf.setParameter("format-pretty-print",pretty);
         return serializer.writeToString(node);
     }
     public static void main(String [] args){

@@ -338,6 +338,7 @@ public class BagView extends DefaultView {
     }*/
     
     private JSplitPane createBagPanel(){
+        
     	
     	LineBorder border = new LineBorder(Color.GRAY,1);
 
@@ -871,5 +872,6 @@ public class BagView extends DefaultView {
     		validateExecutor.setEnabled(true);
          * 
          */        
-    }   
+        
+    }       
 }

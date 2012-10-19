@@ -73,8 +73,6 @@ public class OpenBagHandler extends AbstractAction {
         //beter geen referentie bijhouden nu naar de oude
     	bagView.clearBagHandler.clearExistingBag();
         
-        
-        
         try{            
             bagView.clearBagHandler.newDefaultBag(file);                  
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
@@ -150,9 +148,11 @@ public class OpenBagHandler extends AbstractAction {
             ApplicationContextUtil.addConsoleMessage(msgs);
         }
         bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
-        bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
-        
+        bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);        
         bagView.updateOpenBag();   
+        
+        //Nicolas Franck: bag-info velden inladen in form blijkbaar niet automatisch (wel na invullen 1ste nieuwe veld)
+        bagView.getInfoFormsPane().updateInfoFormsPane(true);
         
         //Nicolas Franck: load mets
         

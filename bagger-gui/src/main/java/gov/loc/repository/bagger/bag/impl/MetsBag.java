@@ -53,10 +53,13 @@ public class MetsBag extends DefaultBag{
         }
         File tmpdir = new File(System.getProperty("java.io.tmpdir"));
         File metsFile = new File(tmpdir,"mets.xml");
+        metsFile.deleteOnExit();
         
         try{
             MetsWriter metsWriter = new MetsWriter();
             metsWriter.writeToFile(mets,metsFile);
+            
+            metsWriter.writeToOutputStream(mets,System.out);
             addTagFile(metsFile);
             
             //manually add checksum

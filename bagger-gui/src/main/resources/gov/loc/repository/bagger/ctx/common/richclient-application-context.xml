@@ -253,6 +253,7 @@
     <util:map id="typeMap" map-class="java.util.HashMap">
         <entry value="http://www.loc.gov/MARC21/slim" key="MARC"/>
         <entry value="http://www.loc.gov/mods/v3" key="MODS" />
+        <entry value="http://www.loc.gov/mods/" key="MODS" />
         <entry value="info:lc/xmlns/premis-v2" key="PREMIS" />
         <entry value="http://www.loc.gov/standards/premis/v1" key="PREMIS" />
         <entry value="http://www.loc.gov/standards/premis" key="PREMIS" />
@@ -292,9 +293,13 @@
     </util:map>
     
     <util:map id="xsltMap" map-class="java.util.HashMap">
-        <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/marc2oai_dc.xsl" />
+        <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/marc2oai_dc.xsl" />        
         <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MODS3-22OAIDC.xsl" />        
     </util:map>
+    <util:map id="baginfoMap" map-class="java.util.HashMap">
+        <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/dc2baginfo.xsl" />
+        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="metadata/xslt/dc2baginfo.xsl" />
+    </util:map>    
     <util:map id="crosswalk" map-class="java.util.HashMap">
         <entry key="http://www.loc.gov/MARC21/slim">
             <util:map map-class="java.util.HashMap">
@@ -305,7 +310,13 @@
         <entry key="http://www.loc.gov/mods/v3">
             <util:map map-class="java.util.HashMap">
                 <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/MODS3-22OAIDC.xsl" />
+                <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/MODS2MARC21slim.xsl" />
             </util:map>
-        </entry>
+        </entry>    
+        <entry key="http://purl.org/dc/elements/1.1/">
+            <util:map map-class="java.util.HashMap">
+                <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/DC2MARC21slim.xsl" />
+            </util:map>
+        </entry>            
     </util:map>
 </beans>

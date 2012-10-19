@@ -35,12 +35,22 @@ public class MetsUtils {
     private static HashMap<String,HashMap<String,String>>crosswalk;
     private static HashMap<String,String> xsdMap = null;
     private static HashMap<String,String> xsltMap = null;
+    private static HashMap<String,String> baginfoMap = null;
     private static HashMap<String,String> namespaceMap = null;
     private static HashMap<String,String> typeMap = null;
     private static ArrayList<String>forbiddenNamespaces = null;
     private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
     private static Log logger = LogFactory.getLog(MetsUtils.class);
 
+    public static HashMap<String, String> getBaginfoMap() {
+        if(baginfoMap == null){
+            baginfoMap = (HashMap<String,String>) Beans.getBean("baginfoMap");
+        }
+        return baginfoMap;
+    }
+    public static void setBaginfoMap(HashMap<String, String> baginfoMap) {
+        MetsUtils.baginfoMap = baginfoMap;
+    }
     public static HashMap<String, HashMap<String, String>> getCrosswalk() {
         if(crosswalk == null){
             crosswalk = (HashMap<String,HashMap<String,String>>) Beans.getBean("crosswalk");
@@ -205,6 +215,7 @@ public class MetsUtils {
         //indien XSD bekend, dan validatie hierop       
         if(getXsdMap().containsKey(namespace)){            
             URL schemaURL = Context.getResource((String)getXsdMap().get(namespace));                                
+            System.out.println("validating against "+schemaURL);
             Schema schema = XML.createSchema(schemaURL);                        
             XML.validate(doc,schema);            
         } 
