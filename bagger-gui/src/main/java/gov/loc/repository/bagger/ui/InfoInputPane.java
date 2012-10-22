@@ -5,12 +5,7 @@ import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.HierarchicalFormModel;
@@ -158,7 +153,8 @@ public final class InfoInputPane extends JTabbedPane {
         validate();
         
         //Nicolas Franck
-        addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());
+        addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());        
+       
         
         //Nicolas Franck: profile niet nuttig
         //bag-info
@@ -166,7 +162,10 @@ public final class InfoInputPane extends JTabbedPane {
         //getBagInfoForm().getControl().setToolTipText(Context.getMessage("infoinputpane.tab.details.help"));
         JComponent bagInfoComponent = getBagInfoForm().getControl();
         bagInfoComponent.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        addTab(Context.getMessage("infoInputPane.tab.details"),bagInfoComponent);
+        addTab(
+            Context.getMessage("infoInputPane.tab.details"),
+            new JScrollPane(bagInfoComponent)
+        );
         //getProfileForm().getControl().setToolTipText("Profile Form");
         
         //Nicolas Franck
@@ -199,8 +198,7 @@ public final class InfoInputPane extends JTabbedPane {
     }    
     public void update(){       
         Component[] components = getBagInfoForm().getControl().getComponents();
-        for (int i=0; i<components.length; i++) {
-            Component c = components[i];
+        for (Component c:components) {            
             c.invalidate();
             c.repaint();
         }

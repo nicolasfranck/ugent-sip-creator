@@ -59,17 +59,29 @@ public class MetsBag extends DefaultBag{
             MetsWriter metsWriter = new MetsWriter();
             metsWriter.writeToFile(mets,metsFile);
             
-            metsWriter.writeToOutputStream(mets,System.out);
-            addTagFile(metsFile);
+            try{
+                removeBagFile("mets.xml");  
+            }catch(Exception e){}
+            addTagFile(metsFile);            
             
             //manually add checksum
-            Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());
-            Manifest tagManifest = bag.getTagManifest(ta);
+            //Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());
+            //Manifest tagManifest = bag.getTagManifest(ta);
+                      
+            
+            /*
             String checksumMets = MessageDigestHelper.generateFixity(metsFile,ta);
             tagManifest.remove("mets.xml");
-            tagManifest.put("mets.xml",checksumMets);
+            tagManifest.put("mets.xml",checksumMets);                
+            System.out.println("setting checksum of mets.xml: "+checksumMets);*/
             
+            isBuildPayloadManifest(false);
+            isBuildTagManifest(true);
+            generateManifestFiles();
+            isBuildPayloadManifest(true);
+          
         }catch(Exception e){ 
+            e.printStackTrace();
             log.debug(e);            
         }        
         String messages = writeBag(bw);

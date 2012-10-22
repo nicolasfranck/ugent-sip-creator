@@ -159,4 +159,21 @@ public class SwingUtils {
         int innerY = (int) Math.ceil((parentDim.getHeight() - childDim.getHeight()) / 2.0);                        
         child.setLocation(innerX,innerY);
     }
+    public static ComponentLocation locateComponent(JComponent ancestor,JComponent child){
+        for(int i = 0;i < ancestor.getComponentCount();i++){
+            if(!(ancestor.getComponent(i) instanceof JComponent)){
+                continue;
+            }
+            JComponent sub = (JComponent)ancestor.getComponent(i);
+            if(sub == child){
+                return new ComponentLocation(ancestor,i);
+            }
+            
+            ComponentLocation l = locateComponent(sub,child);
+            if(l != null){
+                return l;
+            }
+        }
+        return null;
+    }
 }

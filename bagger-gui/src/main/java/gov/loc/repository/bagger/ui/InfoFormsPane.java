@@ -12,7 +12,9 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import ugent.bagger.filters.FileExtensionFilter;
+import ugent.bagger.helper.ComponentLocation;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 
 public final class InfoFormsPane extends JPanel {
     private static final long serialVersionUID = -5988111446773491301L;   
@@ -288,7 +290,9 @@ public final class InfoFormsPane extends JPanel {
 
     public void updateInfoFormsPane(boolean enabled) {
         
-        //Nicolas Franck: plaatst nu enkel baginfo-form opnieuw
+        //Nicolas Franck: plaatst nu enkel baginfo-form opnieuw        
+        
+        /*
         for(int i = 0;i< getInfoInputPane().getComponentCount();i++){                      
             if(getInfoInputPane().getComponentAt(i) == getInfoInputPane().getBagInfoForm().getControl()){
                 //ervoor zorgen dat get-methode 'getBagInfoForm' zichzelf opnieuw initialiseert!
@@ -296,7 +300,13 @@ public final class InfoFormsPane extends JPanel {
                 getInfoInputPane().setComponentAt(i,getInfoInputPane().getBagInfoForm().getControl());
                 break;
             }
-        }        
+        }*/        
+        
+        getInfoInputPane().setBagInfoForm(null);
+        getInfoInputPane().setComponentAt(1,
+            new JScrollPane(getInfoInputPane().getBagInfoForm().getControl())
+        );
+        
         getInfoInputPane().validate();        
         validate();
         
