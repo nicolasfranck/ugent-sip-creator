@@ -38,6 +38,7 @@ Version 1.0	2007-05-04 Tracy Meehleib <tmee@loc.gov>
 -->
 
 	<xsl:output method="xml" indent="yes"/>
+    <xsl:strip-space elements="*"/>
 	
 	<xsl:template match="/">
 		<xsl:choose>

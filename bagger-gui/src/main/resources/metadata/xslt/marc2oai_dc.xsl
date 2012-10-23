@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="marc">
     
     <xsl:output method="xml" indent="no" encoding="UTF-8"/>
+    <xsl:strip-space elements="*"/>
 
      <!-- 08/08/08: tmee added corrected chopPunctuation templates for 260c -->
     <!-- 08/19/04: ntra added "marc:" prefix to datafield element -->

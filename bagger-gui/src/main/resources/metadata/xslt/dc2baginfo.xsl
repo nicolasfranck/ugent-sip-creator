@@ -7,6 +7,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 >
     <xsl:output method="text" indent="no" encoding="UTF-8"/>
+    <xsl:strip-space elements="*"/>
+
     <xsl:variable name="br">
         <xsl:text>&#10;</xsl:text>
     </xsl:variable>

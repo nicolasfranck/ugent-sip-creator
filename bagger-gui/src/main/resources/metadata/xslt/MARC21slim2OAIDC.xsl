@@ -3,6 +3,7 @@
     <!--<xsl:import href="MARC21slimUtils.xsl"/>-->
     <xsl:import href="http://www.loc.gov/standards/marcxml/xslt/MARC21slimUtils.xsl" />
     <xsl:output method="xml" indent="no" encoding="UTF-8"/>
+    <xsl:strip-space elements="*"/>
     <!--
     Fixed 530 Removed type="original" from dc:relation 2010-11-19 tmee
     Fixed 500 fields. 2006-12-11 ntra

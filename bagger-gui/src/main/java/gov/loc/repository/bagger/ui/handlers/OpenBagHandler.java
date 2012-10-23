@@ -15,7 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
-import ugent.bagger.bagitmets.DSpaceBagItMets;
+import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.helper.SwingUtils;
 
 public class OpenBagHandler extends AbstractAction {
@@ -156,7 +156,7 @@ public class OpenBagHandler extends AbstractAction {
         
         //Nicolas Franck: load mets
         
-        BagItMets bagitMets = new DSpaceBagItMets();
+        BagItMets bagitMets = new DefaultBagItMets();
         
         Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());              
         

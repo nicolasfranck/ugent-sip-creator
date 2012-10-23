@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="marc">
 	<xsl:import href="MARC21slimUtils.xsl"/>
 	<xsl:output method="xml" indent="yes"/>
+    <xsl:strip-space elements="*"/>
 	
 	<!--
 	Suppressed duplicate 520,521.  fixed 752 subfield list, suppressed 856q, added 662.  2008-01-22 ntra
