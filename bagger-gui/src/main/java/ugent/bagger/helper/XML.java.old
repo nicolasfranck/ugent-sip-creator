@@ -14,12 +14,18 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import org.apache.log4j.Logger;
-import org.w3c.dom.*;
+import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
-import org.xml.sax.*;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -28,30 +34,23 @@ import org.xml.sax.*;
 public class XML {
 
     private static SchemaFactory sf = null;
+    private static DocumentBuilderFactory dbf = null;
+    private static DocumentBuilder db = null;
     private static DOMImplementationRegistry registry = null;
-    private static DOMImplementationLS impl = null;    
+    private static DOMImplementationLS impl = null;
+    
     private static Logger log = Logger.getLogger(XML.class);
 
-    
+    public static void free(){
+        sf = null;
+        dbf = null;
+        db = null;
+        registry = null;
+        impl = null;
+    }
     /*
      * W3C DOM helper functions
      */
-    public static ErrorHandler getErrorHandler(){
-        return new ErrorHandler(){
-            @Override
-            public void warning(SAXParseException e) throws SAXException {
-                throw e;
-            }
-            @Override
-            public void error(SAXParseException e) throws SAXException {
-                throw e;
-            }
-            @Override
-            public void fatalError(SAXParseException e) throws SAXException {
-                throw e;
-            }            
-        };
-    }
     public static DOMImplementationRegistry getDOMImplementationRegistry() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         if(registry == null){
             registry = DOMImplementationRegistry.newInstance();            
@@ -78,40 +77,32 @@ public class XML {
         lsout.setCharacterStream(out);
         return lsout;
     }
-    public static DocumentBuilderFactory getDocumentBuilderFactory(boolean validate){
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);                  
-        dbf.setValidating(validate);
-        dbf.setIgnoringComments(true);
-        dbf.setIgnoringElementContentWhitespace(true);                
-        return dbf;
-    }
     public static DocumentBuilderFactory getDocumentBuilderFactory(){
-        return getDocumentBuilderFactory(false);        
+        if(dbf == null){
+            dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);                  
+            dbf.setValidating(false);
+            dbf.setIgnoringComments(true);
+            dbf.setIgnoringElementContentWhitespace(true);
+        }
+        return dbf;
     }    
-    public static DocumentBuilder getDocumentBuilder(boolean validate) throws ParserConfigurationException{
-        DocumentBuilder db = getDocumentBuilderFactory(validate).newDocumentBuilder();
-        //default error-handler simply prints out first 10 errors when validating dtd or xsd on creation
-        db.setErrorHandler(getErrorHandler());
-        if(!validate){            
+    public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException{
+        if(db == null){
+            db = getDocumentBuilderFactory().newDocumentBuilder();
             db.setEntityResolver(new EntityResolver() {
                 @Override
                 public InputSource resolveEntity(String publicId, String systemId)throws SAXException, IOException {
-                    //avoid schema validating while building xml documents                    
+                    //avoid schema validating while building xml documents
+                    //System.out.println("Ignoring " + publicId + ", " + systemId);
                     return new InputSource(new StringReader(""));
                 }
-            }); 
-        }               
+            });
+        }
         return db;
     }
-    public static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException{
-        return getDocumentBuilder(false);        
-    }
-    public static Document createDocument(boolean validate) throws ParserConfigurationException{
-        return getDocumentBuilder(validate).newDocument();
-    }
     public static Document createDocument() throws ParserConfigurationException{
-        return createDocument(false);
+        return getDocumentBuilder().newDocument();
     }
     /*
      * Schema helper functions
@@ -123,28 +114,26 @@ public class XML {
         return sf;
     }
     /*
-     * check against schema (XSD or DTD):
-     *  1. well formed? (always)
-     *  2. schema valid?
+     * check against schema (XSD or DTD)
      */
     public static void validate(URL sourceURL,URL schemaURL) throws SAXException, IOException{
         validate(
             new BufferedReader(new InputStreamReader(sourceURL.openStream())),
             new BufferedReader(new InputStreamReader(schemaURL.openStream()))
         );
-    }    
+    }
     public static void validate(InputStream sourceInputStream,InputStream schemaInputStream) throws SAXException, IOException{
         StreamSource sourceStreamSource = new StreamSource(sourceInputStream);
         StreamSource schemaStreamSource = new StreamSource(schemaInputStream);
         Schema schema = getSchemaFactory().newSchema(schemaStreamSource);
         validate(sourceStreamSource,schema);
-    }   
-    public static void validate(Reader sourceReader,Reader schemaReader) throws SAXException, IOException{
+    }
+    public static void validate(Reader sourceReader,Reader schemaReader) throws SAXException, IOException{        
         StreamSource sourceStreamSource = new StreamSource(sourceReader);
         StreamSource schemaStreamSource = new StreamSource(schemaReader);
         Schema schema = getSchemaFactory().newSchema(schemaStreamSource);
         validate(sourceStreamSource,schema);
-    }    
+    }
     public static void validate(Document doc,URL schemaURL) throws SAXException, IOException{
         validate(
             doc,createSchema(schemaURL)            
@@ -156,7 +145,19 @@ public class XML {
     public static void validate(Source source,Schema schema) throws SAXException, IOException{
         Validator validator = schema.newValidator();
         validator.validate(source);
-    } 
+    }
+    public static void validateAgainstDTD(InputStream in) throws ParserConfigurationException, SAXException, IOException{
+        validateAgainstDTD(new InputSource(in));
+    }    
+    public static void validateAgainstDTD(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException{
+        DocumentBuilder builder = getDocumentBuilderFactory().newDocumentBuilder();
+        builder.parse(inputSource);
+    }
+    public static void validateAgainstDTD(File file) throws ParserConfigurationException, SAXException, IOException{
+        //now the entity resolver MUST be on!
+        DocumentBuilder builder = getDocumentBuilderFactory().newDocumentBuilder();
+        builder.parse(file);
+    }
     public static Schema createSchema(URL schemaURL) throws SAXException, IOException{        
         return createSchema(schemaURL.openStream());        
     }
@@ -171,61 +172,35 @@ public class XML {
 
 
     /*
-     * validation based on information found in the xml document (references to xsd or dtd):
-     *  1. well formed? (always)
-     *  2. optional validation of schema referenced in document
+     * check for well formedness
      */    
-    public static void validate(URL sourceURL,boolean schemaValid) throws ParserConfigurationException, MalformedURLException, IOException, SAXException{
-        validate(sourceURL.openStream(),schemaValid);
-    }
     public static void validate(URL sourceURL) throws ParserConfigurationException, MalformedURLException, IOException, SAXException{
-        validate(sourceURL.openStream(),false);
-    }
-    public static void validate(File sourceF,boolean schemaValid) throws ParserConfigurationException, MalformedURLException, IOException, SAXException{
-        validate(new FileInputStream(sourceF));
+        validate(sourceURL.openStream());
     }
     public static void validate(File sourceF) throws ParserConfigurationException, MalformedURLException, IOException, SAXException{
-        validate(sourceF,false);
-    }
-    public static void validate(InputStream sourceIS,boolean schemaValid) throws IOException, SAXException, ParserConfigurationException{
-        XMLToDocument(sourceIS,schemaValid);
+        validate(new FileInputStream(sourceF));
     }
     public static void validate(InputStream sourceIS) throws IOException, SAXException, ParserConfigurationException{
-        validate(sourceIS,false);
-    }
-    public static void validate(Reader sourceR,boolean schemaValid) throws IOException, SAXException, ParserConfigurationException{
-        XMLToDocument(sourceR,schemaValid);
+        XMLToDocument(sourceIS);
     }
     public static void validate(Reader sourceR) throws IOException, SAXException, ParserConfigurationException{
-        validate(sourceR,false);
+        XMLToDocument(sourceR);
     }
 
     /*
      * convert XML input to W3C Document object
      */
-    public static Document XMLToDocument(File file,boolean validate) throws ParserConfigurationException, SAXException, IOException{      
-        return XMLToDocument(new FileInputStream(file),validate);
-    }
     public static Document XMLToDocument(File file) throws ParserConfigurationException, SAXException, IOException{      
-        return XMLToDocument(file,false);
-    }
-    public static Document XMLToDocument(URL sourceURL,boolean validate) throws IOException, ParserConfigurationException, SAXException{
-        return XMLToDocument(sourceURL.openStream(),false);
+        return XMLToDocument(new FileInputStream(file));
     }
     public static Document XMLToDocument(URL sourceURL) throws ParserConfigurationException, SAXException, IOException{
-        return XMLToDocument(sourceURL,false);
-    }
-    public static Document XMLToDocument(InputStream sourceIS,boolean validate) throws ParserConfigurationException, SAXException, IOException{
-        return getDocumentBuilder(validate).parse(sourceIS);
+        return XMLToDocument(sourceURL.openStream());
     }
     public static Document XMLToDocument(InputStream sourceIS) throws ParserConfigurationException, SAXException, IOException{
-        return XMLToDocument(sourceIS,false);
-    }
-    public static Document XMLToDocument(Reader sourceR,boolean validate) throws SAXException, ParserConfigurationException, IOException{
-        return getDocumentBuilder(validate).parse(new InputSource(sourceR));
+        return getDocumentBuilder().parse(sourceIS);
     }
     public static Document XMLToDocument(Reader sourceR) throws SAXException, ParserConfigurationException, IOException{
-        return XMLToDocument(sourceR,false);
+        return getDocumentBuilder().parse(new InputSource(sourceR));
     }
 
     /*
@@ -282,12 +257,11 @@ public class XML {
     public static void main(String [] args){      
      
         try{
-            //File file = new File("/home/nicolas/EAD/VEA_000005_A/ead.xml");
-            File file = new File("/home/nicolas/dtd1.xml");
+            File file = new File("/home/nicolas/EAD/VEA_000005_A/ead.xml");
             System.out.println("creating document");
-            Document doc = XMLToDocument(file,false);
-            System.out.println("document created"); 
-            
+            validateAgainstDTD(file);
+            System.out.println("document created");            
+            Document doc = XMLToDocument(file);
             DocumentType docType = doc.getDoctype();
             
             System.out.println("doctype name: "+docType.getName());
