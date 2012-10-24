@@ -216,6 +216,22 @@
       <artifactId>bagit</artifactId>
       <version>3.13</version>
     </dependency>
+    <dependency>
+      <groupId>org.dspace</groupId>
+      <artifactId>dspace-sword-client</artifactId>
+      <version>1.8.2</version>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.foresite-toolkit</groupId>
+      <artifactId>foresite</artifactId>
+      <version>0.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.swordapp</groupId>
+      <artifactId>sword2-client</artifactId>
+      <version>0.9</version>
+    </dependency>
   </dependencies>
 
   <repositories>

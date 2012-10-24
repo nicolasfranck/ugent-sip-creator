@@ -10,7 +10,7 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import ugent.bagger.bagitmets.DSpaceBagItMets;
+import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
@@ -56,7 +56,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
         }    
     
     	try {
-            bag.setBagItMets(new DSpaceBagItMets());            
+            bag.setBagItMets(new DefaultBagItMets());            
             bag.setRootDir(dataFile);
             bag.createPreBag(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
@@ -78,7 +78,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress {
         }    
     
     	try {
-            bag.setBagItMets(new DSpaceBagItMets());            
+            bag.setBagItMets(new DefaultBagItMets());            
             bag.setRootDir(dataFile);
             bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {

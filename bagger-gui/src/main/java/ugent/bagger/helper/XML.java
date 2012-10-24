@@ -16,6 +16,7 @@ import javax.xml.validation.Validator;
 import org.apache.log4j.Logger;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -147,7 +148,7 @@ public class XML {
     }
     public static void validateAgainstDTD(InputStream in) throws ParserConfigurationException, SAXException, IOException{
         validateAgainstDTD(new InputSource(in));
-    }
+    }    
     public static void validateAgainstDTD(InputSource inputSource) throws ParserConfigurationException, SAXException, IOException{
         DocumentBuilder builder = getDocumentBuilderFactory().newDocumentBuilder();
         builder.parse(inputSource);
@@ -257,9 +258,16 @@ public class XML {
       
      
         try{
+            File file = new File("/home/nicolas/EAD/VEA_000005_A/ead.xml");
             System.out.println("creating document");
-            validateAgainstDTD(new File("/home/nicolas/EAD/VEA_000005_A/ead.xml"));;
+            validateAgainstDTD(file);;
             System.out.println("document created");            
+            Document doc = XMLToDocument(file);
+            DocumentType docType = doc.getDoctype();
+            
+            System.out.println("doctype name: "+docType.getName());
+            System.out.println("doctype public id: "+docType.getPublicId());
+            System.out.println("doctype system id: "+docType.getSystemId());
         }catch(Exception e){
             e.printStackTrace();
         }

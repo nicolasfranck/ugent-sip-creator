@@ -15,7 +15,7 @@ import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.progress.BusyIndicator;
-import ugent.bagger.bagitmets.DSpaceBagItMets;
+import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.helper.SwingUtils;
 
 public class CreateBagInPlaceHandler extends AbstractAction implements Progress {
@@ -72,7 +72,7 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
         
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-            bag.setBagItMets(new DSpaceBagItMets());            
+            bag.setBagItMets(new DefaultBagItMets());            
             bag.setRootDir(dataFile);
             bag.createPreBag(dataFile,bagItVersion);                      
     	} catch (Exception e) {
@@ -102,7 +102,7 @@ public class CreateBagInPlaceHandler extends AbstractAction implements Progress 
         }
     	bagView.clearBagHandler.clearExistingBag();
     	try {
-            bag.setBagItMets(new DSpaceBagItMets());            
+            bag.setBagItMets(new DefaultBagItMets());            
             bag.setRootDir(dataFile);
             bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion);            
     	} catch (Exception e) {

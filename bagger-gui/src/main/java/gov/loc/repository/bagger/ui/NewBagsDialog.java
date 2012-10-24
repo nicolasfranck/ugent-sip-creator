@@ -53,7 +53,7 @@ import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.util.GuiStandardUtils;
-import ugent.bagger.bagitmets.DSpaceBagItMets;
+import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
@@ -820,7 +820,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                         }
                     }
                     
-                    bag.setBagItMets(new DSpaceBagItMets());
+                    bag.setBagItMets(new DefaultBagItMets());
                     
                     Writer writer = new FileSystemWriter(new BagFactory());
                     
