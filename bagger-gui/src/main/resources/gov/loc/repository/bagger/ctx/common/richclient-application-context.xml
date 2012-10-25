@@ -253,6 +253,7 @@
         <entry key="http://www.loc.gov/mix/v10" value="NISOIMG" />
         <entry key="http://www.loc.gov/AMD/" value="LC-AV" />
         <entry key="http://www.loc.gov/VMD/" value="LC-AV" />
+        <entry key="info:lc/xmlns/textMD-v3" value="TEXTMD" />
         <entry key="http://www.vraweb.org/vracore4.htm" value="VRA" />
     </util:map>
     
@@ -270,12 +271,13 @@
         <entry value="http://www.loc.gov/mix/v10" key="NISOIMG" />
         <entry value="http://www.loc.gov/AMD/" key="LC-AV" />
         <entry value="http://www.loc.gov/VMD/" key="LC-AV" />
+        <entry key="info:lc/xmlns/textMD-v3" value="TEXTMD" />
         <entry value="http://www.vraweb.org/vracore4.htm" key="VRA" />
     </util:map>
     
     
     <!--premis agent|object|event|rights hebben allemaal dezelfde namespace: http://www.loc.gov/standards/premis -->    
-    <util:map id="xsdMap" map-class="java.util.HashMap">
+    <util:map id="xsdMap" map-class="java.util.HashMap">        
         <entry key="http://www.loc.gov/MARC21/slim">            
             <util:map>
                 <entry key="versionable" value="false"/>            
@@ -298,11 +300,10 @@
                         <entry key="3.3" value="metadata/xsd/mods/mods-3-3.xsd" />
                         <entry key="3.4" value="metadata/xsd/mods/mods-3-4.xsd" />
                         <entry key="default" value="metadata/xsd/mods/mods-3-4.xsd" />
-                    <util:map>
+                    </util:map>
                 </entry>
             </util:map>                                
-        </entry> 
-        
+        </entry>         
         <entry key="http://www.loc.gov/standards/premis">
             <util:map>
                 <entry key="versionable" value="true" />
@@ -314,8 +315,7 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-                    
+        </entry>                    
         <entry key="http://www.loc.gov/standards/premis/v1">
             <util:map>
                 <entry key="versionable" value="true" />
@@ -346,7 +346,9 @@
             <util:map>
                 <entry key="versionable" value="false" />                
                 <entry key="versions">
-                    <entry key="default" value="metadata/xsd/ead/ead-200804.xsd" />
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/ead/ead-200804.xsd" />
+                    </util:map>
                 </entry>    
             </util:map>            
         </entry>
@@ -379,8 +381,7 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-        
+        </entry>        
         <entry key="http://purl.org/dc/elements/1.1/">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -390,8 +391,7 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-        
+        </entry>        
          <entry key="http://www.loc.gov/mix/v20">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -401,8 +401,7 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-        
+        </entry>        
         <entry key="http://www.loc.gov/mix/v10">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -412,8 +411,7 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-        
+        </entry>        
         <entry key="http://www.loc.gov/AMD/">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -423,8 +421,7 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-       
+        </entry>       
         <entry key="http://www.loc.gov/VMD/">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -434,8 +431,17 @@
                     </util:map>
                 </entry>
             </util:map>
+        </entry>  
+        <entry key="info:lc/xmlns/textMD-v3">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/textMD-v3.01a.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
         </entry>
-        
         <entry key="http://www.vraweb.org/vracore4.htm">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -445,8 +451,7 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-        
+        </entry>        
         <entry key="http://ltsc.ieee.org/xsd/LOM">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -456,14 +461,37 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>
-        
-        
-        
-        
-        <entry key="http://www.tei-c.org/ns/1.0" value="metadata/xsd/tei_all.xsd" />
-        <entry key="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" value="metadata/xsd/Spectrum-1.01.xsd" />
-        <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="metadata/xsd/METSRights.xsd" />
+        </entry>        
+        <entry key="http://www.tei-c.org/ns/1.0">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/tei_all.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>        
+        <entry key="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/Spectrum-1.01.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>        
+        <entry key="http://cosimo.stanford.edu/sdr/metsrights/">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/METSRights.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>        
     </util:map>
     
     <util:map id="xsltMap" map-class="java.util.HashMap">

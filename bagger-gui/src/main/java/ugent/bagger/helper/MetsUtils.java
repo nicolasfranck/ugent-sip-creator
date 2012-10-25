@@ -39,7 +39,7 @@ import ugent.bagger.exceptions.NoNamespaceException;
 public class MetsUtils {
     
     private static HashMap<String,HashMap<String,String>>crosswalk;
-    private static HashMap<String,String> xsdMap = null;
+    private static HashMap<String,HashMap<String,Object>> xsdMap = null;
     private static HashMap<String,String> xsltMap = null;
     private static HashMap<String,String> baginfoMap = null;
     private static HashMap<String,String> namespaceMap = null;
@@ -97,13 +97,13 @@ public class MetsUtils {
         MetsUtils.typeMap = typeMap;
     }    
     
-    public static HashMap<String, String> getXsdMap() {
+    public static HashMap<String,HashMap<String,Object>> getXsdMap() {
         if(xsdMap == null){
-            xsdMap = (HashMap<String,String>) Beans.getBean("xsdMap");
+            xsdMap = (HashMap<String,HashMap<String,Object>>) Beans.getBean("xsdMap");
         }        
         return xsdMap;
     }
-    public static void setXsdMap(HashMap<String, String> xsdMap) {
+    public static void setXsdMap(HashMap<String,HashMap<String,Object>> xsdMap) {
         MetsUtils.xsdMap = xsdMap;
     }
     public static HashMap<String, String> getXsltMap() {
@@ -214,10 +214,10 @@ public class MetsUtils {
         }
     }
    
-    public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException{        
+    public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException, Exception{        
         return createMdSec(XML.XMLToDocument(file));        
     }
-    public static MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException{
+    public static MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         MdSec mdSec = new MdSec(UUID.randomUUID().toString());                
         mdSec.setMdWrap(createMdWrap(doc));
         mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString()); 
@@ -228,7 +228,7 @@ public class MetsUtils {
         }
         return mdSec;
     }
-    public static MdSec.MdWrap createMdWrap(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException{
+    public static MdSec.MdWrap createMdWrap(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         String namespace = doc.getDocumentElement().getNamespaceURI();            
         DocumentType docType = doc.getDoctype();
         
@@ -291,9 +291,10 @@ public class MetsUtils {
             throw new IllegalNamespaceException("namespace "+namespace+" is forbidden in mdWrap",namespace);
         }
         //indien XSD bekend, dan validatie hierop       
-        if(getXsdMap().containsKey(namespace)){                        
-            URL schemaURL = Context.getResource((String)getXsdMap().get(namespace));                                            
-            System.out.println("validating against "+((String)getXsdMap().get(namespace)));
+        String schemaPath = getSchemaPath(doc);
+        if(schemaPath != null){      
+            URL schemaURL = Context.getResource(schemaPath);
+            System.out.println("validating against "+schemaPath);
             Schema schema = XML.createSchema(schemaURL);                        
             XML.validate(doc,schema);            
         } 
@@ -312,7 +313,33 @@ public class MetsUtils {
         mdWrap.getXmlData().add(doc.getDocumentElement());                
         return mdWrap;
     }
-    public static MdSec.MdWrap createMdWrap(File file) throws ParserConfigurationException, SAXException, IOException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException{           
+    public static String getSchemaPath(Document doc) {
+        String namespace = doc.getDocumentElement().getNamespaceURI();
+        String schemaPath = null;
+        if(getXsdMap().containsKey(namespace)){                        
+            
+            HashMap<String,Object>nsEntry = (HashMap<String,Object>)getXsdMap().get(namespace);
+            String versionable = (String) (nsEntry.containsKey("versionable") ? nsEntry.get("versionable") : "false");
+            HashMap<String,String>versions = (HashMap<String,String>) nsEntry.get("versions");
+            
+            if(versionable.equals("false")){
+                if(versions.containsKey("default")){
+                    schemaPath = versions.get("default");
+                }
+                
+            }else if(nsEntry.containsKey("versionKey")){
+                String versionKey = (String) nsEntry.get("versionKey");
+                String version = doc.getDocumentElement().getAttribute(versionKey);
+                if(versions.containsKey(version)){
+                    schemaPath = versions.get(version);
+                }else if(versions.containsKey("default")){
+                    schemaPath = versions.get("default");
+                }
+            }
+        }
+        return schemaPath;
+    }
+    public static MdSec.MdWrap createMdWrap(File file) throws ParserConfigurationException, SAXException, IOException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException, Exception{           
         //Valideer xml, en geef W3C-document terug
         MdSec.MdWrap mdWrap = createMdWrap(XML.XMLToDocument(file));
         mdWrap.setLabel(file.getName());

@@ -137,8 +137,9 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                         
                         //indien XSD bekend, dan validatie hierop       
-                        if(MetsUtils.getXsdMap().containsKey(transformFromNamespace)){            
-                            URL schemaURL = Context.getResource((String)MetsUtils.getXsdMap().get(transformFromNamespace));                                                                                                           
+                        String schemaPath = MetsUtils.getSchemaPath(document);
+                        if(schemaPath != null){            
+                            URL schemaURL = Context.getResource(schemaPath);                                                                                                           
                             XML.validate(document,XML.createSchema(schemaURL));            
                         }
                         //zoek mapping
