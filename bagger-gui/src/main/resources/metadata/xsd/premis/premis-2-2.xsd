@@ -282,7 +282,7 @@ For an object of type bitstream: <object xsi:type="bitstream">  will mean that t
 		<xs:sequence>
 			<xs:element ref="copyrightDocumentationIdentifierType"/>
 			<xs:element ref="copyrightDocumentationIdentifierValue"/>
-			<xs:element ref="copyrightDocumentationRole " minOccurs="0"/>
+			<xs:element ref="copyrightDocumentationRole" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<!--

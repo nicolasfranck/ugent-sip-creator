@@ -232,11 +232,17 @@
         <entry key="http://www.tei-c.org/ns/1.0" value="TEIHDR" />
         <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="METSRIGHTS" />
         ISO 19115:2003 NAP => xsd niet gevonden 
+        
+        
+        TODO:
+            versionKey (default: 'version')
+            version
     -->
     
     <util:map id="namespaceMap" map-class="java.util.HashMap">
-        <entry key="http://www.loc.gov/MARC21/slim" value="MARC"  />
+        <entry key="http://www.loc.gov/MARC21/slim" value="MARC" />
         <entry key="http://www.loc.gov/mods/v3" value="MODS" />
+        <entry key="http://www.loc.gov/mods/" value="MODS" />
         <entry key="info:lc/xmlns/premis-v2" value="PREMIS" />
         <entry key="http://www.loc.gov/standards/premis/v1" value="PREMIS" />
         <entry key="http://www.loc.gov/standards/premis" value="PREMIS" />
@@ -270,23 +276,191 @@
     
     <!--premis agent|object|event|rights hebben allemaal dezelfde namespace: http://www.loc.gov/standards/premis -->    
     <util:map id="xsdMap" map-class="java.util.HashMap">
-        <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xsd/MARC21.xsd" />
-        <entry key="http://www.loc.gov/mods/v3" value="metadata/xsd/mods.xsd" />        
-        <entry key="info:lc/xmlns/premis-v2" value="metadata/xsd/premis.xsd" />        
-        <entry key="urn:isbn:1-931666-22-9" value="metadata/xsd/ead.xsd" />
-        <entry key="urn:ebu:metadata-schema:ebupmeta_2011" value="metadata/xsd/EBU_PMETA_2011.xsd" />
-        <entry key="http://www.getty.edu/CDWA/CDWALite" value="metadata/xsd/CDWALite-xsd-public-v1-1.xsd" />
-        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
-        <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xsd/dc.xsd" />
-        <entry key="http://www.loc.gov/mix/v20" value="metadata/xsd/mix20.xsd" />
-        <entry key="http://www.loc.gov/mix/v10" value="metadata/xsd/mix10.xsd" />        
-        <entry key="http://www.loc.gov/AMD/" value="metadata/xsd/AMD.xsd" />
-        <entry key="http://www.loc.gov/VMD/" value="metadata/xsd/VMD.xsd" />
-        <entry key="http://www.vraweb.org/vracore4.htm" value="metadata/xsd/vra.xsd" />
-        <entry key="http://ltsc.ieee.org/xsd/LOM" value="http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd" />        
-        <entry key="info:lc/xmlns/premis-v2" value="metadata/xsd/premis/premis-2-2.xsd" />
-        <entry key="http://www.loc.gov/standards/premis/v1" value="metadata/xsd/premis/premis-1-1.xsd" />
-        <entry key="http://www.loc.gov/standards/premis" value="metadata/xsd/premis/premis-1-1.xsd" />                
+        <entry key="http://www.loc.gov/MARC21/slim">            
+            <util:map>
+                <entry key="versionable" value="false"/>            
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/MARC21.xsd" />
+                    </util:map>    
+                </entry>            
+            </util:map>            
+        </entry> 
+        <entry key="http://www.loc.gov/mods/v3">
+            <util:map>
+                <entry key="versionable" value="true"/>
+                <entry key="versionKey" value="version"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="3.0" value="metadata/xsd/mods/mods-3-0.xsd" />
+                        <entry key="3.1" value="metadata/xsd/mods/mods-3-1.xsd" />
+                        <entry key="3.2" value="metadata/xsd/mods/mods-3-2.xsd" />
+                        <entry key="3.3" value="metadata/xsd/mods/mods-3-3.xsd" />
+                        <entry key="3.4" value="metadata/xsd/mods/mods-3-4.xsd" />
+                        <entry key="default" value="metadata/xsd/mods/mods-3-4.xsd" />
+                    <util:map>
+                </entry>
+            </util:map>                                
+        </entry> 
+        
+        <entry key="http://www.loc.gov/standards/premis">
+            <util:map>
+                <entry key="versionable" value="true" />
+                <entry key="versionKey" value="version" />
+                <entry key="versions">
+                    <util:map>
+                        <entry key="1.0" value="http://www.loc.gov/standards/premis/PREMIS-v1-0.xsd" />
+                        <entry key="default" value="http://www.loc.gov/standards/premis/PREMIS-v1-0.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+                    
+        <entry key="http://www.loc.gov/standards/premis/v1">
+            <util:map>
+                <entry key="versionable" value="true" />
+                <entry key="versionKey" value="version" />
+                <entry key="versions">
+                    <util:map>
+                        <entry key="1.1" value="http://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd" />
+                        <entry key="default" value="http://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        <entry key="info:lc/xmlns/premis-v2">
+            <util:map>
+                <entry key="versionable" value="true" />
+                <entry key="versionKey" value="version" />
+                <entry key="versions">
+                    <util:map>
+                        <entry key="2.0" value="http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" />
+                        <entry key="2.1" value="http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd" />
+                        <entry key="2.2" value="http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd" />                    
+                    </util:map>
+                </entry>    
+            </util:map>            
+        </entry>
+        
+        <entry key="urn:isbn:1-931666-22-9">
+            <util:map>
+                <entry key="versionable" value="false" />                
+                <entry key="versions">
+                    <entry key="default" value="metadata/xsd/ead/ead-200804.xsd" />
+                </entry>    
+            </util:map>            
+        </entry>
+        <entry key="urn:ebu:metadata-schema:ebupmeta_2011">
+            <util:map>
+                <entry key="versionable" value="false" />
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/EBU_PMETA_2011.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>            
+        </entry>
+        <entry key="http://www.getty.edu/CDWA/CDWALite">
+            <util:map>
+                <entry key="versionable" value="false" />
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/CDWALite-xsd-public-v1-1.xsd" />
+                    </util:map>
+                </entry>    
+            </util:map>
+        </entry>
+        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        
+        <entry key="http://purl.org/dc/elements/1.1/">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/dc.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        
+         <entry key="http://www.loc.gov/mix/v20">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/mix20.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        
+        <entry key="http://www.loc.gov/mix/v10">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/mix10.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        
+        <entry key="http://www.loc.gov/AMD/">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/AMD.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+       
+        <entry key="http://www.loc.gov/VMD/">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/VMD.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        
+        <entry key="http://www.vraweb.org/vracore4.htm">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/vra.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        
+        <entry key="http://ltsc.ieee.org/xsd/LOM">
+            <util:map>
+                <entry key="versionable" value="false"/>
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>
+        </entry>
+        
+        
+        
+        
         <entry key="http://www.tei-c.org/ns/1.0" value="metadata/xsd/tei_all.xsd" />
         <entry key="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" value="metadata/xsd/Spectrum-1.01.xsd" />
         <entry key="http://cosimo.stanford.edu/sdr/metsrights/" value="metadata/xsd/METSRights.xsd" />
@@ -319,4 +493,34 @@
             </util:map>
         </entry>            
     </util:map>
+    
+    <!--
+        wanneer men werkt met DTD, of wanneer er noch DTD noch xsd is (enkel rootname). Werking niet gegarandeerd (want
+        via node-name weet je niet met welke versie je werkt)
+    -->
+    <util:map id="rootNameMapping">
+        <entry key="ead" value="urn:isbn:1-931666-22-9" />
+        <entry key="marc" value="http://www.loc.gov/MARC21/slim" />
+        <entry key="collection" value="http://www.loc.gov/MARC21/slim" />
+        <entry key="mods" value="http://www.loc.gov/mods/v3" />
+        <entry key="premis" value="info:lc/xmlns/premis-v2" />
+        <entry key="ClassificationScheme" value="urn:ebu:metadata-schema:ebupmeta_2011" />
+        <entry key="cdwalite" value="http://www.getty.edu/CDWA/CDWALite" />
+        <entry key="dcCollection" value="http://www.openarchives.org/OAI/2.0/oai_dc/" />        
+        <entry key="dc" value="http://www.openarchives.org/OAI/2.0/oai_dc/" />        
+        <entry key="mix" value="http://www.loc.gov/mix/v20" />       
+        <entry key="AUDIOMD" value="http://www.loc.gov/AMD/" />
+        <entry key="VIDEOMD" value="http://www.loc.gov/VMD/" />
+        <entry key="vra" value="http://www.vraweb.org/vracore4.htm" />
+        <entry key="lom" value="http://ltsc.ieee.org/xsd/LOM" />                
+        <entry key="tei" value="http://www.tei-c.org/ns/1.0" />
+        <entry key="spectrum" value="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" />
+        <entry key="metsrights" value="http://cosimo.stanford.edu/sdr/metsrights/" />        
+    </util:map> 
+    <util:map id="docTypeMapping">
+        <entry key="ead" value="urn:isbn:1-931666-22-9" />
+        <entry key="marc" value="http://www.loc.gov/MARC21/slim" />
+        <entry key="mods" value="http://www.loc.gov/mods/v3" />
+        <entry key="premis" value="info:lc/xmlns/premis-v2" />             
+    </util:map>   
 </beans>

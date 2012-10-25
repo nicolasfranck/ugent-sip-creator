@@ -3,12 +3,20 @@ package ugent.bagger.helper;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -54,7 +62,7 @@ public class XML {
     }
     public static DOMImplementationRegistry getDOMImplementationRegistry() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         if(registry == null){
-            registry = DOMImplementationRegistry.newInstance();            
+            registry = DOMImplementationRegistry.newInstance();
         }
         return registry;
     }
@@ -83,7 +91,7 @@ public class XML {
         dbf.setNamespaceAware(true);                  
         dbf.setValidating(validate);
         dbf.setIgnoringComments(true);
-        dbf.setIgnoringElementContentWhitespace(true);                
+        dbf.setIgnoringElementContentWhitespace(true);           
         return dbf;
     }
     public static DocumentBuilderFactory getDocumentBuilderFactory(){
@@ -282,17 +290,58 @@ public class XML {
     public static void main(String [] args){      
      
         try{
-            //File file = new File("/home/nicolas/EAD/VEA_000005_A/ead.xml");
-            File file = new File("/home/nicolas/dtd1.xml");
-            System.out.println("creating document");
-            Document doc = XMLToDocument(file,false);
-            System.out.println("document created"); 
+            HashMap emptyNSReplacements = new HashMap();
+            emptyNSReplacements.put("ead","urn:isbn:1-931666-22-9");
             
+            File xsdFile = new File("/home/nicolas/Bagger-LC/bagger-gui/src/main/resources/metadata/xsd/ead.xsd");            
+            File file = new File("/tmp/ead2.xml");
+            
+            Document doc = XMLToDocument(file,false);                        
             DocumentType docType = doc.getDoctype();
+            String namespace = doc.getDocumentElement().getNamespaceURI();    
             
-            System.out.println("doctype name: "+docType.getName());
-            System.out.println("doctype public id: "+docType.getPublicId());
-            System.out.println("doctype system id: "+docType.getSystemId());
+            if(namespace == null || namespace.isEmpty()){                
+                String name = docType.getName() != null ? docType.getName() : doc.getDocumentElement().getTagName();                
+                if(!emptyNSReplacements.containsKey(name)){
+                    throw new Exception("could not find replacement for '"+name+"'");
+                }                
+                ErrorListener el = new ErrorListener(){
+                    @Override
+                    public void warning(TransformerException exception) throws TransformerException {
+                        throw exception;
+                    }
+                    @Override
+                    public void error(TransformerException exception) throws TransformerException {
+                        throw exception;
+                    }
+                    @Override
+                    public void fatalError(TransformerException exception) throws TransformerException {
+                        throw exception;
+                    }
+                };
+                TransformerFactory tf = TransformerFactory.newInstance();
+                tf.setErrorListener(el);
+                Transformer trans = tf.newTransformer();
+                trans.setErrorListener(el);                                                
+                doc.getDocumentElement().setAttributeNS(
+                    "http://www.w3.org/2000/xmlns/",
+                    "xmlns:xsi",
+                    "http://www.w3.org/1999/XMLSchema-instance"
+                );           
+                doc.getDocumentElement().setAttributeNS(
+                    "http://www.w3.org/2000/xmlns/",
+                    "xmlns:xlink",
+                    "http://www.w3.org/1999/xlink"
+                );                       
+                doc.getDocumentElement().setAttribute("xmlns",(String)emptyNSReplacements.get(name));
+                ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                trans.transform(new DOMSource(doc),new StreamResult(bout));
+                doc = XMLToDocument(new ByteArrayInputStream(bout.toByteArray()));
+            }
+            validate(doc,xsdFile.toURI().toURL());
+            
+            DocumentToXML(doc,new FileOutputStream(new File("/tmp/fixed_ead.xml")));
+            
         }catch(Exception e){
             e.printStackTrace();
         }
