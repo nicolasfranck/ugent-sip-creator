@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.ValidatingFormModel;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
-import org.springframework.richclient.application.Application;
 import treetable.FileLazyTreeModel;
 import treetable.FileLazyTreeModel.Mode;
 import treetable.FileNode;
@@ -206,15 +205,11 @@ public class RenamePanel extends JPanel{
                     LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
                     FileNode fnode = (FileNode) node.getUserObject();
                     File file = fnode.getFile();
-                    if(file.isDirectory() && file.canRead()){
+                    if(file.isDirectory()){
                         setLastFile(file);
                         reloadTreeTable(file);        
                         setFormsEnabled(file.isDirectory() && file.canWrite());                        
-                    }else{
-                        //panelFileTree.remove(scrollerTreeTable);                        
-                        reloadTreeTable(new File(" "));
-                        setFormsEnabled(false);                        
-                    }
+                    }                   
                 }
             });           
                    
