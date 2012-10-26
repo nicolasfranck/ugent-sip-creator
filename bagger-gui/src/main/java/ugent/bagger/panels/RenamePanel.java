@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.ValidatingFormModel;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
+import org.springframework.richclient.application.Application;
 import treetable.FileLazyTreeModel;
 import treetable.FileLazyTreeModel.Mode;
 import treetable.FileNode;
@@ -67,8 +68,7 @@ public class RenamePanel extends JPanel{
     private DefaultTableModel resultTableModel;
     private int numToRename = 0;
     private int numRenamedSuccess = 0;
-    private int numRenamedError = 0;
-    private JTextArea statusTextArea;
+    private int numRenamedError = 0;    
     private JTreeTable treeTable;
     private TreeTableModel treeTableModel;
     private boolean treeTableExpanded = false;   
@@ -83,6 +83,7 @@ public class RenamePanel extends JPanel{
     private static FileSystemView fsv = FileSystemView.getFileSystemView();
     
     public RenamePanel(){
+        setLayout(new BorderLayout());
         init();
     }   
     public LazyTreeNode getFileSystemTreeNode() {
@@ -95,14 +96,14 @@ public class RenamePanel extends JPanel{
             //sommige systemen hebben meerdere roots (C:/, D:/)
             for(File file:File.listRoots()){
                 
-                System.out.println("root: "+file);
+                //System.out.println("root: "+file);
                 
                 if(!fsv.isFileSystemRoot(file)){  
                     System.out.println("root: "+file+" is NOT a file system root");
                     continue;
                 }
                 
-                System.out.println("root: "+file+" is a file system root");
+                //System.out.println("root: "+file+" is a file system root");
                 
                 FileNode fn = new FileNode(file);
                 final LazyTreeNode node = new LazyTreeNode(
@@ -116,7 +117,7 @@ public class RenamePanel extends JPanel{
                     continue;
                 }
                 for(File child:children){                
-                    System.out.println("\tchild: "+child);
+                    //System.out.println("\tchild: "+child);
                     LazyTreeNode childNode = new LazyTreeNode(
                         child.getAbsolutePath(), 
                         new FileNode(child), 
@@ -164,9 +165,10 @@ public class RenamePanel extends JPanel{
             });
             fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
                 @Override
-                public void treeWillExpand(TreeExpansionEvent tee) throws ExpandVetoException {
+                public void treeWillExpand(TreeExpansionEvent tee) throws ExpandVetoException {                    
                     
-                    getStatusTextArea().setText(null);
+                    SwingUtils.StatusErrorMessage(null);
+                    SwingUtils.StatusMessage(null);
                     
                     TreePath tpath = tee.getPath();
                     LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
@@ -174,22 +176,21 @@ public class RenamePanel extends JPanel{
                     File file = fileNode.getFile();                
                     if(file.isDirectory()){                    
                         if(!file.canRead()){
-                            SwingUtils.ShowError(
-                                null,
-                                Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
-                                    file.getAbsolutePath()
-                                })
-                            );
+                            String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
+                                file.getAbsolutePath()
+                            });
+                            SwingUtils.ShowError(null,error);
+                            SwingUtils.StatusErrorMessage(error);
                                     
                             throw new ExpandVetoException(tee);
                         }else if(!file.canWrite()){
-                            getStatusTextArea().setText(
+                            SwingUtils.StatusErrorMessage(
                                 Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
                                     file.getAbsolutePath()
-                                })
-                            );                            
-                        }else{
-                            getStatusTextArea().setText(file.getAbsolutePath());                            
+                                })    
+                            );                           
+                        }else{                            
+                            SwingUtils.StatusMessage(file.getAbsolutePath());
                         }
                     }                    
                     setFormsEnabled(file.isDirectory() && file.canWrite());                                        
@@ -209,6 +210,10 @@ public class RenamePanel extends JPanel{
                         setLastFile(file);
                         reloadTreeTable(file);        
                         setFormsEnabled(file.isDirectory() && file.canWrite());                        
+                    }else{
+                        //panelFileTree.remove(scrollerTreeTable);                        
+                        reloadTreeTable(new File(" "));
+                        setFormsEnabled(false);                        
                     }
                 }
             });           
@@ -250,7 +255,9 @@ public class RenamePanel extends JPanel{
             @Override
             public void valueChanged(TreeSelectionEvent tse) {            
                 fileNodesSelected.clear();       
-                getStatusTextArea().setText(null);
+                
+                SwingUtils.StatusErrorMessage(null);
+                SwingUtils.StatusMessage(null);
                 
                 TreePath [] selectedPaths = tree.getSelectionPaths();                
                 if(selectedPaths != null) {                
@@ -263,11 +270,11 @@ public class RenamePanel extends JPanel{
                 File currentDir = getLastFile();
                 
                 if(currentDir.isDirectory() && !currentDir.canWrite()){
-                    getStatusTextArea().setText(
-                        Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
-                            currentDir.getAbsolutePath()
-                        })
-                    );
+                    String error = Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
+                        currentDir.getAbsolutePath()
+                    });
+                    SwingUtils.StatusErrorMessage(error);
+                    SwingUtils.StatusErrorMessage(error);                   
                 }
                 
                 boolean formsEnabled = currentDir.isDirectory() && currentDir.canWrite() && selectedPaths != null && selectedPaths.length > 0;                
@@ -351,18 +358,6 @@ public class RenamePanel extends JPanel{
     public void setResultTableModel(DefaultTableModel resultTableModel) {
         this.resultTableModel = resultTableModel;
     }
-
-    public JTextArea getStatusTextArea() {
-        if(statusTextArea == null){
-            statusTextArea = new JTextArea();
-            statusTextArea.setEditable(false);            
-        }
-        return statusTextArea;
-    }
-
-    public void setStatusTextArea(JTextArea statusTextArea) {
-        this.statusTextArea = statusTextArea;
-    }
     
     public JPanel getNewButtonPanel(){
         return new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -437,9 +432,10 @@ public class RenamePanel extends JPanel{
         panelFileTree = new JPanel();
         panelFileTree.setLayout(new BorderLayout());
         panelFileTree.setPreferredSize(new Dimension(512,300));
-        scrollerTreeTable = new JScrollPane(getCurrentTreeTable());
-        panelFileTree.add(scrollerTreeTable,BorderLayout.SOUTH);        
-        panelFileTree.add(getStatusTextArea(),BorderLayout.NORTH);
+        scrollerTreeTable = new JScrollPane(getCurrentTreeTable());        
+        panelFileTree.add(scrollerTreeTable);                
+        
+        
         
         panelNorth.add(panelFileSystemTree);
         panelNorth.add(panelFileTree);
@@ -682,8 +678,10 @@ public class RenamePanel extends JPanel{
         }
         @Override
         protected Void doInBackground(){
-            clearResultTable();
-            getStatusTextArea().setText(null);        
+            clearResultTable();         
+            SwingUtils.StatusErrorMessage(null);
+            SwingUtils.StatusMessage(null);
+            
             numRenamedSuccess = 0;
             numRenamedError = 0;
             
@@ -775,7 +773,9 @@ public class RenamePanel extends JPanel{
         @Override
         protected Void doInBackground(){
             clearResultTable();
-            getStatusTextArea().setText(null);        
+           
+            SwingUtils.StatusErrorMessage(null);
+            SwingUtils.StatusMessage(null);
             numRenamedSuccess = 0;
             numRenamedError = 0;
             try{

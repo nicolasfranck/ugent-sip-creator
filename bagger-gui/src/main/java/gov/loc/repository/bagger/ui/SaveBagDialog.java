@@ -166,6 +166,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         serializeLabel = new JLabel(Context.getMessage("bag.label.ispackage"));
         serializeLabel.setToolTipText(Context.getMessage("bag.serializetype.help"));
 
+        
+        
     	// TODO: Add format selection panel
         noneButton = new JRadioButton(Context.getMessage("bag.serializetype.none"));
         noneButton.setEnabled(true);
@@ -174,38 +176,39 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         noneButton.setToolTipText(Context.getMessage("bag.serializetype.none.help"));
 
         zipButton = new JRadioButton(Context.getMessage("bag.serializetype.zip"));
-        zipButton.setEnabled(true);
+        zipButton.setEnabled(true);        
         zipButton.addActionListener(serializeListener);
         zipButton.setToolTipText(Context.getMessage("bag.serializetype.zip.help"));
 
         tarButton = new JRadioButton(Context.getMessage("bag.serializetype.tar"));
-        tarButton.setEnabled(true);
+        tarButton.setEnabled(true);        
         tarButton.addActionListener(serializeListener);
         tarButton.setToolTipText(Context.getMessage("bag.serializetype.tar.help"));
         
         tarGzButton = new JRadioButton(Context.getMessage("bag.serializetype.targz"));
-        tarGzButton.setEnabled(true);
+        tarGzButton.setEnabled(true);        
         tarGzButton.addActionListener(serializeListener);
         tarGzButton.setToolTipText(Context.getMessage("bag.serializetype.targz.help"));
         
         tarBz2Button = new JRadioButton(Context.getMessage("bag.serializetype.tarbz2"));
-        tarBz2Button.setEnabled(true);
+        tarBz2Button.setEnabled(true);        
         tarBz2Button.addActionListener(serializeListener);
         tarBz2Button.setToolTipText(Context.getMessage("bag.serializetype.tarbz2.help"));
 
         short mode = bag.getSerialMode();
+        
     	if (mode == DefaultBag.NO_MODE) {
-            noneButton.setEnabled(true);
+            noneButton.setSelected(true);
     	} else if (mode == DefaultBag.ZIP_MODE) {
-            zipButton.setEnabled(true);
+            zipButton.setSelected(true);
     	} else if (mode == DefaultBag.TAR_MODE) {
-            tarButton.setEnabled(true);
+            tarButton.setSelected(true);
     	} else if (mode == DefaultBag.TAR_GZ_MODE) {
-            tarGzButton.setEnabled(true);
+            tarGzButton.setSelected(true);
     	} else if (mode == DefaultBag.TAR_BZ2_MODE) {
-            tarBz2Button.setEnabled(true);
+            tarBz2Button.setSelected(true);
     	} else {
-            noneButton.setEnabled(true);
+            noneButton.setSelected(true);
     	}
         
         ButtonGroup serializeGroup = new ButtonGroup();

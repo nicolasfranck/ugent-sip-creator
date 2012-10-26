@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,8 +66,7 @@ public class DefaultBagItMets extends BagItMets{
         }        
         try{
             mets = MetsUtils.readMets(FUtils.getInputStreamFor(pathMets));            
-        }catch(Exception e){      
-            e.printStackTrace();            
+        }catch(Exception e){                              
             log.debug(e.getMessage());            
         }
         if(mets == null){            
@@ -99,9 +97,9 @@ public class DefaultBagItMets extends BagItMets{
         
         
         //metadata: controleer of er een Dublin Core record aan toegevoegd is        
-        HashMap<String, HashMap<String, String>> crosswalk = MetsUtils.getCrosswalk();
+        HashMap<String,HashMap<String,Object>> crosswalk = MetsUtils.getCrosswalk();
         
-        //System.out.println("iterating dmdSec");
+        System.out.println("iterating dmdSec");
         Document dcDoc = null;
         
         
@@ -109,71 +107,66 @@ public class DefaultBagItMets extends BagItMets{
         ArrayList<Element>dcCandidates = new ArrayList<Element>();
         
         for(int i = 0;i< mets.getDmdSec().size();i++){
-            //System.out.println("mdSec "+i);
+            System.out.println("mdSec "+i);
             MdSec mdSec = mets.getDmdSec().get(i);
             
             MdWrap mdWrap = mdSec.getMdWrap();
             if(mdWrap == null){
                 continue;
             }
-            //System.out.println("mdSec "+i+", mdWrap found");
+            System.out.println("mdSec "+i+", mdWrap found");
             
             Element element = mdWrap.getXmlData().get(0);           
             
             if(element == null || element.getOwnerDocument() == null){
                 continue;
             }            
-            //System.out.println("mdSec "+i+", element found");
+            System.out.println("mdSec "+i+", element found");
             
             String ns = element.getNamespaceURI();            
-            //System.out.println("mdSec "+i+", ns: "+ns);
+            System.out.println("mdSec "+i+", ns: "+ns);
             Document doc = element.getOwnerDocument();            
             ns = (ns != null) ? ns : doc.getDocumentElement().getNamespaceURI();            
             if(ns == null){
                 continue;
             }            
-            //System.out.println("mdSec "+i+", ns not empty");
+            System.out.println("mdSec "+i+", ns not empty");
             //dc gevonden
             if(ns.compareTo(NAMESPACE_DC) == 0 || ns.compareTo(NAMESPACE_OAI_DC) == 0){            
-                //System.out.println("mdSec "+i+", dcFound!");
+                System.out.println("mdSec "+i+", dcFound!");
                 dcElements.add(element);                            
             }            
             //crosswalk naar dc gevonden
-            else if(crosswalk.containsKey(ns)){
-                //System.out.println("mdSec "+i+", looking for crosswalk");
-                String xsltPath = null;
-                if(crosswalk.get(ns).containsKey(NAMESPACE_DC)){
-                    xsltPath = crosswalk.get(ns).get(NAMESPACE_DC);
-                }else if(crosswalk.get(ns).containsKey(NAMESPACE_OAI_DC)){
-                    xsltPath = crosswalk.get(ns).get(NAMESPACE_OAI_DC);
-                }                
-                if(xsltPath != null){
-                    dcCandidates.add(element);                  
-                }
+            else if(
+                crosswalk.containsKey(ns) &&                     
+                (crosswalk.get(ns).containsKey(NAMESPACE_DC) || crosswalk.get(ns).containsKey(NAMESPACE_OAI_DC))
+            ){
+                dcCandidates.add(element);                                  
             } 
         }
-        //System.out.println("num dcElements: "+dcElements.size()+", num dcCandidates: "+dcCandidates.size());
+        System.out.println("num dcElements: "+dcElements.size()+", num dcCandidates: "+dcCandidates.size());
         //voeg DC toe indien nodig
         if(dcElements.size() <= 0 && dcCandidates.size() > 0){
             
             Element element = dcCandidates.get(0);
-            String ns = element.getNamespaceURI();
-            ns = (ns != null) ? ns : element.getOwnerDocument().getDocumentElement().getNamespaceURI();
+            
             String xsltPath = null;
             try{
-                if(crosswalk.get(ns).containsKey(NAMESPACE_DC)){
-                    xsltPath = crosswalk.get(ns).get(NAMESPACE_DC);
-                }else if(crosswalk.get(ns).containsKey(NAMESPACE_OAI_DC)){
-                    xsltPath = crosswalk.get(ns).get(NAMESPACE_OAI_DC);
+                xsltPath = MetsUtils.getXsltPath(element,NAMESPACE_DC);
+                xsltPath = xsltPath != null ? xsltPath : MetsUtils.getXsltPath(element,NAMESPACE_OAI_DC);
+                
+                if(xsltPath == null){
+                    throw new Exception("no crosswalk found");
                 }
+                
                 URL xsltURL = Context.getResource(xsltPath);
-                //System.out.println("xsltURL: "+xsltURL);
+                System.out.println("xsltURL: "+xsltURL);
                 Document xsltDoc = XML.XMLToDocument(xsltURL);
-                /*System.out.println("xsltDoc created");
-                System.out.println("Doc output:");*/
+                System.out.println("xsltDoc created");
+                System.out.println("Doc output:");
                 XML.ElementToXML(element,System.out);
                 Document outDoc = XSLT.transform(element,xsltDoc);
-                //System.out.println("print to outputstream");
+                System.out.println("print to outputstream");
                 XML.DocumentToXML(outDoc,System.out,true);
                 mets.getDmdSec().add(MetsUtils.createMdSec(outDoc));
                 dcDoc = outDoc;                                        
@@ -194,6 +187,7 @@ public class DefaultBagItMets extends BagItMets{
         
         //schrijf naar bag-info.txt
         if(dcDoc != null){
+            System.out.println("writing doc to bag-info");
             try{                
                 ByteArrayOutputStream baginfoOut = new ByteArrayOutputStream();                
                 URL xsltURL = Context.getResource(
@@ -246,7 +240,7 @@ public class DefaultBagItMets extends BagItMets{
             for(BagFile bagFile:payloads){
 
                 //xsd:ID moet NCName zijn                    
-                String fileId = UUID.randomUUID().toString();                        
+                String fileId = MetsUtils.createID();                        
                 
                 //houd mapping filepath <=> fileid bij
                 fileIdMap.put(bagFile.getFilepath(),fileId);                                
@@ -321,7 +315,7 @@ public class DefaultBagItMets extends BagItMets{
                     //je kan geen checksum bijhouden van iets dat straks zal wijzigen
                 }
                                    
-                String fileId = UUID.randomUUID().toString();                        
+                String fileId = MetsUtils.createID();                        
                 
                 fileIdMap.put(bagFile.getFilepath(),fileId);                
                 

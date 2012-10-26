@@ -61,16 +61,33 @@ public final class XMLCrosswalkDialog extends JDialog{
         okButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                System.out.println("XMLCrosswalkDialog::okButton::actionPerformed start");
+                System.out.println("file: "+file);
+                System.out.println("transformFromNamespace: "+transformFromNamespace);
+                System.out.println("transformToNamespace: "+transformToNamespace);
                 if(file == null || transformFromNamespace == null || transformToNamespace == null){
                     return;
                 }
+                System.out.println("XMLCrosswalkDialog::okButton::actionPerformed through the gates");
                 BusyIndicator.showAt(SwingUtils.getFrame());
                 try{
                     
-                    String filename = MetsUtils.getCrosswalk().get(transformFromNamespace).get(transformToNamespace);
-                    Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));
                     Document sourceDoc = XML.XMLToDocument(file);
+                    System.out.println("sourceDoc: "+sourceDoc);                    
+                    
+                    //String filename = MetsUtils.getCrosswalk().get(transformFromNamespace).get(transformToNamespace);
+                    String filename = MetsUtils.getXsltPath(sourceDoc.getDocumentElement(),transformToNamespace);
+                    
+                    System.out.println("filename: "+filename);
+                    
+                    Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));
+                    
+                    System.out.println("xsltDoc"+xsltDoc);
+                    
+                    
                     Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc); 
+                    
+                    System.out.println("transformedDoc: "+transformedDoc);
                     
                     XML.DocumentToXML(transformedDoc,System.out);
                     
@@ -84,6 +101,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                 }
                 XMLCrosswalkDialog.this.dispose();
                 BusyIndicator.clearAt(SwingUtils.getFrame());
+                System.out.println("XMLCrosswalkDialog::okButton::actionPerformed end");
             }            
         });
         
@@ -147,13 +165,16 @@ public final class XMLCrosswalkDialog extends JDialog{
                             throw new Exception("no crosswalk found!");
                         }
                         
-                        HashMap<String,String> crosswalk = MetsUtils.getCrosswalk().get(transformFromNamespace);
+                        HashMap<String,Object> crosswalk = MetsUtils.getCrosswalk().get(transformFromNamespace);
                         
                         //vul combobox           
                         transformComboBox.removeAllItems();
-                        for(String key:crosswalk.keySet().toArray(new String [] {})){
+                        String [] keys = crosswalk.keySet().toArray(new String [] {});
+                        for(String key:keys){
                             transformComboBox.addItem(MetsUtils.getNamespaceMap().get(key));
                         }
+                        //stel 1ste waarde in!
+                        transformToNamespace = keys[0];
                         
                         //set combobox
                         transformComboBox.setEnabled(true);                        
@@ -166,6 +187,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         invalidate();                                               
                         
                     }catch(Exception e){
+                        e.printStackTrace();
                         JOptionPane.showMessageDialog(XMLCrosswalkDialog.this,e.getMessage());                                               
                     }                    
                 }

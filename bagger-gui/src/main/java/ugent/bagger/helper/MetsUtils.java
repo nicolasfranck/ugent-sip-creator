@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.MdRefException;
@@ -38,10 +39,10 @@ import ugent.bagger.exceptions.NoNamespaceException;
  */
 public class MetsUtils {
     
-    private static HashMap<String,HashMap<String,String>>crosswalk;
-    private static HashMap<String,HashMap<String,Object>> xsdMap = null;
-    private static HashMap<String,String> xsltMap = null;
+    private static HashMap<String,HashMap<String,Object>>crosswalk;
+    private static HashMap<String,HashMap<String,Object>> xsdMap = null;    
     private static HashMap<String,String> baginfoMap = null;
+    private static HashMap<String,String> xsltMap = null;
     private static HashMap<String,String> namespaceMap = null;
     private static HashMap<String,String> typeMap = null;
     private static HashMap<String,String> rootNameMapping = null;
@@ -50,6 +51,15 @@ public class MetsUtils {
     private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
     private static Log logger = LogFactory.getLog(MetsUtils.class);
 
+    public static HashMap<String, String> getXsltMap() {
+        if(xsltMap == null){
+            xsltMap = (HashMap<String,String>) Beans.getBean("xsltMap");
+        }
+        return xsltMap;
+    }
+    public static void setXsltMap(HashMap<String, String> xsltMap) {
+        MetsUtils.xsltMap = xsltMap;
+    }    
     public static HashMap<String, String> getDocTypeMapping() {
         if(docTypeMapping == null){
             docTypeMapping = (HashMap<String,String>) Beans.getBean("docTypeMapping");
@@ -78,13 +88,13 @@ public class MetsUtils {
     public static void setBaginfoMap(HashMap<String, String> baginfoMap) {
         MetsUtils.baginfoMap = baginfoMap;
     }
-    public static HashMap<String, HashMap<String, String>> getCrosswalk() {
+    public static HashMap<String, HashMap<String, Object>> getCrosswalk() {
         if(crosswalk == null){
-            crosswalk = (HashMap<String,HashMap<String,String>>) Beans.getBean("crosswalk");
+            crosswalk = (HashMap<String,HashMap<String,Object>>) Beans.getBean("crosswalk");
         }
         return crosswalk;
     }
-    public static void setCrosswalk(HashMap<String, HashMap<String, String>> crosswalk) {
+    public static void setCrosswalk(HashMap<String, HashMap<String, Object>> crosswalk) {
         MetsUtils.crosswalk = crosswalk;
     }
     public static HashMap<String, String> getTypeMap() {
@@ -105,16 +115,7 @@ public class MetsUtils {
     }
     public static void setXsdMap(HashMap<String,HashMap<String,Object>> xsdMap) {
         MetsUtils.xsdMap = xsdMap;
-    }
-    public static HashMap<String, String> getXsltMap() {
-        if(xsltMap == null){
-            xsltMap = (HashMap<String,String>) Beans.getBean("xsltMap");
-        }
-        return xsltMap;
-    }
-    public static void setXsltMap(HashMap<String, String> xsltMap) {
-        MetsUtils.xsltMap = xsltMap;
-    }
+    }  
     public static HashMap<String, String> getNamespaceMap(){
         if(namespaceMap == null){
             namespaceMap = (HashMap<String,String>) Beans.getBean("namespaceMap");
@@ -217,10 +218,14 @@ public class MetsUtils {
     public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException, Exception{        
         return createMdSec(XML.XMLToDocument(file));        
     }
+    public static String createID(){
+        //xsd NCName: moet start met letter of _, colon (':') mag niet voorkomen
+        return "_"+UUID.randomUUID().toString();
+    }
     public static MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
-        MdSec mdSec = new MdSec(UUID.randomUUID().toString());                
+        MdSec mdSec = new MdSec(createID());                
         mdSec.setMdWrap(createMdWrap(doc));
-        mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString()); 
+        mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString());         
         if(mdSec.getCREATED() == null){
             try{
                 mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
@@ -338,6 +343,35 @@ public class MetsUtils {
             }
         }
         return schemaPath;
+    }
+    public static String getXsltPath(Element element,String transformToNS){
+        String namespace = element.getNamespaceURI();
+        String xsltPath = null;
+        if(
+            getCrosswalk().containsKey(namespace) &&
+            getCrosswalk().get(namespace).containsKey(transformToNS)
+        ){                        
+            
+            HashMap<String,Object>nsEntry = (HashMap<String,Object>)getCrosswalk().get(namespace).get(transformToNS);
+            String versionable = (String) (nsEntry.containsKey("versionable") ? nsEntry.get("versionable") : "false");
+            HashMap<String,String>versions = (HashMap<String,String>) nsEntry.get("versions");
+            
+            if(versionable.equals("false")){
+                if(versions.containsKey("default")){
+                    xsltPath = versions.get("default");
+                }
+                
+            }else if(nsEntry.containsKey("versionKey")){
+                String versionKey = (String) nsEntry.get("versionKey");
+                String version = element.getAttribute(versionKey);
+                if(versions.containsKey(version)){
+                    xsltPath = versions.get(version);
+                }else if(versions.containsKey("default")){
+                    xsltPath = versions.get("default");
+                }
+            }
+        }
+        return xsltPath;
     }
     public static MdSec.MdWrap createMdWrap(File file) throws ParserConfigurationException, SAXException, IOException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException, Exception{           
         //Valideer xml, en geef W3C-document terug

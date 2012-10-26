@@ -252,11 +252,9 @@
         <entry key="info:lc/xmlns/textMD-v3" value="TEXTMD" />
         <entry key="http://www.vraweb.org/vracore4.htm" value="VRA" />
         <entry key="http://www.loc.gov/mads/" value="MADS" />
-        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="OAI-DC" />
     </util:map>
     
     <util:map id="typeMap" map-class="java.util.HashMap">
-        <entry value="http://www.openarchives.org/OAI/2.0/oai_dc/" key="OAI-DC" />
         <entry value="http://www.loc.gov/MARC21/slim" key="MARC"/>
         <entry value="http://www.loc.gov/mods/v3" key="MODS" />        
         <entry value="info:lc/xmlns/premis-v2" key="PREMIS" />
@@ -293,7 +291,6 @@
                         <entry key="1.8" value="metadata/xsd/mets/mets-1.8.xsd" />
                         <entry key="1.9" value="metadata/xsd/mets/mets-1.9.xsd" />
                         <entry key="1.9.1" value="metadata/xsd/mets/mets-1.9.1.xsd" />
-                        <entry key="default" value="metadata/xsd/mets/mets-1.9.1.xsd" />
                     </util:map>    
                 </entry>            
             </util:map>            
@@ -542,77 +539,22 @@
     <util:map id="crosswalk" map-class="java.util.HashMap">
         <entry key="http://www.loc.gov/MARC21/slim">
             <util:map map-class="java.util.HashMap">
-                <entry key="http://www.loc.gov/mods/v3">
-                    <util:map>                        
-                        <entry key="versionable" value="false" />
-                        <entry key="versions">
-                            <util:map>
-                                <entry key="default" value="metadata/xslt/MARC21slim2MODS3.xsl" />
-                            </util:map>    
-                        </entry>    
-                    </util:map>    
-                </entry>                
-                <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/">
-                    <util:map>
-                        <entry key="versionable" value="false" />
-                        <entry key="versions">
-                            <util:map>
-                                <entry key="default" value="metadata/xslt/marc2oai_dc.xsl" />
-                            </util:map>    
-                        </entry>    
-                    </util:map>    
-                </entry>               
-                <entry key="http://www.loc.gov/mads/">
-                    <util:map>
-                        <entry key="versionable" value="false" />
-                        <entry key="versions">
-                            <util:map>
-                                <entry key="default" value="metadata/xslt/MARC21slim2MADS-2-0.xsl" />
-                            </util:map>    
-                        </entry>    
-                    </util:map>    
-                </entry>
+                <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MARC21slim2MODS3.xsl" />        
+                <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/marc2oai_dc.xsl" />
+                <entry key="http://www.loc.gov/mads/" value="metadata/xslt/MARC21slim2MADS-2-0.xsl" />
             </util:map>                
         </entry>
-        
         <entry key="http://www.loc.gov/mods/v3">
             <util:map map-class="java.util.HashMap">
-                <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/">
-                    <util:map>
-                        <entry key="versionable" value="false" />
-                        <entry key="versions">
-                            <util:map>
-                                <entry key="default" value="metadata/xslt/MODS3-22OAIDC.xsl" />
-                            </util:map>
-                        </entry>
-                    </util:map>
-                </entry>
-                <entry key="http://www.loc.gov/MARC21/slim">
-                    <util:map>
-                        <entry key="versionable" value="false" />
-                        <entry key="versions">
-                            <util:map>
-                                <entry key="default" value="metadata/xslt/MODS2MARC21slim.xsl" />
-                            </util:map>
-                        </entry>
-                    </util:map>
-                </entry>
+                <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/MODS3-22OAIDC.xsl" />
+                <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/MODS2MARC21slim.xsl" />
             </util:map>
-        </entry>
+        </entry>    
         <entry key="http://purl.org/dc/elements/1.1/">
-            <util:map>
-                <entry key="http://www.loc.gov/MARC21/slim">
-                    <util:map>
-                        <entry key="versionable" value="false" />
-                        <entry key="versions">
-                            <util:map>
-                                <entry key="default" value="metadata/xslt/DC2MARC21slim.xsl" />
-                            </util:map>
-                        </entry>
-                    </util:map>
-                </entry>
-            </util:map>            
-        </entry>       
+            <util:map map-class="java.util.HashMap">
+                <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/DC2MARC21slim.xsl" />
+            </util:map>
+        </entry>            
     </util:map>
     
     <!--

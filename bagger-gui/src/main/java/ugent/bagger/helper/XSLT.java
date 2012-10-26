@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  *
@@ -63,7 +64,10 @@ public class XSLT {
     }    
     public static Document transform(Element sourceE,Document xsltD) throws ParserConfigurationException, TransformerConfigurationException, TransformerException{
         Document outDoc = XML.createDocument();
-        transform(new DOMSource(sourceE),new DOMSource(xsltD),new DOMResult(outDoc));
+        Document sourceDoc = XML.createDocument();
+        Node node = sourceDoc.importNode(sourceE,true);
+        sourceDoc.appendChild(node);
+        transform(new DOMSource(sourceDoc),new DOMSource(xsltD),new DOMResult(outDoc));
         return outDoc;
     }
    

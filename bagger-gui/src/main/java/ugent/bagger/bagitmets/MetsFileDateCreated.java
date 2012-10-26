@@ -12,7 +12,10 @@ public enum MetsFileDateCreated {
     }
     @Override
     public String toString(){
-        String translated = Context.getMessage("MetsFileDateCreated."+c);
+        String translated = null;
+        try{
+            translated = Context.getMessage("MetsFileDateCreated."+c);
+        }catch(Exception e){};
         return (translated != null && !translated.isEmpty()) ? translated : c;
     }
 }

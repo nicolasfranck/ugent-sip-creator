@@ -5,6 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.*;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
@@ -20,13 +23,13 @@ final public class EditMdSecPanel extends JPanel{
     private JComponent buttonPanel;    
     private MdSecForm mdSecForm;
     private MdSec mdSec;    
-    private JTextArea textArea;
+    private JTextArea textArea;    
     
     public EditMdSecPanel(final MdSec mdSec){        
         assert(mdSec != null);
         this.mdSec = mdSec;         
         setLayout(new BorderLayout());
-        add(createContentPane());        
+        add(createContentPane());                
     }  
 
     public JTextArea getTextArea() {
@@ -110,6 +113,7 @@ final public class EditMdSecPanel extends JPanel{
             public void actionPerformed(ActionEvent ae) {
                 if(!getMdSecForm().hasErrors()){
                     getMdSecForm().commit();                    
+                    firePropertyChange("save",null,null);
                 }                
             }
         });              
