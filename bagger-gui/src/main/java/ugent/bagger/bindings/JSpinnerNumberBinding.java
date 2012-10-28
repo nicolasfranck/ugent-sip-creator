@@ -36,8 +36,8 @@ public final class JSpinnerNumberBinding extends CustomBinding{
     }
 
     public SpinnerModel getSpinnerModel() {
-        if(spinnerModel == null){            
-            spinnerModel = new SpinnerNumberModel(getMin(),getMin(),getMax(),getStep());        
+        if(spinnerModel == null){             
+            spinnerModel = new SpinnerNumberModel(getInit(),getMin(),getMax(),getStep());        
         }
         return spinnerModel;
     }

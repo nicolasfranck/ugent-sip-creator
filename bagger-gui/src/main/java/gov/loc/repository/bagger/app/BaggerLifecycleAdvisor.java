@@ -1,23 +1,11 @@
 package gov.loc.repository.bagger.app;
 
-import java.awt.Dialog;
-import java.awt.Dimension;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JProgressBar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.application.statusbar.StatusBar;
-import org.springframework.richclient.application.statusbar.support.DefaultStatusBar;
-import org.springframework.richclient.application.statusbar.support.StatusBarProgressMonitor;
-import org.springframework.richclient.core.Message;
-import org.springframework.richclient.progress.ProgressMonitor;
-import ugent.bagger.dialogs.CreateBagsDialog;
-import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.params.CreateBagsParams;
 
 /**
  * Custom application lifecycle implementation that configures the app at well defined points within

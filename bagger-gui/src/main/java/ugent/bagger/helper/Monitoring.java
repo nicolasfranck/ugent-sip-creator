@@ -1,19 +1,11 @@
 package ugent.bagger.helper;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import gov.loc.repository.bagger.ui.BagView;
 import javax.swing.SwingWorker;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.statusbar.support.StatusBarProgressMonitor;
 import org.springframework.richclient.progress.BusyIndicator;
-import org.springframework.richclient.progress.ProgressBarProgressMonitor;
-import org.springframework.richclient.progress.ProgressMonitor;
+import ugent.bagger.wizards.FTPWizard;
+import ugent.bagger.wizards.FTPWizardDialog;
 
 
 
@@ -24,6 +16,10 @@ import org.springframework.richclient.progress.ProgressMonitor;
  */
 public class Monitoring {
     public static void main(String [] args){
+        
+        FTPWizardDialog wizard = new FTPWizardDialog();
+        
+        wizard.showDialog();
         
         
         final StatusBarProgressMonitor monitor = (StatusBarProgressMonitor)SwingUtils.getStatusBar().getProgressMonitor();        
