@@ -4,7 +4,6 @@ import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -108,6 +107,7 @@ public class SwingUtils {
                 }else if(
                     "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue() == SwingWorker.StateValue.DONE
                 ){                    
+                    System.out.println("progress is done!");
                     progressMonitor.close();
                 }
             }
@@ -184,6 +184,7 @@ public class SwingUtils {
                 return l;
             }
         }
+       
         return null;
     }
 }

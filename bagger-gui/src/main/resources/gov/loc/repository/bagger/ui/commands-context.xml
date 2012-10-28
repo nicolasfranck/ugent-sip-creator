@@ -20,6 +20,7 @@
         <value>saveBagAsCommand</value>
          <value>addTagFileCommand</value>
         <value>removeTagFileCommand</value>
+        <value>testCommand</value> 
        </list>
     </property>
   </bean>
@@ -58,6 +59,7 @@
         <value>clearCommand</value>
         <value>saveBagCommand</value>
         <value>saveBagAsCommand</value>     
+        <value>testCommand</value>     
       </list>
     </property>
   </bean>

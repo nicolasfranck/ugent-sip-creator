@@ -3,6 +3,8 @@ package gov.loc.repository.bagger.ui.handlers;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.Progress;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
@@ -34,9 +36,8 @@ public class AddDataHandler extends AbstractAction implements Progress {
         execute();                        
     }
     public void addData(){
-        System.out.println("is event thread: "+(SwingUtilities.isEventDispatchThread() ? "yes":"no"));       
         
-        System.out.println("AddDataHandler::addData() start");
+        
         
         final BagView bagView = BagView.getInstance();
         /*
@@ -90,14 +91,14 @@ public class AddDataHandler extends AbstractAction implements Progress {
             bagView.completeBagHandler.setEnabled(false);
             
             BusyIndicator.clearAt(SwingUtils.getFrame());
+            
+            
         }
         /*
          * Nicolas Franck
          */
         String lastDir = fc.getCurrentDirectory().getAbsolutePath();
-        System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
-        
-        System.out.println("AddDataHandler::addData() end");
+        System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);        
         
     }
     private String getFileNames(File[] files) {

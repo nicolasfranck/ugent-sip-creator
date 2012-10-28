@@ -21,9 +21,11 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.PageComponentContext;
+import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
+import ugent.bagger.helper.Monitoring;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
@@ -707,6 +709,14 @@ public class BagView extends DefaultView {
     	context.register("addDataCommand", addDataExecutor);
     	context.register("saveBagCommand", saveBagExecutor);
     	context.register("saveBagAsCommand", saveBagAsExecutor);
+        
+        context.register("testCommand",new ActionCommandExecutor(){
+            @Override
+            public void execute() {
+                Monitoring.main(new String [] {});
+            }
+            
+        });
     }
 
     /**

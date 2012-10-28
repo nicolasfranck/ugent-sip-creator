@@ -20,10 +20,11 @@ public abstract class LongTask2 extends SwingWorker implements ProgressListener,
             lastNote = activity;
         }        
         int percent = (int)Math.floor( (count / ((float)total))*100);        
+        /*
         if(percent == 100){            
             //indien percent == 100, dan sluit de monitor, en dat willen we zelf doen
             percent = 99;
-        }
+        }*/
         setProgress(percent);       
     }
 }

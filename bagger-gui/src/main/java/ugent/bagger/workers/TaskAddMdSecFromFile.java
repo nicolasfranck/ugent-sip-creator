@@ -3,15 +3,12 @@ package ugent.bagger.workers;
 import com.anearalone.mets.MdSec;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JFileChooser;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
-import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.MetsUtils;
-import ugent.bagger.helper.SwingUtils;
 
 /**
  *

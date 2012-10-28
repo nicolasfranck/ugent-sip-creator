@@ -2,12 +2,19 @@ package gov.loc.repository.bagger.app;
 
 import java.awt.Dialog;
 import java.awt.Dimension;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JProgressBar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.application.statusbar.StatusBar;
+import org.springframework.richclient.application.statusbar.support.DefaultStatusBar;
+import org.springframework.richclient.application.statusbar.support.StatusBarProgressMonitor;
+import org.springframework.richclient.core.Message;
+import org.springframework.richclient.progress.ProgressMonitor;
 import ugent.bagger.dialogs.CreateBagsDialog;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.CreateBagsParams;
@@ -66,12 +73,17 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
         
     }
     @Override
-    public void onWindowOpened(ApplicationWindow window){
+    public void onWindowOpened(ApplicationWindow window){        
         /*
         JDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),new CreateBagsParams());
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         dialog.pack();
         dialog.setVisible(true);*/
+    }
+    @Override
+    public StatusBar getStatusBar(){
+        //Nicolas Franck
+        return new BaggerStatusBar();
     }
             
     
