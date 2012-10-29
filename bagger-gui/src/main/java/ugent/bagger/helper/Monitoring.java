@@ -1,10 +1,8 @@
 package ugent.bagger.helper;
 
-import gov.loc.repository.bagger.ui.BagView;
 import javax.swing.SwingWorker;
 import org.springframework.richclient.application.statusbar.support.StatusBarProgressMonitor;
 import org.springframework.richclient.progress.BusyIndicator;
-import ugent.bagger.wizards.FTPWizard;
 import ugent.bagger.wizards.FTPWizardDialog;
 
 

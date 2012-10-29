@@ -1,5 +1,6 @@
 package ugent.bagger.wizards;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import org.apache.commons.net.ftp.*;
@@ -37,22 +38,7 @@ public class FTPWizard extends AbstractWizard{
     @Override
     protected boolean onFinish() {        
         return true;
-    }
-    protected void listFiles() throws IOException{  
-        for(FTPFile f:ftp.listFiles()){
-            listFiles(f);
-        }
-    }
-    protected void listFiles(FTPFile file) throws IOException{        
-        System.out.println("name: "+file.getName());
-        if(file.isDirectory()){
-            ftp.changeWorkingDirectory(file.getName());
-            for(FTPFile f:ftp.listFiles()){
-                listFiles(f);
-            }
-            ftp.changeToParentDirectory();
-        }
-    }
+    }    
     private void checkConnection(){
         
         System.out.println("starting ftp connection");
@@ -88,7 +74,12 @@ public class FTPWizard extends AbstractWizard{
             ftp.setFileType(FTP.BINARY_FILE_TYPE);
             
             
-            listFiles();
+            for(FTPFile f:ftp.listFiles()){
+                System.out.println("name: "+f.getName());
+                System.out.println("size: "+f.getSize());
+                System.out.println("link: "+f.getLink());
+               
+            }
             
            
             

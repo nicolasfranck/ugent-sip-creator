@@ -44,10 +44,9 @@ public class LazyFileTreeCellRenderer extends DefaultTreeCellRenderer {
         
         
         LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();                
-        System.err.println("node.userObject: "+node.getUserObject());
         
         if(!(node.getUserObject() instanceof FileNode)){
-            System.err.println("node.userObject is not an instance of FileNode");
+        
             renderer.setIcon(directoryIcon);
             return renderer;
         }
@@ -55,14 +54,11 @@ public class LazyFileTreeCellRenderer extends DefaultTreeCellRenderer {
         FileNode fnode = (FileNode)node.getUserObject();        
         File currentFile = fnode.getFile();
 
-        if(fsv.isFileSystemRoot(currentFile)){
-            System.err.println(currentFile+" is filesystem root");
+        if(fsv.isFileSystemRoot(currentFile)){        
             renderer.setIcon(diskIcon);
-        }else if (currentFile.isDirectory()){
-            System.err.println(currentFile+" is directory");
+        }else if (currentFile.isDirectory()){            
             renderer.setIcon(directoryIcon);
-        }else{          
-            System.err.println(currentFile+" is file");
+        }else{                      
             renderer.setIcon(fileIcon);
         }
         return renderer;

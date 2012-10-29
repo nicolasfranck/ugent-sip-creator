@@ -8,7 +8,6 @@ import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MetsHdr.Agent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -35,6 +34,7 @@ public final class AgentTable extends AbstractObjectTable{
                     refresh();
                 }
             }            
+            
         });         
     }
     @Override

@@ -24,7 +24,7 @@ public class FUtils {
     private static final String [] sizeNames = {        
       "TB","GB","MB","KB","B"
     };   
-    private static Comparator defaultFileSorter =  new Comparator<File>(){
+    public static Comparator defaultFileSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1, File f2){
             return f1.getName().compareToIgnoreCase(f2.getName());
@@ -53,8 +53,7 @@ public class FUtils {
        
         return ((long)size)+"B";
     }
-    public static boolean hasChildren(File file){
-        
+    public static boolean hasChildren(File file){        
         return file != null && file.listFiles() != null && file.listFiles().length > 0;
     }
     public static ArrayList<File> listFiles(String fn){
@@ -84,6 +83,9 @@ public class FUtils {
     public static void listFiles(File f,IteratorListener l){
         listFiles(f,l,false);        
     }
+    public static void sort(List<File>files){
+        Collections.sort(files,defaultFileSorter);
+    }
     public static void listFiles(File f,IteratorListener l,boolean sort){
        
         if(!f.isDirectory() || f.listFiles() == null) {
@@ -102,12 +104,14 @@ public class FUtils {
                 else {
                     files.add(sb);
                 }         
-            }
-            Collections.sort(directories,defaultFileSorter);
+            }            
+            //Collections.sort(directories,defaultFileSorter);
+            sort(directories);
             for(File dir:directories){           
                 listFiles(dir,l,sort);
             }
-            Collections.sort(files,defaultFileSorter);
+            //Collections.sort(files,defaultFileSorter);
+            sort(files);
             for(File file:files){            
                 l.execute(file);
             } 
