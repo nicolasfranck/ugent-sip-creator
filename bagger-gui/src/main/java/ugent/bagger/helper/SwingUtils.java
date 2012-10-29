@@ -106,8 +106,7 @@ public class SwingUtils {
                     progressMonitor.setNote(progress+"%");                    
                 }else if(
                     "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue() == SwingWorker.StateValue.DONE
-                ){                    
-                    System.out.println("progress is done!");
+                ){  
                     progressMonitor.close();
                 }
             }

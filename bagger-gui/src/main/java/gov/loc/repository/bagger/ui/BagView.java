@@ -710,13 +710,13 @@ public class BagView extends DefaultView {
     	context.register("saveBagCommand", saveBagExecutor);
     	context.register("saveBagAsCommand", saveBagAsExecutor);
         
-        context.register("testCommand",new ActionCommandExecutor(){
+        /*context.register("testCommand",new ActionCommandExecutor(){
             @Override
             public void execute() {
                 Monitoring.main(new String [] {});
             }
             
-        });
+        });*/
     }
 
     /**

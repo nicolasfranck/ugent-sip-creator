@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.ValidatingFormModel;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
+import org.springframework.richclient.command.ActionCommandExecutor;
 import treetable.FileLazyTreeModel;
 import treetable.FileLazyTreeModel.Mode;
 import treetable.FileNode;
@@ -114,7 +115,36 @@ public class RenamePanel extends JPanel{
                 afiles,
                 new String [] {"name","mimeType"},
                 "fileTable"
-            );            
+            );       
+            fileTable.setDoubleClickHandler(new ActionCommandExecutor(){
+                @Override
+                public void execute() {
+                    AbstractFile afile = fileTable.getSelected();
+                    if(afile == null || afile.isFile() || !afile.isReadable()){
+                        return;
+                    }
+                    File file = (File)afile.getFile();
+                    reloadFileTable(file);
+                    
+                    final LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);
+                    
+                    final TreePath tpath = getFileSystemTree().getSelectionPath();
+                    System.out.println("tpath: "+tpath);
+                    System.out.println("tpath.lastPathComponent: "+tpath.getLastPathComponent());
+                    final TreePath tpath2 = tpath.pathByAddingChild(node);   
+                    System.out.println("tpath2: "+tpath2);
+                    System.out.println("tpath2.lastPathComponent: "+tpath2.getLastPathComponent());
+                    
+                    SwingUtilities.invokeLater(new Runnable(){
+                        @Override
+                        public void run() {                            
+                            getFileSystemTree().scrollPathToVisible(tpath2);                            
+                            getFileSystemTree().setSelectionPath(tpath2);
+                        }                    
+                    });
+                }
+                
+            });
             final JTable table = (JTable) fileTable.getControl();
             table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
                 @Override
@@ -181,8 +211,7 @@ public class RenamePanel extends JPanel{
             //sommige systemen hebben meerdere roots (C:/, D:/)
             for(File file:File.listRoots()){
                 
-                if(!fsv.isFileSystemRoot(file)){  
-                    System.out.println("root: "+file+" is NOT a file system root");
+                if(!fsv.isFileSystemRoot(file)){                      
                     continue;
                 }
                 
