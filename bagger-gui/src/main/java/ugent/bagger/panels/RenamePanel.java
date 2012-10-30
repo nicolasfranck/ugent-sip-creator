@@ -83,21 +83,12 @@ public class RenamePanel extends JPanel{
     private ArrayList<File>selectedFiles = new ArrayList<File>();
 
     public static ArrayList<AbstractFile>getList(File file){
+        
         ArrayList<File>files = new ArrayList<File>();                        
-        ArrayList<File>directories = new ArrayList<File>();                                    
-        File [] list = file.listFiles();
-        list = list != null ? list : new File [] {};
-
-        for(File f:list){
-            if(f.isDirectory()){                           
-                directories.add(f);
-            }else{                                        
-                files.add(f);
-            }
-        }
-        FUtils.sort(files);
-        FUtils.sort(directories);
-
+        ArrayList<File>directories = new ArrayList<File>();
+        
+        FUtils.arrangeDirectoryEntries(file,files,directories);
+        
         final ArrayList<AbstractFile>afiles = new ArrayList<AbstractFile>();
 
         for(File f:directories){                
@@ -106,7 +97,8 @@ public class RenamePanel extends JPanel{
         for(File f:files){                
             afiles.add(new FileAbstractFile(f));
         }
-        return afiles;
+        return afiles;        
+        
     }
     public AbstractFileTable getFileTable() {
         if(fileTable == null){                        

@@ -5,7 +5,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -18,7 +17,6 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.FileSelectBinding;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.CreateBagsParams;
-import ugent.rename.ErrorAction;
 
 /**
  *

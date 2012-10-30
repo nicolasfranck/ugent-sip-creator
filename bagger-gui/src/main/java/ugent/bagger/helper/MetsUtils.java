@@ -17,6 +17,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -28,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.MdRefException;
@@ -50,6 +52,8 @@ public class MetsUtils {
     private static ArrayList<String>forbiddenNamespaces = null;
     private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
     private static Log logger = LogFactory.getLog(MetsUtils.class);
+    public static final String NAMESPACE_DC = "http://purl.org/dc/elements/1.1/";
+    public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/"; 
 
     public static HashMap<String, String> getXsltMap() {
         if(xsltMap == null){
@@ -379,4 +383,82 @@ public class MetsUtils {
         mdWrap.setLabel(file.getName());
         return mdWrap;
     }        
+    public static void findDCMdSec(Mets mets,ArrayList<MdSec>dcMdSecs,ArrayList<MdSec>dcCandidateMdSecs){
+        for(int i = 0;i< mets.getDmdSec().size();i++){            
+            MdSec mdSec = mets.getDmdSec().get(i);            
+            MdSec.MdWrap mdWrap = mdSec.getMdWrap();
+            if(mdWrap == null){
+                continue;
+            }            
+            Element element = mdWrap.getXmlData().get(0);           
+            
+            if(element == null || element.getOwnerDocument() == null){
+                continue;
+            }            
+            
+            String ns = element.getNamespaceURI();                        
+            Document doc = element.getOwnerDocument();            
+            ns = (ns != null) ? ns : doc.getDocumentElement().getNamespaceURI();            
+            if(ns == null){
+                continue;
+            }                        
+            //dc gevonden
+            if(ns.compareTo(NAMESPACE_DC) == 0 || ns.compareTo(NAMESPACE_OAI_DC) == 0){                            
+                dcMdSecs.add(mdSec);                            
+            }            
+            //crosswalk naar dc gevonden
+            else if(
+                getCrosswalk().containsKey(ns) &&                     
+                (getCrosswalk().get(ns).containsKey(NAMESPACE_DC) || getCrosswalk().get(ns).containsKey(NAMESPACE_OAI_DC))
+            ){
+                dcCandidateMdSecs.add(mdSec);                                  
+            } 
+        }
+    }
+    public static void findDC(Mets mets,ArrayList<Element>dcElements,ArrayList<Element>dcCandidates){        
+        ArrayList<MdSec>dcMdSecs = new ArrayList<MdSec>();
+        ArrayList<MdSec>dcCandidateMdSecs = new ArrayList<MdSec>();        
+        findDCMdSec(mets,dcMdSecs,dcCandidateMdSecs);        
+        for(MdSec dcMdSec:dcMdSecs){
+            dcElements.add(dcMdSec.getMdWrap().getXmlData().get(0));
+        }        
+        for(MdSec dcCandidateMdSec:dcCandidateMdSecs){
+            dcCandidates.add(dcCandidateMdSec.getMdWrap().getXmlData().get(0));
+        }
+    }
+    
+    //genereert Dublin Core Document indien geen dergelijke records aanwezig zijn én er een crosswalk bestaat
+    public static Document generateDCDoc(Mets mets) throws Exception{
+        ArrayList<Element>dcElements = new ArrayList<Element>();
+        ArrayList<Element>dcCandidates = new ArrayList<Element>();
+        findDC(mets,dcElements,dcCandidates);        
+        return generateDCDoc(dcElements,dcCandidates);        
+    }
+    public static Document generateDCDoc(ArrayList<Element>dcElements,ArrayList<Element>dcCandidates) throws Exception{
+        Document dcDoc = null;
+        System.out.println("dcElements.size="+dcElements.size()+", dcCandidates.size="+dcCandidates.size());
+        if(dcElements.size() <= 0 && dcCandidates.size() > 0){
+            Element sourceElement = dcCandidates.get(0);
+            String xsltPath = MetsUtils.getXsltPath(sourceElement,MetsUtils.NAMESPACE_DC);
+            xsltPath = xsltPath != null ? xsltPath : MetsUtils.getXsltPath(sourceElement,MetsUtils.NAMESPACE_OAI_DC);                
+            if(xsltPath == null){
+                throw new Exception("no crosswalk found");
+            }                
+            URL xsltURL = Context.getResource(xsltPath);                
+            Document xsltDoc = XML.XMLToDocument(xsltURL);                
+            dcDoc = XSLT.transform(sourceElement,xsltDoc);
+        }
+        return dcDoc;
+    }
+    public static byte [] DCToBagInfo(Document doc) throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException{
+        ByteArrayOutputStream baginfoOut = new ByteArrayOutputStream();                
+        URL xsltURL = Context.getResource(
+            getBaginfoMap().get(
+                doc.getDocumentElement().getNamespaceURI()
+            )
+        );                
+        Document xsltDoc = XML.XMLToDocument(xsltURL);                
+        XSLT.transform(doc,xsltDoc,baginfoOut);                
+        return baginfoOut.toByteArray();
+    }    
 }

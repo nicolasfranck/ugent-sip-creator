@@ -25,7 +25,7 @@ import ugent.bagger.forms.MdWrapForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.tables.DmdSecPropertiesTable;
-import ugent.bagger.tables.MdSecPropertiesTable;
+import ugent.bagger.tables.EditMdSecPropertiesTable;
 import ugent.bagger.workers.TaskAddMdSecFromFile;
 
 /**
@@ -34,7 +34,7 @@ import ugent.bagger.workers.TaskAddMdSecFromFile;
  */
 public class MdSecPropertiesPanel extends JPanel{
     private JComponent buttonPanel;
-    private MdSecPropertiesTable dmdSecPropertiesTable;         
+    private EditMdSecPropertiesTable editDmdSecPropertiesTable;         
     private ArrayList<MdSec>data; 
     private MdSecForm mdSecForm;
     private MdWrapForm mdWrapForm;
@@ -80,7 +80,7 @@ public class MdSecPropertiesPanel extends JPanel{
         this.mdSecForm = mdSecForm;
     }    
     public void reset(final ArrayList<MdSec>data){                       
-        getDmdSecPropertiesTable().reset(data);
+        getEditDmdSecPropertiesTable().reset(data);
         this.data = data;        
     }
     public JComponent getButtonPanel() {
@@ -92,21 +92,21 @@ public class MdSecPropertiesPanel extends JPanel{
     public void setButtonPanel(JPanel buttonPanel) {
         this.buttonPanel = buttonPanel;
     }        
-    public MdSecPropertiesTable getDmdSecPropertiesTable() {
-        if(dmdSecPropertiesTable == null){
-            dmdSecPropertiesTable = createMdSecPropertiesTable();
+    public EditMdSecPropertiesTable getEditDmdSecPropertiesTable() {
+        if(editDmdSecPropertiesTable == null){
+            editDmdSecPropertiesTable = createMdSecPropertiesTable();
         }
-        return dmdSecPropertiesTable;
+        return editDmdSecPropertiesTable;
     }
     public DmdSecPropertiesTable createMdSecPropertiesTable(){                        
         return new DmdSecPropertiesTable(data,new String [] {"namespace","label","MDTYPE","OTHERMDTYPE"},"mdSecTable");
     }
-    public void setMdSecPropertiesTable(DmdSecPropertiesTable dmdSecTable) {
-        this.dmdSecPropertiesTable = dmdSecTable;
+    public void setMdSecPropertiesTable(EditMdSecPropertiesTable editDmdSecPropertiesTable) {
+        this.editDmdSecPropertiesTable = editDmdSecPropertiesTable;
     }  
     protected JComponent createContentPane() {
         JPanel panel = new JPanel(new BorderLayout());        
-        panel.add(new JScrollPane(getDmdSecPropertiesTable().getControl()));        
+        panel.add(new JScrollPane(getEditDmdSecPropertiesTable().getControl()));        
         panel.add(getButtonPanel(),BorderLayout.NORTH);        
         return panel;
     }
@@ -135,8 +135,8 @@ public class MdSecPropertiesPanel extends JPanel{
         removeButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                getDmdSecPropertiesTable().deleteSelectedMdSec();
-                getDmdSecPropertiesTable().refresh();
+                getEditDmdSecPropertiesTable().deleteSelectedMdSec();
+                getEditDmdSecPropertiesTable().refresh();
             }        
         });
         addButton.addActionListener(new ActionListener(){
@@ -191,12 +191,12 @@ public class MdSecPropertiesPanel extends JPanel{
                 }else if(pce.getPropertyName().equals("log")){
                     ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){
-                    getDmdSecPropertiesTable().addMdSec((MdSec)pce.getNewValue());
+                    getEditDmdSecPropertiesTable().addMdSec((MdSec)pce.getNewValue());
                 }else if(
                     pce.getPropertyName().equals("report") && 
                     pce.getNewValue().toString().compareTo("success") == 0
                 ){
-                    getDmdSecPropertiesTable().refresh();
+                    getEditDmdSecPropertiesTable().refresh();
                 }
             }
         };

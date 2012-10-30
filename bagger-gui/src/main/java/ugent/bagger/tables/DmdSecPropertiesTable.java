@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author nicolas
  */
-public class DmdSecPropertiesTable extends MdSecPropertiesTable{
+public class DmdSecPropertiesTable extends EditMdSecPropertiesTable{
     public DmdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(data,cols,id);
     }

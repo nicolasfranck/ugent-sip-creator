@@ -21,6 +21,7 @@
          <value>addTagFileCommand</value>
         <value>removeTagFileCommand</value>
         <!--<value>testCommand</value>-->
+        <value>MdSecSourceCommand</value>        
        </list>
     </property>
   </bean>
@@ -60,6 +61,7 @@
         <value>saveBagCommand</value>
         <value>saveBagAsCommand</value>     
         <!--<value>testCommand</value>-->
+        <value>MdSecSourceCommand</value>
       </list>
     </property>
   </bean>

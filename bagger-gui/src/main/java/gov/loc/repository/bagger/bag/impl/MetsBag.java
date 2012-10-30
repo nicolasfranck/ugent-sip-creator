@@ -62,19 +62,7 @@ public class MetsBag extends DefaultBag{
             try{
                 removeBagFile("mets.xml");  
             }catch(Exception e){}
-            addTagFile(metsFile);            
-            
-            //manually add checksum
-            //Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());
-            //Manifest tagManifest = bag.getTagManifest(ta);
-                      
-            
-            /*
-            String checksumMets = MessageDigestHelper.generateFixity(metsFile,ta);
-            tagManifest.remove("mets.xml");
-            tagManifest.put("mets.xml",checksumMets);                
-            System.out.println("setting checksum of mets.xml: "+checksumMets);*/
-            
+            addTagFile(metsFile);
             isBuildPayloadManifest(false);
             isBuildTagManifest(true);
             generateManifestFiles();

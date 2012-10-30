@@ -21,11 +21,9 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.PageComponentContext;
-import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
-import ugent.bagger.helper.Monitoring;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
@@ -60,10 +58,9 @@ public class BagView extends DefaultView {
     public OpenBagHandler openBagHandler = new OpenBagHandler();
     public OpenExecutor openExecutor = new OpenExecutor();
     
-    //Nicolas Franck: ondersteunt enkel één bag in place per keer
-    
-    public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
-    public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();
+    //Nicolas Franck: ondersteunt enkel één bag in place per keer    
+    //public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
+    //public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();
     
     //Nicolas Franck: creëer meerdere bags in place of door copy
     public CreateBagsHandler createBagsHandler = new CreateBagsHandler();
@@ -717,6 +714,12 @@ public class BagView extends DefaultView {
             }
             
         });*/
+        
+        context.register("MdSecSourceCommand",new MdSecSourceExecutor(){
+            {
+                this.setEnabled(true);
+            }
+        });
     }
 
     /**

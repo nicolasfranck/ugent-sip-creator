@@ -22,11 +22,14 @@ package gov.loc.repository.bagger.ui;
 
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
+import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.BagFactory.Version;
+import gov.loc.repository.bagit.utilities.namevalue.NameValueReader.NameValue;
+import gov.loc.repository.bagit.utilities.namevalue.impl.NameValueReaderImpl;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.FileSystemWriter;
 import java.awt.BorderLayout;
@@ -37,7 +40,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.*;
@@ -53,12 +58,17 @@ import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.util.GuiStandardUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.helper.XML;
+import ugent.bagger.helper.XSLT;
 import ugent.bagger.workers.LongTask2;
 
 public final class NewBagsDialog extends JDialog implements ActionListener {
@@ -80,6 +90,9 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     private ActionCommand cancelCommand;    
     private JComboBox metsFileDateCreatedCombobox;
     private ArrayList<String> metadataPaths = new ArrayList<String>();
+    private boolean keepMetadata = true;
+    private boolean addDC = false;
+    private boolean writeToBagInfo = false;
     
     protected void parseMetadataPaths(String text){        
         String [] data = text.replaceAll("\\s","").split(",");
@@ -312,6 +325,53 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             public void changedUpdate(DocumentEvent de) {                
             }            
         });
+        
+        //keep metadata?
+        row++;
+        JLabel keepMetadataLabel = new JLabel(Context.getMessage("NewBagsDialog.keepMetadata.label"));  
+        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        panel.add(keepMetadataLabel, glbc);
+        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);         
+        final JCheckBox keepMetadataCheckBox = new JCheckBox();
+        keepMetadataCheckBox.setSelected(keepMetadata);                                
+        panel.add(keepMetadataCheckBox,glbc);
+        keepMetadataCheckBox.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                keepMetadata = keepMetadataCheckBox.isSelected();
+            }            
+        }); 
+        
+        //add DC?
+        row++;
+        JLabel addDCLabel = new JLabel(Context.getMessage("NewBagsDialog.addDC.label"));  
+        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        panel.add(addDCLabel, glbc);
+        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);         
+        final JCheckBox addDCCheckBox = new JCheckBox();
+        addDCCheckBox.setSelected(addDC);                                
+        panel.add(addDCCheckBox,glbc);
+        addDCCheckBox.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                addDC = addDCCheckBox.isSelected();
+            }            
+        }); 
+        //write to baginfo
+        row++;
+        JLabel writeToBagInfoLabel = new JLabel(Context.getMessage("NewBagsDialog.writeToBagInfo.label"));  
+        glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
+        panel.add(writeToBagInfoLabel, glbc);
+        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);         
+        final JCheckBox writeToBagInfoCheckBox = new JCheckBox();
+        writeToBagInfoCheckBox.setSelected(writeToBagInfo);                                
+        panel.add(writeToBagInfoCheckBox,glbc);
+        writeToBagInfoCheckBox.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                writeToBagInfo = writeToBagInfoCheckBox.isSelected();
+            }            
+        }); 
         
         //bagInPlace
         row++;
@@ -589,7 +649,11 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         public void actionPerformed(ActionEvent e) {            
             
             if(bagInPlace){
-                NewBagsInPlaceWorker worker = new NewBagsInPlaceWorker(getSelectedDirectories(),(String)bagVersionList.getSelectedItem(),(String)profileList.getSelectedItem());
+                NewBagsInPlaceWorker worker = new NewBagsInPlaceWorker(
+                    getSelectedDirectories(),
+                    (String)bagVersionList.getSelectedItem(),
+                    (String)profileList.getSelectedItem()
+                );
                 NewBagsDialog.this.dispose();                        
                 SwingUtils.monitor(
                     worker,
@@ -602,7 +666,12 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     Context.getMessage("NewBagsDialog.outputDir.browse.title")
                 );
             }else{
-                NewBagsWorker worker = new NewBagsWorker(getSelectedDirectories(),getOutputDir(),(String)bagVersionList.getSelectedItem(),(String)profileList.getSelectedItem());
+                NewBagsWorker worker = new NewBagsWorker(
+                    getSelectedDirectories(),
+                    getOutputDir(),
+                    (String)bagVersionList.getSelectedItem(),
+                    (String)profileList.getSelectedItem()
+                );
                 NewBagsDialog.this.dispose();
                 SwingUtils.monitor(
                     worker,
@@ -691,8 +760,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     
                     //zoek metadata bestanden (todo: haal die uit payload lijst)
                     for(String metadataPath:getMetadataPaths()){
-                        File metadataFile = new File(file,metadataPath);                   
-                    
+                        File metadataFile = new File(file,metadataPath);                                       
                         if(metadataFile.exists() && metadataFile.isFile()){                            
                             try{
                                 if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
@@ -705,21 +773,74 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 log.debug(e);
                             }
                         }
+                    }                    
+                    
+                    //voeg dc toe indien nodig, en mogelijk
+                    if(addDC){
+                        try{
+                            Document dcDoc = MetsUtils.generateDCDoc(mets);
+                            if(dcDoc != null){
+                                mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
+                            }
+                        }catch(Exception e){
+                            e.printStackTrace();                            
+                        }                        
                     }
+                    
+                    //schrijf naar bag-info
+                    if(writeToBagInfo){
+                        try{
+                            ArrayList<Element>dcElements = new ArrayList<Element>();
+                            ArrayList<Element>dcCandidates = new ArrayList<Element>();
+                            MetsUtils.findDC(mets,dcElements,dcCandidates);
+                            
+                            Document dcDoc = null;
+                            if(dcElements.size() > 0){
+                                Document doc = XML.createDocument();
+                                Node node = doc.importNode(dcElements.get(0),true);
+                                doc.appendChild(node);
+                                dcDoc = doc;
+                            }else{
+                                dcDoc = MetsUtils.generateDCDoc(dcElements,dcCandidates);
+                            }
+                            
+                            if(dcDoc != null){                                
+                                byte [] baginfo = MetsUtils.DCToBagInfo(dcDoc);
+                                ByteArrayInputStream baginfoIn = new ByteArrayInputStream(MetsUtils.DCToBagInfo(dcDoc));
+                                NameValueReaderImpl reader = new NameValueReaderImpl(
+                                    "UTF-8",baginfoIn,"bagInfoTxt"
+                                );
+                                while(reader.hasNext()){
+                                    NameValue pair = reader.next();
+                                    BagInfoField field = new BagInfoField();
+                                    field.setName(pair.getName());
+                                    field.setLabel(pair.getName());
+                                    field.setValue(pair.getValue());
+                                    field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
+                                    bag.addField(field);
+                                }
+                            }                            
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    
+                    
+                    String [] ignoreFiles = keepMetadata ? new String [] {} : getMetadataPaths().toArray(new String [] {});                    
                     
                     if(bag.isAddKeepFilesToEmptyFolders()){                    
                         bagView.createBagsHandler.createPreBagAddKeepFilesToEmptyFolders(
                             file,
                             version,
                             profile,
-                            getMetadataPaths().toArray(new String [] {})
+                            ignoreFiles
                         );					
                     }else{							
                         bagView.createBagsHandler.createPreBag(
                             file, 
                             version,
                             profile,
-                            getMetadataPaths().toArray(new String [] {})
+                            ignoreFiles
                         );
                     }
                     int percent = (int)Math.floor( ((i+1) / ((float)getSelectedDirectories().size()))*100);                                                                        
@@ -815,8 +936,61 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 log.debug(e);
                             }
                             //haal uit payload lijst
-                            String path = "data/"+metadataPath;                            
-                            bag.removeBagFile(path);
+                            if(!keepMetadata){
+                                String path = "data/"+metadataPath;                            
+                                bag.removeBagFile(path);
+                            }                            
+                        }
+                    }
+                    
+                    //voeg dc toe indien nodig, en mogelijk
+                    if(addDC){
+                        try{
+                            Document dcDoc = MetsUtils.generateDCDoc(mets);
+                            if(dcDoc != null){
+                                mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
+                            }                           
+                        }catch(Exception e){
+                            e.printStackTrace();                            
+                        }                        
+                    }
+                    
+                    //schrijf naar bag-info
+                    if(writeToBagInfo){
+                        try{
+                            ArrayList<Element>dcElements = new ArrayList<Element>();
+                            ArrayList<Element>dcCandidates = new ArrayList<Element>();
+                            MetsUtils.findDC(mets,dcElements,dcCandidates);
+                            
+                            Document dcDoc = null;
+                            if(dcElements.size() > 0){
+                                Document doc = XML.createDocument();
+                                Node node = doc.importNode(dcElements.get(0),true);
+                                doc.appendChild(node);
+                                dcDoc = doc;
+                            }else{
+                                dcDoc = MetsUtils.generateDCDoc(dcElements,dcCandidates);
+                            }
+                            
+                            if(dcDoc != null){                               
+                                
+                                byte [] baginfo = MetsUtils.DCToBagInfo(dcDoc);
+                                ByteArrayInputStream baginfoIn = new ByteArrayInputStream(MetsUtils.DCToBagInfo(dcDoc));
+                                NameValueReaderImpl reader = new NameValueReaderImpl(
+                                    "UTF-8",baginfoIn,"bagInfoTxt"
+                                );                          
+                                while(reader.hasNext()){
+                                    NameValue pair = reader.next();                            
+                                    BagInfoField field = new BagInfoField();
+                                    field.setName(pair.getName());
+                                    field.setLabel(pair.getName());
+                                    field.setValue(pair.getValue());
+                                    field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
+                                    bag.addField(field);
+                                }
+                            }                            
+                        }catch(Exception e){
+                            e.printStackTrace();
                         }
                     }
                     

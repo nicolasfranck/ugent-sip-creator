@@ -3,7 +3,6 @@ package ugent.bagger.bagitmets;
 import com.anearalone.mets.FileSec;
 import com.anearalone.mets.LocatorElement;
 import com.anearalone.mets.MdSec;
-import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.SharedEnums;
 import com.anearalone.mets.StructMap;
@@ -16,10 +15,6 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
-import gov.loc.repository.bagit.utilities.namevalue.NameValueReader;
-import gov.loc.repository.bagit.utilities.namevalue.impl.NameValueReaderImpl;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -49,9 +44,7 @@ import ugent.bagger.helper.XSLT;
 public class DefaultBagItMets extends BagItMets{
     
     private static final Log log = LogFactory.getLog(DefaultBagItMets.class);
-    public static final String NAMESPACE_DC = "http://purl.org/dc/elements/1.1/";
-    public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/";
-    public static final String XSLT_DC2BAGINFO = "http://www.openarchives.org/OAI/2.0/oai_dc/";
+       
     
     @Override
     public Mets onOpenBag(Bag bag) {
@@ -96,78 +89,26 @@ public class DefaultBagItMets extends BagItMets{
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);
         
         
-        //metadata: controleer of er een Dublin Core record aan toegevoegd is        
-        HashMap<String,HashMap<String,Object>> crosswalk = MetsUtils.getCrosswalk();
-        
-        System.out.println("iterating dmdSec");
-        Document dcDoc = null;
-        
-        
+        //metadata: controleer of er een Dublin Core record aan toegevoegd is       
+        /*
+        HashMap<String,HashMap<String,Object>> crosswalk = MetsUtils.getCrosswalk();        
+        Document dcDoc = null;                
         ArrayList<Element>dcElements = new ArrayList<Element>();
-        ArrayList<Element>dcCandidates = new ArrayList<Element>();
-        
-        for(int i = 0;i< mets.getDmdSec().size();i++){
-            System.out.println("mdSec "+i);
-            MdSec mdSec = mets.getDmdSec().get(i);
-            
-            MdWrap mdWrap = mdSec.getMdWrap();
-            if(mdWrap == null){
-                continue;
-            }
-            System.out.println("mdSec "+i+", mdWrap found");
-            
-            Element element = mdWrap.getXmlData().get(0);           
-            
-            if(element == null || element.getOwnerDocument() == null){
-                continue;
-            }            
-            System.out.println("mdSec "+i+", element found");
-            
-            String ns = element.getNamespaceURI();            
-            System.out.println("mdSec "+i+", ns: "+ns);
-            Document doc = element.getOwnerDocument();            
-            ns = (ns != null) ? ns : doc.getDocumentElement().getNamespaceURI();            
-            if(ns == null){
-                continue;
-            }            
-            System.out.println("mdSec "+i+", ns not empty");
-            //dc gevonden
-            if(ns.compareTo(NAMESPACE_DC) == 0 || ns.compareTo(NAMESPACE_OAI_DC) == 0){            
-                System.out.println("mdSec "+i+", dcFound!");
-                dcElements.add(element);                            
-            }            
-            //crosswalk naar dc gevonden
-            else if(
-                crosswalk.containsKey(ns) &&                     
-                (crosswalk.get(ns).containsKey(NAMESPACE_DC) || crosswalk.get(ns).containsKey(NAMESPACE_OAI_DC))
-            ){
-                dcCandidates.add(element);                                  
-            } 
-        }
-        System.out.println("num dcElements: "+dcElements.size()+", num dcCandidates: "+dcCandidates.size());
+        ArrayList<Element>dcCandidates = new ArrayList<Element>();        
+        MetsUtils.findDC(mets,dcElements,dcCandidates);                
         //voeg DC toe indien nodig
-        if(dcElements.size() <= 0 && dcCandidates.size() > 0){
-            
-            Element element = dcCandidates.get(0);
-            
+        if(dcElements.size() <= 0 && dcCandidates.size() > 0){            
+            Element element = dcCandidates.get(0);            
             String xsltPath = null;
             try{
-                xsltPath = MetsUtils.getXsltPath(element,NAMESPACE_DC);
-                xsltPath = xsltPath != null ? xsltPath : MetsUtils.getXsltPath(element,NAMESPACE_OAI_DC);
-                
+                xsltPath = MetsUtils.getXsltPath(element,MetsUtils.NAMESPACE_DC);
+                xsltPath = xsltPath != null ? xsltPath : MetsUtils.getXsltPath(element,MetsUtils.NAMESPACE_OAI_DC);                
                 if(xsltPath == null){
                     throw new Exception("no crosswalk found");
-                }
-                
-                URL xsltURL = Context.getResource(xsltPath);
-                System.out.println("xsltURL: "+xsltURL);
-                Document xsltDoc = XML.XMLToDocument(xsltURL);
-                System.out.println("xsltDoc created");
-                System.out.println("Doc output:");
-                XML.ElementToXML(element,System.out);
+                }                
+                URL xsltURL = Context.getResource(xsltPath);                
+                Document xsltDoc = XML.XMLToDocument(xsltURL);                
                 Document outDoc = XSLT.transform(element,xsltDoc);
-                System.out.println("print to outputstream");
-                XML.DocumentToXML(outDoc,System.out,true);
                 mets.getDmdSec().add(MetsUtils.createMdSec(outDoc));
                 dcDoc = outDoc;                                        
             }catch(Exception e){
@@ -183,9 +124,10 @@ public class DefaultBagItMets extends BagItMets{
             }catch(Exception e){
                 e.printStackTrace();
             }
-        }
+        }*/
         
-        //schrijf naar bag-info.txt
+        //schrijf naar bag-info.txt => irritant!
+        /*
         if(dcDoc != null){
             System.out.println("writing doc to bag-info");
             try{                
@@ -210,7 +152,7 @@ public class DefaultBagItMets extends BagItMets{
                 log.error(e);
                 e.printStackTrace();
             }
-        }
+        }*/
         
         
 

@@ -21,6 +21,7 @@ import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.helper.XSLT;
+import ugent.bagger.tables.EditMdSecPropertiesTable;
 import ugent.bagger.tables.MdSecPropertiesTable;
 
 /**
@@ -43,7 +44,7 @@ public final class XMLCrosswalkDialog extends JDialog{
         
         JPanel mainPanel = new JPanel();        
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
-        final MdSecPropertiesTable mdSecPropertiesTable = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getDmdSecPropertiesTable();
+        final EditMdSecPropertiesTable mdSecPropertiesTable = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();
         
         //buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

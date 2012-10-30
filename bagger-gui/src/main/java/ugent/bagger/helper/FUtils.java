@@ -86,6 +86,18 @@ public class FUtils {
     public static void sort(List<File>files){
         Collections.sort(files,defaultFileSorter);
     }
+    public static void arrangeDirectoryEntries(File dir,ArrayList<File>files,ArrayList<File>directories){
+        for(File file:dir.listFiles()){
+            if(file.isDirectory()) {
+                directories.add(file);
+            }
+            else {
+                files.add(file);
+            }         
+        }            
+        sort(directories);
+        sort(files);
+    }
     public static void listFiles(File f,IteratorListener l,boolean sort){
        
         if(!f.isDirectory() || f.listFiles() == null) {
@@ -96,8 +108,18 @@ public class FUtils {
 
             ArrayList<File>files = new ArrayList<File>();
             ArrayList<File>directories = new ArrayList<File>();
+            
+            arrangeDirectoryEntries(f,files,directories);
+            
+            for(File dir:directories){           
+                listFiles(dir,l,sort);
+            }
+            
+            for(File file:files){            
+                l.execute(file);
+            }
 
-            for(File sb:f.listFiles()){
+            /*for(File sb:f.listFiles()){
                 if(sb.isDirectory()) {
                     directories.add(sb);
                 }
@@ -114,7 +136,7 @@ public class FUtils {
             sort(files);
             for(File file:files){            
                 l.execute(file);
-            } 
+            }*/ 
             
         }else{
             
@@ -329,11 +351,31 @@ public class FUtils {
         return node;
     }
     public static void main(String [] args){
-        ArrayList<File>nonWritable = getBadDirs(new File("/home/nicolas"));        
+        /*ArrayList<File>nonWritable = getBadDirs(new File("/home/nicolas"));        
         System.out.println("not writable: ");
         for(File file:nonWritable){
             System.out.println("\t"+file);
+        }*/
+        ArrayList<File>files = new ArrayList<File>();
+        ArrayList<File>directories = new ArrayList<File>();
+        arrangeDirectoryEntries(new File("/home/nicolas/Catmandu"), files, directories);
+        System.out.println("directories:");
+        for(File dir:directories){
+            System.out.println("\t"+dir.getAbsolutePath());
         }
+        System.out.println("files:");
+        for(File file:files){
+            System.out.println("\t"+file.getAbsolutePath());
+        }
+        
+        listFiles(new File("/home/nicolas/Catmandu"),new IteratorListener(){
+            @Override
+            public void execute(Object o) {
+                File file = (File)o;
+                System.out.println(file);
+            }        
+        },true);
+        
     }
     public static void recurseTree(DefaultMutableTreeNode node){
         recurseTree(node,0);

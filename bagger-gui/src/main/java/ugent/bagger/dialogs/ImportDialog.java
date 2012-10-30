@@ -17,7 +17,7 @@ import javax.swing.*;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.importers.ImportType;
-import ugent.bagger.tables.MdSecPropertiesTable;
+import ugent.bagger.tables.EditMdSecPropertiesTable;
 import ugent.bagger.workers.TaskAddMdSecFromImport2;
 
 /**
@@ -39,7 +39,7 @@ public final class ImportDialog extends JDialog{
         JPanel mainPanel = new JPanel(); 
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
         final BagView bagView = BagView.getInstance();
-        final MdSecPropertiesTable mdSecPropertiesTable = bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getDmdSecPropertiesTable();
+        final EditMdSecPropertiesTable mdSecPropertiesTable = bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();
         
         //buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -152,7 +152,7 @@ public final class ImportDialog extends JDialog{
             @Override
             public void propertyChange(PropertyChangeEvent pce) {                
                 final BagView bagView = BagView.getInstance();
-                final MdSecPropertiesTable dmdSecPropertiesTable = bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getDmdSecPropertiesTable();
+                final EditMdSecPropertiesTable dmdSecPropertiesTable = bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();
                 if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){                    
                     ApplicationContextUtil.addConsoleMessage("adding new mdSec batch");
                 }else if(pce.getPropertyName().equals("log")){

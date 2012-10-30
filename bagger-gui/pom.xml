@@ -232,6 +232,21 @@
       <artifactId>sword2-client</artifactId>
       <version>0.9</version>
     </dependency>
+    <dependency>
+      <groupId>com.googlecode.jcsv</groupId>
+      <artifactId>jcsv</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.5</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.supercsv</groupId>
+      <artifactId>super-csv</artifactId>
+      <version>2.0.0-beta-1</version>
+    </dependency>
   </dependencies>
 
   <repositories>
