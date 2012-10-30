@@ -9,11 +9,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.binding.support.CustomBinding;
 
@@ -37,8 +33,7 @@ public final class FileSelectBinding extends CustomBinding{
 
     public JTextField getField() {
         if(field == null){
-            field = new JTextField(15);
-            //field.setEditable(false);            
+            field = new JTextField(15);              
             
             field.addMouseListener(new MouseAdapter(){
                 @Override
