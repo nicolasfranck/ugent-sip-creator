@@ -31,7 +31,8 @@ public class Velocity1 {
             ve.setProperty((String)entry.getKey(),(String)entry.getValue());
         }
         
-        ve.init();
+        ve.init();        
+        
         /*  next, get the Template  */                
         Template t = ve.getTemplate("/home/nicolas/helloworld.vm");
         /*  create a context and add data */

@@ -3,6 +3,7 @@ package ugent.bagger.dialogs;
 import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import ugent.bagger.panels.CSVPanel;
@@ -15,6 +16,7 @@ public class CSVDialog extends JDialog{
     public CSVDialog(Frame parentFrame){
         super(parentFrame,true);        
         JPanel panel = new CSVPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         setContentPane(panel);
         PropertyChangeListener l = new PropertyChangeListener() {
             @Override
@@ -24,6 +26,6 @@ public class CSVDialog extends JDialog{
                 }
             }
         };
-        panel.addPropertyChangeListener(l);        
+        panel.addPropertyChangeListener(l);                
     }
 }

@@ -1,6 +1,7 @@
 package ugent.bagger.params;
 
 import java.io.File;
+import java.util.ArrayList;
 import org.supercsv.prefs.CsvPreference;
 
 /**
@@ -13,14 +14,14 @@ public class CSVParseParams {
     private char quoteChar = (char) CsvPreference.STANDARD_PREFERENCE.getQuoteChar();
     private String endOfLineSymbols = CsvPreference.STANDARD_PREFERENCE.getEndOfLineSymbols();
     private boolean surroundingSpacesNeedQuotes = CsvPreference.STANDARD_PREFERENCE.isSurroundingSpacesNeedQuotes();
-    private File file;
+    private ArrayList<File> files;
 
-    public File getFile() {
-        return file;
+    public ArrayList<File> getFiles() {
+        return files;
     }
-    public void setFile(File file) {
-        this.file = file;
-    }  
+    public void setFiles(ArrayList<File> files) {
+        this.files = files;
+    }
     public char getDelimiterChar() {
         return delimiterChar;
     }

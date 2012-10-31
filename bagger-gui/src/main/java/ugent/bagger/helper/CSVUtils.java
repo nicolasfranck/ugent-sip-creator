@@ -40,9 +40,10 @@ public class CSVUtils {
         int i = 0;
         Map<String,String>map;        
         while((map = mapReader.read(cols)) != null){
-            if(i > num){
+            if(num > 0 && i > num){
                 break;
             }
+            i++;
             listener.execute(map);            
         }        
     }

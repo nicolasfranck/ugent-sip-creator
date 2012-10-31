@@ -11,6 +11,8 @@ import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.CSVParseParams;
 
+
+
 /**
  *
  * @author nicolas
@@ -35,7 +37,7 @@ public class CSVParseParamsForm extends AbstractForm{
         );
         FileSelectBinding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
-            "file",
+            "files",
             fileChooser,
             "%s",
             SwingUtils.getFrame()
@@ -44,12 +46,16 @@ public class CSVParseParamsForm extends AbstractForm{
         builder.row();
         
         String [] fields = {
-            "delimiterChar","quoteChar","endOfLineSymbols","surroundingSpacesNeedQuotes"
-        };
+            "delimiterChar","quoteChar"
+        };        
+        
         for(String field:fields){
             builder.add(field);
             builder.row();
         }
+        
+        builder.add("surroundingSpacesNeedQuotes");
+        builder.row();
         return builder.getForm();
     }
 }

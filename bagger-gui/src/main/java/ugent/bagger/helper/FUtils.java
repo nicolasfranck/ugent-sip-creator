@@ -87,7 +87,9 @@ public class FUtils {
         Collections.sort(files,defaultFileSorter);
     }
     public static void arrangeDirectoryEntries(File dir,ArrayList<File>files,ArrayList<File>directories){
-        for(File file:dir.listFiles()){
+        File [] list = dir.listFiles();
+        list = list != null ? list: new File [] {};                
+        for(File file:list){
             if(file.isDirectory()) {
                 directories.add(file);
             }

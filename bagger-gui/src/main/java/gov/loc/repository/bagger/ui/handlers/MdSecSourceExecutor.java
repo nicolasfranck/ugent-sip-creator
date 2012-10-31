@@ -18,10 +18,9 @@ public class MdSecSourceExecutor extends AbstractActionCommandExecutor{
     public void execute(){ 
         BagView bagView = BagView.getInstance();
         Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
-        JDialog dialog = new MdSecSourceDialog(SwingUtils.getFrame(),mets);
-        dialog.setPreferredSize(new Dimension(500,500));
-        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);            
-        dialog.setVisible(true);
-        //dialog.pack();
+        JDialog dialog = new MdSecSourceDialog(SwingUtils.getFrame(),mets);        
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);                    
+        dialog.pack();
+        dialog.setVisible(true);        
     }
 }

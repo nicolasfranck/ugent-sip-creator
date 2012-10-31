@@ -2,6 +2,7 @@ package ugent.bagger.tables;
 
 import com.anearalone.mets.MdSec;
 import java.util.ArrayList;
+import javax.swing.JTable;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import ugent.bagger.properties.MdSecProperties;
@@ -20,6 +21,10 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
             props.add(new MdSecProperties(m));
         }
         return props;
+    }
+    @Override
+    protected void configureTable(JTable table) {
+        table.setFillsViewportHeight(true);
     }
     public MdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(id,cols);         

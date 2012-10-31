@@ -3,6 +3,7 @@ package ugent.bagger.tables;
 import ca.odell.glazedlists.EventList;
 import java.util.ArrayList;
 import javax.swing.JComponent;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import ugent.bagger.params.AbstractFile;
@@ -19,6 +20,10 @@ public final class AbstractFileTable extends AbstractObjectTable{
         super(id,cols);                 
         setData(data);
     }            
+    @Override
+    protected void configureTable(JTable table) {
+        table.setFillsViewportHeight(true);
+    }
     @Override
     protected Object[] getDefaultInitialData(){               
        return getData().toArray();

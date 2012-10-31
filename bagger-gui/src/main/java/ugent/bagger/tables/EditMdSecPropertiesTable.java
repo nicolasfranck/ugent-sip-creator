@@ -59,6 +59,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     }    
     @Override
     protected void configureTable(JTable table){          
+        super.configureTable(table);
         //replace default action on enter
         table.getActionMap().put("selectNextRowCell",new AbstractAction(){
             @Override

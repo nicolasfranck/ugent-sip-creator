@@ -3,6 +3,7 @@ package gov.loc.repository.bagger.domain;
 import com.anearalone.mets.MdSec;
 import org.springframework.rules.Rules;
 import org.springframework.rules.support.DefaultRulesSource;
+import ugent.bagger.params.CSVParseParams;
 
 
 public class BaggerValidationRulesSource extends DefaultRulesSource {
@@ -12,11 +13,18 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
     public BaggerValidationRulesSource() {
         super();
         
-        //ugent bagger       
+        //ugent bagger      
         
         Rules mdWrapRules = new Rules(MdSec.MdWrap.class);
         mdWrapRules.add(required("ID"));
         addRules(mdWrapRules);
+        
+        Rules csvParseParamsRules = new Rules(CSVParseParams.class);
+        for(String key:new String []{"quoteChar","delimiterChar","surroundingSpacesNeedQuotes","file"}){
+            csvParseParamsRules.add(required(key));
+        }
+        
+        addRules(csvParseParamsRules);
     }  
     //Nicolas Franck: deze attributen worden nergens gebruikt!
     /*

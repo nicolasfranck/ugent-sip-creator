@@ -12,6 +12,7 @@ public class CSV2 {
     
     public static void main(String [] args){
         try{
+           
             CSVUtils.readCSV(new File("/home/nicolas/adressenall.csv"),new IteratorListener(){
                 @Override
                 public void execute(Object o) {

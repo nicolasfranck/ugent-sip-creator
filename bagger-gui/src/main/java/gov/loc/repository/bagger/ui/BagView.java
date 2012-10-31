@@ -720,6 +720,11 @@ public class BagView extends DefaultView {
                 this.setEnabled(true);
             }
         });
+        context.register("CSVCommand",new CSVExecutor(){
+            {
+                this.setEnabled(true);
+            }
+        });
     }
 
     /**

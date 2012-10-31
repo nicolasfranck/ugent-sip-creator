@@ -118,14 +118,9 @@ public class RenamePanel extends JPanel{
                     File file = (File)afile.getFile();
                     reloadFileTable(file);
                     
-                    final LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);
-                    
-                    final TreePath tpath = getFileSystemTree().getSelectionPath();
-                    System.out.println("tpath: "+tpath);
-                    System.out.println("tpath.lastPathComponent: "+tpath.getLastPathComponent());
-                    final TreePath tpath2 = tpath.pathByAddingChild(node);   
-                    System.out.println("tpath2: "+tpath2);
-                    System.out.println("tpath2.lastPathComponent: "+tpath2.getLastPathComponent());
+                    final LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);                    
+                    final TreePath tpath = getFileSystemTree().getSelectionPath();                    
+                    final TreePath tpath2 = tpath.pathByAddingChild(node);                       
                     
                     SwingUtilities.invokeLater(new Runnable(){
                         @Override
@@ -779,8 +774,6 @@ public class RenamePanel extends JPanel{
                 logger.debug(e.getMessage());
             }
             
-            selectedFiles.clear();
-            
             return null;
         }
     }
@@ -891,7 +884,7 @@ public class RenamePanel extends JPanel{
             }catch(Exception e){
                 logger.debug(e.getMessage());
             }
-            selectedFiles.clear();
+            
             return null;
         }
     }

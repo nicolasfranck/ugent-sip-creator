@@ -1,6 +1,7 @@
 package ugent.bagger.dialogs;
 
 import com.anearalone.mets.Mets;
+import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -15,6 +16,7 @@ import ugent.bagger.panels.MdSecSourcePanel;
 public class MdSecSourceDialog extends JDialog{
     public MdSecSourceDialog(Frame parentFrame,Mets mets){
         super(parentFrame,true);        
+        setLayout(new BorderLayout());
         JPanel panel = new MdSecSourcePanel(mets);
         setContentPane(panel);
         PropertyChangeListener l = new PropertyChangeListener() {
@@ -25,6 +27,6 @@ public class MdSecSourceDialog extends JDialog{
                 }
             }
         };
-        panel.addPropertyChangeListener(l);        
+        panel.addPropertyChangeListener(l);                
     }
 }

@@ -25,7 +25,19 @@ public final class BagInfoForm extends AbstractForm /*implements FocusListener*/
     private HashMap<String, BagInfoField> fieldMap;
     private JComponent form;
     private AddFieldPanel addFieldPannel;
-	
+    
+    //Nicolas Franck
+    private LoadFieldsPanel loadFieldsPanel;
+
+    public LoadFieldsPanel getLoadFieldsPanel() {
+        if(loadFieldsPanel == null){
+            loadFieldsPanel = new LoadFieldsPanel();
+        }
+        return loadFieldsPanel;
+    }
+    public void setLoadFieldsPanel(LoadFieldsPanel loadFieldsPanel) {
+        this.loadFieldsPanel = loadFieldsPanel;
+    }
     public BagInfoForm(FormModel formModel,HashMap<String, BagInfoField> fieldMap, boolean enabled) {
     	super(formModel,INFO_FORM_PAGE);        
         setFieldMap(fieldMap);
@@ -63,17 +75,24 @@ public final class BagInfoForm extends AbstractForm /*implements FocusListener*/
     }    
     @Override
     protected JComponent createFormControl() {
-    	// add field panel
+    	
     	JPanel contentPanel = new JPanel(new GridBagLayout());
     	int row = 0;
     	int col = 0;
-    	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);    	
-    	contentPanel.add(getAddFieldPannel(),gbc);    	
+        GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);    	
+        
+        //Nicolas Franck: loadFieldsPanel
+        contentPanel.add(getLoadFieldsPanel(),gbc);
+        
+        // add field panel    	
+        gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
+    	contentPanel.add(getAddFieldPannel(),gbc);   	
     	gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
     	contentPanel.add(new JSeparator(),gbc);    	
     	// bag-info input form    	
     	gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
     	contentPanel.add(getForm(),gbc);
+        
     	return contentPanel;
     }
     protected JComponent createFormFields() {
@@ -142,13 +161,13 @@ public final class BagInfoForm extends AbstractForm /*implements FocusListener*/
                             if(field.getValue() != null) {
                                 ((JComboBox) lcomp).setSelectedItem(field.getValue().trim());
                             }
-                            if (rowCount == 1) {
+                            if(rowCount == 1) {
                                 focusField = lcomp;
                             }
                             break;                            
                     }
                 }
-                if (focusField != null) {
+                if(focusField != null){
                     focusField.requestFocus();
                 }
             }

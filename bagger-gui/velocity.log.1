@@ -1,0 +1,1019 @@
+2012-10-30 16:00:42,193 - Log4JLogChute initialized using file 'velocity.log'
+2012-10-30 16:00:42,194 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-10-30 16:00:42,194 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-10-30 16:00:42,194 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-10-30 16:00:42,194 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:116)
+	at ugent.bagger.helper.Velocity1.main(Velocity1.java:20)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	... 10 more
+2012-10-30 16:00:42,197 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:00:42,197 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:00:42,200 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-10-30 16:00:42,203 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-10-30 16:00:42,205 - Do unicode file recognition:  false
+2012-10-30 16:00:42,205 - FileResourceLoader : adding path '.'
+2012-10-30 16:00:42,224 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-10-30 16:00:42,226 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-10-30 16:00:42,228 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-10-30 16:00:42,230 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-10-30 16:00:42,232 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-10-30 16:00:42,233 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-10-30 16:00:42,263 - Created '20' parsers.
+2012-10-30 16:00:42,269 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-10-30 16:00:42,269 - Velocimacro : Default library not found.
+2012-10-30 16:00:42,269 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-10-30 16:00:42,270 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-10-30 16:00:42,270 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-10-30 16:00:42,270 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-10-30 16:00:42,270 - ResourceManager : unable to find resource '/home/nicolas/helloworld.vm' in any resource loader.
+2012-10-30 16:09:06,538 - Log4JLogChute initialized using file 'velocity.log'
+2012-10-30 16:09:06,539 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-10-30 16:09:06,539 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-10-30 16:09:06,539 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-10-30 16:09:06,539 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:116)
+	at ugent.bagger.helper.Velocity1.main(Velocity1.java:21)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	... 10 more
+2012-10-30 16:09:06,541 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:09:06,541 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:09:06,543 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-10-30 16:09:06,543 - ResourceManager : No configuration information for resource loader named 'class'. Skipping.
+2012-10-30 16:09:06,543 - ResourceManager : No configuration information for resource loader named 'jar'. Skipping.
+2012-10-30 16:09:06,546 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-10-30 16:09:06,547 - Do unicode file recognition:  false
+2012-10-30 16:09:06,547 - FileResourceLoader : adding path '.'
+2012-10-30 16:09:06,555 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-10-30 16:09:06,556 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-10-30 16:09:06,563 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-10-30 16:09:06,565 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-10-30 16:09:06,569 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-10-30 16:09:06,570 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-10-30 16:09:06,597 - Created '20' parsers.
+2012-10-30 16:09:06,602 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-10-30 16:09:06,603 - Velocimacro : Default library not found.
+2012-10-30 16:09:06,603 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-10-30 16:09:06,603 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-10-30 16:09:06,603 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-10-30 16:09:06,603 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-10-30 16:09:06,604 - ResourceManager : unable to find resource '/home/nicolas/helloworld.vm' in any resource loader.
+2012-10-30 16:15:43,011 - Log4JLogChute initialized using file 'velocity.log'
+2012-10-30 16:15:43,012 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-10-30 16:15:43,012 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-10-30 16:15:43,012 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-10-30 16:15:43,013 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:116)
+	at ugent.bagger.helper.Velocity1.main(Velocity1.java:34)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	... 10 more
+2012-10-30 16:15:43,015 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:15:43,015 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:15:43,017 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-10-30 16:15:43,020 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-10-30 16:15:43,021 - Do unicode file recognition:  false
+2012-10-30 16:15:43,021 - FileResourceLoader : adding path '/'
+2012-10-30 16:15:43,022 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-10-30 16:15:43,029 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.JarResourceLoader
+2012-10-30 16:15:43,029 - JarResourceLoader # of paths : 2
+2012-10-30 16:15:43,029 - JarResourceLoader : trying to load "jar:file:/myjarplace/myjar.jar"
+2012-10-30 16:15:43,030 - JarHolder: attempting to connect to jar:file:/myjarplace/myjar.jar!/
+2012-10-30 16:15:43,031 - JarHolder: error establishing connection to JAR at "jar:file:/myjarplace/myjar.jar!/"
+java.util.zip.ZipException: error in opening zip file
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:127)
+	at java.util.jar.JarFile.<init>(JarFile.java:135)
+	at java.util.jar.JarFile.<init>(JarFile.java:72)
+	at sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:72)
+	at sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:48)
+	at sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:55)
+	at sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:104)
+	at org.apache.velocity.runtime.resource.loader.JarHolder.init(JarHolder.java:82)
+	at org.apache.velocity.runtime.resource.loader.JarHolder.<init>(JarHolder.java:58)
+	at org.apache.velocity.runtime.resource.loader.JarResourceLoader.loadJar(JarResourceLoader.java:152)
+	at org.apache.velocity.runtime.resource.loader.JarResourceLoader.init(JarResourceLoader.java:118)
+	at org.apache.velocity.runtime.resource.ResourceManagerImpl.initialize(ResourceManagerImpl.java:147)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeResourceManager(RuntimeInstance.java:594)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:241)
+	at org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:116)
+	at ugent.bagger.helper.Velocity1.main(Velocity1.java:34)
+2012-10-30 16:15:43,031 - JarHolder: initialized JAR: jar:file:/myjarplace/myjar.jar!/
+2012-10-30 16:16:08,717 - Log4JLogChute initialized using file 'velocity.log'
+2012-10-30 16:16:08,717 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-10-30 16:16:08,717 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-10-30 16:16:08,717 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-10-30 16:16:08,718 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:116)
+	at ugent.bagger.helper.Velocity1.main(Velocity1.java:34)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	... 10 more
+2012-10-30 16:16:08,719 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:16:08,719 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-30 16:16:08,721 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-10-30 16:16:08,724 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-10-30 16:16:08,725 - Do unicode file recognition:  false
+2012-10-30 16:16:08,725 - FileResourceLoader : adding path '/'
+2012-10-30 16:16:08,726 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-10-30 16:16:08,734 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-10-30 16:16:08,736 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-10-30 16:16:08,737 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-10-30 16:16:08,738 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-10-30 16:16:08,739 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-10-30 16:16:08,740 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-10-30 16:16:08,762 - Created '20' parsers.
+2012-10-30 16:16:08,769 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-10-30 16:16:08,770 - Velocimacro : Default library not found.
+2012-10-30 16:16:08,770 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-10-30 16:16:08,770 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-10-30 16:16:08,770 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-10-30 16:16:08,770 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-10-30 16:16:08,776 - ResourceManager : found /home/nicolas/helloworld.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-10-31 10:22:04,854 - Log4JLogChute initialized using file 'velocity.log'
+2012-10-31 10:22:04,855 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-10-31 10:22:04,855 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-10-31 10:22:04,855 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-10-31 10:22:04,856 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:116)
+	at ugent.bagger.helper.CSV3.main(CSV3.java:36)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	... 10 more
+2012-10-31 10:22:04,857 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-31 10:22:04,857 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-31 10:22:04,859 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-10-31 10:22:04,873 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-10-31 10:22:04,882 - Do unicode file recognition:  false
+2012-10-31 10:22:04,882 - FileResourceLoader : adding path '/'
+2012-10-31 10:22:04,882 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-10-31 10:22:04,891 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-10-31 10:22:04,892 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-10-31 10:22:04,905 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-10-31 10:22:04,906 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-10-31 10:22:04,907 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-10-31 10:22:04,908 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-10-31 10:22:04,930 - Created '20' parsers.
+2012-10-31 10:22:04,937 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-10-31 10:22:04,937 - Velocimacro : Default library not found.
+2012-10-31 10:22:04,937 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-10-31 10:22:04,937 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-10-31 10:22:04,938 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-10-31 10:22:04,938 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-10-31 10:22:04,951 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,951 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,951 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,951 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,951 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,952 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,952 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,952 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,952 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,952 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,952 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,953 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,953 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,953 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,953 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,954 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,954 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,954 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,954 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,954 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,954 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,956 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,956 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,956 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,956 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,956 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,956 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,957 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,957 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,957 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,957 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,957 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,957 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,958 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,958 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,958 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,958 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,958 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,958 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,959 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,959 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,959 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,959 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,959 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,959 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,960 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,960 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,960 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,960 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,960 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,960 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,960 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,961 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,962 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,962 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,962 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,962 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,962 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,962 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,963 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,963 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,963 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,963 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,963 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,963 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,964 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,964 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,964 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,964 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,964 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,964 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,965 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,965 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,965 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,965 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,965 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,965 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,966 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,966 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,966 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,966 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,966 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,966 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,967 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,967 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,967 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,967 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,967 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,967 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,968 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,968 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,968 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,968 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,968 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,968 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,969 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,969 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,969 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,969 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,969 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,969 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,970 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,970 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,970 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,970 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,970 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,971 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,971 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,971 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,971 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,971 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,971 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,972 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,972 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,972 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,972 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,972 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,973 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,973 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,973 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,973 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,973 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,974 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,974 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,974 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,974 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,974 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,974 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,975 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,975 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,975 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,975 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,975 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,975 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,976 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,976 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,976 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,976 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,976 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,976 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,977 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,977 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,977 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,977 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,977 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,977 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,978 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,978 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,978 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,978 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,978 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,978 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,979 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,979 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,979 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,979 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,979 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,980 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,980 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,980 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,980 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,980 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,981 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,981 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,981 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,981 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,981 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,982 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,982 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,982 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,982 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,982 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,982 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,983 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,983 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,983 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,983 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,983 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,983 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,984 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,984 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,984 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,984 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,984 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,984 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,985 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,985 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,985 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,985 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,985 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,985 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,986 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,986 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,986 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,986 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,986 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,986 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,987 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,987 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,987 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,987 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,987 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,988 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,988 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,988 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,988 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,988 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,988 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,989 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,989 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,989 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,989 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,990 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,990 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,990 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,990 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,990 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,990 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,991 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,991 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,991 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,991 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,991 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,991 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,992 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,992 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,992 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,992 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,992 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,992 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,993 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,993 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,993 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,993 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,993 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,993 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,994 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,994 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,994 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,994 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,994 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,994 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,995 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,995 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,995 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,995 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,995 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,996 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,996 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,996 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,996 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,996 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,997 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,997 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,997 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,997 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,997 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,997 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,998 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,998 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,998 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,998 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,998 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,999 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,999 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,999 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:04,999 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:04,999 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:04,999 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,000 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,000 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,000 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,000 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,000 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,000 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,001 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,001 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,001 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,001 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,001 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,001 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,002 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,002 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,002 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,002 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,002 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,002 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,003 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,003 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,003 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,003 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,003 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,003 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,004 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,004 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,004 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,004 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,005 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,005 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,005 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,005 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,005 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,005 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,006 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,006 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,006 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,006 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,006 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,007 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,007 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,007 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,007 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,007 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,007 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,008 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,008 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,008 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,008 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,008 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,008 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,009 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,009 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,009 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,009 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,009 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,009 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,010 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,010 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,010 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,010 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,010 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,010 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,011 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,011 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,011 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,011 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,011 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,011 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,012 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,013 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,013 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,013 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,013 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,013 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,013 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,013 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,014 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,014 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,014 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,014 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,014 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,014 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,015 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,015 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,015 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,015 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,015 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,015 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,015 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,016 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,017 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,017 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,017 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,017 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,017 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,017 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,018 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,019 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,019 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,019 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,019 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,019 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,019 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,019 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,020 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,020 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,020 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,020 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,020 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,020 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,021 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,022 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,022 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,022 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,022 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,022 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,022 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,023 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,024 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,024 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,024 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,024 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,024 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,024 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,025 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,026 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,026 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,026 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,026 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,026 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,026 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,027 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,028 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,028 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,028 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,028 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,028 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,028 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,029 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,030 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,030 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,030 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,030 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,030 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,030 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,031 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,032 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,032 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,032 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,032 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,032 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,032 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,033 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,034 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,034 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,034 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,034 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,034 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,034 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,034 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,035 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,036 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,036 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,036 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,036 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,036 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,036 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,041 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,041 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,041 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,042 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,043 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,043 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,043 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,043 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,043 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,043 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,043 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,044 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,045 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,046 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,046 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,046 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,046 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,046 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,046 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,047 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,048 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,048 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,048 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,048 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,048 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,048 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,049 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,050 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,050 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,050 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,050 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,050 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,050 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,050 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,051 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,052 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,053 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,053 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,053 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,053 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,053 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,053 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,053 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,054 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,055 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,056 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,056 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,056 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,056 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,056 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,056 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,056 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,057 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,058 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,059 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,059 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,059 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,059 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,059 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,059 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,059 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,060 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,061 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,061 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,061 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,061 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,061 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,061 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,061 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,062 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,063 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,064 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,064 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,064 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,064 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,064 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,064 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,065 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,065 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,065 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:05,065 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:05,065 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:05,065 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,569 - Log4JLogChute initialized using file 'velocity.log'
+2012-10-31 10:22:44,570 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-10-31 10:22:44,570 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-10-31 10:22:44,570 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-10-31 10:22:44,570 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:247)
+	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
+	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
+	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
+	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
+	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
+	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
+	at org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:116)
+	at ugent.bagger.helper.CSV3.main(CSV3.java:36)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	... 10 more
+2012-10-31 10:22:44,572 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-31 10:22:44,572 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-10-31 10:22:44,574 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-10-31 10:22:44,577 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-10-31 10:22:44,580 - Do unicode file recognition:  false
+2012-10-31 10:22:44,581 - FileResourceLoader : adding path '/'
+2012-10-31 10:22:44,581 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-10-31 10:22:44,591 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-10-31 10:22:44,593 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-10-31 10:22:44,594 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-10-31 10:22:44,595 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-10-31 10:22:44,596 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-10-31 10:22:44,597 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-10-31 10:22:44,626 - Created '20' parsers.
+2012-10-31 10:22:44,631 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-10-31 10:22:44,631 - Velocimacro : Default library not found.
+2012-10-31 10:22:44,631 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-10-31 10:22:44,631 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-10-31 10:22:44,632 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-10-31 10:22:44,632 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-10-31 10:22:44,643 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,643 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,643 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,644 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,644 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,644 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,644 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,644 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,644 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,645 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,645 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,645 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,645 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,645 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,646 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,646 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,646 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,646 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,647 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,647 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,647 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.
+2012-10-31 10:22:44,647 - Null reference [template 'LOG', line 1, column 1] : $ID cannot be resolved.
+2012-10-31 10:22:44,647 - Null reference [template 'LOG', line 1, column 5] : $NAAM cannot be resolved.
+2012-10-31 10:22:44,647 - Null reference [template 'LOG', line 1, column 11] : $DEPT cannot be resolved.

@@ -1,6 +1,5 @@
 package ugent.bagger.wizards;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import org.apache.commons.net.ftp.*;
@@ -19,7 +18,7 @@ public class FTPWizard extends AbstractWizard{
     FTPParamsForm ftpParamsForm = new FTPParamsForm(ftpParams);
     FTPClient ftp;
     public FTPWizard(){       
-       
+        
         addForm(ftpParamsForm);        
         addWizardListener(new WizardListener(){
             @Override
@@ -77,10 +76,8 @@ public class FTPWizard extends AbstractWizard{
             for(FTPFile f:ftp.listFiles()){
                 System.out.println("name: "+f.getName());
                 System.out.println("size: "+f.getSize());
-                System.out.println("link: "+f.getLink());
-               
-            }
-            
+                System.out.println("link: "+f.getLink());               
+            }          
            
             
         }catch(SocketException e){
