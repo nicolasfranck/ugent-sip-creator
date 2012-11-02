@@ -15,6 +15,17 @@ public class CSVParseParams {
     private String endOfLineSymbols = CsvPreference.STANDARD_PREFERENCE.getEndOfLineSymbols();
     private boolean surroundingSpacesNeedQuotes = CsvPreference.STANDARD_PREFERENCE.isSurroundingSpacesNeedQuotes();
     private ArrayList<File> files;
+    
+    private File testFile;
+
+    public File getTestFile() {
+        return testFile;
+    }
+
+    public void setTestFile(File testFile) {
+        this.testFile = testFile;
+    }    
+    
 
     public ArrayList<File> getFiles() {
         return files;

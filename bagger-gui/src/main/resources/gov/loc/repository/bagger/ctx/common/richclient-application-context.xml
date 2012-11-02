@@ -137,7 +137,7 @@
       </property>
       <property name="3DEnabled" value="false"/>
       <property name="highContrastFocusColorsEnabled" value="false" />
-    </bean>
+    </bean>  
     
     <bean id="conversionService" class="ugent.bagger.converters.BaggerConversionService" />
 
@@ -652,5 +652,13 @@
     
     <util:map map-class="java.util.HashMap" id="velocity">
         <entry key="properties" value="velocity.properties" />
+    </util:map>
+    <util:map map-class="java.util.HashMap" id="velocityTemplates">
+        <entry key="ead-simple">
+            <util:map map-class="java.util.HashMap">
+                <entry key="name" value="EAD simple" />
+                <entry key="path" value="velocity/ead-simple.vm" />
+            </util:map>    
+        </entry>
     </util:map>
 </beans>

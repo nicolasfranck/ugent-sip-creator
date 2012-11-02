@@ -12,7 +12,7 @@ public class CSVWizardDialog extends WizardDialog{
         this(new CSVWizard());
     }
     public CSVWizardDialog(Wizard wizard){
-        super(wizard);
-        setTitle(getApplicationName());               
-    }
+        super(wizard);                
+        setTitle(getApplicationName());          
+    }        
 }

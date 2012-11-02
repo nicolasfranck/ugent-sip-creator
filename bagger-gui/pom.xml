@@ -225,16 +225,6 @@
       <type>pom</type>
     </dependency>
     <dependency>
-      <groupId>com.googlecode.foresite-toolkit</groupId>
-      <artifactId>foresite</artifactId>
-      <version>0.9</version>
-    </dependency>
-    <dependency>
-      <groupId>org.swordapp</groupId>
-      <artifactId>sword2-client</artifactId>
-      <version>0.9</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.5</version>

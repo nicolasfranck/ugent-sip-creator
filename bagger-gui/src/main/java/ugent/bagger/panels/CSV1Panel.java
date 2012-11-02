@@ -8,11 +8,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.util.HashMap;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvListReader;
 import org.supercsv.prefs.CsvPreference;
@@ -24,24 +22,46 @@ import ugent.bagger.params.CSVParseParams;
  *
  * @author nicolas
  */
-public class CSVPanel extends JPanel{
+public class CSV1Panel extends JPanel{
     private CSVParseParams csvParseParams;
     private CSVParseParamsForm csvParseParamsForm;
     private JButton okButton;
-    private JButton testButton;
-    private JButton cancelButton;
+    private JButton testButton;   
     private JScrollPane scrollerCSVTable;
+    private JTable csvTable;
     
-    public CSVPanel(){
+    public CSV1Panel(){
         init();
+    }
+
+    public JScrollPane getScrollerCSVTable() {
+        if(scrollerCSVTable == null){
+            scrollerCSVTable = new JScrollPane(getCsvTable());     
+            scrollerCSVTable.setPreferredSize(new Dimension(500,300));
+        }
+        return scrollerCSVTable;
+    }
+    public void setScrollerCSVTable(JScrollPane scrollerCSVTable) {
+        this.scrollerCSVTable = scrollerCSVTable;
+    }
+
+    public JTable getCsvTable() {
+        if(csvTable == null){
+            csvTable = new JTable();            
+            csvTable.setFillsViewportHeight(true);
+        }
+        return csvTable;
+    }
+
+    public void setCsvTable(JTable csvTable) {
+        this.csvTable = csvTable;
     }
     
     public void init(){
         setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
         add(getCsvParseParamsForm().getControl());
-        add(createButtonPanel());
-        scrollerCSVTable = new JScrollPane();
-        add(scrollerCSVTable);
+        add(createButtonPanel());       
+        add(getScrollerCSVTable());
     }
      
     public CSVParseParams getCsvParseParams() {
@@ -55,23 +75,15 @@ public class CSVPanel extends JPanel{
     }
     public CSVParseParamsForm getCsvParseParamsForm() {
         if(csvParseParamsForm == null){
-            csvParseParamsForm = new CSVParseParamsForm(getCsvParseParams());                                    
+            csvParseParamsForm = new CSVParseParamsForm(getCsvParseParams());             
         }
         return csvParseParamsForm;
     }
-    public void reloadCSVTable(){
-        System.out.println("has errors: "+getCsvParseParamsForm().hasErrors());
+    public void reloadCSVTable(){        
        
         if(!getCsvParseParamsForm().hasErrors()){
             getCsvParseParamsForm().commit();
-            remove(scrollerCSVTable);
-            JTable table = createCSVTable();
-            table.setPreferredSize(new Dimension(500,300));
-            scrollerCSVTable = new JScrollPane(table);            
-            table.setFillsViewportHeight(true);
-            add(scrollerCSVTable);
-            revalidate();
-            repaint();
+            reloadDataCSVTable();
         }
     }
     public void setCsvParseParamsForm(CSVParseParamsForm csvParseParamsForm) {
@@ -79,25 +91,21 @@ public class CSVPanel extends JPanel{
     }   
     public JPanel createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        okButton = new JButton("ok");
-        cancelButton = new JButton("cancel");
-        testButton = new JButton("test");
-        panel.add(okButton);
-        panel.add(cancelButton);
+        okButton = new JButton("ok");       
+        testButton = new JButton("test");        
+        panel.add(okButton);       
         panel.add(testButton);
         
         okButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                CSVPanel.this.firePropertyChange("ok",null,null);
+                CSV1Panel.this.firePropertyChange("ok",null,null);
             }        
-        });
-        cancelButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                CSVPanel.this.firePropertyChange("cancel",null,null);
-            }        
-        });
+        });  
+        
+        testButton.addActionListener(
+                getCsvParseParamsForm().getCommitCommand().getActionAdapter()
+        );
         testButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -106,11 +114,11 @@ public class CSVPanel extends JPanel{
         });
         return panel;
     }
-    public JTable createCSVTable(){        
-        JTable table = null;
+    public void reloadDataCSVTable(){        
+        
         try{
             File file = getCsvParseParams().getFiles().get(0);
-            System.out.println("file to parse: "+file);
+            
             CsvPreference csvPreference = CSVUtils.createCSVPreference(
                 getCsvParseParams().getQuoteChar(),
                 getCsvParseParams().getDelimiterChar(),
@@ -142,21 +150,27 @@ public class CSVPanel extends JPanel{
                     row.addAll(new ArrayList<String>(cols.length - row.size()));                    
                 }                
                 rows[i] = row.toArray(new String [] {});
-            }
+            }                                 
             
-            for(Object [] row:rows){
-                for(Object col:row){
-                    System.out.println(col+" ");
+            DefaultTableModel tableModel = (DefaultTableModel) getCsvTable().getModel();
+            tableModel.getDataVector().clear();
+            tableModel.setDataVector(rows,cols);            
+            tableModel.fireTableDataChanged();
+            
+            HashMap<String,String>record = new HashMap<String,String>();
+            if(rows.length > 0){                
+                for(int i = 0;i<cols.length;i++){
+                    record.put(
+                        (String) cols[i],
+                        (String) rows[0][i]
+                    );
                 }
-                System.out.println();
             }
+            firePropertyChange("record",null,record);
             
-            table = new JTable(rows,cols);
         }catch(Exception e){
-            e.printStackTrace();
-            table = new JTable();
-        }
-        
-        return table;        
+            e.printStackTrace();            
+        }        
+              
     }    
 }
