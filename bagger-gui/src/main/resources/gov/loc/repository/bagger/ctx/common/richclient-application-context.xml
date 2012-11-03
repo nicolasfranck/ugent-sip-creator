@@ -660,5 +660,11 @@
                 <entry key="path" value="velocity/ead-simple.vm" />
             </util:map>    
         </entry>
+        <entry key="oai-dc-simple">
+            <util:map map-class="java.util.HashMap">
+                <entry key="name" value="OAI DC simple" />
+                <entry key="path" value="velocity/oai-dc-simple.vm" />
+            </util:map>    
+        </entry>
     </util:map>
 </beans>

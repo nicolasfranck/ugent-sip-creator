@@ -103,9 +103,7 @@ public class CSV1Panel extends JPanel{
             }        
         });  
         
-        testButton.addActionListener(
-                getCsvParseParamsForm().getCommitCommand().getActionAdapter()
-        );
+        
         testButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
