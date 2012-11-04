@@ -6,13 +6,13 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
+import ugent.bagger.workers.Loggable;
 import ugent.bagger.workers.LongTask2;
 
-public class CompleteBagHandler2 extends Handler {
+public class CompleteBagHandler2 extends Handler implements Loggable {
     private static final long serialVersionUID = 1L;   
     private String messages;
 
@@ -24,7 +24,10 @@ public class CompleteBagHandler2 extends Handler {
     public void actionPerformed(ActionEvent e) {        
         completeBag();
     }
-
+    @Override
+    public void log(String message){
+        ApplicationContextUtil.addConsoleMessage(message);
+    }
     public void completeBag(){        
         execute();    	
     }
@@ -35,7 +38,7 @@ public class CompleteBagHandler2 extends Handler {
     private class CompleteBagWorker extends LongTask2 {
         @Override
         protected Object doInBackground() throws Exception {
-            BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+            BusyIndicator.showAt(SwingUtils.getFrame());
             
             BagView bagView = BagView.getInstance();
             DefaultBag bag = bagView.getBag();
@@ -46,34 +49,36 @@ public class CompleteBagHandler2 extends Handler {
                 messages = bag.completeBag(completeVerifier);
 
                 if (messages != null && !messages.trim().isEmpty()) {
-                    bagView.showWarningErrorDialog("Warning - incomplete", "Is complete result: " + messages);
+                    String error = "Is complete result: " + messages;
+                    log(error);
+                    SwingUtils.ShowError("Is complete result: ",error);                  
                 }
                 else {
-                    bagView.showWarningErrorDialog("Is Complete Dialog", "Bag is complete.");
+                    String message = "Bag is complete.";
+                    log(message);
+                    SwingUtils.ShowMessage("Is Complete Dialog",message);                  
                 }
 
                 SwingUtilities.invokeLater(new Runnable(){
                     @Override
                     public void run() {
-                        ApplicationContextUtil.addConsoleMessage(messages);
+                        log(messages);
                     }
                 });            
 
             }catch(Exception e) {
-                e.printStackTrace();
+                e.printStackTrace();                
                 if (isCancelled()) {
-                    bagView.showWarningErrorDialog("Check cancelled", "Completion check cancelled.");
+                    log("Completion check cancelled.");
+                    SwingUtils.ShowError("Check cancelled", "Completion check cancelled.");
                 } else {
-                    bagView.showWarningErrorDialog("Warning - complete check interrupted", "Error checking bag completeness: " + e.getMessage());
+                    log("Error checking bag completeness: " + e.getMessage());
+                    SwingUtils.ShowError("Warning - complete check interrupted", "Error checking bag completeness: " + e.getMessage());
                 }
             }
             
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+            BusyIndicator.clearAt(SwingUtils.getFrame());
             return null;
-        }
-        @Override
-        public void cancel(){  
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-        }        
+        }               
     }
 }

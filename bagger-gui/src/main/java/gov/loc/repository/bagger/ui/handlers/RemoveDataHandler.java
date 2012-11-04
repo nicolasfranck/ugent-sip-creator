@@ -16,8 +16,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.workers.Loggable;
 
-public class RemoveDataHandler extends AbstractAction {
+public class RemoveDataHandler extends AbstractAction implements Loggable{
     private static final Log log = LogFactory.getLog(RemoveDataHandler.class);
     private static final long serialVersionUID = 1L;   
 
@@ -92,7 +93,8 @@ public class RemoveDataHandler extends AbstractAction {
                             }
                         } catch (Exception ex) {                            
                             String message = "Error trying to remove: " + fileName + "\n";
-                            bagView.showWarningErrorDialog("Error - file not removed", message + ex.getMessage());
+                            log(message);                            
+                            SwingUtils.ShowError("Error - file not removed", message + ex.getMessage());
                         }
                     }
                 }
@@ -109,5 +111,10 @@ public class RemoveDataHandler extends AbstractAction {
     	}
         
         BusyIndicator.clearAt(SwingUtils.getFrame());
+    }
+
+    @Override
+    public void log(String message) {
+        ApplicationContextUtil.addConsoleMessage(message);
     }
 }

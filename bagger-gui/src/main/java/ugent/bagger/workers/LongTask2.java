@@ -1,6 +1,7 @@
 package ugent.bagger.workers;
 
-import gov.loc.repository.bagit.Cancellable;
+//import gov.loc.repository.bagit.Cancellable;
+import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.ProgressListener;
 import javax.swing.SwingWorker;
 
@@ -8,7 +9,7 @@ import javax.swing.SwingWorker;
  *
  * @author nicolas
  */
-public abstract class LongTask2 extends SwingWorker implements ProgressListener,Cancellable{       
+public abstract class LongTask2 extends SwingWorker implements ProgressListener/*,Cancellable*/,Loggable{       
     private String lastNote = "";
     @Override
     final public void reportProgress(String activity, Object o, Long count, Long total) {
@@ -19,12 +20,11 @@ public abstract class LongTask2 extends SwingWorker implements ProgressListener,
             firePropertyChange("note",lastNote,activity);
             lastNote = activity;
         }        
-        int percent = (int)Math.floor( (count / ((float)total))*100);        
-        /*
-        if(percent == 100){            
-            //indien percent == 100, dan sluit de monitor, en dat willen we zelf doen
-            percent = 99;
-        }*/
-        setProgress(percent);       
+        int percent = (int)Math.floor( (count / ((float)total))*100);                
+        setProgress(percent);               
     }
+    @Override
+    final public void log(String message){
+        ApplicationContextUtil.addConsoleMessage(message);
+    }    
 }

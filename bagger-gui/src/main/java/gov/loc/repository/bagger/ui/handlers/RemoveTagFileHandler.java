@@ -9,8 +9,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
+import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.workers.Loggable;
 
-public class RemoveTagFileHandler extends AbstractAction {
+public class RemoveTagFileHandler extends AbstractAction implements Loggable{
     private static final long serialVersionUID = 1L;   
     
     /*
@@ -50,13 +52,20 @@ public class RemoveTagFileHandler extends AbstractAction {
                         model.removeNodeFromParent((MutableTreeNode)aNode);
                     }
                 }
-                } catch (Exception e) {
+                }catch (Exception e){
                     message += "Error trying to remove file: " + node + "\n";
-                    bagView.showWarningErrorDialog("Error - file not removed", "Error trying to remove file: " + node + "\n" + e.getMessage());
+                    log(message);
+                    SwingUtils.ShowError("Error - file not removed", "Error trying to remove file: " + node + "\n" + e.getMessage());
                 }
             }
             bagView.getBagTagFileTree().removeSelectionPaths(paths);
             bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
     	}
+        
+    }
+
+    @Override
+    public void log(String message) {
+        ApplicationContextUtil.addConsoleMessage(message);
     }
 }

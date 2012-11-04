@@ -3,6 +3,7 @@ package ugent.bagger.helper;
 import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -10,6 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,6 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.statusbar.StatusBar;
+import ugent.bagger.dialogs.ReportDialog;
+
 
 /**
  *
@@ -25,6 +29,8 @@ import org.springframework.richclient.application.statusbar.StatusBar;
  */
 public class SwingUtils {
     private static Log logger = LogFactory.getLog(SwingUtils.class);
+   
+    
     public static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,int dialogType){
         JFileChooser fileChooser = new JFileChooser();           
         fileChooser.setDialogTitle(title);            
@@ -84,7 +90,19 @@ public class SwingUtils {
         ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                                
         progressMonitor.setMillisToDecideToPopup(0);
         progressMonitor.setMillisToPopup(0);        
-        progressMonitor.setProgress(0);        
+        progressMonitor.setProgress(0);  
+        
+        AccessibleContext ac = progressMonitor.getAccessibleContext();
+        JDialog dialog = (JDialog)ac.getAccessibleParent();
+        JPanel panel = (JPanel) dialog.getContentPane();
+   
+        for(int i = 0;i < panel.getComponentCount();i++){            
+            Component c = panel.getComponents()[i];
+            if(c instanceof JButton){
+                c.setVisible(true);
+            }
+        }
+        
         
         worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
         if(listeners != null){

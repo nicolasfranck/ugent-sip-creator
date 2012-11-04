@@ -195,7 +195,7 @@ public class MdSecPropertiesPanel extends JPanel{
                 }else if(
                     pce.getPropertyName().equals("report") && 
                     pce.getNewValue().toString().compareTo("success") == 0
-                ){
+                ){                    
                     getEditDmdSecPropertiesTable().refresh();
                 }
             }

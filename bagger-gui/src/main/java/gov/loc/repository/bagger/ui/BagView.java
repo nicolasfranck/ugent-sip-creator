@@ -24,6 +24,7 @@ import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
@@ -109,7 +110,9 @@ public class BagView extends DefaultView {
     }    
     public JSplitPane getMainPanel() {
         if(mainPanel == null){
-            mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getInfoFormsPane()); 
+            mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getInfoFormsPane());                                                
+            mainPanel.setDividerLocation(0.3);
+            mainPanel.setResizeWeight(1.0);
         }
         return mainPanel;
     }

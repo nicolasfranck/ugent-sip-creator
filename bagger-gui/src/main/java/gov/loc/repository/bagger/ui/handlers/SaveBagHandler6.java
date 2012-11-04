@@ -188,7 +188,7 @@ public class SaveBagHandler6 extends Handler {
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());                        
+            BusyIndicator.showAt(SwingUtils.getFrame());                        
 
             final BagView bagView = BagView.getInstance();
             MetsBag bag = bagView.getBag();
@@ -216,10 +216,12 @@ public class SaveBagHandler6 extends Handler {
                 bagWriter.addProgressListener(this);                
                 messages = bag.write(bagWriter);
 
-                if (messages != null && !messages.trim().isEmpty()) {
-                    bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
+                if (messages != null && !messages.trim().isEmpty()) {                    
+                    SwingUtils.ShowError("Warning - bag not saved", "Problem saving bag:\n" + messages);
+                    log("Problem saving bag:\n" + messages);
                 } else {
-                    bagView.showWarningErrorDialog("Bag saved", "Bag saved successfully.\n" );
+                    SwingUtils.ShowMessage("Bag saved", "Bag saved successfully.\n" );
+                    log("Bag saved successfully.\n");
                 }
                
                 if (bag.isSerialized()) {
@@ -235,19 +237,17 @@ public class SaveBagHandler6 extends Handler {
                         bagView.openBagHandler.openExistingBag(bagFile);
                         bagView.updateSaveBag();
                     }
-                } else {
-                    ApplicationContextUtil.addConsoleMessage(messages);
+                } else {                   
                     bagView.updateManifestPane();
                 }                
             }catch(Exception e){
+                log(e.getMessage());
                 log.debug(e.getMessage());                
-            }            
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());            
+            } 
+            
+            BusyIndicator.clearAt(SwingUtils.getFrame());            
             return null;
-        }    
-        @Override
-        public void cancel(){ 
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());            
-        }    
+        }   
+           
     }    
 }

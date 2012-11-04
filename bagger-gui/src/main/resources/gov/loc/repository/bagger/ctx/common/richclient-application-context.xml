@@ -208,6 +208,7 @@
         <property name="viewClass" value="ugent.bagger.views.RenameView" />                       
     </bean>
     
+    
  
     <util:list id="metsSchemaURLS">        
         <value>http://www.loc.gov/METS/</value>

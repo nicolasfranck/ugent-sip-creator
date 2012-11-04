@@ -522,11 +522,11 @@ public class RenamePanel extends JPanel{
         JScrollPane scrollerPanelModifier = new JScrollPane(panelSouth);
         splitterVertical.add(scrollerPanelModifier);
         
-        splitterVertical.setDividerLocation(0.7);
-        splitterVertical.setResizeWeight(0.7);                
+        splitterVertical.setDividerLocation(0.4);
+        splitterVertical.setResizeWeight(1.0);
         
+        add(splitterVertical);            
         
-        add(splitterVertical);        
     }    
     protected JPanel getNewRenumberPanel(){
         JPanel panel = new JPanel();

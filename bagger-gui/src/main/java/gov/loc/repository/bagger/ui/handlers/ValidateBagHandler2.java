@@ -37,7 +37,7 @@ public class ValidateBagHandler2 extends Handler {
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+            BusyIndicator.showAt(SwingUtils.getFrame());
             
             final BagView bagView = BagView.getInstance();
             DefaultBag bag = bagView.getBag();
@@ -48,34 +48,27 @@ public class ValidateBagHandler2 extends Handler {
                 validVerifier.addProgressListener(this);                
                 messages = bag.validateBag(validVerifier);                
                
-                if (messages != null && !messages.trim().isEmpty()){   
-                    bagView.showWarningErrorDialog("Warning - validation failed","Validation result: " + messages);
+                if (messages != null && !messages.trim().isEmpty()){                      
+                    SwingUtils.ShowError("Warning - validation failed","Validation result: " + messages);
+                    log("Validation result: " + messages);
                 }else{
-                    bagView.showWarningErrorDialog("Validation Dialog","Validation successful.");
+                    SwingUtils.ShowMessage("Validation Dialog","Validation successful.");
+                    log("Validation successful.");
                 }
-                
-                SwingUtilities.invokeLater(new Runnable(){
-                    @Override
-                    public void run(){                        
-                        ApplicationContextUtil.addConsoleMessage(messages);
-                    }
-                });                
                    
             }catch (Exception e){                                                
                 if (isCancelled()) {
+                    log("Validation cancelled.");
                     bagView.showWarningErrorDialog("Validation cancelled", "Validation cancelled.");
                 } else {
+                    log("Error trying validate bag: " + e.getMessage());
                     bagView.showWarningErrorDialog("Warning - validation interrupted", "Error trying validate bag: " + e.getMessage());
                 }
             }
             
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+            BusyIndicator.clearAt(SwingUtils.getFrame());
             
             return null;
-        }
-        @Override
-        public void cancel(){
-            BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-        }        
+        }               
     }
 }

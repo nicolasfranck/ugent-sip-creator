@@ -13,8 +13,9 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.springframework.richclient.application.Application;
+import ugent.bagger.workers.Loggable;
 
-public class AddTagFileHandler extends AbstractAction {
+public class AddTagFileHandler extends AbstractAction implements Loggable {
     private static final long serialVersionUID = 1L;   
 
     /*
@@ -29,7 +30,10 @@ public class AddTagFileHandler extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         addTagFile();
     }
-
+    @Override
+    public void log(String message){
+        ApplicationContextUtil.addConsoleMessage(message);
+    }
     public void addTagFile() {
         /*
          * Nicolas Franck: default directory
@@ -72,7 +76,7 @@ public class AddTagFileHandler extends AbstractAction {
             	bagView.getBagTagFileTree().addNode(bf.getFilepath());
             }
             bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
-            ApplicationContextUtil.addConsoleMessage("Tag file added: " + file.getAbsolutePath());
+            log("Tag file added: " + file.getAbsolutePath());
         }
 
         /*
@@ -102,7 +106,7 @@ public class AddTagFileHandler extends AbstractAction {
                 }
                 bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
             }
-            ApplicationContextUtil.addConsoleMessage("Tag files changed.");
+            log("Tag files changed.");
     	}
     }
 }

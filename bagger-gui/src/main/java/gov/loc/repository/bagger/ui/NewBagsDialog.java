@@ -25,6 +25,7 @@ import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
+import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.BagFactory.Version;
@@ -696,8 +697,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             this.files = files;
             this.version = version;
             this.profile = profile;
-        }
-
+        }        
         public ArrayList<File> getFiles() {
             if(files == null){
                 files = new ArrayList<File>();
@@ -729,6 +729,11 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             
             BusyIndicator.showAt(SwingUtils.getFrame());
             
+            ArrayList<Integer>succeeded = new ArrayList<Integer>();
+            int numErrors = 0;
+            BagView bagView = getBagView();
+            MetsBag bag = bagView.getBag();
+            
             try{
                 
                 //pre check: zijn alle mappen schrijfbaar?
@@ -736,19 +741,15 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 for(File file:files){                    
                     badDirs.addAll(getBadRWDirs(file));
                 }
-                if(!badDirs.isEmpty()){                    
-                    SwingUtils.ShowError(null,
-                        Context.getMessage("NewBagsDialog.NewBagsInPlaceWorker.error.badrwdirs",new Object [] {
-                            new Integer(badDirs.size())
-                        })                            
-                    );
+                if(!badDirs.isEmpty()){ 
+                    String error = Context.getMessage("NewBagsDialog.NewBagsInPlaceWorker.error.badrwdirs",new Object [] {
+                        new Integer(badDirs.size())
+                    });
+                    SwingUtils.ShowError(null,error);
+                    log(error);
                     BusyIndicator.clearAt(SwingUtils.getFrame());
                     return null;
                 }
-                
-                ArrayList<Integer>succeeded = new ArrayList<Integer>();
-                BagView bagView = getBagView();
-                MetsBag bag = bagView.getBag();                 
                
                 for(int i = 0; i< files.size();i++){                                
                     
@@ -769,7 +770,9 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 }else if(metadataFile.getAbsolutePath().endsWith(".csv")){
                                 
                                 }
-                            }catch(Exception e){                                
+                            }catch(Exception e){    
+                                log(e.getMessage());
+                                numErrors++;
                                 log.debug(e);
                             }
                         }
@@ -783,6 +786,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
                             }
                         }catch(Exception e){
+                            log(e.getMessage());
+                            numErrors++;
                             e.printStackTrace();                            
                         }                        
                     }
@@ -821,6 +826,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 }
                             }                            
                         }catch(Exception e){
+                            log(e.getMessage());
+                            numErrors++;
                             e.printStackTrace();
                         }
                     }
@@ -848,25 +855,31 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     succeeded.add(i);
                 }
                 
-                //open laatste geslaagde bagit
-                if(succeeded.size() > 0){
-                    int last = succeeded.get(succeeded.size() - 1);
-                    File file = getSelectedDirectories().get(last);
-                    bagView.openBagHandler.openExistingBag(file);
-                }
-                
-            }catch(Exception e){
+            }catch(Exception e){  
+                log(e.getMessage());
+                numErrors++;
                 log.error(e);                
+            }
+            
+            //report
+            String report = Context.getMessage("report.message",new Integer []{
+                succeeded.size(),numErrors
+            });
+            String reportLog = Context.getMessage("report.log");
+
+            SwingUtils.ShowMessage(null,report+"\n"+reportLog);
+            
+            //open laatste geslaagde bagit
+            if(succeeded.size() > 0){
+                int last = succeeded.get(succeeded.size() - 1);
+                File file = getSelectedDirectories().get(last);
+                bagView.openBagHandler.openExistingBag(file);
             }
             
             BusyIndicator.clearAt(SwingUtils.getFrame());
             
             return null;
-        }
-
-        @Override
-        public void cancel(){            
-        }        
+        }      
     }
     
     private class NewBagsWorker extends LongTask2 {
@@ -880,19 +893,18 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             this.dir = dir;
             this.version = version;
             this.profile = profile;
-        }        
-        
+        }
         @Override
         protected Object doInBackground() throws Exception {
             
             BusyIndicator.showAt(SwingUtils.getFrame());
             
-            try{
+            ArrayList<File>succeeded = new ArrayList<File>();
+            int numErrors = 0;
+            BagView bagView = getBagView();                
+            MetsBag bag = bagView.getBag();
             
-                ArrayList<File>succeeded = new ArrayList<File>();
-                BagView bagView = getBagView();                
-                MetsBag bag = bagView.getBag(); 
-                
+            try{
                 
                 for(int i = 0; i< files.size();i++){                                                                        
                     
@@ -932,7 +944,9 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 }else if(metadataFile.getAbsolutePath().endsWith(".csv")){
                                 
                                 }
-                            }catch(Exception e){                               
+                            }catch(Exception e){  
+                                numErrors++;
+                                log(e.getMessage());
                                 log.debug(e);
                             }
                             //haal uit payload lijst
@@ -951,6 +965,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
                             }                           
                         }catch(Exception e){
+                            log(e.getMessage());
+                            numErrors++;
                             e.printStackTrace();                            
                         }                        
                     }
@@ -990,6 +1006,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 }
                             }                            
                         }catch(Exception e){
+                            log(e.getMessage());
+                            numErrors++;
                             e.printStackTrace();
                         }
                     }
@@ -1001,7 +1019,9 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     String messages = bag.write(writer);
 
                     if(messages != null && !messages.trim().isEmpty()){
-                        bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
+                        numErrors++;
+                        log("Warning - bag not saved"+"Problem saving bag:\n" + messages);
+                        //bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
                     }
                
                     if(bag.isSerialized()){
@@ -1012,21 +1032,28 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     setProgress(percent);                     
                 }
                 
-                //open laatste geslaagde bagit
-                if(succeeded.size() > 0){                                
-                    File file = succeeded.get(succeeded.size()-1);            
-                    bagView.openBagHandler.openExistingBag(file);                                    
-                }
             }catch(Exception e){
+                log(e.getMessage());
                 log.error(e);                
             }
             
-            BusyIndicator.clearAt(SwingUtils.getFrame());
+            //report
+            String report = Context.getMessage("report.message",new Integer []{
+                succeeded.size(),numErrors
+            });
+            String reportLog = Context.getMessage("report.log");
+
+            SwingUtils.ShowMessage(null,report+"\n"+reportLog);
             
+            //open laatste geslaagde bagit
+            if(succeeded.size() > 0){                                
+                File file = succeeded.get(succeeded.size()-1);            
+                bagView.openBagHandler.openExistingBag(file);                                    
+            }
+            
+            BusyIndicator.clearAt(SwingUtils.getFrame());
+         
             return null;
-        }
-        @Override
-        public void cancel() {         
-        }        
+        }               
     }
 }

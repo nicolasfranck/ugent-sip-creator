@@ -3,20 +3,19 @@ package gov.loc.repository.bagger.ui.handlers;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.Progress;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.workers.Loggable;
 
-public class AddDataHandler extends AbstractAction implements Progress {
+public class AddDataHandler extends AbstractAction implements Progress,Loggable {
     private static final Log log = LogFactory.getLog(AddDataHandler.class);
     private static final long serialVersionUID = 1L;    
 
@@ -34,6 +33,10 @@ public class AddDataHandler extends AbstractAction implements Progress {
     @Override
     public void actionPerformed(ActionEvent e) {                
         execute();                        
+    }
+    @Override
+    public void log(String message){
+        ApplicationContextUtil.addConsoleMessage(message);
     }
     public void addData(){
         
@@ -75,11 +78,11 @@ public class AddDataHandler extends AbstractAction implements Progress {
             String message = ApplicationContextUtil.getMessage("bag.message.filesadded");
             if (files != null && files.length >0) {
                 addBagData(files);
-                ApplicationContextUtil.addConsoleMessage(message + " " + getFileNames(files));
+                log(message + " " + getFileNames(files));
             } else {
             	File file = fc.getSelectedFile();
             	addBagData(file, true);
-            	ApplicationContextUtil.addConsoleMessage(message + " " + file.getAbsolutePath());
+            	log(message + " " + file.getAbsolutePath());
             }
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
             bagView.updateAddData();
@@ -145,11 +148,23 @@ public class AddDataHandler extends AbstractAction implements Progress {
             bagView.getBag().addFileToPayload(file);
             boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);
             if(alreadyExists) {
-                bagView.showWarningErrorDialog("Warning - file already exists", "File: " + file.getName() + "\n" + "already exists in bag.");
+                String title = Context.getMessage("addDataHandler.fileExists.title");
+                String message = Context.getMessage(
+                    "addDataHandler.fileExists.message",
+                    new Object [] {file.getName()}
+                );                        
+                log(message);
+                SwingUtils.ShowError(title,message);
             }
         }catch (Exception e){
             log.error("BagView.addBagData: " + e);
-            bagView.showWarningErrorDialog("Error - file not added", "Error adding bag file: " + file + "\ndue to:\n" + e.getMessage());
+            String title = Context.getMessage("addDataHandler.unknowException.title");
+            String message = Context.getMessage(
+                "addDataHandler.fileExists.message",
+                new Object [] {e.getMessage()}
+            ); 
+            log(message);
+            SwingUtils.ShowError(title,message);            
         }    	
     }    
 }

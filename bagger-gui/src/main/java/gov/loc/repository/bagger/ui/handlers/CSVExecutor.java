@@ -3,7 +3,6 @@ package gov.loc.repository.bagger.ui.handlers;
 import java.awt.Dialog;
 import javax.swing.JDialog;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.wizards.CSVWizardDialog;
 
 /**

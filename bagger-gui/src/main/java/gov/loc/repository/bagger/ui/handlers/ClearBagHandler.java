@@ -12,8 +12,8 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
-import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 
 public class ClearBagHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;   

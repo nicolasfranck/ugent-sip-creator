@@ -2,14 +2,18 @@ package gov.loc.repository.bagger.ui;
 
 import java.util.ArrayList;
 import javax.swing.JComponent;
+import org.springframework.util.Assert;
 import ugent.bagger.views.DefaultView;
 
 public class ConsoleView extends DefaultView {
     public static ConsoleView instance;
-    private ConsolePane consolePane;
+    //Nicolas Franck
+    //private ConsolePane consolePane;
+    private ConsolePane2 consolePane;
     public static ArrayList<String>delayedMessages= new ArrayList<String>();
 
-    public ConsoleView(){                        
+    public ConsoleView(){    
+        Assert.isNull(instance);
         instance = this;
     }
     @Override
@@ -27,15 +31,12 @@ public class ConsoleView extends DefaultView {
             delayedMessages.clear();
         }            
     }
-    public ConsolePane getConsolePane() {
+    public ConsolePane2 getConsolePane() {
         if(consolePane == null){
-            consolePane =  new ConsolePane(getInitialConsoleMsg());
+            consolePane =  new ConsolePane2(getInitialConsoleMsg());
         }
         return consolePane;
-    }
-    public void setConsolePane(ConsolePane consolePane) {
-        this.consolePane = consolePane;
-    }   
+    }       
     public static ConsoleView getInstance() {
         return instance;
     }	
