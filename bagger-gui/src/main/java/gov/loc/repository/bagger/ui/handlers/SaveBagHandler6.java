@@ -4,7 +4,6 @@ import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.*;
@@ -14,10 +13,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
@@ -188,7 +185,7 @@ public class SaveBagHandler6 extends Handler {
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(SwingUtils.getFrame());                        
+            SwingUtils.ShowBusy();            
 
             final BagView bagView = BagView.getInstance();
             MetsBag bag = bagView.getBag();
@@ -245,7 +242,8 @@ public class SaveBagHandler6 extends Handler {
                 log.debug(e.getMessage());                
             } 
             
-            BusyIndicator.clearAt(SwingUtils.getFrame());            
+            SwingUtils.ShowDone();
+            
             return null;
         }   
            

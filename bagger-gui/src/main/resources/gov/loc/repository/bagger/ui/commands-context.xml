@@ -31,7 +31,7 @@
     <property name="members">
       <list>
         <ref bean="fileMenu" />
-        <ref bean="windowMenu" />
+        <ref bean="showViewMenu" />
         <ref bean="helpMenu" />
       </list>
     </property>
@@ -81,7 +81,7 @@
         <value>addDataCommand</value>
         <value>saveBagCommand</value>
         <value>saveBagAsCommand</value>
-        <bean class="gov.loc.repository.bagger.app.BaggerExit" />
+        <bean class="gov.loc.repository.bagger.app.BaggerExit" id="exitCommand" />
       </list>
     </property>
   </bean>
@@ -113,6 +113,9 @@
 
   <bean id="logoutCommand" class="org.springframework.richclient.security.LogoutCommand" />
   
+  <bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu" >      
+  </bean>
+  <!--
    <bean id="windowMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
       <list>
@@ -120,5 +123,6 @@
       </list>
     </property>
   </bean>
+  -->
 
 </beans>

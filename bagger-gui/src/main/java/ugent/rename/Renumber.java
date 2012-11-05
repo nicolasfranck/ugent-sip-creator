@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.FUtils;
 
 /**
@@ -11,6 +13,7 @@ import ugent.bagger.helper.FUtils;
  * @author nicolas
  */
 public class Renumber extends AbstractRenamer{    
+    private static final Log log = LogFactory.getLog(Renumber.class);    
     private int start = 0;
     private int end = 0;
     private int step = 1;
@@ -165,13 +168,10 @@ public class Renumber extends AbstractRenamer{
                 }
             }
             String left = index > 0 ? nameInputFile.substring(0,index):"";
-            String right = nameInputFile.substring(index);
-            String format = getFormatString();
-            String formattedNumber = String.format(format,i);
+            String right = nameInputFile.substring(index);            
             
-            formattedNumber = sequence.next();
+            String formattedNumber = sequence.next();
             String nameOutputFile = left+separatorBefore+formattedNumber+separatorAfter+right;            
-
         
             pairs.add(new RenameFilePair(
                 inputFile,

@@ -3,17 +3,17 @@ package ugent.rename;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
-import java.nio.channels.OverlappingFileLockException;
 import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
  * @author nicolas
  */
 abstract public class AbstractRenamer {
+    private static final Log log = LogFactory.getLog(AbstractRenamer.class);
     private RenameListener renameListener;
     private boolean copy = false;
     private boolean copyDirectoryContent = false;
@@ -90,10 +90,12 @@ abstract public class AbstractRenamer {
         }        
         
         ErrorAction action = ErrorAction.undoAll;
-        System.out.println("AbstractRenamer::rename => pair.size() is "+pairs.size());
+        log.debug("AbstractRenamer::rename => pair.size() is "+pairs.size());
         for(int i = 0;i < pairs.size();i++){
             RenameFilePair pair = pairs.get(i);
-            System.out.println(pair.getSource()+" => "+pair.getTarget());
+            
+            log.debug(pair.getSource()+" => "+pair.getTarget());
+            
             pair.setSuccess(false);
             l.onRenameStart(pair,i);            
             try{
@@ -103,7 +105,7 @@ abstract public class AbstractRenamer {
                     }else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }else{
-                        pair.setSuccess(true);
+                        pair.setSuccess(true);                        
                     }
                 }else{
                     //zorg ervoor dat geen enkel ander process bezig is met deze bestanden!
@@ -111,18 +113,15 @@ abstract public class AbstractRenamer {
                     //FileChannel channelSource = new RandomAccessFile(pair.getSource(),"rw").getChannel();                                        
                     //channelSource.lock();                    
                     
-                    if(!isOverwrite() && pair.getTarget().exists()){
-                        System.out.println("target file "+pair.getTarget().getAbsolutePath()+" already exists");
+                    if(!isOverwrite() && pair.getTarget().exists()){                        
                         throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
                     }else{
-                        System.out.println("making target directories");
+                        log.debug("making target directories");
                         pair.getTarget().getParentFile().mkdirs();                                           
-                        System.out.println("making target directories ok");
-                        if(isCopy()){
-                            System.out.println("copy!");
+                        log.debug("making target directories ok");
+                        if(isCopy()){                            
                             copy(pair.getSource(),pair.getTarget());
-                        }else{
-                            System.out.println("move!");
+                        }else{                            
                             /*
                                 *  TODO: in Windows wordt target niet overschreven.
                                 Zie: http://stackoverflow.com/questions/595631/how-to-atomically-rename-a-file-in-java-even-if-the-dest-file-already-exists
@@ -133,42 +132,35 @@ abstract public class AbstractRenamer {
                 }
                 if(pair.isSuccess()){
                     numSuccess++;
+                    l.onRenameSuccess(pair,i);
                 }
             }catch(TargetExistsException e){
-                System.out.println("error occurred: "+e.getMessage());
+                log.debug("error occurred: "+e.getMessage());                
                 e.printStackTrace();
                 action = l.onError(pair,RenameError.TARGET_EXISTS,e.getMessage(),i);                                        
             }catch(ParentNotWritableException e){                
-                System.out.println("error occurred: "+e.getMessage());
+                log.debug("error occurred: "+e.getMessage());                
                 e.printStackTrace();
                 action = l.onError(pair,RenameError.PARENT_NOT_WRITABLE,e.getMessage(),i);
             }catch(FileNotFoundException e){
-                System.out.println("error occurred: "+e.getMessage());
+                log.debug("error occurred: "+e.getMessage());                
                 e.printStackTrace();
                 action = l.onError(pair,RenameError.FILE_NOT_FOUND,e.getMessage(),i);
             }catch(IOException e){
-                System.out.println("error occurred: "+e.getMessage());
+                log.debug("error occurred: "+e.getMessage());                
                 e.printStackTrace();
                 action = l.onError(pair,RenameError.IO_EXCEPTION,e.getMessage(),i);
             }catch(SecurityException e){
-                System.out.println("error occurred: "+e.getMessage());
+                log.debug("error occurred: "+e.getMessage());                
                 e.printStackTrace();
                 action = l.onError(pair,RenameError.SECURITY_EXCEPTION,e.getMessage(),i);
-            }
-            /*
-            catch(OverlappingFileLockException e){
-                System.out.println("error occurred: "+e.getMessage());
-                e.printStackTrace();
-                action = l.onError(pair,RenameError.FILELOCK_EXCEPTION,e.getMessage(),i);
-        }*/
+            }            
             catch(Exception e){
-                System.out.println("error occurred: "+e.getMessage());
+                log.debug("error occurred: "+e.getMessage());             
                 e.printStackTrace();
                 action = l.onError(pair,RenameError.UNKNOWN_ERROR,e.getMessage(),i);
-            }
-            System.out.println("is Success: "+(pair.isSuccess() ? "yes":"no"));
-            System.out.println("target "+pair.getTarget()+" exists: "+(pair.getTarget().exists()));
-            System.out.println("action to take:" + action);
+            }            
+            
             /* check if renaming operation was successful */
             if(!pair.isSuccess()){                    
                 /* take action */

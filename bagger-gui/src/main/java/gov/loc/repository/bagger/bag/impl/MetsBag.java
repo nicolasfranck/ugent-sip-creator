@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 public class MetsBag extends DefaultBag{
     private BagItMets bagItMets;
     
-    public MetsBag() {  
+    public MetsBag() {          
         super();            
     }
     public MetsBag(File rootDir, String version) {
@@ -68,8 +68,7 @@ public class MetsBag extends DefaultBag{
             generateManifestFiles();
             isBuildPayloadManifest(true);
           
-        }catch(Exception e){ 
-            e.printStackTrace();
+        }catch(Exception e){             
             log.debug(e);            
         }        
         String messages = writeBag(bw);
@@ -89,17 +88,17 @@ public class MetsBag extends DefaultBag{
             Algorithm pa = resolveAlgorithm(getPayloadManifestAlgorithm());   
             Manifest payloadManifest = bag.getPayloadManifest(pa);
             for(String ignoreFile:ignoreFiles){
-                System.out.println("looking for ignoreFile: "+ignoreFile);
+                log.debug("looking for ignoreFile: "+ignoreFile);
                 String path = "data/"+ignoreFile;
                 if(payloadManifest.containsKey(path)){
-                    System.out.println("removing ignoreFile "+ignoreFile+" from payload manifest");
+                    log.debug("removing ignoreFile "+ignoreFile+" from payload manifest");
                     payloadManifest.remove(path);
-                    System.out.println("removing ignoreFile "+ignoreFile+" from system");
+                    log.debug("removing ignoreFile "+ignoreFile+" from system");
                     File payloadFile = new File(bag.getFile(),path);
                     if(payloadFile.exists()){
                         payloadFile.delete();
                     }
-                    System.out.println("removing ignoreFile "+ignoreFile+" from payload list");
+                    log.debug("removing ignoreFile "+ignoreFile+" from payload list");
                     bag.removeBagFile(path);                    
                 }
             }
@@ -113,7 +112,7 @@ public class MetsBag extends DefaultBag{
                 }
                 writer.close();
             }catch(Exception e){
-                e.printStackTrace();
+                log.debug(e.getMessage());                
             }            
         }
         
@@ -163,17 +162,17 @@ public class MetsBag extends DefaultBag{
             Algorithm pa = resolveAlgorithm(getPayloadManifestAlgorithm());   
             Manifest payloadManifest = bag.getPayloadManifest(pa);
             for(String ignoreFile:ignoreFiles){
-                System.out.println("looking for ignoreFile: "+ignoreFile);
+                log.debug("looking for ignoreFile: "+ignoreFile);
                 String path = "data/"+ignoreFile;
                 if(payloadManifest.containsKey(path)){
-                    System.out.println("removing ignoreFile "+ignoreFile+" from payload manifest");
+                    log.debug("removing ignoreFile "+ignoreFile+" from payload manifest");
                     payloadManifest.remove(path);
-                    System.out.println("removing ignoreFile "+ignoreFile+" from system");
+                    log.debug("removing ignoreFile "+ignoreFile+" from system");
                     File payloadFile = new File(bag.getFile(),path);
                     if(payloadFile.exists()){
                         payloadFile.delete();
                     }
-                    System.out.println("removing ignoreFile "+ignoreFile+" from payload list");
+                    log.debug("removing ignoreFile "+ignoreFile+" from payload list");
                     bag.removeBagFile(path);                    
                 }
             }
@@ -187,7 +186,7 @@ public class MetsBag extends DefaultBag{
                 }
                 writer.close();
             }catch(Exception e){
-                e.printStackTrace();
+                log.debug(e.getMessage());                
             }            
         }
         
@@ -215,8 +214,8 @@ public class MetsBag extends DefaultBag{
             writer.println(checksumMets+"  mets.xml");            
             writer.close();
             
-        }catch(Exception e){              
-            e.printStackTrace();            
+        }catch(Exception e){   
+            log.debug(e.getMessage());                    
         } 
     }
     

@@ -19,7 +19,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -104,13 +103,13 @@ public class MdSecSourcePanel extends JPanel{
         okButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {                
-                BusyIndicator.showAt(SwingUtils.getFrame());                
+                SwingUtils.ShowBusy();
                 try{
                     loadFromMdSec(getMdSecPropertiesTable().getSelected().getMdSec());
                 }catch(Exception e){
                     e.printStackTrace();
                 }                                
-                BusyIndicator.clearAt(SwingUtils.getFrame());
+                SwingUtils.ShowDone();
                 firePropertyChange("ok",null,null);
             }            
         });        

@@ -18,6 +18,7 @@ public class CSVWizard extends AbstractWizard{
         CSVWizardPage1 csv1WizardPage = new CSVWizardPage1("page1");        
         final CSVWizardPage2 csv2WizardPage = new CSVWizardPage2("page1");        
         
+        
         csv1WizardPage.getCsv1Panel().addPropertyChangeListener("record",new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {

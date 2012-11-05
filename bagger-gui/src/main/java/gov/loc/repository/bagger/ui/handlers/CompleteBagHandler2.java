@@ -6,7 +6,6 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.Loggable;
@@ -38,7 +37,7 @@ public class CompleteBagHandler2 extends Handler implements Loggable {
     private class CompleteBagWorker extends LongTask2 {
         @Override
         protected Object doInBackground() throws Exception {
-            BusyIndicator.showAt(SwingUtils.getFrame());
+            SwingUtils.ShowBusy();            
             
             BagView bagView = BagView.getInstance();
             DefaultBag bag = bagView.getBag();
@@ -77,7 +76,8 @@ public class CompleteBagHandler2 extends Handler implements Loggable {
                 }
             }
             
-            BusyIndicator.clearAt(SwingUtils.getFrame());
+            SwingUtils.ShowDone();
+            
             return null;
         }               
     }

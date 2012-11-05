@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.importers.ImportType;
 import ugent.bagger.tables.EditMdSecPropertiesTable;
@@ -60,7 +59,8 @@ public final class ImportDialog extends JDialog{
                 if(files == null || importType == null){
                     return;
                 }
-                BusyIndicator.showAt(SwingUtils.getFrame());                
+                
+                SwingUtils.ShowBusy();
                 
                 SwingUtils.monitor(
                     new TaskAddMdSecFromImport2(files,importType),                    
@@ -69,7 +69,8 @@ public final class ImportDialog extends JDialog{
                     getPropertyListeners()
                 );
                 
-                BusyIndicator.clearAt(SwingUtils.getFrame());
+                SwingUtils.ShowDone();
+                
                 ImportDialog.this.dispose();                
             }            
         });

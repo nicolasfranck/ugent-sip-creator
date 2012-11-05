@@ -2,14 +2,10 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import gov.loc.repository.bagit.verify.impl.ParallelManifestChecksumVerifier;
 import gov.loc.repository.bagit.verify.impl.ValidVerifierImpl;
 import java.awt.event.ActionEvent;
-import javax.swing.SwingUtilities;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask2;
@@ -37,7 +33,7 @@ public class ValidateBagHandler2 extends Handler {
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(SwingUtils.getFrame());
+            SwingUtils.ShowBusy();            
             
             final BagView bagView = BagView.getInstance();
             DefaultBag bag = bagView.getBag();
@@ -66,7 +62,7 @@ public class ValidateBagHandler2 extends Handler {
                 }
             }
             
-            BusyIndicator.clearAt(SwingUtils.getFrame());
+            SwingUtils.ShowDone();
             
             return null;
         }               

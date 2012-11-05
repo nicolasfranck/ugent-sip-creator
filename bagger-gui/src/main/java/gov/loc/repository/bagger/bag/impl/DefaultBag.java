@@ -82,17 +82,13 @@ public class DefaultBag {
         init(rootDir);
     }
 
-    protected void display(String s) {
-        log.info(this.getClass().getName() + ": " + s);
-    }
-
     private void init(File rootDir){
         boolean newBag = rootDir == null;
         resetStatus();
         this.rootDir = rootDir;
 
-        display("DefaultBag.init file: " + rootDir + ", version: "
-                        + versionString);
+        log.debug("DefaultBag.init file: "+rootDir+", version: "+versionString);
+        
         BagFactory bagFactory = new BagFactory();
         if (!newBag) {
             bilBag = bagFactory.createBag(this.rootDir);
@@ -161,10 +157,10 @@ public class DefaultBag {
         BagFactory bagFactory = new BagFactory();
         PreBag preBag = bagFactory.createPreBag(data);
         if (version == null) {
-            System.out.println("no version supplied, so using latest");
+            log.debug("no version supplied, so using latest");
             bilBag = preBag.makeBagInPlace(BagFactory.LATEST, false);            
         } else {
-            System.out.println("version supplied: "+Version.valueOfString(version));
+            log.debug("version supplied: "+Version.valueOfString(version));
             bilBag = preBag.makeBagInPlace(Version.valueOfString(version),false);            
         }
     }
@@ -407,7 +403,7 @@ public class DefaultBag {
         if(fetchTxt != null){
             for (int i = 0; i < fetchTxt.size(); i++) {
                 FilenameSizeUrl f = fetchTxt.get(i);                
-                display("DefaultBag.getFetchPayload: " + f.toString());
+                log.debug("DefaultBag.getFetchPayload: " + f.toString());
                 list.add(f.getFilename());
             }
         }
@@ -446,7 +442,7 @@ public class DefaultBag {
                         dcontent.append(bf.getFilepath());
                         dcontent.append('\n');
                     }
-                } catch (Exception e) {
+                }catch(Exception e) {
                     log.error("DefaultBag.getDataContent: " + e.getMessage());
                 }
             }
@@ -527,7 +523,7 @@ public class DefaultBag {
 
         String messages = writeBag(bw);
 
-        if (bw.isCancelled()) {
+        if(bw.isCancelled()){
             return "Save cancelled.";
         }
         return messages;
@@ -563,7 +559,7 @@ public class DefaultBag {
                     }
                 }
             }catch(Exception ex) {
-                ex.printStackTrace();
+                log.debug(ex.getMessage());                
                 String msgs = "ERROR validating bag: \n" + ex.getMessage()+"\n";
                 if (messages != null) {
                     messages += msgs;
@@ -763,7 +759,7 @@ public class DefaultBag {
     public void generateManifestFiles() {
         DefaultCompleter completer = new DefaultCompleter(new BagFactory());            
         if (isBuildPayloadManifest) {  
-            System.out.println("generating payload manifest");
+            log.debug("generating payload manifest");
             completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));
             //Nicolas Franck
             /*
@@ -789,7 +785,7 @@ public class DefaultBag {
             }*/
         }
         if (isBuildTagManifest) {
-            System.out.println("generating tag manifest");
+            log.debug("generating tag manifest");
             
             completer.setClearExistingTagManifests(true);
             completer.setGenerateTagManifest(true);
@@ -854,7 +850,7 @@ public class DefaultBag {
     public void removePayloadDirectory(String fileName) {
         changeToDirty();
         isComplete(Status.UNKNOWN);
-        System.out.println("DefaultBag::removePayloadDirectory('"+fileName+"')");        
+        log.debug("DefaultBag::removePayloadDirectory('"+fileName+"')");        
         bilBag.removePayloadDirectory(fileName);
     }
     public Collection<BagFile> getPayload() {

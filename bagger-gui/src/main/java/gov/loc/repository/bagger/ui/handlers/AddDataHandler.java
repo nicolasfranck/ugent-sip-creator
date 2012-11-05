@@ -10,7 +10,6 @@ import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
@@ -72,7 +71,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
 
         if (option == JFileChooser.APPROVE_OPTION) {
             
-            BusyIndicator.showAt(SwingUtils.getFrame());
+            SwingUtils.ShowBusy();            
             
             File[] files = fc.getSelectedFiles();
             String message = ApplicationContextUtil.getMessage("bag.message.filesadded");
@@ -93,8 +92,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
             bagView.completeExecutor.setEnabled(false);
             bagView.completeBagHandler.setEnabled(false);
             
-            BusyIndicator.clearAt(SwingUtils.getFrame());
-            
+            SwingUtils.ShowDone();
             
         }
         /*

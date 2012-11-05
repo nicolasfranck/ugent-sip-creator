@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.SwingUtils;
 
 /*
@@ -13,6 +15,7 @@ import ugent.bagger.helper.SwingUtils;
 
 
 public class Renamer extends AbstractRenamer{
+    private static final Log log = LogFactory.getLog(Renamer.class);    
     private String source;
     private String destination;   
     private int patternFlags = Pattern.CANON_EQ;       
@@ -32,7 +35,7 @@ public class Renamer extends AbstractRenamer{
         try{                        
             sourcePattern = Pattern.compile(source,getPatternFlags());                           
         }catch(Exception e){
-            e.printStackTrace();
+            log.debug(e.getMessage());
         }       
         return sourcePattern;
     }      

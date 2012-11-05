@@ -25,7 +25,6 @@ import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.BagFactory.Version;
@@ -43,7 +42,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.*;
@@ -57,7 +55,6 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
-import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.util.GuiStandardUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -69,7 +66,6 @@ import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
-import ugent.bagger.helper.XSLT;
 import ugent.bagger.workers.LongTask2;
 
 public final class NewBagsDialog extends JDialog implements ActionListener {
@@ -727,7 +723,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         @Override
         protected Object doInBackground() throws Exception {          
             
-            BusyIndicator.showAt(SwingUtils.getFrame());
+            SwingUtils.ShowBusy();
             
             ArrayList<Integer>succeeded = new ArrayList<Integer>();
             int numErrors = 0;
@@ -747,7 +743,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     });
                     SwingUtils.ShowError(null,error);
                     log(error);
-                    BusyIndicator.clearAt(SwingUtils.getFrame());
+                    SwingUtils.ShowDone();                    
                     return null;
                 }
                
@@ -876,7 +872,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 bagView.openBagHandler.openExistingBag(file);
             }
             
-            BusyIndicator.clearAt(SwingUtils.getFrame());
+            SwingUtils.ShowDone();            
             
             return null;
         }      
@@ -897,7 +893,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(SwingUtils.getFrame());
+            SwingUtils.ShowBusy();            
             
             ArrayList<File>succeeded = new ArrayList<File>();
             int numErrors = 0;
@@ -1043,7 +1039,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             });
             String reportLog = Context.getMessage("report.log");
 
-            SwingUtils.ShowMessage(null,report+"\n"+reportLog);
+            SwingUtils.ShowMessage(Context.getMessage("report.title"),report+"\n"+reportLog);
             
             //open laatste geslaagde bagit
             if(succeeded.size() > 0){                                
@@ -1051,7 +1047,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 bagView.openBagHandler.openExistingBag(file);                                    
             }
             
-            BusyIndicator.clearAt(SwingUtils.getFrame());
+            SwingUtils.ShowDone();
          
             return null;
         }               

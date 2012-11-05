@@ -14,7 +14,6 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
 
@@ -35,7 +34,7 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
     }
 
     public void removeData() {
-    	BusyIndicator.showAt(SwingUtils.getFrame());
+    	SwingUtils.ShowBusy();
         
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
@@ -110,7 +109,7 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
             bagView.completeBagHandler.setEnabled(false);            
     	}
         
-        BusyIndicator.clearAt(SwingUtils.getFrame());
+        SwingUtils.ShowDone();
     }
 
     @Override

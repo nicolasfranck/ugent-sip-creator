@@ -13,8 +13,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.helper.SwingUtils;
 
@@ -32,9 +30,9 @@ public class OpenBagHandler extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BusyIndicator.showAt(SwingUtils.getFrame());        
+        SwingUtils.ShowBusy();        
         openBag();        
-        BusyIndicator.clearAt(SwingUtils.getFrame());
+        SwingUtils.ShowDone();        
     }
 
     public void openBag() {
@@ -63,8 +61,8 @@ public class OpenBagHandler extends AbstractAction {
         }
     }
 
-    public void openExistingBag(File file) {        
-        BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+    public void openExistingBag(File file) { 
+        SwingUtils.ShowBusy();        
         
         BagView bagView = BagView.getInstance();        
     	bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
@@ -78,8 +76,8 @@ public class OpenBagHandler extends AbstractAction {
             ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
         }catch(Exception ex){        
             ApplicationContextUtil.addConsoleMessage("Failed to create bag: " + ex.getMessage());    	                
-            log.debug(ex.getMessage());                                     
-            BusyIndicator.clearAt(SwingUtils.getFrame());            
+            log.debug(ex.getMessage());    
+            SwingUtils.ShowDone();            
     	    return;
         }
         
@@ -164,6 +162,6 @@ public class OpenBagHandler extends AbstractAction {
         bagInfoInputPane.setMets(mets);
         bagInfoInputPane.getMetsPanel().reset(mets);
         
-        BusyIndicator.clearAt(SwingUtils.getFrame());
+        SwingUtils.ShowDone();
     }    
 }

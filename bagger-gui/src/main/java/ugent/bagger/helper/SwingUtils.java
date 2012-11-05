@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.statusbar.StatusBar;
+import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.dialogs.ReportDialog;
 
 
@@ -203,5 +204,11 @@ public class SwingUtils {
         }
        
         return null;
+    }
+    public static void ShowBusy(){
+        BusyIndicator.showAt(getFrame());
+    }
+    public static void ShowDone(){
+        BusyIndicator.clearAt(getFrame());
     }
 }

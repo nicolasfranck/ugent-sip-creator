@@ -11,7 +11,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import javax.swing.*;
-import org.springframework.richclient.progress.BusyIndicator;
 import org.w3c.dom.Document;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
@@ -22,7 +21,6 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.helper.XSLT;
 import ugent.bagger.tables.EditMdSecPropertiesTable;
-import ugent.bagger.tables.MdSecPropertiesTable;
 
 /**
  *
@@ -69,8 +67,11 @@ public final class XMLCrosswalkDialog extends JDialog{
                 if(file == null || transformFromNamespace == null || transformToNamespace == null){
                     return;
                 }
+                
                 System.out.println("XMLCrosswalkDialog::okButton::actionPerformed through the gates");
-                BusyIndicator.showAt(SwingUtils.getFrame());
+                
+                SwingUtils.ShowBusy();
+                
                 try{
                     
                     Document sourceDoc = XML.XMLToDocument(file);
@@ -100,8 +101,11 @@ public final class XMLCrosswalkDialog extends JDialog{
                     JOptionPane.showMessageDialog(null,e.getMessage());
                     e.printStackTrace();
                 }
+                
                 XMLCrosswalkDialog.this.dispose();
-                BusyIndicator.clearAt(SwingUtils.getFrame());
+                
+                SwingUtils.ShowDone();
+                
                 System.out.println("XMLCrosswalkDialog::okButton::actionPerformed end");
             }            
         });
@@ -138,7 +142,9 @@ public final class XMLCrosswalkDialog extends JDialog{
                     JFileChooser.FILES_ONLY,
                     false
                 );
-                BusyIndicator.showAt(SwingUtils.getFrame());
+                
+                SwingUtils.ShowBusy();
+                
                 if(selectedFiles.length > 0){
                     try{                       
                         Document document = XML.XMLToDocument(selectedFiles[0]);
@@ -192,7 +198,9 @@ public final class XMLCrosswalkDialog extends JDialog{
                         JOptionPane.showMessageDialog(XMLCrosswalkDialog.this,e.getMessage());                                               
                     }                    
                 }
-                BusyIndicator.clearAt(SwingUtils.getFrame());
+                
+                SwingUtils.ShowDone();
+                
             }            
         });
         filePanel.add(fileLabel);
