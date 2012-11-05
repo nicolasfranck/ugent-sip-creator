@@ -29,8 +29,7 @@ public class CSVWizardPage1 extends AbstractWizardPage {
         return getCsv1Panel();
     }   
     @Override
-    public boolean canFlipToNextPage(){           
-        //firePropertyChange (DialogPage.PAGE_COMPLETE_PROPERTY, null, null);
+    public boolean canFlipToNextPage(){                   
         return !getCsv1Panel().getCsvParseParamsForm().hasErrors();
     }
 }

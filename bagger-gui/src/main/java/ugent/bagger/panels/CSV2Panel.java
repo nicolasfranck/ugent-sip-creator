@@ -4,7 +4,7 @@ package ugent.bagger.panels;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +13,17 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.springframework.richclient.progress.BusyIndicator;
+import org.w3c.dom.Document;
 import ugent.bagger.helper.Beans;
 import ugent.bagger.helper.VelocityUtils;
+import ugent.bagger.helper.XML;
 
 /**
  *
@@ -31,9 +36,18 @@ public class CSV2Panel extends JPanel{
     private HashMap<String,String>record = new HashMap<String,String>();
     private JTextArea textArea;
     private JComboBox templateComboBox;
-    private HashMap<String,HashMap<String,String>>velocityTemplates;
+    private HashMap<String,HashMap<String,String>>velocityTemplates;    
+    private ActionListener showListener = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            BusyIndicator.showAt(CSV2Panel.this);                
+            showResult();
+            BusyIndicator.clearAt(CSV2Panel.this);                
+        }        
+    };
 
-    public HashMap<String, HashMap<String, String>> getVelocityTemplates() {
+    public HashMap<String, HashMap<String, String>> getVelocityTemplates() {        
+                
         if(velocityTemplates == null){
             velocityTemplates = (HashMap<String,HashMap<String,String>>) Beans.getBean("velocityTemplates");
         }
@@ -45,9 +59,10 @@ public class CSV2Panel extends JPanel{
             ArrayList<VelocityTemplate>data = new ArrayList<VelocityTemplate>();
             for(Entry<String,HashMap<String,String>> entry:getVelocityTemplates().entrySet()){
                 HashMap<String,String> value = entry.getValue();
-                data.add(new VelocityTemplate(value.get("name"),value.get("path")));
+                data.add(new VelocityTemplate(value.get("name"),value.get("path"),value.get("xsd")));
             }
             templateComboBox = new JComboBox(data.toArray());
+            templateComboBox.addActionListener(showListener);
         }
         return templateComboBox;
     }
@@ -67,8 +82,14 @@ public class CSV2Panel extends JPanel{
     public void init(){
         setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));        
         add(getTemplateComboBox());
-        add(getTextArea());
+        add(new JScrollPane(getTextArea()));
         add(createButtonPanel());              
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                showListener.actionPerformed(null);
+            }            
+        });
     } 
       
     public JPanel createButtonPanel(){
@@ -84,23 +105,44 @@ public class CSV2Panel extends JPanel{
                 CSV2Panel.this.firePropertyChange("ok",null,null);
             }        
         });        
-        testButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                showResult();
-            }        
-        });
+        
+                
+        testButton.addActionListener(showListener);        
         return panel;
     } 
     protected void showResult() {
         try{
+            
+            //vul record in in template
             VelocityTemplate vt = (VelocityTemplate) getTemplateComboBox().getSelectedItem();
             VelocityEngine ve = VelocityUtils.getVelocityEngine();
-            Template template = ve.getTemplate(vt.getPath());
-            VelocityContext vcontext = new VelocityContext(getRecord());
+            Template template = ve.getTemplate(vt.getPath());            
+            HashMap<String,Object>r = new HashMap<String,Object>();
+            
+            System.out.println("record: "+getRecord());
+            
+            r.put("record",getRecord());
+            VelocityContext vcontext = new VelocityContext(r);
             StringWriter writer = new StringWriter();
-            template.merge(vcontext,writer);
-            getTextArea().setText(writer.toString());
+            template.merge(vcontext,writer);                        
+            
+            String output = writer.toString();
+            
+            //zet xml om naar w3c.document
+            Document doc = XML.XMLToDocument(new StringReader(output));
+            
+            //valideer            
+            /*
+            if(vt.getXsd() != null && !vt.getXsd().isEmpty()){
+                URL url = Context.getResource(vt.getXsd());                
+                XML.validate(doc,url);
+            }*/
+            
+            //pretty print naar output
+            StringWriter out = new StringWriter();
+            XML.DocumentToXML(doc,out,true);
+            getTextArea().setText(out.toString());
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -109,15 +151,23 @@ public class CSV2Panel extends JPanel{
     private class VelocityTemplate {
         private String name;
         private String path;
-        public VelocityTemplate(String name,String path){
+        private String xsd;
+        public VelocityTemplate(String name,String path,String xsd){
             this.name = name;
             this.path = path;
+            this.xsd = xsd;
         }
         public String getName() {
             return name;
         }
         public String getPath() {
             return path;
+        }
+        public String getXsd() {
+            return xsd;
+        }
+        public void setXsd(String xsd) {
+            this.xsd = xsd;
         }        
         @Override
         public String toString(){

@@ -13,12 +13,9 @@ import org.springframework.richclient.wizard.AbstractWizard;
 public class CSVWizard extends AbstractWizard{
          
     @Override
-    public void addPages(){
-  
+    public void addPages(){        
         CSVWizardPage1 csv1WizardPage = new CSVWizardPage1("page1");        
-        final CSVWizardPage2 csv2WizardPage = new CSVWizardPage2("page1");        
-        
-        
+        final CSVWizardPage2 csv2WizardPage = new CSVWizardPage2("page1");                        
         csv1WizardPage.getCsv1Panel().addPropertyChangeListener("record",new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
@@ -31,11 +28,9 @@ public class CSVWizard extends AbstractWizard{
                     record.put(entry.getKey(),entry.getValue());
                 }
             }
-        });
-        
-        addPage(csv2WizardPage);
+        });        
         addPage(csv1WizardPage);
-        
+        addPage(csv2WizardPage);
     }
 
     @Override

@@ -17,7 +17,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
   <build>
+    
    <plugins>
+   
       <!--test-start-->
       <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
@@ -50,21 +52,22 @@
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-resources</artifactId>
-      <version>${richclient.version}</version>
+      <version>1.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-core</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>spring-beans</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-binding</artifactId>
-      <version>${richclient.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.richclient</groupId>
-      <artifactId>spring-richclient-form</artifactId>
       <version>${richclient.version}</version>
     </dependency>
     <dependency>
@@ -76,12 +79,15 @@
           <artifactId>forms</artifactId>
           <groupId>com.jgoodies</groupId>          
         </exclusion>
+        <exclusion>
+          <artifactId>spring-richclient-form</artifactId>
+          <groupId>org.springframework.richclient</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-beans</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
       </exclusions>
-    </dependency>    
-    <dependency>
-      <groupId>org.springframework.richclient</groupId>
-      <artifactId>spring-richclient-jdk5</artifactId>
-      <version>${richclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.richclient</groupId>
@@ -91,27 +97,33 @@
     <dependency>
       <groupId>org.springframework.richclient</groupId>
       <artifactId>spring-richclient-sandbox</artifactId>
-      <version>${richclient.version}</version>
+      <version>1.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>${spring.version}</version>
+      <version>2.5.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>${spring.version}</version>
+      <version>2.5.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
+      <version>2.5.5</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
       <version>${spring.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>spring-beans</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.jgoodies</groupId>
@@ -147,55 +159,15 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>jgoodies</groupId>
-      <artifactId>forms</artifactId>
-      <version>1.0.5</version>
-    </dependency>
-    <dependency>
-      <groupId>spring</groupId>
-      <artifactId>spring-aop</artifactId>
-      <version>1.0.2</version>
-    </dependency>
-    <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>1.2.17</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
-      <version>1.4.1</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpmime</artifactId>
-      <version>4.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.martiansoftware</groupId>
-      <artifactId>jsap</artifactId>
-      <version>2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>jaxen</groupId>
-      <artifactId>jaxen</artifactId>
-      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>classworlds</groupId>
       <artifactId>classworlds</artifactId>
       <version>1.1</version>
       <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-exec</artifactId>
-      <version>1.1</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -208,21 +180,15 @@
       <version>3.1</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant</artifactId>
-      <version>1.8.1</version>
-      <type>jar</type>
-    </dependency>
-    <dependency>
       <groupId>gov.loc</groupId>
       <artifactId>bagit</artifactId>
       <version>3.13</version>
-    </dependency>
-    <dependency>
-      <groupId>org.dspace</groupId>
-      <artifactId>dspace-sword-client</artifactId>
-      <version>1.8.2</version>
-      <type>pom</type>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging-api</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.velocity</groupId>
@@ -233,6 +199,11 @@
       <groupId>net.sf.supercsv</groupId>
       <artifactId>super-csv</artifactId>
       <version>2.0.0-beta-1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.swinglabs</groupId>
+      <artifactId>swingx</artifactId>
+      <version>1.6.1</version>
     </dependency>
   </dependencies>
 

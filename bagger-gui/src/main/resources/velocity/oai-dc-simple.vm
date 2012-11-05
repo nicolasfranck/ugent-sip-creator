@@ -1,9 +1,9 @@
-<oai_dc:dc xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
+<oai_dc:dc xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	#set ( $fields = ["title","subject","rights","identifier","relation","coverage","description","date","language","type","creator","publisher"] )
 	#foreach ( $field in $fields )        
 		#set ($dc = "DC-" + $field.substring(0,1).toUpperCase() + $field.substring(1).toLowerCase())
-        #if ( ${$dc} )
-            <dc:$field>${$dc}</dc:$field>
+        #if ( $record.containsKey($dc) )
+            <dc:$field>$record.get($dc)</dc:$field>
         #end
 	#end
 </oai_dc:dc>

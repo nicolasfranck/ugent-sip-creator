@@ -654,17 +654,12 @@
     <util:map map-class="java.util.HashMap" id="velocity">
         <entry key="properties" value="velocity.properties" />
     </util:map>
-    <util:map map-class="java.util.HashMap" id="velocityTemplates">
-        <entry key="ead-simple">
-            <util:map map-class="java.util.HashMap">
-                <entry key="name" value="EAD simple" />
-                <entry key="path" value="velocity/ead-simple.vm" />
-            </util:map>    
-        </entry>
+    <util:map map-class="java.util.HashMap" id="velocityTemplates">        
         <entry key="oai-dc-simple">
             <util:map map-class="java.util.HashMap">
                 <entry key="name" value="OAI DC simple" />
                 <entry key="path" value="velocity/oai-dc-simple.vm" />
+                <entry key="xsd" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
             </util:map>    
         </entry>
     </util:map>

@@ -10,17 +10,12 @@ import ugent.bagger.panels.CSV2Panel;
  * @author nicolas
  */
 public class CSVWizardPage2 extends AbstractWizardPage {        
-    private CSV2Panel csv2Panel;
-    
+    private CSV2Panel csv2Panel;    
     public CSVWizardPage2(String pageId){
-        super(pageId);
-        System.out.println("CSVWizardPage2()");
+        super(pageId);        
     }
-    
-    
     public CSV2Panel getCsv2Panel() {
-        if(csv2Panel == null){
-            System.out.println("CSVWizardPage2::getCsv2Panel()");
+        if(csv2Panel == null){            
             csv2Panel = new CSV2Panel();
             csv2Panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         }
@@ -30,13 +25,11 @@ public class CSVWizardPage2 extends AbstractWizardPage {
         this.csv2Panel = csv2Panel;
     }    
     @Override
-    protected JComponent createControl() {                
-        System.out.println("CSVWizardPage2::createControl()");
+    protected JComponent createControl() {                        
         return getCsv2Panel();
     }   
     @Override
-    public boolean canFlipToNextPage(){           
-        System.out.println("CSVWizardPage2::canFlipToNextPage()");
-        return true;
+    public boolean canFlipToNextPage(){                   
+        return false;
     }
 }

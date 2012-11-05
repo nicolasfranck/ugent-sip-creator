@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -75,12 +77,17 @@ public class CSV1Panel extends JPanel{
     }
     public CSVParseParamsForm getCsvParseParamsForm() {
         if(csvParseParamsForm == null){
-            csvParseParamsForm = new CSVParseParamsForm(getCsvParseParams());             
-        }
+            csvParseParamsForm = new CSVParseParamsForm(getCsvParseParams());                                     
+            csvParseParamsForm.addFormValueChangeListener("files",new PropertyChangeListener(){
+                @Override
+                public void propertyChange(PropertyChangeEvent pce) {
+                    reloadCSVTable();
+                }                
+            });
+        }   
         return csvParseParamsForm;
     }
-    public void reloadCSVTable(){        
-       
+    public void reloadCSVTable(){
         if(!getCsvParseParamsForm().hasErrors()){
             getCsvParseParamsForm().commit();
             reloadDataCSVTable();
@@ -101,8 +108,7 @@ public class CSV1Panel extends JPanel{
             public void actionPerformed(ActionEvent ae) {
                 CSV1Panel.this.firePropertyChange("ok",null,null);
             }        
-        });  
-        
+        });         
         
         testButton.addActionListener(new ActionListener(){
             @Override
