@@ -5,12 +5,14 @@ import javax.swing.JFileChooser;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.richclient.form.binding.Binding;
+import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.FileSelectBinding;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.params.CSVParseParams;
+import ugent.bagger.params.BagInfoImportParams;
 
 
 
@@ -18,22 +20,24 @@ import ugent.bagger.params.CSVParseParams;
  *
  * @author nicolas
  */
-public class CSVParseParamsForm extends AbstractForm{
+public class BagInfoImportForm extends AbstractForm{
     
-    public CSVParseParamsForm(CSVParseParams csvParseParams){
-        this(FormModelHelper.createFormModel(csvParseParams,"csvParseParamsForm"));
+    public BagInfoImportForm(BagInfoImportParams bagInfoImportParams){
+        this(FormModelHelper.createFormModel(bagInfoImportParams,"bagInfoImportForm"));
     }
-    public CSVParseParamsForm(FormModel formModel){
+    public BagInfoImportForm(FormModel formModel){
         super(formModel);       
     }    
     @Override
     protected JComponent createFormControl() {    
-        TableFormBuilder builder = new TableFormBuilder(getBindingFactory());        
+        
+        SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
+        TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");   
         
         JFileChooser fileChooser = SwingUtils.createFileChooser(
-            "CSV",
-            new FileExtensionFilter(new String [] {"csv"},Context.getMessage("csvParseParamsForm.fileFilter.label"),true),
+            "bag-info.txt",
+            new FileExtensionFilter(new String [] {"txt"},Context.getMessage("bagInfoImportForm.fileFilter.label"),true),
             JFileChooser.FILES_ONLY,false,JFileChooser.OPEN_DIALOG
         );
         FileSelectBinding fileSelectBinding = new FileSelectBinding(
@@ -41,23 +45,16 @@ public class CSVParseParamsForm extends AbstractForm{
             "files",
             fileChooser,
             "%s",
-            Context.getMessage("csvParseParamsForm.files.buttonText"),
+            Context.getMessage("bagInfoImportForm.files.buttonText"),
             SwingUtils.getFrame()
         );
         builder.add(fileSelectBinding);        
         builder.row();
-        
-        String [] fields = {
-            "delimiterChar","quoteChar"
-        };        
-        
-        for(String field:fields){
-            builder.add(field);
-            builder.row();
-        }
-        
-        builder.add("surroundingSpacesNeedQuotes");
+       
+        Binding bagInfoConverterBinding = bf.createBoundComboBox("",BagInfoImportParams.BagInfoConverter.values());
+        builder.add(bagInfoConverterBinding);
         builder.row();
+       
         return builder.getForm();
     }
 }

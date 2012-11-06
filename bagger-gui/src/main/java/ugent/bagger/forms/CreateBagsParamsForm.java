@@ -15,6 +15,7 @@ import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.FileSelectBinding;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.CreateBagsParams;
 
@@ -38,7 +39,7 @@ public class CreateBagsParamsForm extends AbstractForm{
         CreateBagsParams createBagParams = (CreateBagsParams) getFormObject();
         
         JFileChooser fileChooser = SwingUtils.createFileChooser(null,null,JFileChooser.DIRECTORIES_ONLY,true,JFileChooser.OPEN_DIALOG);        
-        Binding fileSelectBinding = new FileSelectBinding(getFormModel(),"directories",fileChooser,"%s geselecteerd",SwingUtils.getFrame());        
+        Binding fileSelectBinding = new FileSelectBinding(getFormModel(),"directories",fileChooser,"%s geselecteerd",Context.getMessage("csvParseParamsForm.files.buttonText"),SwingUtils.getFrame());        
         builder.add(fileSelectBinding);
         builder.row();
 
@@ -57,7 +58,7 @@ public class CreateBagsParamsForm extends AbstractForm{
         builder.row();
         
         fileChooser = SwingUtils.createFileChooser(null,null,JFileChooser.DIRECTORIES_ONLY,false,JFileChooser.OPEN_DIALOG);        
-        final Binding outputDirBinding = new FileSelectBinding(getFormModel(),"outputDir",fileChooser,"%s geselecteerd",SwingUtils.getFrame());                        
+        final Binding outputDirBinding = new FileSelectBinding(getFormModel(),"outputDir",fileChooser,"%s geselecteerd",Context.getMessage("csvParseParamsForm.files.buttonText"),SwingUtils.getFrame());                        
         SwingUtils.setJComponentEnabled(outputDirBinding.getControl(),!createBagParams.isBagInPlace());
         builder.add(outputDirBinding);
         builder.row();

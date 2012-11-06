@@ -16,18 +16,10 @@ public class CSVParseParams {
     private boolean surroundingSpacesNeedQuotes = CsvPreference.STANDARD_PREFERENCE.isSurroundingSpacesNeedQuotes();
     private ArrayList<File> files;
     
-    private File testFile;
-
-    public File getTestFile() {
-        return testFile;
-    }
-
-    public void setTestFile(File testFile) {
-        this.testFile = testFile;
-    }    
-    
-
     public ArrayList<File> getFiles() {
+        if(files == null){
+            files = new ArrayList<File>();
+        }
         return files;
     }
     public void setFiles(ArrayList<File> files) {

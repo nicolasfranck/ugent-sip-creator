@@ -1,5 +1,6 @@
 package ugent.bagger.bindings;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -22,12 +23,14 @@ public final class FileSelectBinding extends CustomBinding{
     private JFileChooser fileChooser;    
     private JTextField field;
     private Component parent;
-    private String template;
+    private String template;    
+    private String buttonText = "select ..";
     
-    public FileSelectBinding(FormModel formModel, String formPropertyPath,JFileChooser fileChooser,String template,Component parent){
+    public FileSelectBinding(FormModel formModel, String formPropertyPath,JFileChooser fileChooser,String template,String buttonText,Component parent){
         super(formModel,formPropertyPath,ArrayList.class);   
         this.fileChooser = fileChooser;
         this.template = template;
+        this.buttonText = buttonText;
         this.parent = parent;
     }
 
@@ -47,7 +50,7 @@ public final class FileSelectBinding extends CustomBinding{
                     fieldListener();
                 }
                 
-            });
+            });            
         }
         return field;
     }
@@ -55,7 +58,6 @@ public final class FileSelectBinding extends CustomBinding{
         if(!getControl().isEnabled()){
             return;
         }
-
         int freturn = fileChooser.showOpenDialog(parent);
         File [] files = {};
         if(freturn == JFileChooser.APPROVE_OPTION) {
@@ -80,48 +82,44 @@ public final class FileSelectBinding extends CustomBinding{
     protected void valueModelChanged(Object o){
         ArrayList<File>list = (ArrayList<File>)o;        
         
-        if(list == null || list.size() == 0){
+        if(list == null || list.isEmpty()){
             field.setText(String.format(getTemplate(),0));
         }else{
             String t = list.size() > 1 ? String.format(getTemplate(),list.size()):list.get(0).getAbsolutePath();
             field.setText(t);        
         }
-        field.invalidate();
-        
+        field.invalidate();        
     }
     @Override
     protected JComponent doBindControl() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        FlowLayout layout = new FlowLayout(FlowLayout.LEFT,0,0);        
+        JPanel panel = new JPanel(layout);
         panel.add(getField());
-        JButton browseButton = new JButton("..");
+        JButton browseButton = new JButton(buttonText);
+        
         browseButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 fieldListener();
             }
         });
-        panel.add(browseButton);
+        panel.add(browseButton);        
         return panel;        
     }
-
     @Override
     protected void readOnlyChanged() {        
     }
-
     @Override
     protected void enabledChanged(){        
         
-    }    
-
+    }
     public String getTemplate() {
         if(template == null){
             template = "%s selected";
         }
         return template;
     }
-
     public void setTemplate(String template) {
         this.template = template;
-    }
-    
+    }    
 }

@@ -1,5 +1,7 @@
 package ugent.bagger.importers;
 
+import ugent.bagger.helper.Context;
+
 /**
  *
  * @author nicolas
@@ -12,6 +14,11 @@ public enum ImportType {
     }
     @Override
     public String toString(){
-        return c;
+        String out = c;
+        try{
+            String formatted = Context.getMessage(c);
+            out = formatted != null ? formatted:c;
+        }catch(Exception e){}
+        return out; 
     }
 }

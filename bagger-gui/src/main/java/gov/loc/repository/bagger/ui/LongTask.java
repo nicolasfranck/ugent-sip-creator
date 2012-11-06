@@ -14,7 +14,7 @@ public class LongTask implements ProgressListener {
     private ProgressMonitor progressMonitor;    
     private String activityMonitored;
 
-    public LongTask() {
+    public LongTask() {       
         //Compute length of task...
         //In a real program, this would figure out
         //the number of bytes to read or whatever.

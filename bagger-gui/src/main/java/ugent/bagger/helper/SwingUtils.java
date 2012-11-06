@@ -3,7 +3,6 @@ package ugent.bagger.helper;
 import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -11,8 +10,15 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import javax.accessibility.AccessibleContext;
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTree;
+import javax.swing.ProgressMonitor;
+
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -21,7 +27,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.statusbar.StatusBar;
 import org.springframework.richclient.progress.BusyIndicator;
-import ugent.bagger.dialogs.ReportDialog;
 
 
 /**
@@ -91,19 +96,7 @@ public class SwingUtils {
         ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                                
         progressMonitor.setMillisToDecideToPopup(0);
         progressMonitor.setMillisToPopup(0);        
-        progressMonitor.setProgress(0);  
-        
-        AccessibleContext ac = progressMonitor.getAccessibleContext();
-        JDialog dialog = (JDialog)ac.getAccessibleParent();
-        JPanel panel = (JPanel) dialog.getContentPane();
-   
-        for(int i = 0;i < panel.getComponentCount();i++){            
-            Component c = panel.getComponents()[i];
-            if(c instanceof JButton){
-                c.setVisible(true);
-            }
-        }
-        
+        progressMonitor.setProgress(0);        
         
         worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
         if(listeners != null){
@@ -211,4 +204,5 @@ public class SwingUtils {
     public static void ShowDone(){
         BusyIndicator.clearAt(getFrame());
     }
+    
 }

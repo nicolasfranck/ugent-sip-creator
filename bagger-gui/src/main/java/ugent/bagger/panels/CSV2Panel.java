@@ -4,7 +4,6 @@ package ugent.bagger.panels;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,15 +14,12 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.w3c.dom.Document;
 import ugent.bagger.helper.Beans;
-import ugent.bagger.helper.VelocityUtils;
+import ugent.bagger.helper.CSVUtils;
 import ugent.bagger.helper.XML;
+import ugent.bagger.params.VelocityTemplate;
 
 /**
  *
@@ -45,7 +41,10 @@ public class CSV2Panel extends JPanel{
             BusyIndicator.clearAt(CSV2Panel.this);                
         }        
     };
-
+    
+    public ActionListener getShowListener() {
+        return showListener;
+    }    
     public HashMap<String, HashMap<String, String>> getVelocityTemplates() {        
                 
         if(velocityTemplates == null){
@@ -83,13 +82,7 @@ public class CSV2Panel extends JPanel{
         setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));        
         add(getTemplateComboBox());
         add(new JScrollPane(getTextArea()));
-        add(createButtonPanel());              
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                showListener.actionPerformed(null);
-            }            
-        });
+        add(createButtonPanel());                      
     } 
       
     public JPanel createButtonPanel(){
@@ -109,34 +102,15 @@ public class CSV2Panel extends JPanel{
                 
         testButton.addActionListener(showListener);        
         return panel;
-    } 
+    }    
     protected void showResult() {
         try{
             
             //vul record in in template
             VelocityTemplate vt = (VelocityTemplate) getTemplateComboBox().getSelectedItem();
-            VelocityEngine ve = VelocityUtils.getVelocityEngine();
-            Template template = ve.getTemplate(vt.getPath());            
-            HashMap<String,Object>r = new HashMap<String,Object>();
-            
-            System.out.println("record: "+getRecord());
-            
-            r.put("record",getRecord());
-            VelocityContext vcontext = new VelocityContext(r);
-            StringWriter writer = new StringWriter();
-            template.merge(vcontext,writer);                        
-            
-            String output = writer.toString();
             
             //zet xml om naar w3c.document
-            Document doc = XML.XMLToDocument(new StringReader(output));
-            
-            //valideer            
-            /*
-            if(vt.getXsd() != null && !vt.getXsd().isEmpty()){
-                URL url = Context.getResource(vt.getXsd());                
-                XML.validate(doc,url);
-            }*/
+            Document doc = CSVUtils.templateToDocument(vt,getRecord());            
             
             //pretty print naar output
             StringWriter out = new StringWriter();
@@ -145,33 +119,6 @@ public class CSV2Panel extends JPanel{
             
         }catch(Exception e){
             e.printStackTrace();
-        }
-        
-    }
-    private class VelocityTemplate {
-        private String name;
-        private String path;
-        private String xsd;
-        public VelocityTemplate(String name,String path,String xsd){
-            this.name = name;
-            this.path = path;
-            this.xsd = xsd;
-        }
-        public String getName() {
-            return name;
-        }
-        public String getPath() {
-            return path;
-        }
-        public String getXsd() {
-            return xsd;
-        }
-        public void setXsd(String xsd) {
-            this.xsd = xsd;
         }        
-        @Override
-        public String toString(){
-            return name;
-        }
-    }
+    }    
 }

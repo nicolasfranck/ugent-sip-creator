@@ -1,7 +1,9 @@
 package ugent.bagger.wizards;
 
+import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import org.springframework.richclient.wizard.AbstractWizardPage;
 import ugent.bagger.panels.CSV2Panel;
 
@@ -17,6 +19,7 @@ public class CSVWizardPage2 extends AbstractWizardPage {
     public CSV2Panel getCsv2Panel() {
         if(csv2Panel == null){            
             csv2Panel = new CSV2Panel();
+            csv2Panel.setPreferredSize(new Dimension(500,400));
             csv2Panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         }
         return csv2Panel;
@@ -25,11 +28,20 @@ public class CSVWizardPage2 extends AbstractWizardPage {
         this.csv2Panel = csv2Panel;
     }    
     @Override
-    protected JComponent createControl() {                        
+    protected JComponent createControl() {                                
         return getCsv2Panel();
     }   
     @Override
     public boolean canFlipToNextPage(){                   
         return false;
+    }
+    @Override
+    public void onAboutToShow(){
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {                
+                getCsv2Panel().getShowListener().actionPerformed(null);                
+            }            
+        });
     }
 }

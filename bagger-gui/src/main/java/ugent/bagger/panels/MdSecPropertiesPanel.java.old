@@ -113,31 +113,17 @@ public class MdSecPropertiesPanel extends JPanel{
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
-        
-        
-        
         //creatie buttons
-        addButton = new JButton("xml..");                
+        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                
         importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
         importButton.setToolTipText(Context.getMessage("MdSecPanel.importButton.toolTip"));
-        removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));          
+        removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));  
+        crosswalkButton = new JButton(Context.getMessage("MdSecPanel.crosswalkButton.label"));                
         
-        JMenuItem addXMLMenuItem = new JMenuItem("add xml..");
-        JMenuItem crosswalkMenuItem = new JMenuItem(Context.getMessage("MdSecPanel.crosswalkButton.label"));
-        
-        final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.add(addXMLMenuItem);
-        popupMenu.add(crosswalkMenuItem);
         
         
         //action listeners
-        addButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                popupMenu.show(addButton,0,addButton.getHeight());
-            }
-        });
-        crosswalkMenuItem.addActionListener(new ActionListener(){
+        crosswalkButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 JDialog dialog = new XMLCrosswalkDialog(SwingUtils.getFrame(),true);                
@@ -148,7 +134,14 @@ public class MdSecPropertiesPanel extends JPanel{
             }
             
         });
-        addXMLMenuItem.addActionListener(new ActionListener(){
+        removeButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                getEditDmdSecPropertiesTable().deleteSelectedMdSec();
+                getEditDmdSecPropertiesTable().refresh();
+            }        
+        });
+        addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){                                
                 File [] files = SwingUtils.chooseFiles(
@@ -162,14 +155,6 @@ public class MdSecPropertiesPanel extends JPanel{
                 }                
             }
         });
-        removeButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                getEditDmdSecPropertiesTable().deleteSelectedMdSec();
-                getEditDmdSecPropertiesTable().refresh();
-            }        
-        });
-        
         importButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {                
@@ -184,11 +169,13 @@ public class MdSecPropertiesPanel extends JPanel{
         //default niet ingeschakeld
         addButton.setEnabled(false);
         removeButton.setEnabled(false);
-        importButton.setEnabled(false);        
+        importButton.setEnabled(false);
+        crosswalkButton.setEnabled(false);
         
         //voeg toe
         panel.add(addButton);                
-        panel.add(importButton);         
+        panel.add(importButton); 
+        panel.add(crosswalkButton);
         panel.add(removeButton); 
         
         return panel;

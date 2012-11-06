@@ -3,11 +3,19 @@ package ugent.bagger.helper;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.supercsv.io.CsvMapReader;
 import org.supercsv.io.ICsvMapReader;
 import org.supercsv.prefs.CsvPreference;
+import org.w3c.dom.Document;
+import ugent.bagger.params.VelocityTemplate;
 
 /**
  *
@@ -49,5 +57,20 @@ public class CSVUtils {
     }
     public static CsvPreference createCSVPreference(char quote,char del,String eol,boolean surroundingSpacesNeedQuotes){                
         return new CsvPreference.Builder(quote,del,eol).surroundingSpacesNeedQuotes(true).build();
+    }
+    public static Document templateToDocument(VelocityTemplate vt,HashMap<String,String>record) throws IOException, ResourceNotFoundException, ParseErrorException, Exception{
+        VelocityEngine ve = VelocityUtils.getVelocityEngine();
+        Template template = ve.getTemplate(vt.getPath());            
+        HashMap<String,Object>r = new HashMap<String,Object>();
+
+        r.put("record",record);
+        VelocityContext vcontext = new VelocityContext(r);
+        StringWriter writer = new StringWriter();
+        template.merge(vcontext,writer);                        
+
+        String output = writer.toString();
+
+        //zet xml om naar w3c.document
+        return XML.XMLToDocument(new StringReader(output));
     }
 }
