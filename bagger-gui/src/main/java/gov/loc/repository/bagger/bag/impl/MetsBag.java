@@ -85,7 +85,7 @@ public class MetsBag extends DefaultBag{
         
         //remove ignored files
         if(ignoreFiles != null && ignoreFiles.length > 0){
-            Algorithm pa = resolveAlgorithm(getPayloadManifestAlgorithm());   
+            Algorithm pa = resolveAlgorithm(getPayloadManifestAlgorithm());
             Manifest payloadManifest = bag.getPayloadManifest(pa);
             for(String ignoreFile:ignoreFiles){
                 log.debug("looking for ignoreFile: "+ignoreFile);

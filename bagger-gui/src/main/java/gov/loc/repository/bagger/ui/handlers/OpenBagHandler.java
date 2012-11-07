@@ -7,6 +7,7 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.InfoInputPane;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
+import gov.loc.repository.bagit.utilities.SimpleResult;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
@@ -141,9 +142,9 @@ public class OpenBagHandler extends AbstractAction {
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.updateManifestPane();
     	bagView.enableBagSettings(true);
-        String msgs = bagView.getBag().validateMetadata();
-        if(msgs != null){
-            ApplicationContextUtil.addConsoleMessage(msgs);
+        SimpleResult result = bagView.getBag().validateMetadata();
+        if(!result.isSuccess()){
+            ApplicationContextUtil.addConsoleMessage(result.toString());
         }
         bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
         bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);        

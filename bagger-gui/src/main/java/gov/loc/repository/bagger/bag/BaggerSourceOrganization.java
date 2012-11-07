@@ -1,11 +1,10 @@
 package gov.loc.repository.bagger.bag;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import gov.loc.repository.bagger.Contact;
 import gov.loc.repository.bagger.ProfileField;
 import gov.loc.repository.bagit.BagInfoTxt;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Simple JavaBean domain object representing an organization.

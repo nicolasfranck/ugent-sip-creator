@@ -161,10 +161,13 @@ public final class InfoInputPane extends JTabbedPane {
         //setName("Profile");
         //getBagInfoForm().getControl().setToolTipText(Context.getMessage("infoinputpane.tab.details.help"));
         JComponent bagInfoComponent = getBagInfoForm().getControl();
-        bagInfoComponent.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        bagInfoComponent.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
+        JScrollPane bagInfoComponentScrollPane = new JScrollPane(bagInfoComponent);
+        bagInfoComponentScrollPane.setBorder(null);
+        bagInfoComponentScrollPane.getViewport().setOpaque(false);
         addTab(
             Context.getMessage("infoInputPane.tab.details"),
-            new JScrollPane(bagInfoComponent)
+            bagInfoComponentScrollPane
         );
         //getProfileForm().getControl().setToolTipText("Profile Form");
         

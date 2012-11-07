@@ -663,4 +663,11 @@
             </util:map>    
         </entry>
     </util:map>
+    
+    
+    <util:map id="bagInfoImporters">
+        <entry key="Dublin Core" value="ugent.bagger.importers.NameValueToDCImporter" />   
+        <entry key="Dublin Core (OAI)" value="ugent.bagger.importers.NameValueToOAIDCImporter" />
+    </util:map>
+    
 </beans>

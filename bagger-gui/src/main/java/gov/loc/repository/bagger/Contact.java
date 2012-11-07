@@ -104,22 +104,25 @@ public class Contact {
                     if(contactSendToJson.has(FIELD_JSON_NAME))
                     {
                             JSONObject nameJson = (JSONObject)contactSendToJson.get(FIELD_JSON_NAME);
-                            if(nameJson != null)
-                                    namefield = ProfileField.createProfileField(nameJson, name);
+                            if(nameJson != null) {
+                            namefield = ProfileField.createProfileField(nameJson, name);
+                        }
                     }
 
                     if(contactSendToJson.has(FIELD_JSON_PHONE))
                     {
                             JSONObject phoneJson = (JSONObject)contactSendToJson.get(FIELD_JSON_PHONE);
-                            if(phoneJson != null)
-                                    phonefield = ProfileField.createProfileField(phoneJson, phone);
+                            if(phoneJson != null) {
+                            phonefield = ProfileField.createProfileField(phoneJson, phone);
+                        }
                     }
 
                     if(contactSendToJson.has(FIELD_JSON_EMAIL))
                     {
                             JSONObject emailJson= (JSONObject)contactSendToJson.get(FIELD_JSON_EMAIL);
-                            if(emailJson != null)
-                                    emailfield = ProfileField.createProfileField(emailJson, email);
+                            if(emailJson != null) {
+                            emailfield = ProfileField.createProfileField(emailJson, email);
+                        }
                     }
             }
 

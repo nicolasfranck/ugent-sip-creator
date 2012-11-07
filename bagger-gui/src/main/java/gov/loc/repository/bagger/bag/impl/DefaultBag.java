@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.helper.Context;
 
 public class DefaultBag {
     protected static final Log log = LogFactory.getLog(DefaultBag.class);
@@ -364,8 +365,8 @@ public class DefaultBag {
         String delimToken = "bagit";
         String baseUrl = "";
         try {
-            if (fetchTxt != null) {
-                if (!fetchTxt.isEmpty()) {
+            if(fetchTxt != null){
+                if(!fetchTxt.isEmpty()){
                     FilenameSizeUrl fsu = fetchTxt.get(0);
                     if (fsu != null) {
                         String url = fsu.getUrl();
@@ -380,7 +381,8 @@ public class DefaultBag {
                     }
                 }
             }
-        }catch (Exception e) {
+        }catch (Exception e){
+            log.error(e.getMessage());
         }
         return baseUrl;
     }
@@ -477,16 +479,18 @@ public class DefaultBag {
         return pathList;
     }
 
-    public String addTagFile(File f) {
+    public String addTagFile(File file) {
         changeToDirty();
         isComplete(Status.UNKNOWN);
 
         String message = null;
-        if (f != null) {
+        if (file != null) {
             try {
-                bilBag.addFileAsTag(f);
-            } catch (Exception e) {
-                message = "Error adding file: "+f+" due to: "+e.getMessage();
+                bilBag.addFileAsTag(file);
+            }catch (Exception e){
+                //message = "Error adding file: "+f+" due to: "+e.getMessage();
+                //Nicolas Franck
+                message = Context.getMessage("defaultBag.addTagFile.Exception",new Object [] {file,e.getMessage()});
             }
         }
         return message;
@@ -508,12 +512,12 @@ public class DefaultBag {
                 bilBag = puncher.makeHoley(bilBag,this.getFetch().getBaseURL(), true, true, false);
                 // makeHoley deletes baginfo so put back
                 bilBag.putBagFile(bagInfoTxt);
-                if (manifests != null) {
+                if(manifests != null){
                     for (int i = 0; i < manifests.size(); i++) {
                         bilBag.putBagFile(manifests.get(i));
                     }
                 }
-                if (tags != null) {
+                if(tags != null){
                     for (int i = 0; i < tags.size(); i++) {
                         bilBag.putBagFile(tags.get(i));
                     }
@@ -524,13 +528,28 @@ public class DefaultBag {
         String messages = writeBag(bw);
 
         if(bw.isCancelled()){
-            return "Save cancelled.";
+            return Context.getMessage("defaultBag.saveCancelled");
         }
         return messages;
     }
+    
+    //Nicolas Franck
+    public SimpleResult completeBag(CompleteVerifierImpl completeVerifier) {
+        prepareBilBagInfoIfDirty();
+        
+        SimpleResult result = completeVerifier.verify(bilBag);
 
+        if(completeVerifier.isCancelled()) {
+            isComplete(Status.UNKNOWN);
+            return result;
+        } 
 
+        isComplete(result.isSuccess()? Status.PASS : Status.FAILURE);
+        
+        return result;
+    }
 
+    /*
     public String completeBag(CompleteVerifierImpl completeVerifier) {
         prepareBilBagInfoIfDirty();
 
@@ -539,11 +558,15 @@ public class DefaultBag {
 
         if(completeVerifier.isCancelled()) {
             isComplete(Status.UNKNOWN);
-            return "Completeness check cancelled.";
+            //return "Completeness check cancelled.";
+            //Nicolas Franck
+            return Context.getMessage("defaultBag.checkCompleteCancelled");
         } 
 
         if (!result.isSuccess()) {
-            messages = "Bag is not complete:\n";
+            //messages = "Bag is not complete:\n";
+            //Nicolas Franck
+            messages = Context.getMessage("defaultBag.bagNotComplete")+"\n";
             messages += result.toString();
         }
         isComplete(result.isSuccess()? Status.PASS : Status.FAILURE);
@@ -560,18 +583,31 @@ public class DefaultBag {
                 }
             }catch(Exception ex) {
                 log.debug(ex.getMessage());                
-                String msgs = "ERROR validating bag: \n" + ex.getMessage()+"\n";
-                if (messages != null) {
+                //String msgs = "ERROR validating bag: \n" + ex.getMessage()+"\n";
+                //Nicolas Franck
+                String msgs = Context.getMessage("defaultBag.bagNotValid")+"\n";
+                if(messages != null){
                     messages += msgs;
-                }
-                else {
+                }else {
                     messages = msgs;
                 }
             }
         }
+        
         return messages;
-    }
+    }*/
+    
+    //Nicolas Franck
+    public SimpleResult validateMetadata() {
+        prepareBilBagInfoIfDirty();
 
+        updateStrategy();
+        SimpleResult result = bilBag.verify(bagStrategy);
+        
+        isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
+        return result;
+    }
+    /*
     public String validateMetadata() {
         prepareBilBagInfoIfDirty();
 
@@ -579,26 +615,32 @@ public class DefaultBag {
         updateStrategy();
         SimpleResult result = bilBag.verify(bagStrategy);
         if (result.toString() != null && !result.isSuccess()) {
-            messages = "Bag-info fields are not all present for the project selected.\n";
+            //messages = "Bag-info fields are not all present for the project selected.\n";
+            //Nicolas Franck
+            messages = Context.getMessage("defaultBag.metadataNotValid")+"\n";
             messages += result.toString();
         }
         isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
         return messages;
-    }
-
+    }*/
+    /*
     public String validateBag(ValidVerifierImpl validVerifier) {
         prepareBilBagInfoIfDirty();
 
         String messages = null;
-        SimpleResult result = validVerifier.verify(bilBag);
+        SimpleResult result = validVerifier.verify(bilBag);        
 
         if(validVerifier.isCancelled()) {
             isValid(Status.UNKNOWN);
-            return "Validation check cancelled.";
+            //return "Validation check cancelled.";
+            //Nicolas Franck
+            return Context.getMessage("defaultBag.checkValidCancelled");
         } 
-
+        
         if(!result.isSuccess()){
-            messages = "Bag is not valid:\n";
+            //messages = "Bag is not valid:\n";
+            //Nicolas Franck
+            messages = Context.getMessage("defaultBag.bagNotValid");
             messages += result.toString();
         }
         isValid(result.isSuccess()? Status.PASS : Status.FAILURE);
@@ -617,6 +659,23 @@ public class DefaultBag {
             }
         }
         return messages;
+    }*/
+    //Nicolas Franck
+    public SimpleResult validateBag(ValidVerifierImpl validVerifier) {
+        prepareBilBagInfoIfDirty();
+       
+        SimpleResult result = validVerifier.verify(bilBag);        
+
+        if(validVerifier.isCancelled()) {
+            isValid(Status.UNKNOWN);        
+            return result;
+        } 
+        
+        isValid(result.isSuccess()? Status.PASS : Status.FAILURE);
+        if(result.isSuccess()){
+            isComplete(Status.PASS);
+        }        
+        return result;
     }
 
     protected String fileStripSuffix(String filename) {

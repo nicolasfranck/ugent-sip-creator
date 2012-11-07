@@ -60,16 +60,21 @@ public class RecursiveFileListIterator implements Iterator<File>{
         public Object next() {
             File next = this.files.next();
 
-            if (next.isDirectory()) return new FileIterator(next, this.filter);
-            else return next;
+            if (next.isDirectory()) {
+                return new FileIterator(next, this.filter);
+            }else {
+                return next;
+            }
         }
 
         @Override
         public boolean hasNext() {
-            if (this.files != null)
+            if (this.files != null) {
                 return this.files.hasNext();
-            else
+            }
+            else {
                 return false;
+            }
         }
     }
 }

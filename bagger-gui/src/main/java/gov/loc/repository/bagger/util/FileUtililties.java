@@ -18,16 +18,16 @@ public class FileUtililties {
         String[] files;  // The names of the files in the directory.
         files = dir.list();
         for (int i = 0; i < files.length; i++) {
-                File f;  // One of the files in the directory.
-                f = new File(dir, files[i]);
-                if ( f.isDirectory() ) {
-                        // Call listContents() recursively to
-                        // list the contents of the directory, f.
-                        listContents(f);
-                } else {
-                    // For a regular file, just print the name, files[i].
-                    display("Bag.listContents: " + files[i]);
-                }
+            File f;  // One of the files in the directory.
+            f = new File(dir, files[i]);
+            if ( f.isDirectory() ) {
+                    // Call listContents() recursively to
+                    // list the contents of the directory, f.
+                    listContents(f);
+            } else {
+                // For a regular file, just print the name, files[i].
+                display("Bag.listContents: " + files[i]);
+            }
         }
     } // end listContents()
 

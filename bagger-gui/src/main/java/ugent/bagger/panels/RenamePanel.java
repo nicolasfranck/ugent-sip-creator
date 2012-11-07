@@ -180,7 +180,6 @@ public class RenamePanel extends JPanel{
         getFileTable().clearSort();
         getFileTable().reset(getList(file));                
     }
-
     public void setFileTable(AbstractFileTable fileTable) {
         this.fileTable = fileTable;
     }
@@ -194,8 +193,7 @@ public class RenamePanel extends JPanel{
                 SwingUtils.ShowDone();
             }        
         });        
-    }   
-    
+    } 
     public LazyTreeNode getFileSystemTreeNode() {
         if(fileSystemTreeNode == null){
             //root is geen echte file, eerder een plaatsvervanger die niet mag getoond worden
@@ -243,11 +241,9 @@ public class RenamePanel extends JPanel{
         }
         return fileSystemTreeNode;
     }
-
     public void setFileSystemTreeNode(LazyTreeNode fileSystemTreeNode) {
         this.fileSystemTreeNode = fileSystemTreeNode;
-    }       
-
+    }
     public JTree getFileSystemTree() {
         if(fileSystemTree == null){
             fileSystemTree = new JTree(); 
@@ -427,7 +423,6 @@ public class RenamePanel extends JPanel{
     public void setResultTableModel(DefaultTableModel resultTableModel) {
         this.resultTableModel = resultTableModel;
     }
-    
     public JPanel getNewButtonPanel(){
         return new JPanel(new FlowLayout(FlowLayout.LEFT));
     } 
@@ -445,12 +440,9 @@ public class RenamePanel extends JPanel{
         }
         return renumberButtonPanel;
     }
-
     public void setRenumberButtonPanel(JPanel renumberButtonPanel) {
         this.renumberButtonPanel = renumberButtonPanel;
     }
-    
-    
     public void setRenameButtonPanel(JPanel renameButtonPanel) {
         this.renameButtonPanel = renameButtonPanel;
     }
@@ -463,7 +455,6 @@ public class RenamePanel extends JPanel{
     public void setRenameParams(RenameParams renameParams) {
         this.renameParams = renameParams;
     }
-
     public RenameParamsForm getRenameParamsForm() {
         if(renameParamsForm == null){
             renameParamsForm = new RenameParamsForm(getRenameParams());
@@ -791,8 +782,7 @@ public class RenamePanel extends JPanel{
                 String message = Context.getMessage("RenamePanel.unknownException.message",new Object [] {e.getMessage()});
                 log(message);
                 logger.debug(e.getMessage());
-            }           
-            
+            }
             
             return null;
         }

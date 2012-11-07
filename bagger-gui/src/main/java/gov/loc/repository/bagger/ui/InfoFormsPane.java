@@ -12,9 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import ugent.bagger.filters.FileExtensionFilter;
-import ugent.bagger.helper.ComponentLocation;
 import ugent.bagger.helper.Context;
-import ugent.bagger.helper.SwingUtils;
 
 public final class InfoFormsPane extends JPanel {
     private static final long serialVersionUID = -5988111446773491301L;   

@@ -30,8 +30,8 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
     @Override
     protected Void doInBackground() throws Exception {
         File [] files = ugent.bagger.helper.SwingUtils.chooseFiles(
-            "Select xml file",
-            new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
+            Context.getMessage("TaskAddMdSecFromTransform.fileChooser.title"),
+            new FileExtensionFilter(new String [] {"xml"},Context.getMessage("TaskAddMdSecFromTransform.fileFilter.label"),true),
             JFileChooser.FILES_ONLY,
             true
         );
@@ -106,7 +106,6 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
             succeeded,numErrors
         });
         String reportLog = Context.getMessage("report.log");
-
         SwingUtils.ShowMessage(null,report+"\n"+reportLog);
         
         if(succeeded > 0){

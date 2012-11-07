@@ -16,7 +16,7 @@ import javax.swing.JPanel;
  *
  * @author nicolas
  */
-public class LoadFieldsPanel extends JPanel {
+public final class LoadFieldsPanel extends JPanel {
     private MdSecSourceExecutor mdSecSourceExecutor = new MdSecSourceExecutor();
     
     public LoadFieldsPanel(){

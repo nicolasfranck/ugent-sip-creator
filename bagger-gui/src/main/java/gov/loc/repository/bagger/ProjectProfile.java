@@ -83,7 +83,7 @@ public class ProjectProfile {
         sb.append("Project Id: ");
         sb.append(this.projectId);
         sb.append('\n');
-        sb.append(this.fieldName + '=' + this.fieldValue);
+        sb.append(this.fieldName).append('=').append(this.fieldValue);
         sb.append('\n');
         return sb.toString();
     }

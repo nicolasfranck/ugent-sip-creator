@@ -49,7 +49,7 @@ public class BaggerProfileStore {
             String key = (String) iter.next();
             Profile bagProfile = userProfiles.get(key);
             if(bagProfile.getIsDefault()){
-                    return bagProfile;
+                return bagProfile;
             }
         }
     	return null;

@@ -708,25 +708,6 @@ public class BagView extends DefaultView {
     	context.register("addDataCommand", addDataExecutor);
     	context.register("saveBagCommand", saveBagExecutor);
     	context.register("saveBagAsCommand", saveBagAsExecutor);
-        
-        /*context.register("testCommand",new ActionCommandExecutor(){
-            @Override
-            public void execute() {
-                Monitoring.main(new String [] {});
-            }
-            
-        });*/
-        
-        context.register("MdSecSourceCommand",new MdSecSourceExecutor(){
-            {
-                this.setEnabled(true);
-            }
-        });
-        context.register("CSVCommand",new CSVExecutor(){
-            {
-                this.setEnabled(true);
-            }
-        });
     }
 
     /**

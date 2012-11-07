@@ -17,7 +17,6 @@ import java.util.List;
 import javax.swing.*;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
-import ugent.bagger.dialogs.ImportDialog;
 import ugent.bagger.dialogs.XMLCrosswalkDialog;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.forms.MdSecForm;
@@ -26,6 +25,8 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.tables.DmdSecPropertiesTable;
 import ugent.bagger.tables.EditMdSecPropertiesTable;
+import ugent.bagger.wizards.BagInfoImportWizardDialog;
+import ugent.bagger.wizards.CSVWizardDialog;
 import ugent.bagger.workers.TaskAddMdSecFromFile;
 
 /**
@@ -113,28 +114,25 @@ public class MdSecPropertiesPanel extends JPanel{
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
-        
-        
-        
         //creatie buttons
-        addButton = new JButton("xml..");                
+        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                
         importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
         importButton.setToolTipText(Context.getMessage("MdSecPanel.importButton.toolTip"));
         removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));          
         
-        JMenuItem addXMLMenuItem = new JMenuItem("add xml..");
-        JMenuItem crosswalkMenuItem = new JMenuItem(Context.getMessage("MdSecPanel.crosswalkButton.label"));
+        JMenuItem addXMLMenuItem = new JMenuItem(Context.getMessage("addXMLMenuItem.label"));
+        JMenuItem crosswalkMenuItem = new JMenuItem(Context.getMessage("crosswalkMenuItem.label"));
         
-        final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.add(addXMLMenuItem);
-        popupMenu.add(crosswalkMenuItem);
+        final JPopupMenu xmlPopupMenu = new JPopupMenu();
+        xmlPopupMenu.add(addXMLMenuItem);
+        xmlPopupMenu.add(crosswalkMenuItem);
         
         
         //action listeners
         addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                popupMenu.show(addButton,0,addButton.getHeight());
+                xmlPopupMenu.show(addButton,0,addButton.getHeight());
             }
         });
         crosswalkMenuItem.addActionListener(new ActionListener(){
@@ -152,8 +150,12 @@ public class MdSecPropertiesPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae){                                
                 File [] files = SwingUtils.chooseFiles(
-                    "Select xml file",
-                    new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
+                    Context.getMessage("addXMLMenuItem.fileChooser.title"),
+                    new FileExtensionFilter(
+                        new String [] {"xml"},
+                        Context.getMessage("addXMLMenuItem.fileFilter.label"),
+                        true
+                    ),
                     JFileChooser.FILES_ONLY,
                     true
                 );
@@ -168,23 +170,40 @@ public class MdSecPropertiesPanel extends JPanel{
                 getEditDmdSecPropertiesTable().deleteSelectedMdSec();
                 getEditDmdSecPropertiesTable().refresh();
             }        
+        });        
+        
+        JMenuItem importCSVItem = new JMenuItem(Context.getMessage("importCSVItem.label"));
+        JMenuItem importBagInfoItem = new JMenuItem(Context.getMessage("importBagInfoItem.label"));
+        
+        importCSVItem.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                new CSVWizardDialog().showDialog();
+            }            
         });
         
-        importButton.addActionListener(new ActionListener(){
+        importBagInfoItem.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae) {                
-                JDialog dialog = new ImportDialog(SwingUtils.getFrame(),true);                
-                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);                
-                dialog.setLocationRelativeTo(panel);
-                dialog.pack();
-                dialog.setVisible(true);
-            }
+            public void actionPerformed(ActionEvent ae) {
+                new BagInfoImportWizardDialog().showDialog();
+            }            
         });
+        
+        final JPopupMenu importPopupMenu = new JPopupMenu();
+        importPopupMenu.add(importCSVItem);
+        importPopupMenu.add(importBagInfoItem);
         
         //default niet ingeschakeld
         addButton.setEnabled(false);
         removeButton.setEnabled(false);
         importButton.setEnabled(false);        
+        
+        importButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                importPopupMenu.show(importButton,0,importButton.getHeight());
+            }            
+        });
         
         //voeg toe
         panel.add(addButton);                
@@ -202,7 +221,7 @@ public class MdSecPropertiesPanel extends JPanel{
             public void propertyChange(PropertyChangeEvent pce) {                
                 final BagView bagView = BagView.getInstance();
                 if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){                    
-                    ApplicationContextUtil.addConsoleMessage("adding new mdSec batch");
+                    ApplicationContextUtil.addConsoleMessage(Context.getMessage("mdSecTable.addMdSec.start"));
                 }else if(pce.getPropertyName().equals("log")){
                     ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){

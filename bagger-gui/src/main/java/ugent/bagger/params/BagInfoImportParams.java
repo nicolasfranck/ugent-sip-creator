@@ -2,7 +2,7 @@ package ugent.bagger.params;
 
 import java.io.File;
 import java.util.ArrayList;
-import ugent.bagger.helper.Context;
+import ugent.bagger.helper.MetsUtils;
 
 /**
  *
@@ -10,35 +10,27 @@ import ugent.bagger.helper.Context;
  */
 public class BagInfoImportParams {
     private ArrayList<File>files;
-    private BagInfoConverter bagInfoConverter = BagInfoConverter.DC;
+    private String bagInfoConverter;
 
     public ArrayList<File> getFiles() {
+        if(files == null){
+            files = new ArrayList<File>();
+        }
         return files;
     }
     public void setFiles(ArrayList<File> files) {
         this.files = files;
     }
-    public BagInfoConverter getBagInfoConverter() {
+
+    public String getBagInfoConverter() {
+        if(bagInfoConverter == null){
+            if(MetsUtils.getBagInfoImporters().size() > 0){
+                bagInfoConverter = MetsUtils.getBagInfoImporters().keySet().iterator().next();
+            }
+        }
         return bagInfoConverter;
     }
-    public void setBagInfoConverter(BagInfoConverter bagInfoConverter) {
+    public void setBagInfoConverter(String bagInfoConverter) {
         this.bagInfoConverter = bagInfoConverter;
-    }
-    public static enum BagInfoConverter  {
-        DC("DC"),OAI_DC("OAI-DC");
-        private String c;        
-        private BagInfoConverter(String c){
-            this.c = c;
-        }
-        @Override
-        public String toString(){
-            String out = c;
-            try{
-                String formatted = Context.getMessage(c);
-                out = formatted != null ? formatted:c;
-            }catch(Exception e){}
-            return out; 
-        }
-    }
-    
+    }     
 }

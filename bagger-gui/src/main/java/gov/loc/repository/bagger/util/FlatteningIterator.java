@@ -62,7 +62,9 @@ public class FlatteningIterator implements Iterator{
                 }else if (next instanceof Array){
                     iterators.push(Arrays.asList((Array)next).iterator());
                     moveToNext();
-                }else this.next = next;
+                }else {
+                    this.next = next;
+                }
             }
         }
     }

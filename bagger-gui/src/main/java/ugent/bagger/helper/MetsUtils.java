@@ -29,7 +29,6 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.MdRefException;
@@ -54,6 +53,7 @@ public class MetsUtils {
     private static Log logger = LogFactory.getLog(MetsUtils.class);
     public static final String NAMESPACE_DC = "http://purl.org/dc/elements/1.1/";
     public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/"; 
+    public static HashMap<String,String>bagInfoImporters;
 
     public static HashMap<String, String> getXsltMap() {
         if(xsltMap == null){
@@ -223,12 +223,15 @@ public class MetsUtils {
         return createMdSec(XML.XMLToDocument(file));        
     }
     public static String createID(){
-        //xsd NCName: moet start met letter of _, colon (':') mag niet voorkomen
+        //xsd NCName: moet starten met letter of _, colon (':') mag niet voorkomen
         return "_"+UUID.randomUUID().toString();
     }
     public static MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
+        return createMdSec(doc,true);
+    }
+    public static MdSec createMdSec(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         MdSec mdSec = new MdSec(createID());                
-        mdSec.setMdWrap(createMdWrap(doc));
+        mdSec.setMdWrap(createMdWrap(doc,validate));
         mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString());         
         if(mdSec.getCREATED() == null){
             try{
@@ -238,6 +241,9 @@ public class MetsUtils {
         return mdSec;
     }
     public static MdSec.MdWrap createMdWrap(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
+        return createMdWrap(doc,true);
+    }
+    public static MdSec.MdWrap createMdWrap(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         String namespace = doc.getDocumentElement().getNamespaceURI();            
         DocumentType docType = doc.getDoctype();
         
@@ -301,7 +307,7 @@ public class MetsUtils {
         }
         //indien XSD bekend, dan validatie hierop       
         String schemaPath = getSchemaPath(doc);
-        if(schemaPath != null){      
+        if(validate && schemaPath != null){      
             URL schemaURL = Context.getResource(schemaPath);
             System.out.println("validating against "+schemaPath);
             Schema schema = XML.createSchema(schemaURL);                        
@@ -460,5 +466,13 @@ public class MetsUtils {
         Document xsltDoc = XML.XMLToDocument(xsltURL);                
         XSLT.transform(doc,xsltDoc,baginfoOut);                
         return baginfoOut.toByteArray();
+    } 
+
+    public static HashMap<String, String> getBagInfoImporters() {
+        if(bagInfoImporters == null){
+            bagInfoImporters = (HashMap<String,String>) Beans.getBean("bagInfoImporters");
+            bagInfoImporters = bagInfoImporters != null ? bagInfoImporters: new HashMap<String,String>();
+        }
+        return bagInfoImporters;
     }    
 }

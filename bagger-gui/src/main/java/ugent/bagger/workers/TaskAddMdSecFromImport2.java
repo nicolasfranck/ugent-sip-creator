@@ -91,7 +91,6 @@ public class TaskAddMdSecFromImport2 extends DefaultWorker {
             succeeded,numErrors
         });
         String reportLog = Context.getMessage("report.log");
-
         SwingUtils.ShowMessage(null,report+"\n"+reportLog);
         
         if(succeeded > 0){

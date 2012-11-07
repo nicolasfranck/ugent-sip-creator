@@ -141,15 +141,15 @@ public final class BagInfoField {
     public String toString() {
     	StringBuilder sb = new StringBuilder();
     	sb.append("\n");
-    	sb.append("Label: " + getLabel() + "\n");
-    	sb.append("Name: " + getName() + "\n");
-    	sb.append("Value: " + getValue() + "\n");
-    	sb.append("Type: " + getComponentType() + "\n");
-    	sb.append("Elements: " + getElements() + "\n");
-    	sb.append("isRequired: " + isRequired() + "\n");
-    	sb.append("isRequiredvalue: " + isRequiredvalue() + "\n");
-    	sb.append("isEnabled: " + isEnabled() + "\n");
-    	sb.append("isEditable: " + isEditable() + "\n");
+    	sb.append("Label: ").append(getLabel()).append("\n");
+    	sb.append("Name: ").append(getName()).append("\n");
+    	sb.append("Value: ").append(getValue()).append("\n");
+    	sb.append("Type: ").append(getComponentType()).append("\n");
+    	sb.append("Elements: ").append(getElements()).append("\n");
+    	sb.append("isRequired: ").append(isRequired()).append("\n");
+    	sb.append("isRequiredvalue: ").append(isRequiredvalue()).append("\n");
+    	sb.append("isEnabled: ").append(isEnabled()).append("\n");
+    	sb.append("isEditable: ").append(isEditable()).append("\n");
     	return sb.toString();
     }
 }

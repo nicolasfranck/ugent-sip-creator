@@ -69,7 +69,7 @@ import ugent.bagger.helper.XML;
 import ugent.bagger.workers.LongTask2;
 
 public final class NewBagsDialog extends JDialog implements ActionListener {
-    private static final Log log = LogFactory.getLog(NewBagFrame.class);
+    private static final Log log = LogFactory.getLog(NewBagsDialog.class);
     private static final long serialVersionUID = 1L;
     private final Dimension preferredDimension = new Dimension(400, 230);
     private JPanel contentPanel;

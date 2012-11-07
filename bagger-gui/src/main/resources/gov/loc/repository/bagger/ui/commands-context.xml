@@ -19,10 +19,7 @@
         <value>saveBagCommand</value>
         <value>saveBagAsCommand</value>
          <value>addTagFileCommand</value>
-        <value>removeTagFileCommand</value>
-        <!--<value>testCommand</value>-->
-        <!--<value>MdSecSourceCommand</value>-->
-        <value>CSVCommand</value>
+        <value>removeTagFileCommand</value>        
        </list>
     </property>
   </bean>
@@ -60,10 +57,7 @@
         <value>completeCommand</value>
         <value>clearCommand</value>
         <value>saveBagCommand</value>
-        <value>saveBagAsCommand</value>     
-        <!--<value>testCommand</value>-->
-        <!--<value>MdSecSourceCommand</value>-->
-        <value>CSVCommand</value>
+        <value>saveBagAsCommand</value>             
       </list>
     </property>
   </bean>
@@ -107,14 +101,16 @@
     <property name="aboutTextPath" value="gov/loc/repository/bagger/about.txt" />
   </bean>
   
+  <!--
   <bean id="loginCommand" class="org.springframework.richclient.security.LoginCommand">
     <property name="closeOnCancel" value="false" />
   </bean>
 
   <bean id="logoutCommand" class="org.springframework.richclient.security.LogoutCommand" />
+  -->
   
-  <bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu" >      
-  </bean>
+  <bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu" />      
+  
   <!--
    <bean id="windowMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">

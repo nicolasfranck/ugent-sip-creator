@@ -5,6 +5,7 @@ import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsHdr;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /**
@@ -26,6 +27,7 @@ public class MetsPanel extends JPanel{
         }        
         setMets(mets);                
         setDmdSecPropertiesPanel(new DmdSecPropertiesPanel(((ArrayList<MdSec>)mets.getDmdSec())));        
+        getDmdSecPropertiesPanel().setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
         add(getDmdSecPropertiesPanel());
     }    
     public DmdSecPropertiesPanel getDmdSecPropertiesPanel() {
