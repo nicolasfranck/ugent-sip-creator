@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import ugent.bagger.helper.Context;
 
 /**
  *
@@ -26,8 +27,8 @@ public final class LoadFieldsPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new FlowLayout(FlowLayout.LEFT));
         
-        JButton loadFromLocalSourceButton = new JButton("laad vanaf interne bron..");
-        JButton loadFromExternalSourceButton = new JButton("laad vanaf externe bron");        
+        JButton loadFromLocalSourceButton = new JButton(Context.getMessage("LoadFieldsPanel.loadFromLocalSourceButton.label"));
+        JButton loadFromExternalSourceButton = new JButton(Context.getMessage("LoadFieldsPanel.loadFromExternalSourceButton.label"));        
         add(loadFromLocalSourceButton);
         add(loadFromExternalSourceButton);
         

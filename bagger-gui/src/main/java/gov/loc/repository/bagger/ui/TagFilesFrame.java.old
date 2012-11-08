@@ -35,7 +35,7 @@ public class TagFilesFrame extends JFrame implements ActionListener {
 
     public void addComponents(JTabbedPane tabs) {
     	getContentPane().removeAll();
-    	getContentPane().add(tabs, BorderLayout.CENTER);
+    	getContentPane().add(tabs,BorderLayout.CENTER);
     	setPreferredSize(tabs.getPreferredSize());
     	pack();
     }    

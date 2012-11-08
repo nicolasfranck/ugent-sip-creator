@@ -1,11 +1,12 @@
 package gov.loc.repository.bagger.app;
 
+import javax.swing.UIManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.application.statusbar.StatusBar;
+import ugent.bagger.helper.Context;
 
 /**
  * Custom application lifecycle implementation that configures the app at well defined points within
@@ -15,6 +16,45 @@ import org.springframework.richclient.application.statusbar.StatusBar;
  */
 public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
+    private static void init(){
+        String [] keys = {
+            "FileChooser.yesButtonText",
+            "FileChooser.yesButtonToolTipText",
+            "FileChooser.yesButtonMnemonic",
+            
+            "FileChooser.noButtonText",
+            "FileChooser.noButtonToolTipText",
+            "FileChooser.noButtonMnemonic",
+            
+            "FileChooser.openButtonText",
+            "FileChooser.openButtonToolTipText",
+            "FileChooser.openButtonMnemonic",
+            
+            "FileChooser.saveButtonText",
+            "FileChooser.saveButtonToolTipText",
+            "FileChooser.saveButtonMnemonic",
+            
+            "FileChooser.cancelButtonText",
+            "FileChooser.cancelButtonMnemonic",
+            "FileChooser.cancelButtonToolTipText",
+            
+            "FileChooser.updateButtonText",
+            "FileChooser.updateButtonToolTipText",
+            "FileChooser.updateButtonMnemonic",
+            
+            "FileChooser.helpButtonText",
+            "FileChooser.helpButtonToolTipText",
+            "FileChooser.helpButtonMnemonic",
+            
+            "FileChooser.fileDescription",
+            "FileChooser.directoryDescription",
+            "FileChooser.directoryOpenButtonText"
+        };
+        for(String key:keys){
+            UIManager.put(key,Context.getMessage(key));
+        }
+        
+    }
     //boolean useWizard = false;
 
     /**
@@ -56,18 +96,14 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     @Override
     public void onPreWindowOpen(ApplicationWindowConfigurer configurer){
         super.onPreWindowOpen(configurer);      
+        init();
+        for(Object key:UIManager.getDefaults().keySet()){
+            System.out.println("key: "+key+", value: "+UIManager.get(key));
+        }
         //Nicolas Franck: elke view past grootte aan
         //configurer.setInitialSize(new Dimension(1024, 768));        
         
-    }
-    @Override
-    public void onWindowOpened(ApplicationWindow window){        
-        /*
-        JDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),new CreateBagsParams());
-        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-        dialog.pack();
-        dialog.setVisible(true);*/
-    }
+    }    
     @Override
     public StatusBar getStatusBar(){
         //Nicolas Franck

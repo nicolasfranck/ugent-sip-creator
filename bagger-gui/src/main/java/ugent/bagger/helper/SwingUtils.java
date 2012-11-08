@@ -33,7 +33,7 @@ import org.springframework.richclient.progress.BusyIndicator;
  * @author nicolas
  */
 public class SwingUtils {
-    private static Log logger = LogFactory.getLog(SwingUtils.class);
+    private static Log log = LogFactory.getLog(SwingUtils.class);
    
     
     public static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,int dialogType){
@@ -109,8 +109,8 @@ public class SwingUtils {
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {                        
-                logger.debug("property change event: "+evt.getPropertyName());
-                logger.debug("property value:"+evt.getNewValue());                
+                log.debug("property change event: "+evt.getPropertyName());
+                log.debug("property value:"+evt.getNewValue());                
                 if("progress".compareTo(evt.getPropertyName())==0){                            
                     int progress = (Integer) evt.getNewValue();                            
                     progressMonitor.setProgress(progress);                              

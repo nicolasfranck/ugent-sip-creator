@@ -82,7 +82,6 @@ public final class JSonBagger implements Bagger {
                         logger.debug(e.getMessage());
                     }
                 }
-                return;
             }
     	}
     	else{
@@ -139,34 +138,34 @@ public final class JSonBagger implements Bagger {
                 continue;
             }
 
-                try {                            
-                    FileReader reader = new FileReader(file);
-                    Profile profile = loadProfile(reader,file.getName());
-                    profilesToReturn.add(profile);
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    logger.debug(e.getMessage());                    
-                    continue;
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    logger.debug(e.getMessage());
-                    continue;
-                } catch(Exception e){
-                    /*
-                     * Nicolas Franck: deze exception werd vaak gegooid, maar
-                     * nooit opgevangen..
-                     */
-                    logger.debug(e.getMessage());
-                    continue;
-                }
+            try {                            
+                FileReader reader = new FileReader(file);
+                Profile profile = loadProfile(reader,file.getName());
+                profilesToReturn.add(profile);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                logger.debug(e.getMessage());                    
+                continue;
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                logger.debug(e.getMessage());
+                continue;
+            } catch(Exception e){
+                /*
+                 * Nicolas Franck: deze exception werd vaak gegooid, maar
+                 * nooit opgevangen..
+                 */
+                logger.debug(e.getMessage());
+                continue;
             }
+        }
 
-            //<no profile>
-            Profile profile = new Profile();
-            profile.setName(Profile.NO_PROFILE_NAME);
-            profile.setIsDefault(true);
-            profilesToReturn.add(profile);
-            return profilesToReturn;
+        //<no profile>
+        Profile profile = new Profile();
+        profile.setName(Profile.NO_PROFILE_NAME);
+        profile.setIsDefault(true);
+        profilesToReturn.add(profile);
+        return profilesToReturn;
     }
 	
     private Profile loadProfile(FileReader reader, String jsonFileName) throws JSONException {
@@ -226,8 +225,8 @@ public final class JSonBagger implements Bagger {
         String homeDir = System.getProperty("user.home");
     	String profilesPath = homeDir+File.separator+"bagger";
     	profilesFolder = new File(profilesPath);
-    	String profileFielName = getJsonFileName(profile.getName());
-    	File file = new File(profilesFolder,profileFielName);
+    	String profileFieldName = getJsonFileName(profile.getName());
+    	File file = new File(profilesFolder,profileFieldName);
     	if(file.exists()) {
             file.delete();
         }

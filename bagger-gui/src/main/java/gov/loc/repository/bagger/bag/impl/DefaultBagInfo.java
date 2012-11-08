@@ -155,8 +155,9 @@ public class DefaultBagInfo {
             if(fieldMap.size()>0){
                 for(BagInfoField field: fieldMap.values()){
                     ProfileField projectProfile = profileFields.get(field.getLabel());
-                    if(projectProfile == null)
+                    if(projectProfile == null) {
                         continue;
+                    }
 
                     field.isEnabled(!projectProfile.isReadOnly());
                     field.isEditable(!projectProfile.isReadOnly());
@@ -214,9 +215,8 @@ public class DefaultBagInfo {
     	if(profileFields == null) {
             return filedsToReturn;
         }
-    	for(ProfileField profileFiled: profileFields)
-    	{
-    		filedsToReturn.put(profileFiled.getFieldName(),profileFiled);
+    	for(ProfileField profileFiled: profileFields){
+            filedsToReturn.put(profileFiled.getFieldName(),profileFiled);
     	}
     	return filedsToReturn;
     }	
@@ -233,44 +233,37 @@ public class DefaultBagInfo {
         bagInfoTxt.clear();
 
         for (Map.Entry<String, BagInfoField> entry : fieldMap.entrySet()) {
-                bagInfoTxt.put(entry.getKey(), entry.getValue().getValue());
+            bagInfoTxt.put(entry.getKey(), entry.getValue().getValue());
         }
 
         updateBagInfoTxtWithOrganizationInformation(bagInfoTxt);
     }
     private void updateBagInfoTxtWithOrganizationInformation(BagInfoTxt bagInfoTxt) {
         if (!sourceOrganization.getOrganizationName().trim().isEmpty()) {
-                bagInfoTxt.setSourceOrganization(
-                                sourceOrganization.getOrganizationName().trim());
+            bagInfoTxt.setSourceOrganization(sourceOrganization.getOrganizationName().trim());
         }
         if (!sourceOrganization.getOrganizationAddress().trim().isEmpty()) {
-                bagInfoTxt.setOrganizationAddress(
-                                sourceOrganization.getOrganizationAddress().trim());
+            bagInfoTxt.setOrganizationAddress(sourceOrganization.getOrganizationAddress().trim());
         }
         Contact contact = sourceOrganization.getContact();
         if (!contact.getContactName().getFieldValue().trim().isEmpty()) {
-                bagInfoTxt.setContactName(
-                                contact.getContactName().getFieldValue().trim());
+            bagInfoTxt.setContactName(contact.getContactName().getFieldValue().trim());
         }
         if (!contact.getTelephone().getFieldValue().trim().isEmpty()) {
-                bagInfoTxt.setContactPhone(
-                                contact.getTelephone().getFieldValue().trim());
+            bagInfoTxt.setContactPhone(contact.getTelephone().getFieldValue().trim());
         }
         if (!contact.getEmail().getFieldValue().trim().isEmpty()) {
-                bagInfoTxt.setContactEmail(
-                                contact.getEmail().getFieldValue().trim());
+            bagInfoTxt.setContactEmail(contact.getEmail().getFieldValue().trim());
         }
         if (!toContact.getContactName().getFieldValue().trim().isEmpty()) {
-                bagInfoTxt.put(Contact.FIELD_TO_CONTACT_NAME,
+            bagInfoTxt.put(Contact.FIELD_TO_CONTACT_NAME,
                                 toContact.getContactName().getFieldValue());
         }
         if (!toContact.getTelephone().getFieldValue().trim().isEmpty()) {
-                bagInfoTxt.put(Contact.FIELD_TO_CONTACT_PHONE,
-                                toContact.getTelephone().getFieldValue().trim());
+            bagInfoTxt.put(Contact.FIELD_TO_CONTACT_PHONE,toContact.getTelephone().getFieldValue().trim());
         }
         if (!toContact.getEmail().getFieldValue().trim().isEmpty()) {
-                bagInfoTxt.put(Contact.FIELD_TO_CONTACT_EMAIL,
-                                toContact.getEmail().getFieldValue().trim());
+            bagInfoTxt.put(Contact.FIELD_TO_CONTACT_EMAIL,toContact.getEmail().getFieldValue().trim());
         }
     }
     public Contact getToContact() {
@@ -288,6 +281,5 @@ public class DefaultBagInfo {
                 fieldMap.get(key).setValue(value);
             }
         }
-    }
-	
+    }	
 }

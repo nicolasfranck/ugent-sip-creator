@@ -7,7 +7,6 @@ import gov.loc.repository.bagit.ProgressListener;
 import gov.loc.repository.bagit.impl.FileBagFile;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.FileSystemWriter;
-
 import java.io.File;
 
 /**

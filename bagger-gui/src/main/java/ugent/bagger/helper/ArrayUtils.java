@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.helper;
 
 /**
@@ -10,14 +6,16 @@ package ugent.bagger.helper;
  */
 public class ArrayUtils {
     public static String join(Object [] objects,String delimiter){
-        String result = "";
+        StringBuilder result = new StringBuilder();
+        
         for(int i = 0;i < objects.length;i++){
             if(i < objects.length - 1){
-                result += objects[i]+delimiter;
+                result.append(objects[i]).append(delimiter);                
             }else{
-                result += objects[i];
+                result.append(objects[i]);                
             }
         }
-        return result;
+        
+        return result.toString();
     }
 }

@@ -69,11 +69,8 @@ public abstract class MergeSort extends Object {
     public abstract int compareElementsAt(int beginLoc, int endLoc);
 
     protected void mergeSort(int begin, int end) {
-	if(begin != end)
-	{
-	    int           mid;
-
-	    mid = (begin + end) / 2;
+	if(begin != end){	    
+	    int mid = (begin + end) / 2;
 	    this.mergeSort(begin, mid);
 	    this.mergeSort(mid + 1, end);
 	    this.merge(begin, mid, end);
@@ -81,12 +78,11 @@ public abstract class MergeSort extends Object {
     }
 
     protected void merge(int begin, int middle, int end) {
-	int           firstHalf, secondHalf, count;
+	int firstHalf,secondHalf,count;
 
 	firstHalf = count = begin;
 	secondHalf = middle + 1;
-	while((firstHalf <= middle) && (secondHalf <= end))
-	{
+	while((firstHalf <= middle) && (secondHalf <= end)){
 	    if(this.compareElementsAt(secondHalf, firstHalf) < 0) {
                 swapSpace[count++] = toSort[secondHalf++];
             }
@@ -94,14 +90,12 @@ public abstract class MergeSort extends Object {
                 swapSpace[count++] = toSort[firstHalf++];
             }
 	}
-	if(firstHalf <= middle)
-	{
+	if(firstHalf <= middle){
 	    while(firstHalf <= middle) {
                 swapSpace[count++] = toSort[firstHalf++];
             }
 	}
-	else
-	{
+	else{
 	    while(secondHalf <= end) {
                 swapSpace[count++] = toSort[secondHalf++];
             }
@@ -111,4 +105,3 @@ public abstract class MergeSort extends Object {
         }
     }
 }
-

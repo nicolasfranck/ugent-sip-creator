@@ -12,7 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import org.springframework.richclient.application.Application;
+import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
 
 public class AddTagFileHandler extends AbstractAction implements Loggable {
@@ -56,9 +57,9 @@ public class AddTagFileHandler extends AbstractAction implements Loggable {
         if(bagView.getBagRootPath() != null) {
             fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
         }
-        fo.setDialogTitle("Tag File Chooser");
+        fo.setDialogTitle(Context.getMessage("bag.message.addtagfiles"));
         
-        int option = fo.showOpenDialog(Application.instance().getActiveWindow().getControl());
+        int option = fo.showOpenDialog(SwingUtils.getFrame());
         //Nicolas Franck
     	//int option = fo.showOpenDialog(frame);
         
@@ -76,7 +77,7 @@ public class AddTagFileHandler extends AbstractAction implements Loggable {
             	bagView.getBagTagFileTree().addNode(bf.getFilepath());
             }
             bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
-            log("Tag file added: " + file.getAbsolutePath());
+            log(Context.getMessage("bag.message.filesadded")+" "+file.getAbsolutePath());
         }
 
         /*
@@ -106,7 +107,7 @@ public class AddTagFileHandler extends AbstractAction implements Loggable {
                 }
                 bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
             }
-            log("Tag files changed.");
+            log(Context.getMessage("bag.message.tagfileschanged"));
     	}
     }
 }

@@ -26,8 +26,7 @@ public class RenameResultTable extends AbstractObjectTable {
         tcm.getColumn(2).setPreferredWidth(200);
         tcm.getColumn(3).setPreferredWidth(50);
         tcm.getColumn(4).setPreferredWidth(10);
-        tcm.getColumn(5).setPreferredWidth(50);
-        
+        tcm.getColumn(5).setPreferredWidth(50);        
         table.setFillsViewportHeight(true);
     }
 

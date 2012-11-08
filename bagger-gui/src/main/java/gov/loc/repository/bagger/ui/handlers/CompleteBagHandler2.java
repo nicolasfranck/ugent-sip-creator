@@ -9,7 +9,8 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.SwingUtilities;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
@@ -18,6 +19,7 @@ import ugent.bagger.workers.LongTask2;
 
 public class CompleteBagHandler2 extends Handler implements Loggable {
     private static final long serialVersionUID = 1L;   
+    private static final Log log = LogFactory.getLog(CompleteBagHandler2.class);
     private Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
     private Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
 
@@ -93,24 +95,23 @@ public class CompleteBagHandler2 extends Handler implements Loggable {
                 else {
                     String message = Context.getMessage("defaultBag.bagIsComplete");
                     log(message);
-                    SwingUtils.ShowMessage("Is Complete Dialog",message);                  
+                    SwingUtils.ShowMessage(message,message);                  
                 }
-
-                SwingUtilities.invokeLater(new Runnable(){
-                    @Override
-                    public void run() {
-                        log(result.toString());
-                    }
-                });            
+                
+                log(result.toString());                           
 
             }catch(Exception e) {
-                e.printStackTrace();                
+                log.debug(e.getMessage());
+                            
                 if (isCancelled()) {
-                    log("Completion check cancelled.");
-                    SwingUtils.ShowError("Check cancelled",Context.getMessage("defaultBag.checkCompleteCancelled"));
+                    log(Context.getMessage("defaultBag.checkCompleteCancelled"));
+                    SwingUtils.ShowError(Context.getMessage("defaultBag.checkCompleteCancelled"),Context.getMessage("defaultBag.checkCompleteCancelled"));
                 }else{
-                    log("Error checking bag completeness: " + e.getMessage());
-                    SwingUtils.ShowError("Warning - complete check interrupted", "Error checking bag completeness: " + e.getMessage());
+                    log(Context.getMessage("defaultBag.checkComplete.error.label",new Object [] {e.getMessage()}));
+                    SwingUtils.ShowError(
+                        Context.getMessage("defaultBag.checkComplete.error.title"),
+                        Context.getMessage("defaultBag.checkComplete.error.label",new Object [] {e.getMessage()})
+                    );
                 }
             }
             

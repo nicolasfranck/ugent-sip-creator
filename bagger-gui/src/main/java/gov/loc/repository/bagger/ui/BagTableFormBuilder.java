@@ -78,7 +78,7 @@ public class BagTableFormBuilder extends TableFormBuilder {
     	removeButton.setFocusable(false);
     	JLabel label = new JLabel(labelName); //createLabelFor(fieldName, component);
     	label.setToolTipText("Double-Click to Edit");
-        if (wrappedComponent == null) {
+        if(wrappedComponent == null) {
             wrappedComponent = component;
         }
         TableLayoutBuilder layoutBuilder = getLayoutBuilder();

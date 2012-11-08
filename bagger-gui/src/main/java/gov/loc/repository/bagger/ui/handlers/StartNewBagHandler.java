@@ -80,7 +80,7 @@ public class StartNewBagHandler extends AbstractAction {
         bag.setRootDir(bagView.getBagRootPath());
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
-    	ApplicationContextUtil.addConsoleMessage("A new bag has been created in memory.");
+    	ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
     	bagView.updateNewBag();
     	
     	// set bagItVersion

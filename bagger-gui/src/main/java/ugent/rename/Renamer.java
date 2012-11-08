@@ -4,10 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import ugent.bagger.helper.SwingUtils;
 
 /*
  *  Nicolas Franck
@@ -81,7 +79,7 @@ public class Renamer extends AbstractRenamer{
         }
         return pairs;
     }
-    
+    /*
     public static void main(String [] args){
         Renamer renamer = new Renamer();
         String [] inputFiles = new String [] {
@@ -139,5 +137,5 @@ public class Renamer extends AbstractRenamer{
             }            
         });
         renamer.rename();
-    }
+    }*/
 }

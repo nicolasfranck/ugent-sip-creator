@@ -466,7 +466,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
             fs.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
             fs.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
             fs.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
-            fs.setDialogTitle("Save Bag As");
+            fs.setDialogTitle(Context.getMessage("SaveBagDialog.title"));
             DefaultBag bag = bagView.getBag();
             fs.setCurrentDirectory(bag.getRootDir());
             if (bag.getName() != null && !bag.getName().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
@@ -512,7 +512,10 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
             BagView bagView = getBagView();
             if (bagNameField.getText().trim().isEmpty() || bagNameField.getText().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
-                bagView.showWarningErrorDialog("Error - bag not saved", "The bag must have a file name.");
+                bagView.showWarningErrorDialog(
+                    Context.getMessage("SaveBagDialog.filenamemissing.title"),
+                    Context.getMessage("SaveBagDialog.filenamemissing.label")
+                );
                 return;
             }
             bagView.getInfoFormsPane().getHoleyValue().setText("false");           

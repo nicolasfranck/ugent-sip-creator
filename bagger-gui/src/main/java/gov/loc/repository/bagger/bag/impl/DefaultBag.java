@@ -484,7 +484,7 @@ public class DefaultBag {
         isComplete(Status.UNKNOWN);
 
         String message = null;
-        if (file != null) {
+        if(file != null) {
             try {
                 bilBag.addFileAsTag(file);
             }catch (Exception e){

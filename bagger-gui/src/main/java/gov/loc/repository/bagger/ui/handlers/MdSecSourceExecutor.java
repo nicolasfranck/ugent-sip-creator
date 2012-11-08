@@ -3,7 +3,6 @@ package gov.loc.repository.bagger.ui.handlers;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.ui.BagView;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import javax.swing.JDialog;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import ugent.bagger.dialogs.MdSecSourceDialog;

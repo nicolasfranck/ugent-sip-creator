@@ -338,8 +338,7 @@ public class BagView extends DefaultView {
         return buttonPanel;
     }*/
     
-    private JSplitPane createBagPanel(){
-        
+    private JSplitPane createBagPanel(){        
     	
     	LineBorder border = new LineBorder(Color.GRAY,1);
 
@@ -494,8 +493,9 @@ public class BagView extends DefaultView {
         viewTagFilesToolbarAction.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
-                if(viewTagFilesToolbarAction.isEnabled())
-                            showTageFileHandler.actionPerformed(null);
+                if(viewTagFilesToolbarAction.isEnabled()) {
+                    showTageFileHandler.actionPerformed(null);
+                }
             }
 
             @Override
@@ -505,8 +505,9 @@ public class BagView extends DefaultView {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(viewTagFilesToolbarAction.isEnabled())
+                if(viewTagFilesToolbarAction.isEnabled()) {
                     viewTagFilesToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
+                }
             }
         });
         buttonPanel.add(viewTagFilesToolbarAction);
@@ -700,7 +701,7 @@ public class BagView extends DefaultView {
     	context.register("openCommand", openExecutor);
     	//context.register("createBagInPlaceCommand", createBagInPlaceExecutor);
         
-        context.register("createBagsInPlaceCommand", createBagsExecutor);
+        context.register("createBagsCommand", createBagsExecutor);
         
     	context.register("clearCommand", clearExecutor);
     	context.register("validateCommand", validateExecutor);

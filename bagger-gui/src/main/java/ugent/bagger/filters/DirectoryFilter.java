@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 public final class DirectoryFilter extends FileFilter{
     
     private String description;  
-    private static Logger logger = Logger.getLogger(DirectoryFilter.class);
+    private static Logger log = Logger.getLogger(DirectoryFilter.class);
     
     public DirectoryFilter(String description){      
         setDescription(description);

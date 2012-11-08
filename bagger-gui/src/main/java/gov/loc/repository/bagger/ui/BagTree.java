@@ -109,12 +109,15 @@ public final class BagTree extends JTree {
             
             List<DefaultMutableTreeNode>structuredList = FUtils.listToStructure(payload.toArray(new String [] {}));                        
             
-            if(isParent) {
-                parentNode = structuredList.get(0);
+            if(structuredList.size() > 0){
+                if(isParent) {
+                    parentNode = structuredList.get(0);
+                }
+                else {
+                    parentNode.add(structuredList.get(0));
+                }
             }
-            else {
-                parentNode.add(structuredList.get(0));
-            }
+            
             initialize();            
             
             //Nicolas Franck: toon structuur ipv lijst

@@ -3,20 +3,12 @@ package ugent.bagger.helper;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -287,6 +279,7 @@ public class XML {
         conf.setParameter("format-pretty-print",pretty);
         return serializer.writeToString(node);
     }
+    /*
     public static void main(String [] args){      
      
         try{
@@ -346,5 +339,5 @@ public class XML {
             e.printStackTrace();
         }
 
-    }
+    }*/
 }

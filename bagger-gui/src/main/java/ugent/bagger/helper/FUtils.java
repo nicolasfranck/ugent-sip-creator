@@ -4,6 +4,7 @@ import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
@@ -13,12 +14,17 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
+import org.apache.log4j.Logger;
+import ugent.bagger.exceptions.FileNotReadableException;
+import ugent.bagger.exceptions.FileNotRegularException;
+import ugent.bagger.exceptions.FileNotWritableException;
 
 /**
  *
  * @author nicolas
  */
 public class FUtils {
+    private static Logger log = Logger.getLogger(FUtils.class);
     private static final HashMap<String,Double> sizes;
     private static MessageDigest md5DigestInstance;
     private static final String [] sizeNames = {        
@@ -49,8 +55,7 @@ public class FUtils {
                     return ""+n+sizeNames[i];
                 }
             }
-        }
-       
+        }       
         return ((long)size)+"B";
     }
     public static boolean hasChildren(File file){        
@@ -120,25 +125,6 @@ public class FUtils {
             for(File file:files){            
                 l.execute(file);
             }
-
-            /*for(File sb:f.listFiles()){
-                if(sb.isDirectory()) {
-                    directories.add(sb);
-                }
-                else {
-                    files.add(sb);
-                }         
-            }            
-            //Collections.sort(directories,defaultFileSorter);
-            sort(directories);
-            for(File dir:directories){           
-                listFiles(dir,l,sort);
-            }
-            //Collections.sort(files,defaultFileSorter);
-            sort(files);
-            for(File file:files){            
-                l.execute(file);
-            }*/ 
             
         }else{
             
@@ -156,13 +142,11 @@ public class FUtils {
     public static DefaultMutableTreeNode toTreeNode(File file){
         return toTreeNode(file,-1);
     }        
-    public static DefaultMutableTreeNode toTreeNode(File file,int maxdepth){
-        
+    public static DefaultMutableTreeNode toTreeNode(File file,int maxdepth){        
         
         if(file == null || !file.exists()){
             return null;
-        }     
-        
+        }
                 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(file.getName());       
         
@@ -206,8 +190,7 @@ public class FUtils {
         }
         if(node.isLeaf()) {            
             il.execute(node,deep);
-        }
-        else{                                  
+        }else{                                  
             for(int i = 0;i < node.getChildCount();i++){             
                 walkTree((DefaultMutableTreeNode)node.getChildAt(i),il,deep + 1);
             }
@@ -249,7 +232,7 @@ public class FUtils {
             }            
         }catch(Exception e){
             //als inputstream geen mark ondersteund, dan wordt een Exception geworpen
-            e.printStackTrace();
+            log.debug(e.getMessage());            
         }
         return mimeType;        
     }    
@@ -330,7 +313,6 @@ public class FUtils {
             return;
         }
         
-        
         int indexChild = indexUserObjectChild(node,components[offset]);
         if(indexChild < 0){            
             DefaultMutableTreeNode newNode = componentsToTreeNode(components,offset);            
@@ -352,31 +334,22 @@ public class FUtils {
         }
         return node;
     }
-    public static void main(String [] args){
-        /*ArrayList<File>nonWritable = getBadDirs(new File("/home/nicolas"));        
-        System.out.println("not writable: ");
-        for(File file:nonWritable){
-            System.out.println("\t"+file);
-        }*/
-        ArrayList<File>files = new ArrayList<File>();
-        ArrayList<File>directories = new ArrayList<File>();
-        arrangeDirectoryEntries(new File("/home/nicolas/Catmandu"), files, directories);
-        System.out.println("directories:");
-        for(File dir:directories){
-            System.out.println("\t"+dir.getAbsolutePath());
-        }
-        System.out.println("files:");
-        for(File file:files){
-            System.out.println("\t"+file.getAbsolutePath());
+   
+    public static void main(String [] args) {
+        try{
+            checkFile(new File("/root"));
+        }catch(FileNotWritableException e){
+            System.out.println("file not writable");
+        }catch(FileNotReadableException e){
+            System.out.println("file not readable");
+        }catch(FileNotFoundException e){
+            System.out.println("file not found");
         }
         
-        listFiles(new File("/home/nicolas/Catmandu"),new IteratorListener(){
-            @Override
-            public void execute(Object o) {
-                File file = (File)o;
-                System.out.println(file);
-            }        
-        },true);
+        ArrayList<File>list = listFiles(new File("/cdrom"));
+        for(File f:list){
+            System.out.println("file: "+f);
+        }
         
     }
     public static void recurseTree(DefaultMutableTreeNode node){
@@ -404,5 +377,23 @@ public class FUtils {
             }
         }
         return badDirs;
+    }
+    public static void checkFile(File file) throws FileNotReadableException, FileNotWritableException, FileNotFoundException{
+        checkFile(file,false);
+    }
+    public static void checkFile(File file,boolean recurse) throws FileNotReadableException, FileNotWritableException, FileNotFoundException{        
+        
+        if(!file.exists()){
+            throw new FileNotFoundException();
+        }else if(!file.canRead()){
+            throw new FileNotReadableException(file);
+        }else if(!file.canWrite()){
+            throw new FileNotWritableException(file);
+        }
+        if(recurse && file.isDirectory()){
+            for(File f:file.listFiles()){
+                checkFile(f,recurse);
+            }
+        }
     }
 }

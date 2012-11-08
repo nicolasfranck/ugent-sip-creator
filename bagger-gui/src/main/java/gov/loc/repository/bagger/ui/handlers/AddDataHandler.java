@@ -9,7 +9,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.application.Application;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
@@ -39,8 +38,6 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
     }
     public void addData(){
         
-        
-        
         final BagView bagView = BagView.getInstance();
         /*
          * Nicolas Franck: default directory
@@ -65,16 +62,16 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         /*
          * Nicolas Franck
          */
-        fc.setDialogTitle(ApplicationContextUtil.getMessage("bag.message.addfiles"));
+        fc.setDialogTitle(Context.getMessage("bag.message.addfiles"));
         //fc.setDialogTitle("Add File or Directory");
-    	int option = fc.showOpenDialog(Application.instance().getActiveWindow().getControl());
+    	int option = fc.showOpenDialog(SwingUtils.getFrame());
 
         if (option == JFileChooser.APPROVE_OPTION) {
             
             SwingUtils.ShowBusy();            
             
             File[] files = fc.getSelectedFiles();
-            String message = ApplicationContextUtil.getMessage("bag.message.filesadded");
+            String message = Context.getMessage("bag.message.filesadded");
             if (files != null && files.length >0) {
                 addBagData(files);
                 log(message + " " + getFileNames(files));

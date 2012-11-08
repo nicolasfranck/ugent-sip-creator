@@ -49,9 +49,10 @@ public class ConsoleView extends DefaultView {
     private String getInitialConsoleMsg() {
     	StringBuilder buffer = new StringBuilder();
     	buffer.append(getMessage("consolepane.msg.help"));
-    	buffer.append("\n\n");
-    	buffer.append(getMessage("consolepane.status.help"));
-    	buffer.append("\n\n");
+        buffer.append("\n");
+    	//buffer.append("\n\n");
+    	//buffer.append(getMessage("consolepane.status.help"));
+    	//buffer.append("\n\n");
     	return buffer.toString();
     }
 }

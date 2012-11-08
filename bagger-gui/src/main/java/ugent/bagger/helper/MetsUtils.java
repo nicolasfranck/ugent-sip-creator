@@ -50,7 +50,7 @@ public class MetsUtils {
     private static HashMap<String,String> docTypeMapping = null;
     private static ArrayList<String>forbiddenNamespaces = null;
     private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
-    private static Log logger = LogFactory.getLog(MetsUtils.class);
+    private static Log log = LogFactory.getLog(MetsUtils.class);
     public static final String NAMESPACE_DC = "http://purl.org/dc/elements/1.1/";
     public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/"; 
     public static HashMap<String,String>bagInfoImporters;
@@ -247,8 +247,8 @@ public class MetsUtils {
         String namespace = doc.getDocumentElement().getNamespaceURI();            
         DocumentType docType = doc.getDoctype();
         
-        System.out.println("namespace: "+namespace);
-        System.out.println("doctype: "+docType);
+        log.debug("namespace: "+namespace);
+        log.debug("doctype: "+docType);
         
         //elke xml moet namespace bevatten (probeer te herstellen, indien mogelijk)
         if(namespace == null || namespace.isEmpty()){
@@ -309,7 +309,7 @@ public class MetsUtils {
         String schemaPath = getSchemaPath(doc);
         if(validate && schemaPath != null){      
             URL schemaURL = Context.getResource(schemaPath);
-            System.out.println("validating against "+schemaPath);
+            log.debug("validating against "+schemaPath);
             Schema schema = XML.createSchema(schemaURL);                        
             XML.validate(doc,schema);            
         } 
@@ -442,7 +442,7 @@ public class MetsUtils {
     }
     public static Document generateDCDoc(ArrayList<Element>dcElements,ArrayList<Element>dcCandidates) throws Exception{
         Document dcDoc = null;
-        System.out.println("dcElements.size="+dcElements.size()+", dcCandidates.size="+dcCandidates.size());
+        log.debug("dcElements.size="+dcElements.size()+", dcCandidates.size="+dcCandidates.size());
         if(dcElements.size() <= 0 && dcCandidates.size() > 0){
             Element sourceElement = dcCandidates.get(0);
             String xsltPath = MetsUtils.getXsltPath(sourceElement,MetsUtils.NAMESPACE_DC);

@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ugent.bagger.filters;
 
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
 import java.util.Collection;
-import javax.swing.filechooser.FileFilter;
 import java.util.Iterator;
+import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
 
 /**

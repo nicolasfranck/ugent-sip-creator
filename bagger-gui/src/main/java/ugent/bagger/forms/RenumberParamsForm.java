@@ -155,8 +155,6 @@ public class RenumberParamsForm extends AbstractForm{
         builder.add(onErrorActionBinding);
         builder.row();
         
-        //TODO: pre-sort
-        
         //valideer huidige toestand?        
         getFormModel().commit();       
         return builder.getForm();

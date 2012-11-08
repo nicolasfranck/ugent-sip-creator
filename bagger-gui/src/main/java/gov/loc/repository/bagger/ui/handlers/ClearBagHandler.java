@@ -10,12 +10,15 @@ import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
 public class ClearBagHandler extends AbstractAction {
+    private static final Log log = LogFactory.getLog(ClearBagHandler.class);
     private static final long serialVersionUID = 1L;   
     private boolean confirmSaveFlag = false;
 
@@ -51,6 +54,7 @@ public class ClearBagHandler extends AbstractAction {
 
     private void confirmCloseBag() {
         final BagView bagView = BagView.getInstance();
+       
         ConfirmationDialog dialog = new ConfirmationDialog() {
             @Override
             protected void onConfirm() {
@@ -62,6 +66,7 @@ public class ClearBagHandler extends AbstractAction {
                 clearExistingBag();
             }
         };
+        
         dialog.setCloseAction(CloseAction.DISPOSE);
         dialog.setTitle(Context.getMessage("bag.dialog.title.close"));
         dialog.setConfirmationMessage(Context.getMessage("bag.dialog.message.close"));

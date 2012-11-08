@@ -2,13 +2,12 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.TagFilesFrame;
+import gov.loc.repository.bagger.ui.TagFilesDialog;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import javax.swing.JFrame;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.ApplicationWindow;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 
 /*
  * Nicolas Franck: behouden of niet? Heeft weinig toegevoegde waarde!
@@ -16,8 +15,8 @@ import ugent.bagger.helper.Context;
 
 public class ShowTagFilesHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;
-    private TagFilesFrame tagFilesFrame;   
-    DefaultBag bag;
+    //private TagFilesFrame tagFilesFrame;   
+    //DefaultBag bag;
 
     /*
      * Nicolas Franck: public <init>(BagView bagView)
@@ -34,14 +33,22 @@ public class ShowTagFilesHandler extends AbstractAction {
 
     public void showTagFiles(){
         BagView bagView = BagView.getInstance();
-    	bag = bagView.getBag();
+    	DefaultBag bag = bagView.getBag();
     	bagView.getTagManifestPane().updateCompositePaneTabs(bag);
+        
+        TagFilesDialog dialog = new TagFilesDialog(SwingUtils.getFrame(),true,Context.getMessage("bagView.tagFrame.title"));
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
+        dialog.setLocationRelativeTo(SwingUtils.getFrame());
+        dialog.addComponents(bagView.getTagManifestPane());
+        dialog.setVisible(true);        
+        
+        /*
     	ApplicationWindow window = Application.instance().getActiveWindow();
     	JFrame f = window.getControl();
         tagFilesFrame = new TagFilesFrame(f,Context.getMessage("bagView.tagFrame.title"));
         tagFilesFrame.addComponents(bagView.getTagManifestPane());
     	tagFilesFrame.addComponents(bagView.getTagManifestPane());
     	tagFilesFrame.setVisible(true);
-    	tagFilesFrame.setAlwaysOnTop(true);
+    	tagFilesFrame.setAlwaysOnTop(true);*/
     }
 }

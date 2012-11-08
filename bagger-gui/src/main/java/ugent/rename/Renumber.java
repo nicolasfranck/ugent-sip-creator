@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import ugent.bagger.helper.FUtils;
 
 /**
  *
@@ -183,6 +182,7 @@ public class Renumber extends AbstractRenamer{
 
         return pairs;
     } 
+    /*
     public static void main(String [] args){
         Renumber renumber = new Renumber();
         ArrayList<File>inputFiles = FUtils.listFiles("/home/nicolas/java");
@@ -196,5 +196,5 @@ public class Renumber extends AbstractRenamer{
         renumber.setPadding(4);
         renumber.setEnd(200);
         renumber.rename();
-    }
+    }*/
 }

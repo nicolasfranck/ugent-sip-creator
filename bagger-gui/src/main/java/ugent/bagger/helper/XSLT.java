@@ -17,6 +17,7 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,6 +28,7 @@ import org.w3c.dom.Node;
  */
 public class XSLT {
     private static TransformerFactory tf;
+    private static Logger log = Logger.getLogger(XSLT.class);
 
     public static TransformerFactory getTransformerFactory() {
         if(tf == null){
@@ -75,8 +77,9 @@ public class XSLT {
         Transformer trans = getTransformerFactory().newTransformer(xslt);
         trans.transform(source,result);
     }
+    /*
     public static void main(String [] args){
-        /*
+        
         try{             
             Document inputDoc = XML.XMLToDocument(new File("/tmp/input.xml"));
             Document xsltDoc = XML.XMLToDocument(new File("/tmp/transform.xslt"));
@@ -92,7 +95,7 @@ public class XSLT {
             System.out.println("validation successfull");
         }catch(Exception e){
             e.printStackTrace();
-        }*/
+        }
         try{
             URL input = new URL("file:///home/nicolas/sandburgdc.xml");
             URL xslt = new URL("file:///home/nicolas/dc2baginfo.xsl");
@@ -102,5 +105,5 @@ public class XSLT {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
+    }*/ 
 }
