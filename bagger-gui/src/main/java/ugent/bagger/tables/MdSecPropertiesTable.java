@@ -3,7 +3,6 @@ package ugent.bagger.tables;
 import com.anearalone.mets.MdSec;
 import java.util.ArrayList;
 import javax.swing.JTable;
-import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import ugent.bagger.properties.MdSecProperties;
 
@@ -12,8 +11,7 @@ import ugent.bagger.properties.MdSecProperties;
  * @author nicolas
  */
 public class MdSecPropertiesTable extends AbstractObjectTable{        
-    private ArrayList<MdSec>data;
-    private ActionCommandExecutor openDialogExecutor;
+    private ArrayList<MdSec>data;    
     
     public static ArrayList<MdSecProperties> toProperties(final ArrayList<MdSec>data){
         ArrayList<MdSecProperties>props = new ArrayList<MdSecProperties>();

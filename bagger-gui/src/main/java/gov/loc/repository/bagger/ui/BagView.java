@@ -709,6 +709,12 @@ public class BagView extends DefaultView {
     	context.register("addDataCommand", addDataExecutor);
     	context.register("saveBagCommand", saveBagExecutor);
     	context.register("saveBagAsCommand", saveBagAsExecutor);
+        
+        context.register("validateBagsCommand",new ValidateBagsExecutor(){
+            {
+                setEnabled(true);
+            }
+        });
     }
 
     /**

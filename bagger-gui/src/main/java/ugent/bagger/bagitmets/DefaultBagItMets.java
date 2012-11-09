@@ -16,8 +16,6 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
@@ -26,16 +24,10 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import ugent.bagger.helper.Context;
 import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.DefaultMetsCallback;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
-import ugent.bagger.helper.XML;
-import ugent.bagger.helper.XSLT;
 
 /**
  *
@@ -89,7 +81,7 @@ public class DefaultBagItMets extends BagItMets{
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);
         
         
-        //metadata: controleer of er een Dublin Core record aan toegevoegd is       
+        //metadata: controleer of er een Dublin Core record aan toegevoegd is   => ondergebracht in batch creatie, en manueel (want niet altijd gewenst)    
         /*
         HashMap<String,HashMap<String,Object>> crosswalk = MetsUtils.getCrosswalk();        
         Document dcDoc = null;                
@@ -315,75 +307,93 @@ public class DefaultBagItMets extends BagItMets{
             fileGroups.add(tagFileGroup);            
             
             //make node trees            
-            DefaultMutableTreeNode rootNodePayloads;              
-            DefaultMutableTreeNode rootNodeTagFiles;            
+            DefaultMutableTreeNode rootNodePayloads = null;              
+            DefaultMutableTreeNode rootNodeTagFiles = null;            
             
+            //node tree voor payloads
             String [] payloadPaths = new String [payloads.size()];
             int i = 0;
             for(BagFile payload:payloads){            
                 payloadPaths[i++] = payload.getFilepath();
             }            
             List<DefaultMutableTreeNode> listNodes = FUtils.listToStructure(payloadPaths);            
-            rootNodePayloads = listNodes.get(0);            
             
+            if(!listNodes.isEmpty()){
+                rootNodePayloads = listNodes.get(0);  
+            }
+            
+            //node tree voor tags            
             String [] tagPaths = new String [tags.size()];
             i = 0;
             for(BagFile tag:tags){            
                 tagPaths[i++] = tag.getFilepath();
             }            
-            listNodes = FUtils.listToStructure(tagPaths);            
-            
+            listNodes = FUtils.listToStructure(tagPaths);                        
             rootNodeTagFiles = new DefaultMutableTreeNode(".");
             for(DefaultMutableTreeNode n:listNodes){
                 rootNodeTagFiles.add(n);
-            }
-            
+            }            
 
             //structMaps
             
             //structmap payloads
-            StructMap structMapPayloads = MetsUtils.toStructMap(rootNodePayloads,new DefaultMetsCallback(){
-                @Override
-                public void onCreateDiv(Div div,DefaultMutableTreeNode node){                   
-                    for(int i = 0;i<div.getFptr().size();i++){                        
-                        Fptr filePointer = div.getFptr().get(i);                                                               
-                        String fid = filePointer.getFILEID().replaceAll("\\\\","/");                                                                            
-                        String fileId = fileIdMap.get(fid);                                                
-                        if(fileId != null){                            
-                            filePointer.setFILEID(fileId);
-                        }           
-                    }                   
-                }
-            });            
+            StructMap structMapPayloads;
+            
+            if(rootNodePayloads != null){
+                structMapPayloads = MetsUtils.toStructMap(rootNodePayloads,new DefaultMetsCallback(){
+                    @Override
+                    public void onCreateDiv(Div div,DefaultMutableTreeNode node){                   
+                        for(int i = 0;i<div.getFptr().size();i++){                        
+                            Fptr filePointer = div.getFptr().get(i);                                                               
+                            String fid = filePointer.getFILEID().replaceAll("\\\\","/");                                                                            
+                            String fileId = fileIdMap.get(fid);                                                
+                            if(fileId != null){                            
+                                filePointer.setFILEID(fileId);
+                            }           
+                        }                   
+                    }
+                });
+            }else{
+                structMapPayloads = new StructMap();
+            }            
+                        
             structMapPayloads.setType("BAGIT_PAYLOAD_TREE");             
             
             //structmap tagfiles            
-            StructMap structMapTagFiles = MetsUtils.toStructMap(rootNodeTagFiles,new DefaultMetsCallback(){
-                @Override
-                public void onCreateDiv(Div div,DefaultMutableTreeNode node){
-                    int indexMetsXML = -1;
-                    int indexTagmanifest = -1;
-                    for(int i = 0;i<div.getFptr().size();i++){                        
-                        Fptr filePointer = div.getFptr().get(i);                                               
-                        String fileId = filePointer.getFILEID().replaceFirst("^\\.\\/","").replaceFirst("^\\.\\\\","");                                                     
-                       
-                        if(fileId.compareTo("mets.xml") == 0){
-                            indexMetsXML = i;
-                        }else if(fileId.startsWith("tagmanifest-")){
-                            indexTagmanifest = i;
-                        }else if(fileIdMap.containsKey(fileId)){                            
-                            filePointer.setFILEID(fileIdMap.get(fileId));
+            StructMap structMapTagFiles;
+            
+            if(rootNodeTagFiles == null){
+                structMapTagFiles = MetsUtils.toStructMap(rootNodeTagFiles,new DefaultMetsCallback(){
+                    @Override
+                    public void onCreateDiv(Div div,DefaultMutableTreeNode node){
+                        int indexMetsXML = -1;
+                        int indexTagmanifest = -1;
+                        for(int i = 0;i<div.getFptr().size();i++){                        
+                            Fptr filePointer = div.getFptr().get(i);                                               
+                            String fileId = filePointer.getFILEID().replaceFirst("^\\.\\/","").replaceFirst("^\\.\\\\","");                                                     
+
+                            if(fileId.compareTo("mets.xml") == 0){
+                                indexMetsXML = i;
+                            }else if(fileId.startsWith("tagmanifest-")){
+                                indexTagmanifest = i;
+                            }else if(fileIdMap.containsKey(fileId)){                            
+                                filePointer.setFILEID(fileIdMap.get(fileId));
+                            }
                         }
+                        if(indexMetsXML >= 0){
+                            div.getFptr().remove(indexMetsXML);
+                        }                    
+                        if(indexTagmanifest >= 0){
+                            div.getFptr().remove(indexTagmanifest);
+                        }
+
                     }
-                    if(indexMetsXML >= 0){
-                        div.getFptr().remove(indexMetsXML);
-                    }                    
-                    if(indexTagmanifest >= 0){
-                        div.getFptr().remove(indexTagmanifest);
-                    }
-                   
-                }
-            });            
+                }); 
+            }else{
+                structMapTagFiles = new StructMap();
+            }
+            
+                       
             structMapTagFiles.setType("BAGIT_TAGFILE_TREE");            
         
             mets.getStructMap().clear();

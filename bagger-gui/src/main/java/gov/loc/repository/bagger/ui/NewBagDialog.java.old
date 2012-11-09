@@ -898,36 +898,33 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             ArrayList<File>succeeded = new ArrayList<File>();
             int numErrors = 0;
             BagView bagView = getBagView();                
-            
-            MetsBag bag = null;
+            MetsBag bag = bagView.getBag();
             
             //ledig payloads en tags (anders hoopt alles zich in de opeenvolgende bags..)           
             
             try{
                 
-                for(int i = 0; i< files.size();i++){
+                for(int i = 0; i< files.size();i++){                                                                        
                     
-                    //ledig mets                    
-                    Mets mets = new Mets();
-                    bagView.getInfoFormsPane().getInfoInputPane().setMets(mets);
+                    //ledig mets
+                    bagView.getInfoFormsPane().getInfoInputPane().setMets(new Mets());
+                    Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
                     
                     File inputDir = files.get(i);
-                    File out = new File(dir,inputDir.getName());                    
+                    File out = new File(dir,inputDir.getName());
                     
-                    /*
-                     *  Lege bag:
-                     *      rootDir: null, want map bestaat nog niet (opgeven File die nog niet bestaat geef IOException)                     
-                     */
-                    bag = new MetsBag(null,version);                    
+                    //clear huidige toestand
+                    bag.clear();
+                    bag.clearProfile();
                     bag.setRootDir(out);
-                    bagView.setBag(bag);                   
+                    bag.setName(out.getName());
+                    bag.setVersion(version);                    
                     
                     //voeg payloads toe
                     ArrayList<File>listPayloads = FUtils.listFiles(inputDir);
                     
                     for(File file:listPayloads){
                         if(file.isFile()){                            
-                            System.out.println("adding "+file+" to payload");
                             bag.addFileToPayload(file);
                         }
                     }
@@ -1024,7 +1021,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                         log("Warning - bag not saved"+"Problem saving bag:\n" + messages);
                         //bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
                     }
-                                   
+               
                     if(bag.isSerialized()){
                         succeeded.add(out);                        
                     }

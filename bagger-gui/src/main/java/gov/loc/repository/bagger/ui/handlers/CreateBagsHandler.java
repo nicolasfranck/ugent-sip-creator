@@ -37,8 +37,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
     }
 
     public void createBags() {
-        BagView bagView = BagView.getInstance();     
-        
+        BagView bagView = BagView.getInstance();             
         NewBagsDialog dialog = new NewBagsDialog(
             SwingUtils.getFrame(),
             true,

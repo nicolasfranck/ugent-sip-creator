@@ -20,6 +20,7 @@
         <value>saveBagAsCommand</value>
          <value>addTagFileCommand</value>
         <value>removeTagFileCommand</value>        
+        <value>validateBagsCommand</value>
        </list>
     </property>
   </bean>
@@ -66,15 +67,17 @@
     <property name="members">
       <list>
         <value>startCommand</value>
-        <value>openCommand</value>
-        <!--<value>createBagInPlaceCommand</value>-->
-        <value>createBagsCommand</value>
+        <value>openCommand</value>                
         <value>validateCommand</value>
         <value>completeCommand</value>
         <value>clearCommand</value>
         <value>addDataCommand</value>
         <value>saveBagCommand</value>
         <value>saveBagAsCommand</value>
+        <value>separator</value>
+        <value>validateBagsCommand</value>
+        <value>createBagsCommand</value>
+        <value>separator</value>
         <bean class="gov.loc.repository.bagger.app.BaggerExit" id="exitCommand" />
       </list>
     </property>
