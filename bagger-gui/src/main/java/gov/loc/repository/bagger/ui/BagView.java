@@ -21,9 +21,12 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.PageComponentContext;
+import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
+import ugent.bagger.dialogs.CreateBagsDialog;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
@@ -713,6 +716,18 @@ public class BagView extends DefaultView {
         context.register("validateBagsCommand",new ValidateBagsExecutor(){
             {
                 setEnabled(true);
+            }
+        });
+        context.register("createBagsCommand2",new AbstractActionCommandExecutor(){
+            {
+                setEnabled(true);
+            }
+            @Override
+            public void execute() {
+                CreateBagsDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),true);
+                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
+                dialog.pack();
+                dialog.setVisible(true);
             }
         });
     }

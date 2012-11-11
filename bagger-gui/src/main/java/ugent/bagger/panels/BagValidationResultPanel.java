@@ -55,7 +55,7 @@ public final class BagValidationResultPanel extends JPanel{
         this.buttonPanel = buttonPanel;
     }
     public BagValidationResultTable createBagValidationResultTable(){                        
-        return new BagValidationResultTable(data,new String [] {"file","valid","complete","date"},"bagValidationResultTable");
+        return new BagValidationResultTable(data,new String [] {"file","valid","complete"},"bagValidationResultTable");
     }
     public BagValidationResultTable getBagValidationResultTable() {
         if(bagValidationResultTable == null){
