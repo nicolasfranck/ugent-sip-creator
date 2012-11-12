@@ -1,12 +1,8 @@
 package gov.loc.repository.bagger.bag.impl;
 
 import gov.loc.repository.bagger.Contact;
-import gov.loc.repository.bagger.Organization;
-import gov.loc.repository.bagger.Profile;
-import gov.loc.repository.bagger.ProfileField;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.BaggerSourceOrganization;
-import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagInfoTxt;
 import gov.loc.repository.bagit.impl.BagInfoTxtImpl;
@@ -49,12 +45,15 @@ public class DefaultBagInfo {
         updateBagInfoFieldMapFromBilBag(bagInfoTxt);
         sourceOrganization = new BaggerSourceOrganization(bagInfoTxt);
         toContact = new Contact(true);
-        if (bagInfoTxt.containsKey(Contact.FIELD_TO_CONTACT_NAME)) {
+        
+        //Nicolas Franck: profile uitschakelen
+        /*
+        if(bagInfoTxt.containsKey(Contact.FIELD_TO_CONTACT_NAME)){
             toContact.setContactName(ProfileField.createProfileField(
                 Contact.FIELD_TO_CONTACT_NAME, 
                 bagInfoTxt.get(Contact.FIELD_TO_CONTACT_NAME)
             ));
-        } else {
+        }else{
             ProfileField.createProfileField(Contact.FIELD_TO_CONTACT_NAME, "");
         }
 
@@ -78,7 +77,7 @@ public class DefaultBagInfo {
                     Contact.FIELD_TO_CONTACT_EMAIL, ""
                 )
             );
-        }
+        }*/
 
         for (String key : bagInfoTxt.keySet()) {
             BagInfoField infoField = new BagInfoField();
@@ -103,6 +102,7 @@ public class DefaultBagInfo {
             }
         }
     }	
+    /*
     public void setProfile(Profile profile, boolean newBag) {
         if (newBag) {
             // if this is a new bag, populate organization and contacts with profile info
@@ -219,7 +219,7 @@ public class DefaultBagInfo {
             filedsToReturn.put(profileFiled.getFieldName(),profileFiled);
     	}
     	return filedsToReturn;
-    }	
+    }*/	
     public void clearFields() {
         fieldMap = new HashMap<String, BagInfoField>();
     }

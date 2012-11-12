@@ -1,11 +1,9 @@
 package gov.loc.repository.bagger.bag.impl;
 
-import gov.loc.repository.bagger.Profile;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.BaggerFetch;
 import gov.loc.repository.bagger.model.BagStatus;
 import gov.loc.repository.bagger.model.Status;
-import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagit.*;
 import gov.loc.repository.bagit.BagFactory.Version;
 import gov.loc.repository.bagit.FetchTxt.FilenameSizeUrl;
@@ -69,7 +67,9 @@ public class DefaultBag {
     protected DefaultBagInfo bagInfo = null;
     protected Verifier bagStrategy;
     protected BaggerFetch fetch;
-    protected Profile profile;
+    
+    //Nicolas Franck: Profile uitschakelen (zie onder)
+    //protected Profile profile;
     protected String versionString = null;
     protected File bagFile = null;
 
@@ -123,6 +123,7 @@ public class DefaultBag {
         this.bagInfo.update(bilBag.getBagInfoTxt());
 
         // set profile
+        /*
         String lcProject = bilBag.getBagInfoTxt().get(DefaultBagInfo.FIELD_LC_PROJECT);
         if (lcProject != null && !lcProject.isEmpty()){            
             setProfile(
@@ -131,7 +132,7 @@ public class DefaultBag {
             );
         } else {
             clearProfile();
-        }
+        }*/
     }
 
     protected void initializeBilBag() {
@@ -195,7 +196,7 @@ public class DefaultBag {
     protected void resetStatus() {
         isComplete(Status.UNKNOWN);
         isValid(Status.UNKNOWN);
-        isValidMetadata(Status.UNKNOWN);
+        //isValidMetadata(Status.UNKNOWN);
     }
 
     public void setVersion(String versionString) {
@@ -259,10 +260,10 @@ public class DefaultBag {
     public short getSerialMode() {
         return serialMode;
     }
-
+    /*
     public boolean isNoProject() {
         return profile.isNoProfile();
-    }
+    }*/
 
     public void isBuildTagManifest(boolean isBuildTagManifest) {
         this.isBuildTagManifest = isBuildTagManifest;
@@ -327,10 +328,10 @@ public class DefaultBag {
     private void isValid(Status status) {
         BagStatus.getInstance().getValidationStatus().setStatus(status);
     }
-
+    /*
     private void isValidMetadata(Status status) {
         BagStatus.getInstance().getProfileComplianceStatus().setStatus(status);
-    }
+    }*/
 
     public void isSerialized(boolean isSerialized) {
         this.isSerialized = isSerialized;
@@ -342,7 +343,7 @@ public class DefaultBag {
 
     public void updateBagInfo(Map<String, String> map) {
         changeToDirty();
-        isValidMetadata(Status.UNKNOWN);
+        //isValidMetadata(Status.UNKNOWN);
         bagInfo.update(map);
     }	
 
@@ -458,6 +459,8 @@ public class DefaultBag {
     public int getDataNumber() {
         return bilBag.getPayload().size();
     }
+    
+    /*
     public void clearProfile() {
         setProfile(BaggerProfileStore.getInstance().getProfile(Profile.NO_PROFILE_NAME),false);
     }
@@ -467,7 +470,8 @@ public class DefaultBag {
     }
     public Profile getProfile() {
         return profile;
-    }
+    }*/
+    
     public List<String> getPayloadPaths() {
         ArrayList<String> pathList = new ArrayList<String>();
         Collection<BagFile> payload = bilBag.getPayload();
@@ -604,7 +608,7 @@ public class DefaultBag {
         updateStrategy();
         SimpleResult result = bilBag.verify(bagStrategy);
         
-        isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
+        //isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
         return result;
     }
     /*
@@ -763,9 +767,9 @@ public class DefaultBag {
 
         log.info("Bag-Info to write: " + bilBag.getBagInfoTxt());
 
-        this.isSerialized(false);
+        isSerialized(false);
 
-        Bag newBag = bw.write(bilBag, bagFile);
+        Bag newBag = bw.write(bilBag,bagFile);
         if (newBag != null) {
             bilBag = newBag;
             // write successful
@@ -875,19 +879,19 @@ public class DefaultBag {
     }
 
     public void clear() {
-        clearProfile();
+        //clearProfile();
         bagInfo.clearFields();		
     }
 
     public void addField(BagInfoField field) {
         changeToDirty();
-        isValidMetadata(Status.UNKNOWN);
+        //isValidMetadata(Status.UNKNOWN);
         bagInfo.addField(field);
     }
 
     public void removeBagInfoField(String key) {
         changeToDirty();
-        isValidMetadata(Status.UNKNOWN);
+        //isValidMetadata(Status.UNKNOWN);
         bagInfo.removeField(key);
     }
 

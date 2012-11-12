@@ -194,8 +194,8 @@
         <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView"/>                                
         <property name="viewProperties">
         <map>
-            <entry key="bagger" value-ref="bagger" />
-            <entry key="profileStore" value-ref="profiles" />
+            <!--<entry key="bagger" value-ref="bagger" />
+            <entry key="profileStore" value-ref="profiles" />-->
         </map>
         </property>
     </bean>

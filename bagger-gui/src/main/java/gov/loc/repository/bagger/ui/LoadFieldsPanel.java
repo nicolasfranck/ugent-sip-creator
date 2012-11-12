@@ -28,9 +28,9 @@ public final class LoadFieldsPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         
         JButton loadFromLocalSourceButton = new JButton(Context.getMessage("LoadFieldsPanel.loadFromLocalSourceButton.label"));
-        JButton loadFromExternalSourceButton = new JButton(Context.getMessage("LoadFieldsPanel.loadFromExternalSourceButton.label"));        
+        //JButton loadFromExternalSourceButton = new JButton(Context.getMessage("LoadFieldsPanel.loadFromExternalSourceButton.label"));        
         add(loadFromLocalSourceButton);
-        add(loadFromExternalSourceButton);
+        //add(loadFromExternalSourceButton);
         
         loadFromLocalSourceButton.addActionListener(new ActionListener(){
             @Override

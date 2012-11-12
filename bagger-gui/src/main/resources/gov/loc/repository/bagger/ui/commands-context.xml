@@ -7,7 +7,7 @@
     class="org.springframework.richclient.application.support.ApplicationWindowCommandManager">
     <property name="sharedCommandIds">
       <list>
-        <value>startCommand</value>
+        <value>startCommand</value>        
         <value>openCommand</value>
         <!--<value>createBagInPlaceCommand</value>-->
         <value>createBagsCommand</value>
@@ -21,7 +21,7 @@
          <value>addTagFileCommand</value>
         <value>removeTagFileCommand</value>        
         <value>validateBagsCommand</value>
-        <value>createBagsCommand2</value>
+        <value>validateManifestCommand</value>
        </list>
     </property>
   </bean>
@@ -78,7 +78,7 @@
         <value>separator</value>
         <value>validateBagsCommand</value>
         <value>createBagsCommand</value>
-        <value>createBagsCommand2</value>
+        <value>validateManifestCommand</value>   
         <value>separator</value>
         <bean class="gov.loc.repository.bagger.app.BaggerExit" id="exitCommand" />
       </list>

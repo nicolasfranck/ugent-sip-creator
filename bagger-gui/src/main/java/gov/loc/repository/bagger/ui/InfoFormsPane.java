@@ -24,7 +24,8 @@ public final class InfoFormsPane extends JPanel {
     protected JLabel bagNameValue;
     private JButton removeProjectButton;
     private JLabel bagVersionValue;
-    private JLabel bagProfileValue;
+    //Nicolas Franck: profile disabled
+    //private JLabel bagProfileValue;
     private JLabel holeyValue;
     private JLabel serializeLabel;
     private JLabel serializeValue;
@@ -95,9 +96,10 @@ public final class InfoFormsPane extends JPanel {
         setLayout(new BorderLayout());
         add(getInfoPanel());       
     }    
+    /*
     public void setProfile(String profileName) {
     	bagProfileValue.setText(profileName);
-    }
+    }*/
 
     public JLabel getSerializeValue() {
         if(serializeValue == null){
@@ -170,6 +172,7 @@ public final class InfoFormsPane extends JPanel {
         this.serializeLabel = serializeLabel;
     }    
 
+    /*
     public JLabel getBagProfileValue() {
         if(bagProfileValue == null){
             bagProfileValue = new JLabel("");
@@ -179,7 +182,7 @@ public final class InfoFormsPane extends JPanel {
 
     public void setBagProfileValue(JLabel bagProfileValue) {
         this.bagProfileValue = bagProfileValue;
-    }
+    }*/
 
     public JLabel getBagNameValue() {
         if(bagNameValue == null){
@@ -215,24 +218,25 @@ public final class InfoFormsPane extends JPanel {
         pane.add(getBagNameValue(), gbc);
 
         // bag profile
+        /*
         row++;
         JLabel bagProfileLabel = new JLabel("Profile:");
         gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
-        pane.add(bagProfileLabel, gbc);
-        
+        pane.add(bagProfileLabel, gbc);        
         gbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
-        pane.add(getBagProfileValue(), gbc);
+        pane.add(getBagProfileValue(), gbc);*/
 
         // bag version
+        row++;
         JLabel bagVersionLabel = new JLabel(Context.getMessage("bag.label.version"));
     	bagVersionLabel.setToolTipText(Context.getMessage("bag.versionlist.help"));
-    	gbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
+    	gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(bagVersionLabel, gbc);
         
-    	gbc = LayoutUtil.buildGridBagConstraints(3, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+    	gbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
     	gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getBagVersionValue(), gbc);
 
@@ -248,12 +252,13 @@ public final class InfoFormsPane extends JPanel {
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getHoleyValue(),gbc);
 		
-        // is packed?                
-    	gbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
+        // is packed?  
+        row++;
+    	gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getSerializeLabel(), gbc);
         
-        gbc = LayoutUtil.buildGridBagConstraints(3, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+        gbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
     	gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getSerializeValue(), gbc);
         return pane;

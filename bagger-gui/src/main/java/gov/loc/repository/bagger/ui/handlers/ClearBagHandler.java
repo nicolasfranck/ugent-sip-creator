@@ -69,11 +69,12 @@ public class ClearBagHandler extends AbstractAction {
         
         dialog.setCloseAction(CloseAction.DISPOSE);
         dialog.setTitle(Context.getMessage("bag.dialog.title.close"));
-        dialog.setConfirmationMessage(Context.getMessage("bag.dialog.message.close"));
+        dialog.setConfirmationMessage(Context.getMessage("bag.dialog.message.close"));        
         dialog.showDialog();
     }
     
     public void clearExistingBag() {
+       
     	newDefaultBag(null);
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
@@ -108,12 +109,15 @@ public class ClearBagHandler extends AbstractAction {
             e.printStackTrace();            
     	}
     	if (f == null) {
+            
             bagName = Context.getMessage("bag.label.noname");
     	}else{
             bagName = f.getName();
             String fileName = f.getAbsolutePath();
             bagView.getInfoFormsPane().setBagName(fileName);
-    	}
+    	}        
+        
+        
         bag.setName(bagName);
         bagView.setBag(bag);
         

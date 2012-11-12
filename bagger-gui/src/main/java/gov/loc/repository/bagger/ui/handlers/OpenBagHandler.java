@@ -91,7 +91,9 @@ public class OpenBagHandler extends AbstractAction {
             
 
             bagView.getInfoFormsPane().setBagVersion(bagView.getBag().getVersion());
-            bagView.getInfoFormsPane().setProfile(bagView.getBag().getProfile().getName());       
+            
+            //Nicolas Franck: Profile uitschakelen
+            //bagView.getInfoFormsPane().setProfile(bagView.getBag().getProfile().getName());       
             String fileName = file.getAbsolutePath();
             bagView.getInfoFormsPane().setBagName(fileName);
 

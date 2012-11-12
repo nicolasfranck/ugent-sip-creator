@@ -12,11 +12,13 @@ import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.bagitmets.DefaultBagItMets;
+import ugent.bagger.dialogs.CreateBagsDialog;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
 
 //Nicolas Franck: based on code of CreateBagInPlaceHandler, but for creation of multiple bagits at once
+//profile uitgeschakeld
 
 public class CreateBagsHandler extends AbstractAction implements Progress,Loggable {
     private static final long serialVersionUID = 1L;
@@ -37,22 +39,19 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
     }
 
     public void createBags() {
-        BagView bagView = BagView.getInstance();             
-        NewBagsDialog dialog = new NewBagsDialog(
-            SwingUtils.getFrame(),
-            true,
-            Context.getMessage("NewBagsDialog.title")
-        );
-        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);        
+        BagView bagView = BagView.getInstance();        
+    
+        CreateBagsDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),true);
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
         dialog.pack();
-        dialog.setVisible(true);        
+        dialog.setVisible(true);
     }
-    public void createPreBag(File dataFile, String bagItVersion, final String profileName,String [] ignoreFiles) {
+    public void createPreBag(File dataFile, String bagItVersion,String [] ignoreFiles) {
         BagView bagView = BagView.getInstance();        
         MetsBag bag = bagView.getBag();        
         
-    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {            
-            String message = "Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion + ", profile: " + profileName;
+    	if ((dataFile != null) && (bagItVersion != null)) {            
+            String message = "Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion;
             log.info(message);            
         }    
     
@@ -68,16 +67,16 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
             SwingUtils.ShowError("Error - bagging in place",error);    	   
     	}
     }
-    public void createPreBag(File dataFile, String bagItVersion, final String profileName) {
-        createPreBag(dataFile, bagItVersion, profileName,new String [] {});            
+    public void createPreBag(File dataFile, String bagItVersion) {
+        createPreBag(dataFile, bagItVersion,new String [] {});            
     }
     
-    public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion, final String profileName,String [] ignoreFiles){
+    public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion,String [] ignoreFiles){
         BagView bagView = BagView.getInstance();        
         MetsBag bag = bagView.getBag();        
         
-    	if (((dataFile != null) && (bagItVersion != null)) && (profileName !=null)) {
-            log.info("Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion + ", profile: " + profileName);
+    	if ((dataFile != null) && (bagItVersion != null)) {
+            log.info("Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion);
         }    
     
     	try {
@@ -96,8 +95,8 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
      * Prepares the call to Create Bag in Place and 
      * adding .keep files in Empty Pay load Folder(s) 
     */
-    public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion, final String profileName) {
-        createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion, profileName,new String [] {});
+    public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion) {
+        createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion,new String [] {});
     }        
 
     @Override

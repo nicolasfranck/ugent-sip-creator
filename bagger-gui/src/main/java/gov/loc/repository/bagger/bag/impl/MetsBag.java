@@ -134,6 +134,7 @@ public class MetsBag extends DefaultBag{
             //manually add checksum
             Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());
             
+            
             Manifest tagManifest = bag.getTagManifest(ta);
             String checksumMets = MessageDigestHelper.generateFixity(metsFile,ta);            
             

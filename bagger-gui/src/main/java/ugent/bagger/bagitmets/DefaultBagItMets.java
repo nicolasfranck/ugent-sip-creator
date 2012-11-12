@@ -80,74 +80,6 @@ public class DefaultBagItMets extends BagItMets{
         Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);
         
-        
-        //metadata: controleer of er een Dublin Core record aan toegevoegd is   => ondergebracht in batch creatie, en manueel (want niet altijd gewenst)    
-        /*
-        HashMap<String,HashMap<String,Object>> crosswalk = MetsUtils.getCrosswalk();        
-        Document dcDoc = null;                
-        ArrayList<Element>dcElements = new ArrayList<Element>();
-        ArrayList<Element>dcCandidates = new ArrayList<Element>();        
-        MetsUtils.findDC(mets,dcElements,dcCandidates);                
-        //voeg DC toe indien nodig
-        if(dcElements.size() <= 0 && dcCandidates.size() > 0){            
-            Element element = dcCandidates.get(0);            
-            String xsltPath = null;
-            try{
-                xsltPath = MetsUtils.getXsltPath(element,MetsUtils.NAMESPACE_DC);
-                xsltPath = xsltPath != null ? xsltPath : MetsUtils.getXsltPath(element,MetsUtils.NAMESPACE_OAI_DC);                
-                if(xsltPath == null){
-                    throw new Exception("no crosswalk found");
-                }                
-                URL xsltURL = Context.getResource(xsltPath);                
-                Document xsltDoc = XML.XMLToDocument(xsltURL);                
-                Document outDoc = XSLT.transform(element,xsltDoc);
-                mets.getDmdSec().add(MetsUtils.createMdSec(outDoc));
-                dcDoc = outDoc;                                        
-            }catch(Exception e){
-                e.printStackTrace();
-                log.error(e);
-            }
-        }else if(dcElements.size() > 0){
-            try{
-                Document doc = XML.createDocument();
-                Node node = doc.importNode(dcElements.get(0),true);
-                doc.appendChild(node);
-                dcDoc = doc;
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }*/
-        
-        //schrijf naar bag-info.txt => irritant!
-        /*
-        if(dcDoc != null){
-            System.out.println("writing doc to bag-info");
-            try{                
-                ByteArrayOutputStream baginfoOut = new ByteArrayOutputStream();                
-                URL xsltURL = Context.getResource(
-                    MetsUtils.getBaginfoMap().get(
-                        dcDoc.getDocumentElement().getNamespaceURI()
-                    )
-                );                
-                Document xsltDoc = XML.XMLToDocument(xsltURL);                
-                XSLT.transform(dcDoc,xsltDoc,baginfoOut);                
-                ByteArrayInputStream baginfoIn = new ByteArrayInputStream(baginfoOut.toByteArray());                                
-                NameValueReaderImpl reader = new NameValueReaderImpl(
-                    "UTF-8",baginfoIn,"bagInfoTxt"
-                );                
-                while(reader.hasNext()){
-                    NameValueReader.NameValue pair = reader.next();                           
-                    bag.getBagInfoTxt().put(pair);                 
-                } 
-                Manifest tagManifest = defaultBag.getBag().getTagManifest(tagManifestAlg);                
-            }catch(Exception e){
-                log.error(e);
-                e.printStackTrace();
-            }
-        }*/
-        
-        
-
         //files
         final HashMap<String,String> fileIdMap = new HashMap<String,String>();
         
@@ -362,7 +294,7 @@ public class DefaultBagItMets extends BagItMets{
             //structmap tagfiles            
             StructMap structMapTagFiles;
             
-            if(rootNodeTagFiles == null){
+            if(rootNodeTagFiles != null){
                 structMapTagFiles = MetsUtils.toStructMap(rootNodeTagFiles,new DefaultMetsCallback(){
                     @Override
                     public void onCreateDiv(Div div,DefaultMutableTreeNode node){

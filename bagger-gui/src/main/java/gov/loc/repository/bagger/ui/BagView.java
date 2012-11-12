@@ -1,8 +1,6 @@
 package gov.loc.repository.bagger.ui;
 
-import gov.loc.repository.bagger.Bagger;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import gov.loc.repository.bagger.profile.BaggerProfileStore;
 import gov.loc.repository.bagger.ui.handlers.*;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
@@ -25,7 +23,7 @@ import org.springframework.richclient.command.support.AbstractActionCommandExecu
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
-import ugent.bagger.dialogs.CreateBagsDialog;
+import ugent.bagger.dialogs.ValidateManifestDialog;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.views.DefaultView;
 
@@ -40,11 +38,11 @@ public class BagView extends DefaultView {
     //public LongTask task;
     //public Cancellable longRunningProcess = null;
     //private final Timer timer = new Timer(ONE_SECOND/10, null);    
-    private Bagger bagger;
+    //private Bagger bagger;
     //private DefaultBag bag;    
     //Nicolas Franck
     private MetsBag bag;
-    private BaggerProfileStore profileStore;
+    //private BaggerProfileStore profileStore;
     private BagTree bagPayloadTree;
     private BagTree bagTagFileTree;
     private File bagRootPath;
@@ -178,15 +176,15 @@ public class BagView extends DefaultView {
     public void setInfoFormsPane(InfoFormsPane infoFormsPane) {
         this.infoFormsPane = infoFormsPane;
     }
-    
+    /*
     public void setBagger(Bagger bagger) {
         Assert.notNull(bagger, "The bagger property is required");
         this.bagger = bagger;
     }
     
     public Bagger getBagger() {
-    	return this.bagger;
-    }
+    	return bagger;
+    }*/
     
     public void setBag(MetsBag bag) {
         this.bag = bag;
@@ -617,6 +615,9 @@ public class BagView extends DefaultView {
     public void updateClearBag() {
     	enableBagSettings(false);    	
     	getInfoFormsPane().getHoleyValue().setText("");
+        getInfoFormsPane().getBagVersionValue().setText("");
+        getInfoFormsPane().getBagNameValue().setText("");
+        getInfoFormsPane().getSerializeValue().setText("");
     	addDataToolBarAction.setEnabled(false);
     	removeDataToolBarAction.setEnabled(false);
     	addDataExecutor.setEnabled(false);
@@ -717,19 +718,20 @@ public class BagView extends DefaultView {
             {
                 setEnabled(true);
             }
-        });
-        context.register("createBagsCommand2",new AbstractActionCommandExecutor(){
+        });    
+        context.register("validateManifestCommand",new AbstractActionCommandExecutor(){
             {
                 setEnabled(true);
             }
             @Override
-            public void execute() {
-                CreateBagsDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),true);
+            public void execute(){
+                ValidateManifestDialog dialog = new ValidateManifestDialog(SwingUtils.getFrame(),true);
                 dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
                 dialog.pack();
                 dialog.setVisible(true);
             }
         });
+               
     }
 
     /**
@@ -824,13 +826,14 @@ public class BagView extends DefaultView {
     	}
     }
     
+    /*
     public BaggerProfileStore getProfileStore() {
         return profileStore;
     }
 
     public void setProfileStore(BaggerProfileStore profileStore) {
         this.profileStore = profileStore;
-    }
+    }*/
 
     public static BagView getInstance() {
         return instance;

@@ -79,7 +79,7 @@ public class CSVWizard extends AbstractWizard{
                             HashMap<String,String>map;
                             while((map = (HashMap) mapReader.read(cols)) != null){
                                 Document document = CSVUtils.templateToDocument(vt,map);
-                                table.addMdSec(MetsUtils.createMdSec(document));
+                                table.addMdSec(MetsUtils.createMdSec(document,false));
                             }
 
                             table.refresh();

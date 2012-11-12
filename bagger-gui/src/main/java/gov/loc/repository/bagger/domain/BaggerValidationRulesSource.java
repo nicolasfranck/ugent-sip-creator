@@ -4,12 +4,8 @@ import com.anearalone.mets.MdSec;
 import java.io.File;
 import java.util.ArrayList;
 import org.springframework.rules.Rules;
-import org.springframework.rules.constraint.And;
-import org.springframework.rules.constraint.CompoundConstraint;
 import org.springframework.rules.constraint.Constraint;
-import org.springframework.rules.constraint.property.PropertyConstraint;
 import org.springframework.rules.constraint.property.RequiredIfTrue;
-import org.springframework.rules.factory.Constraints;
 import org.springframework.rules.support.DefaultRulesSource;
 import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.CreateBagsParams;
@@ -36,7 +32,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         addRules(csvParseParamsRules);
         
         Rules createBagsParamsRules = new Rules(CreateBagsParams.class);
-        for(String key:new String [] {"profile","version"}){            
+        for(String key:new String [] {"version"}){            
             createBagsParamsRules.add(required(key));            
         }
         Constraint directoriesConstraint = new Constraint(){
@@ -46,9 +42,8 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
                 return directories != null && !directories.isEmpty();
             }            
         };
-        createBagsParamsRules.add("directories",directoriesConstraint);
+        createBagsParamsRules.add("directories",directoriesConstraint);        
         
-        /*
         Constraint con = ifTrue(value("bagInPlace",new Constraint(){
             @Override
             public boolean test(Object o) {
@@ -62,30 +57,8 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
                 System.out.println("outputDir: "+o);
                 return list != null && !list.isEmpty();
             }        
-        }));
-        boolean ok = con.test(new CreateBagsParams());
-        System.out.println("ok: "+ok);*/
-      
-        PropertyConstraint c = new RequiredIfTrue("outputDir",value("bagInPlace",new Constraint(){
-            @Override
-            public boolean test(Object o) {
-                System.out.println("bagInPlace: "+o);
-                return !((Boolean)o);
-            }        
-        }));
-        
-        
-        
-        /*
-        createBagsParamsRules.add(value("outputDir",new Constraint(){
-            @Override
-            public boolean test(Object o) {
-                ArrayList<File>list = (ArrayList<File>)o;
-                System.out.println("outputDir: "+o);
-                return list != null && !list.isEmpty();
-            }        
-        }));*/
-        //createBagsParamsRules.add(new And(new Constraint [] {con}));
+        })); 
+        createBagsParamsRules.add(new RequiredIfTrue("outputDir",createBagsParamsRules.all(new Constraint [] {con})));
         
         addRules(createBagsParamsRules);
     }  

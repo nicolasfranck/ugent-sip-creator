@@ -1,6 +1,7 @@
 package ugent.bagger.params;
 
 import java.io.File;
+import ugent.bagger.helper.ArrayUtils;
 
 /**
  *
@@ -39,5 +40,8 @@ public class CreateBagResult {
     }
     public boolean isSuccess(){
         return getErrors().length == 0;
+    }
+    public String getErrorString(){        
+        return ArrayUtils.join(getErrors(),", ");
     }
 }

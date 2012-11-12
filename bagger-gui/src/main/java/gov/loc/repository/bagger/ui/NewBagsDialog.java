@@ -79,7 +79,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     private File outputDir;
     private JButton saveAsButton;
     private JComboBox bagVersionList;
-    private JComboBox profileList;
+    //private JComboBox profileList;
     private JCheckBox addKeepFilesToEmptyFoldersCheckBox;
     protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
     protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";	
@@ -186,7 +186,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     public void setCancelCommand(ActionCommand cancelCommand) {
         this.cancelCommand = cancelCommand;
     }
-
+    /*
     public JComboBox getProfileList() {
         if(profileList == null){
             profileList = new JComboBox(getBagView().getProfileStore().getProfileNames());
@@ -199,7 +199,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
 
     public void setProfileList(JComboBox profileList) {
         this.profileList = profileList;
-    }
+    }*/
 
     public JCheckBox getAddKeepFilesToEmptyFoldersCheckBox() {
         if(addKeepFilesToEmptyFoldersCheckBox == null){
@@ -286,7 +286,8 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         int row = 0;
         layoutSelectDataContent(panel,row++);
         layoutBagVersionContent(panel,row++);
-        layoutProfileSelectionContent(panel,row++);
+        //Nicolas Franck: profile uitschakelen
+        //layoutProfileSelectionContent(panel,row++);
         layoutAddKeepFilesToEmptyCheckBox(panel,row++);
         layoutSpacer(panel,row++);
        
@@ -489,6 +490,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         contentPanel.add(getBagVersionList(), glbc);
     }
 	
+    /*
     private void layoutProfileSelectionContent(JPanel contentPane, int row) {
         // content
         // profile selection
@@ -502,7 +504,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         contentPane.add(getProfileList(), glbc);
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
         contentPane.add(spacerLabel, glbc);
-    }
+    }*/
     
 
     /*
@@ -645,11 +647,10 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {            
             
-            if(bagInPlace){
+            if(bagInPlace){                
                 NewBagsInPlaceWorker worker = new NewBagsInPlaceWorker(
                     getSelectedDirectories(),
-                    (String)bagVersionList.getSelectedItem(),
-                    (String)profileList.getSelectedItem()
+                    (String)bagVersionList.getSelectedItem()                    
                 );
                 NewBagsDialog.this.dispose();                        
                 SwingUtils.monitor(
@@ -662,12 +663,11 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     Context.getMessage("NewBagsDialog.outputDir.browse.title"),
                     Context.getMessage("NewBagsDialog.outputDir.browse.title")
                 );
-            }else{
+            }else{              
                 NewBagsWorker worker = new NewBagsWorker(
                     getSelectedDirectories(),
                     getOutputDir(),
-                    (String)bagVersionList.getSelectedItem(),
-                    (String)profileList.getSelectedItem()
+                    (String)bagVersionList.getSelectedItem()                  
                 );
                 NewBagsDialog.this.dispose();
                 SwingUtils.monitor(
@@ -688,11 +688,10 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     private class NewBagsInPlaceWorker extends LongTask2{
         private ArrayList<File>files = new ArrayList<File>();
         private String version;
-        private String profile;
-        public NewBagsInPlaceWorker(ArrayList<File>files,String version,String profile){
+       
+        public NewBagsInPlaceWorker(ArrayList<File>files,String version){
             this.files = files;
-            this.version = version;
-            this.profile = profile;
+            this.version = version;            
         }        
         public ArrayList<File> getFiles() {
             if(files == null){
@@ -835,14 +834,12 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                         bagView.createBagsHandler.createPreBagAddKeepFilesToEmptyFolders(
                             file,
                             version,
-                            profile,
                             ignoreFiles
                         );					
                     }else{							
                         bagView.createBagsHandler.createPreBag(
                             file, 
                             version,
-                            profile,
                             ignoreFiles
                         );
                     }
@@ -881,14 +878,12 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     private class NewBagsWorker extends LongTask2 {
         private ArrayList<File>files = new ArrayList<File>();
         private File dir;
-        private String version;
-        private String profile;  
+        private String version;        
         
-        public NewBagsWorker(ArrayList<File>files,File dir,String version,String profile){
+        public NewBagsWorker(ArrayList<File>files,File dir,String version){
             this.files = files;
             this.dir = dir;
-            this.version = version;
-            this.profile = profile;
+            this.version = version;            
         }
         @Override
         protected Object doInBackground() throws Exception {

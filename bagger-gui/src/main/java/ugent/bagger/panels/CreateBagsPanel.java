@@ -11,6 +11,7 @@ import gov.loc.repository.bagit.utilities.namevalue.impl.NameValueReaderImpl;
 import gov.loc.repository.bagit.writer.Writer;
 import gov.loc.repository.bagit.writer.impl.FileSystemWriter;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,6 @@ import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.progress.BusyIndicator;
-import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -69,15 +69,20 @@ public final class CreateBagsPanel extends JPanel{
         JPanel panel = new JPanel();
         BoxLayout layout = new BoxLayout(panel,BoxLayout.PAGE_AXIS);
         panel.setLayout(layout);
-        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));       
         
         JComponent form = getCreateBagsParamsForm().getControl();
-        panel.add(form);
+        panel.add(form);        
         
         JComponent buttonPanel = createButtonPanel();
-        panel.add(buttonPanel);
+        panel.add(buttonPanel);     
         
-        panel.add(new JScrollPane(getCreateBagResultTable().getControl()));
+        JComponent table = getCreateBagResultTable().getControl();
+        final Dimension tDimension = new Dimension(500,200);
+        table.setPreferredSize(tDimension);
+        JScrollPane scroller = new JScrollPane(table);
+        scroller.setPreferredSize(tDimension);
+        panel.add(scroller);
         
         return panel;
     }
@@ -86,7 +91,7 @@ public final class CreateBagsPanel extends JPanel{
         if(createBagResultTable == null){
             createBagResultTable = new CreateBagResultTable(
                 getCreateBagResults(),
-                new String [] {"inputFile","outputFile","success"},
+                new String [] {"inputFile","outputFile","success","errorString"},
                 "createBagResultTable"
             );
             createBagResultTable.setDoubleClickHandler(new ActionCommandExecutor(){
@@ -98,8 +103,7 @@ public final class CreateBagsPanel extends JPanel{
                         BagView.getInstance().openBagHandler.openExistingBag(result.getOutputFile());
                         BusyIndicator.clearAt(CreateBagsPanel.this);
                     }
-                }
-                
+                }                
             });
         }
         return createBagResultTable;
@@ -222,7 +226,7 @@ public final class CreateBagsPanel extends JPanel{
             
             BusyIndicator.showAt(CreateBagsPanel.this);
             
-            ArrayList<Integer>succeeded = new ArrayList<Integer>();            
+            
             BagView bagView = BagView.getInstance();
             MetsBag bag = bagView.getBag();
             
@@ -374,21 +378,18 @@ public final class CreateBagsPanel extends JPanel{
                     if(bag.isAddKeepFilesToEmptyFolders()){                    
                         bagView.createBagsHandler.createPreBagAddKeepFilesToEmptyFolders(
                             file,
-                            getCreateBagsParams().getVersion(),
-                            getCreateBagsParams().getProfile(),
+                            getCreateBagsParams().getVersion(),                            
                             ignoreFiles
                         );					
                     }else{							
                         bagView.createBagsHandler.createPreBag(
                             file, 
-                            getCreateBagsParams().getVersion(),
-                            getCreateBagsParams().getProfile(),
+                            getCreateBagsParams().getVersion(),                           
                             ignoreFiles
                         );
                     }
                     
-                    setProgress(percent); 
-                    succeeded.add(i);
+                    setProgress(percent);
                     
                     addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                 }
@@ -410,9 +411,8 @@ public final class CreateBagsPanel extends JPanel{
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(CreateBagsPanel.this);           
+            BusyIndicator.showAt(CreateBagsPanel.this);
             
-            ArrayList<File>succeeded = new ArrayList<File>();            
             BagView bagView = BagView.getInstance();                
             
             MetsBag bag = null;
@@ -590,11 +590,7 @@ public final class CreateBagsPanel extends JPanel{
                         addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                         setProgress(percent);
                         continue;
-                    }
-                                   
-                    if(bag.isSerialized()){
-                        succeeded.add(out);                        
-                    }
+                    }                                   
                     
                     addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                     setProgress(percent);                     

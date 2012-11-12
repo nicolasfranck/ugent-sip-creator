@@ -36,7 +36,9 @@ public final class FileSelectBinding extends CustomBinding{
 
     public JTextField getField() {
         if(field == null){
-            field = new JTextField(15);              
+            field = new JTextField(15); 
+            
+            field.setEditable(false);
             
             field.addMouseListener(new MouseAdapter(){
                 @Override
