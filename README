@@ -1,0 +1,5 @@
+installatie:
+
+    cd Bagger-LC/bagger-gui
+    mvn clean assembly:assembly
+    java -jar target/bagger-gui-2.1.2-SNAPSHOT-jar-with-dependencies.jar
