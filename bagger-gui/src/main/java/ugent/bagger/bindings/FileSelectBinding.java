@@ -86,7 +86,7 @@ public final class FileSelectBinding extends CustomBinding{
         
         if(list == null || list.isEmpty()){
             field.setText(String.format(getTemplate(),0));
-        }else{
+        }else{            
             String t = list.size() > 1 ? String.format(getTemplate(),list.size()):list.get(0).getAbsolutePath();
             field.setText(t);        
         }

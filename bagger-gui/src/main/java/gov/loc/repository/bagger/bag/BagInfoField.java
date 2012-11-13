@@ -32,24 +32,24 @@ public final class BagInfoField {
     
     public BagInfoField(ProfileField projectProfile){
         setLabel(projectProfile.getFieldName());
-        setName(this.getLabel());
+        setName(getLabel());
         setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
         isEnabled(!projectProfile.isReadOnly());
         isEditable(!projectProfile.isReadOnly());
         isRequiredvalue(projectProfile.getIsValueRequired());
         isRequired(projectProfile.getIsRequired());
         setValue(projectProfile.getFieldValue());
-        //field.setValue("");
+        
         if(projectProfile.isReadOnly()) {
             isEnabled(false);
         }
         buildElements(projectProfile.getElements());
-        if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTFIELD_CODE)) {
-                setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
-        } else if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTAREA_CODE)) {
-                setComponentType(BagInfoField.TEXTAREA_COMPONENT);
-        }	else if (!(projectProfile.getElements().isEmpty())) {
-                setComponentType(BagInfoField.LIST_COMPONENT);
+        if(projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTFIELD_CODE)) {
+            setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
+        }else if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTAREA_CODE)) {
+            setComponentType(BagInfoField.TEXTAREA_COMPONENT);
+        }else if (!(projectProfile.getElements().isEmpty())) {
+            setComponentType(BagInfoField.LIST_COMPONENT);
         }
     }
 
@@ -82,7 +82,7 @@ public final class BagInfoField {
     }
     
     public List<String> getElements() {
-    	return this.elements;
+    	return elements;
     }
         
     public void setComponentType(int type) {

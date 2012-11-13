@@ -27,7 +27,7 @@ public class DefaultBagInfo {
     private static final HashSet<String> ORGANIZATION_CONTACT_FIELD_SET = new HashSet<String>(Arrays.asList(ORGANIZATION_CONTACT_FIELDS));	
     private BaggerSourceOrganization sourceOrganization = new BaggerSourceOrganization();
     private Contact toContact = new Contact(true);
-    private HashMap<String, BagInfoField> fieldMap = new HashMap<String, BagInfoField>();
+    private HashMap<String,BagInfoField> fieldMap = new HashMap<String,BagInfoField>();
 
     public DefaultBagInfo(Bag bag) {
         log.debug("DefaultBagInfo");
@@ -35,10 +35,10 @@ public class DefaultBagInfo {
     public BaggerSourceOrganization getBagOrganization() {
         return sourceOrganization;
     }
-    public HashMap<String, BagInfoField> getFieldMap() {
+    public HashMap<String,BagInfoField> getFieldMap() {
         return fieldMap;
     }
-    public void addField(BagInfoField field) {
+    public void addField(BagInfoField field){        
         fieldMap.put(field.getName(),field);
     }
     public void update(BagInfoTxt bagInfoTxt) {
@@ -80,6 +80,7 @@ public class DefaultBagInfo {
         }*/
 
         for (String key : bagInfoTxt.keySet()) {
+            
             BagInfoField infoField = new BagInfoField();
             infoField.setLabel(key);
             infoField.setName(key);
@@ -97,7 +98,7 @@ public class DefaultBagInfo {
                 BagInfoField field = fieldMap.get(label);
                 String key = field.getLabel();
                 String value = bagInfoTxt.get(key);
-                field.setValue(value);
+                field.setValue(value);                
                 fieldMap.put(label, field);
             }
         }

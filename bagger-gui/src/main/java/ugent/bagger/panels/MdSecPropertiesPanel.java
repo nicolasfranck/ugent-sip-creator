@@ -23,7 +23,6 @@ import ugent.bagger.forms.MdSecForm;
 import ugent.bagger.forms.MdWrapForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.tables.DmdSecPropertiesTable;
 import ugent.bagger.tables.EditMdSecPropertiesTable;
 import ugent.bagger.wizards.BagInfoImportWizardDialog;
 import ugent.bagger.wizards.CSVWizardDialog;
@@ -99,8 +98,8 @@ public class MdSecPropertiesPanel extends JPanel{
         }
         return editDmdSecPropertiesTable;
     }
-    public DmdSecPropertiesTable createMdSecPropertiesTable(){                        
-        return new DmdSecPropertiesTable(data,new String [] {"namespace","label","MDTYPE","OTHERMDTYPE"},"mdSecTable");
+    public EditMdSecPropertiesTable createMdSecPropertiesTable(){                        
+        return new EditMdSecPropertiesTable(data,new String [] {"namespace","label","MDTYPE","OTHERMDTYPE"},"mdSecTable");
     }
     public void setMdSecPropertiesTable(EditMdSecPropertiesTable editDmdSecPropertiesTable) {
         this.editDmdSecPropertiesTable = editDmdSecPropertiesTable;

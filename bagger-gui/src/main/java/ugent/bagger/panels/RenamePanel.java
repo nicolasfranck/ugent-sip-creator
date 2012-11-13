@@ -43,7 +43,7 @@ import ugent.bagger.params.AbstractFile;
 import ugent.bagger.params.FileAbstractFile;
 import ugent.bagger.params.RenameParams;
 import ugent.bagger.params.RenumberParams;
-import ugent.bagger.tables.AbstractFileTable;
+import ugent.bagger.tables.ClassTable;
 import ugent.bagger.workers.DefaultWorker;
 import ugent.rename.*;
 
@@ -77,7 +77,7 @@ public class RenamePanel extends JPanel{
     private JTree fileSystemTree;
     private LazyTreeNode fileSystemTreeNode;
     private static FileSystemView fsv = FileSystemView.getFileSystemView();    
-    private AbstractFileTable fileTable;
+    private ClassTable<AbstractFile> fileTable;
     private JScrollPane scrollerFileTable;
     private JPanel panelFileTable;
     private ArrayList<File>selectedFiles = new ArrayList<File>();
@@ -100,10 +100,10 @@ public class RenamePanel extends JPanel{
         return afiles;        
         
     }
-    public AbstractFileTable getFileTable() {
+    public ClassTable<AbstractFile> getFileTable() {
         if(fileTable == null){                        
             final ArrayList<AbstractFile>afiles = getList(getLastFile());            
-            fileTable = new AbstractFileTable(
+            fileTable = new ClassTable<AbstractFile>(
                 afiles,
                 new String [] {"name","mimeType"},
                 "fileTable"
@@ -177,10 +177,10 @@ public class RenamePanel extends JPanel{
         return fileTable;
     }
     public void reloadFileTable(File file){         
-        getFileTable().clearSort();
+        getFileTable().clearSort();        
         getFileTable().reset(getList(file));                
     }
-    public void setFileTable(AbstractFileTable fileTable) {
+    public void setFileTable(ClassTable<AbstractFile> fileTable) {
         this.fileTable = fileTable;
     }
     public RenamePanel(){

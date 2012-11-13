@@ -42,7 +42,7 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.params.CreateBagResult;
 import ugent.bagger.params.CreateBagsParams;
-import ugent.bagger.tables.CreateBagResultTable;
+import ugent.bagger.tables.ClassTable;
 import ugent.bagger.workers.LongTask2;
 
 /**
@@ -54,7 +54,7 @@ public final class CreateBagsPanel extends JPanel{
     private CreateBagsParams createBagsParams;
     private CreateBagsParamsForm createBagsParamsForm;
     private ArrayList<CreateBagResult>createBagResults;
-    private CreateBagResultTable createBagResultTable;
+    private ClassTable<CreateBagResult> createBagResultTable;
     private JButton okButton;
     
     public CreateBagsPanel(){ 
@@ -78,8 +78,7 @@ public final class CreateBagsPanel extends JPanel{
         panel.add(buttonPanel);     
         
         JComponent table = getCreateBagResultTable().getControl();
-        final Dimension tDimension = new Dimension(500,200);
-        table.setPreferredSize(tDimension);
+        final Dimension tDimension = new Dimension(500,200);        
         JScrollPane scroller = new JScrollPane(table);
         scroller.setPreferredSize(tDimension);
         panel.add(scroller);
@@ -87,9 +86,9 @@ public final class CreateBagsPanel extends JPanel{
         return panel;
     }
 
-    public CreateBagResultTable getCreateBagResultTable() {
+    public ClassTable<CreateBagResult> getCreateBagResultTable() {
         if(createBagResultTable == null){
-            createBagResultTable = new CreateBagResultTable(
+            createBagResultTable = new ClassTable<CreateBagResult>(
                 getCreateBagResults(),
                 new String [] {"inputFile","outputFile","success","errorString"},
                 "createBagResultTable"
@@ -109,7 +108,7 @@ public final class CreateBagsPanel extends JPanel{
         return createBagResultTable;
     }
 
-    public void setCreateBagResultTable(CreateBagResultTable createBagResultTable) {
+    public void setCreateBagResultTable(ClassTable<CreateBagResult> createBagResultTable) {
         this.createBagResultTable = createBagResultTable;
     }
     
@@ -152,8 +151,7 @@ public final class CreateBagsPanel extends JPanel{
     }
     protected void addCreateBagResult(CreateBagResult result){
         getCreateBagResults().add(result);
-        getCreateBagResultTable().reset(getCreateBagResults());
-        getCreateBagResultTable().refresh();
+        getCreateBagResultTable().reset(getCreateBagResults());        
     }
 
     public JButton getOkButton() {

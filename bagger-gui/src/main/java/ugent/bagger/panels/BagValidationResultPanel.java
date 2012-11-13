@@ -19,7 +19,7 @@ import ugent.bagger.forms.BagValidateParamsForm;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.BagValidateParams;
 import ugent.bagger.params.BagValidationResult;
-import ugent.bagger.tables.BagValidationResultTable;
+import ugent.bagger.tables.ClassTable;
 import ugent.bagger.workers.DefaultWorker;
 
 /**
@@ -28,7 +28,7 @@ import ugent.bagger.workers.DefaultWorker;
  */
 public final class BagValidationResultPanel extends JPanel{
     private JComponent buttonPanel;
-    private BagValidationResultTable bagValidationResultTable;         
+    private ClassTable<BagValidationResult> bagValidationResultTable;         
     private ArrayList<BagValidationResult>data = new ArrayList<BagValidationResult>();
     private BagValidateParams bagValidateParams;
     private BagValidateParamsForm bagValidateParamsForm;
@@ -54,10 +54,10 @@ public final class BagValidationResultPanel extends JPanel{
     public void setButtonPanel(JPanel buttonPanel) {
         this.buttonPanel = buttonPanel;
     }
-    public BagValidationResultTable createBagValidationResultTable(){                        
-        return new BagValidationResultTable(data,new String [] {"file","valid","complete"},"bagValidationResultTable");
+    public ClassTable<BagValidationResult> createBagValidationResultTable(){                        
+        return new ClassTable<BagValidationResult>(data,new String [] {"file","valid","complete"},"bagValidationResultTable");
     }
-    public BagValidationResultTable getBagValidationResultTable() {
+    public ClassTable<BagValidationResult> getBagValidationResultTable() {
         if(bagValidationResultTable == null){
             bagValidationResultTable = createBagValidationResultTable();
             bagValidationResultTable.setDoubleClickHandler(new ActionCommandExecutor(){
@@ -73,16 +73,21 @@ public final class BagValidationResultPanel extends JPanel{
         return bagValidationResultTable;
     }
 
-    public void setBagValidationResultTable(BagValidationResultTable bagValidationResultTable) {
+    public void setBagValidationResultTable(ClassTable<BagValidationResult> bagValidationResultTable) {
         this.bagValidationResultTable = bagValidationResultTable;
     }
     protected JComponent createContentPane() {
         JPanel panel = new JPanel();        
         BoxLayout layout = new BoxLayout(panel,BoxLayout.PAGE_AXIS);
         panel.setLayout(layout);
-        panel.add(getBagValidateParamsForm().getControl());
+        
+        JComponent form = getBagValidateParamsForm().getControl();
+        panel.add(form);
         panel.add(new JScrollPane(getBagValidationResultTable().getControl()));        
         panel.add(getButtonPanel());        
+        
+        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        
         return panel;
     }
     public JComponent createButtonPanel(){
@@ -135,8 +140,7 @@ public final class BagValidationResultPanel extends JPanel{
             SwingUtils.ShowBusy();
             
             try{
-                reset(new ArrayList<BagValidationResult>());
-                getBagValidationResultTable().refresh();
+                reset(new ArrayList<BagValidationResult>());                
                 
                 ArrayList<File>files = getBagValidateParams().getFiles();
                 for(int i = 0;i < files.size();i++){

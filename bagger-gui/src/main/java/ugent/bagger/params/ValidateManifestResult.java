@@ -7,11 +7,13 @@ import java.io.File;
  * @author nicolas
  */
 public class ValidateManifestResult {
+    private File manifestFile;
     private File file;
     private String checksumFound;
     private String checksumComputed;   
     
-    public ValidateManifestResult(File file,String checksumFound,String checksumComputed){
+    public ValidateManifestResult(File manifestFile,File file,String checksumFound,String checksumComputed){
+        this.manifestFile = manifestFile;
         this.file = file;
         this.checksumFound = checksumFound;
         this.checksumComputed = checksumComputed;
@@ -38,4 +40,13 @@ public class ValidateManifestResult {
     public boolean isSuccess() {
         return checksumFound.compareTo(checksumComputed) == 0;
     }
+
+    public File getManifestFile() {
+        return manifestFile;
+    }
+
+    public void setManifestFile(File manifestFile) {
+        this.manifestFile = manifestFile;
+    }
+    
 }

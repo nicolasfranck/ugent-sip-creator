@@ -264,7 +264,12 @@ public final class AddFieldPanel extends JPanel {
 
         field.setName(fieldName);
         field.setLabel(fieldName);
-        field.setValue(getValueField().getText().trim());
+        
+        //field.setValue(getValueField().getText().trim());
+        
+        field.getElements().add(getValueField().getText().trim());
+        
+        
         field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
 		
     	return field;

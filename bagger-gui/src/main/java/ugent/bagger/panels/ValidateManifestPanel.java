@@ -20,13 +20,12 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.forms.ValidateManifestParamsForm;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.ValidateManifestParams;
 import ugent.bagger.params.ValidateManifestResult;
-import ugent.bagger.tables.ValidateManifestResultTable;
+import ugent.bagger.tables.ClassTable;
 import ugent.bagger.workers.LongTask2;
 
 /**
@@ -36,7 +35,7 @@ import ugent.bagger.workers.LongTask2;
 public class ValidateManifestPanel extends JPanel{
     private ValidateManifestParams validateManifestParams;
     private ValidateManifestParamsForm validateManifestParamsForm;
-    private ValidateManifestResultTable validateManifestResultTable;
+    private ClassTable<ValidateManifestResult> validateManifestResultTable;
     private ArrayList<ValidateManifestResult>validateManifestResults;
     
     public ValidateManifestPanel(){
@@ -44,14 +43,18 @@ public class ValidateManifestPanel extends JPanel{
     }
     public void init(){
         setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
-        add(getValidateManifestParamsForm().getControl());
-        add(new JSeparator());
-        JComponent table = getValidateManifestResultTable().getControl();
-        final Dimension tDimension = new Dimension(500,200);
-        table.setPreferredSize(tDimension);
+        
+        JComponent form = getValidateManifestParamsForm().getControl();        
+        add(form);
+        
+        add(createButtonPanel()); 
+        
+        JComponent table = getValidateManifestResultTable().getControl();         
         JScrollPane scroller = new JScrollPane(table);
-        scroller.setPreferredSize(tDimension);
+        scroller.setPreferredSize(new Dimension(500,200));
         add(scroller);
+        
+        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
     }
     public ValidateManifestParams getValidateManifestParams() {
         if(validateManifestParams == null){
@@ -97,26 +100,27 @@ public class ValidateManifestPanel extends JPanel{
         panel.add(okButton);
         panel.add(cancelButton);
         
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        
         return panel;
+    }
+    public void reset(ArrayList<ValidateManifestResult>validateManifestResults){
+        getValidateManifestResultTable().reset(validateManifestResults);
+        this.validateManifestResults = validateManifestResults;
     }
     public void addValidateManifestResult(ValidateManifestResult result){
         getValidateManifestResults().add(result);
-        getValidateManifestResultTable().reset(getValidateManifestResults());
-        getValidateManifestResultTable().refresh();
+        getValidateManifestResultTable().reset(getValidateManifestResults());        
     }
-    public ValidateManifestResultTable getValidateManifestResultTable() {
+    public ClassTable<ValidateManifestResult> getValidateManifestResultTable() {
         if(validateManifestResultTable == null){
-            validateManifestResultTable  = new ValidateManifestResultTable(
+            validateManifestResultTable  = new ClassTable<ValidateManifestResult>(
                 getValidateManifestResults(),
-                new String [] {"file","checksumFound","checksumComputed","success"},
+                new String [] {"manifestFile","file","checksumFound","checksumComputed","success"},
                 "validateManifestResultTable"
             );
         }
         return validateManifestResultTable;
     }
-    public void setValidateManifestResultTable(ValidateManifestResultTable validateManifestResultTable) {
+    public void setValidateManifestResultTable(ClassTable<ValidateManifestResult> validateManifestResultTable) {
         this.validateManifestResultTable = validateManifestResultTable;
     }
     public ArrayList<ValidateManifestResult> getValidateManifestResults() {
@@ -134,21 +138,28 @@ public class ValidateManifestPanel extends JPanel{
             
             BusyIndicator.showAt(ValidateManifestPanel.this);            
             
+            reset(new ArrayList<ValidateManifestResult>());
+            
             BagFactory bagFactory = new BagFactory();            
             BagPartFactoryImpl bagPartFactory = new BagPartFactoryImpl(bagFactory,new BagConstantsImpl());
             
-            int i = 0;            
+            System.out.println("algorithm: "+getValidateManifestParams().getAlgorithm());
+            
+            int i = 0;                        
             for(File manifestFile:getValidateManifestParams().getFiles()){
                 try{
-                    File baseDir = manifestFile.getParentFile();
+                    System.out.println("manifestFile: "+manifestFile);
+                    
+                    File baseDir = manifestFile.getParentFile();                    
                     System.out.println("baseDir: "+baseDir);
+                    
                     ManifestReader manifestReader = bagPartFactory.createManifestReader(new FileInputStream(manifestFile),"UTF-8");
                     while(manifestReader.hasNext()){
                         FilenameFixity fixity = manifestReader.next();                            
-                        File childFile = new File(baseDir,fixity.getFilename());
+                        File childFile = new File(baseDir,fixity.getFilename());                                                
                         System.out.println("childFile: "+childFile);
                         String checksumComputed = MessageDigestHelper.generateFixity(childFile,getValidateManifestParams().getAlgorithm());                            
-                        addValidateManifestResult(new ValidateManifestResult(manifestFile,fixity.getFixityValue(),checksumComputed));
+                        addValidateManifestResult(new ValidateManifestResult(manifestFile,childFile,fixity.getFixityValue(),checksumComputed));
                     }                        
                 }catch(FileNotFoundException e){
                     e.printStackTrace();
@@ -156,8 +167,7 @@ public class ValidateManifestPanel extends JPanel{
                 int percent = (int)Math.floor( ((++i) / ((float)getValidateManifestParams().getFiles().size()))*100);                    
                 setProgress(percent);
                                 
-            }
-            
+            }            
             
             BusyIndicator.clearAt(ValidateManifestPanel.this);
             return null;            

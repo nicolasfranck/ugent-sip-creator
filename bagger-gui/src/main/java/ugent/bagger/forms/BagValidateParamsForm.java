@@ -36,8 +36,6 @@ public class BagValidateParamsForm extends AbstractForm{
         TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");   
         
-        builder.add("valid");
-        
         JFileChooser fileChooser = SwingUtils.createFileChooser(
             "bags", //title
             null, //filter
@@ -54,6 +52,10 @@ public class BagValidateParamsForm extends AbstractForm{
             SwingUtils.getFrame()
         );
         builder.add(fileSelectBinding);                            
+        builder.row();
+        
+        builder.add("valid");
+        builder.row();
        
         return builder.getForm();
     }
