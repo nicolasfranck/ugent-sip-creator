@@ -24,7 +24,9 @@ import ugent.bagger.forms.MdWrapForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.tables.EditMdSecPropertiesTable;
+import ugent.bagger.wizards.BagInfoImportWizard;
 import ugent.bagger.wizards.BagInfoImportWizardDialog;
+import ugent.bagger.wizards.CSVWizard;
 import ugent.bagger.wizards.CSVWizardDialog;
 import ugent.bagger.workers.TaskAddMdSecFromFile;
 
@@ -138,6 +140,16 @@ public class MdSecPropertiesPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 JDialog dialog = new XMLCrosswalkDialog(SwingUtils.getFrame(),true);                
+                
+                dialog.addPropertyChangeListener("mdSec",new PropertyChangeListener(){
+                    @Override
+                    public void propertyChange(PropertyChangeEvent pce) {                        
+                        MdSec mdSec = (MdSec) pce.getNewValue();
+                        getEditDmdSecPropertiesTable().addMdSec(mdSec);
+                        getEditDmdSecPropertiesTable().refresh();
+                    }                    
+                });
+                
                 dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);                
                 dialog.setLocationRelativeTo(panel);
                 dialog.pack();
@@ -177,25 +189,50 @@ public class MdSecPropertiesPanel extends JPanel{
         importCSVItem.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                new CSVWizardDialog().showDialog();
+                CSVWizard wizard = new CSVWizard();
+                CSVWizardDialog dialog = new CSVWizardDialog(wizard);
+                wizard.addPropertyChangeListener("addMdSec",new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent pce) {
+                        MdSec mdSec = (MdSec) pce.getNewValue();
+                        getEditDmdSecPropertiesTable().addMdSec(mdSec);
+                    }
+                });
+                wizard.addPropertyChangeListener("doneMdSec",new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent pce) {                        
+                        getEditDmdSecPropertiesTable().refresh();
+                    }
+                });
+                dialog.showDialog();
             }            
         });
         
         importBagInfoItem.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                new BagInfoImportWizardDialog().showDialog();
+                BagInfoImportWizard wizard = new BagInfoImportWizard();
+                BagInfoImportWizardDialog dialog = new BagInfoImportWizardDialog(wizard);
+                wizard.addPropertyChangeListener("addMdSec",new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent pce) {
+                        MdSec mdSec = (MdSec) pce.getNewValue();
+                        getEditDmdSecPropertiesTable().addMdSec(mdSec);
+                    }
+                });
+                wizard.addPropertyChangeListener("doneMdSec",new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent pce) {                        
+                        getEditDmdSecPropertiesTable().refresh();
+                    }
+                });
+                dialog.showDialog();
             }            
         });
         
         final JPopupMenu importPopupMenu = new JPopupMenu();
         importPopupMenu.add(importCSVItem);
-        importPopupMenu.add(importBagInfoItem);
-        
-        //default niet ingeschakeld
-        addButton.setEnabled(false);
-        removeButton.setEnabled(false);
-        importButton.setEnabled(false);        
+        importPopupMenu.add(importBagInfoItem);                
         
         importButton.addActionListener(new ActionListener(){
             @Override

@@ -644,7 +644,7 @@
         <entry key="spectrum" value="http://www.ivoa.net/xml/Spectrum/Spectrum-1.01.xsd" />
         <entry key="metsrights" value="http://cosimo.stanford.edu/sdr/metsrights/" />        
     </util:map> 
-    <util:map id="docTypeMapping">
+    <util:map id="docTypeMapping" map-class="java.util.HashMap">
         <entry key="ead" value="urn:isbn:1-931666-22-9" />
         <entry key="marc" value="http://www.loc.gov/MARC21/slim" />
         <entry key="mods" value="http://www.loc.gov/mods/v3" />
@@ -662,12 +662,28 @@
                 <entry key="xsd" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
             </util:map>    
         </entry>
-    </util:map>
+    </util:map>    
     
-    
-    <util:map id="bagInfoImporters">
+    <util:map id="bagInfoImporters" map-class="java.util.HashMap">
         <entry key="Dublin Core" value="ugent.bagger.importers.NameValueToDCImporter" />   
         <entry key="Dublin Core (OAI)" value="ugent.bagger.importers.NameValueToOAIDCImporter" />
+    </util:map>
+    
+    <util:map id="renameParamsTemplates" map-class="java.util.HashMap" key-type="java.lang.String" value-type="ugent.bagger.params.RenameParams">
+        <entry key="replaceWhiteSpaceByUnderscores">
+            <bean class="ugent.bagger.params.RenameParams">
+                <property name="regex" value="true" />
+                <property name="source" value="\s+" />
+                <property name="destination" value="_" />                
+            </bean>  
+        </entry>
+        <entry key="removeWhiteSpace">
+            <bean class="ugent.bagger.params.RenameParams">
+                <property name="regex" value="true" />
+                <property name="source" value="\s+" />
+                <property name="destination" value="" />                
+            </bean>  
+        </entry>
     </util:map>
     
 </beans>

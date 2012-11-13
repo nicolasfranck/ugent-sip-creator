@@ -1,11 +1,14 @@
 package ugent.bagger.wizards;
 
-import gov.loc.repository.bagger.ui.BagView;
+import com.anearalone.mets.MdSec;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.springframework.richclient.wizard.AbstractWizard;
@@ -17,10 +20,7 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.importers.Importer;
-import ugent.bagger.importers.NameValueToDCImporter;
-import ugent.bagger.importers.NameValueToOAIDCImporter;
 import ugent.bagger.params.BagInfoImportParams;
-import ugent.bagger.tables.EditMdSecPropertiesTable;
 import ugent.bagger.workers.DefaultWorker;
 /**
  *
@@ -28,6 +28,7 @@ import ugent.bagger.workers.DefaultWorker;
  */
 public class BagInfoImportWizard extends AbstractWizard{    
     private BagInfoImportWizardPage1 bagInfoImportWizardPage1;
+    HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
     
     public void log(String message){
         ApplicationContextUtil.addConsoleMessage(message+"\n");
@@ -46,7 +47,7 @@ public class BagInfoImportWizard extends AbstractWizard{
     private class BagInfoImporterWorker extends DefaultWorker {
         @Override
         protected Void doInBackground() throws Exception {
-            final EditMdSecPropertiesTable table = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();                        
+            
             bagInfoImportWizardPage1.getBagInfoImportForm().commit();
             BagInfoImportParams bagInfoImportParams = bagInfoImportWizardPage1.getBagInfoImportParams();
             
@@ -62,8 +63,9 @@ public class BagInfoImportWizard extends AbstractWizard{
                 for(int i = 0;i < files.size();i++){
                     File file = files.get(i);
                     Document doc = importer.performImport(file);
-                    try{
-                        table.addMdSec(MetsUtils.createMdSec(doc,false));
+                    try{                        
+                        MdSec mdSec = MetsUtils.createMdSec(doc,false);                        
+                        BagInfoImportWizard.this.firePropertyChange("addMdSec",mdSec,mdSec);
                         numSuccess++;
                     }catch(NoNamespaceException e){
                         numErrors++;
@@ -105,12 +107,28 @@ public class BagInfoImportWizard extends AbstractWizard{
                 String reportLog = Context.getMessage("report.log");
                 SwingUtils.ShowMessage(null,report+"\n"+reportLog);
 
-                table.refresh();
+                //table.refresh();
+                BagInfoImportWizard.this.firePropertyChange("doneMdSec",null,null);
             }else{
                 //geen importer gevonden
                 SwingUtils.ShowError(null,Context.getMessage("bagInfoImportWizard.noImporterFound"));
             }
             return null;
+        }
+    }
+    
+    public void addPropertyChangeListener(String key,PropertyChangeListener l){        
+        if(!propertyChangeListeners.containsKey(key)){
+            propertyChangeListeners.put(key,new ArrayList<PropertyChangeListener>());
+        }
+        propertyChangeListeners.get(key).add(l);       
+    }
+    public void firePropertyChange(String key,Object oldValue,Object newValue){
+        if(propertyChangeListeners.containsKey(key)){
+            ArrayList<PropertyChangeListener>list = propertyChangeListeners.get(key);
+            for(PropertyChangeListener l:list){
+                l.propertyChange(new PropertyChangeEvent(this,key,newValue,newValue));               
+            }            
         }
     }
 }

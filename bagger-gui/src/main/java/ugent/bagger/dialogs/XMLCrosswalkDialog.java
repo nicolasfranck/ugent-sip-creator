@@ -1,7 +1,6 @@
 package ugent.bagger.dialogs;
 
 import com.anearalone.mets.MdSec;
-import gov.loc.repository.bagger.ui.BagView;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +19,6 @@ import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.helper.XSLT;
-import ugent.bagger.tables.EditMdSecPropertiesTable;
 
 /**
  *
@@ -42,7 +40,7 @@ public final class XMLCrosswalkDialog extends JDialog{
         
         JPanel mainPanel = new JPanel();        
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
-        final EditMdSecPropertiesTable mdSecPropertiesTable = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();
+        //final EditMdSecPropertiesTable mdSecPropertiesTable = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();
         
         //buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -94,8 +92,11 @@ public final class XMLCrosswalkDialog extends JDialog{
                     XML.DocumentToXML(transformedDoc,System.out);
                     
                     MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                     
-                    mdSecPropertiesTable.addMdSec(mdSec);
-                    mdSecPropertiesTable.refresh();                    
+                    
+                    XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
+                    
+                    //mdSecPropertiesTable.addMdSec(mdSec);
+                    //mdSecPropertiesTable.refresh();                    
                     
                 }catch(Exception e){              
                     JOptionPane.showMessageDialog(null,e.getMessage());

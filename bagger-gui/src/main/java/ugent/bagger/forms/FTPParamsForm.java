@@ -30,24 +30,26 @@ public class FTPParamsForm extends AbstractForm{
         TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");        
         
-        System.out.println("initial port: "+ftpParams.getPort());
-        
         builder.add("host");
         builder.row();        
         builder.add(new JSpinnerNumberBinding(
             getFormModel(),"port",ftpParams.getPort(),1,65536,1
-        )); 
-        
+        ));         
         builder.row();
+        
         builder.add("userName");
         builder.row();
         builder.addPasswordField("password");
+        builder.row();
+        
+        builder.add("passiveMode");
         builder.row();
         
         Binding protocolBinding = bf.createBoundComboBox("protocol",FTPParams.FTPS_PROTOCOL.values());  
         ((JComboBox)protocolBinding.getControl()).setSelectedItem(FTPParams.FTPS_PROTOCOL.NONE);
         
         builder.add(protocolBinding);
+        builder.row();
         
         return builder.getForm();
     }

@@ -2,6 +2,7 @@ package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -49,20 +50,20 @@ public final class ClassTable<T> extends AbstractObjectTable {
            ((AbstractTableModel)getTable().getModel()).fireTableDataChanged();
         }
     }                     
-    public T [] getSelections(){
+    public List<T> getSelections(){
         int[] selected = getTable().getSelectedRows();
         if(selected == null){
             return null;
-        }        
-        T[]list = (T[]) new Object[selected.length];
+        }                
+        ArrayList<T>list = new ArrayList<T>(selected.length);        
         for (int i = 0; i < selected.length; i++) {
-            list[i] = (T) getTableModel().getElementAt(selected[i]);
+            list.add((T) getTableModel().getElementAt(selected[i]));            
         }
         return list;
     }
     public T getSelected(){
-        T [] list = getSelections();        
-        return list == null || list.length == 0 ? null:list[0];        
+        List<T>list = getSelections();        
+        return list == null || list.isEmpty() ? null:list.get(0);        
     }        
     @Override
     protected boolean isMultipleColumnSort() {

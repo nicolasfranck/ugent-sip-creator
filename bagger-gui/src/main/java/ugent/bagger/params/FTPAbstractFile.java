@@ -48,6 +48,5 @@ public class FTPAbstractFile extends AbstractFile {
     @Override
     public String getMimeType() {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
+    }    
 }

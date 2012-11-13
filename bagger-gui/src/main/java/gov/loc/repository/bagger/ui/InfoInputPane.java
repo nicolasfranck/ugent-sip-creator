@@ -1,16 +1,20 @@
 package gov.loc.repository.bagger.ui;
 
+import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.Mets;
+import com.anearalone.mets.MetsWriter;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import javax.swing.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.HierarchicalFormModel;
 import org.springframework.richclient.form.FormModelHelper;
 import ugent.bagger.helper.Context;
+import ugent.bagger.panels.AmdSecsPanel;
 import ugent.bagger.panels.MetsPanel;
 
 /*
@@ -27,7 +31,16 @@ public final class InfoInputPane extends JTabbedPane {
     private HierarchicalFormModel infoFormModel;    
     private Mets mets;
     private MetsPanel metsPanel;
+    private AmdSecsPanel amdSecsPanel;
 
+    public AmdSecsPanel getAmdSecsPanel() {
+        if(amdSecsPanel == null){
+            amdSecsPanel = new AmdSecsPanel((ArrayList<AmdSec>)getMets().getAmdSec());
+        }
+        return amdSecsPanel;
+    }
+
+    
     public MetsPanel getMetsPanel(){
         if(metsPanel == null){
             metsPanel = new MetsPanel(getMets());            
@@ -45,6 +58,11 @@ public final class InfoInputPane extends JTabbedPane {
     }
     public void setMets(Mets mets) {
         this.mets = mets;
+    }
+    public void resetMets(Mets m){
+        setMets(m);
+        getMetsPanel().reset(m);
+        getAmdSecsPanel().reset((ArrayList<AmdSec>)m.getAmdSec());        
     }
     public BagView getBagView(){
         return BagView.getInstance();        
@@ -169,6 +187,18 @@ public final class InfoInputPane extends JTabbedPane {
             Context.getMessage("infoInputPane.tab.details"),
             bagInfoComponentScrollPane
         );
+        
+        System.out.println("amdSec found: "+getMets().getAmdSec());
+        System.out.println("amdSec.size found: "+getMets().getAmdSec().size());
+        
+        try{
+            new MetsWriter().writeToOutputStream(getMets(),System.out);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        addTab("amdSecs",getAmdSecsPanel());
+        
         //getProfileForm().getControl().setToolTipText("Profile Form");
         
         //Nicolas Franck

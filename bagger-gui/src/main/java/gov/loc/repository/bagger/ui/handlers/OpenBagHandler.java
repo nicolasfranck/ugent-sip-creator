@@ -169,8 +169,9 @@ public class OpenBagHandler extends AbstractAction {
             Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());              
 
             InfoInputPane bagInfoInputPane = bagView.getInfoFormsPane().getInfoInputPane();
-            bagInfoInputPane.setMets(mets);
-            bagInfoInputPane.getMetsPanel().reset(mets);
+            
+            bagInfoInputPane.resetMets(mets);           
+            
             
         }catch(FileNotReadableException e){
             SwingUtils.ShowError(null,"bestand is niet leesbaar!");

@@ -1,10 +1,11 @@
 package ugent.bagger.wizards;
 
-import gov.loc.repository.bagger.ui.BagView;
+import com.anearalone.mets.MdSec;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import org.springframework.richclient.progress.BusyIndicator;
@@ -18,15 +19,15 @@ import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.VelocityTemplate;
-import ugent.bagger.tables.EditMdSecPropertiesTable;
 
 /**
  *
  * @author nicolas
  */
-public class CSVWizard extends AbstractWizard{    
+public class CSVWizard extends AbstractWizard {    
     CSVWizardPage1 csv1WizardPage;
     CSVWizardPage2 csv2WizardPage;
+    HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
          
     @Override
     public void addPages(){        
@@ -37,10 +38,8 @@ public class CSVWizard extends AbstractWizard{
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
                 HashMap<String,String>newRecord = (HashMap<String,String>) pce.getNewValue();
-                HashMap<String,String>record = csv2WizardPage.getCsv2Panel().getRecord();
-                
-                record.clear();
-                        
+                HashMap<String,String>record = csv2WizardPage.getCsv2Panel().getRecord();                
+                record.clear();                        
                 for(Entry<String,String>entry:newRecord.entrySet()){                    
                     record.put(entry.getKey(),entry.getValue());
                 }                
@@ -55,8 +54,7 @@ public class CSVWizard extends AbstractWizard{
     protected boolean onFinish() {
         
        
-        try{            
-            final EditMdSecPropertiesTable table = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();                        
+        try{                        
             final VelocityTemplate vt = (VelocityTemplate) csv2WizardPage.getCsv2Panel().getTemplateComboBox().getSelectedItem();
             final CSVParseParams csvParseParams = csv1WizardPage.getCsv1Panel().getCsvParseParams();
             final File file = csvParseParams.getFiles().size() > 0 ? csvParseParams.getFiles().get(0) : null;
@@ -79,10 +77,10 @@ public class CSVWizard extends AbstractWizard{
                             HashMap<String,String>map;
                             while((map = (HashMap) mapReader.read(cols)) != null){
                                 Document document = CSVUtils.templateToDocument(vt,map);
-                                table.addMdSec(MetsUtils.createMdSec(document,false));
+                                MdSec mdSec = MetsUtils.createMdSec(document,false);
+                                firePropertyChange("addMdSec",mdSec,mdSec);                                
                             }
-
-                            table.refresh();
+                            firePropertyChange("doneMdSec",null,null);                            
                         }catch(Exception e){                           
                             e.printStackTrace();
                         }                        
@@ -99,4 +97,20 @@ public class CSVWizard extends AbstractWizard{
         
         return true;
     }
+
+    public void addPropertyChangeListener(String key,PropertyChangeListener l){        
+        if(!propertyChangeListeners.containsKey(key)){
+            propertyChangeListeners.put(key,new ArrayList<PropertyChangeListener>());
+        }
+        propertyChangeListeners.get(key).add(l);       
+    }
+    public void firePropertyChange(String key,Object oldValue,Object newValue){
+        if(propertyChangeListeners.containsKey(key)){
+            ArrayList<PropertyChangeListener>list = propertyChangeListeners.get(key);
+            for(PropertyChangeListener l:list){
+                l.propertyChange(new PropertyChangeEvent(this,key,newValue,newValue));               
+            }            
+        }
+    }
+
 } 

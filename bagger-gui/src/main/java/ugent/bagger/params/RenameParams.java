@@ -11,7 +11,7 @@ public class RenameParams {
     private String destination;
     private boolean copy = false;
     private boolean regex = false;
-    private ErrorAction onErrorAction;
+    private ErrorAction onErrorAction = ErrorAction.undoAll;
     private boolean ignoreCase = false;
     private boolean overWrite = false;
     private boolean simulateOnly = false;

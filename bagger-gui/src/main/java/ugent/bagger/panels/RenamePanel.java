@@ -1,12 +1,20 @@
 package ugent.bagger.panels;
 
-import java.awt.*;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -36,10 +44,12 @@ import treetable.LazyTreeModel;
 import treetable.LazyTreeNode;
 import ugent.bagger.forms.RenameParamsForm;
 import ugent.bagger.forms.RenumberParamsForm;
+import ugent.bagger.helper.Beans;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.AbstractFile;
+import ugent.bagger.params.ContextObject;
 import ugent.bagger.params.FileAbstractFile;
 import ugent.bagger.params.RenameParams;
 import ugent.bagger.params.RenumberParams;
@@ -81,7 +91,14 @@ public class RenamePanel extends JPanel{
     private JScrollPane scrollerFileTable;
     private JPanel panelFileTable;
     private ArrayList<File>selectedFiles = new ArrayList<File>();
+    private HashMap<String,RenameParams>renameParamsTemplates;
 
+    public HashMap<String, RenameParams> getRenameParamsTemplates() {
+        if(renameParamsTemplates == null){
+            renameParamsTemplates = (HashMap<String,RenameParams>) Beans.getBean("renameParamsTemplates");
+        }
+        return renameParamsTemplates;
+    }
     public static ArrayList<AbstractFile>getList(File file){
         
         ArrayList<File>files = new ArrayList<File>();                        
@@ -135,8 +152,8 @@ public class RenamePanel extends JPanel{
             final JTable table = (JTable) fileTable.getControl();
             table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
                 @Override
-                public void valueChanged(ListSelectionEvent lse) {
-                    AbstractFile [] selected = fileTable.getSelections();
+                public void valueChanged(ListSelectionEvent lse) {                                        
+                    List<AbstractFile>selected = fileTable.getSelections();
                     selectedFiles.clear();
                     if(selected != null){
                         for(AbstractFile file:selected){
@@ -595,10 +612,35 @@ public class RenamePanel extends JPanel{
         panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
 
         JTextArea descriptionArea = new JTextArea();
-        descriptionArea.setEditable(false);  
-        
+        descriptionArea.setEditable(false);          
         JPanel panelDescription = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.add(panelDescription);        
+        
+        //templates
+        JPanel renameParamsTemplatesPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ContextObject [] list = new ContextObject[getRenameParamsTemplates().keySet().size()];
+        Object [] keys = getRenameParamsTemplates().keySet().toArray();
+        for(int i = 0;i < keys.length;i++){
+            list[i] = new ContextObject(getRenameParamsTemplates().get(keys[i]),"renameParamsTemplates."+keys[i]+".label");            
+        }
+        final JComboBox renameParamsTemplatesComboBox = new JComboBox(list);
+        renameParamsTemplatesComboBox.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ContextObject contextObject = (ContextObject) renameParamsTemplatesComboBox.getSelectedItem();                
+                RenameParams params = (RenameParams) contextObject.getObject();
+                if(params != null){
+                    setRenameParams(params);
+                    getRenameParamsForm().setFormObject(params);
+                }
+            }                       
+        });
+        JLabel renameParamsTemplatesLabel = new JLabel(Context.getMessage("renamePanel.renameParamsTemplatesLabel.label"));
+        
+        renameParamsTemplatesPanel.add(renameParamsTemplatesLabel);
+        renameParamsTemplatesPanel.add(renameParamsTemplatesComboBox);
+        
+        panel.add(renameParamsTemplatesPanel);
 
         //form
         RenameParamsForm renameForm = getRenameParamsForm();
@@ -800,6 +842,15 @@ public class RenamePanel extends JPanel{
             SwingUtils.StatusMessage(null);
             numRenamedSuccess = 0;
             numRenamedError = 0;
+            
+            System.out.println("selectedFiles: ");
+            for(File file:selectedFiles){
+                System.out.println("\tfile: "+file);
+            }
+            System.out.println("source: "+renameParams.getSource());
+            System.out.println("destination: "+renameParams.getDestination());
+            System.out.println("regex: "+renameParams.isRegex());
+            
             try{
 
                 final Renamer renamer = new Renamer();    
