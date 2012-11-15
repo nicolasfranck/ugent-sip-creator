@@ -3,9 +3,14 @@ package ugent.bagger.panels;
 import com.anearalone.mets.AmdSec;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,6 +34,7 @@ public class AmdSecsPanel extends JPanel{
     }
     public void init(){
         setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+        add(createButtonPanel());
         add(new JScrollPane(getAmdSecPartsTable().getControl()));
     }
     public void reset(ArrayList<AmdSec>data){
@@ -48,18 +54,13 @@ public class AmdSecsPanel extends JPanel{
             amdSecPartsTable.setDoubleClickHandler(new ActionCommandExecutor() {
                 @Override
                 public void execute() {
-                    JDialog dialog = new JDialog(SwingUtils.getFrame(),true);
-                    dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                    dialog.setLayout(new BorderLayout());
-                    
-                    AmdSecPanel panel = new AmdSecPanel(amdSecPartsTable.getSelected().amdSec);
-                    panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-                    
-                    dialog.setContentPane(panel);
-                    dialog.pack();
-                    dialog.setVisible(true);
+                    AmdSecParts parts = amdSecPartsTable.getSelected();                    
+                    if(parts == null || parts.amdSec == null){
+                        return;
+                    }                    
+                    startAmdSecDialog(parts.getAmdSec());
                 }
-            });
+            });            
         }
         return amdSecPartsTable;
     }    
@@ -69,6 +70,49 @@ public class AmdSecsPanel extends JPanel{
             parts.add(new AmdSecParts(amdSec));
         }
         return parts;
+    }
+    public static void startAmdSecDialog(AmdSec amdSec){
+        JDialog dialog = new JDialog(SwingUtils.getFrame(),true);
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setLayout(new BorderLayout());                                        
+        AmdSecPanel panel = new AmdSecPanel(amdSec);
+        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));                    
+        dialog.setContentPane(panel);
+        dialog.pack();
+        dialog.setVisible(true);
+    }
+    public JComponent createButtonPanel(){
+        final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton addButton = new JButton("nieuw..");
+        JButton removeButton = new JButton("verwijder");
+        panel.add(addButton);
+        panel.add(removeButton);
+        
+        addButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                AmdSec amdSec = new AmdSec();
+                getData().add(amdSec);
+                reset(getData());
+                startAmdSecDialog(amdSec);
+            }            
+        });
+        
+        removeButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                deleteSelected();
+                reset(getData());
+            }            
+        });
+        
+        return panel;
+    }
+    public void deleteSelected(){
+        ArrayList<AmdSecParts> selections = (ArrayList<AmdSecParts>) getAmdSecPartsTable().getSelections();
+        for(AmdSecParts amdSecParts:selections){
+            getData().remove(amdSecParts.getAmdSec());
+        }
     }
     public static class AmdSecParts {
         private AmdSec amdSec;
@@ -88,6 +132,9 @@ public class AmdSecsPanel extends JPanel{
         }
         public int getNumRightsMD() {
             return amdSec.getRightsMD().size();
-        }        
+        } 
+        public AmdSec getAmdSec(){
+            return amdSec;
+        }
     }
 }

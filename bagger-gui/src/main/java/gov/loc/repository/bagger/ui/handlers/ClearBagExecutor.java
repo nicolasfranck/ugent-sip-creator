@@ -18,6 +18,10 @@ public class ClearBagExecutor extends AbstractActionCommandExecutor {
     }
     @Override
     public void execute() {
-        BagView.getInstance().clearBagHandler.closeExistingBag();
+        try {
+            BagView.getInstance().clearBagHandler.closeExistingBag();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

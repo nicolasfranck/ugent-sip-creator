@@ -145,7 +145,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     @Override
                     public void propertyChange(PropertyChangeEvent pce) {                        
                         MdSec mdSec = (MdSec) pce.getNewValue();
-                        getEditDmdSecPropertiesTable().addMdSec(mdSec);
+                        getEditDmdSecPropertiesTable().add(mdSec);
                         getEditDmdSecPropertiesTable().refresh();
                     }                    
                 });
@@ -178,7 +178,7 @@ public class MdSecPropertiesPanel extends JPanel{
         removeButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                getEditDmdSecPropertiesTable().deleteSelectedMdSec();
+                getEditDmdSecPropertiesTable().deleteSelected();
                 getEditDmdSecPropertiesTable().refresh();
             }        
         });        
@@ -195,7 +195,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     @Override
                     public void propertyChange(PropertyChangeEvent pce) {
                         MdSec mdSec = (MdSec) pce.getNewValue();
-                        getEditDmdSecPropertiesTable().addMdSec(mdSec);
+                        getEditDmdSecPropertiesTable().add(mdSec);
                     }
                 });
                 wizard.addPropertyChangeListener("doneMdSec",new PropertyChangeListener() {
@@ -217,7 +217,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     @Override
                     public void propertyChange(PropertyChangeEvent pce) {
                         MdSec mdSec = (MdSec) pce.getNewValue();
-                        getEditDmdSecPropertiesTable().addMdSec(mdSec);
+                        getEditDmdSecPropertiesTable().add(mdSec);
                     }
                 });
                 wizard.addPropertyChangeListener("doneMdSec",new PropertyChangeListener() {
@@ -261,7 +261,7 @@ public class MdSecPropertiesPanel extends JPanel{
                 }else if(pce.getPropertyName().equals("log")){
                     ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){
-                    getEditDmdSecPropertiesTable().addMdSec((MdSec)pce.getNewValue());
+                    getEditDmdSecPropertiesTable().add((MdSec)pce.getNewValue());
                 }else if(
                     pce.getPropertyName().equals("report") && 
                     pce.getNewValue().toString().compareTo("success") == 0

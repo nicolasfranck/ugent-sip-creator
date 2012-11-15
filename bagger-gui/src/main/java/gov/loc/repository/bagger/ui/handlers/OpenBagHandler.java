@@ -16,8 +16,11 @@ import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.bagitmets.DefaultBagItMets;
+import ugent.bagger.exceptions.BagNoBagDirException;
+import ugent.bagger.exceptions.BagUnknownFormatException;
 import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
 
@@ -73,22 +76,23 @@ public class OpenBagHandler extends AbstractAction {
         
         try{ 
             
-            try{
-                FUtils.checkFile(file,true);
-            }catch(FileNotWritableException e){
-                SwingUtils.ShowError(null,"Waarschuwing: niet alle bestanden beschrijfbaar!");
-                System.out.println("file not writable");
-            }
+            //leesbaar? schrijfbaar?
+            FUtils.checkFile(file,true);            
             
             bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
 
             //opgelet: een nieuw DefaultBag wordt aangemaakt, dus
-            //beter geen referentie bijhouden nu naar de oude
-            bagView.clearBagHandler.clearExistingBag();
-                       
-            bagView.clearBagHandler.newDefaultBag(file);                  
-            ApplicationContextUtil.addConsoleMessage("Opened the bag " + file.getAbsolutePath());
+            //beter geen referentie bijhouden nu naar de oude            
             
+            bagView.clearBagHandler.clearExistingBag();      
+            
+            //formaat correct?
+            bagView.clearBagHandler.newDefaultBag(file);                  
+            ApplicationContextUtil.addConsoleMessage(
+                Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
+                    file
+                })
+            );            
 
             bagView.getInfoFormsPane().setBagVersion(bagView.getBag().getVersion());
             
@@ -166,19 +170,46 @@ public class OpenBagHandler extends AbstractAction {
 
             BagItMets bagitMets = new DefaultBagItMets();
 
-            Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());              
-
+            Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());
+            
             InfoInputPane bagInfoInputPane = bagView.getInfoFormsPane().getInfoInputPane();
             
             bagInfoInputPane.resetMets(mets);           
             
+       
             
+        }catch(FileNotWritableException e){
+            SwingUtils.ShowError(
+                Context.getMessage("clearBagHandler.FileNotWritableException.title"),
+                Context.getMessage("clearBagHandler.FileNotWritableException.description",new Object [] {file})
+            );
         }catch(FileNotReadableException e){
-            SwingUtils.ShowError(null,"bestand is niet leesbaar!");
-            bagView.clearBagHandler.clearExistingBag();            
+            SwingUtils.ShowError(
+                Context.getMessage("clearBagHandler.FileNotReadableException.title"),
+                Context.getMessage("clearBagHandler.FileNotReadableException.description",new Object [] {file})
+            );                     
         }catch(FileNotFoundException e){
-            SwingUtils.ShowError(null,"bestand is niet gevonden!");
-            bagView.clearBagHandler.clearExistingBag();
+           SwingUtils.ShowError(
+                Context.getMessage("clearBagHandler.FileNotFoundException.title"),
+                Context.getMessage("clearBagHandler.FileNotFoundException.description",new Object [] {file})
+            );            
+        }catch(BagUnknownFormatException e){
+            SwingUtils.ShowError(
+                Context.getMessage("clearBagHandler.BagUnknownFormatException.title"),
+                Context.getMessage("clearBagHandler.BagUnknownFormatException.description",new Object [] {file})
+            );
+        }catch(BagNoBagDirException ex){
+            log.debug(ex.getMessage());
+            /*
+             * geserialiseerde bag bevat geen hoofdmap met dezelfde naam
+             */
+            String basename = file.getName();
+            int index = basename.lastIndexOf('.');
+            String n = index >= 0 ? basename.substring(0,index) : basename;
+            SwingUtils.ShowError(
+                Context.getMessage("clearBagHandler.BagNoBagDirException.title"),
+                Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file})
+            );
         }
         
         SwingUtils.ShowDone();

@@ -77,7 +77,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
                         break;
                     //press delete
                     case 127:
-                        deleteSelectedMdSec(); 
+                        deleteSelected(); 
                         refresh();
                         break;
                 }                
@@ -100,10 +100,10 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
            ((AbstractTableModel)getTable().getModel()).fireTableDataChanged();
         }
     }
-    public void addMdSec(MdSec mdSec){        
+    public void add(MdSec mdSec){        
         getData().add(mdSec);        
     }   
-    public void deleteSelectedMdSec(){
+    public void deleteSelected(){
         if(getTable().getSelectedRows().length > 0){
             for(MdSecProperties mdSecProperties:getSelections()){
                 deleteMdSec(mdSecProperties.getMdSec());

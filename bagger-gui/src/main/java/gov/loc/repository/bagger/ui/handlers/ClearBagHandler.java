@@ -9,13 +9,20 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.dialog.CloseAction;
 import org.springframework.richclient.dialog.ConfirmationDialog;
+import ugent.bagger.exceptions.BagNoBagDirException;
+import ugent.bagger.exceptions.BagUnknownFormatException;
+import ugent.bagger.helper.BagitUtils;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.params.BagError;
+import ugent.bagger.params.BagErrorNoBagDir;
 
 public class ClearBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(ClearBagHandler.class);
@@ -32,10 +39,16 @@ public class ClearBagHandler extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        closeExistingBag();
+        try{
+            closeExistingBag();
+        }catch(BagUnknownFormatException ex) {
+            log.debug(ex.getMessage());
+        }catch(BagNoBagDirException ex){
+            log.debug(ex.getMessage());
+        }
     }
 
-    public void closeExistingBag() {
+    public void closeExistingBag() throws BagUnknownFormatException, BagNoBagDirException {
     	// Closes Bag without popping up the Save Dialog Box for a Holey and Serialized Bag 
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
@@ -63,7 +76,13 @@ public class ClearBagHandler extends AbstractAction {
             @Override
             protected void onCancel() {
                 super.onCancel();
-                clearExistingBag();
+                try{                   
+                    clearExistingBag();                    
+                } catch (BagUnknownFormatException ex) {
+                    log.debug(ex.getMessage());
+                }catch(BagNoBagDirException ex){
+                    log.debug(ex.getMessage());
+                }
             }
         };
         
@@ -73,7 +92,7 @@ public class ClearBagHandler extends AbstractAction {
         dialog.showDialog();
     }
     
-    public void clearExistingBag() {
+    public void clearExistingBag() throws BagUnknownFormatException, BagNoBagDirException {
        
     	newDefaultBag(null);
         BagView bagView = BagView.getInstance();
@@ -95,21 +114,24 @@ public class ClearBagHandler extends AbstractAction {
     	bagView.updateClearBag();
     }
 
-    public void newDefaultBag(File f) {
+    public void newDefaultBag(File f) throws BagUnknownFormatException, BagNoBagDirException {
         
     	MetsBag bag = null;
     	String bagName = "";
-        BagView bagView = BagView.getInstance();
+        BagView bagView = BagView.getInstance();        
         
-        
-    	try {                    
-            //bag = new MetsBag(f,bagView.getInfoInputPane().getBagVersion());            
+    	try {                                
             bag = new MetsBag(f,null);            
-    	} catch (Exception e) {                        
+    	}catch(Exception e){     
+            String message = e.getMessage();
+            log.error(message);            
+            BagError error = BagitUtils.parseBagError(message);
+            if(error instanceof BagErrorNoBagDir){
+                throw new BagNoBagDirException(f);
+            }
             e.printStackTrace();            
     	}
-    	if (f == null) {
-            
+    	if(f == null) {            
             bagName = Context.getMessage("bag.label.noname");
     	}else{
             bagName = f.getName();
@@ -117,11 +139,15 @@ public class ClearBagHandler extends AbstractAction {
             bagView.getInfoFormsPane().setBagName(fileName);
     	}        
         
+        //indien bag == null, dan is er iets fout met het formaat van het bestand!
+        if(bag != null){
+            bag.setName(bagName);
+            bagView.setBag(bag);        
+            SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
+        }else{          
+            throw new BagUnknownFormatException(f);
+        }
         
-        bag.setName(bagName);
-        bagView.setBag(bag);
-        
-        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
     }
     public void setConfirmSaveFlag(boolean confirmSaveFlag) {
         this.confirmSaveFlag = confirmSaveFlag;

@@ -6,7 +6,6 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFile;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
@@ -56,7 +55,11 @@ public class StartNewBagHandler extends AbstractAction {
     public void createNewBag(String bagItVersion) {
         BagView bagView = BagView.getInstance();    	
     	
-    	bagView.clearBagHandler.clearExistingBag();
+        try{
+            bagView.clearBagHandler.clearExistingBag();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     	DefaultBag bag = bagView.getBag();
     	bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
 

@@ -12,7 +12,7 @@ import org.springframework.richclient.table.support.AbstractObjectTable;
  *
  * @author nicolas
  */
-public final class ClassTable<T> extends AbstractObjectTable {
+public class ClassTable<T> extends AbstractObjectTable {
     private ArrayList<T>data;
     private EventList eventList;
     
