@@ -74,7 +74,7 @@ public class StartNewBagHandler extends AbstractAction {
             bagView.getBagTagFileTree().addNode(bf.getFilepath());
         }
         bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
-        
+        bagView.updateBaggerRules();
         bag.setRootDir(bagView.getBagRootPath());
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
@@ -125,7 +125,6 @@ public class StartNewBagHandler extends AbstractAction {
     }*/
     
     // TODO refactor
-    /*
     private void changeProfile(String selected) {
         BagView bagView = BagView.getInstance();
     	//Profile profile = bagView.getProfileStore().getProfile(selected);        
@@ -134,5 +133,5 @@ public class StartNewBagHandler extends AbstractAction {
         //bag.setProfile(profile, true);        
         bagView.getInfoFormsPane().getInfoInputPane().updateProject();        
         //bagView.getInfoFormsPane().setProfile(bag.getProfile().getName());
-    }*/
+    }
 }

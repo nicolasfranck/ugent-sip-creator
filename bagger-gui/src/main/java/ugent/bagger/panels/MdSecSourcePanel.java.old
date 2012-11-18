@@ -152,10 +152,8 @@ public class MdSecSourcePanel extends JPanel{
             BagView bagView = BagView.getInstance();
             MetsBag metsBag = bagView.getBag();
             
-            metsBag.getInfo().clearFields();
-            
             while(reader.hasNext()){
-                NameValueReader.NameValue pair = reader.next();                                           
+                NameValueReader.NameValue pair = reader.next();                           
                 BagInfoField field = new BagInfoField();
                 field.setName(pair.getName());
                 field.setLabel(pair.getName());

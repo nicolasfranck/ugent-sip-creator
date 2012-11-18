@@ -1,0 +1,4 @@
+- profile support removed
+- baginfo now support multiple values per key
+- mets.xml support added
+- batch modus for creating and validating of bags added

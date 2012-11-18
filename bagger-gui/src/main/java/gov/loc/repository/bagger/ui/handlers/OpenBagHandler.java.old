@@ -137,7 +137,7 @@ public class OpenBagHandler extends AbstractAction {
 
             bagView.getInfoFormsPane().setHoley(bagView.getBag().isHoley() ? "true":"false");        
             bagView.getInfoFormsPane().getHoleyValue().invalidate();
-            
+            bagView.updateBaggerRules();
             bagView.setBagRootPath(file);
 
             File rootSrc;
@@ -155,13 +155,10 @@ public class OpenBagHandler extends AbstractAction {
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
             bagView.updateManifestPane();
             bagView.enableBagSettings(true);
-            
-            /*
             SimpleResult result = bagView.getBag().validateMetadata();
             if(!result.isSuccess()){
                 ApplicationContextUtil.addConsoleMessage(result.toString());
             }
-            */ 
             bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
             bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);        
             bagView.updateOpenBag();   

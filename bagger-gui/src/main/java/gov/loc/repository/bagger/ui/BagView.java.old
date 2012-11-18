@@ -588,11 +588,10 @@ public class BagView extends DefaultView {
         getInfoFormsPane().getInfoInputPane().setEnabled(b);
     }
 
-    /*
     public String updateBaggerRules() {        
         getBag().updateStrategy();        
         return "";
-    }*/
+    }
 
     public void showWarningErrorDialog(String title, String msg) {    	
         new MessageDialog(title,msg).showDialog();

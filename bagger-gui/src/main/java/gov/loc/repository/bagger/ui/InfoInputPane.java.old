@@ -187,7 +187,9 @@ public final class InfoInputPane extends JTabbedPane {
             Context.getMessage("infoInputPane.tab.details"),
             bagInfoComponentScrollPane
         );
-                
+        
+        System.out.println("amdSec found: "+getMets().getAmdSec());
+        System.out.println("amdSec.size found: "+getMets().getAmdSec().size());
         
         try{
             new MetsWriter().writeToOutputStream(getMets(),System.out);

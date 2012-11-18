@@ -216,7 +216,9 @@
         </xsl:for-each>
         <xsl:for-each select="marc:datafield[@tag=100]|marc:datafield[@tag=110]|marc:datafield[@tag=111]|marc:datafield[@tag=700]|marc:datafield[@tag=710]|marc:datafield[@tag=711]|marc:datafield[@tag=720]">
             <dc:creator>
-                <xsl:value-of select="."/>
+                <xsl:call-template name="subfieldSelect">                    
+                    <xsl:with-param name="delimeter">. </xsl:with-param>
+                </xsl:call-template>
             </dc:creator>
         </xsl:for-each>
         <dc:type>
