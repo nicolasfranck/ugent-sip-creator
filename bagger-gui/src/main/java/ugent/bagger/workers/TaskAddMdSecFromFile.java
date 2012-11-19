@@ -18,6 +18,7 @@ import ugent.bagger.helper.SwingUtils;
 public class TaskAddMdSecFromFile extends DefaultWorker {    
     private File [] files;
     public TaskAddMdSecFromFile(File [] files){
+        super();
         this.files = files;
     }
     @Override

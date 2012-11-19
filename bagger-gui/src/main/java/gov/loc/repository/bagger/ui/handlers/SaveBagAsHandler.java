@@ -10,10 +10,6 @@ import ugent.bagger.helper.SwingUtils;
 public class SaveBagAsHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;    
 
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
     public SaveBagAsHandler() {
         super();        
     }
@@ -30,11 +26,5 @@ public class SaveBagAsHandler extends AbstractAction {
         dialog.setLocationRelativeTo(SwingUtils.getFrame());              
         SwingUtils.centerAt(SwingUtils.getFrame(),dialog);
         dialog.setVisible(true);
-        
-        //Nicolas Franck
-        /*
-        SaveBagFrame2 saveBagFrame = new SaveBagFrame2(bagView.getPropertyMessage("bag.frame.save"));
-        saveBagFrame.setBag(bagView.getBag());
-        saveBagFrame.setVisible(true);*/
     }
 }

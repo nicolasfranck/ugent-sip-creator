@@ -15,15 +15,15 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.Loggable;
-import ugent.bagger.workers.LongTask2;
+import ugent.bagger.workers.LongTask;
 
-public class CompleteBagHandler2 extends Handler implements Loggable {
+public class CompleteBagHandler extends Handler implements Loggable {
     private static final long serialVersionUID = 1L;   
-    private static final Log log = LogFactory.getLog(CompleteBagHandler2.class);
+    private static final Log log = LogFactory.getLog(CompleteBagHandler.class);
     private Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
     private Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
 
-    public CompleteBagHandler2() {
+    public CompleteBagHandler() {
         super();           
     }
 
@@ -40,9 +40,13 @@ public class CompleteBagHandler2 extends Handler implements Loggable {
     }
     @Override
     public void execute() {        
-        SwingUtils.monitor(new CompleteBagWorker(),"checking bag complete","");
+        SwingUtils.monitor(
+            new CompleteBagWorker(),
+            Context.getMessage("CompleteBagHandler.validating.title"),
+            Context.getMessage("CompleteBagHandler.validating.description")
+        );
     }
-    private class CompleteBagWorker extends LongTask2 {
+    private class CompleteBagWorker extends LongTask {       
         @Override
         protected Object doInBackground() throws Exception {
             SwingUtils.ShowBusy();            

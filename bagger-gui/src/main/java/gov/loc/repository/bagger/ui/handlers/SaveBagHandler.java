@@ -19,16 +19,16 @@ import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
-import ugent.bagger.workers.LongTask2;
+import ugent.bagger.workers.LongTask;
 
-public class SaveBagHandler6 extends Handler {
-    private static final Log log = LogFactory.getLog(SaveBagHandler6.class);
+public class SaveBagHandler extends Handler {
+    private static final Log log = LogFactory.getLog(SaveBagHandler.class);
     private static final long serialVersionUID = 1L;    
     private File tmpRootPath;
     private boolean clearAfterSaving = false;
     private String messages;
     
-    public SaveBagHandler6() {
+    public SaveBagHandler() {
         super();        
     }
     //wordt uitgevoerd indien men op de toolbarbutton drukt
@@ -47,7 +47,11 @@ public class SaveBagHandler6 extends Handler {
 
     @Override
     public void execute(){        
-        SwingUtils.monitor(new SaveBagWorker(),"saving bag","");        
+        SwingUtils.monitor(
+            new SaveBagWorker(),
+            Context.getMessage("SaveBagHandler.saving.title"),
+            Context.getMessage("SaveBagHandler.saving.description")
+        );        
     }
 
     public void setTmpRootPath(File f) {
@@ -131,7 +135,7 @@ public class SaveBagHandler6 extends Handler {
     	fs.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
     	fs.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
         fs.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
-        fs.setDialogTitle("Save Bag As");
+        fs.setDialogTitle(Context.getMessage("SaveBagHandler.saveBagAs.title"));
     	fs.setCurrentDirectory(bag.getRootDir());
     	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
             String selectedName = bag.getName();
@@ -181,7 +185,7 @@ public class SaveBagHandler6 extends Handler {
         bagView.getControl().invalidate();
     }
     
-    private class SaveBagWorker extends LongTask2{
+    private class SaveBagWorker extends LongTask{
         @Override
         protected Object doInBackground() throws Exception {
             
@@ -211,14 +215,17 @@ public class SaveBagHandler6 extends Handler {
                 }                               
                 
                 bagWriter.addProgressListener(this);                
-                messages = bag.write(bagWriter);
+                boolean saveOk = bag.write(bagWriter);
 
-                if (messages != null && !messages.trim().isEmpty()) {                    
-                    SwingUtils.ShowError("Warning - bag not saved", "Problem saving bag:\n" + messages);
-                    log("Problem saving bag:\n" + messages);
+                if (!saveOk) {                    
+                    String message = Context.getMessage("bag.warning.savingFailed");
+                    SwingUtils.ShowError(null,message);
+                    log(message);
                 } else {
-                    SwingUtils.ShowMessage("Bag saved", "Bag saved successfully.\n" );
-                    log("Bag saved successfully.\n");
+                    String message = Context.getMessage("bag.saved.description");
+                    String title = Context.getMessage("bag.saved.title");
+                    SwingUtils.ShowMessage(title,message);
+                    log(message);
                 }
                
                 if (bag.isSerialized()) {

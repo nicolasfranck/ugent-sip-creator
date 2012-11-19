@@ -1,6 +1,5 @@
 package gov.loc.repository.bagger.bag;
 
-import gov.loc.repository.bagger.ProfileField;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
@@ -28,30 +27,7 @@ public final class BagInfoField {
 
     public BagInfoField() {
     	
-    }
-    
-    public BagInfoField(ProfileField projectProfile){
-        setLabel(projectProfile.getFieldName());
-        setName(getLabel());
-        setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
-        isEnabled(!projectProfile.isReadOnly());
-        isEditable(!projectProfile.isReadOnly());
-        isRequiredvalue(projectProfile.getIsValueRequired());
-        isRequired(projectProfile.getIsRequired());
-        setValue(projectProfile.getFieldValue());
-        
-        if(projectProfile.isReadOnly()) {
-            isEnabled(false);
-        }
-        buildElements(projectProfile.getElements());
-        if(projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTFIELD_CODE)) {
-            setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
-        }else if (projectProfile.getFieldType().equalsIgnoreCase(BagInfoField.TEXTAREA_CODE)) {
-            setComponentType(BagInfoField.TEXTAREA_COMPONENT);
-        }else if (!(projectProfile.getElements().isEmpty())) {
-            setComponentType(BagInfoField.LIST_COMPONENT);
-        }
-    }
+    }    
 
     public void setName(String n) {
     	this.name = n;

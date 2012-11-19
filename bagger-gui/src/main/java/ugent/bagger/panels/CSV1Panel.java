@@ -18,6 +18,7 @@ import org.supercsv.io.ICsvListReader;
 import org.supercsv.prefs.CsvPreference;
 import ugent.bagger.forms.CSVParseParamsForm;
 import ugent.bagger.helper.CSVUtils;
+import ugent.bagger.helper.Context;
 import ugent.bagger.params.CSVParseParams;
 
 /**
@@ -98,8 +99,8 @@ public class CSV1Panel extends JPanel{
     }   
     public JPanel createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        okButton = new JButton("ok");       
-        testButton = new JButton("test");        
+        okButton = new JButton(Context.getMessage("ok"));       
+        testButton = new JButton(Context.getMessage("test"));        
         panel.add(okButton);       
         panel.add(testButton);
         

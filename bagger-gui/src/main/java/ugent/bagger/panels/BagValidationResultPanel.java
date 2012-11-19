@@ -2,7 +2,6 @@ package ugent.bagger.panels;
 
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagit.ProgressListener;
 import gov.loc.repository.bagit.utilities.SimpleResult;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import gov.loc.repository.bagit.verify.impl.ParallelManifestChecksumVerifier;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import ugent.bagger.forms.BagValidateParamsForm;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.BagValidateParams;
 import ugent.bagger.params.BagValidationResult;
@@ -92,7 +92,7 @@ public final class BagValidationResultPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
-        JButton okButton = new JButton("ok");
+        JButton okButton = new JButton(Context.getMessage("BagValidationResultPanel.okButton.label"));
         okButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -132,9 +132,14 @@ public final class BagValidationResultPanel extends JPanel{
         this.bagValidateParamsForm = bagValidateParamsForm;
     }    
     protected void startValidate(){
-        SwingUtils.monitor(this,new ValidateBagsWorker(),"","%s");        
+        SwingUtils.monitor(
+            this,
+            new ValidateBagsWorker(),
+            Context.getMessage("ValidateBagsWorker.validating.title"),
+            Context.getMessage("ValidateBagsWorker.validating.description")
+        );        
     }
-    private class ValidateBagsWorker extends DefaultWorker implements ProgressListener{
+    private class ValidateBagsWorker extends DefaultWorker {
         @Override
         protected Void doInBackground(){  
             SwingUtils.ShowBusy();
@@ -154,12 +159,11 @@ public final class BagValidationResultPanel extends JPanel{
                     if(getBagValidateParams().isValid()){                
                         ParallelManifestChecksumVerifier manifestVerifier = new ParallelManifestChecksumVerifier();
                         ValidVerifierImpl validVerifier = new ValidVerifierImpl(completeVerifier, manifestVerifier);                          
-                        validVerifier.addProgressListener(this);
+                        
                         result = bag.validateBag(validVerifier);
                         valid = result.isSuccess();
                         complete = valid;
-                    }else{
-                        completeVerifier.addProgressListener(this);
+                    }else{                        
                         result = bag.completeBag(completeVerifier);
                         valid = false;
                         complete = result.isSuccess();
@@ -171,8 +175,7 @@ public final class BagValidationResultPanel extends JPanel{
                         valid,
                         complete
                     );
-                    addBagValidationResult(vresult);
-                    
+                    addBagValidationResult(vresult);                    
 
                     int percent = (int)Math.floor( ((i+1) / ((float)files.size()))*100);                                                                        
                     setProgress(percent);                
@@ -184,14 +187,6 @@ public final class BagValidationResultPanel extends JPanel{
             
             SwingUtils.ShowDone();
             return null;
-        }
-
-        @Override
-        public void reportProgress(String activity, Object o, Long count, Long total) {
-            if(count == null || total == null){
-                return;
-            }
-            System.out.println("activity '"+activity+"' at "+count+"/"+total);
-        }
+        }        
     }
 }

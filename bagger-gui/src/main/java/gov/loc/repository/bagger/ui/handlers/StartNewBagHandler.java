@@ -20,10 +20,6 @@ public class StartNewBagHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(StartNewBagHandler.class);
     
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
     public StartNewBagHandler() {
         super();       
     }
@@ -43,14 +39,7 @@ public class StartNewBagHandler extends AbstractAction {
         dialog.setLocationRelativeTo(SwingUtils.getFrame());         
         SwingUtils.centerAt(SwingUtils.getFrame(),dialog);
         dialog.pack();
-        dialog.setVisible(true);
-        
-        //Nicolas Franck
-        /*
-                
-        NewBagFrame newBagFrame = new NewBagFrame(bagView,Context.getMessage("bag.frame.new"));
-        newBagFrame.setVisible(true);        
-        newBagFrame.pack();*/        
+        dialog.setVisible(true);             
     }
     public void createNewBag(String bagItVersion) {
         BagView bagView = BagView.getInstance();    	
@@ -86,53 +75,5 @@ public class StartNewBagHandler extends AbstractAction {
     	        
         SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
         
-    }
-    /*
-    public void createNewBag(String bagItVersion, String profileName) {
-        BagView bagView = BagView.getInstance();
-    	log.info("Creating a new bag with version: " + bagItVersion + ", profile: " + profileName);
-    	
-    	bagView.clearBagHandler.clearExistingBag();
-    	DefaultBag bag = bagView.getBag();
-    	bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
-
-    	String bagName = Context.getMessage("bag.label.noname");
-        bag.setName(bagName);
-        bagView.getInfoFormsPane().setBagName(bagName);
-
-        bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
-        Collection<BagFile> tags = bag.getTags();
-        for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
-            BagFile bf = it.next();
-            bagView.getBagTagFileTree().addNode(bf.getFilepath());
-        }
-        bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
-        bagView.updateBaggerRules();
-        bag.setRootDir(bagView.getBagRootPath());
-
-    	bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
-    	ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
-    	bagView.updateNewBag();
-    	
-    	// set bagItVersion
-    	bagView.getInfoFormsPane().getBagVersionValue().setText(bagItVersion);
-    	
-    	// change profile
-    	changeProfile(profileName);
-        
-        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
-        
-    }*/
-    
-    // TODO refactor
-    /*
-    private void changeProfile(String selected) {
-        BagView bagView = BagView.getInstance();
-    	//Profile profile = bagView.getProfileStore().getProfile(selected);        
-        DefaultBag bag = bagView.getBag();
-        //Nicolas Franck: Profile uitschakelen
-        //bag.setProfile(profile, true);        
-        bagView.getInfoFormsPane().getInfoInputPane().updateProject();        
-        //bagView.getInfoFormsPane().setProfile(bag.getProfile().getName());
-    }*/
+    }    
 }

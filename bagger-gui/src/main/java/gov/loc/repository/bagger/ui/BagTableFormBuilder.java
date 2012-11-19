@@ -10,6 +10,7 @@ import org.springframework.richclient.factory.ComponentFactory;
 import org.springframework.richclient.form.binding.BindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+import ugent.bagger.helper.Context;
 
 public class BagTableFormBuilder extends TableFormBuilder {
     private static final String VALIGN_TOP = TableLayoutBuilder.VALIGN + "=top";
@@ -77,7 +78,7 @@ public class BagTableFormBuilder extends TableFormBuilder {
     public JComponent[] addBinding(String fieldName, boolean isRequired, String labelName, JComponent component, JComponent wrappedComponent, JComponent removeButton, String attributes, String labelAttributes) {
     	removeButton.setFocusable(false);
     	JLabel label = new JLabel(labelName); //createLabelFor(fieldName, component);
-    	label.setToolTipText("Double-Click to Edit");
+    	label.setToolTipText(Context.getMessage("BagTableFormBuilder.binding.tooltip"));
         if(wrappedComponent == null) {
             wrappedComponent = component;
         }

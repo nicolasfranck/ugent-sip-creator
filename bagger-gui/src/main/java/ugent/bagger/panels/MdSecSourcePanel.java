@@ -94,9 +94,9 @@ public class MdSecSourcePanel extends JPanel{
     protected JComponent createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
-        okButton = new JButton("ok");
+        okButton = new JButton(Context.getMessage("ok"));
         okButton.setEnabled(false);
-        cancelButton = new JButton("cancel");
+        cancelButton = new JButton(Context.getMessage("cancel"));
         panel.add(okButton);
         panel.add(cancelButton);
         

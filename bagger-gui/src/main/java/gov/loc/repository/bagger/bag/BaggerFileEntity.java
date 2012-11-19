@@ -88,16 +88,7 @@ public class BaggerFileEntity {
     }
 
     public void setBagSrc(File bagDir, File src) {
-        // TODO given the bag location, create the location the src file will exist
-        // within the bag data directory, e.g. strip off parent of src and replace
-        // it with the bag data dir
-        
-        this.bagSrc = new File(bagDir,src.getPath());
-        //Nicolas Franck
-        /*
-        File bagSrc = src;
-        File f = new File(bagDir, bagSrc.getPath());
-        this.bagSrc = f;*/
+        this.bagSrc = new File(bagDir,src.getPath());       
     }
 
     public void setBagSrc(File file) {

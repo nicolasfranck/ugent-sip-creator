@@ -23,9 +23,7 @@ public final class InfoFormsPane extends JPanel {
     private UpdateBagHandler updateBagHandler;
     protected JLabel bagNameValue;
     private JButton removeProjectButton;
-    private JLabel bagVersionValue;
-    //Nicolas Franck: profile disabled
-    //private JLabel bagProfileValue;
+    private JLabel bagVersionValue;    
     private JLabel holeyValue;
     private JLabel serializeLabel;
     private JLabel serializeValue;
@@ -39,10 +37,7 @@ public final class InfoFormsPane extends JPanel {
     private FileFilter noFilter;
     private FileFilter zipFilter;
     private FileFilter tarFilter;
-
-    /*
-     * Nicolas Franck: filters zijn null!! => waarom worden dan gebruikt?
-     */
+   
     public FileFilter getNoFilter(){
         return noFilter;
     }
@@ -95,11 +90,7 @@ public final class InfoFormsPane extends JPanel {
     	super();       
         setLayout(new BorderLayout());
         add(getInfoPanel());       
-    }    
-    /*
-    public void setProfile(String profileName) {
-    	bagProfileValue.setText(profileName);
-    }*/
+    }        
 
     public JLabel getSerializeValue() {
         if(serializeValue == null){
@@ -172,18 +163,6 @@ public final class InfoFormsPane extends JPanel {
         this.serializeLabel = serializeLabel;
     }    
 
-    /*
-    public JLabel getBagProfileValue() {
-        if(bagProfileValue == null){
-            bagProfileValue = new JLabel("");
-        }
-        return bagProfileValue;
-    }
-
-    public void setBagProfileValue(JLabel bagProfileValue) {
-        this.bagProfileValue = bagProfileValue;
-    }*/
-
     public JLabel getBagNameValue() {
         if(bagNameValue == null){
             bagNameValue = new JLabel(Context.getMessage("bag.label.noname"));
@@ -217,16 +196,6 @@ public final class InfoFormsPane extends JPanel {
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getBagNameValue(), gbc);
 
-        // bag profile
-        /*
-        row++;
-        JLabel bagProfileLabel = new JLabel("Profile:");
-        gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
-        gbc.insets = new Insets(0, 0, 5, 5);
-        pane.add(bagProfileLabel, gbc);        
-        gbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-        gbc.insets = new Insets(0, 0, 5, 5);
-        pane.add(getBagProfileValue(), gbc);*/
 
         // bag version
         row++;
@@ -291,40 +260,12 @@ public final class InfoFormsPane extends JPanel {
     	getInfoInputPane().invalidate();
     }
 
-    public void updateInfoFormsPane(boolean enabled) {
-        
-        //Nicolas Franck: plaatst nu enkel baginfo-form opnieuw        
-        
-        /*
-        for(int i = 0;i< getInfoInputPane().getComponentCount();i++){                      
-            if(getInfoInputPane().getComponentAt(i) == getInfoInputPane().getBagInfoForm().getControl()){
-                //ervoor zorgen dat get-methode 'getBagInfoForm' zichzelf opnieuw initialiseert!
-                getInfoInputPane().setBagInfoForm(null);
-                getInfoInputPane().setComponentAt(i,getInfoInputPane().getBagInfoForm().getControl());
-                break;
-            }
-        }*/        
-        
+    public void updateInfoFormsPane(boolean enabled) {        
         getInfoInputPane().setBagInfoForm(null);
         getInfoInputPane().setComponentAt(1,
             new JScrollPane(getInfoInputPane().getBagInfoForm().getControl())
-        );
-        
+        );        
         getInfoInputPane().validate();        
         validate();
-        
-        //Nicolas Franck: verwijdert volledige inputpane, inclusief mets-tab
-    	// need to remove something?
-        /*
-        getInfoPanel().remove(getInfoInputPane());
-        getInfoPanel().validate();      
-    	setInfoInputPane(new InfoInputPane(enabled));
-    	getInfoInputPane().setToolTipText(Context.getMessage("bagView.bagInfoInputPane.help"));
-        
-    	GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
-        getInfoPanel().add(getInfoInputPane(),gbc);
-        validate();
-        */
-        
     }     
 }

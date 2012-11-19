@@ -1,12 +1,13 @@
 package gov.loc.repository.bagger.app;
 
+import java.util.Set;
 import javax.swing.UIManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.application.statusbar.StatusBar;
-import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 
 /**
  * Custom application lifecycle implementation that configures the app at well defined points within
@@ -16,79 +17,13 @@ import ugent.bagger.helper.Context;
  */
 public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
-    private static void init(){
-        String [] keys = {
-            "FileChooser.yesButtonText",
-            "FileChooser.yesButtonToolTipText",
-            "FileChooser.yesButtonMnemonic",
-            
-            "FileChooser.noButtonText",
-            "FileChooser.noButtonToolTipText",
-            "FileChooser.noButtonMnemonic",
-            
-            "FileChooser.openButtonText",
-            "FileChooser.openButtonToolTipText",
-            "FileChooser.openButtonMnemonic",
-            
-            "FileChooser.saveButtonText",
-            "FileChooser.saveButtonToolTipText",
-            "FileChooser.saveButtonMnemonic",
-            
-            "FileChooser.cancelButtonText",
-            "FileChooser.cancelButtonMnemonic",
-            "FileChooser.cancelButtonToolTipText",
-            
-            "FileChooser.updateButtonText",
-            "FileChooser.updateButtonToolTipText",
-            "FileChooser.updateButtonMnemonic",
-            
-            "FileChooser.helpButtonText",
-            "FileChooser.helpButtonToolTipText",
-            "FileChooser.helpButtonMnemonic",
-            
-            "FileChooser.fileDescription",
-            "FileChooser.directoryDescription",
-            "FileChooser.directoryOpenButtonText"
-        };
+    private static void init(){        
+        Set<String>keys = SwingUtils.getUIManagerMessages().keySet();
         for(String key:keys){
-            UIManager.put(key,Context.getMessage(key));
+            UIManager.put(key,SwingUtils.getUIManagerMessages().get(key));
         }
         
-    }
-    //boolean useWizard = false;
-
-    /**
-     * Show a setup wizard before actual applicationWindow is created. This should happen only on Application
-     * startup and only once. (note: for this to happen only once, a state should be preserved, which is not
-     * the case with this sample)
-     */
-    //Nicolas Franck
-    /*
-    @Override
-    public void onPreStartup(){   
-    	log.debug("BaggerLifeCycleAdvisor.onPreStartup");
-    	if(useWizard){
-            if(getApplication().getApplicationContext().containsBean("setupWizard")){
-                SetupWizard setupWizard = (SetupWizard) getApplication().getApplicationContext().getBean(
-                    "setupWizard", SetupWizard.class
-                );
-                setupWizard.execute();
-            }
-    	}
-    	
-    	//Make the view layout page as read-only so the user changes to view layout will 
-    	//be reset during restart.                
-       
-    	if(getApplication().getApplicationContext().containsBean("proxyPage")){
-            VLDockingPageDescriptor dockingPageDesc = (VLDockingPageDescriptor)getApplication().getApplicationContext().getBean("proxyPage");
-            try {
-                dockingPageDesc.getInitialLayout().getFile().setReadOnly();
-            } catch (Exception e) {
-                log.debug("Error setting the view layout page as read-only", e);
-            }
-    	}
-        
-    }*/
+    }    
 
     /**
      * Additional window configuration before it is created.
@@ -96,30 +31,10 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     @Override
     public void onPreWindowOpen(ApplicationWindowConfigurer configurer){
         super.onPreWindowOpen(configurer);      
-        init();
-        for(Object key:UIManager.getDefaults().keySet()){
-            System.out.println("key: "+key+", value: "+UIManager.get(key));
-        }
-        //Nicolas Franck: elke view past grootte aan
-        //configurer.setInitialSize(new Dimension(1024, 768));        
-        
+        init(); 
     }    
     @Override
-    public StatusBar getStatusBar(){
-        //Nicolas Franck
+    public StatusBar getStatusBar(){       
         return new BaggerStatusBar();
-    }
-            
-    
-    /**
-     * When commands are created, lookup the login command and execute it.
-     */
-    //Nicolas Franck
-    /*
-    @Override
-    public void onCommandsCreated(ApplicationWindow window){
-        //ActionCommand command = (ActionCommand) window.getCommandManager().getCommand("loginCommand", ActionCommand.class);
-        // TODO: implement login and logout if db is on remote server
-        //command.execute();
-    }*/  
+    } 
 }

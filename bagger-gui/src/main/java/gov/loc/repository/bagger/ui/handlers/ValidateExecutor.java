@@ -6,10 +6,6 @@ import org.springframework.richclient.command.support.AbstractActionCommandExecu
 public class ValidateExecutor extends AbstractActionCommandExecutor{
     private static final long serialVersionUID = 1L;
 
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
     public ValidateExecutor() {
         super();           
     }

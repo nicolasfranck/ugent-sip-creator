@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui;
 
 import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.Mets;
-import com.anearalone.mets.MetsWriter;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
@@ -17,16 +16,9 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.panels.AmdSecsPanel;
 import ugent.bagger.panels.MetsPanel;
 
-/*
- * Nicolas Franck: renamed from "BagInfoInputPane" to "InfoInputPane"
- */
 public final class InfoInputPane extends JTabbedPane {
     private static final long serialVersionUID = 1L;
-    private static final Log logger = LogFactory.getLog(InfoInputPane.class);
-    //Nicolas Franck: profile niet nuttig
-    //private BaggerProfile bagProfile;
-    //private OrganizationProfileForm profileForm;
-    //private HierarchicalFormModel profileFormModel;
+    private static final Log logger = LogFactory.getLog(InfoInputPane.class);    
     private BagInfoForm bagInfoForm;    
     private HierarchicalFormModel infoFormModel;    
     private Mets mets;
@@ -69,18 +61,7 @@ public final class InfoInputPane extends JTabbedPane {
     }   
     public DefaultBag getDefaultBag() {
         return getBagView().getBag();
-    }    
-    //Nicolas Franck: profile niet nuttig
-    /*
-    public BaggerProfile getBagProfile() {
-        if (bagProfile == null) {
-            bagProfile = new BaggerProfile();
-        }
-        return bagProfile;
-    }
-    public void setBagProfile(BaggerProfile bagProfile) {
-        this.bagProfile = bagProfile;
-    }*/
+    }       
     public BagInfoForm getBagInfoForm() {
         if(bagInfoForm == null){            
             bagInfoForm = new BagInfoForm(
@@ -93,18 +74,7 @@ public final class InfoInputPane extends JTabbedPane {
     }
     public void setBagInfoForm(BagInfoForm bagInfoForm) {
         this.bagInfoForm = bagInfoForm;
-    } 
-    //Nicolas Franck: profile niet nuttig
-    /*
-    public OrganizationProfileForm getProfileForm() {
-        if(profileForm == null){
-            profileForm = new OrganizationProfileForm(FormModelHelper.createChildPageFormModel(getProfileFormModel(), null));    	
-        }
-        return profileForm;
-    }
-    public void setProfileForm(OrganizationProfileForm profileForm) {
-        this.profileForm = profileForm;
-    }*/
+    }     
     public HierarchicalFormModel getInfoFormModel() {
         if(infoFormModel == null){
             infoFormModel = FormModelHelper.createCompoundFormModel(getDefaultBag().getInfo());
@@ -113,18 +83,7 @@ public final class InfoInputPane extends JTabbedPane {
     }
     public void setInfoFormModel(HierarchicalFormModel infoFormModel) {        
         this.infoFormModel = infoFormModel;
-    }
-    //Nicolas Franck: profile niet nuttig
-    /*
-    public HierarchicalFormModel getProfileFormModel() {
-        if(profileFormModel == null){
-            profileFormModel = FormModelHelper.createCompoundFormModel(getBagProfile());
-        }
-        return profileFormModel;
-    }
-    public void setProfileFormModel(HierarchicalFormModel profileFormModel) {
-        this.profileFormModel = profileFormModel;
-    }*/
+    }   
     public InfoInputPane(boolean b){
     	populateForms(b);                       
         getInputMap().put(KeyStroke.getKeyStroke("F2"), "tabNext");
@@ -151,68 +110,40 @@ public final class InfoInputPane extends JTabbedPane {
         setActionMap(am);                
     }
     public void enableForms(boolean b) {      
-        //Nicolas Franck: profile niet nuttig
-    	/*getProfileForm().setEnabled(b);
-    	getProfileForm().getControl().invalidate();
-    	getBagInfoForm().setEnabled(b);*/
+        
     	getBagInfoForm().getControl().invalidate();
     	setEnabled(b);
     	invalidate();
     }    
-    public void populateForms(boolean enabled){    	                
-    	/*getBagProfile().setOrganization(getDefaultBag().getInfo().getBagOrganization());                
-    	getBagProfile().setToContact(getDefaultBag().getInfo().getToContact());*/    	    	        
+    public void populateForms(boolean enabled){    	                    	
         createTabbedUiComponentsWithForms();        
     }
 
     // Create a tabbed pane for the information forms and checkbox panel
     private void createTabbedUiComponentsWithForms() {                
+        
+        //revalidate
         removeAll();     
-        validate();
+        validate();        
         
-        //Nicolas Franck
+        //add tabs
+        
         addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());        
-       
-        
-        //Nicolas Franck: profile niet nuttig
-        //bag-info
-        //setName("Profile");
-        //getBagInfoForm().getControl().setToolTipText(Context.getMessage("infoinputpane.tab.details.help"));
         JComponent bagInfoComponent = getBagInfoForm().getControl();
         bagInfoComponent.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
         JScrollPane bagInfoComponentScrollPane = new JScrollPane(bagInfoComponent);
         bagInfoComponentScrollPane.setBorder(null);
-        bagInfoComponentScrollPane.getViewport().setOpaque(false);
+        bagInfoComponentScrollPane.getViewport().setOpaque(false);        
+        
         addTab(
             Context.getMessage("infoInputPane.tab.details"),
             bagInfoComponentScrollPane
-        );
-                
-        
-        try{
-            new MetsWriter().writeToOutputStream(getMets(),System.out);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        );                        
         
         addTab("amdSecs",getAmdSecsPanel());
         
-        //getProfileForm().getControl().setToolTipText("Profile Form");
-        
-        //Nicolas Franck
-        /* vreemd. ProfileForm wordt hier nergens gebruikt. Waarom bestaat dit?
-         * 
-         */
-        //addTab(Context.getMessage("newProfileWizard.title"),getProfileForm().getControl());        
-        
     }
-    public String verifyForms(){        
-        /*        
-        if(!getProfileForm().hasErrors()){            
-            getProfileForm().commit();
-        }else{
-            throw new RuntimeException("Bag-Info has errors");
-        }*/        
+    public String verifyForms(){                      
         if(!getBagInfoForm().hasErrors()){
             getBagInfoForm().commit();
         }else{
@@ -233,8 +164,7 @@ public final class InfoInputPane extends JTabbedPane {
             c.invalidate();
             c.repaint();
         }
-        getBagInfoForm().getControl().invalidate();
-        //getProfileForm().getControl().invalidate();        
+        getBagInfoForm().getControl().invalidate();        
     	invalidate();
     	repaint();        
     }
@@ -244,14 +174,5 @@ public final class InfoInputPane extends JTabbedPane {
     }
     private void updateBagInfo(){              
         getDefaultBag().updateBagInfo(getBagInfoForm().getBagInfoMap());        
-    }
-    /*
-     * Nicolas Franck: evil! Bij meerdere tabs wordt een focus gevraagd op een onderdeel van tab 1!
-     */
-    /*
-    @Override
-    public void requestFocus(){        
-        System.out.println("BagInfoInputPane::requestFocus");
-    	getBagInfoForm().getControl().requestFocus();        
-    }*/
+    }    
 }

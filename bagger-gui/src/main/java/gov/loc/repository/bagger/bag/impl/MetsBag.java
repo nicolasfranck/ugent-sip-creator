@@ -19,7 +19,7 @@ import java.util.Map.Entry;
  * @author nicolas
  */
 public class MetsBag extends DefaultBag{
-    private BagItMets bagItMets;
+    private BagItMets bagItMets;    
     
     public MetsBag() {          
         super();            
@@ -37,7 +37,7 @@ public class MetsBag extends DefaultBag{
     }
      
     @Override
-    public String write(Writer bw){        
+    public boolean write(Writer bw){        
         prepareBilBagInfoIfDirty();
         generateManifestFiles();
         
@@ -71,12 +71,7 @@ public class MetsBag extends DefaultBag{
         }catch(Exception e){             
             log.debug(e);            
         }        
-        String messages = writeBag(bw);
-        if (bw.isCancelled()) {
-            return "Save cancelled.";
-        }
-        return messages;       
-        
+        return writeBag(bw);
     }
     public void createPreBag(File data, String version,String [] ignoreFiles) {
         super.createPreBag(data,version);

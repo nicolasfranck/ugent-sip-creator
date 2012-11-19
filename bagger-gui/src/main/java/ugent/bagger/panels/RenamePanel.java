@@ -521,8 +521,14 @@ public class RenamePanel extends JPanel{
         //panel renumber        
         panelRenumber = getNewRenumberPanel();        
         
-        tabs.addTab("rename",new JScrollPane(panelRenamer));
-        tabs.addTab("renumber",new JScrollPane(panelRenumber));                        
+        tabs.addTab(
+            Context.getMessage("RenamePanel.tabRename.title"),
+            new JScrollPane(panelRenamer)
+        );
+        tabs.addTab(
+            Context.getMessage("RenamePanel.tabRenumber.title"),
+            new JScrollPane(panelRenumber)
+        );                        
         
         panelSouth.add(tabs);       
         
@@ -710,10 +716,18 @@ public class RenamePanel extends JPanel{
         resultTable.setModel(resultTableModel);
     }
     protected void rename(){
-        monitor(new TaskRename(getRenameParams()),"renaming");        
+        SwingUtils.monitor(
+            new TaskRename(getRenameParams()),
+            Context.getMessage("RenamePanel.renaming.title"), 
+            Context.getMessage("RenamePanel.renaming.description")
+        );        
     }  
     protected void renumber(){
-        monitor(new TaskRenumber(getRenumberParams()),"renumbering");
+        SwingUtils.monitor(
+            new TaskRenumber(getRenumberParams()),
+            Context.getMessage("RenamePanel.renumbering.title"), 
+            Context.getMessage("RenamePanel.renumbering.description")
+        );        
     }
     public File getLastFile(){
         if(lastFile == null){
@@ -723,10 +737,7 @@ public class RenamePanel extends JPanel{
     }
     protected void setLastFile(File lastFile) {
         this.lastFile = lastFile;
-    }   
-    private void monitor(SwingWorker worker,String title){
-        SwingUtils.monitor(worker,title,"renaming");        
-    } 
+    }       
     private class TaskRenumber extends DefaultWorker {
         private RenumberParams renumberParams;
         public TaskRenumber(RenumberParams renumberParams){
@@ -842,15 +853,7 @@ public class RenamePanel extends JPanel{
             SwingUtils.StatusMessage(null);
             numRenamedSuccess = 0;
             numRenamedError = 0;
-            
-            System.out.println("selectedFiles: ");
-            for(File file:selectedFiles){
-                System.out.println("\tfile: "+file);
-            }
-            System.out.println("source: "+renameParams.getSource());
-            System.out.println("destination: "+renameParams.getDestination());
-            System.out.println("regex: "+renameParams.isRegex());
-            
+                        
             try{
 
                 final Renamer renamer = new Renamer();    

@@ -20,12 +20,6 @@ public final class BagTextPane extends JTextPane {
     	super();
         
         setMessage(message);
-        
-        //Nicolas Franck: één call naar setMessage doet hetzelfde
-    	/*this.message = message;
-    	buildDocument();
-        setStyledDocument(document);*/
-        
         setAutoscrolls(true);
         setEditable(false);
         setBackground(textBackground);

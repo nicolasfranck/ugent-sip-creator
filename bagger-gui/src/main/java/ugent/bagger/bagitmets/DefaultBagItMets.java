@@ -70,12 +70,12 @@ public class DefaultBagItMets extends BagItMets{
     public Mets onSaveBag(Bag bag,Mets mets) {
         
         BagView bagView = BagView.getInstance();
-        MetsBag defaultBag = bagView.getBag();        
+        MetsBag metsBag = bagView.getBag();        
         
-        Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(defaultBag.getTagManifestAlgorithm());            
-        SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(defaultBag.getTagManifestAlgorithm());         
-        Manifest.Algorithm payloadManifestAlg = DefaultBag.resolveAlgorithm(defaultBag.getPayloadManifestAlgorithm());            
-        SharedEnums.CHECKSUMTYPE payloadManifestChecksumType = resolveChecksumType(defaultBag.getPayloadManifestAlgorithm()); 
+        Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm());            
+        SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(metsBag.getTagManifestAlgorithm());         
+        Manifest.Algorithm payloadManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getPayloadManifestAlgorithm());            
+        SharedEnums.CHECKSUMTYPE payloadManifestChecksumType = resolveChecksumType(metsBag.getPayloadManifestAlgorithm()); 
         
         Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);
@@ -117,7 +117,7 @@ public class DefaultBagItMets extends BagItMets{
 
                 //MIMETYPE
                 String mimeType;                
-                File rootDir = bagView.getBag().getRootDir();
+                File rootDir = metsBag.getRootDir();
                 File payloadFile = new File(rootDir,bagFile.getFilepath());                
 
                 if(payloadFile.isFile()){                    

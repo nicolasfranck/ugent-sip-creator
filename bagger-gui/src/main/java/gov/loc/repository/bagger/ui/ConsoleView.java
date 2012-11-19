@@ -6,10 +6,8 @@ import org.springframework.util.Assert;
 import ugent.bagger.views.DefaultView;
 
 public class ConsoleView extends DefaultView {
-    public static ConsoleView instance;
-    //Nicolas Franck
-    //private ConsolePane consolePane;
-    private ConsolePane2 consolePane;
+    public static ConsoleView instance;    
+    private ConsolePane consolePane;
     public static ArrayList<String>delayedMessages= new ArrayList<String>();
 
     public ConsoleView(){    
@@ -31,9 +29,9 @@ public class ConsoleView extends DefaultView {
             delayedMessages.clear();
         }            
     }
-    public ConsolePane2 getConsolePane() {
+    public ConsolePane getConsolePane() {
         if(consolePane == null){
-            consolePane =  new ConsolePane2(getInitialConsoleMsg());
+            consolePane =  new ConsolePane(getInitialConsoleMsg());
         }
         return consolePane;
     }       
@@ -48,11 +46,7 @@ public class ConsoleView extends DefaultView {
     }	
     private String getInitialConsoleMsg() {
     	StringBuilder buffer = new StringBuilder();
-    	buffer.append(getMessage("consolepane.msg.help"));
-        buffer.append("\n");
-    	//buffer.append("\n\n");
-    	//buffer.append(getMessage("consolepane.status.help"));
-    	//buffer.append("\n\n");
+    	buffer.append(getMessage("consolepane.msg.help")).append("\n");        
     	return buffer.toString();
     }
 }

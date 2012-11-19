@@ -16,7 +16,6 @@ import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.apache.log4j.Logger;
 import ugent.bagger.exceptions.FileNotReadableException;
-import ugent.bagger.exceptions.FileNotRegularException;
 import ugent.bagger.exceptions.FileNotWritableException;
 
 /**

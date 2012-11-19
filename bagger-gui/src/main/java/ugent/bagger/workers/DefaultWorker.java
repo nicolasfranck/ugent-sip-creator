@@ -7,7 +7,7 @@ import javax.swing.SwingWorker;
  * @author nicolas
  */
 public class DefaultWorker extends SwingWorker<Void, Void> implements Loggable,Sendable,Reportable{
-    private boolean success = false;
+    private boolean success = false;    
     @Override
     protected Void doInBackground() throws Exception {        
         throw new UnsupportedOperationException("Not supported yet.");

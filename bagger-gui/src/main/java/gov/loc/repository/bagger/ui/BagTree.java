@@ -25,9 +25,7 @@ public final class BagTree extends JTree {
     private TreePath rootPath;
     private String basePath;
     private DefaultMutableTreeNode parentNode = new DefaultMutableTreeNode(AbstractBagConstants.DATA_DIRECTORY);
-    
-    //Nicolas Franck: nergens gebruikt
-    //private ArrayList<DefaultMutableTreeNode> srcNodes = new ArrayList<DefaultMutableTreeNode>();
+   
 	
     public BagView getBagView(){
         return BagView.getInstance();
@@ -35,34 +33,16 @@ public final class BagTree extends JTree {
     public BagTree(String path, boolean isPayload) {
         super();
         
-        setShowsRootHandles(true);
-        /*
-         * Nicolas Franck: is het nodig om de root 'data' te tonen?
-         * nieuwe bagit supporteert data1, data2 .., maar wij niet
-         */
-        setRootVisible(false);
+        setShowsRootHandles(true);       
+        setRootVisible(false);        
+        basePath = path;        
         
-        basePath = path;
-        
-        //i.e. 'data' => maar dit is al hierboven ingesteld??
-        //parentNode = new DefaultMutableTreeNode(basePath);
-        initialize();
-        
-        //initListeners();
+        initialize();        
+       
         JTextField nameTextField = new JTextField();
         int fieldHeight = nameTextField.getFontMetrics(nameTextField.getFont()).getHeight() + 5;
         BAGTREE_ROW_MODIFIER = fieldHeight;
-
-        /*
-         * Nicolas Franck: dragEnabled enkel nuttig indien de interne nodelist naar buiten geëxporteerd kan worden!
-         * kan volgens BagTreeTransferHandler, maar wat houdt dat precies in?
-         */
-        /*
-        this.setDragEnabled(true);
-        this.setDropMode(DropMode.ON_OR_INSERT);
-        this.setTransferHandler(new BagTreeTransferHandler(isPayload));
-        this.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-        */        
+       
         getBagView().registerTreeListener(path,this);        
         
     }
@@ -70,16 +50,10 @@ public final class BagTree extends JTree {
     private void initialize() {
         setModel(new DefaultTreeModel(parentNode));
         rootPath = new TreePath(parentNode.getPath());
-
-        //setCheckingPath(rootPath);
         setAnchorSelectionPath(rootPath);
-        makeVisible(rootPath);
-        //getCheckingModel().setCheckingMode(TreeCheckingModel.CheckingMode.PROPAGATE);
-        setLargeModel(true);
-        //setPreferredSize(getTreeSize());
+        makeVisible(rootPath);        
+        setLargeModel(true);        
         requestFocus();
-        //setScrollsOnExpand(true);
-        
     }
 	
     public void populateNodes(DefaultBag bag, String path, File rootSrc, boolean isParent) {
@@ -95,18 +69,6 @@ public final class BagTree extends JTree {
             
             List<String> payload = bag.getPayloadPaths();
             
-            //Nicolas Franck
-            /*
-            if(!bag.isHoley()){                
-                log.debug("BagTree.populateNodes getPayloadPaths:" );
-                payload = bag.getPayloadPaths();                
-            }else{
-                log.debug("BagTree.populateNodes getFetchPayload:");
-                payload = bag.getPayloadPaths(); //bag.getFetchPayload();                
-                //basePath = bag.getFetch().getBaseURL();
-            }*/            
-            
-            
             List<DefaultMutableTreeNode>structuredList = FUtils.listToStructure(payload.toArray(new String [] {}));                        
             
             if(structuredList.size() > 0){
@@ -118,32 +80,11 @@ public final class BagTree extends JTree {
                 }
             }
             
-            initialize();            
+            initialize();                        
             
-            //Nicolas Franck: toon structuur ipv lijst
-            /*
-            for(Iterator<String> it=payload.iterator(); it.hasNext(); ){
-                String filePath = it.next();
-                try{
-                    String normalPath;
-                    if(bag.isHoley()){
-                        normalPath = BaggerFileEntity.removeBasePath("data", filePath);
-                    }else{
-                        normalPath = BaggerFileEntity.removeBasePath(basePath, filePath);
-                    }
-                    if(!nodeAlreadyExists(normalPath)){
-                        addNode(normalPath);
-                    }
-                }catch(Exception e){
-                    if(!nodeAlreadyExists(filePath)){
-                        addNode(filePath);
-                    }
-                    log.error("BagTree.populateNodes: " + e.getMessage());
-                }
-            }*/
             log.debug("BagTree rows: " + payload.size());
             BAGTREE_HEIGHT = BAGTREE_ROW_MODIFIER * (payload.size() + 1);
-            //setPreferredSize(getTreeSize());
+        
             invalidate();
         }
     }
@@ -151,13 +92,8 @@ public final class BagTree extends JTree {
     public boolean addNodes(File file, boolean isParent) {
         if(!nodeAlreadyExists(file.getName())){           
             
-            //Nicolas Franck
-            //DefaultMutableTreeNode node = createNodeTree(null, null, file);                        
-            
-            DefaultMutableTreeNode node = FUtils.toTreeNode(file);
-            
-            //Nicolas Franck: nergens gebruikt
-            //srcNodes.add(node);
+            DefaultMutableTreeNode node = FUtils.toTreeNode(file);            
+           
             if(isParent) {
                 parentNode = node;
             }
@@ -189,82 +125,11 @@ public final class BagTree extends JTree {
         return b;
     }
 
-    public void addNode(String filePath) {
-        //DefaultMutableTreeNode node = new DefaultMutableTreeNode(new TNode(filePath,filePath));        
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(filePath);        
-        //Nicolas Franck: nooit gebruikt
-        //srcNodes.add(node);
+    public void addNode(String filePath) {        
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(filePath);                
         parentNode.add(node);
         initialize();
     }
-	
-    /** Add nodes from under "dir" into curTop. Highly recursive. */
-    
-    //Nicolas Franck: vervangen door FUtils.toTreeNode(File file)
-    /*
-    private DefaultMutableTreeNode createNodeTree(DefaultMutableTreeNode curTop, DefaultMutableTreeNode displayTop, File dir) {
-        String curPath = dir.getPath();
-        String displayPath = dir.getName();
-        DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
-        DefaultMutableTreeNode displayDir = new DefaultMutableTreeNode(displayPath);
-        if (curTop != null) { // should only be null at root
-            curTop.add(curDir);
-            displayTop.add(displayDir);
-        }
-        
-        ArrayList<String>ol = new ArrayList<String>();
-        
-        //Nicolas Franck: obsolete in this context: vector are synchronized version of arraylist
-        //Vector<String> ol = new Vector<String>();
-        //display("addNodes: " + dir.list());
-        String[] tmp = dir.list();
-        if (tmp != null && tmp.length > 0) {
-            //for (int i = 0; i < tmp.length; i++)ol.addElement(tmp[i]);
-            ol.addAll(Arrays.asList(tmp));
-        }
-
-        Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
-        File f;
-        
-        //Nicolas Franck: obsolete in this context: vector are synchronized version of arraylist
-        //Vector<String> files = new Vector<String>();
-        ArrayList<String> files = new ArrayList<String>();
-        
-        // Make two passes, one for Dirs and one for Files. This is #1.
-        for (int i = 0; i < ol.size(); i++) {
-            //String thisObject = (String) ol.elementAt(i);
-            
-            String thisObject = (String) ol.get(i);
-            
-            String newPath;
-            if (curPath.equals(".")) {
-                newPath = thisObject;
-            }
-            else {
-                newPath = curPath + File.separator + thisObject;
-            }
-            if ((f = new File(newPath)).isDirectory()) {
-                createNodeTree(curDir, displayDir, f);
-            }
-            else {
-                //files.addElement(thisObject);
-                files.add(thisObject);
-            }
-        }
-        // Pass two: for files.
-        //display("createBagManagerTree: files.size: " + files.size());
-        for(int fnum = 0; fnum < files.size(); fnum++){
-            //String elem = files.elementAt(fnum);
-            String elem = files.get(fnum);            
-            DefaultMutableTreeNode elemNode = new DefaultMutableTreeNode(elem);
-            curDir.add(elemNode);
-            displayDir.add(elemNode);
-        }
-
-        //return curDir;
-        return displayDir;
-    }*/
-
     public void setParentNode(DefaultMutableTreeNode parent) {
         this.parentNode = parent;
     }	

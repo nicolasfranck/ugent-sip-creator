@@ -171,7 +171,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     true
                 );
                 if(files.length > 0){
-                    monitor(new TaskAddMdSecFromFile(files),"inserting..");                
+                    monitor(new TaskAddMdSecFromFile(files));                
                 }                
             }
         });
@@ -248,8 +248,12 @@ public class MdSecPropertiesPanel extends JPanel{
         
         return panel;
     }
-    private void monitor(SwingWorker worker,String title){
-        SwingUtils.monitor(worker,title,"working..",getPropertyListeners());        
+    private void monitor(SwingWorker worker){
+        SwingUtils.monitor(
+            worker,
+            Context.getMessage("MdSecPropertiesPanel.monitoring.title"),
+            Context.getMessage("MdSecPropertiesPanel.monitoring.description"),
+            getPropertyListeners());        
     }   
     private List<PropertyChangeListener> getPropertyListeners(){        
         PropertyChangeListener listener = new PropertyChangeListener() {

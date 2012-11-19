@@ -17,10 +17,6 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
     private static final Log log = LogFactory.getLog(AddDataHandler.class);
     private static final long serialVersionUID = 1L;    
 
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
     public AddDataHandler() {
         super();        
     }
@@ -47,23 +43,14 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         if(dir == null){           
             dir = System.getProperty("user.home");           
         }
-
-        //File selectFile = new File(File.separator+".");
-        
-        //Nicolas Franck: een frame die niet gebruikt wordt heeft geen effect!
-        //JFrame frame = new JFrame();
-        //JFileChooser fc = new JFileChooser(selectFile);
+       
         JFileChooser fc = new JFileChooser(dir);
 
         fc.setDialogType(JFileChooser.OPEN_DIALOG);
     	fc.setMultiSelectionEnabled(true);
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        
-        /*
-         * Nicolas Franck
-         */
         fc.setDialogTitle(Context.getMessage("bag.message.addfiles"));
-        //fc.setDialogTitle("Add File or Directory");
+                
     	int option = fc.showOpenDialog(SwingUtils.getFrame());
 
         if (option == JFileChooser.APPROVE_OPTION) {
@@ -92,9 +79,8 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
             SwingUtils.ShowDone();
             
         }
-        /*
-         * Nicolas Franck
-         */
+     
+        //Nicolas Franck: onthoud laatst geopende map
         String lastDir = fc.getCurrentDirectory().getAbsolutePath();
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);        
         
@@ -122,17 +108,8 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         
     	if(files != null){
             for (int i=0; i < files.length; i++) {
-                log.info("addBagData[" + i + "] " + files[i].getName());
-                
-                addBagData(files[i],!(i < files.length-1));
-                //Nicolas Franck
-                /*
-                if (i < files.length-1) {
-                    addBagData(files[i], false);
-                }
-                else {
-                    addBagData(files[i], true);
-                }*/
+                log.info("addBagData[" + i + "] " + files[i].getName());                
+                addBagData(files[i],!(i < files.length-1));                
             }
     	}
     }

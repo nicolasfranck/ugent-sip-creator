@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
-import ugent.bagger.workers.LongTask2;
+import ugent.bagger.workers.LongTask;
 
-public class ValidateBagHandler2 extends Handler {
+public class ValidateBagHandler extends Handler {
 
     private static final long serialVersionUID = 1L;       
     private Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
@@ -23,7 +23,7 @@ public class ValidateBagHandler2 extends Handler {
     private Pattern tagsFixityFailurePattern = Pattern.compile("Fixity failure in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
     private Pattern payloadsFixityFailurePattern = Pattern.compile("Fixity failure in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
 
-    public ValidateBagHandler2() {
+    public ValidateBagHandler() {
         super();      
     }
     @Override
@@ -41,7 +41,7 @@ public class ValidateBagHandler2 extends Handler {
             Context.getMessage("ValidateBagHandler.monitor.label")
         );
     }
-    private class ValidateBagWorker extends LongTask2{
+    private class ValidateBagWorker extends LongTask{
         @Override
         protected Object doInBackground() throws Exception {
             
@@ -142,6 +142,6 @@ public class ValidateBagHandler2 extends Handler {
             SwingUtils.ShowDone();
             
             return null;
-        }               
+        }            
     }
 }

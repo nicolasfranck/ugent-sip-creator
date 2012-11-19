@@ -7,7 +7,6 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.InfoInputPane;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
-import gov.loc.repository.bagit.utilities.SimpleResult;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,10 +27,6 @@ public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
     private static final long serialVersionUID = 1L;   
 
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
     public OpenBagHandler() {
         super();        
     }
@@ -82,7 +77,7 @@ public class OpenBagHandler extends AbstractAction {
             bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
 
             //opgelet: een nieuw DefaultBag wordt aangemaakt, dus
-            //beter geen referentie bijhouden nu naar de oude            
+            //beter geen referentie bijhouden nu naar de oude           
             
             bagView.clearBagHandler.clearExistingBag();      
             
@@ -154,14 +149,8 @@ public class OpenBagHandler extends AbstractAction {
             bagView.getBagPayloadTree().populateNodes(bagView.getBag(),path,rootSrc,true);
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
             bagView.updateManifestPane();
-            bagView.enableBagSettings(true);
-            
-            /*
-            SimpleResult result = bagView.getBag().validateMetadata();
-            if(!result.isSuccess()){
-                ApplicationContextUtil.addConsoleMessage(result.toString());
-            }
-            */ 
+            bagView.enableBagSettings(true);            
+         
             bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
             bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);        
             bagView.updateOpenBag();   
@@ -177,9 +166,7 @@ public class OpenBagHandler extends AbstractAction {
             
             InfoInputPane bagInfoInputPane = bagView.getInfoFormsPane().getInfoInputPane();
             
-            bagInfoInputPane.resetMets(mets);           
-            
-       
+            bagInfoInputPane.resetMets(mets);
             
         }catch(FileNotWritableException e){
             SwingUtils.ShowError(

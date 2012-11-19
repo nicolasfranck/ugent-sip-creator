@@ -9,8 +9,6 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,11 +26,7 @@ public class ClearBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(ClearBagHandler.class);
     private static final long serialVersionUID = 1L;   
     private boolean confirmSaveFlag = false;
-
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
+    
     public ClearBagHandler() {
         super();      
     }
@@ -98,8 +92,7 @@ public class ClearBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();
     	DefaultBag bag = bagView.getBag();
     	bag.clear();        
-    	//bagView.setBagPayloadTree(new BagTree(AbstractBagConstants.DATA_DIRECTORY, true));
-        //Nicolas Franck
+    	
         bagView.setBagPayloadTree(bagView.createBagPayloadTree(AbstractBagConstants.DATA_DIRECTORY, true));
         
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());

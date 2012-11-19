@@ -14,14 +14,14 @@ import javax.swing.text.Document;
  * code based on gov.loc.repository.bagger.ui.ConsolePane
  */
 
-public final class ConsolePane2 extends JPanel {
+public final class ConsolePane extends JPanel {
     private static final int MAX_CONSOLE_MESSAGE_LENGTH = 50000;
     private static final long serialVersionUID = -4290352509246639528L;    
     public static final String CONSOLE_PANE = "consolePane";    
     private Color textBackground = new Color(240, 240, 240);   
     private JTextArea serializedArea;    
 
-    public ConsolePane2(String messages) {       
+    public ConsolePane(String messages) {       
         setLayout(new BorderLayout());  
         add(createConsoleArea());
         addConsoleMessages(messages);

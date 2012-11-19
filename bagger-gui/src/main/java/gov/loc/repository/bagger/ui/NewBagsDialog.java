@@ -1,20 +1,4 @@
 /*
- * Copyright 2002-2004 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-
-/*
  * Nicolas Franck: based on code of NewBagInPlaceFrame
  */
 
@@ -66,9 +50,10 @@ import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
-import ugent.bagger.workers.LongTask2;
+import ugent.bagger.workers.LongTask;
 
 public final class NewBagsDialog extends JDialog implements ActionListener {
+    
     private static final Log log = LogFactory.getLog(NewBagsDialog.class);
     private static final long serialVersionUID = 1L;
     private final Dimension preferredDimension = new Dimension(400, 230);
@@ -78,8 +63,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     private boolean bagInPlace = true;
     private File outputDir;
     private JButton saveAsButton;
-    private JComboBox bagVersionList;
-    //private JComboBox profileList;
+    private JComboBox bagVersionList;    
     private JCheckBox addKeepFilesToEmptyFoldersCheckBox;
     protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
     protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";	
@@ -186,21 +170,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     public void setCancelCommand(ActionCommand cancelCommand) {
         this.cancelCommand = cancelCommand;
     }
-    /*
-    public JComboBox getProfileList() {
-        if(profileList == null){
-            profileList = new JComboBox(getBagView().getProfileStore().getProfileNames());
-            profileList.setName(Context.getMessage("bag.label.projectlist"));
-            profileList.setSelectedItem(Context.getMessage("bag.project.noproject"));
-            profileList.setToolTipText(Context.getMessage("bag.projectlist.help"));
-        }
-        return profileList;
-    }
-
-    public void setProfileList(JComboBox profileList) {
-        this.profileList = profileList;
-    }*/
-
     public JCheckBox getAddKeepFilesToEmptyFoldersCheckBox() {
         if(addKeepFilesToEmptyFoldersCheckBox == null){
             addKeepFilesToEmptyFoldersCheckBox = new JCheckBox();
@@ -226,7 +195,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     }                    
                     getBagView().setMetsFileDateCreated((MetsFileDateCreated)ie.getItem());
                 }
-
             });
         }
         return metsFileDateCreatedCombobox;
@@ -285,9 +253,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         
         int row = 0;
         layoutSelectDataContent(panel,row++);
-        layoutBagVersionContent(panel,row++);
-        //Nicolas Franck: profile uitschakelen
-        //layoutProfileSelectionContent(panel,row++);
+        layoutBagVersionContent(panel,row++);        
         layoutAddKeepFilesToEmptyCheckBox(panel,row++);
         layoutSpacer(panel,row++);
        
@@ -489,22 +455,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST); 
         contentPanel.add(getBagVersionList(), glbc);
     }
-	
-    /*
-    private void layoutProfileSelectionContent(JPanel contentPane, int row) {
-        // content
-        // profile selection
-        JLabel bagProfileLabel = new JLabel(Context.getMessage("NewBagsDialog.profile.label"));
-        bagProfileLabel.setToolTipText(Context.getMessage("NewBagsDialog.profile.description"));
-	
-        JLabel spacerLabel = new JLabel();
-        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 5, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-        contentPane.add(bagProfileLabel, glbc);
-        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 40, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-        contentPane.add(getProfileList(), glbc);
-        glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
-        contentPane.add(spacerLabel, glbc);
-    }*/
     
 
     /*
@@ -543,28 +493,23 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         contentPane.add(getAddKeepFilesToEmptyFoldersCheckBox(), glbc);
         glbc = LayoutUtil.buildGridBagConstraints(2, row, 1, 1, 40, 50, GridBagConstraints.NONE, GridBagConstraints.EAST);
         contentPane.add(spacerLabel, glbc);
-    }
-	
+    }	
     private void layoutSpacer(JPanel contentPanel, int row) {        
         GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST);         
         contentPanel.add(new JLabel(""),glbc);
     }
-
     protected JComponent createButtonBar() {
         CommandGroup dialogCommandGroup = CommandGroup.createCommandGroup(null, getCommandGroupMembers());
         JComponent buttonBar = dialogCommandGroup.createButtonBar();
         GuiStandardUtils.attachDialogBorder(buttonBar);
         return buttonBar;
     }
-
     public ArrayList<File> getSelectedDirectories() {
         return selectedDirectories;
     }
-
     public void setSelectedDirectories(ArrayList<File> selectedDirectories) {
         this.selectedDirectories = selectedDirectories;
-    }
-    
+    }   
 	
     protected Object[] getCommandGroupMembers() {
         return new AbstractCommand[] { getFinishCommand(), getCancelCommand() };
@@ -580,7 +525,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     	invalidate();
     	repaint();
     }
-
     private class BrowseFileHandler extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
@@ -685,7 +629,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             NewBagsDialog.this.dispose();            
         }
     }
-    private class NewBagsInPlaceWorker extends LongTask2{
+    private class NewBagsInPlaceWorker extends LongTask{
         private ArrayList<File>files = new ArrayList<File>();
         private String version;
        
@@ -699,14 +643,11 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             }
             return files;
         }
-
         public void setFiles(ArrayList<File> files) {
             this.files = files;
-        }
-        
+        }        
         public ArrayList<File> getBadRWDirs(File file){
             ArrayList<File>badDirs = new ArrayList<File>();
-
             if(file.isDirectory()){
                 if(!file.canRead() || !file.canWrite()){
                     badDirs.add(file);
@@ -872,10 +813,10 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             SwingUtils.ShowDone();            
             
             return null;
-        }      
+        }         
     }
     
-    private class NewBagsWorker extends LongTask2 {
+    private class NewBagsWorker extends LongTask {
         private ArrayList<File>files = new ArrayList<File>();
         private File dir;
         private String version;        
@@ -921,8 +862,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     ArrayList<File>listPayloads = FUtils.listFiles(inputDir);
                     
                     for(File file:listPayloads){
-                        if(file.isFile()){                            
-                            System.out.println("adding "+file+" to payload");
+                        if(file.isFile()){                                                        
                             bag.addFileToPayload(file);
                         }
                     }
@@ -937,8 +877,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                                 if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
                                     MdSec mdSec = MetsUtils.createMdSec(metadataFile);                                    
                                     mets.getDmdSec().add(mdSec);
-                                }else if(metadataFile.getAbsolutePath().endsWith(".csv")){
-                                
                                 }
                             }catch(Exception e){  
                                 numErrors++;
@@ -1012,12 +950,13 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     
                     Writer writer = new FileSystemWriter(new BagFactory());
                     
-                    String messages = bag.write(writer);
+                    boolean saveOk = bag.write(writer);
 
-                    if(messages != null && !messages.trim().isEmpty()){
-                        numErrors++;
-                        log("Warning - bag not saved"+"Problem saving bag:\n" + messages);
-                        //bagView.showWarningErrorDialog("Warning - bag not saved", "Problem saving bag:\n" + messages);
+                    if(!saveOk){
+                        numErrors++;                        
+                        String message = Context.getMessage("bag.warning.savingFailed");
+                        SwingUtils.ShowError(null,message);
+                        log(message);                        
                     }
                                    
                     if(bag.isSerialized()){
@@ -1038,7 +977,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                 succeeded.size(),numErrors
             });
             String reportLog = Context.getMessage("report.log");
-
             SwingUtils.ShowMessage(Context.getMessage("report.title"),report+"\n"+reportLog);
             
             //open laatste geslaagde bagit
@@ -1050,6 +988,6 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
             SwingUtils.ShowDone();
          
             return null;
-        }               
+        }            
     }
 }

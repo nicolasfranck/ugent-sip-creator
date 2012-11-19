@@ -18,16 +18,14 @@ import javax.swing.border.EmptyBorder;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 
-//Nicolas Franck: FocusListener heeft geen toegevoegde waarde
-public final class BagInfoForm extends AbstractForm /*implements FocusListener*/ {
+
+public final class BagInfoForm extends AbstractForm {
     private static final long serialVersionUID = -3231249644435262577L;
     public static final String INFO_FORM_PAGE = "infoPage";
     private JComponent focusField;    
     private HashMap<String,ArrayList<String>> fieldMap;
     private JComponent form;
     private AddFieldPanel addFieldPannel;
-    
-    //Nicolas Franck
     private LoadFieldsPanel loadFieldsPanel;
 
     public LoadFieldsPanel getLoadFieldsPanel() {
@@ -80,9 +78,9 @@ public final class BagInfoForm extends AbstractForm /*implements FocusListener*/
     	JPanel contentPanel = new JPanel(new GridBagLayout());
     	int row = 0;
     	int col = 0;
-        GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);    	
-        
-        //Nicolas Franck: loadFieldsPanel
+        GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+       
+        //load fields panel
         contentPanel.add(getLoadFieldsPanel(),gbc);
         
         // add field panel    	
@@ -90,6 +88,7 @@ public final class BagInfoForm extends AbstractForm /*implements FocusListener*/
     	contentPanel.add(getAddFieldPannel(),gbc);   	
     	gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
     	contentPanel.add(new JSeparator(),gbc);    	
+        
     	// bag-info input form    	
     	gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
     	contentPanel.add(getForm(),gbc);

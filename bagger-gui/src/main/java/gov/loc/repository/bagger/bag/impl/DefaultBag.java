@@ -12,9 +12,7 @@ import gov.loc.repository.bagit.transformer.HolePuncher;
 import gov.loc.repository.bagit.transformer.impl.DefaultCompleter;
 import gov.loc.repository.bagit.transformer.impl.HolePuncherImpl;
 import gov.loc.repository.bagit.utilities.SimpleResult;
-import gov.loc.repository.bagit.verify.Verifier;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
-import gov.loc.repository.bagit.verify.impl.RequiredBagInfoTxtFieldsVerifier;
 import gov.loc.repository.bagit.verify.impl.ValidVerifierImpl;
 import gov.loc.repository.bagit.writer.Writer;
 import java.io.File;
@@ -64,12 +62,9 @@ public class DefaultBag {
     protected long totalSize = 0;
 
     protected Bag bilBag;
-    protected DefaultBagInfo bagInfo = null;
-    //protected Verifier bagStrategy;
-    protected BaggerFetch fetch;
+    protected DefaultBagInfo bagInfo = null;   
+    protected BaggerFetch fetch;    
     
-    //Nicolas Franck: Profile uitschakelen (zie onder)
-    //protected Profile profile;
     protected String versionString = null;
     protected File bagFile = null;
 
@@ -121,18 +116,6 @@ public class DefaultBag {
         this.tagManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;
 
         this.bagInfo.update(bilBag.getBagInfoTxt());
-
-        // set profile
-        /*
-        String lcProject = bilBag.getBagInfoTxt().get(DefaultBagInfo.FIELD_LC_PROJECT);
-        if (lcProject != null && !lcProject.isEmpty()){            
-            setProfile(
-                BaggerProfileStore.getInstance().getProfile(lcProject), 
-                newBag
-            );
-        } else {
-            clearProfile();
-        }*/
     }
 
     protected void initializeBilBag() {
@@ -195,8 +178,7 @@ public class DefaultBag {
 
     protected void resetStatus() {
         isComplete(Status.UNKNOWN);
-        isValid(Status.UNKNOWN);
-        //isValidMetadata(Status.UNKNOWN);
+        isValid(Status.UNKNOWN);        
     }
 
     public void setVersion(String versionString) {
@@ -260,11 +242,7 @@ public class DefaultBag {
     public short getSerialMode() {
         return serialMode;
     }
-    /*
-    public boolean isNoProject() {
-        return profile.isNoProfile();
-    }*/
-
+   
     public void isBuildTagManifest(boolean isBuildTagManifest) {
         this.isBuildTagManifest = isBuildTagManifest;
     }
@@ -328,11 +306,7 @@ public class DefaultBag {
     private void isValid(Status status) {
         BagStatus.getInstance().getValidationStatus().setStatus(status);
     }
-    /*
-    private void isValidMetadata(Status status) {
-        BagStatus.getInstance().getProfileComplianceStatus().setStatus(status);
-    }*/
-
+   
     public void isSerialized(boolean isSerialized) {
         this.isSerialized = isSerialized;
     }
@@ -342,8 +316,7 @@ public class DefaultBag {
     }
 
     public void updateBagInfo(Map<String,ArrayList<String>> map) {
-        changeToDirty();
-        //isValidMetadata(Status.UNKNOWN);
+        changeToDirty();        
         bagInfo.update(map);
     }	
 
@@ -352,13 +325,7 @@ public class DefaultBag {
     }
 
     public String getBagInfoContent() {
-        return bagInfo != null ? bagInfo.toString():"";
-        /*
-        String bicontent = "";
-        if (bagInfo != null) {
-            bicontent = bagInfo.toString();
-        }
-        return bicontent;*/
+        return bagInfo != null ? bagInfo.toString():"";        
     }
 
     public String getBaseUrl(FetchTxt fetchTxt) {
@@ -401,7 +368,6 @@ public class DefaultBag {
 
     public List<String> getFetchPayload() {
         List<String> list = new ArrayList<String>();
-
         FetchTxt fetchTxt = bilBag.getFetchTxt();
         if(fetchTxt != null){
             for (int i = 0; i < fetchTxt.size(); i++) {
@@ -410,24 +376,7 @@ public class DefaultBag {
                 list.add(f.getFilename());
             }
         }
-        return list;
-        //Nicolas Franck
-        /*
-        List<String> list = new ArrayList<String>();
-        FetchTxt fetchTxt = bilBag.getFetchTxt();
-        if(fetchTxt == null){
-            return list;
-        }
-        if(fetchTxt != null){
-            for (int i = 0; i < fetchTxt.size(); i++) {
-                FilenameSizeUrl f = fetchTxt.get(i);                
-                display("DefaultBag.getFetchPayload: " + f.toString());
-                list.add(f.getFilename());
-            }
-        }
-        return list;
-        */
-        
+        return list;        
     }
 
     public String getDataContent() {
@@ -460,18 +409,6 @@ public class DefaultBag {
         return bilBag.getPayload().size();
     }
     
-    /*
-    public void clearProfile() {
-        setProfile(BaggerProfileStore.getInstance().getProfile(Profile.NO_PROFILE_NAME),false);
-    }
-    public void setProfile(Profile profile, boolean newBag) {
-        this.profile = profile;
-        bagInfo.setProfile(profile,newBag);
-    }
-    public Profile getProfile() {
-        return profile;
-    }*/
-    
     public List<String> getPayloadPaths() {
         ArrayList<String> pathList = new ArrayList<String>();
         Collection<BagFile> payload = bilBag.getPayload();
@@ -491,21 +428,19 @@ public class DefaultBag {
         if(file != null) {
             try {
                 bilBag.addFileAsTag(file);
-            }catch (Exception e){
-                //message = "Error adding file: "+f+" due to: "+e.getMessage();
-                //Nicolas Franck
+            }catch (Exception e){                
                 message = Context.getMessage("defaultBag.addTagFile.Exception",new Object [] {file,e.getMessage()});
             }
         }
         return message;
     }
 
-    public String write(Writer bw) {
+    public boolean write(Writer bw) {
         prepareBilBagInfoIfDirty();
        
         generateManifestFiles();
 
-        if (isHoley) {
+        if(isHoley){
             if (getFetch().getBaseURL() != null) {
                 BagInfoTxt bagInfoTxt = bilBag.getBagInfoTxt();
 
@@ -529,15 +464,9 @@ public class DefaultBag {
             }
         }
 
-        String messages = writeBag(bw);
-
-        if(bw.isCancelled()){
-            return Context.getMessage("defaultBag.saveCancelled");
-        }
-        return messages;
-    }
+        return writeBag(bw);
+    }    
     
-    //Nicolas Franck
     public SimpleResult completeBag(CompleteVerifierImpl completeVerifier) {
         prepareBilBagInfoIfDirty();
         
@@ -553,119 +482,6 @@ public class DefaultBag {
         return result;
     }
 
-    /*
-    public String completeBag(CompleteVerifierImpl completeVerifier) {
-        prepareBilBagInfoIfDirty();
-
-        String messages = null;
-        SimpleResult result = completeVerifier.verify(bilBag);
-
-        if(completeVerifier.isCancelled()) {
-            isComplete(Status.UNKNOWN);
-            //return "Completeness check cancelled.";
-            //Nicolas Franck
-            return Context.getMessage("defaultBag.checkCompleteCancelled");
-        } 
-
-        if (!result.isSuccess()) {
-            //messages = "Bag is not complete:\n";
-            //Nicolas Franck
-            messages = Context.getMessage("defaultBag.bagNotComplete")+"\n";
-            messages += result.toString();
-        }
-        isComplete(result.isSuccess()? Status.PASS : Status.FAILURE);
-        if(!isNoProject()){
-            try {
-                String msgs = validateMetadata();
-                if (msgs != null) {
-                    if (messages != null) {
-                        messages += msgs;
-                    }
-                    else {
-                        messages = msgs;
-                    }
-                }
-            }catch(Exception ex) {
-                log.debug(ex.getMessage());                
-                //String msgs = "ERROR validating bag: \n" + ex.getMessage()+"\n";
-                //Nicolas Franck
-                String msgs = Context.getMessage("defaultBag.bagNotValid")+"\n";
-                if(messages != null){
-                    messages += msgs;
-                }else {
-                    messages = msgs;
-                }
-            }
-        }
-        
-        return messages;
-    }*/
-    
-    //Nicolas Franck
-    /*
-    public SimpleResult validateMetadata() {
-        prepareBilBagInfoIfDirty();
-
-        //updateStrategy();
-        SimpleResult result = bilBag.verify(bagStrategy);
-        
-        //isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
-        return result;
-    }*/
-    /*
-    public String validateMetadata() {
-        prepareBilBagInfoIfDirty();
-
-        String messages = null;
-        updateStrategy();
-        SimpleResult result = bilBag.verify(bagStrategy);
-        if (result.toString() != null && !result.isSuccess()) {
-            //messages = "Bag-info fields are not all present for the project selected.\n";
-            //Nicolas Franck
-            messages = Context.getMessage("defaultBag.metadataNotValid")+"\n";
-            messages += result.toString();
-        }
-        isValidMetadata(result.isSuccess() ? Status.PASS : Status.FAILURE);
-        return messages;
-    }*/
-    /*
-    public String validateBag(ValidVerifierImpl validVerifier) {
-        prepareBilBagInfoIfDirty();
-
-        String messages = null;
-        SimpleResult result = validVerifier.verify(bilBag);        
-
-        if(validVerifier.isCancelled()) {
-            isValid(Status.UNKNOWN);
-            //return "Validation check cancelled.";
-            //Nicolas Franck
-            return Context.getMessage("defaultBag.checkValidCancelled");
-        } 
-        
-        if(!result.isSuccess()){
-            //messages = "Bag is not valid:\n";
-            //Nicolas Franck
-            messages = Context.getMessage("defaultBag.bagNotValid");
-            messages += result.toString();
-        }
-        isValid(result.isSuccess()? Status.PASS : Status.FAILURE);
-        if(result.isSuccess()){
-            isComplete(Status.PASS);
-        }
-        if(!isNoProject()){
-            String msgs = validateMetadata();
-            if(msgs != null){
-                if(messages != null){
-                    messages += msgs;
-                }
-                else{
-                    messages = msgs;
-                }
-            }
-        }
-        return messages;
-    }*/
-    //Nicolas Franck
     public SimpleResult validateBag(ValidVerifierImpl validVerifier) {
         prepareBilBagInfoIfDirty();
        
@@ -684,15 +500,11 @@ public class DefaultBag {
     }
 
     protected String fileStripSuffix(String filename) {
-        return new StringTokenizer(filename,".").nextToken();
-        //Nicolas Franck
-        /*
-        StringTokenizer st = new StringTokenizer(filename, ".");
-        return st.nextToken();*/
+        return new StringTokenizer(filename,".").nextToken();        
     }
 
-    protected String writeBag(Writer bw) {
-        String messages = null;        
+    protected boolean writeBag(Writer bw) {
+      
         File bagFile = null;        
         String bagName = fileStripSuffix(getRootDir().getName());
         File parentDir = getRootDir().getParentFile();
@@ -703,7 +515,7 @@ public class DefaultBag {
         if(serialMode == NO_MODE) {
             bagFile = new File(parentDir,getName());
         } else if (serialMode == ZIP_MODE) {
-            //String s = bagName;
+            
             int i = bagName.lastIndexOf('.');
             if (i > 0 && i < bagName.length() - 1) {
                 String sub = bagName.substring(i + 1);
@@ -714,12 +526,9 @@ public class DefaultBag {
                 bagName += "." + ZIP_LABEL;
             }
             bagFile = new File(parentDir,bagName);
-            /*long zipSize = this.getSize() / MB;
-            if (zipSize > 100) {
-                    messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
-            }*/
+           
         } else if (serialMode == TAR_MODE) {
-            //String s = bagName;
+          
             int i = bagName.lastIndexOf('.');
             if (i > 0 && i < bagName.length() - 1) {
                 if (!bagName.substring(i + 1).toLowerCase().equals(TAR_LABEL)) {
@@ -729,12 +538,9 @@ public class DefaultBag {
                 bagName += "." + TAR_LABEL;
             }
             bagFile = new File(parentDir, bagName);
-            /*long zipSize = this.getSize() / MB;
-            if (zipSize > 100) {
-                    messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
-            }*/
+            
         } else if (serialMode == TAR_GZ_MODE) {
-            //String s = bagName;
+           
             int i = bagName.lastIndexOf('.');
             if (i > 0 && i < bagName.length() - 1) {
                 if (!bagName.substring(i + 1).toLowerCase().equals(TAR_GZ_LABEL)) {
@@ -744,12 +550,9 @@ public class DefaultBag {
                 bagName += "." + TAR_GZ_LABEL;
             }
             bagFile = new File(parentDir, bagName);
-            /*long zipSize = this.getSize() / MB;
-            if (zipSize > 100) {
-                    messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
-            }*/
+            
         } else if (serialMode == TAR_BZ2_MODE) {
-            //String s = bagName;
+            
             int i = bagName.lastIndexOf('.');
             if (i > 0 && i < bagName.length() - 1) {
                 if (!bagName.substring(i + 1).toLowerCase().equals(TAR_BZ2_LABEL)) {
@@ -759,10 +562,7 @@ public class DefaultBag {
                 bagName += "." + TAR_BZ2_LABEL;
             }
             bagFile = new File(parentDir, bagName);
-            /*long zipSize = this.getSize() / MB;
-            if (zipSize > 100) {
-                    messages = "WARNING: You may not be able to network transfer files > 100 MB!\n";
-            }*/
+           
         }
         setBagFile(bagFile);
 
@@ -771,44 +571,15 @@ public class DefaultBag {
         isSerialized(false);
 
         Bag newBag = bw.write(bilBag,bagFile);
-        if (newBag != null) {
+        if(newBag != null) {
             bilBag = newBag;
             // write successful
             isSerialized(true);
         }
-        return messages;
-    }
-    /*
-    public void updateStrategy() {
-        bagStrategy = getBagInfoStrategy();
+        
+        return newBag != null;
     }    
-    protected Verifier getBagInfoStrategy() {
-        List<String> rulesList = new ArrayList<String>();
-        
-        
-        HashMap<String, BagInfoField> fieldMap = getInfo().getFieldMap();
-        if (fieldMap != null) {
-            Set<String> keys = fieldMap.keySet();
-            for (Iterator<String> iter = keys.iterator(); iter.hasNext();) {
-                String label = (String) iter.next();
-                BagInfoField field = fieldMap.get(label);
-                if(field.isRequired()) {
-                    rulesList.add(field.getLabel());
-                }
-            }
-        }
-       
-        
-        String[] rules = new String[rulesList.size()];
-        for (int i = 0; i < rulesList.size(); i++) {
-            rules[i] = rulesList.get(i);
-        }
-        
-        Verifier strategy = new RequiredBagInfoTxtFieldsVerifier(rules);
-
-        return strategy;
-    }*/
-    //Nicolas Franck - start
+   
     public static Algorithm resolveAlgorithm(String algorithm){
         if(algorithm.equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
             return Algorithm.MD5;
@@ -822,60 +593,19 @@ public class DefaultBag {
             return Algorithm.MD5;
         }                
     }
-    //Nicolas Franck - end
+   
 
     public void generateManifestFiles() {
         DefaultCompleter completer = new DefaultCompleter(new BagFactory());            
         if (isBuildPayloadManifest) {  
             log.debug("generating payload manifest");
-            completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));
-            //Nicolas Franck
-            /*
-            if (this.payloadManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
-                completer.setPayloadManifestAlgorithm(Algorithm.MD5);
-            } else if (this.payloadManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.SHA1.bagItAlgorithm)) {
-                completer.setPayloadManifestAlgorithm(Algorithm.SHA1);
-            } else if (this.payloadManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.SHA256.bagItAlgorithm)) {
-                completer.setPayloadManifestAlgorithm(Algorithm.SHA256);
-            } else if (this.payloadManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.SHA512.bagItAlgorithm)) {
-                completer.setPayloadManifestAlgorithm(Algorithm.SHA512);
-            } else {
-                completer.setPayloadManifestAlgorithm(Algorithm.MD5);
-            }
-            if (this.isHoley) {
-                completer.setClearExistingPayloadManifests(true);
-            } else {
-                completer.setClearExistingPayloadManifests(true);
-            }*/
+            completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));            
         }
         if (isBuildTagManifest) {
-            log.debug("generating tag manifest");
-            
+            log.debug("generating tag manifest");            
             completer.setClearExistingTagManifests(true);
             completer.setGenerateTagManifest(true);
-
-            completer.setTagManifestAlgorithm(resolveAlgorithm(tagManifestAlgorithm));
-            //Nicolas Franck
-            /*
-            if (this.tagManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
-                    completer.setTagManifestAlgorithm(Algorithm.MD5);
-            } else if (this.tagManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.SHA1.bagItAlgorithm)) {
-                    completer.setTagManifestAlgorithm(Algorithm.SHA1);
-            } else if (this.tagManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.SHA256.bagItAlgorithm)) {
-                    completer.setTagManifestAlgorithm(Algorithm.SHA256);
-            } else if (this.tagManifestAlgorithm
-                            .equalsIgnoreCase(Manifest.Algorithm.SHA512.bagItAlgorithm)) {
-                    completer.setTagManifestAlgorithm(Algorithm.SHA512);
-            } else {
-                    completer.setTagManifestAlgorithm(Algorithm.MD5);
-            }*/
+            completer.setTagManifestAlgorithm(resolveAlgorithm(tagManifestAlgorithm));           
         }
         if (bilBag.getBagInfoTxt() != null) {
             completer.setGenerateBagInfoTxt(true);
@@ -883,20 +613,17 @@ public class DefaultBag {
         bilBag = completer.complete(bilBag);
     }
 
-    public void clear() {
-        //clearProfile();
+    public void clear() {       
         bagInfo.clearFields();		
     }
 
     public void addField(BagInfoField field) {
-        changeToDirty();
-        //isValidMetadata(Status.UNKNOWN);
+        changeToDirty();       
         bagInfo.addField(field);
     }
 
     public void removeBagInfoField(String key) {
-        changeToDirty();
-        //isValidMetadata(Status.UNKNOWN);
+        changeToDirty();        
         bagInfo.removeField(key);
     }
 
@@ -935,10 +662,7 @@ public class DefaultBag {
         if (dirty) {
             bagInfo.prepareBilBagInfo(bilBag.getBagInfoTxt());
         }
-    }
-    /*
-     * Nicolas Franck         
-    */
+    }   
     public Bag getBag(){
         return bilBag;                    
     }        

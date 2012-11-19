@@ -43,7 +43,7 @@ import ugent.bagger.helper.XML;
 import ugent.bagger.params.CreateBagResult;
 import ugent.bagger.params.CreateBagsParams;
 import ugent.bagger.tables.ClassTable;
-import ugent.bagger.workers.LongTask2;
+import ugent.bagger.workers.LongTask;
 
 /**
  *
@@ -156,7 +156,7 @@ public final class CreateBagsPanel extends JPanel{
 
     public JButton getOkButton() {
         if(okButton == null){
-            okButton = new JButton("ok");
+            okButton = new JButton(Context.getMessage("ok"));
             okButton.setEnabled(false);
             okButton.addActionListener(new ActionListener(){
                 @Override
@@ -201,7 +201,7 @@ public final class CreateBagsPanel extends JPanel{
         panel.add(getOkButton());
         return panel;
     }    
-    private class NewBagsInPlaceWorker extends LongTask2{
+    private class NewBagsInPlaceWorker extends LongTask{
         public boolean isBadRWDir(File file){
             return file.isDirectory() && (!file.canRead() || !file.canWrite());            
         }
@@ -401,11 +401,10 @@ public final class CreateBagsPanel extends JPanel{
             BusyIndicator.clearAt(CreateBagsPanel.this);    
             
             return null;
-        }      
+        }              
     }
     
-    private class NewBagsWorker extends LongTask2 {
-        
+    private class NewBagsWorker extends LongTask {        
         @Override
         protected Object doInBackground() throws Exception {
             
@@ -450,8 +449,7 @@ public final class CreateBagsPanel extends JPanel{
                     ArrayList<File>listPayloads = FUtils.listFiles(inputDir);
                     
                     for(File file:listPayloads){
-                        if(file.isFile()){                            
-                            System.out.println("adding "+file+" to payload");
+                        if(file.isFile()){                                                        
                             bag.addFileToPayload(file);
                         }
                     }
@@ -580,11 +578,12 @@ public final class CreateBagsPanel extends JPanel{
                     
                     Writer writer = new FileSystemWriter(new BagFactory());
                     
-                    String messages = bag.write(writer);
+                    boolean saveOk = bag.write(writer);
 
-                    if(messages != null && !messages.trim().isEmpty()){                        
-                        log("Warning - bag not saved"+"Problem saving bag:\n" + messages);                        
-                        errors.add("Warning - bag not saved"+"Problem saving bag:\n" + messages);
+                    if(!saveOk){                        
+                        String message = Context.getMessage("bag.warning.savingFailed");
+                        SwingUtils.ShowError(null,message);
+                        log(message);  
                         addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                         setProgress(percent);
                         continue;

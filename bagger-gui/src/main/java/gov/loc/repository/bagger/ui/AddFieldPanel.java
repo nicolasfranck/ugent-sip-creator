@@ -39,7 +39,7 @@ public final class AddFieldPanel extends JPanel {
     }
     public JCheckBox getStandardCheckBox() {
         if(standardCheckBox == null){
-            standardCheckBox = new JCheckBox("Standard");
+            standardCheckBox = new JCheckBox(Context.getMessage("baginfo.isStandardField.label"));
             standardCheckBox.setSelected(true);
             standardCheckBox.addActionListener(new StandardFieldCheckBoxAction());
         }
@@ -117,12 +117,12 @@ public final class AddFieldPanel extends JPanel {
         add(getValueField(), gbc);
 
         // add field button
-        JButton addFieldButton = new JButton("Add");
+        JButton addFieldButton = new JButton(Context.getMessage("baginfo.addField.label"));
         gbc = LayoutUtil.buildGridBagConstraints(col++, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         add(addFieldButton, gbc);
         addFieldButton.addActionListener(new AddFieldAction());
 
-        //Nicolas Franck: voeg veld toe bij druk op enter
+        
         getValueField().addActionListener(new AddFieldAction());        
     }
 	
@@ -135,14 +135,10 @@ public final class AddFieldPanel extends JPanel {
             boolean standardFieldSelected = checkbox.isSelected();
             if(standardFieldSelected) {
                 getCustomFieldTextField().setVisible(false);
-                getStandardFieldsComboBox().setVisible(true);
-                //Nicolas Franck
-                //getStandardFieldsComboBox().requestFocus();
+                getStandardFieldsComboBox().setVisible(true);                
             }else{
                 getStandardFieldsComboBox().setVisible(false);
-                getCustomFieldTextField().setVisible(true);
-                //Nicolas Franck
-                //getCustomFieldTextField().requestFocus();
+                getCustomFieldTextField().setVisible(true);                
             }
         }
     }
@@ -176,17 +172,10 @@ public final class AddFieldPanel extends JPanel {
 	
 	
     @Override
-    public void setEnabled(boolean enabled) {
-        //Nicolas Franck        
+    public void setEnabled(boolean enabled) {       
         for(Component component:getComponents()){
             component.setEnabled(enabled);
-        }
-        //Nicolas Franck
-        /*
-        Component[] components = getComponents();
-        for (int i = 0; i < components.length; i++) {
-            components[i].setEnabled(enabled);
-        }*/
+        }       
     }
 	
 	
@@ -202,15 +191,7 @@ public final class AddFieldPanel extends JPanel {
                 // TODO use observer pattern
                 //verwijdert de volledige infoFormsPane, en hertekent alles
                 //nadeel: wijzingen in metsTab zijn weg!
-                getBagView().getInfoFormsPane().updateInfoFormsPane(true);
-
-                //Nicolas Franck: todo => request leads to never ending blocking state blocking state (deadlock?)
-                //volgens documentatie is requestFocusInWindow veiliger (focus enkel wanneer niet in huidige window => mss wacht hij op parent,
-                //die zelf de focus heeft???
-                // => loopt enkel fout bij BagInfoForm (is een AbstractForm)
-                //bagView.infoInputPane.bagInfoInputPane.requestFocus();
-                //dit kan uitvoeren: dus die focus gebeurt in een aparte thread?
-                //System.out.println("TEST!!!!!!");
+                getBagView().getInfoFormsPane().updateInfoFormsPane(true);                
             }
         }
     }
@@ -218,12 +199,7 @@ public final class AddFieldPanel extends JPanel {
 	
     private BagInfoField createBagInfoField() {
         BagView bagView = ApplicationContextUtil.getBagView();
-
-        /*
-         * Nicolas Franck: TODO
-         *  new BagInfoField(ProfileField projectProfile) moet worden opgeroepen!
-         *
-         */
+       
         BagInfoField field = new BagInfoField();
 
         String fieldName;
@@ -235,26 +211,14 @@ public final class AddFieldPanel extends JPanel {
 
         String dialogTitle = Context.getMessage("baginfo.newFieldDialog.title");
         if (fieldName.trim().isEmpty()) {
-            //Nicolas Franck
             
             bagView.showWarningErrorDialog(
                 dialogTitle,
                 Context.getMessage("baginfo.newFieldDialog.error.fieldRequired")
             );
-            //bagView.showWarningErrorDialog("New Field Dialog", "Field name must be specified!");
-            //Nicolas Franck
+            
             return null;
-        }
-        //Nicolas Franck
-        /*TODO:
-            laten passeren langs validation rules
-                standaard: waarde mag niet leeg zijn
-         *      bijkomende regels worden hiermee gemerged
-         *  MessageSource gebruiken!
-         *
-         *
-         */
-        else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){
+        }else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){
             bagView.showWarningErrorDialog(
                 dialogTitle,
                 Context.getMessage("baginfo.newFieldDialog.error.valueRequired")
@@ -262,16 +226,9 @@ public final class AddFieldPanel extends JPanel {
             return null;
         }
 
-        //Nicolas Franck
-
         field.setName(fieldName);
-        field.setLabel(fieldName);
-        
-        //field.setValue(getValueField().getText().trim());
-        
-        field.getElements().add(getValueField().getText().trim());
-        
-        
+        field.setLabel(fieldName);        
+        field.getElements().add(getValueField().getText().trim()); 
         field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
 		
     	return field;

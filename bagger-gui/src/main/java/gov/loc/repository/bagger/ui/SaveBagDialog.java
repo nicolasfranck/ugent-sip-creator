@@ -14,7 +14,7 @@
  * the License.
  */
 
-//Nicolas Franck: based on SaveBagFrame
+//based on SaveBagFrame
 
 package gov.loc.repository.bagger.ui;
 
@@ -57,9 +57,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     private JRadioButton zipButton;
     private JRadioButton tarButton;
     private JRadioButton tarGzButton;
-    private JRadioButton tarBz2Button;
-    //private JCheckBox isTagCheckbox;
-    //private JCheckBox isPayloadCheckbox;
+    private JRadioButton tarBz2Button;    
     private JComboBox tagAlgorithmList;
     private JComboBox payAlgorithmList;        
     private JComboBox metsFileDateCreatedCombobox;    
@@ -138,7 +136,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
         titlePane.setTitle(Context.getMessage("SaveBagFrame.title"));
-        titlePane.setMessage(new DefaultMessage(Context.getMessage("Define the Bag settings")));
+        titlePane.setMessage(new DefaultMessage(Context.getMessage("SaveBagFrame.description")));
         titlePaneContainer.add(titlePane.getControl());
         titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
         pageControl.add(titlePaneContainer, BorderLayout.NORTH);
@@ -228,16 +226,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         serializeGroupPanel.setEnabled(true);
         serializeGroupPanel.setToolTipText(Context.getMessage("bag.serializetype.help"));
 
-        //Nicolas Franck: tag manifest moet altijd aangemaakt worden
-        getBagView().getBag().isBuildTagManifest(true);
-        /*
-        JLabel tagLabel = new JLabel(getMessage("bag.label.istag"));
-        tagLabel.setToolTipText(getMessage("bag.label.istag.help"));
-        isTagCheckbox = new JCheckBox();
-        isTagCheckbox.setBorder(border);
-        isTagCheckbox.setSelected(bag.isBuildTagManifest());
-        isTagCheckbox.addActionListener(new TagManifestHandler());
-        isTagCheckbox.setToolTipText(getMessage("bag.checkbox.istag.help"));*/
+        //manifest prohibited!
+        getBagView().getBag().isBuildTagManifest(true);        
 
         JLabel tagAlgorithmLabel = new JLabel(Context.getMessage("bag.label.tagalgorithm"));
         tagAlgorithmLabel.setToolTipText(Context.getMessage("bag.label.tagalgorithm.help"));
@@ -249,18 +239,10 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         tagAlgorithmList.setName(Context.getMessage("bag.tagalgorithmlist"));
         tagAlgorithmList.setSelectedItem(bag.getTagManifestAlgorithm());
         tagAlgorithmList.addActionListener(new TagAlgorithmListHandler());
-        tagAlgorithmList.setToolTipText(Context.getMessage("bag.tagalgorithmlist.help"));
-    	
-        //Nicolas Franck: payload manifest moet altijd aangemaakt worden
-        getBagView().getBag().isBuildPayloadManifest(true);
-        /*
-        JLabel payloadLabel = new JLabel(getMessage("bag.label.ispayload"));
-        payloadLabel.setToolTipText(getMessage("bag.ispayload.help"));
-        isPayloadCheckbox = new JCheckBox();
-        isPayloadCheckbox.setBorder(border);
-        isPayloadCheckbox.setSelected(bag.isBuildPayloadManifest());
-        isPayloadCheckbox.addActionListener(new PayloadManifestHandler());
-        isPayloadCheckbox.setToolTipText(getMessage("bag.ispayload.help"));*/
+        tagAlgorithmList.setToolTipText(Context.getMessage("bag.tagalgorithmlist.help"));    	
+        
+        //manifest prohibited!
+        getBagView().getBag().isBuildPayloadManifest(true);        
 
         JLabel payAlgorithmLabel = new JLabel(Context.getMessage("bag.label.payalgorithm"));
         payAlgorithmLabel.setToolTipText(Context.getMessage("bag.payalgorithm.help"));
@@ -291,9 +273,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         glbc.ipadx=5;
         layout.setConstraints(bagNameField, glbc);
         glbc.ipadx=0;
-        panel.add(bagNameField);
+        panel.add(bagNameField);        
         
-        //Nicolas Franck - start
         JLabel metsFileDateCreatedLabel = new JLabel("Date created:");
         metsFileDateCreatedCombobox = new JComboBox(MetsFileDateCreated.values());
         metsFileDateCreatedCombobox.setSelectedItem(MetsFileDateCreated.CURRENT_DATE);
@@ -304,10 +285,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
                     return;
                 }
                 BagView.getInstance().setMetsFileDateCreated((MetsFileDateCreated)ie.getItem());
-            }
-            
-        });
-        //Nicolas Frank - end
+            }            
+        });        
         
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
@@ -315,16 +294,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     	panel.add(serializeLabel);
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST); 
         layout.setConstraints(serializeGroupPanel, glbc);
-    	panel.add(serializeGroupPanel);
-        
-        /*
-        row++;
-        buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
-        layout.setConstraints(tagLabel, glbc);
-    	panel.add(tagLabel);
-        buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
-        layout.setConstraints(isTagCheckbox, glbc);
-    	panel.add(isTagCheckbox);*/
+    	panel.add(serializeGroupPanel);        
         
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
@@ -332,16 +302,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     	panel.add(tagAlgorithmLabel);
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
         layout.setConstraints(tagAlgorithmList, glbc);
-    	panel.add(tagAlgorithmList);
-        
-        /*
-        row++;
-        buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
-        layout.setConstraints(payloadLabel, glbc);
-    	panel.add(payloadLabel);
-        buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
-        layout.setConstraints(isPayloadCheckbox, glbc);
-    	panel.add(isPayloadCheckbox);*/
+    	panel.add(tagAlgorithmList);        
         
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
@@ -349,23 +310,19 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     	panel.add(payAlgorithmLabel);
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
         layout.setConstraints(payAlgorithmList, glbc);
-    	panel.add(payAlgorithmList);
+    	panel.add(payAlgorithmList);        
         
-        //Nicolas Franck - start
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         layout.setConstraints(metsFileDateCreatedLabel, glbc);
     	panel.add(metsFileDateCreatedLabel);
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
         layout.setConstraints(metsFileDateCreatedCombobox, glbc);
-    	panel.add(metsFileDateCreatedCombobox);
-        //Nicolas Frank - end
+    	panel.add(metsFileDateCreatedCombobox);        
         
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
-        
-        
     	
     	GuiStandardUtils.attachDialogBorder(contentPane);
         pageControl.add(panel);

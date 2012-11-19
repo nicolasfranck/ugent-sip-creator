@@ -14,6 +14,7 @@ import javax.swing.tree.TreePath;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
 
@@ -21,10 +22,6 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
     private static final Log log = LogFactory.getLog(RemoveDataHandler.class);
     private static final long serialVersionUID = 1L;   
 
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
     public RemoveDataHandler() {
         super();            
     }
@@ -46,8 +43,10 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
             for (int i=0; i < paths.length; i++) {
                 TreePath path = paths[i];
                 Object node = path.getLastPathComponent();
+                
                 log.debug("removeData: " + path.toString());
                 log.debug("removeData pathCount: " + path.getPathCount());
+                
                 File filePath = null;
                 String fileName = null;
                 if (path.getPathCount() > 0){                    
@@ -60,11 +59,15 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                 if (filePath != null) {
                     fileName = BaggerFileEntity.normalize(filePath.getPath());
                 }
+                
                 log.debug("removeData filePath: " + fileName);
+                
                 if (fileName != null && !fileName.isEmpty()) {
                     try {
                         bag.removeBagFile(fileName);
-                        ApplicationContextUtil.addConsoleMessage("Payload data removed: " + fileName);
+                        
+                        log(Context.getMessage("RemoveDataHandler.removeData.success.description",new Object []{fileName}));
+                        
                         if (node instanceof MutableTreeNode) {
                             model.removeNodeFromParent((MutableTreeNode)node);
                         } else {
@@ -91,9 +94,13 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                                 model.removeNodeFromParent((MutableTreeNode)aNode);
                             }
                         } catch (Exception ex) {                            
-                            String message = "Error trying to remove: " + fileName + "\n";
+                            String title = Context.getMessage("RemoveDataHandler.removeData.Exception.title");
+                            String message = Context.getMessage(
+                                "RemoveDataHandler.removeData.Exception.description",
+                                new Object [] {fileName,ex.getMessage()}
+                            );
                             log(message);                            
-                            SwingUtils.ShowError("Error - file not removed", message + ex.getMessage());
+                            SwingUtils.ShowError(title,message);
                         }
                     }
                 }

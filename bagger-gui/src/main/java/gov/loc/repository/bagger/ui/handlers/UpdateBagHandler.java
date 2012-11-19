@@ -6,10 +6,7 @@ import javax.swing.AbstractAction;
 
 public class UpdateBagHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
+  
     public UpdateBagHandler() {
         super();            
     }

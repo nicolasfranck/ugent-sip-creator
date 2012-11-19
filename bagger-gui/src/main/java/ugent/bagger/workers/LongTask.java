@@ -1,6 +1,5 @@
 package ugent.bagger.workers;
 
-//import gov.loc.repository.bagit.Cancellable;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.ProgressListener;
 import javax.swing.SwingWorker;
@@ -9,10 +8,10 @@ import javax.swing.SwingWorker;
  *
  * @author nicolas
  */
-public abstract class LongTask2 extends SwingWorker implements ProgressListener/*,Cancellable*/,Loggable{       
+public abstract class LongTask extends SwingWorker implements ProgressListener,Loggable{       
     private String lastNote = "";
     @Override
-    final public void reportProgress(String activity, Object o, Long count, Long total) {
+    final public void reportProgress(String activity, Object o, Long count, Long total) {                
         if(count == null || total == null){
             return;
         }

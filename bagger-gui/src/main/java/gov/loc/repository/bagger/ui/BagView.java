@@ -32,48 +32,30 @@ public class BagView extends DefaultView {
     public static BagView instance;
     private final static int ONE_SECOND = 1000;
     private int DEFAULT_WIDTH = 1024;
-    private int DEFAULT_HEIGHT = 768;    
-    //Nicolas Franck: long running process are now managed by monitor function in ugent.bagger.helper.SwingUtils    
-    //public ProgressMonitor progressMonitor;
-    //public LongTask task;
-    //public Cancellable longRunningProcess = null;
-    //private final Timer timer = new Timer(ONE_SECOND/10, null);    
-    //private Bagger bagger;
-    //private DefaultBag bag;    
-    //Nicolas Franck
-    private MetsBag bag;
-    //private BaggerProfileStore profileStore;
+    private int DEFAULT_HEIGHT = 768;       
+    private MetsBag bag;    
     private BagTree bagPayloadTree;
     private BagTree bagTagFileTree;
     private File bagRootPath;
-    private String userHomeDir;
-    private TagManifestPane tagManifestPane;
+    private String userHomeDir;    
     private InfoFormsPane infoFormsPane;
     private BagTreePanel bagPayloadTreePanel;
     private BagTreePanel bagTagFileTreePanel;
     private JPanel bagButtonPanel;
-    private JPanel bagTagButtonPanel;
-    //private JPanel topButtonPanel;
+    private JPanel bagTagButtonPanel;    
     public StartNewBagHandler startNewBagHandler = new StartNewBagHandler();
     public StartExecutor startExecutor = new StartExecutor();
     public OpenBagHandler openBagHandler = new OpenBagHandler();
     public OpenExecutor openExecutor = new OpenExecutor();
-    
-    //Nicolas Franck: ondersteunt enkel één bag in place per keer    
-    //public CreateBagInPlaceHandler createBagInPlaceHandler = new CreateBagInPlaceHandler();
-    //public CreateBagInPlaceExecutor createBagInPlaceExecutor = new CreateBagInPlaceExecutor();
-    
-    //Nicolas Franck: creëer meerdere bags in place of door copy
     public CreateBagsHandler createBagsHandler = new CreateBagsHandler();
     public CreateBagsExecutor createBagsExecutor = new CreateBagsExecutor();    
-    
-    public SaveBagHandler6 saveBagHandler = new SaveBagHandler6();    
+    public SaveBagHandler saveBagHandler = new SaveBagHandler();    
     public SaveBagExecutor saveBagExecutor = new SaveBagExecutor();
     public SaveBagAsHandler saveBagAsHandler = new SaveBagAsHandler();
     public SaveBagAsExecutor saveBagAsExecutor = new SaveBagAsExecutor();    
-    public ValidateBagHandler2 validateBagHandler = new ValidateBagHandler2();    
+    public ValidateBagHandler validateBagHandler = new ValidateBagHandler();    
     public ValidateExecutor validateExecutor = new ValidateExecutor();    
-    public CompleteBagHandler2 completeBagHandler = new CompleteBagHandler2();
+    public CompleteBagHandler completeBagHandler = new CompleteBagHandler();
     public CompleteExecutor completeExecutor = new CompleteExecutor();    
     public ClearBagHandler clearBagHandler = new ClearBagHandler();
     public ClearBagExecutor clearExecutor = new ClearBagExecutor();
@@ -83,11 +65,9 @@ public class BagView extends DefaultView {
     public RemoveTagFileHandler removeTagFileHandler;
     public AddTagFileHandler addTagFileHandler;
     private JLabel addDataToolBarAction;
-    private JLabel removeDataToolBarAction;
-    private JLabel viewTagFilesToolbarAction;
+    private JLabel removeDataToolBarAction;    
     private JLabel addTagFileToolBarAction;
-    private JLabel removeTagFileToolbarAction;
-    //Nicolas Franck: vldocking sucks!
+    private JLabel removeTagFileToolbarAction;    
     private JSplitPane mainPanel;
     private JSplitPane leftPanel;
     //interpretatie van file attribuut 'CREATED' (CURRENT_DATE,LAST_MODIFIED)
@@ -119,11 +99,7 @@ public class BagView extends DefaultView {
     }
     public void setMainPanel(JSplitPane mainPanel) {
         this.mainPanel = mainPanel;
-    }    
-    /*
-     * Nicolas Franck
-     */
-    //private final TimerListener timerListener = new TimerListener();    
+    }          
     
     public BagView() {
         //verhinder twee instantie
@@ -148,23 +124,8 @@ public class BagView extends DefaultView {
 
     public void setBagTagButtonPanel(JPanel bagTagButtonPanel) {
         this.bagTagButtonPanel = bagTagButtonPanel;
-    }
-
-    public TagManifestPane getTagManifestPane() {
-        if(tagManifestPane == null){
-            tagManifestPane = new TagManifestPane();
-        }
-        return tagManifestPane;
-    }
-
-    public void setTagManifestPane(TagManifestPane tagManifestPane) {
-        this.tagManifestPane = tagManifestPane;
-    }
-    /*
-     * Nicolas Franck: dit wordt niet gevisualiseerd in deze view, maar
-     * dient als panel voor metaView. Op die manier kan men vanuit deze
-     * view de metaView manipuleren     * 
-     */
+    }   
+    
     public InfoFormsPane getInfoFormsPane() {
         if(infoFormsPane == null){
             infoFormsPane = new InfoFormsPane();
@@ -175,16 +136,7 @@ public class BagView extends DefaultView {
 
     public void setInfoFormsPane(InfoFormsPane infoFormsPane) {
         this.infoFormsPane = infoFormsPane;
-    }
-    /*
-    public void setBagger(Bagger bagger) {
-        Assert.notNull(bagger, "The bagger property is required");
-        this.bagger = bagger;
-    }
-    
-    public Bagger getBagger() {
-    	return bagger;
-    }*/
+    }    
     
     public void setBag(MetsBag bag) {
         this.bag = bag;
@@ -222,7 +174,7 @@ public class BagView extends DefaultView {
     public BagTree createBagPayloadTree(String path, boolean isPayload){
         final BagTree tree = new BagTree(path,isPayload);
         
-        //Nicolas Franck    
+        
         ActionMap actionMap = tree.getActionMap();                        
         actionMap.put("removeData",new AbstractAction(){
             @Override
@@ -271,7 +223,7 @@ public class BagView extends DefaultView {
     public BagTree getBagTagFileTree() {
         if(bagTagFileTree == null){
             bagTagFileTree = new BagTree(getMessage("bag.label.noname"), false);
-            //Nicolas Franck    
+            
             InputMap inputMap = bagTagFileTree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
             inputMap.put(KeyStroke.getKeyStroke((char)127),"removeTagfile");
             ActionMap actionMap = bagTagFileTree.getActionMap();
@@ -288,56 +240,12 @@ public class BagView extends DefaultView {
     // This populates the default view descriptor declared as the startingPageId
     // property in the richclient-application-context.xml file.
     @Override    
-    protected JComponent createControl() {    	
-
-        /*
-         * Nicolas Franck: vreemd dat dit nergens gebruikt wordt..
-         * zou handig zijn voor basismap bij selecteren van bestanden (i.p.v root of C:/)
-         */
-    	this.userHomeDir = System.getProperty("user.home");        
-        
+    protected JComponent createControl() {    	        
+    	this.userHomeDir = System.getProperty("user.home");                
     	initializeCommands();
-
-        //ApplicationServices services = getApplicationServices();     
-	
-        //Nicolas Franck: rol? nergens wordt dit aan toegevoegd?
-        /*
-    	Color bgColor = new Color(20,20,100);
-    	topButtonPanel = createTopButtonPanel();
-    	topButtonPanel.setBackground(bgColor);
-        */                  	
-    	
         return getMainPanel();        
-
-        //Nicolas Franck
-        /*
-    	GridBagLayout layout = new GridBagLayout();
-        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 50, 100,GridBagConstraints.BOTH, GridBagConstraints.CENTER);
-
-        layout.setConstraints(bagPanel,glbc);
-
-        JPanel mainPanel = new JPanel(layout);
-        mainPanel.add(bagPanel);        
-    	JPanel bagViewPanel = new JPanel(new BorderLayout(2, 2));
-        bagViewPanel.setBackground(bgColor);
-    	bagViewPanel.add(mainPanel, BorderLayout.CENTER);
         
-        return bagViewPanel;*/
-    }
-    //Nicolas Franck: enig nut van deze panel is de instelling van de handlers blijkbaar
-    /*
-    private JPanel createTopButtonPanel(){
-    	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-    	startNewBagHandler = new StartNewBagHandler();
-    	openBagHandler = new OpenBagHandler();
-    	createBagInPlaceHandler = new CreateBagInPlaceHandler();
-        saveBagHandler = new SaveBagHandler2();
-    	saveBagAsHandler = new SaveBagAsHandler();
-    	completeBagHandler = new CompleteBagHandler2();
-    	validateBagHandler = new ValidateBagHandler2();
-    	clearBagHandler = new ClearBagHandler();
-        return buttonPanel;
-    }*/
+    }    
     
     private JSplitPane createBagPanel(){        
     	
@@ -353,7 +261,7 @@ public class BagView extends DefaultView {
     	getBagTagFileTreePanel().setBorder(border);
     	getBagTagFileTreePanel().setToolTipText(getMessage("bagTree.help"));
 
-    	getTagManifestPane().setToolTipText(getMessage("compositePane.tab.help"));    	
+    	//getTagManifestPane().setToolTipText(getMessage("compositePane.tab.help"));    	
 
         JSplitPane splitPane = new JSplitPane();
         splitPane.setResizeWeight(0.5);
@@ -476,43 +384,13 @@ public class BagView extends DefaultView {
     
     private JPanel createBagTagButtonPanel() {
     	
-    	JPanel buttonPanel = new JPanel();
+    	JPanel buttonPanel = new JPanel();    	
     	
-    	final ShowTagFilesHandler showTageFileHandler = new ShowTagFilesHandler();
     	addTagFileHandler = new AddTagFileHandler();
     	removeTagFileHandler = new RemoveTagFileHandler();
     	
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
-
-        viewTagFilesToolbarAction = new JLabel("");
-        viewTagFilesToolbarAction.setEnabled(false);
-        viewTagFilesToolbarAction.setHorizontalAlignment(SwingConstants.CENTER);
-        viewTagFilesToolbarAction.setBorder(new LineBorder(viewTagFilesToolbarAction.getBackground(),1));
-        viewTagFilesToolbarAction.setIcon(getPropertyImage("Bag_ViewTagFile.icon"));
-        viewTagFilesToolbarAction.setToolTipText(getMessage("bagView.TagFilesTree.viewfile.tooltip"));
-		
-        viewTagFilesToolbarAction.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(viewTagFilesToolbarAction.isEnabled()) {
-                    showTageFileHandler.actionPerformed(null);
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                viewTagFilesToolbarAction.setBorder(new LineBorder(viewTagFilesToolbarAction.getBackground(),1));
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if(viewTagFilesToolbarAction.isEnabled()) {
-                    viewTagFilesToolbarAction.setBorder(new LineBorder(Color.GRAY,1));
-                }
-            }
-        });
-        buttonPanel.add(viewTagFilesToolbarAction);
-
+        
         addTagFileToolBarAction = new JLabel("");
         addTagFileToolBarAction.setEnabled(false);
         addTagFileToolBarAction.setHorizontalAlignment(SwingConstants.CENTER);
@@ -588,12 +466,6 @@ public class BagView extends DefaultView {
         getInfoFormsPane().getInfoInputPane().setEnabled(b);
     }
 
-    /*
-    public String updateBaggerRules() {        
-        getBag().updateStrategy();        
-        return "";
-    }*/
-
     public void showWarningErrorDialog(String title, String msg) {    	
         new MessageDialog(title,msg).showDialog();
     }
@@ -601,10 +473,7 @@ public class BagView extends DefaultView {
     private void initializeCommands() {
     	startExecutor.setEnabled(true);
     	openExecutor.setEnabled(true);
-    	//createBagInPlaceExecutor.setEnabled(true);
-        
-        createBagsExecutor.setEnabled(true);
-        
+        createBagsExecutor.setEnabled(true);        
     	clearExecutor.setEnabled(false);
         validateExecutor.setEnabled(false);
         completeExecutor.setEnabled(false);
@@ -623,19 +492,16 @@ public class BagView extends DefaultView {
     	removeDataToolBarAction.setEnabled(false);
     	addDataExecutor.setEnabled(false);
     	saveBagExecutor.setEnabled(false);
-    	saveBagAsExecutor.setEnabled(false);
-    	viewTagFilesToolbarAction.setEnabled(false);
+    	saveBagAsExecutor.setEnabled(false);    	
     	addTagFileToolBarAction.setEnabled(false);
     	removeTagFileToolbarAction.setEnabled(false);
     	clearExecutor.setEnabled(false);
     	validateExecutor.setEnabled(false);
     	completeExecutor.setEnabled(false);
-    	getBagButtonPanel().invalidate();
-    	//topButtonPanel.invalidate();
+    	getBagButtonPanel().invalidate();    	
     }
 
-    public void updateNewBag() {
-        viewTagFilesToolbarAction.setEnabled(true);
+    public void updateNewBag() {        
         enableBagSettings(true);
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);
@@ -647,14 +513,12 @@ public class BagView extends DefaultView {
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);
         saveBagExecutor.setEnabled(true);
-        addTagFileToolBarAction.setEnabled(true);
-        viewTagFilesToolbarAction.setEnabled(true);
+        addTagFileToolBarAction.setEnabled(true);        
         saveBagAsExecutor.setEnabled(true);
         getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
-        setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags
-        //topButtonPanel.invalidate();
+        setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags        
     }
     
     public void updateBagInPlace() {
@@ -662,33 +526,28 @@ public class BagView extends DefaultView {
         addDataExecutor.setEnabled(true);
         saveBagExecutor.setEnabled(false);
         saveBagAsExecutor.setEnabled(true);
-        addTagFileToolBarAction.setEnabled(true);
-        viewTagFilesToolbarAction.setEnabled(true);
+        addTagFileToolBarAction.setEnabled(true);        
         getBagButtonPanel().invalidate();
         completeExecutor.setEnabled(true);
         validateExecutor.setEnabled(true);
-        getBagButtonPanel().invalidate();
-        //topButtonPanel.invalidate();
+        getBagButtonPanel().invalidate();       
     }
     
     public void updateSaveBag() {
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);
         saveBagExecutor.setEnabled(true);
-        addTagFileToolBarAction.setEnabled(true);
-        viewTagFilesToolbarAction.setEnabled(true);
+        addTagFileToolBarAction.setEnabled(true);        
         saveBagAsExecutor.setEnabled(true);
         getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
-        setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags
-        //topButtonPanel.invalidate();
+        setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags     
     }
     
     public void updateAddData() {
     	saveBagAsExecutor.setEnabled(true);
-    	getBagButtonPanel().invalidate();
-    	//topButtonPanel.invalidate();
+    	getBagButtonPanel().invalidate();    	
     }
     
     public void updateManifestPane() {
@@ -704,10 +563,7 @@ public class BagView extends DefaultView {
     protected void registerLocalCommandExecutors(PageComponentContext context) {
     	context.register("startCommand", startExecutor);
     	context.register("openCommand", openExecutor);
-    	//context.register("createBagInPlaceCommand", createBagInPlaceExecutor);
-        
         context.register("createBagsCommand", createBagsExecutor);
-        
     	context.register("clearCommand", clearExecutor);
     	context.register("validateCommand", validateExecutor);
     	context.register("completeCommand", completeExecutor);
@@ -734,60 +590,6 @@ public class BagView extends DefaultView {
         });
                
     }
-
-    /**
-     * The actionPerformed method in this class
-     * is called each time the Timer "goes off".
-     */
-    //Nicolas Franck
-    /*
-    class TimerListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            // check if task is completed or user has clicked cancel button
-            if (task.hasUserTriedToCancel() || task.isDone()) {
-            	// we are done
-                progressMonitor.close();
-                Toolkit.getDefaultToolkit().beep();                
-                timer.stop();                
-                log.info("Stopped the timer");
-                // getting an array of Action Listeners from Timer Listener (will have only one element)
-                ActionListener[] als = (ActionListener[])(timer.getListeners(ActionListener.class));
-                // Removing Action Listener from timer
-		if (als.length > 0)timer.removeActionListener(als[0]);
-                
-                //Nicolas Franck
-      
-                if (longRunningProcess != null && !task.isDone()) {
-                    log.info("Trying to cancel the long running process: " + longRunningProcess);
-                    longRunningProcess.cancel();
-                }
-            } 
-        }
-    }*/
-   
-    //Nicolas Franck
-    /*
-    public void statusBarBegin(Progress progress, String message, String activityMonitored) {
-    	BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-        task = new LongTask();
-        task.setActivityMonitored(activityMonitored);
-        //Nicolas Franck: Progress heeft execute methode!
-        task.setProgress(progress);
-
-        //timer.addActionListener(new TimerListener());
-        timer.addActionListener(timerListener);
-
-        progressMonitor = new ProgressMonitor(getControl(),
-        		message, "Preparing the operation...", 0, 1);
-        progressMonitor.setMillisToDecideToPopup(ONE_SECOND);
-        task.setMonitor(progressMonitor);        
-        task.go();
-        timer.start();
-    }
-    public void statusBarEnd() {
-    	BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());    	
-    }*/ 
     
     public void registerTreeListener(String label,final JTree tree){
     	if(AbstractBagConstants.DATA_DIRECTORY.equals(label)){
@@ -825,16 +627,7 @@ public class BagView extends DefaultView {
                 }
             });
     	}
-    }
-    
-    /*
-    public BaggerProfileStore getProfileStore() {
-        return profileStore;
-    }
-
-    public void setProfileStore(BaggerProfileStore profileStore) {
-        this.profileStore = profileStore;
-    }*/
+    }   
 
     public static BagView getInstance() {
         return instance;
@@ -849,18 +642,8 @@ public class BagView extends DefaultView {
      * This would be true in the case of a Holey Bag
      * Returns false for all other types of Bags
      */
-    private boolean checkFetchTxtFile() {
-        /*
-         * Nicolas Franck
-         */
-        return (getBag().getFetchTxt() != null);
-        /*
-    	if (bag.getFetchTxt() != null)
-    		return true;
-    	else 
-    		return false;
-         *
-         */
+    private boolean checkFetchTxtFile() {        
+        return (getBag().getFetchTxt() != null);        
     }
 
     /*
@@ -868,18 +651,8 @@ public class BagView extends DefaultView {
      * This is true in the case of a Holey Bag
      * The Validate Button is enabled for all other types of Bags
      */
-    private void setCompleteExecutor() {
-        /*
-         * Nicolas Franck
-         */
-        completeExecutor.setEnabled(!checkFetchTxtFile());
-        /*
-    	if (checkFetchTxtFile())
-    		completeExecutor.setEnabled(false);
-    	else
-    		completeExecutor.setEnabled(true);
-         *
-         */
+    private void setCompleteExecutor() {        
+        completeExecutor.setEnabled(!checkFetchTxtFile());       
     }
     
     /*
@@ -887,18 +660,7 @@ public class BagView extends DefaultView {
      * This is true in the case of a Holey Bag
      * The Validate Button is enabled for all other types of Bags
      */
-    private void setValidateExecutor() {
-        /*
-         * Nicolas Franck
-         */
-        validateExecutor.setEnabled(!checkFetchTxtFile());
-        /*
-    	if (checkFetchTxtFile())
-    		validateExecutor.setEnabled(false);
-    	else
-    		validateExecutor.setEnabled(true);
-         * 
-         */        
-        
+    private void setValidateExecutor() {       
+        validateExecutor.setEnabled(!checkFetchTxtFile());       
     }       
 }

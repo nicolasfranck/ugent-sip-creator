@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.NewBagsDialog;
 import gov.loc.repository.bagger.ui.Progress;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Dialog;
@@ -60,11 +59,15 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
             bag.setRootDir(dataFile);
             bag.createPreBag(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
-            log.error(e);  
+            log.error(e); 
             
-            String error = "No file or directory selection was made!\n";
-            log(error);
-            SwingUtils.ShowError("Error - bagging in place",error);    	   
+            String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
+            String message = Context.getMessage(
+                "DefaultBag.createPreBag.Exception.description", 
+                new Object [] {dataFile,e.getMessage()}
+            );
+            log(message);
+            SwingUtils.ShowError(title,message);    	   
     	}
     }
     public void createPreBag(File dataFile, String bagItVersion) {
@@ -85,15 +88,19 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
             bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
             log.error(e);   
-            String error = "No file or directory selection was made!\n";
-            log(error);
-            SwingUtils.ShowError("Error - bagging in place",error);    	    
+            String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
+            String message = Context.getMessage(
+                "DefaultBag.createPreBag.Exception.description", 
+                new Object [] {dataFile,e.getMessage()}
+            );
+            log(message);
+            SwingUtils.ShowError(title,message); 	    
     	}
     }
     
-	/*
-     * Prepares the call to Create Bag in Place and 
-     * adding .keep files in Empty Pay load Folder(s) 
+    /*
+        * Prepares the call to Create Bag in Place and 
+        * adding .keep files in Empty Pay load Folder(s) 
     */
     public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion) {
         createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion,new String [] {});

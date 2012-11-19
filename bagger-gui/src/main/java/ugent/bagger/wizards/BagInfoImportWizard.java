@@ -40,7 +40,11 @@ public class BagInfoImportWizard extends AbstractWizard{
     }
     @Override
     protected boolean onFinish(){                
-        SwingUtils.monitor(new BagInfoImporterWorker(),"","%s");
+        SwingUtils.monitor(
+            new BagInfoImporterWorker(),
+            Context.getMessage("BagInfoImportWizard.monitoring.title"),
+            Context.getMessage("BagInfoImportWizard.monitoring.description")
+        );
         return true;
     }    
     

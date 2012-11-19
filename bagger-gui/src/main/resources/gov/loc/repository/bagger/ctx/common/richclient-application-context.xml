@@ -146,8 +146,8 @@
       <property name="basenames">
         <list>
           <value>gov.loc.repository.bagger.ui.messages</value>
-          <value>org.springframework.richclient.application.messages</value>
-        </list>
+          <value>org.springframework.richclient.application.messages</value>          
+        </list>        
       </property>
     </bean>
 

@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
 
@@ -30,7 +31,7 @@ public class RemoveTagFileHandler extends AbstractAction implements Loggable{
 
     public void removeTagFile() {
         BagView bagView = BagView.getInstance();
-    	String message = "";
+    	
     	DefaultBag bag = bagView.getBag();
 
     	TreePath[] paths = bagView.getBagTagFileTree().getSelectionPaths();
@@ -39,23 +40,31 @@ public class RemoveTagFileHandler extends AbstractAction implements Loggable{
             for (int i=0; i < paths.length; i++) {
                 TreePath path = paths[i];
                 Object node = path.getLastPathComponent();
+                String fileName = node.toString();
                 try {
-                if (node != null) {
-                    if (node instanceof MutableTreeNode) {
-                    bag.removeBagFile(node.toString());
-                    ApplicationContextUtil.addConsoleMessage("Tag file removed: " + node.toString());
-                        model.removeNodeFromParent((MutableTreeNode)node);
-                    } else {
-                    bag.removeBagFile((String)node);
-                    ApplicationContextUtil.addConsoleMessage("Tag file removed: " + node.toString());
-                        DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(node);
-                        model.removeNodeFromParent((MutableTreeNode)aNode);
+                    if (node != null) {
+                        if (node instanceof MutableTreeNode) {
+                            bag.removeBagFile(fileName);
+                            log(Context.getMessage(
+                                "RemoveTagFileHandler.removeTagFile.success.description", 
+                                new Object [] {fileName}
+                            ));
+                            model.removeNodeFromParent((MutableTreeNode)node);
+                        } else {
+                            bag.removeBagFile((String)node);
+                            ApplicationContextUtil.addConsoleMessage("Tag file removed: " + fileName);
+                            DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(node);
+                            model.removeNodeFromParent((MutableTreeNode)aNode);
+                        }
                     }
-                }
                 }catch (Exception e){
-                    message += "Error trying to remove file: " + node + "\n";
-                    log(message);
-                    SwingUtils.ShowError("Error - file not removed", "Error trying to remove file: " + node + "\n" + e.getMessage());
+                    String title = Context.getMessage("RemoveTagFileHandler.removeTagFile.Exception.title");
+                    String message = Context.getMessage(
+                        "RemoveTagFileHandler.removeTagFile.Exception.description",
+                        new Object [] {fileName,e.getMessage()}
+                    );
+                    log(message);                            
+                    SwingUtils.ShowError(title,message);
                 }
             }
             bagView.getBagTagFileTree().removeSelectionPaths(paths);

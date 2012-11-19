@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.util.Assert;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.tables.ClassTable;
 
@@ -83,8 +84,8 @@ public class AmdSecsPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton addButton = new JButton("nieuw..");
-        JButton removeButton = new JButton("verwijder");
+        JButton addButton = new JButton(Context.getMessage("AmdSecsPanel.addButton.label"));
+        JButton removeButton = new JButton(Context.getMessage("AmdSecsPanel.removeButton.label"));
         panel.add(addButton);
         panel.add(removeButton);
         

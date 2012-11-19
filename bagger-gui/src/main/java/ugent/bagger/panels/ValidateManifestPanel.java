@@ -22,11 +22,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.forms.ValidateManifestParamsForm;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.ValidateManifestParams;
 import ugent.bagger.params.ValidateManifestResult;
 import ugent.bagger.tables.ClassTable;
-import ugent.bagger.workers.LongTask2;
+import ugent.bagger.workers.LongTask;
 
 /**
  *
@@ -71,8 +72,8 @@ public class ValidateManifestPanel extends JPanel{
     public JComponent createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
-        JButton okButton = new JButton("ok");
-        JButton cancelButton = new JButton("cancel");
+        JButton okButton = new JButton(Context.getMessage("ok"));
+        JButton cancelButton = new JButton(Context.getMessage("cancel"));
         
         okButton.addActionListener(new ActionListener(){
             @Override
@@ -84,8 +85,8 @@ public class ValidateManifestPanel extends JPanel{
                 SwingUtils.monitor(
                     ValidateManifestPanel.this,
                     new ValidateManifestWorker(),
-                    "",
-                    ""
+                    Context.getMessage("ValidateManifestPanel.monitoring.title"),
+                    Context.getMessage("ValidateManifestPanel.monitoring.description")
                 );
                 ValidateManifestPanel.this.firePropertyChange("ok",null,null);
             }            
@@ -132,7 +133,7 @@ public class ValidateManifestPanel extends JPanel{
     public void setValidateManifestResults(ArrayList<ValidateManifestResult> validateManifestResults) {
         this.validateManifestResults = validateManifestResults;
     }    
-    private class ValidateManifestWorker extends LongTask2 {        
+    private class ValidateManifestWorker extends LongTask {                
         @Override
         protected Object doInBackground() {            
             
@@ -143,21 +144,16 @@ public class ValidateManifestPanel extends JPanel{
             BagFactory bagFactory = new BagFactory();            
             BagPartFactoryImpl bagPartFactory = new BagPartFactoryImpl(bagFactory,new BagConstantsImpl());
             
-            System.out.println("algorithm: "+getValidateManifestParams().getAlgorithm());
-            
             int i = 0;                        
             for(File manifestFile:getValidateManifestParams().getFiles()){
-                try{
-                    System.out.println("manifestFile: "+manifestFile);
-                    
+                try{                    
                     File baseDir = manifestFile.getParentFile();                    
-                    System.out.println("baseDir: "+baseDir);
+                    
                     
                     ManifestReader manifestReader = bagPartFactory.createManifestReader(new FileInputStream(manifestFile),"UTF-8");
                     while(manifestReader.hasNext()){
                         FilenameFixity fixity = manifestReader.next();                            
-                        File childFile = new File(baseDir,fixity.getFilename());                                                
-                        System.out.println("childFile: "+childFile);
+                        File childFile = new File(baseDir,fixity.getFilename());                                                                        
                         String checksumComputed = MessageDigestHelper.generateFixity(childFile,getValidateManifestParams().getAlgorithm());                            
                         addValidateManifestResult(new ValidateManifestResult(manifestFile,childFile,fixity.getFixityValue(),checksumComputed));
                     }                        
@@ -165,8 +161,7 @@ public class ValidateManifestPanel extends JPanel{
                     e.printStackTrace();
                 }
                 int percent = (int)Math.floor( ((++i) / ((float)getValidateManifestParams().getFiles().size()))*100);                    
-                setProgress(percent);
-                                
+                setProgress(percent);                                
             }            
             
             BusyIndicator.clearAt(ValidateManifestPanel.this);

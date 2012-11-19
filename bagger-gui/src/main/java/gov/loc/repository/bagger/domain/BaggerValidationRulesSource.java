@@ -12,8 +12,6 @@ import ugent.bagger.params.CreateBagsParams;
 
 
 public class BaggerValidationRulesSource extends DefaultRulesSource {
-    /*boolean isLcProject = false;
-    boolean isHoley = false;*/
 	
     public BaggerValidationRulesSource() {
         super();
@@ -61,18 +59,5 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         createBagsParamsRules.add(new RequiredIfTrue("outputDir",createBagsParamsRules.all(new Constraint [] {con})));
         
         addRules(createBagsParamsRules);
-    }  
-    //Nicolas Franck: deze attributen worden nergens gebruikt!
-    /*
-    public void init(boolean isLcProject, boolean isHoley) {
-    	clear();
-    	this.isLcProject = isLcProject;
-    	this.isHoley = isHoley;       
-        
-    }    
-    public void clear() {
-        System.out.println("\nrules are cleared!!!\n");
-    	java.util.List<Rules> empty = new java.util.ArrayList<Rules>();
-    	setRules(empty);
-    }*/
+    }     
 }

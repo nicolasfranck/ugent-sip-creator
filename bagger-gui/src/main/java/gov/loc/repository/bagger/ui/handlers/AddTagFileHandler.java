@@ -18,11 +18,7 @@ import ugent.bagger.workers.Loggable;
 
 public class AddTagFileHandler extends AbstractAction implements Loggable {
     private static final long serialVersionUID = 1L;   
-
-    /*
-     * Nicolas Franck: public <init>(BagView bagView)
-     * removed, because BagView instance is available in BagView.getInstance()
-     */
+    
     public AddTagFileHandler() {
         super();        
     }
@@ -44,11 +40,7 @@ public class AddTagFileHandler extends AbstractAction implements Loggable {
         String dir = System.getProperty("java.bagger.filechooser.lastdirectory");
         if(dir == null){           
             dir = System.getProperty("user.home");           
-        }
-
-        //File selectFile = new File(File.separator+".");
-        //JFrame frame = new JFrame();
-        //JFileChooser fo = new JFileChooser(selectFile);
+        }       
 
         JFileChooser fo = new JFileChooser(dir);
 
@@ -59,9 +51,7 @@ public class AddTagFileHandler extends AbstractAction implements Loggable {
         }
         fo.setDialogTitle(Context.getMessage("bag.message.addtagfiles"));
         
-        int option = fo.showOpenDialog(SwingUtils.getFrame());
-        //Nicolas Franck
-    	//int option = fo.showOpenDialog(frame);
+        int option = fo.showOpenDialog(SwingUtils.getFrame());       
         
         if(option == JFileChooser.APPROVE_OPTION){
             DefaultBag bag = bagView.getBag();
@@ -81,7 +71,7 @@ public class AddTagFileHandler extends AbstractAction implements Loggable {
         }
 
         /*
-         * Nicolas Franck
+         * Nicolas Franck: onthoud laatst geopende map
          */
         String lastDir = fo.getCurrentDirectory().getAbsolutePath();
         System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);
@@ -95,9 +85,7 @@ public class AddTagFileHandler extends AbstractAction implements Loggable {
             if(files != null){
                 for(int i=0; i < files.size(); i++){                    
                     bag.addTagFile(files.get(i));
-                }
-                //Nicolas Franck
-                //bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
+                }               
                 bagView.setBagPayloadTree(bagView.createBagPayloadTree(bag.getName(),false));
                 
                 Collection<BagFile> tags = bag.getTags();

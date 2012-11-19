@@ -9,7 +9,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -34,7 +37,7 @@ import org.springframework.richclient.progress.BusyIndicator;
  */
 public class SwingUtils {
     private static Log log = LogFactory.getLog(SwingUtils.class);
-   
+    private static HashMap<String,String>uiManagerMessages;
     
     public static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,int dialogType){
         JFileChooser fileChooser = new JFileChooser();           
@@ -102,17 +105,16 @@ public class SwingUtils {
             for(PropertyChangeListener listener:listeners){
                 worker.addPropertyChangeListener(listener);
             }            
-        }
+        }        
         worker.execute();
     }
     private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor){
         return new PropertyChangeListener() {
+            boolean cancelRemoved = false;
             @Override
-            public void propertyChange(PropertyChangeEvent evt) {                        
-                log.debug("property change event: "+evt.getPropertyName());
-                log.debug("property value:"+evt.getNewValue());                
-                if("progress".compareTo(evt.getPropertyName())==0){                            
-                    int progress = (Integer) evt.getNewValue();                            
+            public void propertyChange(PropertyChangeEvent evt) {                                        
+                if("progress".compareTo(evt.getPropertyName())==0){ 
+                    int progress = (Integer) evt.getNewValue();                     
                     progressMonitor.setProgress(progress);                              
                     progressMonitor.setNote(progress+"%");                    
                 }else if(
@@ -202,6 +204,24 @@ public class SwingUtils {
     }
     public static void ShowDone(){
         BusyIndicator.clearAt(getFrame());
+    }
+    public static HashMap<String,String> getUIManagerMessages(){
+        if(uiManagerMessages == null){
+            try{
+                uiManagerMessages = new HashMap<String,String>();
+                Properties props = new Properties();
+                props.load(Context.getResourceAsStream("gov/loc/repository/bagger/ui/manager.properties"));
+                Enumeration it = props.propertyNames();
+                while(it.hasMoreElements()){
+                    String key = (String) it.nextElement();
+                    uiManagerMessages.put(key,props.getProperty(key));
+                }
+            }catch(Exception e){                
+                log.debug(e);
+            }
+            
+        }
+        return uiManagerMessages;
     }
     
 }

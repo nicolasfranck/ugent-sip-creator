@@ -18,6 +18,7 @@ import org.springframework.richclient.progress.BusyIndicator;
 import org.w3c.dom.Document;
 import ugent.bagger.helper.Beans;
 import ugent.bagger.helper.CSVUtils;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.XML;
 import ugent.bagger.params.VelocityTemplate;
 
@@ -87,8 +88,8 @@ public class CSV2Panel extends JPanel{
       
     public JPanel createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        okButton = new JButton("ok");        
-        testButton = new JButton("test");
+        okButton = new JButton(Context.getMessage("ok"));        
+        testButton = new JButton(Context.getMessage("test"));
         panel.add(okButton);        
         panel.add(testButton);
         
