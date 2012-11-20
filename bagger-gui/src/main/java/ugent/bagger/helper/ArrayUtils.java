@@ -1,5 +1,9 @@
 package ugent.bagger.helper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  * @author nicolas
@@ -17,5 +21,48 @@ public class ArrayUtils {
         }
         
         return result.toString();
+    }
+    public static ArrayDiff diff(ArrayList<Object>a,ArrayList<Object>b){
+        ArrayDiff diff = new ArrayDiff();
+        //added
+        for(Object o:b){
+            if(!a.contains(o)){
+                diff.getAdded().add(o);
+            }
+        }
+        //deleted
+        for(Object o:a){
+            if(!b.contains(o)){
+                diff.getDeleted().add(o);
+            }
+        }
+        return diff;
+    }
+    public static class ArrayDiff {
+        ArrayList<Object>added;
+        ArrayList<Object>deleted;
+
+        public ArrayList<Object> getAdded() {
+            if(added == null){
+                added = new ArrayList<Object>();
+            }
+            return added;
+        }        
+        public ArrayList<Object> getDeleted() {
+            if(deleted == null){
+                deleted = new ArrayList<Object>();
+            }
+            return deleted;
+        }               
+    }
+    public static void main(String [] main){
+        String [] a = {"a","b","c","e"};
+        String [] b = {"a","b","c","d"};
+        ArrayList<Object>lista = new ArrayList<Object>(Arrays.asList(a));
+        ArrayList<Object>listb = new ArrayList<Object>(Arrays.asList(b));
+        
+        ArrayDiff diff = diff(lista,listb);
+        System.out.println("added: "+diff.getAdded().size());
+        System.out.println("deleted: "+diff.getDeleted().size());
     }
 }

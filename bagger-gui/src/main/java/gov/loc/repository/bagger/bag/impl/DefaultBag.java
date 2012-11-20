@@ -412,6 +412,7 @@ public class DefaultBag {
     public List<String> getPayloadPaths() {
         ArrayList<String> pathList = new ArrayList<String>();
         Collection<BagFile> payload = bilBag.getPayload();
+        
         if(payload != null) {
             for (Iterator<BagFile> it = payload.iterator(); it.hasNext();) {                
                 pathList.add(it.next().getFilepath());
@@ -629,7 +630,7 @@ public class DefaultBag {
 
     public void addFileToPayload(File file) {
         changeToDirty();
-        isComplete(Status.UNKNOWN);        
+        isComplete(Status.UNKNOWN);       
         bilBag.addFileToPayload(file);
     }
 

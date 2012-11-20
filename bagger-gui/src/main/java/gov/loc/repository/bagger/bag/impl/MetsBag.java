@@ -6,12 +6,14 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.Manifest;
 import gov.loc.repository.bagit.Manifest.Algorithm;
+import gov.loc.repository.bagit.utilities.FilenameHelper;
 import gov.loc.repository.bagit.utilities.MessageDigestHelper;
 import gov.loc.repository.bagit.writer.Writer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 /**
@@ -20,7 +22,21 @@ import java.util.Map.Entry;
  */
 public class MetsBag extends DefaultBag{
     private BagItMets bagItMets;    
-    
+    private ArrayList<String>newFiles;
+    private ArrayList<String>removedFiles;
+
+    public ArrayList<String> getNewFiles() {
+        if(newFiles == null){
+            newFiles = new ArrayList<String>();
+        }
+        return newFiles;
+    }
+    public ArrayList<String> getRemovedFiles() {
+        if(removedFiles == null){
+            removedFiles = new ArrayList<String>();
+        }
+        return removedFiles;
+    }
     public MetsBag() {          
         super();            
     }
@@ -218,5 +234,5 @@ public class MetsBag extends DefaultBag{
     @Override
     public void createPreBagAddKeepFilesToEmptyFolders(File data,String version){
         createPreBagAddKeepFilesToEmptyFolders(data,version,new String [] {});
-    }
+    }    
 }
