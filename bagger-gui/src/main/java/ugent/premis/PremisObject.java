@@ -22,11 +22,11 @@ public class PremisObject implements ElementInterface{
     private String preservationLevel;
     private String objectCategory;
     private ArrayList<PremisObjectCharacteristics>objectCharacteristics;
-    private ArrayList<PremisObjectStorage> storage;
+    private ArrayList<PremisStorage> storage;
 
-    public ArrayList<PremisObjectStorage> getStorage() {
+    public ArrayList<PremisStorage> getStorage() {
         if(storage == null){
-            storage = new ArrayList<PremisObjectStorage>();
+            storage = new ArrayList<PremisStorage>();
         }
         return storage;
     }   
@@ -118,7 +118,7 @@ public class PremisObject implements ElementInterface{
                 oc.unmarshal(child);
                 getObjectCharacteristics().add(oc);
             }else if(localName.equals("storage")) {
-                PremisObjectStorage s = new PremisObjectStorage();
+                PremisStorage s = new PremisStorage();
                 s.unmarshal(child);
                 getStorage().add(s);
             }
@@ -126,7 +126,33 @@ public class PremisObject implements ElementInterface{
     }
 
     @Override
-    public void marshal(Element e, Document d) {
+    public void marshal(Element root, Document doc) {
+        //attributes
+        root.setAttribute("xmlID",xmlID);
+        root.setAttribute("version",version);
+        root.setAttributeNS(NS.XSI.ns(),"xsi:type",type.toString());        
+        
+        //elements
+        if(preservationLevel != null){
+            Element pe = doc.createElementNS(NS.PREMIS.ns(),"premis:preservationLevel");
+            pe.setTextContent(preservationLevel);
+            root.appendChild(pe);
+        }
+        if(objectCategory != null){
+            Element pl = doc.createElementNS(NS.PREMIS.ns(),"premis:objectCategory");
+            pl.setTextContent(objectCategory);
+            root.appendChild(pl);
+        }
+        for(PremisObjectIdentifier oi:getObjectIdentifier()){
+            Element oie = doc.createElementNS(NS.PREMIS.ns(),"premis:objectIdentifier");
+            oi.marshal(oie,doc);
+            root.appendChild(oie);
+        }
+        for(PremisObjectCharacteristics oc:getObjectCharacteristics()){
+            Element oce = doc.createElementNS(NS.PREMIS.ns(),"premis:objectCharacteristics");
+            oc.marshal(oce,doc);
+            root.appendChild(oce);
+        }
         
     }
     
@@ -171,9 +197,9 @@ public class PremisObject implements ElementInterface{
     }
     public static class PremisObjectCharacteristics implements ElementInterface {
         private int compositionLevel;
-        private ArrayList<PremisObjectCharacteristicsFixity>fixity;
+        private ArrayList<PremisFixity>fixity;
         private long size;
-        private PremisObjectCharacteristicsFormat format;
+        private PremisFormat format;
         private ArrayList<Element> significantProperties;
      
         public ArrayList<Element> getSignificantProperties() {
@@ -182,10 +208,10 @@ public class PremisObject implements ElementInterface{
             }
             return significantProperties;
         }        
-        public PremisObjectCharacteristicsFormat getFormat() {
+        public PremisFormat getFormat() {
             return format;
         }
-        public void setFormat(PremisObjectCharacteristicsFormat format) {
+        public void setFormat(PremisFormat format) {
             this.format = format;
         }
         public long getSize() {
@@ -194,9 +220,9 @@ public class PremisObject implements ElementInterface{
         public void setSize(long size) {
             this.size = size;
         }
-        public ArrayList<PremisObjectCharacteristicsFixity> getFixity() {
+        public ArrayList<PremisFixity> getFixity() {
             if(fixity == null){
-                fixity = new ArrayList<PremisObjectCharacteristicsFixity>();
+                fixity = new ArrayList<PremisFixity>();
             }
             return fixity;
         }
@@ -215,13 +241,13 @@ public class PremisObject implements ElementInterface{
                 if(localName.equals("compositionLevel")) {
                     compositionLevel = Integer.parseInt(child.getTextContent());
                 }else if(localName.equals("fixity")) {
-                    PremisObjectCharacteristicsFixity f = new PremisObjectCharacteristicsFixity();
+                    PremisFixity f = new PremisFixity();
                     f.unmarshal(child);
                     getFixity().add(f);
                 }else if(localName.equals("size")) {
                     size = Long.parseLong(child.getTextContent());
                 }else if(localName.equals("format")) {
-                    format = new PremisObjectCharacteristicsFormat();
+                    format = new PremisFormat();
                     format.unmarshal(child);                    
                 }else if(localName.equals("significantProperties")) {
                     getSignificantProperties().add(child);
@@ -234,7 +260,7 @@ public class PremisObject implements ElementInterface{
             
         }
         
-        public static class PremisObjectCharacteristicsFixity implements ElementInterface{
+        public static class PremisFixity implements ElementInterface{
             private String messageDigestAlgorithm;
             private String messageDigest;
             private String messageDigestOriginator;
@@ -267,20 +293,20 @@ public class PremisObject implements ElementInterface{
                 
             }            
         }
-        public static class PremisObjectCharacteristicsFormat implements ElementInterface{
-            private PremisObjectCharacteristicsFormatDesignation formatDesignation;
-            private PremisObjectCharacteristicsFormatRegistry formatRegistry;
+        public static class PremisFormat implements ElementInterface{
+            private PremisFormatDesignation formatDesignation;
+            private PremisFormatRegistry formatRegistry;
 
-            public PremisObjectCharacteristicsFormatDesignation getFormatDesignation() {
+            public PremisFormatDesignation getFormatDesignation() {
                 return formatDesignation;
             }
-            public void setFormatDesignation(PremisObjectCharacteristicsFormatDesignation formatDesignation) {
+            public void setFormatDesignation(PremisFormatDesignation formatDesignation) {
                 this.formatDesignation = formatDesignation;
             }
-            public PremisObjectCharacteristicsFormatRegistry getFormatRegistry() {
+            public PremisFormatRegistry getFormatRegistry() {
                 return formatRegistry;
             }
-            public void setFormatRegistry(PremisObjectCharacteristicsFormatRegistry formatRegistry) {
+            public void setFormatRegistry(PremisFormatRegistry formatRegistry) {
                 this.formatRegistry = formatRegistry;
             }
             
@@ -294,7 +320,7 @@ public class PremisObject implements ElementInterface{
                 
             }
             
-            public static class PremisObjectCharacteristicsFormatDesignation implements ElementInterface{
+            public static class PremisFormatDesignation implements ElementInterface{
                 private String formatName;
                 private String formatVersion;
 
@@ -324,7 +350,7 @@ public class PremisObject implements ElementInterface{
                     
                 }                
             }
-            public static class PremisObjectCharacteristicsFormatRegistry implements ElementInterface{
+            public static class PremisFormatRegistry implements ElementInterface{
                 private String formatRegistryName;
                 private String formatRegistryKey;
                 private String formatRegistryRole;
@@ -358,14 +384,14 @@ public class PremisObject implements ElementInterface{
             }
         }                
     }
-    public static class PremisObjectStorage implements ElementInterface {
-        PremisObjectStorageContentLocation contentLocation;
+    public static class PremisStorage implements ElementInterface {
+        PremisContentLocation contentLocation;
         String storageMedium;
 
-        public PremisObjectStorageContentLocation getContentLocation() {
+        public PremisContentLocation getContentLocation() {
             return contentLocation;
         }
-        public void setContentLocation(PremisObjectStorageContentLocation contentLocation) {
+        public void setContentLocation(PremisContentLocation contentLocation) {
             this.contentLocation = contentLocation;
         }
         public String getStorageMedium() {
@@ -381,7 +407,7 @@ public class PremisObject implements ElementInterface{
             for(Element child:children) {
                 String localName = child.getLocalName();
                 if(localName.equals("contentLocation")) {
-                    contentLocation = new PremisObjectStorageContentLocation();
+                    contentLocation = new PremisContentLocation();
                     contentLocation.unmarshal(child);
                 }else if(localName.equals("storageMedium")) {
                     storageMedium = child.getTextContent();
@@ -394,7 +420,7 @@ public class PremisObject implements ElementInterface{
             
         }
 
-        public static class PremisObjectStorageContentLocation implements ElementInterface {
+        public static class PremisContentLocation implements ElementInterface {
             String contentLocationType;
             String contentLocationValue;
 
