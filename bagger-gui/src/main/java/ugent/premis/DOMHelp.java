@@ -57,7 +57,6 @@ public class DOMHelp {
 			}
 		}
 		return childElements;
-	}
-	
+	}	
 	
 }

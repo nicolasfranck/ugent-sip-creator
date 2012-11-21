@@ -3,23 +3,32 @@ package ugent.premis;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import ugent.bagger.helper.XML;
 import ugent.premis.PremisEvent.PremisLinkingAgentIdentifier;
 import ugent.premis.PremisEvent.PremisLinkingObjectIdentifier;
+import ugent.premis.PremisObject.PremisObjectType;
 
 /**
  *
  * @author nicolas
  */
 public class Premis implements ElementInterface{      
-    
+    private String version = "2.0";
     private ArrayList<PremisObject>object;
     private ArrayList<PremisEvent>event;
     private ArrayList<PremisAgent>agent;
     private ArrayList<PremisRights>rights;
 
+    public String getVersion() {
+        return version;
+    }
+    public void setVersion(String version) {
+        this.version = version;
+    }    
     public ArrayList<PremisObject> getObject() {
         if(object == null){
             object = new ArrayList<PremisObject>();
@@ -47,26 +56,45 @@ public class Premis implements ElementInterface{
 
     @Override
     public void unmarshal(Element root) throws ParseException {
+        //attributes
+        NamedNodeMap attrs = root.getAttributes();
+        for (int i = 0; i < attrs.getLength(); i++) {
+            Attr attr = (Attr) attrs.item(i);
+            String name = attr.getName();
+            String value = attr.getNodeValue();
+            if(name.equals("version")){
+                version = value;
+                break;
+            }
+        }
+        
+        //elements
         ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
         for(Element child:children) {
             String localName = child.getLocalName();
             if(localName.equals("event")) {
-                PremisEvent event = new PremisEvent();
-                event.unmarshal(child);
-                getEvent().add(event);
+                PremisEvent ev = new PremisEvent();
+                ev.unmarshal(child);
+                getEvent().add(ev);
             }else if(localName.equals("object")){
-                PremisObject object = new PremisObject();
-                object.unmarshal(child);
-                getObject().add(object);                
+                PremisObjectType type = PremisObject.PremisObjectType.valueOf(
+                    child.getAttributeNS(NS.XSI.ns(),"type")
+                );
+                if(type == null){
+                    continue;
+                }
+                PremisObject obj = new PremisObject(type);
+                obj.unmarshal(child);
+                getObject().add(obj);                
             }else if(localName.equals("agent")){
                 PremisAgent agent = new PremisAgent();
                 agent.unmarshal(child);
                 getAgent().add(agent);                
             }
             else if(localName.equals("rights")){
-                PremisRights rights = new PremisRights();
-                rights.unmarshal(child);
-                getRights().add(rights);                
+                PremisRights r = new PremisRights();
+                r.unmarshal(child);
+                getRights().add(r);                
             }
         }
     }
@@ -75,12 +103,20 @@ public class Premis implements ElementInterface{
     public void marshal(Element root, Document doc) {       
         
         // set up namespace declarations and schema references
-        root.setAttribute("xmlns:premis",NS.PREMIS.ns());
-        root.setAttribute("xmlns:xlink", NS.XLINK.ns());
-        root.setAttribute("xmlns:xsi", NS.XSI.ns());
+        root.setAttributeNS(NS.XMLNS.ns(),"xmlns:premis",NS.PREMIS.ns());
+        root.setAttributeNS(NS.XMLNS.ns(),"xmlns:xlink", NS.XLINK.ns());
+        root.setAttributeNS(NS.XMLNS.ns(),"xmlns:xsi", NS.XSI.ns());
         root.setAttributeNS(NS.XSI.ns(),"xsi:schemaLocation",NS.PREMIS.schemaLoc());
         
-        
+        if(version != null && !version.isEmpty()){
+            root.setAttribute("version",version);
+        }
+        //sequence is important!
+        for(PremisObject object:getObject()){
+            Element objectE = doc.createElementNS(NS.PREMIS.ns(),"premis:object");
+            object.marshal(objectE,doc);
+            root.appendChild(objectE);
+        }
         for(PremisEvent event:getEvent()){
             Element eventE = doc.createElementNS(NS.PREMIS.ns(),"premis:event");
             event.marshal(eventE,doc);
@@ -90,12 +126,7 @@ public class Premis implements ElementInterface{
             Element agentE = doc.createElementNS(NS.PREMIS.ns(),"premis:agent");
             agent.marshal(agentE,doc);
             root.appendChild(agentE);
-        }
-        for(PremisObject object:getObject()){
-            Element objectE = doc.createElementNS(NS.PREMIS.ns(),"premis:object");
-            object.marshal(objectE,doc);
-            root.appendChild(objectE);
-        }
+        }        
         for(PremisRights rights:getRights()){
             Element rightsE = doc.createElementNS(NS.PREMIS.ns(),"premis:rights");
             rights.marshal(rightsE,doc);

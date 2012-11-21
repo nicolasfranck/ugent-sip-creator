@@ -24,8 +24,8 @@ public abstract class BagItMets {
         }
     }
     //open een mets-document die als tagfile is opgeslagen in een bagit
-    public abstract Mets onOpenBag(Bag bag);
+    public abstract Mets onOpenBag(MetsBag bag);
     //na creatie van payload-manifest moet het mets-document aangepast worden
     //nadien creëert MetsBag de manifest voor de tagfiles
-    protected abstract Mets onSaveBag(Bag bag,Mets mets);        
+    protected abstract Mets onSaveBag(MetsBag bag,Mets mets);        
 }

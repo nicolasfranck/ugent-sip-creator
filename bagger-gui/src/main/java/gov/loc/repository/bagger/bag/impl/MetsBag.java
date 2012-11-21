@@ -15,33 +15,29 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  *
  * @author nicolas
  */
 public class MetsBag extends DefaultBag{
-    private BagItMets bagItMets;    
-    private ArrayList<String>newFiles;
-    private ArrayList<String>removedFiles;
+    private BagItMets bagItMets;      
+    private ArrayList<String>oldFileList;
 
-    public ArrayList<String> getNewFiles() {
-        if(newFiles == null){
-            newFiles = new ArrayList<String>();
+    public ArrayList<String> getOldFileList() {
+        if(oldFileList == null){
+            oldFileList = new ArrayList<String>();
         }
-        return newFiles;
-    }
-    public ArrayList<String> getRemovedFiles() {
-        if(removedFiles == null){
-            removedFiles = new ArrayList<String>();
-        }
-        return removedFiles;
+        return oldFileList;
     }
     public MetsBag() {          
         super();            
+        initOldFileList();
     }
     public MetsBag(File rootDir, String version) {
         super(rootDir,version);        
+        initOldFileList();
     }    
 
     public BagItMets getBagItMets() {                
@@ -50,6 +46,10 @@ public class MetsBag extends DefaultBag{
 
     public void setBagItMets(BagItMets bagItMets) {
         this.bagItMets = bagItMets;
+    }
+    public void initOldFileList(){        
+        oldFileList = (ArrayList<String>) getPayloadPaths();
+        oldFileList.addAll(getTagFilePaths());
     }
      
     @Override
@@ -60,7 +60,7 @@ public class MetsBag extends DefaultBag{
         Bag bag = getBag();        
         
         Mets mets = getBagItMets().onSaveBag(
-            bag,
+            this,
             BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMets()
         );
         
@@ -128,7 +128,7 @@ public class MetsBag extends DefaultBag{
         }
         
         Mets mets = getBagItMets().onSaveBag(
-            bag,
+            this,
             BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMets()
         );
         
@@ -203,7 +203,7 @@ public class MetsBag extends DefaultBag{
         }
         
         Mets mets = getBagItMets().onSaveBag(
-            bag,
+            this,
             BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMets()
         );
         

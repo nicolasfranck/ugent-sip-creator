@@ -162,7 +162,7 @@ public class OpenBagHandler extends AbstractAction {
 
             BagItMets bagitMets = new DefaultBagItMets();
 
-            Mets mets = bagitMets.onOpenBag(bagView.getBag().getBag());
+            Mets mets = bagitMets.onOpenBag(bagView.getBag());
             
             InfoInputPane bagInfoInputPane = bagView.getInfoFormsPane().getInfoInputPane();
             

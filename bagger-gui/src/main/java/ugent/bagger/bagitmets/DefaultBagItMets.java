@@ -16,6 +16,7 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
@@ -24,6 +25,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.helper.ArrayUtils;
+import ugent.bagger.helper.ArrayUtils.ArrayDiff;
 import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.DefaultMetsCallback;
 import ugent.bagger.helper.FUtils;
@@ -39,7 +42,10 @@ public class DefaultBagItMets extends BagItMets{
        
     
     @Override
-    public Mets onOpenBag(Bag bag) {
+    public Mets onOpenBag(MetsBag metsBag) {
+        Bag bag = metsBag.getBag();      
+        
+        
         String pathMets;            
         Mets mets = null;  
         BagView bagView = BagView.getInstance();
@@ -67,10 +73,10 @@ public class DefaultBagItMets extends BagItMets{
     };
 
     @Override
-    public Mets onSaveBag(Bag bag,Mets mets) {
+    public Mets onSaveBag(MetsBag metsBag,Mets mets) {        
         
         BagView bagView = BagView.getInstance();
-        MetsBag metsBag = bagView.getBag();        
+        Bag bag = metsBag.getBag();
         
         Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm());            
         SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(metsBag.getTagManifestAlgorithm());         
@@ -79,6 +85,24 @@ public class DefaultBagItMets extends BagItMets{
         
         Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);
+        
+        //verschil oud en nieuw berekenen
+        ArrayList<String>oldFileList = metsBag.getOldFileList();
+        ArrayList<String>newFileList = (ArrayList<String>) metsBag.getPayloadPaths();
+        newFileList.addAll(metsBag.getTagFilePaths());
+        
+        ArrayDiff<String>diff = ArrayUtils.diff(oldFileList,newFileList);
+        System.out.println("added: "+diff.getAdded().size()+", deleted: "+diff.getDeleted().size());
+        System.out.println("added: ");
+        for(String n:diff.getAdded()){
+            System.out.println("\t"+n);
+        }
+        System.out.println("deleted: ");
+        for(String n:diff.getDeleted()){
+            System.out.println("\t"+n);
+        }
+        
+        
         
         //files
         final HashMap<String,String> fileIdMap = new HashMap<String,String>();

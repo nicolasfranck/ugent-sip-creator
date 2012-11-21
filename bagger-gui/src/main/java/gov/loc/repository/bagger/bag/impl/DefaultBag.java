@@ -70,7 +70,7 @@ public class DefaultBag {
 
 
     public DefaultBag() {            
-        this(null, Version.V0_96.versionString);
+        this(null,Version.V0_96.versionString);
     }
 
     public DefaultBag(File rootDir, String version) {
@@ -415,6 +415,17 @@ public class DefaultBag {
         
         if(payload != null) {
             for (Iterator<BagFile> it = payload.iterator(); it.hasNext();) {                
+                pathList.add(it.next().getFilepath());
+            }
+        }
+        return pathList;
+    }
+    public List<String> getTagFilePaths() {
+        ArrayList<String> pathList = new ArrayList<String>();
+        Collection<BagFile>tags = bilBag.getTags();
+        
+        if(tags != null) {
+            for (Iterator<BagFile> it = tags.iterator(); it.hasNext();) {                
                 pathList.add(it.next().getFilepath());
             }
         }

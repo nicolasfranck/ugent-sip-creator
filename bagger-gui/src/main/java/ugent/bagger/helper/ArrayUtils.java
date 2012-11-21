@@ -2,7 +2,6 @@ package ugent.bagger.helper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  *
@@ -22,35 +21,35 @@ public class ArrayUtils {
         
         return result.toString();
     }
-    public static ArrayDiff diff(ArrayList<Object>a,ArrayList<Object>b){
+    public static<T> ArrayDiff diff(ArrayList<T>a,ArrayList<T>b){
         ArrayDiff diff = new ArrayDiff();
         //added
-        for(Object o:b){
+        for(T o:b){
             if(!a.contains(o)){
                 diff.getAdded().add(o);
             }
         }
         //deleted
-        for(Object o:a){
+        for(T o:a){
             if(!b.contains(o)){
                 diff.getDeleted().add(o);
             }
         }
         return diff;
     }
-    public static class ArrayDiff {
-        ArrayList<Object>added;
-        ArrayList<Object>deleted;
+    public static class ArrayDiff<T> {
+        ArrayList<T>added;
+        ArrayList<T>deleted;
 
-        public ArrayList<Object> getAdded() {
+        public ArrayList<T> getAdded() {
             if(added == null){
-                added = new ArrayList<Object>();
+                added = new ArrayList<T>();
             }
             return added;
         }        
-        public ArrayList<Object> getDeleted() {
+        public ArrayList<T> getDeleted() {
             if(deleted == null){
-                deleted = new ArrayList<Object>();
+                deleted = new ArrayList<T>();
             }
             return deleted;
         }               
@@ -59,7 +58,7 @@ public class ArrayUtils {
         String [] a = {"a","b","c","e"};
         String [] b = {"a","b","c","d"};
         ArrayList<Object>lista = new ArrayList<Object>(Arrays.asList(a));
-        ArrayList<Object>listb = new ArrayList<Object>(Arrays.asList(b));
+        ArrayList<Object>listb = new ArrayList<Object>(Arrays.asList(b));        
         
         ArrayDiff diff = diff(lista,listb);
         System.out.println("added: "+diff.getAdded().size());

@@ -13,7 +13,8 @@ public enum NS {
     VRA_3("http://www.vraweb.org/vracore3.htm"),   
     XLINK("http://www.w3.org/1999/xlink"),
     XSI("http://www.w3.org/2001/XMLSchema-instance"),    
-    XMP("adobe:ns:meta/");
+    XMP("adobe:ns:meta/"),
+    XMLNS("http://www.w3.org/2000/xmlns/");
 
     private String ns;
     private String schema;
