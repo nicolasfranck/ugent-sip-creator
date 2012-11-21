@@ -315,135 +315,135 @@ public class PremisObject implements ElementInterface{
             
         }
         
-        public static class PremisFixity implements ElementInterface{
-            private String messageDigestAlgorithm;
-            private String messageDigest;
-            private String messageDigestOriginator;
+                      
+    }
+    public static class PremisFixity implements ElementInterface{
+        private String messageDigestAlgorithm;
+        private String messageDigest;
+        private String messageDigestOriginator;
 
-            public String getMessageDigestAlgorithm() {
-                return messageDigestAlgorithm;
-            }
-            public void setMessageDigestAlgorithm(String messageDigestAlgorithm) {
-                this.messageDigestAlgorithm = messageDigestAlgorithm;
-            }
-            public String getMessageDigest() {
-                return messageDigest;
-            }
-            public void setMessageDigest(String messageDigest) {
-                this.messageDigest = messageDigest;
-            }
-            public String getMessageDigestOriginator() {
-                return messageDigestOriginator;
-            }
-            public void setMessageDigestOriginator(String messageDigestOriginator) {
-                this.messageDigestOriginator = messageDigestOriginator;
-            }
-            @Override
-            public void unmarshal(Element e) throws ParseException {
-                
-            }
-
-            @Override
-            public void marshal(Element e, Document d) {
-                
-            }            
+        public String getMessageDigestAlgorithm() {
+            return messageDigestAlgorithm;
         }
-        public static class PremisFormat implements ElementInterface{
-            private PremisFormatDesignation formatDesignation;
-            private PremisFormatRegistry formatRegistry;
-            private String formatNote;
+        public void setMessageDigestAlgorithm(String messageDigestAlgorithm) {
+            this.messageDigestAlgorithm = messageDigestAlgorithm;
+        }
+        public String getMessageDigest() {
+            return messageDigest;
+        }
+        public void setMessageDigest(String messageDigest) {
+            this.messageDigest = messageDigest;
+        }
+        public String getMessageDigestOriginator() {
+            return messageDigestOriginator;
+        }
+        public void setMessageDigestOriginator(String messageDigestOriginator) {
+            this.messageDigestOriginator = messageDigestOriginator;
+        }
+        @Override
+        public void unmarshal(Element e) throws ParseException {
 
-            public String getFormatNote() {
-                return formatNote;
-            }
-            public void setFormatNote(String formatNote) {
-                this.formatNote = formatNote;
-            }           
-            public PremisFormatDesignation getFormatDesignation() {
-                return formatDesignation;
-            }
-            public void setFormatDesignation(PremisFormatDesignation formatDesignation) {
-                this.formatDesignation = formatDesignation;
-            }
-            public PremisFormatRegistry getFormatRegistry() {
-                return formatRegistry;
-            }
-            public void setFormatRegistry(PremisFormatRegistry formatRegistry) {
-                this.formatRegistry = formatRegistry;
-            }
-            
-            @Override
-            public void unmarshal(Element e) throws ParseException {
-                
-            }
+        }
 
-            @Override
-            public void marshal(Element e, Document d) {
-                
-            }
-            
-            public static class PremisFormatDesignation implements ElementInterface{
-                private String formatName;
-                private String formatVersion;
+        @Override
+        public void marshal(Element e, Document d) {
 
-                public String getFormatName() {
-                    return formatName;
-                }
+        }            
+    }
+    public static class PremisFormat implements ElementInterface{
+        private PremisFormatDesignation formatDesignation;
+        private PremisFormatRegistry formatRegistry;
+        private String formatNote;
 
-                public void setFormatName(String formatName) {
-                    this.formatName = formatName;
-                }
+        public String getFormatNote() {
+            return formatNote;
+        }
+        public void setFormatNote(String formatNote) {
+            this.formatNote = formatNote;
+        }           
+        public PremisFormatDesignation getFormatDesignation() {
+            return formatDesignation;
+        }
+        public void setFormatDesignation(PremisFormatDesignation formatDesignation) {
+            this.formatDesignation = formatDesignation;
+        }
+        public PremisFormatRegistry getFormatRegistry() {
+            return formatRegistry;
+        }
+        public void setFormatRegistry(PremisFormatRegistry formatRegistry) {
+            this.formatRegistry = formatRegistry;
+        }
 
-                public String getFormatVersion() {
-                    return formatVersion;
-                }
+        @Override
+        public void unmarshal(Element e) throws ParseException {
 
-                public void setFormatVersion(String formatVersion) {
-                    this.formatVersion = formatVersion;
-                }               
-                
-                
-                @Override
-                public void unmarshal(Element e) throws ParseException {
-                    
-                }
-                @Override
-                public void marshal(Element e, Document d) {
-                    
-                }                
-            }
-            public static class PremisFormatRegistry implements ElementInterface{
-                private String formatRegistryName;
-                private String formatRegistryKey;
-                private String formatRegistryRole;
+        }
 
-                public String getFormatRegistryName() {
-                    return formatRegistryName;
-                }
-                public void setFormatRegistryName(String formatRegistryName) {
-                    this.formatRegistryName = formatRegistryName;
-                }
-                public String getFormatRegistryKey() {
-                    return formatRegistryKey;
-                }
-                public void setFormatRegistryKey(String formatRegistryKey) {
-                    this.formatRegistryKey = formatRegistryKey;
-                }
-                public String getFormatRegistryRole() {
-                    return formatRegistryRole;
-                }
-                public void setFormatRegistryRole(String formatRegistryRole) {
-                    this.formatRegistryRole = formatRegistryRole;
-                }                
-                @Override
-                public void unmarshal(Element e) throws ParseException {
-                    
-                }
-                @Override
-                public void marshal(Element e, Document d) {
-                    
-                }                
-            }
+        @Override
+        public void marshal(Element e, Document d) {
+
+        }
+    }  
+    public static class PremisFormatDesignation implements ElementInterface{
+        private String formatName;
+        private String formatVersion;
+
+        public String getFormatName() {
+            return formatName;
+        }
+
+        public void setFormatName(String formatName) {
+            this.formatName = formatName;
+        }
+
+        public String getFormatVersion() {
+            return formatVersion;
+        }
+
+        public void setFormatVersion(String formatVersion) {
+            this.formatVersion = formatVersion;
+        }               
+
+
+        @Override
+        public void unmarshal(Element e) throws ParseException {
+
+        }
+        @Override
+        public void marshal(Element e, Document d) {
+
+        }                
+    }
+    public static class PremisFormatRegistry implements ElementInterface{
+        private String formatRegistryName;
+        private String formatRegistryKey;
+        private String formatRegistryRole;
+
+        public String getFormatRegistryName() {
+            return formatRegistryName;
+        }
+        public void setFormatRegistryName(String formatRegistryName) {
+            this.formatRegistryName = formatRegistryName;
+        }
+        public String getFormatRegistryKey() {
+            return formatRegistryKey;
+        }
+        public void setFormatRegistryKey(String formatRegistryKey) {
+            this.formatRegistryKey = formatRegistryKey;
+        }
+        public String getFormatRegistryRole() {
+            return formatRegistryRole;
+        }
+        public void setFormatRegistryRole(String formatRegistryRole) {
+            this.formatRegistryRole = formatRegistryRole;
+        }                
+        @Override
+        public void unmarshal(Element e) throws ParseException {
+
+        }
+        @Override
+        public void marshal(Element e, Document d) {
+
         }                
     }
     public static class PremisStorage implements ElementInterface {
@@ -478,35 +478,52 @@ public class PremisObject implements ElementInterface{
         }
 
         @Override
-        public void marshal(Element e, Document d) {
-            
+        public void marshal(Element root, Document doc) {
+            if(contentLocation != null){                
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"contentLocation");
+                contentLocation.marshal(e,doc);
+                root.appendChild(e);
+            }
+            if(storageMedium != null){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"storageMedium");
+                e.setTextContent(storageMedium);
+                root.appendChild(e);
+            }
+        }
+                   
+    }
+    public static class PremisContentLocation implements ElementInterface {
+        String contentLocationType;
+        String contentLocationValue;
+
+        @Override
+        public void unmarshal(Element root) throws ParseException {
+            ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
+            for(Element child:children) {
+                String localName = child.getLocalName();
+                if(localName.equals("contentLocationType")) {
+                    contentLocationType = child.getTextContent();
+                }else if(localName.equals("contentLocationValue")) {
+                    contentLocationValue = child.getTextContent();
+                }
+            }                
         }
 
-        public static class PremisContentLocation implements ElementInterface {
-            String contentLocationType;
-            String contentLocationValue;
-
-            @Override
-            public void unmarshal(Element root) throws ParseException {
-                ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
-                for(Element child:children) {
-                    String localName = child.getLocalName();
-                    if(localName.equals("contentLocationType")) {
-                        contentLocationType = child.getTextContent();
-                    }else if(localName.equals("contentLocationValue")) {
-                        contentLocationValue = child.getTextContent();
-                    }
-                }                
+        @Override
+        public void marshal(Element root, Document doc) {
+            if(contentLocationType != null){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"contentLocationType");
+                e.setTextContent(contentLocationType);
+                root.appendChild(e);
             }
-
-            @Override
-            public void marshal(Element e, Document d) {
-                
+            if(contentLocationValue != null){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"contentLocationValue");
+                e.setTextContent(contentLocationValue);
+                root.appendChild(e);
             }
-
-        }            
-    }
-    public static class PremisSignificantProperties {        
+        }
+    } 
+    public static class PremisSignificantProperties implements ElementInterface{        
         String significantPropertiesType;
         String significantPropertiesValue;
         ArrayList<Element>significantPropertiesExtension;
@@ -537,8 +554,40 @@ public class PremisObject implements ElementInterface{
         public void setSignificantPropertiesValue(String significantPropertiesValue) {
             this.significantPropertiesValue = significantPropertiesValue;
         }
+        @Override
+        public void unmarshal(Element root) throws ParseException {
+            
+            ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
+            for(Element child:children) {
+                String localName = child.getLocalName();
+                if(localName.equals("significantPropertiesType")) {
+                    significantPropertiesType = child.getTextContent();
+                }else if(localName.equals("significantPropertiesValue")) {
+                    significantPropertiesValue = child.getTextContent();
+                }else if(localName.equals("significantPropertiesExtension")) {
+                    getSignificantPropertiesExtension().add(child);
+                }
+            }
+        }
+
+        @Override
+        public void marshal(Element root, Document doc) {                    
+            //elements
+            Element t = doc.createElementNS(NS.PREMIS.ns(),"significantPropertiesType");
+            t.setTextContent(significantPropertiesType);
+            root.appendChild(t);
+            
+            if(significantPropertiesValue != null){
+                Element v = doc.createElementNS(NS.PREMIS.ns(),"significantPropertiesValue");
+                v.setTextContent(significantPropertiesValue);
+                root.appendChild(v);
+            }
+            for(Element e:getSignificantPropertiesExtension()){
+                root.appendChild(doc.importNode(e,true));
+            }
+        }
     }
-    public static class PremisCreatingApplication {
+    public static class PremisCreatingApplication implements ElementInterface{
         String creatingApplicationName;
         String creatingApplicationVersion;
         String dateCreatedByApplication;
@@ -581,9 +630,49 @@ public class PremisObject implements ElementInterface{
                 mdSec = new ArrayList<MdSec>();
             }
             return mdSec;
-        }   
+        } 
+        @Override
+        public void unmarshal(Element root) throws ParseException {
+            
+            ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
+            for(Element child:children) {
+                String localName = child.getLocalName();
+                if(localName.equals("creatingApplicationName")) {
+                    creatingApplicationName = child.getTextContent();
+                }else if(localName.equals("creatingApplicationVersion")) {
+                    creatingApplicationVersion = child.getTextContent();
+                }else if(localName.equals("dateCreatedByApplication")) {
+                    dateCreatedByApplication = child.getTextContent();
+                }else if(localName.equals("creatingApplicationExtension")) {
+                    getCreatingApplicationExtension().add(child);
+                }
+            }
+        }
+
+        @Override
+        public void marshal(Element root, Document doc) {           
+            
+            //elements
+            Element n = doc.createElementNS(NS.PREMIS.ns(),"creatingApplicationName");
+            n.setTextContent(creatingApplicationName);
+            root.appendChild(n);
+            
+            if(creatingApplicationVersion != null){
+                Element v = doc.createElementNS(NS.PREMIS.ns(),"creatingApplicationVersion");
+                v.setTextContent(creatingApplicationVersion);
+                root.appendChild(v);
+            }
+            if(dateCreatedByApplication != null){
+                Element d = doc.createElementNS(NS.PREMIS.ns(),"dateCreatedByApplication");
+                d.setTextContent(creatingApplicationVersion);
+                root.appendChild(d);
+            }
+            for(Element appe:getCreatingApplicationExtension()){
+                root.appendChild(doc.importNode(appe,true));
+            }
+        } 
     }
-    public static class PremisInhibitors {
+    public static class PremisInhibitors implements ElementInterface{
         String inhibitorType;
         ArrayList<String>inhibitorTarget;
         String inhibitorKey;
@@ -609,7 +698,41 @@ public class PremisObject implements ElementInterface{
                 inhibitorTarget = new ArrayList<String>();
             }
             return inhibitorTarget;
-        }        
+        }   
+        @Override
+        public void unmarshal(Element root) throws ParseException {
+                        
+            ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
+            for(Element child:children) {
+                String localName = child.getLocalName();
+                if(localName.equals("inhibitorType")) {
+                    inhibitorType = child.getTextContent();
+                }else if(localName.equals("inhibitorTarget")) {
+                    getInhibitorTarget().add(child.getTextContent());                    
+                }else if(localName.equals("inhibitorKey")) {
+                    inhibitorKey = child.getTextContent();                    
+                }
+            }
+        }
+
+        @Override
+        public void marshal(Element root, Document doc) {            
+            
+            //elements
+            Element t = doc.createElementNS(NS.PREMIS.ns(),"inhibitorType");
+            t.setTextContent(inhibitorType);
+            root.appendChild(t);
+            
+            for(String target:getInhibitorTarget()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"inhibitorTarget");
+                e.setTextContent(target);
+                root.appendChild(e);
+            }
+            
+            Element k = doc.createElementNS(NS.PREMIS.ns(),"inhibitorKey");
+            k.setTextContent(inhibitorKey);
+            root.appendChild(k);
+        }
     }
     public static class PremisEnvironment implements ElementInterface{
         String environmentCharacteristic;
@@ -618,8 +741,7 @@ public class PremisObject implements ElementInterface{
         ArrayList<PremisDependency>dependency;
         ArrayList<PremisSoftware>software;
         ArrayList<PremisHardware>hardware;        
-        ArrayList<Element>environmentExtension;
-        ArrayList<MdSec>mdSec;
+        Element environmentExtension;        
 
         public String getEnvironmentCharacteristic() {
             return environmentCharacteristic;
@@ -663,19 +785,15 @@ public class PremisObject implements ElementInterface{
             return hardware;
         }
 
-        public ArrayList<Element> getEnvironmentExtension() {
-            if(environmentExtension == null){
-                environmentExtension = new ArrayList<Element>();
-            }
+        public Element getEnvironmentExtension() {
             return environmentExtension;
         }
 
-        public ArrayList<MdSec> getMdSec() {
-            if(mdSec == null){
-                mdSec = new ArrayList<MdSec>();
-            }
-            return mdSec;
-        }       
+        public void setEnvironmentExtension(Element environmentExtension) {
+            this.environmentExtension = environmentExtension;
+        }
+        
+              
         @Override
         public void unmarshal(Element root) throws ParseException {            
             
@@ -701,7 +819,7 @@ public class PremisObject implements ElementInterface{
                     hard.unmarshal(child);
                     getHardware().add(hard);
                 }else if(localName.equals("environmentExtension")) {                    
-                    getEnvironmentExtension().add(child);
+                    environmentExtension = child;                    
                 }
             }
         }
@@ -716,13 +834,32 @@ public class PremisObject implements ElementInterface{
                 Element epe = doc.createElementNS(NS.PREMIS.ns(),"environmentPurpose");
                 epe.setTextContent(p);
                 root.appendChild(epe);
-            }
-            
+            }            
             for(String n:getEnvironmentNote()){
                 Element ne = doc.createElementNS(NS.PREMIS.ns(),"environmentNote");
                 ne.setTextContent(n);
                 root.appendChild(ne);
             }
+            for(PremisDependency dep:getDependency()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"dependency");
+                dep.marshal(e,doc);
+                root.appendChild(e);
+            }
+            for(PremisSoftware soft:getSoftware()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"software");
+                soft.marshal(e,doc);
+                root.appendChild(e);
+            }
+            for(PremisHardware hard:getHardware()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"software");
+                hard.marshal(e,doc);
+                root.appendChild(e);
+            }
+            if(environmentExtension != null){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"environmentExtension");
+                e.appendChild(doc.importNode(environmentExtension,true));
+                root.appendChild(e);
+            }            
         }
     }
     public static class PremisDependency implements ElementInterface{
@@ -775,48 +912,49 @@ public class PremisObject implements ElementInterface{
             
         }
         
-        public static class PremisDependencyIdentifier implements ElementInterface{
-            String depencyIdentifierType;
-            String depencyIdentifierValue;
+        
+    }
+    public static class PremisDependencyIdentifier implements ElementInterface{
+        String depencyIdentifierType;
+        String depencyIdentifierValue;
 
-            public String getDepencyIdentifierType() {
-                return depencyIdentifierType;
-            }
-            public void setDepencyIdentifierType(String depencyIdentifierType) {
-                this.depencyIdentifierType = depencyIdentifierType;
-            }
-            public String getDepencyIdentifierValue() {
-                return depencyIdentifierValue;
-            }
-            public void setDepencyIdentifierValue(String depencyIdentifierValue) {
-                this.depencyIdentifierValue = depencyIdentifierValue;
-            }
-            @Override
-            public void unmarshal(Element root) throws ParseException {
-                
-                ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
-                for(Element child:children) {
-                    String localName = child.getLocalName();
-                    if(localName.equals("depencyIdentifierType")) {
-                        depencyIdentifierType = child.getTextContent();
-                    }else if(localName.equals("depencyIdentifierValue")) {
-                        depencyIdentifierValue = child.getTextContent();
-                    }
+        public String getDepencyIdentifierType() {
+            return depencyIdentifierType;
+        }
+        public void setDepencyIdentifierType(String depencyIdentifierType) {
+            this.depencyIdentifierType = depencyIdentifierType;
+        }
+        public String getDepencyIdentifierValue() {
+            return depencyIdentifierValue;
+        }
+        public void setDepencyIdentifierValue(String depencyIdentifierValue) {
+            this.depencyIdentifierValue = depencyIdentifierValue;
+        }
+        @Override
+        public void unmarshal(Element root) throws ParseException {
+
+            ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
+            for(Element child:children) {
+                String localName = child.getLocalName();
+                if(localName.equals("depencyIdentifierType")) {
+                    depencyIdentifierType = child.getTextContent();
+                }else if(localName.equals("depencyIdentifierValue")) {
+                    depencyIdentifierValue = child.getTextContent();
                 }
             }
-
-            @Override
-            public void marshal(Element root, Document doc) {                            
-                //elements
-                Element t = doc.createElementNS(NS.PREMIS.ns(),"depencyIdentifierType");
-                t.setTextContent(depencyIdentifierType);
-                root.appendChild(t);
-                
-                Element v = doc.createElementNS(NS.PREMIS.ns(),"depencyIdentifierValue");
-                v.setTextContent(depencyIdentifierValue);
-                root.appendChild(v);
-            }  
         }
+
+        @Override
+        public void marshal(Element root, Document doc) {                            
+            //elements
+            Element t = doc.createElementNS(NS.PREMIS.ns(),"depencyIdentifierType");
+            t.setTextContent(depencyIdentifierType);
+            root.appendChild(t);
+
+            Element v = doc.createElementNS(NS.PREMIS.ns(),"depencyIdentifierValue");
+            v.setTextContent(depencyIdentifierValue);
+            root.appendChild(v);
+        }  
     }
     public static class PremisSoftware implements ElementInterface{
         String swName;
