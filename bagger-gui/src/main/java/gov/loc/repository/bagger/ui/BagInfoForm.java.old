@@ -27,8 +27,6 @@ public final class BagInfoForm extends AbstractForm {
     private JComponent form;
     private AddFieldPanel addFieldPannel;
     private LoadFieldsPanel loadFieldsPanel;
-    
-    JPanel contentPanel;
 
     public LoadFieldsPanel getLoadFieldsPanel() {
         if(loadFieldsPanel == null){
@@ -64,6 +62,7 @@ public final class BagInfoForm extends AbstractForm {
     public void setForm(JComponent form) {
         this.form = form;
     }   
+
     public AddFieldPanel getAddFieldPannel() {
         if(addFieldPannel == null){
             addFieldPannel = new AddFieldPanel();
@@ -73,40 +72,34 @@ public final class BagInfoForm extends AbstractForm {
     public void setAddFieldPannel(AddFieldPanel addFieldPannel) {
         this.addFieldPannel = addFieldPannel;
     }    
-
-    protected JPanel getContentPanel() {
-        if(contentPanel == null){
-            contentPanel = new JPanel(new GridBagLayout());
-            int row = 0;
-            int col = 0;
-            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-
-            //load fields panel
-            contentPanel.add(getLoadFieldsPanel(),gbc);
-
-            // add field panel    	
-            gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-            contentPanel.add(getAddFieldPannel(),gbc);   	
-            gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-            contentPanel.add(new JSeparator(),gbc);    	
-
-            // bag-info input form    	
-            gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
-            contentPanel.add(getForm(),gbc);
-        }
-        return contentPanel;
-    }    
     @Override
     protected JComponent createFormControl() {        
-        return getContentPanel();
+        
+    	JPanel contentPanel = new JPanel(new GridBagLayout());
+    	int row = 0;
+    	int col = 0;
+        GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+       
+        //load fields panel
+        contentPanel.add(getLoadFieldsPanel(),gbc);
+        
+        // add field panel    	
+        gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
+    	contentPanel.add(getAddFieldPannel(),gbc);   	
+    	gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
+    	contentPanel.add(new JSeparator(),gbc);    	
+        
+    	// bag-info input form    	
+    	gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+    	contentPanel.add(getForm(),gbc);
+        
+    	return contentPanel;
     }
     protected JComponent createFormFields() {
-        System.out.println("createFormFields");
-        System.out.println("fieldMap: "+fieldMap);
     	int rowCount = 0;
         ImageIcon requiredIcon = getBagView().getPropertyImage("bag.required.image");
         BagTableFormBuilder formBuilder = new BagTableFormBuilder(getBindingFactory(),requiredIcon);
-        final int index = 2;
+        int index = 2;
 
         formBuilder.row();
         if (fieldMap != null && !fieldMap.isEmpty()){
@@ -128,7 +121,8 @@ public final class BagInfoForm extends AbstractForm {
                         removeButton.setMaximumSize(dimension);
                         removeButton.setOpaque(false);
                         removeButton.setBorderPainted(false);
-                        removeButton.setContentAreaFilled(false);                        
+                        removeButton.setContentAreaFilled(false);
+                        
                         
                         removeButton.addActionListener(new ActionListener(){
                             @Override

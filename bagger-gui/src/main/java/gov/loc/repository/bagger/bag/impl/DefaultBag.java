@@ -97,7 +97,8 @@ public class DefaultBag {
         }
         initializeBilBag();
 
-        bagInfo = new DefaultBagInfo(bilBag);
+        bagInfo = new DefaultBagInfo(bilBag);        
+               
 
         FetchTxt fetchTxt = bilBag.getFetchTxt();
         if (fetchTxt != null && !fetchTxt.isEmpty()) {
@@ -114,8 +115,8 @@ public class DefaultBag {
 
         this.payloadManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;
         this.tagManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;
-
-        this.bagInfo.update(bilBag.getBagInfoTxt());
+        
+        this.bagInfo.updateBagInfoFieldMapFromBilBag(bilBag.getBagInfoTxt());
     }
 
     protected void initializeBilBag() {
@@ -671,7 +672,7 @@ public class DefaultBag {
         isValid(Status.UNKNOWN);
     }
     protected void prepareBilBagInfoIfDirty() {
-        if (dirty) {
+        if(dirty){
             bagInfo.prepareBilBagInfo(bilBag.getBagInfoTxt());
         }
     }   

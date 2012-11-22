@@ -61,7 +61,9 @@ public final class MetsBag extends DefaultBag{
      
     @Override
     public boolean write(Writer bw){        
-        prepareBilBagInfoIfDirty();
+        //herschrijf bag-info.txt!
+        getInfo().prepareBilBagInfo(getBag().getBagInfoTxt());
+        //bereken checksums
         generateManifestFiles();
         
         HashMap<String,ArrayList<String>>map = getInfo().getFieldMap();
@@ -157,8 +159,7 @@ public final class MetsBag extends DefaultBag{
             metsWriter.writeToFile(mets,metsFile);            
             
             //manually add checksum
-            Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());
-            
+            Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());            
             
             Manifest tagManifest = bag.getTagManifest(ta);
             String checksumMets = MessageDigestHelper.generateFixity(metsFile,ta);            
