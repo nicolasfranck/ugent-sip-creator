@@ -26,11 +26,14 @@ public class PremisIO {
         premis.unmarshal(doc.getDocumentElement());
         return premis;
     }
-    public static void write(Premis premis,OutputStream out,boolean pretty) throws ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+    public static void write(Premis premis,OutputStream out,boolean pretty) throws ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException{        
+        XML.DocumentToXML(toDocument(premis),out,pretty);
+    }    
+    public static Document toDocument(Premis premis) throws ParserConfigurationException{
         Document doc = XML.createDocument();
         Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:premis");        
         premis.marshal(e,doc);       
-        doc.appendChild(e);        
-        XML.DocumentToXML(doc,System.out,pretty);
+        doc.appendChild(e);
+        return doc;
     }
 }

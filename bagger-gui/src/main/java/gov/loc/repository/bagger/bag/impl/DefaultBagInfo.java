@@ -29,14 +29,16 @@ public class DefaultBagInfo {
         
         updateBagInfoFieldMapFromBilBag(bagInfoTxt);
        
-        for (String key : bagInfoTxt.keySet()){            
-            BagInfoField infoField = new BagInfoField();
-            infoField.setLabel(key);
-            infoField.setName(key);
-            infoField.setValue(bagInfoTxt.get(key));
-            infoField.isEditable(true);
-            infoField.isEnabled(true);
-            addField(infoField);            
+        for (String key : bagInfoTxt.keySet()){ 
+            for(String value:bagInfoTxt.getList(key)){
+                BagInfoField infoField = new BagInfoField();
+                infoField.setLabel(key);
+                infoField.setName(key);
+                infoField.setValue(value);
+                infoField.isEditable(true);
+                infoField.isEnabled(true);
+                addField(infoField);            
+            }
         }		
     }	
     private void updateBagInfoFieldMapFromBilBag(BagInfoTxt bagInfoTxt) {
@@ -65,10 +67,11 @@ public class DefaultBagInfo {
         }        
     }   
     public void update(Map<String,ArrayList<String>> map) {
+        
         Set<String> keys = map.keySet();
         for (Iterator<String> iter = keys.iterator(); iter.hasNext();) {
             String key = (String) iter.next();
-            ArrayList<String> value = (ArrayList<String>) map.get(key);            
+            ArrayList<String> value = (ArrayList<String>) map.get(key);                        
             fieldMap.put(key,value);                            
         }
     }	

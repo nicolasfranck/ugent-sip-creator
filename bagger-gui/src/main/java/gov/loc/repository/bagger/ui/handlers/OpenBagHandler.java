@@ -1,8 +1,11 @@
 package gov.loc.repository.bagger.ui.handlers;
 
+import com.anearalone.mets.AmdSec;
+import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.InfoInputPane;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
@@ -14,6 +17,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
 import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.exceptions.BagNoBagDirException;
 import ugent.bagger.exceptions.BagUnknownFormatException;
@@ -22,6 +26,8 @@ import ugent.bagger.exceptions.FileNotWritableException;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
+import ugent.premis.Premis;
+import ugent.premis.PremisIO;
 
 public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
@@ -90,9 +96,7 @@ public class OpenBagHandler extends AbstractAction {
             );            
 
             bagView.getInfoFormsPane().setBagVersion(bagView.getBag().getVersion());
-            
-            //Nicolas Franck: Profile uitschakelen
-            //bagView.getInfoFormsPane().setProfile(bagView.getBag().getProfile().getName());       
+                        
             String fileName = file.getAbsolutePath();
             bagView.getInfoFormsPane().setBagName(fileName);
 
@@ -164,9 +168,20 @@ public class OpenBagHandler extends AbstractAction {
 
             Mets mets = bagitMets.onOpenBag(bagView.getBag());
             
-            InfoInputPane bagInfoInputPane = bagView.getInfoFormsPane().getInfoInputPane();
+            bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);           
             
-            bagInfoInputPane.resetMets(mets);
+            
+            //Nicolas Franck: set eventLog
+            for(AmdSec amdSec:mets.getAmdSec()){
+                if(amdSec.getID() != null && amdSec.getID().equals("BAGIT_EVENT_LOG")){
+                    if(!amdSec.getDigiprovMD().isEmpty()){
+                        setEventLog(bagView.getBag(),mets,amdSec,amdSec.getDigiprovMD().get(0));
+                    }else if(!amdSec.getTechMD().isEmpty()){
+                        setEventLog(bagView.getBag(),mets,amdSec,amdSec.getTechMD().get(0));
+                    }
+                    break;
+                }
+            }
             
         }catch(FileNotWritableException e){
             SwingUtils.ShowError(
@@ -204,4 +219,22 @@ public class OpenBagHandler extends AbstractAction {
         
         SwingUtils.ShowDone();
     }        
+    protected void setEventLog(MetsBag metsBag,Mets mets,AmdSec amdSec,MdSec mdSec){
+        try{
+            if(
+                mdSec != null && mdSec.getMdWrap() != null && 
+                mdSec.getMdWrap().getXmlData() != null && !mdSec.getMdWrap().getXmlData().isEmpty()
+            ){                
+                Element e = mdSec.getMdWrap().getXmlData().get(0);
+                Premis premis = new Premis();
+                premis.unmarshal(e);
+                
+                metsBag.setEventLog(premis);               
+                //verwijder uit zichtbare lijst
+                mets.getAmdSec().remove(amdSec);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

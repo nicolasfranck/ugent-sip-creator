@@ -260,12 +260,7 @@ public final class InfoFormsPane extends JPanel {
     	getInfoInputPane().invalidate();
     }
 
-    public void updateInfoFormsPane(boolean enabled) {        
-        getInfoInputPane().setBagInfoForm(null);
-        getInfoInputPane().setComponentAt(1,
-            new JScrollPane(getInfoInputPane().getBagInfoForm().getControl())
-        );        
-        getInfoInputPane().validate();        
-        validate();
+    public void updateInfoFormsPane(boolean enabled) {                
+        getInfoInputPane().repaintBagInfo();        
     }     
 }

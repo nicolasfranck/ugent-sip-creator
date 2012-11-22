@@ -74,6 +74,13 @@ public final class BagInfoForm extends AbstractForm {
     }    
     @Override
     protected JComponent createFormControl() {
+        
+        Set<String>keys = fieldMap.keySet();
+        for(String key:keys){
+            for(String value:fieldMap.get(key)){
+                System.out.println("key: "+key+", value: "+value);
+            }
+        }
     	
     	JPanel contentPanel = new JPanel(new GridBagLayout());
     	int row = 0;
@@ -110,7 +117,7 @@ public final class BagInfoForm extends AbstractForm {
                     ArrayList<String>values = fieldMap.get(key);                 
                     
                     for(int i = 0;i < values.size();i++){
-                        String value = values.get(i);
+                        final String value = values.get(i);
                         
                         formBuilder.row();
                         rowCount++;
@@ -123,12 +130,15 @@ public final class BagInfoForm extends AbstractForm {
                         removeButton.setBorderPainted(false);
                         removeButton.setContentAreaFilled(false);
                         
-                        final int n = i;
+                        
                         removeButton.addActionListener(new ActionListener(){
                             @Override
-                            public void actionPerformed(ActionEvent ae) {
-                                if(fieldMap.containsKey(key)){
-                                    fieldMap.get(key).remove(n);
+                            public void actionPerformed(ActionEvent ae) {                                                                
+                                if(fieldMap.containsKey(key)){                                    
+                                    fieldMap.get(key).remove(value);
+                                    if(fieldMap.get(key).isEmpty()){
+                                        fieldMap.remove(key);
+                                    }
                                 }
                                 getBagView().getInfoFormsPane().updateInfoFormsPane(true);
                             }                            

@@ -1,8 +1,10 @@
 package ugent.bagger.bagitmets;
 
+import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.FileSec;
 import com.anearalone.mets.LocatorElement;
 import com.anearalone.mets.MdSec;
+import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.SharedEnums;
 import com.anearalone.mets.StructMap;
@@ -16,6 +18,9 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -31,6 +36,10 @@ import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.DefaultMetsCallback;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
+import ugent.premis.Premis;
+import ugent.premis.PremisEvent;
+import ugent.premis.PremisIO;
+import ugent.premis.PremisObject;
 
 /**
  *
@@ -43,8 +52,7 @@ public class DefaultBagItMets extends BagItMets{
     
     @Override
     public Mets onOpenBag(MetsBag metsBag) {
-        Bag bag = metsBag.getBag();      
-        
+        Bag bag = metsBag.getBag();
         
         String pathMets;            
         Mets mets = null;  
@@ -63,6 +71,7 @@ public class DefaultBagItMets extends BagItMets{
         if(mets == null){            
             mets = new Mets();
         }
+        
         return mets;
     }
     private static Comparator defaultBagFileSorter =  new Comparator<BagFile>(){
@@ -78,30 +87,140 @@ public class DefaultBagItMets extends BagItMets{
         BagView bagView = BagView.getInstance();
         Bag bag = metsBag.getBag();
         
+        
+        //manifest informatie
         Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm());            
         SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(metsBag.getTagManifestAlgorithm());         
         Manifest.Algorithm payloadManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getPayloadManifestAlgorithm());            
         SharedEnums.CHECKSUMTYPE payloadManifestChecksumType = resolveChecksumType(metsBag.getPayloadManifestAlgorithm()); 
         
         Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
-        Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);
+        Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);        
         
-        //verschil oud en nieuw berekenen
-        ArrayList<String>oldFileList = metsBag.getOldFileList();
-        ArrayList<String>newFileList = (ArrayList<String>) metsBag.getPayloadPaths();
-        newFileList.addAll(metsBag.getTagFilePaths());
+        //premis event log        
+        Premis premis = metsBag.getEventLog();
+        premis = premis == null ? new Premis():premis;
+        premis.getObject().clear();
         
-        ArrayDiff<String>diff = ArrayUtils.diff(oldFileList,newFileList);
-        System.out.println("added: "+diff.getAdded().size()+", deleted: "+diff.getDeleted().size());
-        System.out.println("added: ");
-        for(String n:diff.getAdded()){
-            System.out.println("\t"+n);
+        PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.representation);
+        pobject.setVersion("2.0");
+        pobject.setXmlID("BAGIT_PREMIS_OBJECT");
+        
+        PremisObject.PremisObjectIdentifier id = new PremisObject.PremisObjectIdentifier();
+        id.setObjectIdentifierType("name");
+        id.setObjectIdentifierValue(metsBag.getRootDir().getName());
+        pobject.getObjectIdentifier().add(id);
+        
+        PremisObject.PremisObjectCharacteristics chars = new PremisObject.PremisObjectCharacteristics();
+        chars.setCompositionLevel(0);        
+        chars.setSize(0);
+        
+        PremisObject.PremisFormat format = new PremisObject.PremisFormat();
+        format.setFormatNote("bagit");;
+        
+        chars.getFormat().add(format);
+        pobject.getObjectCharacteristics().add(chars);
+        premis.getObject().add(pobject);        
+        
+        DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        String formattedDate = dformat.format(new Date());        
+        String dateId = formattedDate.replaceAll("[^a-zA-Z0-9]+","-");
+        
+        //eerste keer (indien oude bagit voor het eerst hier wordt ingeladen, dan is er nog geen eventlog)
+        //en kan er bijgevolg geen verschil berekent worden
+        if(premis.getEvent().isEmpty()){
+            PremisEvent ev = new PremisEvent();
+            PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
+            evid.setEventIdentifierType("dateTime");
+            evid.setEventIdentifierValue(dateId);
+            ev.setEventIdentifier(evid);
+            ev.setXmlID(dateId);
+            ev.setVersion("2.0");
+            ev.setEventType("files added");
+            
+            ev.setEventDateTime(formattedDate);            
+            ev.setEventDetail("files added from bagit (payloads of tagfiles)");
+            
+            for(String file:metsBag.getPayloadPaths()){
+                PremisEvent.PremisLinkingObjectIdentifier oid = new PremisEvent.PremisLinkingObjectIdentifier();
+                oid.setLinkingObjectIdentifierType("URL");
+                oid.setLinkingObjectIdentifierValue(file);
+                ev.getLinkingObjectIdentifier().add(oid);
+            }
+            for(String file:metsBag.getPayloadPaths()){
+                PremisEvent.PremisLinkingObjectIdentifier oid = new PremisEvent.PremisLinkingObjectIdentifier();
+                oid.setLinkingObjectIdentifierType("URL");
+                oid.setLinkingObjectIdentifierValue(file);
+                ev.getLinkingObjectIdentifier().add(oid);
+            }
+            premis.getEvent().add(ev);
         }
-        System.out.println("deleted: ");
-        for(String n:diff.getDeleted()){
-            System.out.println("\t"+n);
+        //er is wel een eventLog
+        else{
+            //verschil oud en nieuw berekenen
+            ArrayList<String>oldFileList = metsBag.getOldFileList();
+            ArrayList<String>newFileList = (ArrayList<String>) metsBag.getPayloadPaths();
+            newFileList.addAll(metsBag.getTagFilePaths());
+
+            ArrayDiff<String>diff = ArrayUtils.diff(oldFileList,newFileList);
+            
+            if(!diff.getAdded().isEmpty()){
+                PremisEvent ev = new PremisEvent();
+                PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
+                evid.setEventIdentifierType("dateTime");
+                evid.setEventIdentifierValue(dateId);
+                ev.setEventIdentifier(evid);
+                ev.setXmlID(dateId);
+                ev.setVersion("2.0");
+                ev.setEventType("files added");
+                ev.setEventDateTime(formattedDate);            
+                ev.setEventDetail("files added from bagit (payloads of tagfiles)");
+                for(String file:diff.getAdded()){
+                    PremisEvent.PremisLinkingObjectIdentifier oid = new PremisEvent.PremisLinkingObjectIdentifier();
+                    oid.setLinkingObjectIdentifierType("URL");
+                    oid.setLinkingObjectIdentifierValue(file);
+                    ev.getLinkingObjectIdentifier().add(oid);
+                }            
+                premis.getEvent().add(ev);
+            }
+            if(!diff.getDeleted().isEmpty()){
+                PremisEvent ev = new PremisEvent();
+                PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
+                evid.setEventIdentifierType("dateTime");
+                evid.setEventIdentifierValue(dateId);
+                ev.setEventIdentifier(evid);
+                ev.setXmlID(dateId);
+                ev.setVersion("2.0");
+                ev.setEventType("files deleted");
+                ev.setEventDateTime(formattedDate);            
+                ev.setEventDetail("files deleted from bagit (payloads of tagfiles)");
+                for(String file:diff.getDeleted()){
+                    PremisEvent.PremisLinkingObjectIdentifier oid = new PremisEvent.PremisLinkingObjectIdentifier();
+                    oid.setLinkingObjectIdentifierType("URL");
+                    oid.setLinkingObjectIdentifierValue(file);
+                    ev.getLinkingObjectIdentifier().add(oid);
+                }            
+                premis.getEvent().add(ev);
+            }
         }
         
+        try{
+            AmdSec amdSec = new AmdSec();
+            amdSec.setID("BAGIT_EVENT_LOG");
+            MdSec mdSec = new MdSec("BAGIT_EVENT_LOG_PREMIS");
+            MdWrap mdWrap = new MdWrap(MdSec.MDTYPE.PREMIS);
+            mdWrap.setMDTYPEVERSION("2.0");
+            mdWrap.getXmlData().add(PremisIO.toDocument(premis).getDocumentElement());
+            mdSec.setMdWrap(mdWrap);
+            amdSec.getDigiprovMD().add(mdSec);
+            mets.getAmdSec().add(amdSec);         
+        
+            //test
+            PremisIO.write(premis,new FileOutputStream(new File("/tmp/premis.xml")),true);
+        
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         
         
         //files
@@ -137,7 +256,9 @@ public class DefaultBagItMets extends BagItMets{
                 
                 //SIZE
                 FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                                                            
-                metsFile.setSIZE(bagFile.getSize());                    
+                metsFile.setSIZE(bagFile.getSize()); 
+                
+                
 
                 //MIMETYPE
                 String mimeType;                
@@ -157,7 +278,8 @@ public class DefaultBagItMets extends BagItMets{
                 
                 //CHECKSUM en CHECKSUMTYPE
                 metsFile.setCHECKSUM(checksumFile);
-                metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                                            
+                metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                                                                          
+                
                 
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
@@ -364,7 +486,10 @@ public class DefaultBagItMets extends BagItMets{
 
         }catch(Exception e){
             e.printStackTrace();            
-        }            
+        }          
+        
+        
+        
         return mets;
     }
 }

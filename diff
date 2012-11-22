@@ -49,4 +49,6 @@
     before trying to open the file: file checks (readable and writable!)
     after bag initialisation: translate error messages
 - ApplicationContextUtil: FileChooser writable now!
-- gov.loc.repository.bagger.util removed (no modules used any more)
+- gov.loc.repository.bagger.util removed (used by no modules used any more)
+- gov.loc.repository.bagger.ui.FileListing removed (used by no modules used any more)
+- gov.loc.repository.bagger.domain.JSonBagger removed (no profile anymore!)

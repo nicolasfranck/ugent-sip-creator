@@ -6,7 +6,6 @@ import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.Manifest;
 import gov.loc.repository.bagit.Manifest.Algorithm;
-import gov.loc.repository.bagit.utilities.FilenameHelper;
 import gov.loc.repository.bagit.utilities.MessageDigestHelper;
 import gov.loc.repository.bagit.writer.Writer;
 import java.io.BufferedWriter;
@@ -14,21 +13,29 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
+import ugent.premis.Premis;
 
 /**
  *
  * @author nicolas
  */
-public class MetsBag extends DefaultBag{
-    private BagItMets bagItMets;      
-    private ArrayList<String>oldFileList;
+public final class MetsBag extends DefaultBag{
+    BagItMets bagItMets;      
+    Premis eventLog;
+    ArrayList<String>oldFileList;
 
+    public Premis getEventLog() {
+        return eventLog;
+    }
+    public void setEventLog(Premis eventLog) {
+        this.eventLog = eventLog;
+    }    
     public ArrayList<String> getOldFileList() {
         if(oldFileList == null){
             oldFileList = new ArrayList<String>();
-        }
+        }        
         return oldFileList;
     }
     public MetsBag() {          
@@ -56,6 +63,13 @@ public class MetsBag extends DefaultBag{
     public boolean write(Writer bw){        
         prepareBilBagInfoIfDirty();
         generateManifestFiles();
+        
+        HashMap<String,ArrayList<String>>map = getInfo().getFieldMap();
+        for(String key:map.keySet()){
+            for(String value:map.get(key)){
+                System.out.println("key: "+key+", value: "+value);
+            }
+        }
         
         Bag bag = getBag();        
         

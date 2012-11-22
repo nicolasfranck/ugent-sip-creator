@@ -138,40 +138,39 @@ public class PremisEvent implements ElementInterface{
         root.setAttribute("xmlID",xmlID);
         root.setAttribute("version",version);
         
+        
+        Element evi = doc.createElementNS(NS.PREMIS.ns(),"premis:eventIdentifier");
         if(eventIdentifier != null){
-            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:eventIdentifier");
-            eventIdentifier.marshal(e,doc);
-            root.appendChild(e);
-        }
-        if(eventType != null){
-            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:eventType");
-            e.setTextContent(eventType);
-            root.appendChild(e);
-        }
-        if(eventDateTime != null){
-            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:eventDateTime");
-            e.setTextContent(eventDateTime);
-            root.appendChild(e);
-        }
-        if(eventDetail != null){
-            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:eventDetail");
-            e.setTextContent(eventDetail);
-            root.appendChild(e);
-        }
+            eventIdentifier.marshal(evi,doc);
+        }            
+        root.appendChild(evi);        
+        
+        Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:eventType");
+        e.setTextContent(eventType);
+        root.appendChild(e);        
+        
+        Element datee = doc.createElementNS(NS.PREMIS.ns(),"premis:eventDateTime");       
+        datee.setTextContent(eventDateTime);
+        root.appendChild(datee);        
+        
+        Element dete = doc.createElementNS(NS.PREMIS.ns(),"premis:eventDetail");
+        dete.setTextContent(eventDetail);
+        root.appendChild(dete);
+        
         for(PremisEventOutcomeInformation info:getEventOutcomeInformation()){
-            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:eventOutcomeInformation");
-            info.marshal(e,doc);
-            root.appendChild(e);
+            Element ie = doc.createElementNS(NS.PREMIS.ns(),"premis:eventOutcomeInformation");
+            info.marshal(ie,doc);
+            root.appendChild(ie);
         }
         for(PremisLinkingAgentIdentifier laid:getLinkingAgentIdentifier()){
-            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:linkingAgentIdentifier");
-            laid.marshal(e,doc);
-            root.appendChild(e);
+            Element le = doc.createElementNS(NS.PREMIS.ns(),"premis:linkingAgentIdentifier");
+            laid.marshal(le,doc);
+            root.appendChild(le);
         }
         for(PremisLinkingObjectIdentifier loid:getLinkingObjectIdentifier()){
-            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:linkingObjectIdentifier");
-            loid.marshal(e,doc);
-            root.appendChild(e);
+            Element le = doc.createElementNS(NS.PREMIS.ns(),"premis:linkingObjectIdentifier");
+            loid.marshal(le,doc);
+            root.appendChild(le);
         }
     }
 

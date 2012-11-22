@@ -1,6 +1,8 @@
 package gov.loc.repository.bagger.app;
 
+import java.awt.Dimension;
 import java.util.Set;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +20,19 @@ import ugent.bagger.helper.SwingUtils;
 public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
     private static void init(){        
+        //set dimension
+        //Nicolas Franck: van belang dat dit LATER gebeurd (anders klapt frame dicht)        
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                
+                SwingUtils.getFrame().setPreferredSize(dim);
+                SwingUtils.getFrame().setBounds(0,0,(int)dim.getWidth(),(int)dim.getHeight());                
+                SwingUtils.getFrame().pack();
+            }            
+        });
+        
+        //set ui-manager keys
         Set<String>keys = SwingUtils.getUIManagerMessages().keySet();
         for(String key:keys){
             UIManager.put(key,SwingUtils.getUIManagerMessages().get(key));
