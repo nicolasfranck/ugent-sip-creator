@@ -2,11 +2,10 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-import gov.loc.repository.bagger.ui.util.LayoutUtil;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,15 +23,35 @@ public final class BagInfoForm extends AbstractForm {
     public static final String INFO_FORM_PAGE = "infoPage";
     private JComponent focusField;    
     private HashMap<String,ArrayList<String>> fieldMap;
-    private JComponent form;
-    private AddFieldPanel addFieldPannel;
+    private JComponent fieldsPanel;
+    private AddFieldPanel addFieldPanel;
     private LoadFieldsPanel loadFieldsPanel;
-    
+    JScrollPane fieldsScrollPane;
     JPanel contentPanel;
+    final int FORM_WIDTH = 800;
 
+    public JScrollPane getFieldsScrollPane() {
+        if(fieldsScrollPane == null){
+            fieldsScrollPane = new JScrollPane(getFieldsPanel());
+            fieldsScrollPane.getViewport().setOpaque(false);
+            fieldsScrollPane.setWheelScrollingEnabled(true);   
+            fieldsScrollPane.setBorder(BorderFactory.createLineBorder(Color.RED));
+            fieldsScrollPane.setPreferredSize(new Dimension(FORM_WIDTH,500));
+            fieldsScrollPane.setMaximumSize(new Dimension(FORM_WIDTH,500));
+            fieldsScrollPane.setAlignmentX(Container.LEFT_ALIGNMENT);
+        }
+        return fieldsScrollPane;
+    }
+    public void setFieldsScrollPane(JScrollPane fieldsScrollPane) {
+        this.fieldsScrollPane = fieldsScrollPane;
+    }    
     public LoadFieldsPanel getLoadFieldsPanel() {
         if(loadFieldsPanel == null){
-            loadFieldsPanel = new LoadFieldsPanel();
+            loadFieldsPanel = new LoadFieldsPanel();                        
+            loadFieldsPanel.setPreferredSize(new Dimension(FORM_WIDTH,30));            
+            loadFieldsPanel.setMaximumSize(new Dimension(FORM_WIDTH,30));
+            loadFieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            loadFieldsPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
         return loadFieldsPanel;
     }
@@ -55,44 +74,40 @@ public final class BagInfoForm extends AbstractForm {
     public DefaultBag getBag(){
         return getBagView().getBag();
     }
-    public JComponent getForm() {
-        if(form == null){
-            form = createFormFields();
+    public JComponent getFieldsPanel() {
+        if(fieldsPanel == null){
+            fieldsPanel = createFormFields();     
+            fieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         }
-        return form;
+        return fieldsPanel;
     }
-    public void setForm(JComponent form) {
-        this.form = form;
+    public void setFieldsPanel(JComponent fieldsPanel) {
+        this.fieldsPanel = fieldsPanel;
     }   
-    public AddFieldPanel getAddFieldPannel() {
-        if(addFieldPannel == null){
-            addFieldPannel = new AddFieldPanel();
+    public AddFieldPanel getAddFieldPanel() {
+        if(addFieldPanel == null){
+            addFieldPanel = new AddFieldPanel();            
+            addFieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            addFieldPanel.setPreferredSize(new Dimension(FORM_WIDTH,30));            
+            addFieldPanel.setMaximumSize(new Dimension(FORM_WIDTH,30));
+            addFieldPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
-        return addFieldPannel;
+        return addFieldPanel;
     }
     public void setAddFieldPannel(AddFieldPanel addFieldPannel) {
-        this.addFieldPannel = addFieldPannel;
+        this.addFieldPanel = addFieldPannel;
     }    
 
     protected JPanel getContentPanel() {
         if(contentPanel == null){
-            contentPanel = new JPanel(new GridBagLayout());
-            int row = 0;
-            int col = 0;
-            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-
-            //load fields panel
-            contentPanel.add(getLoadFieldsPanel(),gbc);
-
-            // add field panel    	
-            gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-            contentPanel.add(getAddFieldPannel(),gbc);   	
-            gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-            contentPanel.add(new JSeparator(),gbc);    	
-
-            // bag-info input form    	
-            gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
-            contentPanel.add(getForm(),gbc);
+            contentPanel = new JPanel();
+            BoxLayout layout = new BoxLayout(contentPanel,BoxLayout.PAGE_AXIS);       
+            contentPanel.setLayout(layout);            
+            contentPanel.add(getLoadFieldsPanel());
+            contentPanel.add(getAddFieldPanel());            
+            contentPanel.add(getFieldsScrollPane());
+            contentPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
+            contentPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE,4));
         }
         return contentPanel;
     }    
@@ -100,14 +115,20 @@ public final class BagInfoForm extends AbstractForm {
     protected JComponent createFormControl() {        
         return getContentPanel();
     }
-    protected JComponent createFormFields() {
-        System.out.println("createFormFields");
-        System.out.println("fieldMap: "+fieldMap);
+    public void resetFields(){        
+        getContentPanel().remove(getFieldsScrollPane());
+        setFieldsScrollPane(null);
+        setFieldsPanel(null);
+        getContentPanel().add(getFieldsScrollPane());
+        getContentPanel().revalidate();
+    }
+    protected JComponent createFormFields() {       
+        
     	int rowCount = 0;
         ImageIcon requiredIcon = getBagView().getPropertyImage("bag.required.image");
         BagTableFormBuilder formBuilder = new BagTableFormBuilder(getBindingFactory(),requiredIcon);
         final int index = 2;
-
+        
         formBuilder.row();
         if (fieldMap != null && !fieldMap.isEmpty()){
             Set<String> keys = fieldMap.keySet();
@@ -138,8 +159,13 @@ public final class BagInfoForm extends AbstractForm {
                                     if(fieldMap.get(key).isEmpty()){
                                         fieldMap.remove(key);
                                     }
-                                }
-                                getBagView().getInfoFormsPane().updateInfoFormsPane(true);
+                                }                                
+                                SwingUtilities.invokeLater(new Runnable(){
+                                    @Override
+                                    public void run() {
+                                        resetFields();
+                                    }                                    
+                                });
                             }                            
                         });
                         
@@ -154,7 +180,7 @@ public final class BagInfoForm extends AbstractForm {
                                 textarea.setEnabled(true);                             
                                 ((NoTabTextArea) textarea).setText(value);
                                 ((NoTabTextArea) textarea).setBorder(new EmptyBorder(1,1,1,1));
-                                ((NoTabTextArea) textarea).setLineWrap(true);
+                                ((NoTabTextArea) textarea).setLineWrap(true);                                
                                 if (rowCount == 1) {
                                     focusField = textarea;
                                 }
@@ -177,14 +203,14 @@ public final class BagInfoForm extends AbstractForm {
                 }
             }
         }
-        return formBuilder.getForm();                
+        return formBuilder.getForm();
     }      
     private Component[] getFieldComponents() {
-       return getForm().getComponents();
+       return getFieldsPanel().getComponents();
     }
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        getAddFieldPannel().setEnabled(enabled);
+        getAddFieldPanel().setEnabled(enabled);
     }
 }

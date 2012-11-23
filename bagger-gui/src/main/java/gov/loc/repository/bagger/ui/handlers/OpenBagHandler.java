@@ -7,7 +7,6 @@ import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.InfoInputPane;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
@@ -27,7 +26,6 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.premis.Premis;
-import ugent.premis.PremisIO;
 
 public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
@@ -159,8 +157,11 @@ public class OpenBagHandler extends AbstractAction {
             bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);        
             bagView.updateOpenBag();   
 
-            //Nicolas Franck: bag-info velden inladen in form blijkbaar niet automatisch (wel na invullen 1ste nieuwe veld)
-            bagView.getInfoFormsPane().updateInfoFormsPane(true);
+            //Nicolas Franck: bag-info velden inladen in form blijkbaar niet automatisch (wel na invullen 1ste nieuwe veld)            
+            bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().setFieldMap(
+                bagView.getBag().getInfo().getFieldMap()
+            );
+            bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
 
             //Nicolas Franck: load mets
 

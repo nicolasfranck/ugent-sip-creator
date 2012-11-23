@@ -60,10 +60,8 @@ public class BagTableFormBuilder extends TableFormBuilder {
         } else if (!labelAttributes.contains(TableLayoutBuilder.VALIGN)) {
             labelAttributes += " " + VALIGN_TOP;
         }
-        //Binding binding = createBinding(fieldName, textArea);
-        JComponent wrappedComponent = textArea;
-        // TODO: using the JScrollPane component causes the validation 'x' to disappear
-//        JComponent wrappedComponent = new JScrollPane(textArea)
+        
+        JComponent wrappedComponent = textArea;        
         return addBinding(fieldName, isRequired, label, textArea, wrappedComponent, checkbox, attributes, labelAttributes);
     }
 
@@ -102,10 +100,8 @@ public class BagTableFormBuilder extends TableFormBuilder {
             reqComp = b;
         }
         
-        //test!
-        //reqComp.setFocusable(false);
     	layoutBuilder.cell(reqComp, "colSpec=left:pref:noGrow");
-        layoutBuilder.cell(component, "colSpec=fill:pref:grow");
+        layoutBuilder.cell(component, "colSpec=fill:pref:noGrow");
         layoutBuilder.labelGapCol();
         layoutBuilder.cell(removeButton, "colSpec=left:pref:noGrow");
         layoutBuilder.labelGapCol();

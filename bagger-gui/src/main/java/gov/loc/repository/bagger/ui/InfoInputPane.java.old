@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui;
 
 import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.Mets;
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
@@ -25,11 +24,11 @@ public final class InfoInputPane extends JTabbedPane {
     private Mets mets;
     private MetsPanel metsPanel;
     private AmdSecsPanel amdSecsPanel;
-    private JScrollPane bagInfoComponentScrollPane = new JScrollPane();
+    private JScrollPane bagInfoComponentScrollPane;
 
     public JScrollPane getBagInfoComponentScrollPane() {
         if(bagInfoComponentScrollPane == null){
-            bagInfoComponentScrollPane = new JScrollPane();
+            bagInfoComponentScrollPane = new JScrollPane(getBagInfoForm().getControl());
             bagInfoComponentScrollPane.setBorder(null);
             bagInfoComponentScrollPane.getViewport().setOpaque(false);
         }
@@ -129,7 +128,7 @@ public final class InfoInputPane extends JTabbedPane {
     public void populateForms(boolean enabled){    	                    	
         createTabbedUiComponentsWithForms();        
     }
-    public void repaintBagInfo(){
+    public void repaintBagInfo(){        
         setBagInfoForm(null);
         JComponent bagInfoComponent = getBagInfoForm().getControl();
         bagInfoComponent.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
@@ -143,16 +142,12 @@ public final class InfoInputPane extends JTabbedPane {
         removeAll();     
         validate();        
         
-        //add tabs
-        
-        addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());        
-                
-        
+        //add tabs        
+        addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());                        
         addTab(
             Context.getMessage("infoInputPane.tab.details"),
-            bagInfoComponentScrollPane
-        );                        
-        
+            getBagInfoComponentScrollPane()
+        );                                
         addTab("amdSecs",getAmdSecsPanel());
         
     }
@@ -178,12 +173,8 @@ public final class InfoInputPane extends JTabbedPane {
         getBagInfoForm().getControl().invalidate();        
     	invalidate();
     	repaint();        
-    }
-    
-    public void updateProject(){        
-    	getBagView().getInfoFormsPane().updateInfoFormsPane(true);        
-    }
+    }    
     private void updateBagInfo(){                      
-        getMetsBag().updateBagInfo(getBagInfoForm().getBagInfoMap());        
+        getMetsBag().updateBagInfo(getBagInfoForm().getFieldMap());        
     }    
 }

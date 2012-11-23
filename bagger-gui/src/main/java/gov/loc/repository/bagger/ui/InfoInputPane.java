@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui;
 
 import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.Mets;
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
@@ -24,20 +23,9 @@ public final class InfoInputPane extends JTabbedPane {
     private HierarchicalFormModel infoFormModel;    
     private Mets mets;
     private MetsPanel metsPanel;
-    private AmdSecsPanel amdSecsPanel;
-    private JScrollPane bagInfoComponentScrollPane;
+    private AmdSecsPanel amdSecsPanel;   
 
-    public JScrollPane getBagInfoComponentScrollPane() {
-        if(bagInfoComponentScrollPane == null){
-            bagInfoComponentScrollPane = new JScrollPane(getBagInfoForm().getControl());
-            bagInfoComponentScrollPane.setBorder(null);
-            bagInfoComponentScrollPane.getViewport().setOpaque(false);
-        }
-        return bagInfoComponentScrollPane;
-    }
-    public void setBagInfoComponentScrollPane(JScrollPane bagInfoComponentScrollPane) {
-        this.bagInfoComponentScrollPane = bagInfoComponentScrollPane;
-    }    
+    
     public AmdSecsPanel getAmdSecsPanel() {
         if(amdSecsPanel == null){
             amdSecsPanel = new AmdSecsPanel((ArrayList<AmdSec>)getMets().getAmdSec());
@@ -129,13 +117,6 @@ public final class InfoInputPane extends JTabbedPane {
     public void populateForms(boolean enabled){    	                    	
         createTabbedUiComponentsWithForms();        
     }
-    public void repaintBagInfo(){        
-        setBagInfoForm(null);
-        JComponent bagInfoComponent = getBagInfoForm().getControl();
-        bagInfoComponent.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
-        getBagInfoComponentScrollPane().setViewportView(bagInfoComponent);
-        getBagInfoComponentScrollPane().validate();
-    }
     // Create a tabbed pane for the information forms and checkbox panel
     private void createTabbedUiComponentsWithForms() {                
         
@@ -143,16 +124,12 @@ public final class InfoInputPane extends JTabbedPane {
         removeAll();     
         validate();        
         
-        //add tabs
-        
-        addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());        
-        
-        
+        //add tabs        
+        addTab(ApplicationContextUtil.getMessage("bagView.metsTab.label"),getMetsPanel());                        
         addTab(
-            Context.getMessage("infoInputPane.tab.details"),
-            getBagInfoComponentScrollPane()
-        );                        
-        
+            Context.getMessage("infoInputPane.tab.details"),            
+            getBagInfoForm().getControl()
+        );                                
         addTab("amdSecs",getAmdSecsPanel());
         
     }
@@ -178,11 +155,7 @@ public final class InfoInputPane extends JTabbedPane {
         getBagInfoForm().getControl().invalidate();        
     	invalidate();
     	repaint();        
-    }
-    
-    public void updateProject(){        
-    	getBagView().getInfoFormsPane().updateInfoFormsPane(true);        
-    }
+    }    
     private void updateBagInfo(){                      
         getMetsBag().updateBagInfo(getBagInfoForm().getFieldMap());        
     }    

@@ -258,5 +258,9 @@ public final class InfoFormsPane extends JPanel {
     	getInfoInputPane().populateForms(false);
     	getInfoInputPane().enableForms(false);
     	getInfoInputPane().invalidate();
+    }
+
+    public void updateInfoFormsPane(boolean enabled) {                
+        getInfoInputPane().repaintBagInfo();        
     }     
 }

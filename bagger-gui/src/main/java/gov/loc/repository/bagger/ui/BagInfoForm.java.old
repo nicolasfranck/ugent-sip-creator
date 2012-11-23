@@ -24,9 +24,11 @@ public final class BagInfoForm extends AbstractForm {
     public static final String INFO_FORM_PAGE = "infoPage";
     private JComponent focusField;    
     private HashMap<String,ArrayList<String>> fieldMap;
-    private JComponent form;
+    private JComponent fieldsPanel;
     private AddFieldPanel addFieldPannel;
     private LoadFieldsPanel loadFieldsPanel;
+    
+    JPanel contentPanel;
 
     public LoadFieldsPanel getLoadFieldsPanel() {
         if(loadFieldsPanel == null){
@@ -53,16 +55,15 @@ public final class BagInfoForm extends AbstractForm {
     public DefaultBag getBag(){
         return getBagView().getBag();
     }
-    public JComponent getForm() {
-        if(form == null){
-            form = createFormFields();
+    public JComponent getFieldsPanel() {
+        if(fieldsPanel == null){
+            fieldsPanel = createFormFields();
         }
-        return form;
+        return fieldsPanel;
     }
-    public void setForm(JComponent form) {
-        this.form = form;
+    public void setFieldsPanel(JComponent fieldsPanel) {
+        this.fieldsPanel = fieldsPanel;
     }   
-
     public AddFieldPanel getAddFieldPannel() {
         if(addFieldPannel == null){
             addFieldPannel = new AddFieldPanel();
@@ -72,34 +73,39 @@ public final class BagInfoForm extends AbstractForm {
     public void setAddFieldPannel(AddFieldPanel addFieldPannel) {
         this.addFieldPannel = addFieldPannel;
     }    
+
+    protected JPanel getContentPanel() {
+        if(contentPanel == null){
+            contentPanel = new JPanel(new GridBagLayout());
+            int row = 0;
+            int col = 0;
+            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+
+            //load fields panel
+            contentPanel.add(getLoadFieldsPanel(),gbc);
+
+            // add field panel    	
+            gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
+            contentPanel.add(getAddFieldPannel(),gbc);   	
+            gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
+            contentPanel.add(new JSeparator(),gbc);    	
+
+            // bag-info input form    	
+            gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            contentPanel.add(getFieldsPanel(),gbc);
+        }
+        return contentPanel;
+    }    
     @Override
     protected JComponent createFormControl() {        
-        
-    	JPanel contentPanel = new JPanel(new GridBagLayout());
-    	int row = 0;
-    	int col = 0;
-        GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(col, row++,1,1,0,0,GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
-       
-        //load fields panel
-        contentPanel.add(getLoadFieldsPanel(),gbc);
-        
-        // add field panel    	
-        gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-    	contentPanel.add(getAddFieldPannel(),gbc);   	
-    	gbc = LayoutUtil.buildGridBagConstraints(col, row++, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER);
-    	contentPanel.add(new JSeparator(),gbc);    	
-        
-    	// bag-info input form    	
-    	gbc = LayoutUtil.buildGridBagConstraints(col,row++,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
-    	contentPanel.add(getForm(),gbc);
-        
-    	return contentPanel;
+        return getContentPanel();
     }
     protected JComponent createFormFields() {
+        
     	int rowCount = 0;
         ImageIcon requiredIcon = getBagView().getPropertyImage("bag.required.image");
         BagTableFormBuilder formBuilder = new BagTableFormBuilder(getBindingFactory(),requiredIcon);
-        int index = 2;
+        final int index = 2;
 
         formBuilder.row();
         if (fieldMap != null && !fieldMap.isEmpty()){
@@ -121,8 +127,7 @@ public final class BagInfoForm extends AbstractForm {
                         removeButton.setMaximumSize(dimension);
                         removeButton.setOpaque(false);
                         removeButton.setBorderPainted(false);
-                        removeButton.setContentAreaFilled(false);
-                        
+                        removeButton.setContentAreaFilled(false);                        
                         
                         removeButton.addActionListener(new ActionListener(){
                             @Override
@@ -174,7 +179,7 @@ public final class BagInfoForm extends AbstractForm {
         return formBuilder.getForm();                
     }      
     private Component[] getFieldComponents() {
-       return getForm().getComponents();
+       return getFieldsPanel().getComponents();
     }
     @Override
     public void setEnabled(boolean enabled) {

@@ -25,6 +25,7 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
+                System.out.println("BaggerLifecycleAdvisor::init::run");
                 Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                
                 SwingUtils.getFrame().setPreferredSize(dim);
                 SwingUtils.getFrame().setBounds(0,0,(int)dim.getWidth(),(int)dim.getHeight());                

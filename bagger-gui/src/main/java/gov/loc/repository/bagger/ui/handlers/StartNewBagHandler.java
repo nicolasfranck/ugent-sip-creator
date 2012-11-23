@@ -72,6 +72,13 @@ public class StartNewBagHandler extends AbstractAction {
     	
     	// set bagItVersion
     	bagView.getInfoFormsPane().getBagVersionValue().setText(bagItVersion);
+        
+        
+        //Nicolas Franck: bag-info velden inladen in form blijkbaar niet automatisch (wel na invullen 1ste nieuwe veld)            
+        bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().setFieldMap(
+            bagView.getBag().getInfo().getFieldMap()
+        );
+        bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
     	        
         SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
         

@@ -149,7 +149,7 @@ public class MdSecSourcePanel extends JPanel{
                 "UTF-8",baginfoIn,"bagInfoTxt"
             );
             
-            BagView bagView = BagView.getInstance();
+            final BagView bagView = BagView.getInstance();
             MetsBag metsBag = bagView.getBag();
             
             metsBag.getInfo().clearFields();
@@ -164,7 +164,14 @@ public class MdSecSourcePanel extends JPanel{
                 metsBag.addField(field);                
             }             
             
-            bagView.getInfoFormsPane().updateInfoFormsPane(true);            
+            
+            SwingUtilities.invokeLater(new Runnable(){
+                @Override
+                public void run() {
+                    bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
+                }            
+            });
+            
             
         }catch(Exception e){
             log.error(e);
