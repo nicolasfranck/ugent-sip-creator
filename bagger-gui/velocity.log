@@ -1,393 +1,66 @@
-2012-11-13 16:43:47,850 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-11-13 16:43:47,850 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-11-13 16:43:47,852 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-11-13 16:43:47,854 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-11-13 16:43:47,855 - Do unicode file recognition:  false
-2012-11-13 16:43:47,855 - FileResourceLoader : adding path '/'
-2012-11-13 16:43:47,855 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:43:47,865 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-11-13 16:43:47,866 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-11-13 16:43:47,867 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-11-13 16:43:47,868 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-11-13 16:43:47,869 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-11-13 16:43:47,869 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-11-13 16:43:47,888 - Created '20' parsers.
-2012-11-13 16:43:47,892 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-11-13 16:43:47,893 - Velocimacro : Default library not found.
-2012-11-13 16:43:47,893 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-11-13 16:43:47,893 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-11-13 16:43:47,893 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-11-13 16:43:47,893 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-11-13 16:43:47,905 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:43:48,930 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:43:48,939 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:16,498 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,493 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,499 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,507 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,511 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,516 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,520 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,524 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,530 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,534 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,537 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,541 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,544 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,547 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,549 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,553 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,557 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,560 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,564 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,569 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,572 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,576 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,579 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,583 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,586 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,589 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,593 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,597 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,600 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,604 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,608 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,611 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,616 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,620 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,624 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,627 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,631 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,634 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,638 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,642 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,646 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,650 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,653 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,657 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,660 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,664 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,669 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,672 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,676 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,707 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,712 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,725 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,728 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,734 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,738 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,744 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,749 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,752 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,755 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,758 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,763 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,773 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,777 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,784 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,789 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,793 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,798 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,810 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,815 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,818 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,833 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,842 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,856 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,864 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,867 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,871 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,876 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,884 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,891 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,905 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,915 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,922 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,932 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,940 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,947 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,959 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,971 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,978 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:18,989 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,002 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,010 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,018 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,029 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,033 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,041 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,048 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,056 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,065 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,071 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,085 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,089 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,093 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,104 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,107 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,110 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,118 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,128 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,133 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,143 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,155 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,160 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,166 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,179 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,182 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,186 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,189 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,202 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,208 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,216 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,223 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,228 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,231 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,234 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,238 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,242 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,245 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,248 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,251 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,254 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,257 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,265 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,274 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,277 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,287 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,294 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,297 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,300 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,303 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,306 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,319 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,323 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,326 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,329 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,331 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,336 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,340 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,343 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,347 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,363 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,367 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,402 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,405 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,409 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,412 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,416 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,419 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,424 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,432 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,437 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,441 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,443 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,448 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,451 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,454 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,460 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,463 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,466 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,470 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,472 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,482 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,495 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,498 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,501 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,507 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,510 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,513 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,516 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,518 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,521 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,526 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,530 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,536 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,539 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,543 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,549 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,553 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,555 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,560 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,562 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,565 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,571 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,574 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,577 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,590 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,593 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,596 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,599 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,605 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,608 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,610 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,612 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,615 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,619 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,622 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,625 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,628 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,631 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,634 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,638 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,641 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,643 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,647 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,650 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,653 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,657 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,661 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,664 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,666 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,670 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,677 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,680 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,682 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,683 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,685 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,687 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,690 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,694 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,697 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,700 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,703 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,707 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,710 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,713 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,717 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,720 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,723 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,727 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,731 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,733 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:44:19,737 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:45:35,036 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:45:35,450 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-13 16:45:35,453 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 14:24:17,745 - Log4JLogChute initialized using file 'velocity.log'
-2012-11-19 14:24:17,760 - Velocity not initialized yet. Calling init()...
-2012-11-19 14:24:17,760 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-11-19 14:24:17,760 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-11-19 14:24:17,761 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-11-19 14:24:17,761 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+2012-11-25 16:47:32,796 - Null reference [template 'velocity/ead-amvb.vm', line 11, column 23] : $inventarisDatumPublicatie cannot be resolved.
+2012-11-25 16:47:32,797 - Null reference [template 'velocity/ead-amvb.vm', line 12, column 28] : $inventarisUitgever cannot be resolved.
+2012-11-25 16:47:32,798 - Null reference [template 'velocity/ead-amvb.vm', line 14, column 34] : $inventarisPlaatsUitgave cannot be resolved.
+2012-11-25 16:47:32,798 - Null reference [template 'velocity/ead-amvb.vm', line 19, column 23] : $profielAuteur cannot be resolved.
+2012-11-25 16:47:32,799 - Null reference [template 'velocity/ead-amvb.vm', line 21, column 27] : $profielTaal cannot be resolved.
+2012-11-25 16:47:32,800 - Null reference [template 'velocity/ead-amvb.vm', line 24, column 24] : $beschrijvingBeschrijvingsregels cannot be resolved.
+2012-11-25 16:47:32,801 - Null reference [template 'velocity/ead-amvb.vm', line 31, column 141] : $identificatieId cannot be resolved.
+2012-11-25 16:47:32,802 - Null reference [template 'velocity/ead-amvb.vm', line 32, column 54] : $identificatieTitel cannot be resolved.
+2012-11-25 16:47:32,803 - Null reference [template 'velocity/ead-amvb.vm', line 33, column 98] : $identificatieDatering cannot be resolved.
+2012-11-25 16:47:32,808 - Null reference [template 'velocity/ead-amvb.vm', line 35, column 25] : $identificatieOmvang cannot be resolved.
+2012-11-25 16:47:32,809 - Null reference [template 'velocity/ead-amvb.vm', line 36, column 28] : $identificatieVorm cannot be resolved.
+2012-11-25 16:47:32,810 - Null reference [template 'velocity/ead-amvb.vm', line 39, column 46] : $contextNaamArchiefvormer cannot be resolved.
+2012-11-25 16:47:32,811 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 9] : $inhoudAbstract cannot be resolved.
+2012-11-25 16:47:32,812 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 81] : $voorwaardenTaalSchrift cannot be resolved.
+2012-11-25 16:47:32,813 - Null reference [template 'velocity/ead-amvb.vm', line 43, column 38] : $identificatieBagitId cannot be resolved.
+2012-11-25 16:47:32,814 - Null reference [template 'velocity/ead-amvb.vm', line 44, column 22] : $identificatieBewaarplaats cannot be resolved.
+2012-11-25 16:47:32,815 - Null reference [template 'velocity/ead-amvb.vm', line 46, column 27] : $identificatieBewaarinstelling cannot be resolved.
+2012-11-25 16:47:32,816 - Null reference [template 'velocity/ead-amvb.vm', line 48, column 34] : $identificatieContactBewaarinstelling cannot be resolved.
+2012-11-25 16:47:32,816 - Null reference [template 'velocity/ead-amvb.vm', line 54, column 16] : $contextBeschrijvingArchiefvormer cannot be resolved.
+2012-11-25 16:47:32,817 - Null reference [template 'velocity/ead-amvb.vm', line 56, column 30] : $contextContactArchiefvormer cannot be resolved.
+2012-11-25 16:47:32,818 - Null reference [template 'velocity/ead-amvb.vm', line 62, column 20] : $contextOorsprBewaarplaats cannot be resolved.
+2012-11-25 16:47:32,819 - Null reference [template 'velocity/ead-amvb.vm', line 66, column 20] : $contextRelatieAnaloogDigitaal cannot be resolved.
+2012-11-25 16:47:32,820 - Null reference [template 'velocity/ead-amvb.vm', line 70, column 20] : $contextDatumAnaloogDigitaal cannot be resolved.
+2012-11-25 16:47:32,821 - Null reference [template 'velocity/ead-amvb.vm', line 76, column 20] : $contextNaamOverdrager cannot be resolved.
+2012-11-25 16:47:32,821 - Null reference [template 'velocity/ead-amvb.vm', line 78, column 34] : $contextContactOVerdrager cannot be resolved.
+2012-11-25 16:47:32,822 - Null reference [template 'velocity/ead-amvb.vm', line 83, column 20] : $contextRelatieOverdragerArchief cannot be resolved.
+2012-11-25 16:47:32,824 - Null reference [template 'velocity/ead-amvb.vm', line 87, column 20] : $contextRedenOverdracht cannot be resolved.
+2012-11-25 16:47:32,825 - Null reference [template 'velocity/ead-amvb.vm', line 91, column 20] : $contextManierOverdracht cannot be resolved.
+2012-11-25 16:47:32,825 - Null reference [template 'velocity/ead-amvb.vm', line 95, column 20] : $contextKopieEigenaar cannot be resolved.
+2012-11-25 16:47:32,826 - Null reference [template 'velocity/ead-amvb.vm', line 99, column 20] : $contextDatumOverdracht cannot be resolved.
+2012-11-25 16:47:32,827 - Null reference [template 'velocity/ead-amvb.vm', line 103, column 20] : $contextTypOVerdracht cannot be resolved.
+2012-11-25 16:47:32,828 - Null reference [template 'velocity/ead-amvb.vm', line 107, column 20] : $contextOVerdrachtsovereenkomst cannot be resolved.
+2012-11-25 16:47:32,829 - Null reference [template 'velocity/ead-amvb.vm', line 111, column 20] : $contextAanwinstnummer cannot be resolved.
+2012-11-25 16:47:32,830 - Null reference [template 'velocity/ead-amvb.vm', line 117, column 20] : $inhoudInhoudBereikArchief cannot be resolved.
+2012-11-25 16:47:32,830 - Null reference [template 'velocity/ead-amvb.vm', line 121, column 20] : $inhoudAnalogeDocumenten cannot be resolved.
+2012-11-25 16:47:32,831 - Null reference [template 'velocity/ead-amvb.vm', line 125, column 20] : $inhoudDigitaleDocumenten cannot be resolved.
+2012-11-25 16:47:32,832 - Null reference [template 'velocity/ead-amvb.vm', line 129, column 20] : $inhoudOverlapAnaloogDigitaal cannot be resolved.
+2012-11-25 16:47:32,833 - Null reference [template 'velocity/ead-amvb.vm', line 135, column 20] : $inhoudSelectieDubbels cannot be resolved.
+2012-11-25 16:47:32,834 - Null reference [template 'velocity/ead-amvb.vm', line 139, column 20] : $inhoudSelectieOntwerpversies cannot be resolved.
+2012-11-25 16:47:32,839 - Null reference [template 'velocity/ead-amvb.vm', line 143, column 20] : $inhoudSelectieLegeMappen cannot be resolved.
+2012-11-25 16:47:32,840 - Null reference [template 'velocity/ead-amvb.vm', line 147, column 20] : $inhoudSelectieAndereBestanden cannot be resolved.
+2012-11-25 16:47:32,841 - Null reference [template 'velocity/ead-amvb.vm', line 151, column 16] : $inhoudAanvullingen cannot be resolved.
+2012-11-25 16:47:32,842 - Null reference [template 'velocity/ead-amvb.vm', line 156, column 20] : $voorwaardenRaadplegingStatus cannot be resolved.
+2012-11-25 16:47:32,843 - Null reference [template 'velocity/ead-amvb.vm', line 160, column 20] : $voorwaardenRaadplegingGevoeligeGegevens cannot be resolved.
+2012-11-25 16:47:32,843 - Null reference [template 'velocity/ead-amvb.vm', line 164, column 20] : $voorwaardenRaadplegingVertrouwelijkeGegevens cannot be resolved.
+2012-11-25 16:47:32,844 - Null reference [template 'velocity/ead-amvb.vm', line 168, column 20] : $voorwaardenRaadplegingPersoonlijkeGegevens cannot be resolved.
+2012-11-25 16:47:32,845 - Null reference [template 'velocity/ead-amvb.vm', line 172, column 20] : $voorwaardenRaadplegingMedischeGegevens cannot be resolved.
+2012-11-25 16:47:32,846 - Null reference [template 'velocity/ead-amvb.vm', line 178, column 20] : $voorwaardenReproductieStatus cannot be resolved.
+2012-11-25 16:47:32,847 - Null reference [template 'velocity/ead-amvb.vm', line 182, column 20] : $voorwaardenReproductieRechthebbende cannot be resolved.
+2012-11-25 16:47:32,848 - Null reference [template 'velocity/ead-amvb.vm', line 186, column 20] : $voorwaardenKopieBeschikbaar cannot be resolved.
+2012-11-25 16:47:32,848 - Null reference [template 'velocity/ead-amvb.vm', line 192, column 20] : $voorwaardenStaatArchief cannot be resolved.
+2012-11-25 16:47:32,849 - Null reference [template 'velocity/ead-amvb.vm', line 197, column 16] : $verwantMateriaalKopieen cannot be resolved.
+2012-11-25 16:47:32,850 - Null reference [template 'velocity/ead-amvb.vm', line 201, column 20] : $beschrijvingNotitie cannot be resolved.
+2012-11-25 16:47:32,851 - Null reference [template 'velocity/ead-amvb.vm', line 205, column 20] : $beschrijvingDatum cannot be resolved.
+2012-11-25 16:58:12,634 - Log4JLogChute initialized using file 'velocity.log'
+2012-11-25 16:58:12,643 - Velocity not initialized yet. Calling init()...
+2012-11-25 16:58:12,645 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-11-25 16:58:12,645 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-11-25 16:58:12,645 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-11-25 16:58:12,649 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
-	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
-	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
-	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
-	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
-	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
-	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1099)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
-	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
-	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:63)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:113)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:40)
-	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
-	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
-	at ugent.bagger.panels.MdSecPropertiesPanel$6.actionPerformed(MdSecPropertiesPanel.java:207)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
-Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-11-19 14:24:17,762 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-11-19 14:24:17,762 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-11-19 14:24:17,764 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-11-19 14:24:17,777 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-11-19 14:24:17,778 - Do unicode file recognition:  false
-2012-11-19 14:24:17,778 - FileResourceLoader : adding path '/'
-2012-11-19 14:24:17,779 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 14:24:17,788 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-11-19 14:24:17,789 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-11-19 14:24:17,790 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-11-19 14:24:17,792 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-11-19 14:24:17,793 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-11-19 14:24:17,794 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-11-19 14:24:17,814 - Created '20' parsers.
-2012-11-19 14:24:17,818 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-11-19 14:24:17,819 - Velocimacro : Default library not found.
-2012-11-19 14:24:17,819 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-11-19 14:24:17,819 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-11-19 14:24:17,819 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-11-19 14:24:17,819 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-11-19 14:24:17,831 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 14:24:18,461 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 14:24:18,472 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 14:24:34,305 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 14:24:34,891 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 14:24:34,897 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 16:30:11,459 - Log4JLogChute initialized using file 'velocity.log'
-2012-11-19 16:30:11,460 - Velocity not initialized yet. Calling init()...
-2012-11-19 16:30:11,460 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-11-19 16:30:11,460 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-11-19 16:30:11,460 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-11-19 16:30:11,460 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
-java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
+	at java.lang.Class.forName(Class.java:264)
 	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
 	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
 	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
@@ -401,93 +74,95 @@ java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
 	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
 	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
 	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
 	at ugent.bagger.panels.MdSecPropertiesPanel$6.actionPerformed(MdSecPropertiesPanel.java:207)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.AbstractButton.doClick(AbstractButton.java:376)
+	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:833)
+	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:877)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
 Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-11-19 16:30:11,461 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-11-19 16:30:11,461 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-11-19 16:30:11,463 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-11-19 16:30:11,465 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-11-19 16:30:11,465 - Do unicode file recognition:  false
-2012-11-19 16:30:11,466 - FileResourceLoader : adding path '/'
-2012-11-19 16:30:11,466 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 16:30:11,473 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-11-19 16:30:11,473 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-11-19 16:30:11,474 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-11-19 16:30:11,475 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-11-19 16:30:11,476 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-11-19 16:30:11,477 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-11-19 16:30:11,494 - Created '20' parsers.
-2012-11-19 16:30:11,498 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-11-19 16:30:11,499 - Velocimacro : Default library not found.
-2012-11-19 16:30:11,499 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-11-19 16:30:11,499 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-11-19 16:30:11,499 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-11-19 16:30:11,499 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-11-19 16:30:11,511 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 16:30:12,198 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-11-19 16:30:12,220 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	... 75 more
+2012-11-25 16:58:12,673 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-11-25 16:58:12,675 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-11-25 16:58:12,707 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-11-25 16:58:12,752 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-11-25 16:58:12,765 - Do unicode file recognition:  false
+2012-11-25 16:58:12,766 - FileResourceLoader : adding path '/'
+2012-11-25 16:58:12,769 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-11-25 16:58:12,871 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-11-25 16:58:12,903 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-11-25 16:58:12,919 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-11-25 16:58:12,978 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-11-25 16:58:12,994 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-11-25 16:58:13,006 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-11-25 16:58:13,434 - Created '20' parsers.
+2012-11-25 16:58:13,545 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-11-25 16:58:13,592 - Velocimacro : Default library not found.
+2012-11-25 16:58:13,592 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-11-25 16:58:13,593 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-11-25 16:58:13,594 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-11-25 16:58:13,595 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-11-25 16:58:13,848 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-11-25 16:58:15,751 - ResourceManager : found velocity/ead-amvb.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-11-25 16:58:15,792 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 9] : $inhoudAbstract cannot be resolved.

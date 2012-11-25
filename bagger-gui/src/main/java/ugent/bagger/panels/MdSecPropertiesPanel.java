@@ -101,7 +101,7 @@ public class MdSecPropertiesPanel extends JPanel{
         return editDmdSecPropertiesTable;
     }
     public EditMdSecPropertiesTable createMdSecPropertiesTable(){                        
-        return new EditMdSecPropertiesTable(data,new String [] {"namespace","label","MDTYPE","OTHERMDTYPE"},"mdSecTable");
+        return new EditMdSecPropertiesTable(data,new String [] {"namespace","MDTYPE"},"mdSecTable");
     }
     public void setMdSecPropertiesTable(EditMdSecPropertiesTable editDmdSecPropertiesTable) {
         this.editDmdSecPropertiesTable = editDmdSecPropertiesTable;

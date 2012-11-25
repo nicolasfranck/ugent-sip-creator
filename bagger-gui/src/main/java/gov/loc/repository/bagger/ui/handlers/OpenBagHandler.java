@@ -56,7 +56,7 @@ public class OpenBagHandler extends AbstractAction {
         if(bagView.getBagRootPath() != null){
             fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
         }
-        fo.setDialogTitle("Existing Bag Location");
+        fo.setDialogTitle(Context.getMessage("openBagHandler.fileChooser.dialogTitle"));
         int option = fo.showOpenDialog(SwingUtils.getFrame());
 
         if (option == JFileChooser.APPROVE_OPTION) {

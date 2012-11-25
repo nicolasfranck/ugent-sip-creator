@@ -34,8 +34,8 @@ public class AmdSecsPanel extends JPanel{
         init();
     }
     public void init(){
-        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
-        add(createButtonPanel());
+        setLayout(new BorderLayout());
+        add(createButtonPanel(),BorderLayout.NORTH);
         add(new JScrollPane(getAmdSecPartsTable().getControl()));
     }
     public void reset(ArrayList<AmdSec>data){

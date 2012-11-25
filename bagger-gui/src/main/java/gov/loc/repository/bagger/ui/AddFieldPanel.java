@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 
 public final class AddFieldPanel extends JPanel {
 
@@ -186,19 +187,14 @@ public final class AddFieldPanel extends JPanel {
         }
 
         String dialogTitle = Context.getMessage("baginfo.newFieldDialog.title");
-        if (fieldName.trim().isEmpty()) {
+        if (fieldName.trim().isEmpty()) {           
             
-            bagView.showWarningErrorDialog(
-                dialogTitle,
-                Context.getMessage("baginfo.newFieldDialog.error.fieldRequired")
-            );
+            SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.fieldRequired"));
             
             return null;
         }else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){
-            bagView.showWarningErrorDialog(
-                dialogTitle,
-                Context.getMessage("baginfo.newFieldDialog.error.valueRequired")
-            );          
+                     
+            SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.valueRequired"));
             return null;
         }
 

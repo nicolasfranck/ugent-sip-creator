@@ -662,6 +662,13 @@
                 <entry key="xsd" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
             </util:map>    
         </entry>
+        <entry key="ead-amvb">
+            <util:map map-class="java.util.HashMap">
+                <entry key="name" value="EAD (volgens AMVB)" />
+                <entry key="path" value="velocity/ead-amvb.vm" />
+                <entry key="xsd" value="metadata/xsd/premis/premis-2-2.xsd" />
+            </util:map>    
+        </entry>
     </util:map>    
     
     <util:map id="bagInfoImporters" map-class="java.util.HashMap">

@@ -67,7 +67,7 @@ public class MdSecSourcePanel extends JPanel{
             mdSecPropertiesTable = new MdSecPropertiesTable(
                 list,
                 new String [] {
-                    "namespace","label","MDTYPE","OTHERMDTYPE"
+                    "namespace","MDTYPE"
                 },
                 "mdSecTable"
             );

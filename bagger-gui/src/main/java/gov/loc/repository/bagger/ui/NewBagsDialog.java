@@ -131,10 +131,10 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
     }
     public JButton getSaveAsButton() {
         if(saveAsButton == null){
-            saveAsButton = new JButton(Context.getMessage("bag.button.browse"));
+            saveAsButton = new JButton(Context.getMessage("NewBagsDialog.saveAsButton.label"));
             saveAsButton.addActionListener(new BrowseFileHandler());
             saveAsButton.setEnabled(true);
-            saveAsButton.setToolTipText(Context.getMessage("bag.button.browse.help"));
+            saveAsButton.setToolTipText(Context.getMessage("NewBagsDialog.saveAsButton.tooltip"));
         }
         return saveAsButton;
     }

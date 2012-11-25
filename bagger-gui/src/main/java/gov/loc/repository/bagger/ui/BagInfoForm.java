@@ -35,7 +35,7 @@ public final class BagInfoForm extends AbstractForm {
             fieldsScrollPane = new JScrollPane(getFieldsPanel());
             fieldsScrollPane.getViewport().setOpaque(false);
             fieldsScrollPane.setWheelScrollingEnabled(true);   
-            fieldsScrollPane.setBorder(BorderFactory.createLineBorder(Color.RED));
+            //fieldsScrollPane.setBorder(BorderFactory.createLineBorder(Color.RED));
             fieldsScrollPane.setPreferredSize(new Dimension(FORM_WIDTH,500));
             fieldsScrollPane.setMaximumSize(new Dimension(FORM_WIDTH,500));
             fieldsScrollPane.setAlignmentX(Container.LEFT_ALIGNMENT);
@@ -48,9 +48,9 @@ public final class BagInfoForm extends AbstractForm {
     public LoadFieldsPanel getLoadFieldsPanel() {
         if(loadFieldsPanel == null){
             loadFieldsPanel = new LoadFieldsPanel();                        
-            loadFieldsPanel.setPreferredSize(new Dimension(FORM_WIDTH,30));            
-            loadFieldsPanel.setMaximumSize(new Dimension(FORM_WIDTH,30));
-            loadFieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            loadFieldsPanel.setPreferredSize(new Dimension(FORM_WIDTH,35));            
+            loadFieldsPanel.setMaximumSize(new Dimension(FORM_WIDTH,35));
+            //loadFieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             loadFieldsPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
         return loadFieldsPanel;
@@ -77,7 +77,7 @@ public final class BagInfoForm extends AbstractForm {
     public JComponent getFieldsPanel() {
         if(fieldsPanel == null){
             fieldsPanel = createFormFields();     
-            fieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            //fieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         }
         return fieldsPanel;
     }
@@ -87,9 +87,9 @@ public final class BagInfoForm extends AbstractForm {
     public AddFieldPanel getAddFieldPanel() {
         if(addFieldPanel == null){
             addFieldPanel = new AddFieldPanel();            
-            addFieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            addFieldPanel.setPreferredSize(new Dimension(FORM_WIDTH,30));            
-            addFieldPanel.setMaximumSize(new Dimension(FORM_WIDTH,30));
+            //addFieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            addFieldPanel.setPreferredSize(new Dimension(FORM_WIDTH,35));            
+            addFieldPanel.setMaximumSize(new Dimension(FORM_WIDTH,35));
             addFieldPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
         return addFieldPanel;
@@ -107,7 +107,7 @@ public final class BagInfoForm extends AbstractForm {
             contentPanel.add(getAddFieldPanel());            
             contentPanel.add(getFieldsScrollPane());
             contentPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
-            contentPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE,4));
+            //contentPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE,4));
         }
         return contentPanel;
     }    

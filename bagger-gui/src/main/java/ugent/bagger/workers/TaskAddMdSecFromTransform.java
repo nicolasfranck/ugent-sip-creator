@@ -81,18 +81,18 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
             }
             catch(NoNamespaceException e){                                                   
                 numErrors++;
-                log(Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
                     file
                 })+"\n");                 
             }catch(NoTransformationFoundException e){
                 numErrors++;
-                log(Context.getMessage("mdSecTable.addMdSec.noTransformationFoundException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.NoTransformationFoundException",new Object []{
                     file
                 })+"\n");
             }
             catch(DocumentCreationFailedException e){
                 numErrors++;
-                log(Context.getMessage("mdSecTable.addMdSec.documentCreationFailedException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.FocumentCreationFailedException",new Object []{
                     file
                 })+"\n");
             }

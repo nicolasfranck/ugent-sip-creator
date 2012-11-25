@@ -20,7 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.dialogs.ValidateManifestDialog;
@@ -172,8 +171,7 @@ public class BagView extends DefaultView {
         this.bagPayloadTree = bagPayloadTree;
     }
     public BagTree createBagPayloadTree(String path, boolean isPayload){
-        final BagTree tree = new BagTree(path,isPayload);
-        
+        final BagTree tree = new BagTree(path,isPayload);        
         
         ActionMap actionMap = tree.getActionMap();                        
         actionMap.put("removeData",new AbstractAction(){
@@ -222,8 +220,7 @@ public class BagView extends DefaultView {
     
     public BagTree getBagTagFileTree() {
         if(bagTagFileTree == null){
-            bagTagFileTree = new BagTree(getMessage("bag.label.noname"), false);
-            
+            bagTagFileTree = new BagTree(getMessage("bag.label.noname"), false);            
             InputMap inputMap = bagTagFileTree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
             inputMap.put(KeyStroke.getKeyStroke((char)127),"removeTagfile");
             ActionMap actionMap = bagTagFileTree.getActionMap();
@@ -464,12 +461,7 @@ public class BagView extends DefaultView {
     	getBagTagFileTree().setEnabled(b);
     	getBagTagFileTreePanel().setEnabled(b);
         getInfoFormsPane().getInfoInputPane().setEnabled(b);
-    }
-
-    public void showWarningErrorDialog(String title, String msg) {    	
-        new MessageDialog(title,msg).showDialog();
-    }
-
+    }   
     private void initializeCommands() {
     	startExecutor.setEnabled(true);
     	openExecutor.setEnabled(true);

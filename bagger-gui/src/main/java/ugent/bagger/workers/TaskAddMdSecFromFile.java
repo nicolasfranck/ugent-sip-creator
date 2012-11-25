@@ -60,10 +60,10 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
             }
             catch(NoNamespaceException e){                          
                 numErrors++;                
-                log(Context.getMessage("mdSecTable.addMdSec.noNamespaceException",new Object []{
+                log(Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
                     file
                 })+"\n");                                
-            }                            
+            }
             int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
             setProgress(percent);                
         }             

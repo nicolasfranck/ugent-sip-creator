@@ -40,6 +40,7 @@ import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 
 public final class SaveBagDialog extends JDialog implements ActionListener {
     private static final Log log = LogFactory.getLog(SaveBagDialog.class);
@@ -135,8 +136,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         TitlePane titlePane = new TitlePane();     
         JPanel pageControl = new JPanel(new BorderLayout());
         JPanel titlePaneContainer = new JPanel(new BorderLayout());
-        titlePane.setTitle(Context.getMessage("SaveBagFrame.title"));
-        titlePane.setMessage(new DefaultMessage(Context.getMessage("SaveBagFrame.description")));
+        titlePane.setTitle(Context.getMessage("SaveBagDialog.title"));
+        titlePane.setMessage(new DefaultMessage(Context.getMessage("SaveBagDialog.description")));
         titlePaneContainer.add(titlePane.getControl());
         titlePaneContainer.add(new JSeparator(), BorderLayout.SOUTH);
         pageControl.add(titlePaneContainer, BorderLayout.NORTH);
@@ -144,11 +145,11 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
 
         // TODO: Add bag name field
     	// TODO: Add save name file selection button
-        JLabel location = new JLabel("Save in:");
-    	browseButton = new JButton(Context.getMessage("bag.button.browse"));
+        JLabel location = new JLabel(Context.getMessage("SaveBagDialog.browseLabel.label"));
+    	browseButton = new JButton(Context.getMessage("SaveBagDialog.browseButton.label"));
     	browseButton.addActionListener(new SaveBagAsHandler());
         browseButton.setEnabled(true);
-        browseButton.setToolTipText(Context.getMessage("bag.button.browse.help"));
+        browseButton.setToolTipText(Context.getMessage("SaveBagDialog.browseButton.tooltip"));
     	String fileName = "";
     	DefaultBag bag = getBagView().getBag();
     	if (bag != null) {
@@ -469,7 +470,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
             BagView bagView = getBagView();
             if (bagNameField.getText().trim().isEmpty() || bagNameField.getText().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
-                bagView.showWarningErrorDialog(
+                SwingUtils.ShowError(
                     Context.getMessage("SaveBagDialog.filenamemissing.title"),
                     Context.getMessage("SaveBagDialog.filenamemissing.label")
                 );
@@ -477,7 +478,8 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
             }
             bagView.getInfoFormsPane().getHoleyValue().setText("false");           
            
-            setVisible(false);
+            SaveBagDialog.this.dispose(); 
+            
             bagView.getBag().setName(bagFileName);
             bagView.saveBagHandler.save(bagFile);           
         }
@@ -487,7 +489,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
         @Override
 	public void actionPerformed(ActionEvent e) {
-            setVisible(false);
+            SaveBagDialog.this.dispose();            
         }
     }
 

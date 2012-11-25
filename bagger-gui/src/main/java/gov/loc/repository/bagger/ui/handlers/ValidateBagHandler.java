@@ -129,10 +129,10 @@ public class ValidateBagHandler extends Handler {
             }catch (Exception e){                                                
                 if(isCancelled()){
                     log(Context.getMessage("ValidateBagHandler.validationCancelled.label"));
-                    bagView.showWarningErrorDialog(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
+                    SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
                 }else{
                     log(Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()}));                    
-                    bagView.showWarningErrorDialog(
+                    SwingUtils.ShowError(
                         Context.getMessage("ValidateBagHandler.validationFailed.title"), 
                         Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()})
                     );

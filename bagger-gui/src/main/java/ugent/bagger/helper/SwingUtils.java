@@ -44,7 +44,7 @@ public class SwingUtils {
         fileChooser.setDialogTitle(title);            
         fileChooser.setFileFilter(filter);            
         fileChooser.setFileSelectionMode(mode);        
-        fileChooser.setDialogType(dialogType);
+        fileChooser.setDialogType(dialogType);       
         fileChooser.setMultiSelectionEnabled(multiSelectionEnabled);        
         return fileChooser;
     }        
