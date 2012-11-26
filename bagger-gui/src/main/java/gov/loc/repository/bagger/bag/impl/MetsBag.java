@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map.Entry;
 import ugent.premis.Premis;
 
@@ -22,16 +21,19 @@ import ugent.premis.Premis;
  * @author nicolas
  */
 public final class MetsBag extends DefaultBag{
-    BagItMets bagItMets;      
-    Premis eventLog;
-    ArrayList<String>oldFileList;
+    BagItMets bagItMets;          
+    Premis premis;
+    ArrayList<String>oldFileList;        
 
-    public Premis getEventLog() {
-        return eventLog;
+    public Premis getPremis() {
+        if(premis == null){
+            premis = new Premis();
+        }
+        return premis;
     }
-    public void setEventLog(Premis eventLog) {
-        this.eventLog = eventLog;
-    }    
+    public void setPremis(Premis premis) {
+        this.premis = premis;
+    }
     public ArrayList<String> getOldFileList() {
         if(oldFileList == null){
             oldFileList = new ArrayList<String>();
@@ -65,15 +67,6 @@ public final class MetsBag extends DefaultBag{
         getInfo().prepareBilBagInfo(getBag().getBagInfoTxt());
         //bereken checksums
         generateManifestFiles();
-        
-        HashMap<String,ArrayList<String>>map = getInfo().getFieldMap();
-        for(String key:map.keySet()){
-            for(String value:map.get(key)){
-                System.out.println("key: "+key+", value: "+value);
-            }
-        }
-        
-        Bag bag = getBag();        
         
         Mets mets = getBagItMets().onSaveBag(
             this,

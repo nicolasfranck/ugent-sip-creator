@@ -93,7 +93,7 @@ public class BagTableFormBuilder extends TableFormBuilder {
             b.setOpaque(false);
             b.setBorderPainted(false);
             reqComp = b;
-        } else {
+        }else{
             JButton b = new JButton("");
             b.setOpaque(false);
             b.setBorderPainted(false);

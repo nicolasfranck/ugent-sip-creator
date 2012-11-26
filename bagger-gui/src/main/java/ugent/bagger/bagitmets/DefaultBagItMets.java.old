@@ -36,7 +36,6 @@ import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.DefaultMetsCallback;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
-import ugent.bagger.helper.PremisUtils;
 import ugent.premis.Premis;
 import ugent.premis.PremisEvent;
 import ugent.premis.PremisIO;
@@ -73,14 +72,6 @@ public class DefaultBagItMets extends BagItMets{
             mets = new Mets();
         }
         
-        //amdSec met id 'bagit' is voor SIP-creator voorbehouden
-        AmdSec amdSecBagit = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());        
-        if(amdSecBagit == null){            
-            amdSecBagit = new AmdSec();
-            amdSecBagit.setID("bagit");
-            mets.getAmdSec().add(amdSecBagit);
-        }
-        
         return mets;
     }
     private static Comparator defaultBagFileSorter =  new Comparator<BagFile>(){
@@ -94,7 +85,8 @@ public class DefaultBagItMets extends BagItMets{
     public Mets onSaveBag(MetsBag metsBag,Mets mets) {        
         
         BagView bagView = BagView.getInstance();
-        Bag bag = metsBag.getBag();        
+        Bag bag = metsBag.getBag();
+        
         
         //manifest informatie
         Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm());            
@@ -103,15 +95,16 @@ public class DefaultBagItMets extends BagItMets{
         SharedEnums.CHECKSUMTYPE payloadManifestChecksumType = resolveChecksumType(metsBag.getPayloadManifestAlgorithm()); 
         
         Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
-        Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);                                
+        Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);        
         
-        //premis        
-        Premis premis = metsBag.getPremis();
-        premis = premis == null ? new Premis():premis;        
+        //premis event log        
+        Premis premis = metsBag.getEventLog();
+        premis = premis == null ? new Premis():premis;
+        premis.getObject().clear();
         
         PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.representation);
         pobject.setVersion("2.0");
-        pobject.setXmlID("bagit");
+        pobject.setXmlID("BAGIT_PREMIS_OBJECT");
         
         PremisObject.PremisObjectIdentifier id = new PremisObject.PremisObjectIdentifier();
         id.setObjectIdentifierType("name");
@@ -229,6 +222,7 @@ public class DefaultBagItMets extends BagItMets{
             e.printStackTrace();
         }
         
+        
         //files
         final HashMap<String,String> fileIdMap = new HashMap<String,String>();
         
@@ -248,8 +242,8 @@ public class DefaultBagItMets extends BagItMets{
             
             //group payloads
             FileSec.FileGrp payloadGroup = new FileSec.FileGrp();            
-            payloadGroup.setID("payloads");
-            payloadGroup.setUse("payloads");
+            payloadGroup.setID("Payloads");
+            payloadGroup.setUse("Content");
             List<FileSec.FileGrp.File>payloadFiles = payloadGroup.getFile();            
 
             for(BagFile bagFile:payloads){
@@ -320,8 +314,8 @@ public class DefaultBagItMets extends BagItMets{
             
             //group tagfiles
             FileSec.FileGrp tagFileGroup = new FileSec.FileGrp();            
-            tagFileGroup.setID("tags");
-            tagFileGroup.setUse("tags");
+            tagFileGroup.setID("Tagfiles");
+            tagFileGroup.setUse("Tags");
             List<FileSec.FileGrp.File>tagFiles = tagFileGroup.getFile();
             
             for(BagFile bagFile:tags){
@@ -441,7 +435,7 @@ public class DefaultBagItMets extends BagItMets{
                 structMapPayloads = new StructMap();
             }            
                         
-            structMapPayloads.setType("bagit_payload_tree");             
+            structMapPayloads.setType("BAGIT_PAYLOAD_TREE");             
             
             //structmap tagfiles            
             StructMap structMapTagFiles;
@@ -478,7 +472,7 @@ public class DefaultBagItMets extends BagItMets{
             }
             
                        
-            structMapTagFiles.setType("bagit_tagfile_tree");            
+            structMapTagFiles.setType("BAGIT_TAGFILE_TREE");            
         
             mets.getStructMap().clear();
             mets.getStructMap().add(structMapPayloads);
@@ -498,7 +492,8 @@ public class DefaultBagItMets extends BagItMets{
 
         }catch(Exception e){
             e.printStackTrace();            
-        }
+        }          
+        
         
         
         return mets;

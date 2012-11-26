@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.*;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
+import org.springframework.util.Assert;
 import ugent.bagger.dialogs.XMLCrosswalkDialog;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.forms.MdSecForm;
@@ -45,10 +46,10 @@ public class MdSecPropertiesPanel extends JPanel{
     private JButton removeButton;
     private JButton addButton;
     private JButton importButton;
-    private JButton crosswalkButton;
-    
+    private JButton crosswalkButton;    
+   
     public MdSecPropertiesPanel(final ArrayList<MdSec>data){        
-        assert(data != null);
+        Assert.notNull(data);
         this.data = data;         
         setLayout(new BorderLayout());
         add(createContentPane());        
@@ -83,7 +84,8 @@ public class MdSecPropertiesPanel extends JPanel{
     }    
     public void reset(final ArrayList<MdSec>data){                       
         getEditDmdSecPropertiesTable().reset(data);
-        this.data = data;        
+        this.data = data;       
+        enableButtons(getMax() > 0 && data.size() >= getMax() ? false:true);
     }
     public JComponent getButtonPanel() {
         if(buttonPanel == null){
@@ -115,19 +117,22 @@ public class MdSecPropertiesPanel extends JPanel{
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
+        boolean buttonsEnabled = getMax() > 0 && data.size() >= getMax() ? false:true;        
+        
         //creatie buttons
-        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                
+        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                        
         importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
         importButton.setToolTipText(Context.getMessage("MdSecPanel.importButton.toolTip"));
-        removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));          
+        removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));                  
+        
+        enableButtons(buttonsEnabled);
         
         JMenuItem addXMLMenuItem = new JMenuItem(Context.getMessage("addXMLMenuItem.label"));
         JMenuItem crosswalkMenuItem = new JMenuItem(Context.getMessage("crosswalkMenuItem.label"));
         
         final JPopupMenu xmlPopupMenu = new JPopupMenu();
         xmlPopupMenu.add(addXMLMenuItem);
-        xmlPopupMenu.add(crosswalkMenuItem);
-        
+        xmlPopupMenu.add(crosswalkMenuItem);        
         
         //action listeners
         addButton.addActionListener(new ActionListener(){
@@ -139,14 +144,21 @@ public class MdSecPropertiesPanel extends JPanel{
         crosswalkMenuItem.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                JDialog dialog = new XMLCrosswalkDialog(SwingUtils.getFrame(),true);                
+                if(getMax() > 0 && data.size() >= getMax()){
+                    return;
+                }
                 
+                JDialog dialog = new XMLCrosswalkDialog(SwingUtils.getFrame(),true);  
                 dialog.addPropertyChangeListener("mdSec",new PropertyChangeListener(){
                     @Override
                     public void propertyChange(PropertyChangeEvent pce) {                        
                         MdSec mdSec = (MdSec) pce.getNewValue();
                         getEditDmdSecPropertiesTable().add(mdSec);
                         getEditDmdSecPropertiesTable().refresh();
+                        if(getMax() > 0 && data.size() >= getMax()){
+                            enableButtons(false);
+                        }
+                        MdSecPropertiesPanel.this.firePropertyChange("crosswalkMdSec",null,mdSec);
                     }                    
                 });
                 
@@ -159,7 +171,11 @@ public class MdSecPropertiesPanel extends JPanel{
         });
         addXMLMenuItem.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae){                                
+            public void actionPerformed(ActionEvent ae){    
+                if(getMax() > 0 && data.size() >= getMax()){
+                    return;
+                }
+                
                 File [] files = SwingUtils.chooseFiles(
                     Context.getMessage("addXMLMenuItem.fileChooser.title"),
                     new FileExtensionFilter(
@@ -180,6 +196,11 @@ public class MdSecPropertiesPanel extends JPanel{
             public void actionPerformed(ActionEvent ae) {
                 getEditDmdSecPropertiesTable().deleteSelected();
                 getEditDmdSecPropertiesTable().refresh();
+                
+                if(getMax() > 0 && data.size() < getMax()){
+                    enableButtons(true);
+                }
+                MdSecPropertiesPanel.this.firePropertyChange("remove",null,null);
             }        
         });        
         
@@ -189,6 +210,10 @@ public class MdSecPropertiesPanel extends JPanel{
         importCSVItem.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                if(getMax() > 0 && data.size() >= getMax()){
+                    return;
+                }
+                
                 CSVWizard wizard = new CSVWizard();
                 CSVWizardDialog dialog = new CSVWizardDialog(wizard);
                 wizard.addPropertyChangeListener("addMdSec",new PropertyChangeListener() {
@@ -202,6 +227,10 @@ public class MdSecPropertiesPanel extends JPanel{
                     @Override
                     public void propertyChange(PropertyChangeEvent pce) {                        
                         getEditDmdSecPropertiesTable().refresh();
+                        
+                        if(getMax() > 0 && data.size() >= getMax()){
+                            enableButtons(false);
+                        }
                     }
                 });
                 dialog.showDialog();
@@ -211,6 +240,10 @@ public class MdSecPropertiesPanel extends JPanel{
         importBagInfoItem.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                if(getMax() > 0 && data.size() >= getMax()){
+                    return;
+                }
+                
                 BagInfoImportWizard wizard = new BagInfoImportWizard();
                 BagInfoImportWizardDialog dialog = new BagInfoImportWizardDialog(wizard);
                 wizard.addPropertyChangeListener("addMdSec",new PropertyChangeListener() {
@@ -224,6 +257,9 @@ public class MdSecPropertiesPanel extends JPanel{
                     @Override
                     public void propertyChange(PropertyChangeEvent pce) {                        
                         getEditDmdSecPropertiesTable().refresh();
+                        if(getMax() > 0 && data.size() >= getMax()){
+                            enableButtons(false);
+                        }
                     }
                 });
                 dialog.showDialog();
@@ -253,7 +289,8 @@ public class MdSecPropertiesPanel extends JPanel{
             worker,
             Context.getMessage("MdSecPropertiesPanel.monitoring.title"),
             Context.getMessage("MdSecPropertiesPanel.monitoring.description"),
-            getPropertyListeners());        
+            getPropertyListeners()
+        );        
     }   
     private List<PropertyChangeListener> getPropertyListeners(){        
         PropertyChangeListener listener = new PropertyChangeListener() {
@@ -266,6 +303,13 @@ public class MdSecPropertiesPanel extends JPanel{
                     ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){
                     getEditDmdSecPropertiesTable().add((MdSec)pce.getNewValue());
+                    
+                    if(getMax() > 0 && data.size() >= getMax()){
+                        enableButtons(false);
+                    }
+                    
+                    MdSecPropertiesPanel.this.firePropertyChange("mdSec",null,pce.getNewValue());
+                    
                 }else if(
                     pce.getPropertyName().equals("report") && 
                     pce.getNewValue().toString().compareTo("success") == 0
@@ -275,5 +319,12 @@ public class MdSecPropertiesPanel extends JPanel{
             }
         };
         return Arrays.asList(new PropertyChangeListener [] {listener});        
-    }    
+    }
+    protected int getMax(){
+        return -1;
+    }
+    public void enableButtons(boolean enabled){
+        addButton.setEnabled(enabled);
+        importButton.setEnabled(enabled);        
+    }
 }

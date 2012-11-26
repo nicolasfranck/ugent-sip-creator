@@ -35,5 +35,10 @@ public class PremisIO {
         premis.marshal(e,doc);       
         doc.appendChild(e);
         return doc;
+    }    
+    public static Premis toPremis(Element element) throws ParseException{
+        Premis premis = new Premis();
+        premis.unmarshal(element);
+        return premis;
     }
 }

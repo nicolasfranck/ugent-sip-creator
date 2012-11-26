@@ -3,77 +3,87 @@ package ugent.bagger.panels;
 import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.MdSec;
 import java.util.ArrayList;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import org.springframework.util.Assert;
+import ugent.bagger.helper.Context;
 
 /**
  *
  * @author nicolas
  */
-public final class AmdSecPanel extends JTabbedPane{
-    private AmdSec amdSec;
-    
-    private MdSecPropertiesPanel rightsMdSecPropertiesPanel;
-    private MdSecPropertiesPanel techMdSecPropertiesPanel;
-    private MdSecPropertiesPanel digiprovMdSecPropertiesPanel;
-    private MdSecPropertiesPanel sourceMdSecPropertiesPanel;
-    
-    public AmdSecPanel(AmdSec amdSec){
-        Assert.notNull(amdSec);
-        setAmdSec(amdSec);
-        init();
-    }
-    public AmdSec getAmdSec() {        
-        return amdSec;
-    }
-    public void setAmdSec(AmdSec amdSec) {
-        this.amdSec = amdSec;
-    }   
-    public void resetAmdSec(AmdSec amdSec){
-        setAmdSec(amdSec);
-        getRightsMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getRightsMD());
-        getSourceMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getSourceMD());
-        getDigiprovMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getDigiprovMD());
-        getTechMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getTechMD());
-    }
-    public void init(){
-        
-        //rightMd       
-        addTab("rightsMD",new JScrollPane(getRightsMdSecPropertiesPanel()));
-        
-        //techMD      
-        addTab("techMD",new JScrollPane(getTechMdSecPropertiesPanel()));
-        
-        //digiprovMD       
-        addTab("digiprovMD",new JScrollPane(getDigiprovMdSecPropertiesPanel()));
-                
-        //sourceMD        
-        addTab("sourceMD",new JScrollPane(getSourceMdSecPropertiesPanel()));
-        
-    }
-    public MdSecPropertiesPanel getRightsMdSecPropertiesPanel() {
-        if(rightsMdSecPropertiesPanel == null){
-            rightsMdSecPropertiesPanel = new MdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getRightsMD());
-        }
-        return rightsMdSecPropertiesPanel;
-    }
-    public MdSecPropertiesPanel getTechMdSecPropertiesPanel() {
+public final class AmdSecPanel extends JPanel{
+    AmdSec amdSec;
+    TechMdSecPropertiesPanel techMdSecPropertiesPanel;
+    SourceMdSecPropertiesPanel sourceMdSecPropertiesPanel;
+    RightsMdSecPropertiesPanel rightsMdSecPropertiesPanel;
+    DigiprovMdSecPropertiesPanel digiprovMdSecPropertiesPanel;
+
+    public TechMdSecPropertiesPanel getTechMdSecPropertiesPanel() {
         if(techMdSecPropertiesPanel == null){
-            techMdSecPropertiesPanel = new MdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getTechMD());
+            techMdSecPropertiesPanel = new TechMdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getTechMD());
         }
         return techMdSecPropertiesPanel;
     }
-    public MdSecPropertiesPanel getDigiprovMdSecPropertiesPanel() {
-        if(digiprovMdSecPropertiesPanel == null){
-            digiprovMdSecPropertiesPanel = new MdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getDigiprovMD());
-        }
-        return digiprovMdSecPropertiesPanel;
-    }
-    public MdSecPropertiesPanel getSourceMdSecPropertiesPanel() {
+
+    public SourceMdSecPropertiesPanel getSourceMdSecPropertiesPanel() {
         if(sourceMdSecPropertiesPanel == null){
-            sourceMdSecPropertiesPanel = new MdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getSourceMD());
+            sourceMdSecPropertiesPanel = new SourceMdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getSourceMD());
         }
         return sourceMdSecPropertiesPanel;
-    }    
+    }
+
+    public RightsMdSecPropertiesPanel getRightsMdSecPropertiesPanel() {
+        if(rightsMdSecPropertiesPanel == null){
+            rightsMdSecPropertiesPanel = new RightsMdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getRightsMD());
+        }
+        return rightsMdSecPropertiesPanel;
+    }
+    public DigiprovMdSecPropertiesPanel getDigiprovMdSecPropertiesPanel() {
+        if(digiprovMdSecPropertiesPanel == null){
+            digiprovMdSecPropertiesPanel = new DigiprovMdSecPropertiesPanel((ArrayList<MdSec>)getAmdSec().getDigiprovMD());
+        }
+        return digiprovMdSecPropertiesPanel;
+    }   
+    
+    public AmdSecPanel(AmdSec amdSec){
+        Assert.notNull(amdSec);
+        this.amdSec = amdSec;
+        init();
+    }     
+    protected AmdSec getAmdSec(){
+        return amdSec;
+    }
+    
+    public void init(){
+        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS)); 
+        
+        JLabel techMDLabel = new JLabel(Context.getMessage("amdSecPanel.techMDLabel.label"));        
+        techMDLabel.setToolTipText(Context.getMessage("amdSecPanel.techMDLabel.tooltip"));
+        add(techMDLabel);                
+        add(getTechMdSecPropertiesPanel());
+        
+        JLabel digiprovMDLabel = new JLabel(Context.getMessage("amdSecPanel.digiprovMDLabel.label"));
+        digiprovMDLabel.setToolTipText(Context.getMessage("amdSecPanel.digiprovMDLabel.tooltip"));                
+        add(digiprovMDLabel);                
+        add(getDigiprovMdSecPropertiesPanel());        
+        
+        JLabel sourceMDLabel = new JLabel(Context.getMessage("amdSecPanel.sourceMDLabel.label"));
+        sourceMDLabel.setToolTipText(Context.getMessage("amdSecPanel.sourceMDLabel.tooltip"));        
+        add(sourceMDLabel);                
+        add(getSourceMdSecPropertiesPanel());
+        
+        JLabel rightsMDLabel = new JLabel(Context.getMessage("amdSecPanel.rightsMDLabel.label"));
+        rightsMDLabel.setToolTipText(Context.getMessage("amdSecPanel.rightsMDLabel.tooltip"));        
+        add(rightsMDLabel);                
+        add(getRightsMdSecPropertiesPanel());
+    }
+    public void reset(AmdSec amdSec){
+        getTechMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getTechMD());
+        getDigiprovMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getDigiprovMD());
+        getSourceMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getSourceMD());
+        getRightsMdSecPropertiesPanel().reset((ArrayList<MdSec>)amdSec.getRightsMD());
+        this.amdSec = amdSec;        
+    }
 }

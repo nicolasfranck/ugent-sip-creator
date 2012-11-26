@@ -49,8 +49,7 @@ public final class BagInfoForm extends AbstractForm {
         if(loadFieldsPanel == null){
             loadFieldsPanel = new LoadFieldsPanel();                        
             loadFieldsPanel.setPreferredSize(new Dimension(FORM_WIDTH,35));            
-            loadFieldsPanel.setMaximumSize(new Dimension(FORM_WIDTH,35));
-            //loadFieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            loadFieldsPanel.setMaximumSize(new Dimension(FORM_WIDTH,35));            
             loadFieldsPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
         return loadFieldsPanel;

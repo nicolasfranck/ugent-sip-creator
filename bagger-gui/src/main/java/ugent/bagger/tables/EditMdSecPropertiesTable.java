@@ -25,7 +25,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     private ActionCommandExecutor openDialogExecutor;    
     
     public EditMdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
-        super(data,cols,id);               
+        super(data,cols,id);                      
         setDoubleClickHandler(getOpenDialogExecutor());
     }    
 

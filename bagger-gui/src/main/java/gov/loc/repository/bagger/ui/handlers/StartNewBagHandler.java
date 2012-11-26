@@ -1,6 +1,8 @@
 package gov.loc.repository.bagger.ui.handlers;
 
+import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
@@ -15,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import ugent.bagger.dialogs.NewBagDialog;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.params.NewBagParams;
 
 public class StartNewBagHandler extends AbstractAction {
     private static final long serialVersionUID = 1L;
@@ -36,12 +39,11 @@ public class StartNewBagHandler extends AbstractAction {
             true            
         );        
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);               
-        dialog.setLocationRelativeTo(SwingUtils.getFrame());         
-        SwingUtils.centerAt(SwingUtils.getFrame(),dialog);
+        dialog.setLocationRelativeTo(SwingUtils.getFrame());                 
         dialog.pack();
         dialog.setVisible(true);             
     }
-    public void createNewBag(String bagItVersion) {
+    public void createNewBag(NewBagParams params) {
         BagView bagView = BagView.getInstance();    	
     	
         try{
@@ -49,38 +51,45 @@ public class StartNewBagHandler extends AbstractAction {
         }catch(Exception e){
             e.printStackTrace();
         }
-    	DefaultBag bag = bagView.getBag();
+    	MetsBag metsBag = bagView.getBag();
+        
+        //Bag-Id      
+        BagInfoField field = new BagInfoField();
+        field.setLabel("Bag-Id");
+        field.setName("Bag-Id");
+        field.setValue(params.getBagId());        
+        metsBag.getInfo().addField(field);
+        
     	bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
 
     	String bagName = Context.getMessage("bag.label.noname");
-        bag.setName(bagName);
+        metsBag.setName(bagName);
         bagView.getInfoFormsPane().setBagName(bagName);
 
-        bagView.setBagTagFileTree(new BagTree(bag.getName(), false));
-        Collection<BagFile> tags = bag.getTags();
+        bagView.setBagTagFileTree(new BagTree(metsBag.getName(), false));
+        Collection<BagFile> tags = metsBag.getTags();
         for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
             BagFile bf = it.next();
             bagView.getBagTagFileTree().addNode(bf.getFilepath());
         }
         bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
         
-        bag.setRootDir(bagView.getBagRootPath());
+        metsBag.setRootDir(bagView.getBagRootPath());
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
     	ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
     	bagView.updateNewBag();
     	
     	// set bagItVersion
-    	bagView.getInfoFormsPane().getBagVersionValue().setText(bagItVersion);
-        
+    	bagView.getInfoFormsPane().getBagVersionValue().setText(params.getVersion());        
         
         //Nicolas Franck: bag-info velden inladen in form blijkbaar niet automatisch (wel na invullen 1ste nieuwe veld)            
         bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().setFieldMap(
-            bagView.getBag().getInfo().getFieldMap()
+            metsBag.getInfo().getFieldMap()
         );
         bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
     	        
-        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
+        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
         
     }    
 }

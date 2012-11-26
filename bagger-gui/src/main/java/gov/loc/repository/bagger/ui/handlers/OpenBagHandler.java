@@ -164,25 +164,11 @@ public class OpenBagHandler extends AbstractAction {
             bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
 
             //Nicolas Franck: load mets
-
             BagItMets bagitMets = new DefaultBagItMets();
-
-            Mets mets = bagitMets.onOpenBag(bagView.getBag());
+            Mets mets = bagitMets.onOpenBag(bagView.getBag());         
+           
             
-            bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);           
-            
-            
-            //Nicolas Franck: set eventLog
-            for(AmdSec amdSec:mets.getAmdSec()){
-                if(amdSec.getID() != null && amdSec.getID().equals("BAGIT_EVENT_LOG")){
-                    if(!amdSec.getDigiprovMD().isEmpty()){
-                        setEventLog(bagView.getBag(),mets,amdSec,amdSec.getDigiprovMD().get(0));
-                    }else if(!amdSec.getTechMD().isEmpty()){
-                        setEventLog(bagView.getBag(),mets,amdSec,amdSec.getTechMD().get(0));
-                    }
-                    break;
-                }
-            }
+            bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);       
             
         }catch(FileNotWritableException e){
             SwingUtils.ShowError(
@@ -219,23 +205,5 @@ public class OpenBagHandler extends AbstractAction {
         }
         
         SwingUtils.ShowDone();
-    }        
-    protected void setEventLog(MetsBag metsBag,Mets mets,AmdSec amdSec,MdSec mdSec){
-        try{
-            if(
-                mdSec != null && mdSec.getMdWrap() != null && 
-                mdSec.getMdWrap().getXmlData() != null && !mdSec.getMdWrap().getXmlData().isEmpty()
-            ){                
-                Element e = mdSec.getMdWrap().getXmlData().get(0);
-                Premis premis = new Premis();
-                premis.unmarshal(e);
-                
-                metsBag.setEventLog(premis);               
-                //verwijder uit zichtbare lijst
-                mets.getAmdSec().remove(amdSec);
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
+    }           
 }

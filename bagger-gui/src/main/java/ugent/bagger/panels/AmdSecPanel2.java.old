@@ -1,0 +1,148 @@
+package ugent.bagger.panels;
+
+import com.anearalone.mets.AmdSec;
+import com.anearalone.mets.MdSec;
+import gov.loc.repository.bagger.ui.BagView;
+import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingWorker;
+import org.springframework.util.Assert;
+import ugent.bagger.filters.FileExtensionFilter;
+import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.workers.TaskAddMdSecFromFile;
+
+/**
+ *
+ * @author nicolas
+ */
+public final class AmdSecPanel2 extends JPanel{
+    AmdSec amdSec;
+    public AmdSecPanel2(AmdSec amdSec){
+        Assert.notNull(amdSec);
+        this.amdSec = amdSec;
+        init();
+    }     
+    protected AmdSec getAmdSec(){
+        return amdSec;
+    }
+    private ActionListener getSetXmlActionListener(final String type){        
+        return new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae){                                
+                File [] files = SwingUtils.chooseFiles(
+                    Context.getMessage("addXMLMenuItem.fileChooser.title"),
+                    new FileExtensionFilter(
+                        new String [] {"xml"},
+                        Context.getMessage("addXMLMenuItem.fileFilter.label"),
+                        false
+                    ),
+                    JFileChooser.FILES_ONLY,
+                    true
+                );
+                if(files.length > 0){
+                    PropertyChangeListener listener = new PropertyChangeListener() {
+                        @Override
+                        public void propertyChange(PropertyChangeEvent pce) {
+                            if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){                    
+                                ApplicationContextUtil.addConsoleMessage(Context.getMessage("mdSecTable.addMdSec.start"));
+                            }else if(pce.getPropertyName().equals("log")){
+                                ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
+                            }else if(pce.getPropertyName().equals("send")){
+                                MdSec mdSec = (MdSec) pce.getNewValue();
+                                if(type.equals("sourceMdSec")){
+                                    getAmdSec().getSourceMD().clear();
+                                    getAmdSec().getSourceMD().add(mdSec);
+                                }else if(type.equals("techMdSec")){
+                                    getAmdSec().getTechMD().clear();
+                                    getAmdSec().getTechMD().add(mdSec);
+                                }else if(type.equals("rightsMdSec")){
+                                    getAmdSec().getRightsMD().clear();
+                                    getAmdSec().getRightsMD().add(mdSec);
+                                }else if(type.equals("digiprovMdSec")){
+                                    getAmdSec().getDigiprovMD().clear();
+                                    getAmdSec().getDigiprovMD().add(mdSec);
+                                }
+                            }
+                        }
+                    };
+                    ArrayList<PropertyChangeListener>listeners = new ArrayList<PropertyChangeListener>();
+                    listeners.add(listener);
+                    SwingUtils.monitor(new TaskAddMdSecFromFile(files),"","",listeners);
+                }                
+            }
+        };
+    }
+    public void init(){
+        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+        
+        final Dimension dim = new Dimension(500,50);
+        
+        JPanel sourceMdSecPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
+        sourceMdSecPanel.setMaximumSize(dim);
+        sourceMdSecPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
+        JLabel sourceMdSecLabel = new JLabel(Context.getMessage("AmdSecPanel.sourceMdSecLabel.label"));
+        JButton sourceMdSecViewButton = new JButton(Context.getMessage("AmdSecPanel.sourceMdSecViewButton.label"));
+        JButton sourceMdSecEditButton = new JButton(Context.getMessage("AmdSecPanel.sourceMdSecEditButton.label"));
+        sourceMdSecPanel.add(sourceMdSecLabel);
+        sourceMdSecPanel.add(sourceMdSecViewButton);
+        sourceMdSecPanel.add(sourceMdSecEditButton); 
+        add(sourceMdSecPanel);
+        
+        JPanel techMdSecPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
+        techMdSecPanel.setMaximumSize(dim);
+        techMdSecPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
+        JLabel techMdSecLabel = new JLabel(Context.getMessage("AmdSecPanel.techMdSecLabel.label"));
+        JButton techMdSecViewButton = new JButton(Context.getMessage("AmdSecPanel.techMdSecViewButton.label"));
+        JButton techMdSecEditButton = new JButton(Context.getMessage("AmdSecPanel.techMdSecEditButton.label"));
+        techMdSecPanel.add(techMdSecLabel);
+        techMdSecPanel.add(techMdSecViewButton);
+        techMdSecPanel.add(techMdSecEditButton);
+        add(techMdSecPanel);
+        
+        JPanel digiprovMdSecPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
+        digiprovMdSecPanel.setMaximumSize(dim);
+        digiprovMdSecPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
+        JLabel digiprovMdSecLabel = new JLabel(Context.getMessage("AmdSecPanel.digiprovMdSecLabel.label"));
+        JButton digiprovMdSecViewButton = new JButton(Context.getMessage("AmdSecPanel.digiprovMdSecViewButton.label"));
+        JButton digiprovMdSecEditButton = new JButton(Context.getMessage("AmdSecPanel.digiprovMdSecEditButton.label"));
+        digiprovMdSecPanel.add(digiprovMdSecLabel);
+        digiprovMdSecPanel.add(digiprovMdSecViewButton);
+        digiprovMdSecPanel.add(digiprovMdSecEditButton);
+        add(digiprovMdSecPanel);
+        
+        JPanel rightsMdSecPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
+        rightsMdSecPanel.setMaximumSize(dim);
+        rightsMdSecPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
+        JLabel rightsMdSecLabel = new JLabel(Context.getMessage("AmdSecPanel.rightsMdSecLabel.label"));
+        JButton rightsMdSecViewButton = new JButton(Context.getMessage("AmdSecPanel.rightsMdSecViewButton.label"));
+        JButton rightsMdSecEditButton = new JButton(Context.getMessage("AmdSecPanel.rightsMdSecEditButton.label"));
+        rightsMdSecPanel.add(rightsMdSecLabel);
+        rightsMdSecPanel.add(rightsMdSecViewButton);
+        rightsMdSecPanel.add(rightsMdSecEditButton);
+        add(rightsMdSecPanel);
+        
+        
+        
+    }
+    public void reset(AmdSec amdSec){
+        this.amdSec = amdSec;        
+    }
+}

@@ -22,7 +22,7 @@ public class ClassTable<T> extends AbstractObjectTable {
     }            
     @Override
     protected void configureTable(JTable table) {
-        table.setFillsViewportHeight(true);
+        table.setFillsViewportHeight(true);        
     }
     @Override
     protected Object[] getDefaultInitialData(){               

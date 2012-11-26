@@ -31,6 +31,10 @@ public class NewBagParamsForm extends AbstractForm{
         TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");        
         
+        //bagId
+        builder.add("bagId");        
+        builder.row();
+        
         //version
         ArrayList<String> versionModel = new ArrayList<String>();                
         for(BagFactory.Version version:BagFactory.Version.values()){

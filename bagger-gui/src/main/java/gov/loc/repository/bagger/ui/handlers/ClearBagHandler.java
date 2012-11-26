@@ -1,7 +1,6 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import com.anearalone.mets.Mets;
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
@@ -9,6 +8,7 @@ import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,8 +46,8 @@ public class ClearBagHandler extends AbstractAction {
     	// Closes Bag without popping up the Save Dialog Box for a Holey and Serialized Bag 
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
-        DefaultBag bag = bagView.getBag();
-    	if(bag.isHoley() || bag.isSerial()){
+        MetsBag metsBag = bagView.getBag();
+    	if(metsBag.isHoley() || metsBag.isSerial()){
             clearExistingBag();
         }else{
             confirmCloseBag();
@@ -90,20 +90,19 @@ public class ClearBagHandler extends AbstractAction {
        
     	newDefaultBag(null);
         BagView bagView = BagView.getInstance();
-    	DefaultBag bag = bagView.getBag();
-    	bag.clear();        
+    	MetsBag metsBag = bagView.getBag();
+    	metsBag.clear();        
     	
         bagView.setBagPayloadTree(bagView.createBagPayloadTree(AbstractBagConstants.DATA_DIRECTORY, true));
         
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.setBagTagFileTree(new BagTree(ApplicationContextUtil.getMessage("bag.label.noname"), false));
     	bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
-    	bagView.getInfoFormsPane().setBagName(bag.getName());
+    	bagView.getInfoFormsPane().setBagName(metsBag.getName());
     	bagView.getInfoFormsPane().updateInfoForms();
         Mets mets = new Mets();
-        bagView.getInfoFormsPane().getInfoInputPane().setMets(mets);
-        bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().reset(mets);      
-        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
+        bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);        
+        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
     	bagView.updateClearBag();
     }
 
@@ -136,7 +135,7 @@ public class ClearBagHandler extends AbstractAction {
         if(bag != null){
             bag.setName(bagName);
             bagView.setBag(bag);        
-            SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
+            SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
         }else{          
             throw new BagUnknownFormatException(f);
         }

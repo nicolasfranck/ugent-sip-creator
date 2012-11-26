@@ -27,7 +27,7 @@ public class NewBagDialog extends JDialog {
             public void propertyChange(PropertyChangeEvent pce) {
                 panel.getNewBagParamsForm().commit();
                 BagView.getInstance().startNewBagHandler.createNewBag(
-                    panel.getNewBagParams().getVersion()
+                    panel.getNewBagParams()
                 );
                 NewBagDialog.this.dispose();
             }

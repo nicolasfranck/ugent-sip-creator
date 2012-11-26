@@ -416,8 +416,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             BagView bagView = getBagView();
-            File selectFile = new File(File.separator+".");
-            JFrame frame = new JFrame();
+            File selectFile = new File(File.separator+".");            
             JFileChooser fs = new JFileChooser(selectFile);           
             fs.setDialogType(JFileChooser.SAVE_DIALOG);
             fs.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -448,7 +447,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
             } else {
                 fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
             }
-            int	option = fs.showSaveDialog(frame);
+            int	option = fs.showSaveDialog(SwingUtils.getFrame());
 
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = fs.getSelectedFile();
