@@ -15,6 +15,7 @@ import ugent.premis.Premis;
 import ugent.premis.PremisEvent;
 import ugent.premis.PremisIO;
 import ugent.premis.PremisObject;
+import ugent.premis.PremisObject.PremisObjectType;
 
 /**
  *
@@ -65,11 +66,11 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                     premis.getRights().addAll(newPremis.getRights());
                     
                     /*
-                     *  objects met type 'bagit' behoren toe aan 'bagit'!
+                     *  objects met type 'bitstream' behoren toe aan 'bagit'!
                      */                    
                     ArrayList<PremisObject>bagitObjects = new ArrayList<PremisObject>();
-                    for(PremisObject object:premis.getObject()){
-                        if(object.getType() != null && object.getType().equals("bagit")){
+                    for(PremisObject object:premis.getObject()){                        
+                        if(object.getType() != PremisObjectType.bitstream){
                             bagitObjects.add(object);
                         }
                     }
@@ -81,7 +82,7 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                      *  events met type 'bagit' behoren toe aan 'bagit'!
                      */
                     ArrayList<PremisEvent>bagitEvents = new ArrayList<PremisEvent>();
-                    for(PremisEvent event:premis.getEvent()){
+                    for(PremisEvent event:premis.getEvent()){                        
                         if(event.getEventType() != null && event.getEventType().equals("bagit")){
                             bagitEvents.add(event);
                         }

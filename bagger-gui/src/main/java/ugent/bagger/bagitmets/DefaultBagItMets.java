@@ -41,6 +41,7 @@ import ugent.premis.Premis;
 import ugent.premis.PremisEvent;
 import ugent.premis.PremisIO;
 import ugent.premis.PremisObject;
+import ugent.premis.PremisObject.PremisObjectType;
 
 /**
  *
@@ -109,8 +110,15 @@ public class DefaultBagItMets extends BagItMets{
         Premis premis = metsBag.getPremis();
         premis = premis == null ? new Premis():premis;        
         
-        PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.representation);
-        pobject.setVersion("2.0");
+        //reset object 'bitstream'
+        for(PremisObject object:premis.getObject()){
+            if(object.getType() == PremisObjectType.bitstream){
+                premis.getObject().remove(object);
+            }
+        }
+        
+        PremisObject pobject = new PremisObject(PremisObjectType.bitstream);
+        pobject.setVersion("2.0");        
         pobject.setXmlID("bagit");
         
         PremisObject.PremisObjectIdentifier id = new PremisObject.PremisObjectIdentifier();
@@ -135,7 +143,13 @@ public class DefaultBagItMets extends BagItMets{
         
         //eerste keer (indien oude bagit voor het eerst hier wordt ingeladen, dan is er nog geen eventlog)
         //en kan er bijgevolg geen verschil berekent worden
-        if(premis.getEvent().isEmpty()){
+        ArrayList<PremisEvent>bagitEvents = new ArrayList<PremisEvent>();
+        for(PremisEvent event:premis.getEvent()){                        
+            if(event.getEventType() != null && event.getEventType().equals("bagit")){
+                bagitEvents.add(event);
+            }
+        }
+        if(bagitEvents.isEmpty()){
             PremisEvent ev = new PremisEvent();
             PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
             evid.setEventIdentifierType("dateTime");
@@ -212,15 +226,20 @@ public class DefaultBagItMets extends BagItMets{
         }
         
         try{
-            AmdSec amdSec = new AmdSec();
-            amdSec.setID("bagit");
-            MdSec mdSec = new MdSec("BAGIT_EVENT_LOG_PREMIS");
+            AmdSec amdSec = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());
+            if(amdSec == null){
+                amdSec = new AmdSec();
+                amdSec.setID("bagit");
+                mets.getAmdSec().add(amdSec);
+            }
+            amdSec.getDigiprovMD().clear();
+            MdSec mdSec = new MdSec("bagit_premis");
             MdWrap mdWrap = new MdWrap(MdSec.MDTYPE.PREMIS);
             mdWrap.setMDTYPEVERSION("2.0");
             mdWrap.getXmlData().add(PremisIO.toDocument(premis).getDocumentElement());
             mdSec.setMdWrap(mdWrap);
             amdSec.getDigiprovMD().add(mdSec);
-            mets.getAmdSec().add(amdSec);         
+                     
         
             //test
             PremisIO.write(premis,new FileOutputStream(new File("/tmp/premis.xml")),true);
