@@ -1,5 +1,6 @@
 package ugent.premis;
 
+import com.anearalone.mets.MdSec;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -228,7 +229,14 @@ public class PremisEvent implements ElementInterface{
     public static class PremisEventOutcomeInformation implements ElementInterface{
         private String eventOutcome;
         private ArrayList<Element> eventOutcomeDetail;
-
+        private ArrayList<MdSec> mdSec;
+        
+        public ArrayList<MdSec> getMdSec() {
+            if(mdSec == null){
+                mdSec = new ArrayList<MdSec>();
+            }
+            return mdSec;
+        }
         public String getEventOutcome() {
             return eventOutcome;
         }
@@ -251,6 +259,10 @@ public class PremisEvent implements ElementInterface{
                     eventOutcome = child.getTextContent();
                 }else if(localName.equals("eventOutcomeDetail")) {
                     getEventOutcomeDetail().add(child);                    
+                }else if(localName.equals("mdSec")) {
+                    MdSec m = new MdSec("");
+                    m.unmarshal(child);
+                    getMdSec().add(m);
                 }
             }
         }
@@ -264,6 +276,11 @@ public class PremisEvent implements ElementInterface{
             }
             for(Element element:getEventOutcomeDetail()){
                 root.appendChild(element);
+            }
+            for(MdSec m:getMdSec()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+                m.marshal(e,doc);
+                root.appendChild(e);
             }
         }
     }

@@ -17,7 +17,7 @@ import ugent.premis.PremisObject.PremisObjectType;
  * @author nicolas
  */
 public class Premis implements ElementInterface{      
-    private String version = "2.0";
+    private String version = "2.2";
     private ArrayList<PremisObject>object;
     private ArrayList<PremisEvent>event;
     private ArrayList<PremisAgent>agent;

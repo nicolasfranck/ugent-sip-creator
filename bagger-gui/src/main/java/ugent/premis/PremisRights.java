@@ -1,5 +1,6 @@
 package ugent.premis;
 
+import com.anearalone.mets.MdSec;
 import java.text.ParseException;
 import java.util.ArrayList;
 import org.w3c.dom.Attr;
@@ -16,8 +17,9 @@ public class PremisRights implements ElementInterface {
     private String xmlID;
     private String version;
     //elements
-    PremisRightsStatement rightsStatement;
-    Element rightsExtension;
+    ArrayList<PremisRightsStatement>rightsStatement;
+    ArrayList<Element>rightsExtension;
+    ArrayList<MdSec>mdSec;
 
     public String getVersion() {
         return version;
@@ -31,49 +33,82 @@ public class PremisRights implements ElementInterface {
     public void setXmlID(String xmlID) {
         this.xmlID = xmlID;
     }
-    public PremisRightsStatement getRightsStatement() {
+
+    public ArrayList<PremisRightsStatement> getRightsStatement() {
+        if(rightsStatement == null){
+            rightsStatement = new ArrayList<PremisRightsStatement>();
+        }
         return rightsStatement;
     }
-    public void setRightsStatement(PremisRightsStatement rightsStatement) {
-        this.rightsStatement = rightsStatement;
-    }
-    public Element getRightsExtension() {
+
+    public ArrayList<Element> getRightsExtension() {
+        if(rightsExtension == null){
+            rightsExtension = new ArrayList<Element>();
+        }
         return rightsExtension;
     }
-    public void setRightsExtension(Element rightsExtension) {
-        this.rightsExtension = rightsExtension;
+
+    public ArrayList<MdSec> getMdSec() {
+        if(mdSec == null){
+            mdSec = new ArrayList<MdSec>();
+        }
+        return mdSec;
     }
+    
     @Override
     public void unmarshal(Element root) throws ParseException {
         //TODO:attributes!
+        NamedNodeMap attrs = root.getAttributes();
+        for (int i = 0; i < attrs.getLength(); i++) {
+            Attr attr = (Attr) attrs.item(i);
+            String name = attr.getName();
+            String value = attr.getNodeValue();
+            if(name.equals("xmlID")){
+                xmlID = value;
+            }else if(name.equals("version")){
+                version = value;
+            }
+        }
         
         
         ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
-            for(Element child:children) {
-                String localName = child.getLocalName();
-                if(localName.equals("rightsStatement")) {
-                    rightsStatement = new PremisRightsStatement();
-                    rightsStatement.unmarshal(child);
-                }else if(localName.equals("rightsBasis")) {
-                    rightsExtension = (Element) child.getFirstChild();
-                }
+        for(Element child:children) {
+            String localName = child.getLocalName();
+            if(localName.equals("rightsStatement")) {
+                PremisRightsStatement r = new PremisRightsStatement();
+                r.unmarshal(child);
+                getRightsStatement().add(r);
+            }else if(localName.equals("rightsExtension")) {
+                getRightsExtension().add((Element) child.getFirstChild());                
+            }else if(localName.equals("mdSec")) {
+                MdSec m = new MdSec("");
+                m.unmarshal(child);
+                getMdSec().add(m);
             }
+        }
     }
 
     @Override
     public void marshal(Element root, Document doc) {
         //TODO:attributes!
+        root.setAttribute("version",version);
+        root.setAttribute("xmlID",xmlID);
         
-        if(rightsStatement != null){
+        for(PremisRightsStatement s:getRightsStatement()){
             Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:rightsStatement");
-            rightsStatement.marshal(e,doc);                
+            s.marshal(e,doc);                
             root.appendChild(e);
         }
-        if(rightsExtension != null){
+        for(Element ext:getRightsExtension()){
             Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:rightsExtension");
-            e.appendChild(doc.importNode(rightsExtension,true));
+            e.appendChild(doc.importNode(ext,true));
             root.appendChild(e);
         }        
+        for(MdSec m:getMdSec()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+            m.marshal(e,doc);                
+            root.appendChild(e);
+        }
     }
     
     public static class PremisRightsStatement implements ElementInterface{
@@ -81,7 +116,7 @@ public class PremisRights implements ElementInterface {
         String rightsBasis;
         PremisCopyrightInformation copyrightInformation;
         PremisLicenseInformation licenseInformation;
-        PremisStatuteInformation statuteInformation;
+        ArrayList<PremisStatuteInformation> statuteInformation;
         PremisOtherRightsInformation otherRightsInformation;
         ArrayList<PremisRightsGranted>rightsGranted;
         ArrayList<PremisEvent.PremisLinkingObjectIdentifier>linkingObjectIdentifier;
@@ -119,12 +154,11 @@ public class PremisRights implements ElementInterface {
             this.licenseInformation = licenseInformation;
         }
 
-        public PremisStatuteInformation getStatuteInformation() {
+        public ArrayList<PremisStatuteInformation> getStatuteInformation() {
+            if(statuteInformation == null){
+                statuteInformation = new ArrayList<PremisStatuteInformation>();
+            }
             return statuteInformation;
-        }
-
-        public void setStatuteInformation(PremisStatuteInformation statuteInformation) {
-            this.statuteInformation = statuteInformation;
         }
 
         public PremisOtherRightsInformation getOtherRightsInformation() {
@@ -173,8 +207,9 @@ public class PremisRights implements ElementInterface {
                     licenseInformation = new PremisLicenseInformation();
                     licenseInformation.unmarshal(child);
                 }else if(localName.equals("statuteInformation")) {
-                    statuteInformation = new PremisStatuteInformation();
-                    statuteInformation.unmarshal(child);        
+                    PremisStatuteInformation info = new PremisStatuteInformation();
+                    info.unmarshal(child);        
+                    getStatuteInformation().add(info);
                 }else if(localName.equals("rightsGranted")) {
                     PremisRightsGranted g = new PremisRightsGranted();
                     g.unmarshal(child);
@@ -213,9 +248,9 @@ public class PremisRights implements ElementInterface {
                 licenseInformation.marshal(e,doc);                
                 root.appendChild(e);
             }
-            if(statuteInformation != null){
+            for(PremisStatuteInformation info:getStatuteInformation()){
                 Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:statuteInformation");
-                statuteInformation.marshal(e,doc);                
+                info.marshal(e,doc);                
                 root.appendChild(e);
             }
             for(PremisRightsGranted g:getRightsGranted()){
@@ -1084,7 +1119,7 @@ public class PremisRights implements ElementInterface {
                 root.appendChild(e);
             }
             if(termOfRestriction != null){
-                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:rightsGrantedNote");
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:termOfRestriction");
                 termOfRestriction.marshal(e,doc);
                 root.appendChild(e);
             }

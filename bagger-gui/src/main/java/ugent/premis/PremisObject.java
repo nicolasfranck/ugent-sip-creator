@@ -1,5 +1,6 @@
 package ugent.premis;
 
+import com.anearalone.mets.MdSec;
 import java.text.ParseException;
 import java.util.ArrayList;
 import org.w3c.dom.Attr;
@@ -426,14 +427,23 @@ public class PremisObject implements ElementInterface{
         private ArrayList<PremisFormat>format;        
         private ArrayList<PremisCreatingApplication>creatingApplication;
         private ArrayList<PremisInhibitors>inhibitors;
-        private Element objectCharacteristicsExtension;        
+        ArrayList<Element> objectCharacteristicsExtension;  
+        ArrayList<MdSec>mdSec;
+        
+        public ArrayList<MdSec> getMdSec() {
+            if(mdSec == null){
+                mdSec = new ArrayList<MdSec>();
+            }
+            return mdSec;
+        }
 
-        public Element getObjectCharacteristicsExtension() {
+        public ArrayList<Element> getObjectCharacteristicsExtension() {
+            if(objectCharacteristicsExtension == null){
+                objectCharacteristicsExtension = new ArrayList<Element>();
+            }
             return objectCharacteristicsExtension;
         }
-        public void setObjectCharacteristicsExtension(Element objectCharacteristicsExtension) {
-            this.objectCharacteristicsExtension = objectCharacteristicsExtension;
-        }        
+                
         public ArrayList<PremisInhibitors> getInhibitors() {
             if(inhibitors == null){
                 inhibitors = new ArrayList<PremisInhibitors>();
@@ -497,7 +507,11 @@ public class PremisObject implements ElementInterface{
                     inh.unmarshal(child);
                     getInhibitors().add(inh);
                 }else if(localName.equals("objectCharacteristicsExtension")) {
-                    objectCharacteristicsExtension = (Element) child.getFirstChild();
+                    getObjectCharacteristicsExtension().add((Element) child.getFirstChild());                    
+                }else if(localName.equals("mdSec")) {
+                    MdSec m = new MdSec("");
+                    m.unmarshal(child);
+                    getMdSec().add(m);
                 }
             }
         }
@@ -535,9 +549,14 @@ public class PremisObject implements ElementInterface{
                 inh.marshal(e,doc);
                 root.appendChild(e);
             }
-            if(objectCharacteristicsExtension != null){
+            for(Element ext:getObjectCharacteristicsExtension()){
                 Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:objectCharacteristicsExtension");                
-                e.appendChild(doc.importNode(objectCharacteristicsExtension,true));
+                e.appendChild(doc.importNode(ext,true));
+                root.appendChild(e);
+            }
+            for(MdSec m:getMdSec()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+                m.marshal(e,doc);
                 root.appendChild(e);
             }
         }
@@ -840,6 +859,14 @@ public class PremisObject implements ElementInterface{
         String significantPropertiesType;
         String significantPropertiesValue;
         ArrayList<Element>significantPropertiesExtension;        
+        private ArrayList<MdSec> mdSec;
+        
+        public ArrayList<MdSec> getMdSec() {
+            if(mdSec == null){
+                mdSec = new ArrayList<MdSec>();
+            }
+            return mdSec;
+        }
 
         public ArrayList<Element> getSignificantPropertiesExtension() {
             if(significantPropertiesExtension == null){
@@ -871,6 +898,10 @@ public class PremisObject implements ElementInterface{
                     significantPropertiesValue = child.getTextContent();
                 }else if(localName.equals("significantPropertiesExtension")) {
                     getSignificantPropertiesExtension().add((Element) child.getFirstChild());
+                }else if(localName.equals("mdSec")) {
+                    MdSec m = new MdSec("");
+                    m.unmarshal(child);
+                    getMdSec().add(m);
                 }
             }
         }
@@ -892,6 +923,11 @@ public class PremisObject implements ElementInterface{
                 e.appendChild(doc.importNode(sp,true));
                 root.appendChild(e);
             }
+            for(MdSec m:getMdSec()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+                m.marshal(e,doc);
+                root.appendChild(e);
+            }
         }
     }
     public static class PremisCreatingApplication implements ElementInterface{
@@ -899,7 +935,14 @@ public class PremisObject implements ElementInterface{
         String creatingApplicationVersion;
         String dateCreatedByApplication;
         ArrayList<Element>creatingApplicationExtension;        
+        ArrayList<MdSec>mdSec;
 
+        public ArrayList<MdSec> getMdSec() {
+            if(mdSec == null){
+                mdSec = new ArrayList<MdSec>();
+            }
+            return mdSec;
+        }
         public String getCreatingApplicationName() {
             return creatingApplicationName;
         }
@@ -945,6 +988,10 @@ public class PremisObject implements ElementInterface{
                     dateCreatedByApplication = child.getTextContent();
                 }else if(localName.equals("creatingApplicationExtension")) {
                     getCreatingApplicationExtension().add((Element) child.getFirstChild());
+                }else if(localName.equals("mdSec")) {
+                    MdSec m = new MdSec("");
+                    m.unmarshal(child);
+                    getMdSec().add(m);
                 }
             }
         }
@@ -970,6 +1017,11 @@ public class PremisObject implements ElementInterface{
             for(Element appe:getCreatingApplicationExtension()){
                 Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:creatingApplicationExtension");
                 e.appendChild(doc.importNode(appe,true));
+                root.appendChild(e);
+            }
+            for(MdSec m:getMdSec()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+                m.marshal(e,doc);
                 root.appendChild(e);
             }
         } 
@@ -1043,8 +1095,15 @@ public class PremisObject implements ElementInterface{
         ArrayList<PremisDependency>dependency;
         ArrayList<PremisSoftware>software;
         ArrayList<PremisHardware>hardware;        
-        Element environmentExtension;        
+        ArrayList<Element>environmentExtension; 
+        ArrayList<MdSec>mdSec;
 
+        public ArrayList<MdSec> getMdSec() {
+            if(mdSec == null){
+                mdSec = new ArrayList<MdSec>();
+            }
+            return mdSec;
+        }
         public String getEnvironmentCharacteristic() {
             return environmentCharacteristic;
         }
@@ -1087,14 +1146,13 @@ public class PremisObject implements ElementInterface{
             return hardware;
         }
 
-        public Element getEnvironmentExtension() {
+        public ArrayList<Element> getEnvironmentExtension() {
+            if(environmentExtension == null){
+                environmentExtension = new ArrayList<Element>();
+            }
             return environmentExtension;
         }
 
-        public void setEnvironmentExtension(Element environmentExtension) {
-            this.environmentExtension = environmentExtension;
-        }
-        
               
         @Override
         public void unmarshal(Element root) throws ParseException {            
@@ -1121,7 +1179,11 @@ public class PremisObject implements ElementInterface{
                     hard.unmarshal(child);
                     getHardware().add(hard);
                 }else if(localName.equals("environmentExtension")) {                    
-                    environmentExtension = (Element) child.getFirstChild();                    
+                    getEnvironmentExtension().add((Element) child.getFirstChild());                                     
+                }else if(localName.equals("mdSec")) {
+                    MdSec m = new MdSec("");
+                    m.unmarshal(child);
+                    getMdSec().add(m);
                 }
             }
         }
@@ -1157,11 +1219,16 @@ public class PremisObject implements ElementInterface{
                 hard.marshal(e,doc);
                 root.appendChild(e);
             }
-            if(environmentExtension != null){
+            for(Element ext:getEnvironmentExtension()){
                 Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:environmentExtension");
-                e.appendChild(doc.importNode(environmentExtension,true));
+                e.appendChild(doc.importNode(ext,true));
                 root.appendChild(e);
-            }            
+            }  
+            for(MdSec m:getMdSec()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+                m.marshal(e,doc);
+                root.appendChild(e);
+            }
         }
     }
     public static class PremisDependency implements ElementInterface{
@@ -1413,6 +1480,14 @@ public class PremisObject implements ElementInterface{
     public static class PremisSignatureInformation implements ElementInterface{
         PremisSignature signature;
         ArrayList<Element>signatureInformationExtension;
+        private ArrayList<MdSec> mdSec;
+        
+        public ArrayList<MdSec> getMdSec() {
+            if(mdSec == null){
+                mdSec = new ArrayList<MdSec>();
+            }
+            return mdSec;
+        }
 
         public ArrayList<Element> getSignatureInformationExtension() {
             if(signatureInformationExtension == null){
@@ -1437,6 +1512,10 @@ public class PremisObject implements ElementInterface{
                     signature.unmarshal(child);                    
                 }else if(localName.equals("signatureInformationExtension")) {                    
                     getSignatureInformationExtension().add((Element) child.getFirstChild());                    
+                }else if(localName.equals("mdSec")) {
+                    MdSec m = new MdSec("");
+                    m.unmarshal(child);
+                    getMdSec().add(m);
                 }
             }
         }
@@ -1454,6 +1533,11 @@ public class PremisObject implements ElementInterface{
                 e.appendChild(doc.importNode(sinfo,true));
                 root.appendChild(e);
             }
+            for(MdSec m:getMdSec()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+                m.marshal(e,doc);
+                root.appendChild(e);
+            }
         }  
     }
     public static class PremisSignature implements ElementInterface{
@@ -1463,7 +1547,15 @@ public class PremisObject implements ElementInterface{
         String signatureValue;
         String signatureValidationRules;
         ArrayList<String>signatureProperties;
-        Element keyInformation;
+        ArrayList<Element> keyInformation;
+        private ArrayList<MdSec> mdSec;
+        
+        public ArrayList<MdSec> getMdSec() {
+            if(mdSec == null){
+                mdSec = new ArrayList<MdSec>();
+            }
+            return mdSec;
+        }
 
         public String getSignatureEncoding() {
             return signatureEncoding;
@@ -1512,13 +1604,10 @@ public class PremisObject implements ElementInterface{
             return signatureProperties;
         }
 
-        public Element getKeyInformation() {
+        public ArrayList<Element> getKeyInformation() {
             return keyInformation;
         }
-        public void setKeyInformation(Element keyInformation) {
-            this.keyInformation = keyInformation;
-        }        
-        
+       
         @Override
         public void unmarshal(Element root) throws ParseException {            
             
@@ -1538,7 +1627,11 @@ public class PremisObject implements ElementInterface{
                 }else if(localName.equals("signatureProperties")) {
                     getSignatureProperties().add(child.getTextContent());
                 }else if(localName.equals("keyInformation")) {
-                    keyInformation = (Element) child.getFirstChild();
+                    getKeyInformation().add((Element) child.getFirstChild());                    
+                }else if(localName.equals("mdSec")) {
+                    MdSec m = new MdSec("");
+                    m.unmarshal(child);
+                    getMdSec().add(m);
                 }
             }
         }
@@ -1574,9 +1667,14 @@ public class PremisObject implements ElementInterface{
                 root.appendChild(spe);
             }
             
-            if(keyInformation != null){                
+            for(Element k:getKeyInformation()){                
                 Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:keyInformation");
-                e.appendChild(doc.importNode(keyInformation,true));
+                e.appendChild(doc.importNode(k,true));
+                root.appendChild(e);
+            }
+            for(MdSec m:getMdSec()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+                m.marshal(e,doc);
                 root.appendChild(e);
             }
         }
