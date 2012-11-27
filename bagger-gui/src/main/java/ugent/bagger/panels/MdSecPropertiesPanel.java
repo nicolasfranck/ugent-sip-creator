@@ -99,6 +99,16 @@ public class MdSecPropertiesPanel extends JPanel{
     public EditMdSecPropertiesTable getEditDmdSecPropertiesTable() {
         if(editDmdSecPropertiesTable == null){
             editDmdSecPropertiesTable = createMdSecPropertiesTable();
+            editDmdSecPropertiesTable.addPropertyChangeListener("remove",new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent pce) {
+                    System.out.println("oldValue: "+pce.getOldValue()+", newValue: "+pce.getNewValue());
+                    MdSecPropertiesPanel.this.firePropertyChange("remove",pce.getOldValue(),pce.getNewValue());                    
+                    if(getMax() > 0 && data.size() < getMax()){
+                       enableButtons(true);
+                    }
+                }
+            });
         }
         return editDmdSecPropertiesTable;
     }
@@ -199,8 +209,7 @@ public class MdSecPropertiesPanel extends JPanel{
                 
                 if(getMax() > 0 && data.size() < getMax()){
                     enableButtons(true);
-                }
-                MdSecPropertiesPanel.this.firePropertyChange("remove",null,null);
+                }                
             }        
         });        
         
@@ -307,7 +316,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     if(getMax() > 0 && data.size() >= getMax()){
                         enableButtons(false);
                     }
-                    
+                    System.out.println("firing property change 'mdSec'");
                     MdSecPropertiesPanel.this.firePropertyChange("mdSec",null,pce.getNewValue());
                     
                 }else if(

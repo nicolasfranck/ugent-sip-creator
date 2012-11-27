@@ -7,7 +7,10 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JTable;
@@ -23,6 +26,7 @@ import ugent.bagger.properties.MdSecProperties;
  */
 public class EditMdSecPropertiesTable extends MdSecPropertiesTable{            
     private ActionCommandExecutor openDialogExecutor;    
+    private HashMap<String,ArrayList<PropertyChangeListener>>listeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
     
     public EditMdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
         super(data,cols,id);                      
@@ -101,16 +105,34 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
         }
     }
     public void add(MdSec mdSec){        
-        getData().add(mdSec);        
+        getData().add(mdSec);     
+        firePropertyChange("add",null,mdSec);
     }   
     public void deleteSelected(){
         if(getTable().getSelectedRows().length > 0){
-            for(MdSecProperties mdSecProperties:getSelections()){
+            for(MdSecProperties mdSecProperties:getSelections()){                
                 deleteMdSec(mdSecProperties.getMdSec());
+                System.out.println("mdSec: "+mdSecProperties.getMdSec());
+                firePropertyChange("remove",null,mdSecProperties.getMdSec());
             }            
         }
     }
     public void deleteMdSec(MdSec mdSec){
         getData().remove(mdSec);
     }    
+    public void addPropertyChangeListener(String key,PropertyChangeListener l){
+        if(!listeners.containsKey(key)){
+            listeners.put(key,new ArrayList<PropertyChangeListener>());
+        }
+        listeners.get(key).add(l);
+    }
+    public void firePropertyChange(String key,Object oldValue,Object newValue){
+        if(listeners.containsKey(key)){
+            System.out.println("firePropertyChange for key '"+key+"', size list: "+listeners.get(key).size());
+            PropertyChangeEvent event = new PropertyChangeEvent(this,key,oldValue,newValue);
+            for(PropertyChangeListener l:listeners.get(key)){
+                l.propertyChange(event);
+            }
+        }
+    }
 }

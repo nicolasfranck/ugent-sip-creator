@@ -39,14 +39,17 @@ public final class MetsBag extends DefaultBag{
             oldFileList = new ArrayList<String>();
         }        
         return oldFileList;
+    }    
+    protected void init(){
+        initOldFileList();       
     }
     public MetsBag() {          
         super();            
-        initOldFileList();
+        init();
     }
     public MetsBag(File rootDir, String version) {
         super(rootDir,version);        
-        initOldFileList();
+        init();
     }    
 
     public BagItMets getBagItMets() {                

@@ -19,7 +19,7 @@ public class PremisObject implements ElementInterface{
     
     //elements
     ArrayList<PremisObjectIdentifier> objectIdentifier;
-    ArrayList<String>preservationLevel;    
+    ArrayList<PremisPreservationLevel>preservationLevel;    
     ArrayList<PremisSignificantProperties>significantProperties;    
     ArrayList<PremisObjectCharacteristics>objectCharacteristics;
     String originalName;
@@ -93,9 +93,9 @@ public class PremisObject implements ElementInterface{
         }
         return objectIdentifier;
     }
-    public ArrayList<String> getPreservationLevel() {
+    public ArrayList<PremisPreservationLevel> getPreservationLevel() {
         if(preservationLevel == null){
-            preservationLevel = new ArrayList<String>();
+            preservationLevel = new ArrayList<PremisPreservationLevel>();
         }
         return preservationLevel;
     }    
@@ -148,12 +148,14 @@ public class PremisObject implements ElementInterface{
             Attr attr = (Attr) attrs.item(i);
             String name = attr.getName();
             String value = attr.getNodeValue();
+            
             if(name.equals("xmlID")){
                 xmlID = value;
             }else if(name.equals("version")){
                 version = value;
             }else if(name.equals("type")){
-                type = PremisObjectType.valueOf(value);
+                //premis:type als value! Jammer kan de waarde niet verwerkt worden door de API                                
+                type = PremisObjectType.valueOf(value.replaceAll("^\\w+:",""));
             }
         }
         
@@ -165,7 +167,9 @@ public class PremisObject implements ElementInterface{
                 oid.unmarshal(child);
                 getObjectIdentifier().add(oid);
             }else if(localName.equals("preservationLevel")) {
-                getPreservationLevel().add(child.getTextContent());                
+                PremisPreservationLevel level = new PremisPreservationLevel();
+                level.unmarshal(child);
+                getPreservationLevel().add(level);                
             }else if(localName.equals("significantProperties")) {
                 PremisSignificantProperties props = new PremisSignificantProperties();
                 props.unmarshal(child);
@@ -216,8 +220,10 @@ public class PremisObject implements ElementInterface{
         }
         if(version != null && !version.isEmpty()){
             root.setAttribute("version",version);
+        }else{
+            root.setAttribute("version","2.2");
         }        
-        root.setAttributeNS(NS.XSI.ns(),"xsi:type",type.toString());        
+        root.setAttributeNS(NS.XSI.ns(),"xsi:type","premis:"+type.toString());        
         
         //elements -> sequence is important!
         for(PremisObjectIdentifier oi:getObjectIdentifier()){
@@ -225,9 +231,9 @@ public class PremisObject implements ElementInterface{
             oi.marshal(oie,doc);
             root.appendChild(oie);
         }
-        for(String pr:getPreservationLevel()){
+        for(PremisPreservationLevel pr:getPreservationLevel()){
             Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:preservationLevel");
-            e.setTextContent(pr);
+            pr.marshal(e,doc);            
             root.appendChild(e);
         }             
         for(PremisSignificantProperties props:getSignificantProperties()){
@@ -288,7 +294,86 @@ public class PremisObject implements ElementInterface{
             root.appendChild(e);
         }
     }
-    
+    public static class PremisPreservationLevel implements ElementInterface{
+        String preservationLevelValue;
+        String preservationLevelRole;
+        ArrayList<String>preservationLevelRationale;
+        String preservationLevelDateAssigned;
+
+        public String getPreservationLevelValue() {
+            return preservationLevelValue;
+        }
+
+        public void setPreservationLevelValue(String preservationLevelValue) {
+            this.preservationLevelValue = preservationLevelValue;
+        }
+
+        public String getPreservationLevelRole() {
+            return preservationLevelRole;
+        }
+
+        public void setPreservationLevelRole(String preservationLevelRole) {
+            this.preservationLevelRole = preservationLevelRole;
+        }
+
+        public String getPreservationLevelDateAssigned() {
+            return preservationLevelDateAssigned;
+        }
+
+        public void setPreservationLevelDateAssigned(String preservationLevelDateAssigned) {
+            this.preservationLevelDateAssigned = preservationLevelDateAssigned;
+        }
+
+        public ArrayList<String> getPreservationLevelRationale() {
+            if(preservationLevelRationale == null){
+                preservationLevelRationale = new ArrayList<String>();
+            }
+            return preservationLevelRationale;
+        }
+
+        @Override
+        public void unmarshal(Element root) throws ParseException {       
+            
+            ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
+            for(Element child:children) {
+                String localName = child.getLocalName();
+                if(localName.equals("preservationLevelValue")) {
+                    preservationLevelValue = child.getTextContent();
+                }else if(localName.equals("preservationLevelRole")) {
+                    preservationLevelRole = child.getTextContent();
+                }else if(localName.equals("preservationLevelRationale")) {
+                    getPreservationLevelRationale().add(child.getTextContent());                    
+                }else if(localName.equals("preservationLevelDateAssigned")) {
+                    preservationLevelDateAssigned = child.getTextContent();
+                }
+            }
+        }
+
+        @Override
+        public void marshal(Element root, Document doc) {                    
+            
+            //elements
+            Element v = doc.createElementNS(NS.PREMIS.ns(),"premis:preservationLevelValue");
+            v.setTextContent(preservationLevelValue);
+            root.appendChild(v);
+            
+            Element r = doc.createElementNS(NS.PREMIS.ns(),"premis:preservationLevelRole");
+            r.setTextContent(preservationLevelRole);
+            root.appendChild(r);
+            
+            for(String value:getPreservationLevelRationale()){
+                Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:preservationLevelRationale");
+                e.setTextContent(value);
+                root.appendChild(e);
+            }
+            
+            if(preservationLevelDateAssigned != null){
+                Element d = doc.createElementNS(NS.PREMIS.ns(),"premis:preservationLevelDateAssigned");
+                d.setTextContent(preservationLevelDateAssigned);
+                root.appendChild(d);
+            }
+        } 
+    }
     public static class PremisObjectIdentifier implements ElementInterface {
         private String objectIdentifierType;
         private String objectIdentifierValue;
@@ -482,6 +567,7 @@ public class PremisObject implements ElementInterface{
         public void setMessageDigestOriginator(String messageDigestOriginator) {
             this.messageDigestOriginator = messageDigestOriginator;
         }
+        @Override
         public void unmarshal(Element root) throws ParseException {            
             ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
             for(Element child:children) {

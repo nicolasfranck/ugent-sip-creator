@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.logging.Log;
@@ -72,15 +73,7 @@ public class DefaultBagItMets extends BagItMets{
         }
         if(mets == null){            
             mets = new Mets();
-        }
-        
-        //amdSec met id 'bagit' is voor SIP-creator voorbehouden
-        AmdSec amdSecBagit = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());        
-        if(amdSecBagit == null){            
-            amdSecBagit = new AmdSec();
-            amdSecBagit.setID("bagit");
-            mets.getAmdSec().add(amdSecBagit);
-        }
+        }        
         
         return mets;
     }
@@ -106,24 +99,34 @@ public class DefaultBagItMets extends BagItMets{
         Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);                                
         
+        System.out.println("test 1");
         //premis        
-        Premis premis = metsBag.getPremis();
-        premis = premis == null ? new Premis():premis;        
+        Premis premis = metsBag.getPremis();  
         
-        //reset object 'bitstream'
-        for(PremisObject object:premis.getObject()){
+        System.out.println("premis: "+premis);
+        System.out.println("premis.object.size: "+premis.getObject().size());
+                
+        //object van type 'bitstream' behoren toe aan bagit
+        Iterator<PremisObject>it = premis.getObject().iterator();
+        while(it.hasNext()){
+            PremisObject object = it.next();
+            System.out.println("object: "+object);
             if(object.getType() == PremisObjectType.bitstream){
-                premis.getObject().remove(object);
+                System.out.println("deleting object "+object);
+                it.remove();                
+                System.out.println("object deleted!");
             }
-        }
+        }   
         
-        PremisObject pobject = new PremisObject(PremisObjectType.bitstream);
+        System.out.println("test 2");
+        
+        PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.bitstream);
         pobject.setVersion("2.0");        
         pobject.setXmlID("bagit");
         
         PremisObject.PremisObjectIdentifier id = new PremisObject.PremisObjectIdentifier();
         id.setObjectIdentifierType("name");
-        id.setObjectIdentifierValue(metsBag.getRootDir().getName());
+        id.setObjectIdentifierValue(metsBag.getName());
         pobject.getObjectIdentifier().add(id);
         
         PremisObject.PremisObjectCharacteristics chars = new PremisObject.PremisObjectCharacteristics();
@@ -135,7 +138,9 @@ public class DefaultBagItMets extends BagItMets{
         
         chars.getFormat().add(format);
         pobject.getObjectCharacteristics().add(chars);
-        premis.getObject().add(pobject);        
+        premis.getObject().add(pobject);   
+        
+        System.out.println("test 3");
         
         DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String formattedDate = dformat.format(new Date());        
@@ -149,18 +154,23 @@ public class DefaultBagItMets extends BagItMets{
                 bagitEvents.add(event);
             }
         }
+        
+        System.out.println("test 4");
+        
         if(bagitEvents.isEmpty()){
-            PremisEvent ev = new PremisEvent();
+            System.out.println("test 'is empty'");
+            
+            PremisEvent ev = new PremisEvent();            
             PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
             evid.setEventIdentifierType("dateTime");
             evid.setEventIdentifierValue(dateId);
             ev.setEventIdentifier(evid);
             ev.setXmlID(dateId);
             ev.setVersion("2.0");
-            ev.setEventType("files added");
+            ev.setEventType("bagit");
             
             ev.setEventDateTime(formattedDate);            
-            ev.setEventDetail("files added from bagit (payloads of tagfiles)");
+            ev.setEventDetail("files added to bagit");
             
             for(String file:metsBag.getPayloadPaths()){
                 PremisEvent.PremisLinkingObjectIdentifier oid = new PremisEvent.PremisLinkingObjectIdentifier();
@@ -178,6 +188,9 @@ public class DefaultBagItMets extends BagItMets{
         }
         //er is wel een eventLog
         else{
+            
+            System.out.println("test 'is not empty'");
+            
             //verschil oud en nieuw berekenen
             ArrayList<String>oldFileList = metsBag.getOldFileList();
             ArrayList<String>newFileList = (ArrayList<String>) metsBag.getPayloadPaths();
@@ -193,9 +206,9 @@ public class DefaultBagItMets extends BagItMets{
                 ev.setEventIdentifier(evid);
                 ev.setXmlID(dateId);
                 ev.setVersion("2.0");
-                ev.setEventType("files added");
+                ev.setEventType("bagit");
                 ev.setEventDateTime(formattedDate);            
-                ev.setEventDetail("files added from bagit (payloads of tagfiles)");
+                ev.setEventDetail("files added to bagit");
                 for(String file:diff.getAdded()){
                     PremisEvent.PremisLinkingObjectIdentifier oid = new PremisEvent.PremisLinkingObjectIdentifier();
                     oid.setLinkingObjectIdentifierType("URL");
@@ -212,9 +225,9 @@ public class DefaultBagItMets extends BagItMets{
                 ev.setEventIdentifier(evid);
                 ev.setXmlID(dateId);
                 ev.setVersion("2.0");
-                ev.setEventType("files deleted");
+                ev.setEventType("bagit");
                 ev.setEventDateTime(formattedDate);            
-                ev.setEventDetail("files deleted from bagit (payloads of tagfiles)");
+                ev.setEventDetail("files deleted from bagit");
                 for(String file:diff.getDeleted()){
                     PremisEvent.PremisLinkingObjectIdentifier oid = new PremisEvent.PremisLinkingObjectIdentifier();
                     oid.setLinkingObjectIdentifierType("URL");
@@ -225,6 +238,8 @@ public class DefaultBagItMets extends BagItMets{
             }
         }
         
+        System.out.println("test 5");
+        
         try{
             AmdSec amdSec = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());
             if(amdSec == null){
@@ -232,14 +247,16 @@ public class DefaultBagItMets extends BagItMets{
                 amdSec.setID("bagit");
                 mets.getAmdSec().add(amdSec);
             }
+            for(MdSec d:amdSec.getDigiprovMD()){
+                
+            }
             amdSec.getDigiprovMD().clear();
             MdSec mdSec = new MdSec("bagit_premis");
             MdWrap mdWrap = new MdWrap(MdSec.MDTYPE.PREMIS);
             mdWrap.setMDTYPEVERSION("2.0");
             mdWrap.getXmlData().add(PremisIO.toDocument(premis).getDocumentElement());
             mdSec.setMdWrap(mdWrap);
-            amdSec.getDigiprovMD().add(mdSec);
-                     
+            amdSec.getDigiprovMD().add(mdSec);                     
         
             //test
             PremisIO.write(premis,new FileOutputStream(new File("/tmp/premis.xml")),true);

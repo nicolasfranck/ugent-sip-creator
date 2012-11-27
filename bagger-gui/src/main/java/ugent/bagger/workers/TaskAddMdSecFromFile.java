@@ -39,27 +39,32 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                 succeeded++;
             }catch(IOException e){                  
                 numErrors++;
+                e.printStackTrace();
                 log(Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
                     file,e.getMessage()
                 }));                    
             }catch(SAXException e){                  
                 numErrors++;
+                e.printStackTrace();
                 log(Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
                     file,e.getMessage()
                 })+"\n");                                                    
             }catch(ParserConfigurationException e){                  
                 numErrors++;
+                e.printStackTrace();
                 log(Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
                     e.getMessage()
                 })+"\n");                    
             }catch(IllegalNamespaceException e){                
                 numErrors++;
+                e.printStackTrace();
                 log(Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
                     file,e.getNamespace()
                 })+"\n");
             }
             catch(NoNamespaceException e){                          
-                numErrors++;                
+                numErrors++;        
+                e.printStackTrace();
                 log(Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
                     file
                 })+"\n");                                

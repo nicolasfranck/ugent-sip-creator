@@ -135,8 +135,14 @@ public class PremisEvent implements ElementInterface{
 
     @Override
     public void marshal(Element root, Document doc) {
-        root.setAttribute("xmlID",xmlID);
-        root.setAttribute("version",version);
+        if(xmlID != null && !xmlID.isEmpty()){
+            root.setAttribute("xmlID",xmlID);
+        }
+        if(version != null && !version.isEmpty()){
+            root.setAttribute("version",version);
+        }else{
+            root.setAttribute("version","2.2");
+        }
         
         
         Element evi = doc.createElementNS(NS.PREMIS.ns(),"premis:eventIdentifier");
@@ -410,7 +416,7 @@ public class PremisEvent implements ElementInterface{
                 Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:linkingObjectIdentifierValue");
                 e.setTextContent(linkingObjectIdentifierValue);
                 root.appendChild(e);
-            }           
+            }             
         }
     }    
 }

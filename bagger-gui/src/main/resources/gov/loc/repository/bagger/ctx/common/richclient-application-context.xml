@@ -264,9 +264,9 @@
         <entry value="http://www.openarchives.org/OAI/2.0/oai_dc/" key="OAI-DC" />
         <entry value="http://www.loc.gov/MARC21/slim" key="MARC"/>
         <entry value="http://www.loc.gov/mods/v3" key="MODS" />        
-        <entry value="info:lc/xmlns/premis-v2" key="PREMIS" />
-        <entry value="http://www.loc.gov/standards/premis/v1" key="PREMIS" />
-        <entry value="http://www.loc.gov/standards/premis" key="PREMIS" />
+        <entry value="info:lc/xmlns/premis-v2" key="PREMIS-2" />
+        <entry value="http://www.loc.gov/standards/premis/v1" key="PREMIS-1" />
+        <entry value="http://www.loc.gov/standards/premis" key="PREMIS-1" />
         <entry value="urn:isbn:1-931666-22-9" key="EAD" />
         <entry value="http://www.loc.gov/METS/" key="METS" />           
         <entry value="http://purl.org/dc/elements/1.1/" key="DC" />         

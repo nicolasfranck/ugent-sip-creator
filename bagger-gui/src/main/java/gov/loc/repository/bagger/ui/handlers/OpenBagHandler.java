@@ -5,18 +5,18 @@ import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Element;
 import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.exceptions.BagNoBagDirException;
 import ugent.bagger.exceptions.BagUnknownFormatException;
@@ -24,8 +24,10 @@ import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
+import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.premis.Premis;
+import ugent.premis.PremisIO;
 
 public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
@@ -165,8 +167,21 @@ public class OpenBagHandler extends AbstractAction {
 
             //Nicolas Franck: load mets
             BagItMets bagitMets = new DefaultBagItMets();
-            Mets mets = bagitMets.onOpenBag(bagView.getBag());         
-           
+            Mets mets = bagitMets.onOpenBag(bagView.getBag());                     
+            
+            //set premis
+            System.out.println("looking for premis");
+            AmdSec amdSecBagit = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());
+            if(amdSecBagit != null && !amdSecBagit.getDigiprovMD().isEmpty()){                
+                System.out.println("amdSecBagit found");
+                MdSec mdSec = PremisUtils.getPremisMdSec((ArrayList<MdSec>)amdSecBagit.getDigiprovMD());
+                System.out.println("mdSec: "+mdSec);
+                if(mdSec != null){
+                    Premis premis = PremisIO.toPremis(mdSec.getMdWrap().getXmlData().get(0));
+                    bagView.getBag().setPremis(premis);
+                }
+            }
+            
             
             bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);       
             
@@ -202,6 +217,8 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.BagNoBagDirException.title"),
                 Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file})
             );
+        }catch(ParseException e){
+            e.printStackTrace();
         }
         
         SwingUtils.ShowDone();

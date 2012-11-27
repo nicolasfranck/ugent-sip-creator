@@ -61,7 +61,7 @@ public class Premis implements ElementInterface{
         for (int i = 0; i < attrs.getLength(); i++) {
             Attr attr = (Attr) attrs.item(i);
             String name = attr.getName();
-            String value = attr.getNodeValue();
+            String value = attr.getNodeValue();            
             if(name.equals("version")){
                 version = value;
                 break;
@@ -77,9 +77,8 @@ public class Premis implements ElementInterface{
                 ev.unmarshal(child);
                 getEvent().add(ev);
             }else if(localName.equals("object")){
-                PremisObjectType type = PremisObject.PremisObjectType.valueOf(
-                    child.getAttributeNS(NS.XSI.ns(),"type")
-                );
+                String typeString =  child.getAttributeNS(NS.XSI.ns(),"type").replaceAll("^\\w+:","");                                                
+                PremisObjectType type = PremisObject.PremisObjectType.valueOf(typeString);
                 if(type == null){
                     continue;
                 }
@@ -110,6 +109,8 @@ public class Premis implements ElementInterface{
         
         if(version != null && !version.isEmpty()){
             root.setAttribute("version",version);
+        }else{
+            root.setAttribute("version","2.2");
         }
         //sequence is important!
         for(PremisObject object:getObject()){
@@ -136,11 +137,14 @@ public class Premis implements ElementInterface{
     }
     public static void main(String [] args){
         try{
-            Document doc = XML.XMLToDocument(new File("/home/nicolas/premis.xml"));
+            Document doc = XML.XMLToDocument(new File("/home/nicolas/premis_pp2.xml"));
             System.out.println("document loaded"); 
             Premis premis = new Premis();
             premis.unmarshal(doc.getDocumentElement());
             
+            for(PremisObject object:premis.getObject()){
+                System.out.println("object type: "+object.getType());
+            }
             ArrayList<PremisEvent> events = premis.getEvent();
             for(PremisEvent event:events){
                 System.out.println("xmlID:"+event.getXmlID());

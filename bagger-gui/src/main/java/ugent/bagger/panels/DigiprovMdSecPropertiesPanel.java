@@ -7,10 +7,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.helper.PremisUtils;
 import ugent.premis.Premis;
 import ugent.premis.PremisEvent;
 import ugent.premis.PremisIO;
@@ -24,15 +25,18 @@ import ugent.premis.PremisObject.PremisObjectType;
 public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
     public DigiprovMdSecPropertiesPanel(ArrayList<MdSec>data){        
         super(data);        
+        init();
     }
     @Override
     protected int getMax(){
         return 1;
     }
     protected void init(){
-        addPropertyChangeListener("mdSec",new PropertyChangeListener() {
+        addPropertyChangeListener("remove",new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
+                System.out.println("property name:"+pce.getPropertyName());
+                System.out.println("property value:"+pce.getNewValue());
                 
                 BagView bagView = BagView.getInstance();
                 MetsBag metsBag = bagView.getBag();
@@ -40,18 +44,60 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                 
                 //indien premis-record, dan deze verwerken!
                 MdSec mdSec = (MdSec) pce.getNewValue();
-                if(
-                    mdSec == null || mdSec.getMdWrap() == null || 
-                    mdSec.getMdWrap().getXmlData() == null || mdSec.getMdWrap().getXmlData().size() == 0
-                        
-                ){
+                
+                System.out.println("is premis? => "+mdSec);
+                
+                if(!PremisUtils.isPremisMdSec(mdSec)){
                     return;
-                }                
-                Element element = mdSec.getMdWrap().getXmlData().get(0);
-                String namespace = element.getNamespaceURI();
-                if(!namespace.equals(MetsUtils.getNamespaceMap().get("PREMIS"))){
+                }
+                
+                System.out.println("is premis!");
+                Element element = mdSec.getMdWrap().getXmlData().get(0);   
+                
+                //cleanup
+                premis.getAgent().clear();
+                premis.getRights().clear();
+                
+                Iterator<PremisObject>itObject = premis.getObject().iterator();
+                while(itObject.hasNext()){
+                    PremisObject object = itObject.next();
+                    if(object.getType() != PremisObjectType.bitstream){
+                        itObject.remove();
+                    }
+                }
+                
+                Iterator<PremisEvent>itEvent = premis.getEvent().iterator();
+                while(itEvent.hasNext()){
+                    PremisEvent event = itEvent.next();
+                    if(!event.getEventType().equals("bagit")){
+                        itEvent.remove();
+                    }
+                }
+            }        
+        });
+        addPropertyChangeListener("mdSec",new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                
+                System.out.println("property name:"+pce.getPropertyName());
+                System.out.println("property value:"+pce.getNewValue());
+                
+                BagView bagView = BagView.getInstance();
+                MetsBag metsBag = bagView.getBag();
+                Premis premis = metsBag.getPremis();
+                
+                //indien premis-record, dan deze verwerken!
+                MdSec mdSec = (MdSec) pce.getNewValue();
+                
+                System.out.println("is premis?");
+                
+                if(!PremisUtils.isPremisMdSec(mdSec)){
                     return;
-                }           
+                }
+                
+                System.out.println("is premis!");
+                Element element = mdSec.getMdWrap().getXmlData().get(0);                
+               
                 
                 //merge premis record met dat van systeem
                 try{
@@ -70,7 +116,7 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                      */                    
                     ArrayList<PremisObject>bagitObjects = new ArrayList<PremisObject>();
                     for(PremisObject object:premis.getObject()){                        
-                        if(object.getType() != PremisObjectType.bitstream){
+                        if(object.getType() == PremisObjectType.bitstream){
                             bagitObjects.add(object);
                         }
                     }
