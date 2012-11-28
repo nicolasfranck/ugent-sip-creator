@@ -205,6 +205,17 @@
       <artifactId>swingx</artifactId>
       <version>1.6.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.swordapp</groupId>
+      <artifactId>sword2-client</artifactId>
+      <version>0.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.dspace</groupId>
+      <artifactId>dspace-swordv2</artifactId>
+      <version>3.0-rc1</version>
+      <classifier>classes</classifier>
+    </dependency>
   </dependencies>
 
   <repositories>

@@ -18,3 +18,7 @@ Div:
     1ste structMap:
         op niveau 0 mag er slechts één Div staan
         die Div staat voor het DSpace-item zelf, en MOET verwijzingen bevatten naar metadata
+
+
+
+https://wiki.duraspace.org/display/DSPACE/DSpace+SIP+Toolkit
