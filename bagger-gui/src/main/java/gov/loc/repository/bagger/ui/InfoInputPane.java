@@ -96,8 +96,8 @@ public final class InfoInputPane extends JTabbedPane {
     public void setInfoFormModel(HierarchicalFormModel infoFormModel) {        
         this.infoFormModel = infoFormModel;
     }   
-    public InfoInputPane(boolean b){
-    	populateForms(b);                       
+    public InfoInputPane(){
+    	populateForms();                       
         getInputMap().put(KeyStroke.getKeyStroke("F2"), "tabNext");
         ActionMap am = getActionMap();
         am.put("tabNext", new AbstractAction("tabNext") {
@@ -126,7 +126,7 @@ public final class InfoInputPane extends JTabbedPane {
     	setEnabled(b);
     	invalidate();
     }    
-    public void populateForms(boolean enabled){    	                    	
+    public void populateForms(){    	                    	
         createTabbedUiComponentsWithForms();        
     }
     // Create a tabbed pane for the information forms and checkbox panel
@@ -134,7 +134,7 @@ public final class InfoInputPane extends JTabbedPane {
         
         //revalidate
         removeAll();     
-        validate();        
+        validate();                
         
         //add tabs  
         addTab(

@@ -57,7 +57,7 @@ public class PremisRights implements ElementInterface {
     
     @Override
     public void unmarshal(Element root) throws ParseException {
-        //TODO:attributes!
+        
         NamedNodeMap attrs = root.getAttributes();
         for (int i = 0; i < attrs.getLength(); i++) {
             Attr attr = (Attr) attrs.item(i);
@@ -90,7 +90,7 @@ public class PremisRights implements ElementInterface {
 
     @Override
     public void marshal(Element root, Document doc) {
-        //TODO:attributes!
+        
         root.setAttribute("version",version);
         root.setAttribute("xmlID",xmlID);
         

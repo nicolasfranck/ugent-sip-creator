@@ -122,7 +122,7 @@ public final class InfoFormsPane extends JPanel {
 
     public InfoInputPane getInfoInputPane() {
         if(infoInputPane == null){
-            infoInputPane = new InfoInputPane(false);
+            infoInputPane = new InfoInputPane();
             infoInputPane.setToolTipText(Context.getMessage("bagView.bagInfoInputPane.help"));
             infoInputPane.setEnabled(false);
         }
@@ -255,7 +255,7 @@ public final class InfoFormsPane extends JPanel {
     	return getBagNameValue().getText();
     }    
     public void updateInfoForms() {
-    	getInfoInputPane().populateForms(false);
+    	getInfoInputPane().populateForms();
     	getInfoInputPane().enableForms(false);
     	getInfoInputPane().invalidate();
     }     

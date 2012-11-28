@@ -85,8 +85,7 @@ public final class BagInfoForm extends AbstractForm {
     }   
     public AddFieldPanel getAddFieldPanel() {
         if(addFieldPanel == null){
-            addFieldPanel = new AddFieldPanel();            
-            //addFieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            addFieldPanel = new AddFieldPanel();                        
             addFieldPanel.setPreferredSize(new Dimension(FORM_WIDTH,35));            
             addFieldPanel.setMaximumSize(new Dimension(FORM_WIDTH,35));
             addFieldPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
@@ -105,8 +104,7 @@ public final class BagInfoForm extends AbstractForm {
             contentPanel.add(getLoadFieldsPanel());
             contentPanel.add(getAddFieldPanel());            
             contentPanel.add(getFieldsScrollPane());
-            contentPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
-            //contentPanel.setBorder(BorderFactory.createLineBorder(Color.ORANGE,4));
+            contentPanel.setAlignmentX(Container.LEFT_ALIGNMENT);            
         }
         return contentPanel;
     }    
@@ -114,7 +112,8 @@ public final class BagInfoForm extends AbstractForm {
     protected JComponent createFormControl() {        
         return getContentPanel();
     }
-    public void resetFields(){        
+    public void resetFields(){   
+        
         getContentPanel().remove(getFieldsScrollPane());
         setFieldsScrollPane(null);
         setFieldsPanel(null);
@@ -122,7 +121,7 @@ public final class BagInfoForm extends AbstractForm {
         getContentPanel().revalidate();
     }
     protected JComponent createFormFields() {       
-        
+                
     	int rowCount = 0;
         ImageIcon requiredIcon = getBagView().getPropertyImage("bag.required.image");
         BagTableFormBuilder formBuilder = new BagTableFormBuilder(getBindingFactory(),requiredIcon);
@@ -169,7 +168,7 @@ public final class BagInfoForm extends AbstractForm {
                         });
                         
                         int componentType = BagInfoField.TEXTFIELD_COMPONENT;
-                        if(value.length() > 30){
+                        if(value.length() > 50){
                             componentType = BagInfoField.TEXTAREA_COMPONENT;
                         }
                         switch(componentType){

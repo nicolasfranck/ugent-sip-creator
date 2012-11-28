@@ -4,11 +4,11 @@ import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
+import gov.loc.repository.bagger.ui.InfoFormsPane;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +21,7 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.BagError;
 import ugent.bagger.params.BagErrorNoBagDir;
+import gov.loc.repository.bagger.ui.InfoInputPane;
 
 public class ClearBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(ClearBagHandler.class);
@@ -91,18 +92,28 @@ public class ClearBagHandler extends AbstractAction {
     	newDefaultBag(null);
         BagView bagView = BagView.getInstance();
     	MetsBag metsBag = bagView.getBag();
+        InfoFormsPane infoFormsPane = bagView.getInfoFormsPane();
+        InfoInputPane infoInputPane = infoFormsPane.getInfoInputPane();
+        
     	metsBag.clear();        
     	
-        bagView.setBagPayloadTree(bagView.createBagPayloadTree(AbstractBagConstants.DATA_DIRECTORY, true));
-        
+        bagView.setBagPayloadTree(bagView.createBagPayloadTree(AbstractBagConstants.DATA_DIRECTORY, true));        
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	bagView.setBagTagFileTree(new BagTree(ApplicationContextUtil.getMessage("bag.label.noname"), false));
     	bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
-    	bagView.getInfoFormsPane().setBagName(metsBag.getName());
-    	bagView.getInfoFormsPane().updateInfoForms();
+    	infoFormsPane.setBagName(metsBag.getName());        
+        
+        infoInputPane.getBagInfoForm().setFieldMap(
+            bagView.getBag().getInfo().getFieldMap()
+        );
+        infoInputPane.getBagInfoForm().resetFields();
+        
+    	infoFormsPane.updateInfoForms();
+                
+        
         Mets mets = new Mets();
-        bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);        
-        SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
+        infoInputPane.resetMets(mets);        
+        SwingUtils.setJComponentEnabled(infoInputPane.getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
     	bagView.updateClearBag();
     }
 

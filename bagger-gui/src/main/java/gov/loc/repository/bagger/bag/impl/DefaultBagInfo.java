@@ -9,8 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class DefaultBagInfo {    
     private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(DefaultBagInfo.class);
-   
+    private static final Log log = LogFactory.getLog(DefaultBagInfo.class);   
     private HashMap<String,ArrayList<String>> fieldMap = new HashMap<String,ArrayList<String>>();
 
     public DefaultBagInfo(Bag bag) {

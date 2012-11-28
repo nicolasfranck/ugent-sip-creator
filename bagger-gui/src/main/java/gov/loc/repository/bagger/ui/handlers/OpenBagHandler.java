@@ -155,7 +155,7 @@ public class OpenBagHandler extends AbstractAction {
             bagView.updateManifestPane();
             bagView.enableBagSettings(true);            
          
-            bagView.getInfoFormsPane().getInfoInputPane().populateForms(true);
+            bagView.getInfoFormsPane().getInfoInputPane().populateForms();
             bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);        
             bagView.updateOpenBag();   
 
