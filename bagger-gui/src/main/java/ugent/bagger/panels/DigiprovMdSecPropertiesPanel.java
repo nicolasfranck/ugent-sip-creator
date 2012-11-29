@@ -9,7 +9,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import ugent.bagger.helper.PremisUtils;
 import ugent.premis.Premis;
@@ -112,11 +111,11 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                     premis.getRights().addAll(newPremis.getRights());
                     
                     /*
-                     *  objects met type 'bitstream' behoren toe aan 'bagit'!
+                     *  objects met type 'bitstream' en xmlID 'bagit' behoren toe aan 'bagit'!
                      */                    
                     ArrayList<PremisObject>bagitObjects = new ArrayList<PremisObject>();
                     for(PremisObject object:premis.getObject()){                        
-                        if(object.getType() == PremisObjectType.bitstream){
+                        if(object.getType() == PremisObjectType.bitstream && object.getXmlID() != null && object.getXmlID().equals("bagit")){
                             bagitObjects.add(object);
                         }
                     }
@@ -137,9 +136,8 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                     premis.getEvent().addAll(newPremis.getEvent());
                     premis.getEvent().addAll(bagitEvents);    
                     
-                    Document doc = PremisIO.toDocument(premis);
-                    
-                    mdSec.getMdWrap().getXmlData().set(0,doc.getDocumentElement());
+                    mdSec.setID("bagit");
+                    mdSec.getMdWrap().getXmlData().set(0,PremisIO.toDocument(premis).getDocumentElement());
                     
                     
                 }catch(ParseException e){

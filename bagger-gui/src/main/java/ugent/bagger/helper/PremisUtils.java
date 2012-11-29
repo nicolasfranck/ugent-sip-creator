@@ -3,6 +3,7 @@ package ugent.bagger.helper;
 import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.MdSec;
 import java.util.ArrayList;
+import java.util.Iterator;
 import org.w3c.dom.Element;
 
 /**
@@ -19,7 +20,27 @@ public class PremisUtils {
             }
         }
         return amdSecBagit;
-    }   
+    }  
+    public static void cleanupAmdSec(ArrayList<AmdSec>list){
+        Iterator<AmdSec>iterator = list.iterator();
+        while(iterator.hasNext()){
+            AmdSec a = iterator.next();
+            if(a.getID().equals("bagit")){
+                iterator.remove();
+            }
+        }
+    }
+    public static void cleanupDigiprovMD(ArrayList<MdSec>list){
+        Iterator<MdSec>iterator = list.iterator();
+        while(iterator.hasNext()){
+            MdSec m = iterator.next();
+            System.out.println("digiprovMD with id: "+m.getID());           
+            if(m.getID().equals("bagit")){
+                iterator.remove();
+                System.out.println("digiprovMD with id: "+m.getID()+" removed!");
+            }
+        }
+    }
     public static MdSec getPremisMdSec(ArrayList<MdSec>list){
         MdSec m = null;
         for(MdSec mdSec:list){
@@ -34,9 +55,7 @@ public class PremisUtils {
         !mdSec.getMdWrap().getXmlData().isEmpty() &&
         isPremisElement(mdSec.getMdWrap().getXmlData().get(0));
     }
-    public static boolean isPremisElement(Element e){
-        System.out.println("checking namespace: "+e.getNamespaceURI());
-        System.out.println("agains ns "+MetsUtils.getTypeMap().get("PREMIS-2"));
+    public static boolean isPremisElement(Element e){        
         return e.getNamespaceURI().equals(MetsUtils.getTypeMap().get("PREMIS-2"));
     }
     

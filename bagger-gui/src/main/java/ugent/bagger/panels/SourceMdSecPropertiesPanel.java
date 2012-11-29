@@ -14,9 +14,5 @@ import java.util.ArrayList;
 public class SourceMdSecPropertiesPanel extends MdSecPropertiesPanel{
     public SourceMdSecPropertiesPanel(ArrayList<MdSec>data){        
         super(data);        
-    }
-    @Override
-    protected int getMax(){
-        return 1;
-    }
+    }  
 }
