@@ -7,12 +7,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
+import ugent.bagger.exceptions.NoTransformationFoundException;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.MetsUtils;
@@ -34,19 +40,18 @@ public final class XMLCrosswalkDialog extends JDialog{
     public XMLCrosswalkDialog(JFrame frame,boolean isModal){
         super(frame,isModal);
         getContentPane().add(createContentPane());
-        setTitle("Crosswalk");
+        setTitle(Context.getMessage("XMLCrosswalkDialog.title"));
     }
     public JComponent createContentPane(){
         
         JPanel mainPanel = new JPanel();        
-        mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
-        //final EditMdSecPropertiesTable mdSecPropertiesTable = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMetsPanel().getDmdSecPropertiesPanel().getEditDmdSecPropertiesTable();
+        mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));        
         
         //buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        final JButton okButton = new JButton("ok");
+        final JButton okButton = new JButton(Context.getMessage("XMLCrosswalkDialog.okButton.label"));
         okButton.setEnabled(false);
-        JButton cancelButton = new JButton("cancel");        
+        JButton cancelButton = new JButton(Context.getMessage("XMLCrosswalkDialog.cancelButton.label"));        
         buttonPanel.add(okButton);        
         buttonPanel.add(cancelButton);
         cancelButton.addActionListener(new ActionListener(){
@@ -58,62 +63,35 @@ public final class XMLCrosswalkDialog extends JDialog{
         okButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                System.out.println("XMLCrosswalkDialog::okButton::actionPerformed start");
-                System.out.println("file: "+file);
-                System.out.println("transformFromNamespace: "+transformFromNamespace);
-                System.out.println("transformToNamespace: "+transformToNamespace);
+                
                 if(file == null || transformFromNamespace == null || transformToNamespace == null){
                     return;
                 }
-                
-                System.out.println("XMLCrosswalkDialog::okButton::actionPerformed through the gates");
                 
                 SwingUtils.ShowBusy();
                 
                 try{
                     
-                    Document sourceDoc = XML.XMLToDocument(file);
-                    System.out.println("sourceDoc: "+sourceDoc);                    
-                    
-                    //String filename = MetsUtils.getCrosswalk().get(transformFromNamespace).get(transformToNamespace);
-                    String filename = MetsUtils.getXsltPath(sourceDoc.getDocumentElement(),transformToNamespace);
-                    
-                    System.out.println("filename: "+filename);
-                    
-                    Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));
-                    
-                    System.out.println("xsltDoc"+xsltDoc);
-                    
-                    
-                    Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc); 
-                    
-                    System.out.println("transformedDoc: "+transformedDoc);
-                    
-                    XML.DocumentToXML(transformedDoc,System.out);
-                    
-                    MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                     
-                    
+                    Document sourceDoc = XML.XMLToDocument(file);                                    
+                    String filename = MetsUtils.getXsltPath(sourceDoc.getDocumentElement(),transformToNamespace);                    
+                    Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));                    
+                    Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc);                                         
+                    MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                                         
                     XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
-                    
-                    //mdSecPropertiesTable.addMdSec(mdSec);
-                    //mdSecPropertiesTable.refresh();                    
-                    
+                  
                 }catch(Exception e){              
                     JOptionPane.showMessageDialog(null,e.getMessage());
                     e.printStackTrace();
                 }
                 
-                XMLCrosswalkDialog.this.dispose();
-                
-                SwingUtils.ShowDone();
-                
-                System.out.println("XMLCrosswalkDialog::okButton::actionPerformed end");
+                XMLCrosswalkDialog.this.dispose();                
+                SwingUtils.ShowDone();                
             }            
         });
         
         //transform input
         JPanel transformPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel transformLabel = new JLabel("transform to:");
+        JLabel transformLabel = new JLabel(Context.getMessage("XMLCrosswalkDialog.transformLabel.label"));
         final JComboBox transformComboBox = new JComboBox();
         transformComboBox.addItemListener(new ItemListener(){
             @Override
@@ -129,8 +107,8 @@ public final class XMLCrosswalkDialog extends JDialog{
         
         //file input
         JPanel filePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel fileLabel = new JLabel("File:");
-        JButton fileButton = new JButton("browse");
+        JLabel fileLabel = new JLabel(Context.getMessage("XMLCrosswalkDialog.fileLabel.label"));
+        JButton fileButton = new JButton(Context.getMessage("XMLCrosswalkDialog.fileButton.label"));
         fileButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -138,8 +116,8 @@ public final class XMLCrosswalkDialog extends JDialog{
                 okButton.setEnabled(false);                
                 
                 File [] selectedFiles = SwingUtils.chooseFiles(
-                    "Select xml file",
-                    new FileExtensionFilter(new String [] {"xml"},"xml files only",true),
+                    Context.getMessage("addXMLMenuItem.fileChooser.title"),
+                    new FileExtensionFilter(new String [] {"xml"},Context.getMessage("addXMLMenuItem.fileFilter.label"),true),
                     JFileChooser.FILES_ONLY,
                     false
                 );
@@ -149,9 +127,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                 if(selectedFiles.length > 0){
                     try{                       
                         Document document = XML.XMLToDocument(selectedFiles[0]);
-                        transformFromNamespace = document.getDocumentElement().getNamespaceURI();                    
-                        
-                        System.out.println("namespace found: "+transformFromNamespace);
+                        transformFromNamespace = document.getDocumentElement().getNamespaceURI();                                            
                         
                         //elke xml moet namespace bevatten (geen oude DOCTYPE!)
                         if(transformFromNamespace == null || transformFromNamespace.isEmpty()){
@@ -170,7 +146,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                         //zoek mapping
                         if(!MetsUtils.getCrosswalk().containsKey(transformFromNamespace)){
-                            throw new Exception("no crosswalk found!");
+                            throw new NoTransformationFoundException("no crosswalk found");
                         }
                         
                         HashMap<String,Object> crosswalk = MetsUtils.getCrosswalk().get(transformFromNamespace);
@@ -194,10 +170,55 @@ public final class XMLCrosswalkDialog extends JDialog{
                         
                         invalidate();                                               
                         
-                    }catch(Exception e){
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(XMLCrosswalkDialog.this,e.getMessage());                                               
-                    }                    
+                    } catch (ParserConfigurationException ex) {
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.ParserConfigurationException.description",
+                                new Object [] {selectedFiles[0],ex.getMessage()}
+                            )
+                        );
+                    } catch (SAXException ex) {
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.SAXException.description",
+                                new Object [] {selectedFiles[0],ex.getMessage()}
+                            )
+                        );
+                    } catch (IOException ex) {
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.IOException.description",
+                                new Object [] {selectedFiles[0],ex.getMessage()}
+                            )
+                        );
+                    }catch(NoNamespaceException e){
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.NoNamespaceException.description",
+                                new Object [] {selectedFiles[0]}
+                            )
+                        );                                             
+                    }catch(IllegalNamespaceException e){
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.IllegalNamespaceException.description",
+                                new Object [] {selectedFiles[0],transformFromNamespace}
+                            )
+                        );
+                    }catch(NoTransformationFoundException e){
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.NoTransformationFoundException.description",
+                                new Object [] {selectedFiles[0]}
+                            )
+                        );
+                    }
                 }
                 
                 SwingUtils.ShowDone();
@@ -209,7 +230,7 @@ public final class XMLCrosswalkDialog extends JDialog{
         filePanel.add(fileButton);
         
         JPanel transformFromPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        transformFromPanel.add(new JLabel("transforming from:"));
+        transformFromPanel.add(new JLabel(Context.getMessage("XMLCrosswalkDialog.transformingFromLabel.label")));
         transformFromPanel.add(getTransformFromNameSpaceField());
         
         //voeg alles samen

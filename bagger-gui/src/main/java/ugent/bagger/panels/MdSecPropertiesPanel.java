@@ -38,7 +38,7 @@ import ugent.bagger.workers.TaskAddMdSecFromFile;
 public class MdSecPropertiesPanel extends JPanel{
     private JComponent buttonPanel;
     private EditMdSecPropertiesTable editDmdSecPropertiesTable;         
-    private ArrayList<MdSec>data; 
+    protected ArrayList<MdSec>data; 
     private MdSecForm mdSecForm;
     private MdWrapForm mdWrapForm;
     private boolean modusAdding = true;
@@ -47,13 +47,24 @@ public class MdSecPropertiesPanel extends JPanel{
     private JButton addButton;
     private JButton importButton;
     private JButton crosswalkButton;    
+    private String id;
    
-    public MdSecPropertiesPanel(final ArrayList<MdSec>data){        
+    public MdSecPropertiesPanel(final ArrayList<MdSec>data,String id){        
         Assert.notNull(data);
         this.data = data;         
+        this.id = id;
         setLayout(new BorderLayout());
         add(createContentPane());        
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public MdSec newMdSec(){
         return new MdSec("");        
     }
@@ -293,7 +304,7 @@ public class MdSecPropertiesPanel extends JPanel{
         
         return panel;
     }
-    private void monitor(SwingWorker worker){
+    protected void monitor(SwingWorker worker){
         SwingUtils.monitor(
             worker,
             Context.getMessage("MdSecPropertiesPanel.monitoring.title"),
@@ -301,7 +312,7 @@ public class MdSecPropertiesPanel extends JPanel{
             getPropertyListeners()
         );        
     }   
-    private List<PropertyChangeListener> getPropertyListeners(){        
+    protected List<PropertyChangeListener> getPropertyListeners(){        
         PropertyChangeListener listener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {                

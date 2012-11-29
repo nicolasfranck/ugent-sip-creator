@@ -1,5 +1,6 @@
 package gov.loc.repository.bagger.ui.handlers;
 
+import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
@@ -16,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.dialogs.NewBagDialog;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.NewBagParams;
 
@@ -88,6 +90,15 @@ public class StartNewBagHandler extends AbstractAction {
             metsBag.getInfo().getFieldMap()
         );
         bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
+        
+        //reset mets
+        Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
+        try{
+            PremisUtils.setPremis(mets);
+        }catch(Exception e){
+            e.printStackTrace();
+        }        
+        bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);
     	        
         SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
         

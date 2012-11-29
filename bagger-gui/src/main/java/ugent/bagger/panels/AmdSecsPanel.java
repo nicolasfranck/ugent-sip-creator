@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -112,7 +111,15 @@ public class AmdSecsPanel extends JPanel{
     public void deleteSelected(){
         ArrayList<AmdSecParts> selections = (ArrayList<AmdSecParts>) getAmdSecPartsTable().getSelections();
         for(AmdSecParts amdSecParts:selections){
-            getData().remove(amdSecParts.getAmdSec());
+            String id = amdSecParts.getAmdSec().getID();
+            if(!(id != null && id.equals("bagit"))){
+                getData().remove(amdSecParts.getAmdSec());
+            }else{
+                SwingUtils.ShowError(
+                    Context.getMessage("AmdSecsPanel.deleteSelectedDenied.title"),
+                    Context.getMessage("AmdSecsPanel.deleteSelectedDenied.description")
+                );
+            }            
         }
     }
     public static class AmdSecParts {

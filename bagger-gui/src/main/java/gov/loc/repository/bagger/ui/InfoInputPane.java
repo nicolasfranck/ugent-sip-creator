@@ -14,7 +14,7 @@ import org.springframework.binding.form.HierarchicalFormModel;
 import org.springframework.richclient.form.FormModelHelper;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.PremisUtils;
-import ugent.bagger.panels.AmdSecPanel;
+import ugent.bagger.panels.AmdSecsPanel;
 import ugent.bagger.panels.MdSecPanel;
 
 public final class InfoInputPane extends JTabbedPane {
@@ -24,29 +24,17 @@ public final class InfoInputPane extends JTabbedPane {
     private HierarchicalFormModel infoFormModel;    
     private Mets mets;
     private MdSecPanel metsPanel;
-    AmdSecPanel amdSecPanel;
-    AmdSec amdSecBagit;
-
-    public AmdSec getAmdSecBagit() {
-        if(amdSecBagit == null){                
-            amdSecBagit = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());       
-            if(amdSecBagit == null){                
-                amdSecBagit = new AmdSec();
-                amdSecBagit.setID("bagit");
-                getMets().getAmdSec().add(amdSecBagit);
-            }
+    private AmdSecsPanel amdSecsPanel;    
+     
+    public AmdSecsPanel getAmdSecsPanel() {
+        if(amdSecsPanel == null){            
+            amdSecsPanel = new AmdSecsPanel((ArrayList<AmdSec>)getMets().getAmdSec());
         }
-        return amdSecBagit;
-    }    
-    public AmdSecPanel getAmdSecPanel() {
-        if(amdSecPanel == null){            
-            amdSecPanel = new AmdSecPanel(getAmdSecBagit());
-        }
-        return amdSecPanel;
+        return amdSecsPanel;
     }
     public MdSecPanel getMdSecPanel(){
         if(metsPanel == null){
-            metsPanel = new MdSecPanel((ArrayList<MdSec>)getMets().getDmdSec());            
+            metsPanel = new MdSecPanel((ArrayList<MdSec>)getMets().getDmdSec(),"");            
         }
         return metsPanel;
     }
@@ -55,18 +43,23 @@ public final class InfoInputPane extends JTabbedPane {
     }    
     public Mets getMets() {
         if(mets == null){
+            System.out.println("setting mets!");
             mets = new Mets();
+            try{
+                PremisUtils.setPremis(mets);
+            }catch(Exception e){
+                e.printStackTrace();
+            }            
         }
         return mets;
     }
     public void setMets(Mets mets) {
         this.mets = mets;
     }
-    public void resetMets(Mets mets){
+    public void resetMets(Mets mets){        
         setMets(mets);
         getMdSecPanel().reset((ArrayList<MdSec>)mets.getDmdSec());
-        amdSecBagit = null;        
-        getAmdSecPanel().reset(getAmdSecBagit());        
+        getAmdSecsPanel().reset((ArrayList<AmdSec>)mets.getAmdSec());        
     }
     public BagView getBagView(){
         return BagView.getInstance();        
@@ -152,7 +145,7 @@ public final class InfoInputPane extends JTabbedPane {
         addTab(
             Context.getMessage("infoInputPane.amdSecTab.label"),
             null,
-            getAmdSecPanel(),
+            getAmdSecsPanel(),
             Context.getMessage("infoInputPane.amdSecTab.tooltip")                
         );
         

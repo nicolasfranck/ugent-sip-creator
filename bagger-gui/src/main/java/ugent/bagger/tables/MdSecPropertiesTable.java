@@ -1,7 +1,10 @@
 package ugent.bagger.tables;
 
 import com.anearalone.mets.MdSec;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JTable;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import ugent.bagger.properties.MdSecProperties;
@@ -12,6 +15,7 @@ import ugent.bagger.properties.MdSecProperties;
  */
 public class MdSecPropertiesTable extends AbstractObjectTable{        
     private ArrayList<MdSec>data;    
+    private HashMap<String,ArrayList<PropertyChangeListener>>listeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
     
     public static ArrayList<MdSecProperties> toProperties(final ArrayList<MdSec>data){
         ArrayList<MdSecProperties>props = new ArrayList<MdSecProperties>();
@@ -35,7 +39,8 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
     protected ArrayList<MdSec> getData() {
         return data;
     }
-    protected void setData(final ArrayList<MdSec> data) {        
+    protected void setData(final ArrayList<MdSec> data) {      
+        firePropertyChange("setData",this.data,data);
         this.data = data;        
     }             
     public MdSecProperties [] getSelections(){
@@ -55,6 +60,21 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
             return null;
         }else{
             return mds[0];
+        }
+    }
+    public void addPropertyChangeListener(String key,PropertyChangeListener l){
+        if(!listeners.containsKey(key)){
+            listeners.put(key,new ArrayList<PropertyChangeListener>());
+        }
+        listeners.get(key).add(l);
+    }
+    public void firePropertyChange(String key,Object oldValue,Object newValue){
+        if(listeners.containsKey(key)){
+            System.out.println("firePropertyChange for key '"+key+"', size list: "+listeners.get(key).size());
+            PropertyChangeEvent event = new PropertyChangeEvent(this,key,oldValue,newValue);
+            for(PropertyChangeListener l:listeners.get(key)){
+                l.propertyChange(event);
+            }
         }
     }
 }

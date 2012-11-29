@@ -245,10 +245,7 @@ public class MetsUtils {
     }
     public static MdSec.MdWrap createMdWrap(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         String namespace = doc.getDocumentElement().getNamespaceURI();            
-        DocumentType docType = doc.getDoctype();
-        
-        log.debug("namespace: "+namespace);
-        log.debug("doctype: "+docType);
+        DocumentType docType = doc.getDoctype();        
         
         //elke xml moet namespace bevatten (probeer te herstellen, indien mogelijk)
         if(namespace == null || namespace.isEmpty()){

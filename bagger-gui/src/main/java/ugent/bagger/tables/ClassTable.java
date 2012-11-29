@@ -1,7 +1,10 @@
 package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -15,11 +18,12 @@ import org.springframework.richclient.table.support.AbstractObjectTable;
 public class ClassTable<T> extends AbstractObjectTable {
     private ArrayList<T>data;
     private EventList eventList;
+    private HashMap<String,ArrayList<PropertyChangeListener>>listeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
     
     public ClassTable(final ArrayList<T>data,String [] cols,String id){
         super(id,cols);                 
-        setData(data);
-    }            
+        setData(data);        
+    }        
     @Override
     protected void configureTable(JTable table) {
         table.setFillsViewportHeight(true);        
@@ -33,10 +37,12 @@ public class ClassTable<T> extends AbstractObjectTable {
     }
     public void reset(final ArrayList<T>data){        
         setData(data);
+        firePropertyChange("reset",null,null);
         refresh();
     }
     protected void setData(final ArrayList<T> data) {                
-        this.data = data;    
+        firePropertyChange("setData",this.data,data);
+        this.data = data;          
     }   
     public void refresh(){        
         EventList rows = getFinalEventList();        
@@ -49,6 +55,7 @@ public class ClassTable<T> extends AbstractObjectTable {
            //belangrijk!
            ((AbstractTableModel)getTable().getModel()).fireTableDataChanged();
         }
+        firePropertyChange("refresh",null,null);
     }                     
     public List<T> getSelections(){
         int[] selected = getTable().getSelectedRows();
@@ -79,4 +86,19 @@ public class ClassTable<T> extends AbstractObjectTable {
     public void clearSort(){         
         getTableSorter().clearComparator();
     }  
+    public void addPropertyChangeListener(String key,PropertyChangeListener l){
+        if(!listeners.containsKey(key)){
+            listeners.put(key,new ArrayList<PropertyChangeListener>());
+        }
+        listeners.get(key).add(l);
+    }
+    public void firePropertyChange(String key,Object oldValue,Object newValue){
+        if(listeners.containsKey(key)){
+            System.out.println("firePropertyChange for key '"+key+"', size list: "+listeners.get(key).size());
+            PropertyChangeEvent event = new PropertyChangeEvent(this,key,oldValue,newValue);
+            for(PropertyChangeListener l:listeners.get(key)){
+                l.propertyChange(event);
+            }
+        }
+    }
 }

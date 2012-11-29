@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Iterator;
 import ugent.bagger.helper.ArrayUtils;
 import ugent.bagger.helper.ArrayUtils.ArrayDiff;
+import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.PremisUtils;
 import ugent.premis.Premis;
 import ugent.premis.PremisEvent;
@@ -118,7 +119,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 evid.setEventIdentifierValue(dateId);
                 ev.setEventIdentifier(evid);
                 ev.setXmlID(dateId);
-                ev.setVersion("2.0");
+                ev.setVersion("2.2");
                 ev.setEventType("bagit");
                 ev.setEventDateTime(formattedDate);            
                 ev.setEventDetail("files added to bagit");
@@ -137,7 +138,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 evid.setEventIdentifierValue(dateId);
                 ev.setEventIdentifier(evid);
                 ev.setXmlID(dateId);
-                ev.setVersion("2.0");
+                ev.setVersion("2.2");
                 ev.setEventType("bagit");
                 ev.setEventDateTime(formattedDate);            
                 ev.setEventDetail("files deleted from bagit");
@@ -158,14 +159,20 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 amdSec.setID("bagit");
                 mets.getAmdSec().add(amdSec);
             }
-            System.out.println("digiprovMD.size:"+amdSec.getDigiprovMD().size());
-            PremisUtils.cleanupDigiprovMD((ArrayList<MdSec>)amdSec.getDigiprovMD());
-            System.out.println("digiprovMD.size afterwards:"+amdSec.getDigiprovMD().size());
             
-            MdSec mdSec = new MdSec("bagit");
+            PremisUtils.cleanupDigiprovMD((ArrayList<MdSec>)amdSec.getDigiprovMD());
+            
+            MdSec mdSec = new MdSec("bagit_digiprovMD");            
             MdWrap mdWrap = new MdWrap(MdSec.MDTYPE.PREMIS);
-            mdWrap.setMDTYPEVERSION("2.2");
-            mdWrap.getXmlData().add(PremisIO.toDocument(premis).getDocumentElement());
+            mdWrap.setMDTYPEVERSION("2.2");            
+            mdWrap.getXmlData().add(PremisIO.toDocument(premis).getDocumentElement());            
+            mdWrap.setMIMETYPE("text/xml");
+            mdSec.setGROUPID(MdSec.MDTYPE.PREMIS.toString());         
+            if(mdSec.getCREATED() == null){
+                try{
+                    mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
+                }catch(Exception e){}            
+            }            
             mdSec.setMdWrap(mdWrap);
             amdSec.getDigiprovMD().add(mdSec);
         

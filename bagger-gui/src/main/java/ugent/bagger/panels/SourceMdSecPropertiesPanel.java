@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author nicolas
  */
 public class SourceMdSecPropertiesPanel extends MdSecPropertiesPanel{
-    public SourceMdSecPropertiesPanel(ArrayList<MdSec>data){        
-        super(data);        
+    public SourceMdSecPropertiesPanel(ArrayList<MdSec>data,String id){        
+        super(data,id);        
     }  
 }

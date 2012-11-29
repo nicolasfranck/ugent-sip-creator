@@ -1,5 +1,6 @@
 package ugent.bagger.bagitmets;
 
+import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.FileSec;
 import com.anearalone.mets.LocatorElement;
 import com.anearalone.mets.MdSec;
@@ -334,17 +335,19 @@ public class DefaultBagItMets extends BagItMets{
             }
             
                        
-            structMapTagFiles.setType("bagit_tagfile_tree");            
+            structMapTagFiles.setType("bagit_tag_tree");            
         
             mets.getStructMap().clear();
             mets.getStructMap().add(structMapPayloads);
             mets.getStructMap().add(structMapTagFiles);
             
-            //structMap payloads moet verwijzingen bevatten naar metadata voor het volledige dspace item            
-            List<String>dmdList = structMapPayloads.getDiv().getDMDID();
+            //structMap payloads moet verwijzingen bevatten naar metadata voor het volledige dspace item                        
             for(MdSec mdSec:mets.getDmdSec()){
                 structMapPayloads.getDiv().getDMDID().add(mdSec.getID());
-            }
+            }            
+            for(AmdSec amdSec:mets.getAmdSec()){
+                structMapPayloads.getDiv().getDMDID().add(amdSec.getID());
+            }            
             
             //Bag-Id
             ArrayList<String>listBagIds = metsBag.getInfo().getFieldMap().get("Bag-Id");

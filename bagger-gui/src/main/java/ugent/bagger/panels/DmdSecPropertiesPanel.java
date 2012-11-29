@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author nicolas
  */
 public class DmdSecPropertiesPanel extends MdSecPropertiesPanel{
-    public DmdSecPropertiesPanel(ArrayList<MdSec>data){        
-        super(data);        
+    public DmdSecPropertiesPanel(ArrayList<MdSec>data,String id){        
+        super(data,id);        
     }
 }

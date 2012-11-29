@@ -169,19 +169,15 @@ public class OpenBagHandler extends AbstractAction {
             BagItMets bagitMets = new DefaultBagItMets();
             Mets mets = bagitMets.onOpenBag(bagView.getBag());                     
             
-            //set premis
-            System.out.println("looking for premis");
-            AmdSec amdSecBagit = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());
-            if(amdSecBagit != null && !amdSecBagit.getDigiprovMD().isEmpty()){                
-                System.out.println("amdSecBagit found");
-                MdSec mdSec = PremisUtils.getPremisMdSec((ArrayList<MdSec>)amdSecBagit.getDigiprovMD());
-                System.out.println("mdSec: "+mdSec);
-                if(mdSec != null){
-                    Premis premis = PremisIO.toPremis(mdSec.getMdWrap().getXmlData().get(0));
-                    bagView.getBag().setPremis(premis);
-                }
+            //set premis    
+            Premis premis = null;
+            try{
+                premis = PremisUtils.setPremis(mets);
+            }catch(Exception e){
+                e.printStackTrace();
             }
             
+            bagView.getBag().setPremis(premis);                
             
             bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);       
             
@@ -217,8 +213,6 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.BagNoBagDirException.title"),
                 Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file})
             );
-        }catch(ParseException e){
-            e.printStackTrace();
         }
         
         SwingUtils.ShowDone();
