@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -72,5 +73,27 @@ public class CSVUtils {
 
         //zet xml om naar w3c.document
         return XML.XMLToDocument(new StringReader(output));
+    }
+    public static HashMap<String,String>createDefaultMap(HashMap<String,ArrayList<String>> bagInfo){
+        HashMap<String,String>map = new HashMap<String, String>();        
+        HashMap<String,HashMap<String,String>>csvDefaultMapConfig = (HashMap<String,HashMap<String,String>>)Beans.getBean("csvDefaultMapConfig");                
+        if(csvDefaultMapConfig != null){
+            Set<String>keys = csvDefaultMapConfig.keySet();
+            for(String key:keys){
+                HashMap<String,String>keyConfig = csvDefaultMapConfig.get(key);
+                String type = keyConfig.get("type");
+                String value = keyConfig.get("value");
+                if(type != null && !type.isEmpty()){
+                    if(type.equals("bag-info") && bagInfo.containsKey(key)){
+                        ArrayList<String>values = bagInfo.get(key);
+                        value = values.size() > 0 ? values.get(0):"";
+                        map.put(key,value);
+                    }else if(type.equals("custom")){
+                        map.put(key,value);
+                    }
+                }
+            }
+        }        
+        return map;
     }
 }

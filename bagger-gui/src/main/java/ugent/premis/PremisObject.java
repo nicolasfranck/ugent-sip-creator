@@ -1,6 +1,5 @@
 package ugent.premis;
 
-import com.anearalone.mets.MdSec;
 import java.text.ParseException;
 import java.util.ArrayList;
 import org.w3c.dom.Attr;
@@ -604,15 +603,15 @@ public class PremisObject implements ElementInterface{
         @Override
         public void marshal(Element root, Document doc) {                                 
             //elements
-            Element n = doc.createElementNS(NS.PREMIS.ns(),"messageDigestAlgorithm");
+            Element n = doc.createElementNS(NS.PREMIS.ns(),"premis:messageDigestAlgorithm");
             n.setTextContent(messageDigestAlgorithm);
             root.appendChild(n);
             
-            Element k = doc.createElementNS(NS.PREMIS.ns(),"messageDigest");
+            Element k = doc.createElementNS(NS.PREMIS.ns(),"premis:messageDigest");
             k.setTextContent(messageDigest);
             root.appendChild(k);
             
-            Element r = doc.createElementNS(NS.PREMIS.ns(),"messageDigestOriginator");
+            Element r = doc.createElementNS(NS.PREMIS.ns(),"premis:messageDigestOriginator");
             r.setTextContent(messageDigestOriginator);
             root.appendChild(r);
         }             

@@ -237,10 +237,10 @@ public class DefaultBagItMets extends BagItMets{
                 }
                 
                 
-                FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();
+                FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();                
                 flocat.setLOCTYPE(LocatorElement.LOCTYPE.URL);
                 flocat.setXlinkHREF(bagFile.getFilepath());                 
-                metsFile.getFLocat().add(flocat);
+                metsFile.getFLocat().add(flocat);                
 
                 tagFiles.add(metsFile);  
             }
@@ -310,7 +310,7 @@ public class DefaultBagItMets extends BagItMets{
                         int indexMetsXML = -1;
                         int indexTagmanifest = -1;
                         for(int i = 0;i<div.getFptr().size();i++){                        
-                            Fptr filePointer = div.getFptr().get(i);                                               
+                            Fptr filePointer = div.getFptr().get(i);                               
                             String fileId = filePointer.getFILEID().replaceFirst("^\\.\\/","").replaceFirst("^\\.\\\\","");                                                     
 
                             if(fileId.compareTo("mets.xml") == 0){

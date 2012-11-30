@@ -693,4 +693,18 @@
         </entry>
     </util:map>
     
+    <util:map id="csvDefaultMapConfig" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.util.HashMap" >
+        <entry key="Bag-Id">
+            <util:map map-class="java.util.HashMap">
+                <entry key="type" value="bag-info" />
+            </util:map>
+        </entry>
+        <entry key="Bag-Software">
+            <util:map map-class="java.util.HashMap">
+                <entry key="type" value="custom" />
+                <entry key="value" value="Bagger UGENT" />
+            </util:map>
+        </entry>    
+    </util:map>
+    
 </beans>

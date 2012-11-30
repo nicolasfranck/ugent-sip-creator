@@ -1,6 +1,7 @@
 package ugent.bagger.wizards;
 
 import com.anearalone.mets.MdSec;
+import gov.loc.repository.bagger.ui.BagView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -8,6 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.wizard.AbstractWizard;
 import org.supercsv.io.CsvMapReader;
@@ -28,26 +30,49 @@ public class CSVWizard extends AbstractWizard {
     CSVWizardPage1 csv1WizardPage;
     CSVWizardPage2 csv2WizardPage;
     HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
+
+    public CSVWizardPage1 getCsv1WizardPage() {
+        if(csv1WizardPage == null){
+            csv1WizardPage = new CSVWizardPage1("page1");        
+        }
+        return csv1WizardPage;
+    }    
+
+    public CSVWizardPage2 getCsv2WizardPage() {
+        if(csv2WizardPage == null){
+            csv2WizardPage = new CSVWizardPage2("page1");
+        }
+        return csv2WizardPage;
+    }
          
+    
     @Override
-    public void addPages(){        
+    public void addPages(){
         
-        csv1WizardPage = new CSVWizardPage1("page1");        
-        csv2WizardPage = new CSVWizardPage2("page1");                        
-        csv1WizardPage.getCsv1Panel().addPropertyChangeListener("record",new PropertyChangeListener() {
+        final HashMap<String,ArrayList<String>>fieldMap = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getBagInfoForm().getFieldMap();        
+        getCsv1WizardPage().getCsv1Panel().addPropertyChangeListener("record",new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
+                HashMap<String,String>defaultMap = CSVUtils.createDefaultMap(fieldMap);
+                
                 HashMap<String,String>newRecord = (HashMap<String,String>) pce.getNewValue();
-                HashMap<String,String>record = csv2WizardPage.getCsv2Panel().getRecord();                
+                HashMap<String,String>record = getCsv2WizardPage().getCsv2Panel().getRecord();                
                 record.clear();                        
+                
+                //set defaults
+                for(Entry<String,String>entry:defaultMap.entrySet()){
+                    System.out.println("setting default key '"+entry.getKey()+"' with value '"+entry.getValue()+"'");
+                    record.put(entry.getKey(),entry.getValue());
+                }
+                //set new values
                 for(Entry<String,String>entry:newRecord.entrySet()){                    
                     record.put(entry.getKey(),entry.getValue());
                 }                
             }
         });                
         
-        addPage(csv1WizardPage);
-        addPage(csv2WizardPage);       
+        addPage(getCsv1WizardPage());
+        addPage(getCsv2WizardPage());       
     }
 
     @Override
@@ -55,8 +80,8 @@ public class CSVWizard extends AbstractWizard {
         
        
         try{                        
-            final VelocityTemplate vt = (VelocityTemplate) csv2WizardPage.getCsv2Panel().getTemplateComboBox().getSelectedItem();
-            final CSVParseParams csvParseParams = csv1WizardPage.getCsv1Panel().getCsvParseParams();
+            final VelocityTemplate vt = (VelocityTemplate) getCsv2WizardPage().getCsv2Panel().getTemplateComboBox().getSelectedItem();
+            final CSVParseParams csvParseParams = getCsv1WizardPage().getCsv1Panel().getCsvParseParams();
             final File file = csvParseParams.getFiles().size() > 0 ? csvParseParams.getFiles().get(0) : null;
             
             if(file != null){
@@ -73,9 +98,21 @@ public class CSVWizard extends AbstractWizard {
                             
                             ICsvMapReader mapReader = new CsvMapReader(new FileReader(file),csvPreference);                       
                             final String [] cols = mapReader.getHeader(true); 
-
+                            
+                            HashMap<String,ArrayList<String>>fieldMap = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getBagInfoForm().getFieldMap();
+                            HashMap<String,String>defaultMap = CSVUtils.createDefaultMap(fieldMap);
                             HashMap<String,String>map;
-                            while((map = (HashMap) mapReader.read(cols)) != null){
+                            while((map = (HashMap<String,String>) mapReader.read(cols)) != null){                                
+                                //stel default in waar nog niet ingevuld
+                                Set<String>keys = defaultMap.keySet();
+                                for(String key:keys){
+                                    if(!map.containsKey(key)){
+                                        String value = defaultMap.get(key);
+                                        System.out.println("setting default key '"+key+"' with value '"+value+"'");
+                                        map.put(key,value);
+                                    }
+                                }
+                                
                                 Document document = CSVUtils.templateToDocument(vt,map);
                                 MdSec mdSec = MetsUtils.createMdSec(document,false);
                                 firePropertyChange("addMdSec",mdSec,mdSec);                                

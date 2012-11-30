@@ -1,6 +1,5 @@
 package ugent.premis;
 
-import com.anearalone.mets.MdSec;
 import java.text.ParseException;
 import java.util.ArrayList;
 import org.w3c.dom.Attr;

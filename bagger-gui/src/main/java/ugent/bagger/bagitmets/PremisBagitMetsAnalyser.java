@@ -4,11 +4,13 @@ import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
+import gov.loc.repository.bagger.bag.impl.DefaultBagInfo;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import ugent.bagger.helper.ArrayUtils;
 import ugent.bagger.helper.ArrayUtils.ArrayDiff;
@@ -27,6 +29,12 @@ import ugent.premis.PremisObject.PremisObjectType;
 public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
     @Override
     public void analyse(MetsBag metsBag, Mets mets) {
+        //bag-info
+        HashMap<String,ArrayList<String>> baginfo = metsBag.getInfo().getFieldMap();
+        String payloadOxum = baginfo.get("Payload-Oxum").get(0);
+        long size = Long.parseLong(payloadOxum.split(".")[0]);
+        
+        
         //premis        
         Premis premis = metsBag.getPremis();            
         
@@ -51,7 +59,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
         
         PremisObject.PremisObjectCharacteristics chars = new PremisObject.PremisObjectCharacteristics();
         chars.setCompositionLevel(0);        
-        chars.setSize(0);
+        chars.setSize(size);
         
         PremisObject.PremisFormat format = new PremisObject.PremisFormat();
         format.setFormatNote("bagit");;

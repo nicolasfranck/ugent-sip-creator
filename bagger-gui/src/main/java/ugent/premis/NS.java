@@ -1,5 +1,10 @@
 package ugent.premis;
 
+/*
+ * Kloon van com.anearalone.mets.NS
+ * Copyright van Jon Stroop (2011)
+ */
+
 public enum NS {    
     DC("http://purl.org/dc/elements/1.1/"),   
     DCTERMS("http://purl.org/dc/terms/"),    

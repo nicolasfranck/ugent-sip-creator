@@ -48,15 +48,30 @@ public class MdSecPropertiesPanel extends JPanel{
     private JButton importButton;
     private JButton crosswalkButton;    
     private String id;
+    private ArrayList<MdSec>exceptions;
    
     public MdSecPropertiesPanel(final ArrayList<MdSec>data,String id){        
+        this(data,id,new ArrayList<MdSec>());
+    }
+    public MdSecPropertiesPanel(final ArrayList<MdSec>data,String id,ArrayList<MdSec>exceptions){        
         Assert.notNull(data);
         this.data = data;         
         this.id = id;
         setLayout(new BorderLayout());
+        setExceptions(exceptions);
         add(createContentPane());        
     }
 
+    public ArrayList<MdSec> getExceptions() {
+        if(exceptions == null){
+            exceptions = new ArrayList<MdSec>();
+        }
+        return exceptions;
+    }    
+    public void setExceptions(ArrayList<MdSec> exceptions) {
+        this.exceptions = exceptions;        
+    }   
+    
     public String getId() {
         return id;
     }
@@ -112,8 +127,7 @@ public class MdSecPropertiesPanel extends JPanel{
             editDmdSecPropertiesTable = createMdSecPropertiesTable();
             editDmdSecPropertiesTable.addPropertyChangeListener("remove",new PropertyChangeListener() {
                 @Override
-                public void propertyChange(PropertyChangeEvent pce) {
-                    System.out.println("oldValue: "+pce.getOldValue()+", newValue: "+pce.getNewValue());
+                public void propertyChange(PropertyChangeEvent pce) {                    
                     MdSecPropertiesPanel.this.firePropertyChange("remove",pce.getOldValue(),pce.getNewValue());                    
                     if(getMax() > 0 && data.size() < getMax()){
                        enableButtons(true);
@@ -124,7 +138,7 @@ public class MdSecPropertiesPanel extends JPanel{
         return editDmdSecPropertiesTable;
     }
     public EditMdSecPropertiesTable createMdSecPropertiesTable(){                        
-        return new EditMdSecPropertiesTable(data,new String [] {"namespace","MDTYPE"},"mdSecTable");
+        return new EditMdSecPropertiesTable(data,new String [] {"namespace","MDTYPE"},"mdSecTable",getExceptions());
     }
     public void setMdSecPropertiesTable(EditMdSecPropertiesTable editDmdSecPropertiesTable) {
         this.editDmdSecPropertiesTable = editDmdSecPropertiesTable;
@@ -322,12 +336,10 @@ public class MdSecPropertiesPanel extends JPanel{
                 }else if(pce.getPropertyName().equals("log")){
                     ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){
-                    getEditDmdSecPropertiesTable().add((MdSec)pce.getNewValue());
-                    
+                    getEditDmdSecPropertiesTable().add((MdSec)pce.getNewValue());                    
                     if(getMax() > 0 && data.size() >= getMax()){
                         enableButtons(false);
-                    }
-                    System.out.println("firing property change 'mdSec'");
+                    }                    
                     MdSecPropertiesPanel.this.firePropertyChange("mdSec",null,pce.getNewValue());
                     
                 }else if(

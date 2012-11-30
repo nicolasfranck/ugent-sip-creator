@@ -46,7 +46,7 @@ public class SwordDepositTest {
             
             System.out.println("test4");
             
-            File file = new File("/tmp/mysip.zip");
+            File file = new File("/home/nicolas/mysip.zip");
             String checksum = MessageDigestHelper.generateFixity(file,Algorithm.MD5);
             
             Deposit deposit = new Deposit();

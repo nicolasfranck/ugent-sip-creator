@@ -41,7 +41,7 @@ public class CSV2Panel extends JPanel{
             showResult();
             BusyIndicator.clearAt(CSV2Panel.this);                
         }        
-    };
+    };    
     
     public ActionListener getShowListener() {
         return showListener;

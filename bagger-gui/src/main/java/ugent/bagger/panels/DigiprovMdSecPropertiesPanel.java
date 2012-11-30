@@ -38,13 +38,22 @@ import ugent.premis.PremisObject.PremisObjectType;
  */
 public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
     public DigiprovMdSecPropertiesPanel(ArrayList<MdSec>data,String id){        
-        super(data,id);        
+        super(data,id,deriveExceptions(data));        
         init();
     }  
+    public static ArrayList<MdSec>deriveExceptions(ArrayList<MdSec>list){
+        ArrayList<MdSec>exceptions = new ArrayList<MdSec>();
+        for(MdSec m:list){
+            if(m.getID().equals("bagit_digiprovMD") && PremisUtils.isPremisMdSec(m)){
+                exceptions.add(m);
+            }
+        }
+        return exceptions;
+    }
     protected void init(){
         if(!(getId() != null && getId().equals("bagit"))){
             return;
-        }
+        }       
         
         JButton mergeButton = new JButton(Context.getMessage("digiprovMDSecPropertiesPanel.mergeButton.label"));
         getButtonPanel().add(mergeButton);
@@ -101,7 +110,7 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                 
                 Element element = mdSec.getMdWrap().getXmlData().get(0);   
                 
-                //cleanup
+                //verwijder alles wat niet aan bagit toebehoort uit premis-record
                 premis.getAgent().clear();
                 premis.getRights().clear();
                 

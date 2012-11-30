@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import ugent.bagger.dialogs.EditMdSecDialog;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.properties.MdSecProperties;
 
@@ -29,8 +30,9 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
         this(data,cols,id,new ArrayList<MdSec>());
     }  
     public EditMdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id,ArrayList<MdSec>exceptions){
-        super(data,cols,id);                      
-        setDoubleClickHandler(getOpenDialogExecutor());
+        super(data,cols,id);          
+        setExceptions(exceptions);
+        setDoubleClickHandler(getOpenDialogExecutor());        
     }
 
     public ArrayList<MdSec> getExceptions() {
@@ -78,8 +80,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
             @Override
             public void actionPerformed(ActionEvent ae) {                
             }
-        });
-        
+        });        
         table.addKeyListener(new KeyAdapter(){           
             @Override
             public void keyReleased(KeyEvent ke) {                               
@@ -95,7 +96,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
                         break;
                 }                
             }            
-        });                 
+        });               
     }         
     public void reset(final ArrayList<MdSec>data){                
         setData(data);
@@ -123,7 +124,10 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
         if(getTable().getSelectedRows().length > 0){
             for(MdSecProperties mdSecProperties:getSelections()){                
                 if(getExceptions().contains(mdSecProperties.getMdSec())){
-                    SwingUtils.ShowError("ERROR","Dit record kan niet verwijderd worden");
+                    SwingUtils.ShowError(
+                        Context.getMessage("EditMdSecPropertiesTable.deleteSelected.deny.title"),
+                        Context.getMessage("EditMdSecPropertiesTable.deleteSelected.deny.description")
+                    );
                 }else{
                     deleteMdSec(mdSecProperties.getMdSec());
                 }                                                

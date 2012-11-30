@@ -13,6 +13,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import ugent.bagger.helper.XML;
+import ugent.premis.NS;
 
 /**
  *
@@ -23,8 +24,8 @@ public class NameValueToOAIDCImporter implements Importer{
     private static final String [] DCKeys = {
      "title","creator","subject","description","publisher","contributor","date","type","format","identifier","source","language","relation","coverage","rights"
     };
-    public static final String namespaceDC = "http://purl.org/dc/elements/1.1/";
-    public static final String namespaceOAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/";
+    public static final String DC = "http://purl.org/dc/elements/1.1/";
+    public static final String OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/";
     private static boolean hasKey(String lookupKey){
         for(String key:DCKeys){           
             if(key.compareTo(lookupKey) == 0){
@@ -60,8 +61,12 @@ public class NameValueToOAIDCImporter implements Importer{
         Document doc = null;              
         try {           
             DOMImplementation domImpl = XML.getDocumentBuilder().getDOMImplementation();            
-            doc = domImpl.createDocument(namespaceOAI_DC,"oai_dc:dc", null);                               
-            Element root = doc.getDocumentElement(); 
+            doc = domImpl.createDocument(OAI_DC,"oai_dc:dc", null);                               
+            Element root = doc.getDocumentElement();             
+            root.setAttributeNS(NS.XMLNS.ns(),"xmlns:oai_dc",OAI_DC);
+            root.setAttributeNS(NS.XMLNS.ns(),"xmlns:dc",DC);
+            root.setAttributeNS(NS.XMLNS.ns(),"xmlns:xlink",NS.XLINK.ns());
+            root.setAttributeNS(NS.XMLNS.ns(),"xmlns:xsi",NS.XSI.ns());            
             
             NameValueReaderImpl reader = new NameValueReaderImpl("UTF-8",is,"bagInfoTxt");
             while(reader.hasNext()){
@@ -74,7 +79,7 @@ public class NameValueToOAIDCImporter implements Importer{
                 if(!hasKey(key)){
                     continue;
                 }                 
-                Element el = doc.createElementNS(namespaceDC,key);                
+                Element el = doc.createElementNS(DC,"dc:"+key);                
                 el.appendChild(doc.createTextNode(pair.getValue()));
                 root.appendChild(el);                
             }

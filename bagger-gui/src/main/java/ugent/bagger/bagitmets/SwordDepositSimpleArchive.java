@@ -47,7 +47,7 @@ public class SwordDepositSimpleArchive {
             
             System.out.println("test4");
             
-            File file = new File("/tmp/simplezip.zip");
+            File file = new File("/home/nicolas/simplezip.zip");
             String checksum = MessageDigestHelper.generateFixity(file,Algorithm.MD5);
             
             Deposit deposit = new Deposit();

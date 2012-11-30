@@ -22,3 +22,41 @@ Div:
 
 
 https://wiki.duraspace.org/display/DSPACE/DSpace+SIP+Toolkit
+https://wiki.duraspace.org/display/DSDOC18/Importing+and+Exporting+Content+via+Packages
+https://wiki.duraspace.org/display/DSPACE/DSpaceMETSSIPProfile
+
+dspace import
+    invoer hoofdmap met daarin 'item-mappen' met deze structuur:
+        item1/
+            contents
+            dublin_core.xml
+            payload1
+            payload2
+            ..
+        item2/
+        ..
+    ofwel dit alles in 1 zip
+
+./dspace packager -t METS -e nicolas.franck@ugent.be -p 123456789/3 /home/nicolas/mysip.zip
+    structuur van zip:
+        mets.xml
+        payload1
+        payload2
+        payload3    
+        ..
+    structuur van mets.xml
+        dmdSec MOET MODS bevatten
+        fileGrp USE="CONTENT"
+            lijst van files
+            elke file heeft amdSec erboven met techMD in PREMIS (min of meer zelfde info als in file),
+            en verwijst daarnaartoe via AMDID
+        structMap LABEL="DSpace Item" TYPE="LOGICAL"
+            div DMDID="dmdSec1 dmdSec2"
+
+                elk dmdSec moet eveneens staan in deze DMDID van 1ste div
+            slecht 1 hoofddiv toegelaten
+            sub-div: div ID="DSpace BITSTREAM"
+                        fptr FILEID=".."
+
+        zie export-dspace.zip
+

@@ -1,6 +1,5 @@
 package ugent.premis;
 
-import com.anearalone.mets.MdSec;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;

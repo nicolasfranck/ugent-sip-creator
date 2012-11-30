@@ -1,6 +1,5 @@
 package ugent.premis;
 
-import com.anearalone.mets.MdSec;
 import java.text.ParseException;
 import java.util.ArrayList;
 import org.w3c.dom.Attr;
@@ -18,6 +17,8 @@ public class PremisAgent implements ElementInterface{
     //attribute
     String xmlID;
     String version;
+    
+    //elements
     ArrayList<PremisAgentIdentifier>agentIdentifier;
     ArrayList<String>agentName;
     ArrayList<String>agentType;
@@ -143,6 +144,57 @@ public class PremisAgent implements ElementInterface{
 
     @Override
     public void marshal(Element root, Document doc) {
+        //attributes
+        if(version != null && !version.isEmpty()){
+            root.setAttribute("version",version);
+        }else{
+            root.setAttribute("version","2.2");
+        }
+        if(xmlID != null && !xmlID.isEmpty()){
+            root.setAttribute("xmlID",xmlID);
+        }
+        
+        //elements
+        for(PremisAgentIdentifier id:getAgentIdentifier()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:agentIdentifier");
+            id.marshal(e,doc);
+            root.appendChild(e);
+        }
+        for(String name:getAgentName()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:agentName");
+            e.setTextContent(name);
+            root.appendChild(e);
+        }
+        for(String type:getAgentType()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:agentType");
+            e.setTextContent(type);
+            root.appendChild(e);
+        }
+        for(String note:getAgentNote()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:agentNote");
+            e.setTextContent(note);
+            root.appendChild(e);
+        }
+        for(Element ext:getAgentExtension()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:agentExtension");
+            e.appendChild(doc.importNode(ext,true));
+            root.appendChild(e);
+        }
+        for(MdSec mdSec:getMdSec()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:mdSec");
+            mdSec.marshal(e,doc);
+            root.appendChild(e);
+        }
+        for(PremisLinkingEventIdentifier id:getLinkingEventIdentifier()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:linkingEventIdentifier");
+            id.marshal(e,doc);
+            root.appendChild(e);
+        }
+        for(PremisLinkingRightsStatementIdentifier id:getLinkingRightsStatementIdentifier()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:linkingRightsStatementIdentifier");
+            id.marshal(e,doc);
+            root.appendChild(e);
+        }
         
     }
     public static class PremisAgentIdentifier implements ElementInterface{

@@ -201,16 +201,18 @@ public class DSpaceSIPMets {
      * @param isPrimaryBitstream true if this is the Item' Primary Bitstream, i.e. index page of a website.
      */
     public void addBitstream(File path,String name,String bundle,boolean isPrimaryBitstream) throws DatatypeConfigurationException{        
-        PackageFile pfile = new PackageFile(path);
-        FileGrp.File mfile = createMetsFile(path,name);
-        pfile.setMetsFile(mfile);
-        
+        FileGrp.File mfile = createMetsFile(path,name);        
+        PackageFile pfile = new PackageFile(path);        
+        pfile.setMetsFile(mfile);        
+        addPackageFile(pfile,bundle,isPrimaryBitstream);                
+    }
+    public void addPackageFile(PackageFile packageFile,String bundle,boolean isPrimaryBitstream){
         if(!bundles.containsKey(bundle)){
             bundles.put(bundle,new ArrayList<PackageFile>());            
         }
-        bundles.get(bundle).add(pfile);        
+        bundles.get(bundle).add(packageFile);        
         if(isPrimaryBitstream) {
-            primaryPackageFile = pfile;
+            primaryPackageFile = packageFile;
         }
     }
     protected com.anearalone.mets.FileSec.FileGrp.File createMetsFile(File file,String relativePath) throws DatatypeConfigurationException{
@@ -422,6 +424,7 @@ public class DSpaceSIPMets {
         PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.bitstream);        
         premis.getObject().add(pobject);
         
+        //ID
         PremisObject.PremisObjectIdentifier poid = new PremisObject.PremisObjectIdentifier();
         poid.setObjectIdentifierType("URL");
         poid.setObjectIdentifierValue(URLEncoder.encode(packageFile.getFile().getAbsolutePath(), "UTF-8"));         
@@ -429,14 +432,23 @@ public class DSpaceSIPMets {
         
         pobject.setOriginalName(packageFile.getFile().getAbsolutePath());    
         
+        //SIZE
         PremisObject.PremisObjectCharacteristics chars = new PremisObject.PremisObjectCharacteristics();        
-        chars.setSize(packageFile.getMetsFile().getSIZE());
+        chars.setSize(packageFile.getMetsFile().getSIZE());        
         pobject.getObjectCharacteristics().add(chars);        
         
+        //CHECKSUMS
         PremisObject.PremisFixity fixity = new PremisObject.PremisFixity();
         fixity.setMessageDigestAlgorithm(packageFile.getMetsFile().getCHECKSUMTYPE().value());
         fixity.setMessageDigest(packageFile.getMetsFile().getCHECKSUM());
         chars.getFixity().add(fixity);
+        
+        //MIMETYPE
+        PremisObject.PremisFormat format = new PremisObject.PremisFormat();
+        PremisObject.PremisFormatDesignation formatDesign = new PremisObject.PremisFormatDesignation();
+        formatDesign.setFormatName(packageFile.getMetsFile().getMIMETYPE());
+                
+        chars.getFormat().add(format);
         
         return PremisIO.toDocument(premis).getDocumentElement();        
     }   

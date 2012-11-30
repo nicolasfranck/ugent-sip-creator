@@ -14,6 +14,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import ugent.bagger.helper.XML;
+import ugent.premis.NS;
 
 /**
  *
@@ -24,7 +25,7 @@ public class NameValueToDCImporter implements Importer{
     private static final String [] DCKeys = {
      "title","creator","subject","description","publisher","contributor","date","type","format","identifier","source","language","relation","coverage","rights"
     };
-    public static final String namespaceDC = "http://purl.org/dc/elements/1.1/";    
+    public static final String DC = "http://purl.org/dc/elements/1.1/";    
     private static boolean hasKey(String lookupKey){
         for(String key:DCKeys){           
             if(key.compareTo(lookupKey) == 0){
@@ -60,8 +61,11 @@ public class NameValueToDCImporter implements Importer{
         Document doc = null;              
         try {           
             DOMImplementation domImpl = XML.getDocumentBuilder().getDOMImplementation();            
-            doc = domImpl.createDocument(namespaceDC,"dc:dc", null);                               
-            Element root = doc.getDocumentElement(); 
+            doc = domImpl.createDocument(DC,"dc:dc", null);                               
+            Element root = doc.getDocumentElement();             
+            root.setAttributeNS(NS.XMLNS.ns(),"xmlns:dc",DC);
+            root.setAttributeNS(NS.XMLNS.ns(),"xmlns:xlink",NS.XLINK.ns());
+            root.setAttributeNS(NS.XMLNS.ns(),"xmlns:xsi",NS.XSI.ns());
             
             NameValueReaderImpl reader = new NameValueReaderImpl("UTF-8",is,"bagInfoTxt");
             while(reader.hasNext()){
@@ -74,7 +78,7 @@ public class NameValueToDCImporter implements Importer{
                 if(!hasKey(key)){
                     continue;
                 }                 
-                Element el = doc.createElementNS(namespaceDC,key);                                
+                Element el = doc.createElementNS(DC,"dc:"+key);                                
                 el.appendChild(doc.createTextNode(pair.getValue()));
                 root.appendChild(el);                
             }
