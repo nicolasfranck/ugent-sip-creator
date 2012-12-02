@@ -77,6 +77,9 @@ public class DefaultBagItMets extends BagItMets{
         BagView bagView = BagView.getInstance();
         Bag bag = metsBag.getBag();        
         
+        
+        System.out.println("test1");
+        
         //manifest informatie
         Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm());            
         SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(metsBag.getTagManifestAlgorithm());         
@@ -89,6 +92,7 @@ public class DefaultBagItMets extends BagItMets{
         //files
         final HashMap<String,String> fileIdMap = new HashMap<String,String>();
         
+        System.out.println("test2");
         try{                     
             
             Collection<BagFile>payloads = bag.getPayload();            
@@ -108,6 +112,8 @@ public class DefaultBagItMets extends BagItMets{
             payloadGroup.setID("payloads");
             payloadGroup.setUse("payloads");
             List<FileSec.FileGrp.File>payloadFiles = payloadGroup.getFile();            
+            
+            System.out.println("test3");
 
             for(BagFile bagFile:payloads){
 
@@ -175,11 +181,15 @@ public class DefaultBagItMets extends BagItMets{
             }
             fileGroups.add(payloadGroup);
             
+            System.out.println("test5");
+            
             //group tagfiles
             FileSec.FileGrp tagFileGroup = new FileSec.FileGrp();            
             tagFileGroup.setID("tags");
             tagFileGroup.setUse("tags");
             List<FileSec.FileGrp.File>tagFiles = tagFileGroup.getFile();
+            
+            System.out.println("test6");
             
             for(BagFile bagFile:tags){
                 
@@ -247,6 +257,8 @@ public class DefaultBagItMets extends BagItMets{
             
             fileGroups.add(tagFileGroup);            
             
+            System.out.println("test7");
+            
             //make node trees            
             DefaultMutableTreeNode rootNodePayloads = null;              
             DefaultMutableTreeNode rootNodeTagFiles = null;            
@@ -276,6 +288,7 @@ public class DefaultBagItMets extends BagItMets{
             }            
 
             //structMaps
+            System.out.println("test8");
             
             //structmap payloads
             StructMap structMapPayloads;
@@ -298,7 +311,9 @@ public class DefaultBagItMets extends BagItMets{
                 structMapPayloads = new StructMap();
             }            
                         
-            structMapPayloads.setType("bagit_payload_tree");             
+            structMapPayloads.setType("bagit_payload_tree");   
+            
+            System.out.println("test9");
             
             //structmap tagfiles            
             StructMap structMapTagFiles;
@@ -334,7 +349,9 @@ public class DefaultBagItMets extends BagItMets{
                 structMapTagFiles = new StructMap();
             }
             
-                       
+            
+            System.out.println("test10");
+            
             structMapTagFiles.setType("bagit_tag_tree");            
         
             mets.getStructMap().clear();
@@ -353,14 +370,21 @@ public class DefaultBagItMets extends BagItMets{
             ArrayList<String>listBagIds = metsBag.getInfo().getFieldMap().get("Bag-Id");
             if(!listBagIds.isEmpty()){
                 mets.setOBJID(listBagIds.get(0));
-            }            
+            }   
+            System.out.println("test11");
 
         }catch(Exception e){
             e.printStackTrace();            
         }
         
-        PremisBagitMetsAnalyser analyser = new PremisBagitMetsAnalyser();
-        analyser.analyse(metsBag,mets);
+        System.out.println("test12");
+        
+        try{
+            PremisBagitMetsAnalyser analyser = new PremisBagitMetsAnalyser();
+            analyser.analyse(metsBag,mets);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         
         return mets;
     }

@@ -4,14 +4,15 @@ import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
-import gov.loc.repository.bagger.bag.impl.DefaultBagInfo;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
+import gov.loc.repository.bagit.BagFile;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import ugent.bagger.helper.ArrayUtils;
 import ugent.bagger.helper.ArrayUtils.ArrayDiff;
 import ugent.bagger.helper.DateUtils;
@@ -29,12 +30,14 @@ import ugent.premis.PremisObject.PremisObjectType;
 public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
     @Override
     public void analyse(MetsBag metsBag, Mets mets) {
-        //bag-info
-        HashMap<String,ArrayList<String>> baginfo = metsBag.getInfo().getFieldMap();
-        String payloadOxum = baginfo.get("Payload-Oxum").get(0);
-        long size = Long.parseLong(payloadOxum.split(".")[0]);
+        System.out.println("premis-start");
+        //size (niet gekend vóór het begin van bagit-creatie)
+        long size = 0;
+        for(BagFile bagFile:metsBag.getPayload()){
+            size += bagFile.getSize();
+        }
         
-        
+        System.out.println("premis1");
         //premis        
         Premis premis = metsBag.getPremis();            
         
@@ -46,6 +49,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 iteratorObject.remove();
             }
         }
+        System.out.println("premis2");
         
         //maak nieuw object van type 'bitstream' en xmlID 'bagit' aan
         PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.bitstream);
@@ -61,6 +65,8 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
         chars.setCompositionLevel(0);        
         chars.setSize(size);
         
+        System.out.println("premis3");
+        
         PremisObject.PremisFormat format = new PremisObject.PremisFormat();
         format.setFormatNote("bagit");;
         
@@ -68,6 +74,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
         pobject.getObjectCharacteristics().add(chars);
         premis.getObject().add(pobject);   
         
+        System.out.println("premis4");
         
         DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String formattedDate = dformat.format(new Date());        
@@ -81,6 +88,8 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 numBagitEvents++;                
             }
         }
+        
+        System.out.println("premis5");
         
         if(numBagitEvents == 0){        
             
@@ -160,6 +169,8 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             }
         }   
         
+        System.out.println("premis6");
+        
         try{            
             AmdSec amdSec = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());
             if(amdSec == null){
@@ -179,7 +190,9 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             if(mdSec.getCREATED() == null){
                 try{
                     mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
-                }catch(Exception e){}            
+                }catch(Exception e){
+                    e.printStackTrace();
+                }            
             }            
             mdSec.setMdWrap(mdWrap);
             amdSec.getDigiprovMD().add(mdSec);
@@ -187,5 +200,6 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
         }catch(Exception e){
             e.printStackTrace();
         }
+        System.out.println("premis7");
     }    
 }

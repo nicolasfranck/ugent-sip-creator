@@ -377,6 +377,19 @@ public class FUtils {
         }
         return badDirs;
     }
+    public static ArrayList<File> getNotReadableFiles(File file){
+        ArrayList<File>notReadableFiles = new ArrayList<File>();
+       
+        if(!file.canRead()){
+            notReadableFiles.add(file);
+        }else{
+            for(File f:file.listFiles()){  
+                notReadableFiles.addAll(getBadDirs(f));
+            }
+        }
+        
+        return notReadableFiles;
+    }
     public static void checkFile(File file) throws FileNotReadableException, FileNotWritableException, FileNotFoundException{
         checkFile(file,false);
     }
