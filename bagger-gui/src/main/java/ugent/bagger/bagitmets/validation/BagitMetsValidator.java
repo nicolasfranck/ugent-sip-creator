@@ -1,8 +1,12 @@
 package ugent.bagger.bagitmets.validation;
 
+import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.FileSec;
+import com.anearalone.mets.FileSec.FileGrp.File.FLocat;
+import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.NS;
+import com.anearalone.mets.SharedEnums.CHECKSUMTYPE;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagit.utilities.SimpleResult;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
@@ -13,11 +17,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import javax.xml.validation.Schema;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import ugent.bagger.exceptions.BagitMetsValidationException;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.XML;
+import ugent.premis.Premis;
 
 /**
  *
@@ -122,6 +129,62 @@ public class BagitMetsValidator {
             if(size == 0){
                 throw new BagitMetsValidationException(RESULT.METS_FILE_SIZE_NOT_VALID,"element 'file' with attribute ID '"+id+" does have valid SIZE");
             }
+            //checksumtype missing
+            CHECKSUMTYPE checksumType = f.getCHECKSUMTYPE();
+            if(checksumType == null){
+                throw new BagitMetsValidationException(RESULT.METS_FILE_CHECKSUMTYPE_MISSING,"element 'file' with attribute ID '"+id+" does have a valid CHECKSUMTYPE");
+            }
+            //checksumtype missing
+            String checksum = f.getCHECKSUM();
+            if(checksum == null || checksum.isEmpty()){
+                throw new BagitMetsValidationException(RESULT.METS_FILE_CHECKSUM_MISSING,"element 'file' with attribute ID '"+id+" does have a CHECKSUM");
+            }
+            //FLocat
+            FLocat flocat = f.getFLocat().isEmpty() ? null:f.getFLocat().get(0);
+            if(flocat == null){
+                throw new BagitMetsValidationException(RESULT.METS_FLOCAT_MISSING,"element 'file' with attribute ID '"+id+" does have a FLocat");
+            }
+            String xhref = flocat.getXlinkHREF();
+            if(xhref == null || xhref.isEmpty()){
+                throw new BagitMetsValidationException(RESULT.METS_FLOCAT_XHREF_MISSING,"FLocat of File with ID '"+id+"' does not have xhref link");
+            }
+            File pfile = new File(file,flocat.getXlinkHREF());
+            if(!pfile.exists()){
+                throw new BagitMetsValidationException(RESULT.METS_FLOCAT_XHREF_MISSING,"FLocat of File with ID '"+id+"' does not refer to an existing file");
+            }            
+        }
+        //amdSec 'bagit'
+        AmdSec amdSecBagit = null;
+        for(AmdSec amdSec:mets.getAmdSec()){
+            String id = amdSec.getID();
+            if(id != null && id.equals("bagit")){
+                amdSecBagit = amdSec;
+                break;
+            }
+        }
+        if(amdSecBagit == null){
+            throw new BagitMetsValidationException(RESULT.METS_AMDSEC_BAGIT_MISSING,"amdSec with ID 'bagit' is missing from mets.xml");
+        }
+        MdSec digiprovMDBagit = null;
+        for(MdSec mdSec:amdSecBagit.getDigiprovMD()){
+            String id = mdSec.getID();
+            if(id != null && id.equals("bagit_digiprovMD")){
+                digiprovMDBagit = mdSec;
+                break;
+            }
+        }
+        if(digiprovMDBagit == null){
+            throw new BagitMetsValidationException(RESULT.METS_DIGIPROVMD_BAGIT_MISSING,"digiprovMD with ID 'bagit_digiprovMD'  is missing from mets.xml");
+        }
+        if(!PremisUtils.isPremisMdSec(digiprovMDBagit)){
+            throw new BagitMetsValidationException(RESULT.METS_DIGIPROVMD_BAGIT_PREMIS_MISSING,"digiprovMD with ID 'bagit_digiprovMD' does not have a premis record");
+        }
+        Premis premis = null;
+        try{
+            Element e = digiprovMDBagit.getMdWrap().getXmlData().get(0);
+            premis = new Premis();
+            premis.unmarshal(e);
+        }catch(Exception e){
             
         }
     }
