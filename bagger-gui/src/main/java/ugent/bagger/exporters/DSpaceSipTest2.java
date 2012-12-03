@@ -1,11 +1,11 @@
 package ugent.bagger.exporters;
 
 import com.anearalone.mets.FileSec;
+import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import java.io.File;
 import java.util.zip.Deflater;
 import ugent.bagger.helper.MetsUtils;
-import ugent.bagger.helper.XML;
 
 /**
  *
@@ -14,13 +14,11 @@ import ugent.bagger.helper.XML;
 public class DSpaceSipTest2 {
     public static void main(String [] args){
         try{
-            File metsXMLFile = new File("/home/nicolas/baggie/mets.xml");
+            File metsXMLFile = new File("/home/nicolas/bags/baggie/mets.xml");
             File metsDir = metsXMLFile.getParentFile();
             Mets mets = MetsUtils.readMets(metsXMLFile);
             
             DSpaceSIPMets sip = new DSpaceSIPMets(true,Deflater.BEST_SPEED);                        
-            
-            sip.addDescriptiveMD("DC",XML.XMLToDocument(new File("/home/nicolas/dc.xml"),false).getDocumentElement());            
             
             for(FileSec.FileGrp fileGroup:mets.getFileSec().getFileGrp()){
                 System.out.println("fileGroup USE "+fileGroup.getUse());
@@ -34,6 +32,9 @@ public class DSpaceSipTest2 {
                     packageFile.setMetsFile(metsFile);
                     sip.addPackageFile(packageFile,"ORIGINAL",false);
                 }
+            }
+            for(MdSec mdSec:mets.getDmdSec()){
+                sip.addDescriptiveMD(mdSec.getMdWrap().getMDTYPE().toString(),mdSec.getMdWrap().getXmlData().get(0));
             }
             
             sip.write(new File("/tmp/mysip.zip"));

@@ -10,13 +10,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 import ugent.bagger.helper.ArrayUtils;
 import ugent.bagger.helper.ArrayUtils.ArrayDiff;
 import ugent.bagger.helper.DateUtils;
 import ugent.bagger.helper.PremisUtils;
+import ugent.premis.DOMHelp;
 import ugent.premis.Premis;
 import ugent.premis.PremisEvent;
 import ugent.premis.PremisIO;
@@ -30,55 +29,35 @@ import ugent.premis.PremisObject.PremisObjectType;
 public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
     @Override
     public void analyse(MetsBag metsBag, Mets mets) {
-        System.out.println("premis-start");
-        //size (niet gekend vóór het begin van bagit-creatie)
-        long size = 0;
-        for(BagFile bagFile:metsBag.getPayload()){
-            size += bagFile.getSize();
-        }
         
         System.out.println("premis1");
         //premis        
         Premis premis = metsBag.getPremis();            
         
-        //ledig alles met type 'bitstream' en xmlID 'bagit'
+        //ledig alles met type 'representation' en xmlID 'bagit'
         Iterator<PremisObject>iteratorObject = premis.getObject().iterator();
         while(iteratorObject.hasNext()){
             PremisObject o = iteratorObject.next();
-            if(o.getType() == PremisObjectType.bitstream && o.getXmlID() != null && o.getXmlID().equals("bagit")){
+            if(o.getType() == PremisObjectType.representation && o.getXmlID() != null && o.getXmlID().equals("bagit")){
                 iteratorObject.remove();
             }
         }
         System.out.println("premis2");
         
-        //maak nieuw object van type 'bitstream' en xmlID 'bagit' aan
-        PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.bitstream);
-        pobject.setVersion("2.2");        
+        //maak nieuw object van type 'representation' en xmlID 'bagit' aan
+        PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.representation);          
         pobject.setXmlID("bagit");
-        
         PremisObject.PremisObjectIdentifier id = new PremisObject.PremisObjectIdentifier();
         id.setObjectIdentifierType("name");
         id.setObjectIdentifierValue(metsBag.getName());
-        pobject.getObjectIdentifier().add(id);
-        
-        PremisObject.PremisObjectCharacteristics chars = new PremisObject.PremisObjectCharacteristics();
-        chars.setCompositionLevel(0);        
-        chars.setSize(size);
-        
-        System.out.println("premis3");
-        
-        PremisObject.PremisFormat format = new PremisObject.PremisFormat();
-        format.setFormatNote("bagit");;
-        
-        chars.getFormat().add(format);
-        pobject.getObjectCharacteristics().add(chars);
-        premis.getObject().add(pobject);   
+        pobject.getObjectIdentifier().add(id); 
+        premis.getObject().add(pobject); 
         
         System.out.println("premis4");
         
         DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String formattedDate = dformat.format(new Date());        
-        String dateId = formattedDate.replaceAll("[^a-zA-Z0-9]+","-");
+        String eventID = DOMHelp.createID();
         
         //eerste keer (indien oude bagit voor het eerst hier wordt ingeladen, dan is er nog geen eventlog)
         //en kan er bijgevolg geen verschil berekent worden        
@@ -96,10 +75,9 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             PremisEvent ev = new PremisEvent();            
             PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
             evid.setEventIdentifierType("dateTime");
-            evid.setEventIdentifierValue(dateId);
+            evid.setEventIdentifierValue(eventID);
             ev.setEventIdentifier(evid);
-            ev.setXmlID(dateId);
-            ev.setVersion("2.2");
+            ev.setXmlID(eventID);            
             ev.setEventType("bagit");
             
             ev.setEventDateTime(formattedDate);            
@@ -133,9 +111,9 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 PremisEvent ev = new PremisEvent();
                 PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
                 evid.setEventIdentifierType("dateTime");
-                evid.setEventIdentifierValue(dateId);
+                evid.setEventIdentifierValue(eventID);
                 ev.setEventIdentifier(evid);
-                ev.setXmlID(dateId);
+                ev.setXmlID(eventID);
                 ev.setVersion("2.2");
                 ev.setEventType("bagit");
                 ev.setEventDateTime(formattedDate);            
@@ -152,9 +130,9 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 PremisEvent ev = new PremisEvent();
                 PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
                 evid.setEventIdentifierType("dateTime");
-                evid.setEventIdentifierValue(dateId);
+                evid.setEventIdentifierValue(eventID);
                 ev.setEventIdentifier(evid);
-                ev.setXmlID(dateId);
+                ev.setXmlID(eventID);
                 ev.setVersion("2.2");
                 ev.setEventType("bagit");
                 ev.setEventDateTime(formattedDate);            

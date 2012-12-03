@@ -57,9 +57,9 @@ public enum RESULT {
     METS_DIGIPROVMD_BAGIT_PREMIS_MISSING("METS_DIGIPROVMD_BAGIT_PREMIS_MISSING",true),
     //digiprovMD does not contain a valid premis record (according to premis schema)
     METS_DIGIPROVMD_BAGIT_PREMIS_NOT_VALID("METS_DIGIPROVMD_BAGIT_PREMIS_NOT_VALID",true),
-    //premis record does not have object 'bitstream' with xmlID 'bagit'
+    //premis record does not have object 'representation' with xmlID 'bagit'
     METS_DIGIPROVMD_BAGIT_PREMIS_OBJECT_BAGIT_MISSING("METS_DIGIPROVMD_BAGIT_PREMIS_OBJECT_BAGIT_MISSING",true),
-    //object 'bitstream' with xmlID 'bagit' contains errors
+    //object 'representation' with xmlID 'bagit' contains errors
     METS_DIGIPROVMD_BAGIT_PREMIS_OBJECT_BAGIT_NOT_VALID("METS_DIGIPROVMD_BAGIT_PREMIS_OBJECT_BAGIT_NOT_VALID",true),
     //warning: premis record does not have events of type 'bagit'
     METS_DIGIPROVMD_BAGIT_PREMIS_EVENT_BAGIT_MISSING("METS_DIGIPROVMD_BAGIT_PREMIS_EVENT_BAGIT_MISSING",false),

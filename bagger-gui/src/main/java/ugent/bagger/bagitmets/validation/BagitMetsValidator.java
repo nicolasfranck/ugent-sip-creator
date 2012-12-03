@@ -25,24 +25,27 @@ import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.XML;
 import ugent.premis.Premis;
+import ugent.premis.PremisEvent;
+import ugent.premis.PremisObject;
 
 /**
  *
  * @author nicolas
  */
 public class BagitMetsValidator {    
-    public void validate(File file) throws BagitMetsValidationException{
-        
+    public ArrayList<BagitMetsValidationException> validate(File file) throws BagitMetsValidationException{
+        ArrayList<BagitMetsValidationException>warnings = new ArrayList<BagitMetsValidationException>();
         //directory?
         if(!file.isDirectory()){
             throw new BagitMetsValidationException(RESULT.BAGIT_NOT_DIRECTORY,file+" is not a directory");
         }
+        System.out.println("file "+file+" is directory");
         //all files readable?
         ArrayList<File>notReadableFiles = FUtils.getNotReadableFiles(file);
         if(!notReadableFiles.isEmpty()){
             throw new BagitMetsValidationException(RESULT.BAGIT_FILES_NOT_READABLE,"not all files in directory "+file+" are readable");
         }
-        
+        System.out.println("all files are readable");
         MetsBag metsBag = new MetsBag(file,null);        
         
         //validate bag
@@ -53,34 +56,53 @@ public class BagitMetsValidator {
         if(!result.isSuccess()){
             throw new BagitMetsValidationException(RESULT.BAGIT_NOT_VALID,"directory ");
         }
+        System.out.println(file+" is a valid bagit");
         
         //mets.xml exists?
         File metsFile = new File(file,"mets.xml");
         if(!metsFile.exists()){
             throw new BagitMetsValidationException(RESULT.METS_MISSING,"mets.xml missing in directory "+file);
         }
+        
+        System.out.println(file+" contains a mets.xml");
             
         //mets.xml readable?
         if(!metsFile.canRead()){
             throw new BagitMetsValidationException(RESULT.METS_NOT_READABLE,"mets.xml is not readable");
         }
         
+        System.out.println(file+" has readable mets.xml");
+        
         Mets mets = null;
         //xml? valid mets-document?
-        try{
-            Document document = XML.XMLToDocument(file,false);
-            String ns = document.getDocumentElement().getNamespaceURI();
-            if(!ns.equals(NS.METS)){
+        try{            
+            Document document = XML.XMLToDocument(metsFile,false);
+            System.out.println("xml document created");
+            String ns = document.getDocumentElement().getNamespaceURI();            
+            System.out.println("ns: "+ns+" <=> "+NS.METS.ns());
+            if(!ns.equals(NS.METS.ns())){
                 throw new Exception();
             }
+            
             String schemaPath = MetsUtils.getSchemaPath(document);
+           
+            //String schemaPath = "file:///home/nicolas/Bagger-LC/bagger-gui/src/main/resources/metadata/xsd/mets/mets-1.9.xsd";
+            System.out.println("schemaPath: "+schemaPath);
             URL schemaURL = Context.getResource(schemaPath);            
+            System.out.println("schemaURL: "+schemaURL);
             Schema schema = XML.createSchema(schemaURL);                        
+            System.out.println("schema created");
             XML.validate(document,schema);
-            mets = MetsUtils.readMets(file);
+            System.out.println("validated against schema");
+            
+            mets = new Mets();
+            mets.unmarshal(document.getDocumentElement());
+            
         }catch(Exception e){
-            throw new BagitMetsValidationException(RESULT.METS_NOT_VALID,"mets.xml is not valid");
+            throw new BagitMetsValidationException(RESULT.METS_NOT_VALID,"mets.xml is not valid: "+e.getMessage());
         }       
+        
+        System.out.println(file+" has valid mets.xml");
         
         //fileSec missing
         if(mets.getFileSec() == null){
@@ -154,38 +176,78 @@ public class BagitMetsValidator {
             }            
         }
         //amdSec 'bagit'
-        AmdSec amdSecBagit = null;
-        for(AmdSec amdSec:mets.getAmdSec()){
-            String id = amdSec.getID();
-            if(id != null && id.equals("bagit")){
-                amdSecBagit = amdSec;
-                break;
-            }
-        }
+        AmdSec amdSecBagit = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());        
         if(amdSecBagit == null){
             throw new BagitMetsValidationException(RESULT.METS_AMDSEC_BAGIT_MISSING,"amdSec with ID 'bagit' is missing from mets.xml");
         }
-        MdSec digiprovMDBagit = null;
-        for(MdSec mdSec:amdSecBagit.getDigiprovMD()){
-            String id = mdSec.getID();
-            if(id != null && id.equals("bagit_digiprovMD")){
-                digiprovMDBagit = mdSec;
-                break;
-            }
-        }
+        //digiprovMD 'bagit_digiprovMD'
+        MdSec digiprovMDBagit = PremisUtils.getPremisMdSec((ArrayList<MdSec>)amdSecBagit.getDigiprovMD());        
         if(digiprovMDBagit == null){
             throw new BagitMetsValidationException(RESULT.METS_DIGIPROVMD_BAGIT_MISSING,"digiprovMD with ID 'bagit_digiprovMD'  is missing from mets.xml");
         }
         if(!PremisUtils.isPremisMdSec(digiprovMDBagit)){
             throw new BagitMetsValidationException(RESULT.METS_DIGIPROVMD_BAGIT_PREMIS_MISSING,"digiprovMD with ID 'bagit_digiprovMD' does not have a premis record");
         }
+        //premis
         Premis premis = null;
         try{
             Element e = digiprovMDBagit.getMdWrap().getXmlData().get(0);
             premis = new Premis();
             premis.unmarshal(e);
         }catch(Exception e){
+            throw new BagitMetsValidationException(RESULT.METS_DIGIPROVMD_BAGIT_PREMIS_NOT_VALID,"premis document in digiprovMD contains errors: "+e.getMessage());
+        }
+        //object with xmlID 'bagit' and type 'representation'
+        PremisObject premisObjectBagit = null;
+        for(PremisObject object:premis.getObject()){
+            String xmlID = object.getXmlID();
+            PremisObject.PremisObjectType type = object.getType();
             
+            if(
+                xmlID != null && xmlID.equals("bagit") && 
+                object.getType() != null && object.getType() == PremisObject.PremisObjectType.representation
+            ){
+                premisObjectBagit = object;
+                break;
+            }
+        }
+        if(premisObjectBagit == null){
+            throw new BagitMetsValidationException(RESULT.METS_DIGIPROVMD_BAGIT_PREMIS_OBJECT_BAGIT_MISSING,"premis document in digiprovMD does not have object with xmlID 'bagit' and type 'representation'");
+        }
+        //event of type 'bagit' (warning)
+        ArrayList<PremisEvent>events = new ArrayList<PremisEvent>();
+        for(PremisEvent event:premis.getEvent()){
+            String type = event.getEventType();
+            if(type != null && type.equals("bagit")){
+                events.add(event);
+            }
+        }
+        if(events.isEmpty()){
+            warnings.add(new BagitMetsValidationException(RESULT.METS_DIGIPROVMD_BAGIT_PREMIS_EVENT_BAGIT_MISSING,"premis document in digiprovMD does not have events of type 'bagit' (warning)"));
+        }
+        //dmdSec available
+        if(mets.getDmdSec().isEmpty()){
+            warnings.add(new BagitMetsValidationException(RESULT.METS_DMDSEC_MISSING,"mets.xml does not contain dmdSec (warning)"));
+        }
+        
+        return warnings;
+    }
+    public static void main(String [] args){
+        ArrayList<File>files = new ArrayList<File>();
+        for(File file:new File("/home/nicolas/bags").listFiles()){
+            files.add(file);
+        }
+        BagitMetsValidator validator = new BagitMetsValidator();
+        for(File file:files){
+            try{
+                ArrayList<BagitMetsValidationException>warnings = validator.validate(file);
+                System.out.println("warning: ");
+                for(BagitMetsValidationException warning:warnings){
+                    System.out.println(warning);
+                }
+            }catch(BagitMetsValidationException e){
+                e.printStackTrace();
+            }
         }
     }
 }

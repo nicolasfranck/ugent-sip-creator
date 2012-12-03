@@ -8,6 +8,7 @@ package ugent.premis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,45 +19,48 @@ import org.w3c.dom.NodeList;
  * 
  */
 public class DOMHelp {
-	/**
-	 * Gets the first element child of the provided Element. Returns null if the
-	 * element has no child elements. Equiv. to XPath
-	 * <code>Element/child[1]</code>.
-	 * 
-	 * @param e
-	 * @return
-	 */
-	public static Element getFirstChildElement(Element e) {
-		Element childElement = null;
-		NodeList children = e.getChildNodes();
-		for (int p = 0; p < children.getLength(); p++) {
-			Node thisNode = children.item(p);
-			if (thisNode.getNodeType() == 1) {
-				childElement = (Element) thisNode;
-				break;
-			}
-		}
-		return childElement;
-	}
-	
-	/**
-	 * Gets the element children of the provided Element. Returns null if the
-	 * element has no child elements. Equiv. to XPath
-	 * <code>Element/child</code>.
-	 * 
-	 * @param e
-	 * @return
-	 */
-	public static List<Element> getChildElements(Element e) {
-		List<Element> childElements = new ArrayList<Element>();
-		NodeList children = e.getChildNodes();
-		for (int p = 0; p < children.getLength(); p++) {
-			Node thisNode = children.item(p);
-			if (thisNode.getNodeType() == 1) {
-				childElements.add((Element) thisNode);
-			}
-		}
-		return childElements;
-	}	
-	
+    /**
+     * Gets the first element child of the provided Element. Returns null if the
+     * element has no child elements. Equiv. to XPath
+     * <code>Element/child[1]</code>.
+     * 
+     * @param e
+     * @return
+     */
+    public static Element getFirstChildElement(Element e) {
+            Element childElement = null;
+            NodeList children = e.getChildNodes();
+            for (int p = 0; p < children.getLength(); p++) {
+                    Node thisNode = children.item(p);
+                    if (thisNode.getNodeType() == 1) {
+                            childElement = (Element) thisNode;
+                            break;
+                    }
+            }
+            return childElement;
+    }
+
+    /**
+     * Gets the element children of the provided Element. Returns null if the
+     * element has no child elements. Equiv. to XPath
+     * <code>Element/child</code>.
+     * 
+     * @param e
+     * @return
+     */
+    public static List<Element> getChildElements(Element e) {
+        List<Element> childElements = new ArrayList<Element>();
+        NodeList children = e.getChildNodes();
+        for (int p = 0; p < children.getLength(); p++) {
+            Node thisNode = children.item(p);
+            if (thisNode.getNodeType() == 1) {
+                    childElements.add((Element) thisNode);
+            }
+        }
+        return childElements;
+    }	
+    public static String createID(){
+        //xsd NCName: moet starten met letter of _, colon (':') mag niet voorkomen
+        return "_"+UUID.randomUUID().toString();
+    }
 }

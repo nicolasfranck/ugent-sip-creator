@@ -152,6 +152,8 @@ public class PremisAgent implements ElementInterface{
         }
         if(xmlID != null && !xmlID.isEmpty()){
             root.setAttribute("xmlID",xmlID);
+        }else{
+            root.setAttribute("xmlID",DOMHelp.createID());
         }
         
         //elements

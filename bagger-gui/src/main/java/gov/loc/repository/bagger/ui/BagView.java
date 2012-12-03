@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.*;
@@ -22,7 +23,9 @@ import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.util.Assert;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
+import ugent.bagger.bagitmets.validation.BagitMetsValidator;
 import ugent.bagger.dialogs.ValidateManifestDialog;
+import ugent.bagger.exceptions.BagitMetsValidationException;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.views.DefaultView;
 
@@ -578,6 +581,31 @@ public class BagView extends DefaultView {
                 dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
                 dialog.pack();
                 dialog.setVisible(true);
+            }
+        });
+        context.register("testCommand",new AbstractActionCommandExecutor(){
+            {
+                setEnabled(true);
+            }
+            @Override
+            public void execute(){                
+                ArrayList<File>files = new ArrayList<File>();
+                for(File file:new File("/home/nicolas/bags").listFiles()){
+                    files.add(file);
+                }
+                BagitMetsValidator validator = new BagitMetsValidator();
+                for(File file:files){
+                    try{
+                        ArrayList<BagitMetsValidationException>warnings = validator.validate(file);
+                        System.out.println("warnings.size = "+warnings.size());
+                        System.out.println("warnings: ");
+                        for(BagitMetsValidationException warning:warnings){
+                            System.out.println(warning);
+                        }
+                    }catch(BagitMetsValidationException e){
+                        e.printStackTrace();
+                    }
+                }
             }
         });
                

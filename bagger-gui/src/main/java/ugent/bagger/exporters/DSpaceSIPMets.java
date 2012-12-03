@@ -221,7 +221,7 @@ public class DSpaceSIPMets {
         mfile.setCHECKSUM(MessageDigestHelper.generateFixity(file,Manifest.Algorithm.MD5));
         mfile.setCHECKSUMTYPE(SharedEnums.CHECKSUMTYPE.MD_5);                
         mfile.setMIMETYPE(FUtils.getMimeType(file));               
-        mfile.setCREATED(DateUtils.DateToGregorianCalender());
+        mfile.setCREATED(DateUtils.DateToGregorianCalender());       
         mfile.setSIZE(file.length());
         
         FileGrp.File.FLocat flocat = new FileGrp.File.FLocat();
@@ -257,10 +257,8 @@ public class DSpaceSIPMets {
             mdWrap.setOTHERMDTYPE(type);
         }
         
-        mdWrap.getXmlData().add(element);
-        
-        dmdSec.setMdWrap(mdWrap);
-        
+        mdWrap.getXmlData().add(element);        
+        dmdSec.setMdWrap(mdWrap);        
         getMets().getDmdSec().add(dmdSec);       
         
     }

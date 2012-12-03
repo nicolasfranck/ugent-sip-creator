@@ -137,6 +137,8 @@ public class PremisEvent implements ElementInterface{
     public void marshal(Element root, Document doc) {
         if(xmlID != null && !xmlID.isEmpty()){
             root.setAttribute("xmlID",xmlID);
+        }else{
+            root.setAttribute("xmlID",DOMHelp.createID());
         }
         if(version != null && !version.isEmpty()){
             root.setAttribute("version",version);

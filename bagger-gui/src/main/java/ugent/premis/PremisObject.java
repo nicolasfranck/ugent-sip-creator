@@ -217,6 +217,8 @@ public class PremisObject implements ElementInterface{
         //attributes
         if(xmlID != null && !xmlID.isEmpty()){
             root.setAttribute("xmlID",xmlID);
+        }else{
+            root.setAttribute("xmlID",DOMHelp.createID());
         }
         if(version != null && !version.isEmpty()){
             root.setAttribute("version",version);
@@ -248,10 +250,11 @@ public class PremisObject implements ElementInterface{
             root.appendChild(e);
         }
         
-        Element n = doc.createElementNS(NS.PREMIS.ns(),"premis:originalName");
-        n.setTextContent(originalName);
-        root.appendChild(n);
-        
+        if(originalName != null && !originalName.isEmpty()){
+            Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:originalName");
+            e.setTextContent(originalName);
+            root.appendChild(e);
+        }
         for(PremisStorage stor:getStorage()){
             Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:storage");
             stor.marshal(e,doc);

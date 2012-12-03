@@ -70,7 +70,10 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                 })+"\n");                                
             }
             int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
-            setProgress(percent);                
+            if(!isDone()){
+                setProgress(percent);                
+            }
+            
         }             
         
         //report

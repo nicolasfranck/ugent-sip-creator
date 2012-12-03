@@ -89,9 +89,17 @@ public class PremisRights implements ElementInterface {
 
     @Override
     public void marshal(Element root, Document doc) {
+        if(version != null && !version.isEmpty()){
+            root.setAttribute("version",version);
+        }else{
+            root.setAttribute("version","2.2");
+        }
+        if(xmlID != null && version.isEmpty()){
+            root.setAttribute("xmlID",xmlID);
+        }else{
+            root.setAttribute("xmlID",DOMHelp.createID());
+        }
         
-        root.setAttribute("version",version);
-        root.setAttribute("xmlID",xmlID);
         
         for(PremisRightsStatement s:getRightsStatement()){
             Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:rightsStatement");

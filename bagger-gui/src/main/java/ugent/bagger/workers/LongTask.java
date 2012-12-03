@@ -20,7 +20,9 @@ public abstract class LongTask extends SwingWorker implements ProgressListener,L
             lastNote = activity;
         }        
         int percent = (int)Math.floor( (count / ((float)total))*100);                
-        setProgress(percent);               
+        if(!isDone()){
+            setProgress(percent);               
+        }        
     }
     @Override
     final public void log(String message){

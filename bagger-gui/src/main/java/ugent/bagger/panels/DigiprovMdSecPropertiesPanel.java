@@ -117,7 +117,7 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                 Iterator<PremisObject>itObject = premis.getObject().iterator();
                 while(itObject.hasNext()){
                     PremisObject object = itObject.next();
-                    if(!(object.getType() == PremisObjectType.bitstream && object.getXmlID() != null && object.getXmlID().equals("bagit"))){
+                    if(!(object.getType() == PremisObjectType.representation && object.getXmlID() != null && object.getXmlID().equals("bagit"))){
                         itObject.remove();
                     }
                 }
@@ -173,13 +173,13 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                         premis.getRights().clear();
                         premis.getRights().addAll(newPremis.getRights());
 
-                        //objects met type 'bitstream' en xmlID 'bagit' behoren toe aan 'bagit'!                     
+                        //objects met type 'representation' en xmlID 'bagit' behoren toe aan 'bagit'!                     
                         
                         //filter nieuwe premis
                         Iterator<PremisObject>iteratorObject = newPremis.getObject().iterator();
                         while(iteratorObject.hasNext()){
                             PremisObject object = iteratorObject.next();
-                            if(object.getType() == PremisObjectType.bitstream && object.getXmlID() != null && object.getXmlID().equals("bagit")){
+                            if(object.getType() == PremisObjectType.representation && object.getXmlID() != null && object.getXmlID().equals("bagit")){
                                 iteratorObject.remove();
                             }
                         }                        
@@ -187,7 +187,7 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                         iteratorObject = premis.getObject().iterator();
                         while(iteratorObject.hasNext()){
                             PremisObject object = iteratorObject.next();
-                            if(!(object.getType() == PremisObjectType.bitstream && object.getXmlID() != null && object.getXmlID().equals("bagit"))){
+                            if(!(object.getType() == PremisObjectType.representation && object.getXmlID() != null && object.getXmlID().equals("bagit"))){
                                 iteratorObject.remove();
                             }
                         }

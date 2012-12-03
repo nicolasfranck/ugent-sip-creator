@@ -24,8 +24,7 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
         //Nicolas Franck: van belang dat dit LATER gebeurd (anders klapt frame dicht)        
         SwingUtilities.invokeLater(new Runnable(){
             @Override
-            public void run() {
-                System.out.println("BaggerLifecycleAdvisor::init::run");
+            public void run() {                
                 Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                
                 SwingUtils.getFrame().setPreferredSize(dim);
                 SwingUtils.getFrame().setBounds(0,0,(int)dim.getWidth(),(int)dim.getHeight());                

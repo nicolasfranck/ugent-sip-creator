@@ -785,7 +785,9 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                         );
                     }
                     int percent = (int)Math.floor( ((i+1) / ((float)getSelectedDirectories().size()))*100);                                                                        
-                    setProgress(percent); 
+                    if(!isDone()){
+                       setProgress(percent);                
+                    }                    
                     succeeded.add(i);
                 }
                 
@@ -964,7 +966,9 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
                     }
                     
                     int percent = (int)Math.floor( ((i+1) / ((float)getSelectedDirectories().size()))*100);                                                                        
-                    setProgress(percent);                     
+                    if(!isDone()){
+                       setProgress(percent);                
+                    }                    
                 }
                 
             }catch(Exception e){

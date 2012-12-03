@@ -23,5 +23,5 @@ public class DefaultWorker extends SwingWorker<Void, Void> implements Loggable,S
     @Override
     public void success(boolean success){
         firePropertyChange("report",null,"success");                
-    }    
+    }     
 }

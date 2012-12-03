@@ -178,8 +178,9 @@ public final class BagValidationResultPanel extends JPanel{
                     addBagValidationResult(vresult);                    
 
                     int percent = (int)Math.floor( ((i+1) / ((float)files.size()))*100);                                                                        
-                    setProgress(percent);                
-
+                    if(!isDone()){
+                       setProgress(percent);                
+                    }
                 }
             }catch(Exception e){
                 e.printStackTrace();

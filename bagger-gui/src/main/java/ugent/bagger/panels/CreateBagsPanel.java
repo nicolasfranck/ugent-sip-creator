@@ -249,7 +249,9 @@ public final class CreateBagsPanel extends JPanel{
                         });
                         errors.add(error);
                         addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
-                        setProgress(percent);
+                        if(!isDone()){
+                            setProgress(percent);                
+                        }
                         continue;
                     }
                     
@@ -292,7 +294,9 @@ public final class CreateBagsPanel extends JPanel{
                     }                    
                     if(!ok){
                         addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
-                        setProgress(percent);
+                        if(!isDone()){
+                            setProgress(percent);                
+                        }
                         continue;
                     }
                     
@@ -313,7 +317,9 @@ public final class CreateBagsPanel extends JPanel{
                             e.printStackTrace(); 
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
-                            setProgress(percent);
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
                             continue;
                         }                        
                     }
@@ -361,7 +367,9 @@ public final class CreateBagsPanel extends JPanel{
                             e.printStackTrace();
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
-                            setProgress(percent);
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
                             continue;
                         }
                     }
@@ -387,7 +395,9 @@ public final class CreateBagsPanel extends JPanel{
                         );
                     }
                     
-                    setProgress(percent);
+                    if(!isDone()){
+                        setProgress(percent);                
+                    }
                     
                     addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                 }
@@ -494,7 +504,9 @@ public final class CreateBagsPanel extends JPanel{
                     }
                     if(!ok){
                         addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
-                        setProgress(percent);
+                        if(!isDone()){
+                            setProgress(percent);                
+                        }
                         continue;
                     }
                     
@@ -515,7 +527,9 @@ public final class CreateBagsPanel extends JPanel{
                             e.printStackTrace();
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
-                            setProgress(percent);
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
                             continue;
                         }                        
                     }
@@ -564,7 +578,9 @@ public final class CreateBagsPanel extends JPanel{
                             e.printStackTrace();
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
-                            setProgress(percent);
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
                             continue;
                         }
                     }
@@ -585,12 +601,16 @@ public final class CreateBagsPanel extends JPanel{
                         SwingUtils.ShowError(null,message);
                         log(message);  
                         addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
-                        setProgress(percent);
+                        if(!isDone()){
+                            setProgress(percent);                
+                        }
                         continue;
                     }                                   
                     
                     addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
-                    setProgress(percent);                     
+                    if(!isDone()){
+                        setProgress(percent);                
+                    }                  
                 }
                 
             }catch(Exception e){
