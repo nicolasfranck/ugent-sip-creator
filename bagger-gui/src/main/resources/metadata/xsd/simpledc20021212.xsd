@@ -23,9 +23,7 @@
     </xs:documentation>
   </xs:annotation>
 
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
-             schemaLocation="http://www.w3.org/2001/03/xml.xsd">
-  </xs:import>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="metadata/xsd/xml.xsd"></xs:import>
 
   <xs:element name="title" type="elementType"/>
   <xs:element name="creator" type="elementType"/>

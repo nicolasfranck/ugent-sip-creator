@@ -10,7 +10,7 @@ import ugent.bagger.helper.MetsUtils;
  */
 public class BagInfoImportParams {
     private ArrayList<File>files;
-    private String bagInfoConverter;
+    private VelocityTemplate template;
 
     public ArrayList<File> getFiles() {
         if(files == null){
@@ -21,16 +21,13 @@ public class BagInfoImportParams {
     public void setFiles(ArrayList<File> files) {
         this.files = files;
     }
-
-    public String getBagInfoConverter() {
-        if(bagInfoConverter == null){
-            if(MetsUtils.getBagInfoImporters().size() > 0){
-                bagInfoConverter = MetsUtils.getBagInfoImporters().keySet().iterator().next();
-            }
+    public VelocityTemplate getTemplate() {
+        if(template == null){
+            template = MetsUtils.getBaginfoTemplates().get(0);
         }
-        return bagInfoConverter;
+        return template;
     }
-    public void setBagInfoConverter(String bagInfoConverter) {
-        this.bagInfoConverter = bagInfoConverter;
-    }     
+    public void setTemplate(VelocityTemplate template) {
+        this.template = template;
+    }  
 }

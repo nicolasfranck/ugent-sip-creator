@@ -6,6 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,9 +19,10 @@ import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.MetsUtils;
+import ugent.bagger.helper.NameValueUtils;
 import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.importers.Importer;
 import ugent.bagger.params.BagInfoImportParams;
+import ugent.bagger.params.VelocityTemplate;
 import ugent.bagger.workers.DefaultWorker;
 /**
  *
@@ -55,19 +57,19 @@ public class BagInfoImportWizard extends AbstractWizard{
             bagInfoImportWizardPage1.getBagInfoImportForm().commit();
             BagInfoImportParams bagInfoImportParams = bagInfoImportWizardPage1.getBagInfoImportParams();
             
-            Importer importer = Class.forName(
-                MetsUtils.getBagInfoImporters().get(bagInfoImportParams.getBagInfoConverter())                
-            ).asSubclass(Importer.class).newInstance();                        
+            VelocityTemplate template = bagInfoImportParams.getTemplate(); 
+            InputStream templateIS = Context.getResourceAsStream(template.getPath());
 
-            if(importer != null){
+            if(template != null){
                 ArrayList<File>files = bagInfoImportParams.getFiles();
                 int numSuccess = 0;
                 int numErrors = 0;
                 
                 for(int i = 0;i < files.size();i++){
                     File file = files.get(i);
-                    Document doc = importer.performImport(file);
-                    try{                        
+                    try{                   
+                        HashMap<String,ArrayList<String>>map = NameValueUtils.readMap(file);
+                        Document doc = NameValueUtils.templateToDocument(template,map);
                         MdSec mdSec = MetsUtils.createMdSec(doc,false);                        
                         BagInfoImportWizard.this.firePropertyChange("addMdSec",mdSec,mdSec);
                         numSuccess++;

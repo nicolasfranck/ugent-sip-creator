@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -33,6 +34,7 @@ import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.MdRefException;
 import ugent.bagger.exceptions.NoNamespaceException;
+import ugent.bagger.params.VelocityTemplate;
 
 /**
  *
@@ -53,7 +55,8 @@ public class MetsUtils {
     private static Log log = LogFactory.getLog(MetsUtils.class);
     public static final String NAMESPACE_DC = "http://purl.org/dc/elements/1.1/";
     public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/"; 
-    public static HashMap<String,String>bagInfoImporters;
+    //public static HashMap<String,String>bagInfoImporters;
+    public static ArrayList<VelocityTemplate>baginfoTemplates;
 
     public static HashMap<String, String> getXsltMap() {
         if(xsltMap == null){
@@ -464,13 +467,26 @@ public class MetsUtils {
         XSLT.transform(doc,xsltDoc,baginfoOut);                
         return baginfoOut.toByteArray();
     } 
-
+    /*
     public static HashMap<String, String> getBagInfoImporters() {
         if(bagInfoImporters == null){
             bagInfoImporters = (HashMap<String,String>) Beans.getBean("bagInfoImporters");
             bagInfoImporters = bagInfoImporters != null ? bagInfoImporters: new HashMap<String,String>();
         }
         return bagInfoImporters;
-    }    
+    }*/
+
+    public static ArrayList<VelocityTemplate> getBaginfoTemplates() {
+        if(baginfoTemplates == null){
+            baginfoTemplates = new ArrayList<VelocityTemplate>();            
+            HashMap<String,HashMap<String,String>>config = (HashMap<String,HashMap<String,String>>) Beans.getBean("baginfoTemplates");            
+            for(Map.Entry<String,HashMap<String,String>> entry:config.entrySet()){
+                HashMap<String,String> value = entry.getValue();
+                baginfoTemplates.add(new VelocityTemplate(value.get("name"),value.get("path"),value.get("xsd")));
+            }
+        }
+        return baginfoTemplates;
+    }
+    
     
 }

@@ -58,8 +58,11 @@ public class BagInfoImportForm extends AbstractForm{
         builder.add(fileSelectBinding);        
         builder.row();       
         
-        Binding bagInfoConverterBinding = bf.createBoundComboBox("bagInfoConverter",MetsUtils.getBagInfoImporters().keySet().toArray(new String [] {}));        
-        builder.add(bagInfoConverterBinding);
+        Binding baginfoTemplateBinding = bf.createBoundComboBox(
+            "template",
+            MetsUtils.getBaginfoTemplates()
+        );        
+        builder.add(baginfoTemplateBinding);
         builder.row();
        
         return builder.getForm();

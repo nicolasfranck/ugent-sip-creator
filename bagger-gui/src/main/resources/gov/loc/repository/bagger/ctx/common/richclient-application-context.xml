@@ -415,7 +415,7 @@
                 <entry key="versionable" value="false"/>
                 <entry key="versions">
                     <util:map>
-                        <entry key="default" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
+                        <entry key="default" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />                        
                     </util:map>
                 </entry>
             </util:map>
@@ -666,14 +666,25 @@
             <util:map map-class="java.util.HashMap">
                 <entry key="name" value="EAD (volgens AMVB)" />
                 <entry key="path" value="velocity/ead-amvb.vm" />
-                <entry key="xsd" value="metadata/xsd/premis/premis-2-2.xsd" />
+                <entry key="xsd" value="metadata/xsd/ead.xsd" />
             </util:map>    
         </entry>
-    </util:map>    
-    
-    <util:map id="bagInfoImporters" map-class="java.util.HashMap">
-        <entry key="Dublin Core" value="ugent.bagger.importers.NameValueToDCImporter" />   
-        <entry key="Dublin Core (OAI)" value="ugent.bagger.importers.NameValueToOAIDCImporter" />
+    </util:map>        
+    <util:map map-class="java.util.HashMap" id="baginfoTemplates">        
+        <entry key="oai-dc">
+            <util:map map-class="java.util.HashMap">
+                <entry key="name" value="Dublin Core (OAI)" />
+                <entry key="path" value="velocity/baginfo-oai-dc.vm" />
+                <entry key="xsd" value="http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />
+            </util:map>    
+        </entry>
+        <entry key="dc">
+            <util:map map-class="java.util.HashMap">
+                <entry key="name" value="Dublin Core" />
+                <entry key="path" value="velocity/baginfo-dc.vm" />
+                <entry key="xsd" value="metadata/xsd/dc.xsd" />
+            </util:map>    
+        </entry>
     </util:map>
     
     <util:map id="renameParamsTemplates" map-class="java.util.HashMap" key-type="java.lang.String" value-type="ugent.bagger.params.RenameParams">

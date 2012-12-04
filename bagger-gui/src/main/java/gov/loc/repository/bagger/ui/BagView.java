@@ -583,6 +583,7 @@ public class BagView extends DefaultView {
                 dialog.setVisible(true);
             }
         });
+        /*
         context.register("testCommand",new AbstractActionCommandExecutor(){
             {
                 setEnabled(true);
@@ -608,6 +609,7 @@ public class BagView extends DefaultView {
                 }
             }
         });
+        */
                
     }
     
