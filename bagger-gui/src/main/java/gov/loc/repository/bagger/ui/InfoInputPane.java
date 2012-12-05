@@ -19,7 +19,7 @@ import ugent.bagger.panels.MdSecPanel;
 
 public final class InfoInputPane extends JTabbedPane {
     private static final long serialVersionUID = 1L;
-    private static final Log logger = LogFactory.getLog(InfoInputPane.class);    
+    private static final Log log = LogFactory.getLog(InfoInputPane.class);    
     private BagInfoForm bagInfoForm;    
     private HierarchicalFormModel infoFormModel;    
     private Mets mets;
@@ -42,13 +42,12 @@ public final class InfoInputPane extends JTabbedPane {
         this.metsPanel = metsPanel;
     }    
     public Mets getMets() {
-        if(mets == null){
-            System.out.println("setting mets!");
+        if(mets == null){            
             mets = new Mets();
             try{
                 PremisUtils.setPremis(mets);
             }catch(Exception e){
-                e.printStackTrace();
+                log.debug(e);                
             }            
         }
         return mets;
@@ -108,7 +107,7 @@ public final class InfoInputPane extends JTabbedPane {
                     invalidate();
                     repaint();
                 }catch (Exception e){
-                    logger.error(e);                    
+                    log.error(e);                    
                 }
             }
         });

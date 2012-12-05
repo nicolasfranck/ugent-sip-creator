@@ -74,7 +74,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             
             PremisEvent ev = new PremisEvent();            
             PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
-            evid.setEventIdentifierType("dateTime");
+            evid.setEventIdentifierType("UUID");
             evid.setEventIdentifierValue(eventID);
             ev.setEventIdentifier(evid);
             ev.setXmlID(eventID);            

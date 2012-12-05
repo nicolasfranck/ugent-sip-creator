@@ -22,6 +22,7 @@
         <value>validateBagsCommand</value>
         <value>validateManifestCommand</value>
         <value>testCommand</value>
+        <value>renameCommand</value>
        </list>
     </property>
   </bean>
@@ -31,6 +32,7 @@
       <list>
         <ref bean="fileMenu" />
         <ref bean="showViewMenu" />
+        <ref bean="renameMenu" />
         <ref bean="helpMenu" />
       </list>
     </property>
@@ -52,13 +54,12 @@
     <property name="members">
       <list>
         <value>startCommand</value>
-        <value>openCommand</value>        
-        <value>createBagsCommand</value>
+        <value>openCommand</value>                
+        <value>saveBagCommand</value>
+        <value>saveBagAsCommand</value>
         <value>validateCommand</value>
         <value>completeCommand</value>
         <value>clearCommand</value>
-        <value>saveBagCommand</value>
-        <value>saveBagAsCommand</value>             
         <value>testCommand</value>             
       </list>
     </property>
@@ -97,5 +98,12 @@
   </bean>  
   <bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu"/>            
   
+  <bean id="renameMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
+      <property name="members">
+          <list>
+              <value>renameCommand</value>
+          </list>              
+      </property>
+  </bean>
 
 </beans>

@@ -566,50 +566,21 @@ public class BagView extends DefaultView {
     	context.register("saveBagCommand", saveBagExecutor);
     	context.register("saveBagAsCommand", saveBagAsExecutor);
         
-        context.register("validateBagsCommand",new ValidateBagsExecutor(){
-            {
-                setEnabled(true);
-            }
-        });    
-        context.register("validateManifestCommand",new AbstractActionCommandExecutor(){
-            {
-                setEnabled(true);
-            }
-            @Override
-            public void execute(){
-                ValidateManifestDialog dialog = new ValidateManifestDialog(SwingUtils.getFrame(),true);
-                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
-                dialog.pack();
-                dialog.setVisible(true);
-            }
-        });
-        /*
-        context.register("testCommand",new AbstractActionCommandExecutor(){
-            {
-                setEnabled(true);
-            }
-            @Override
-            public void execute(){                
-                ArrayList<File>files = new ArrayList<File>();
-                for(File file:new File("/home/nicolas/bags").listFiles()){
-                    files.add(file);
-                }
-                BagitMetsValidator validator = new BagitMetsValidator();
-                for(File file:files){
-                    try{
-                        ArrayList<BagitMetsValidationException>warnings = validator.validate(file);
-                        System.out.println("warnings.size = "+warnings.size());
-                        System.out.println("warnings: ");
-                        for(BagitMetsValidationException warning:warnings){
-                            System.out.println(warning);
-                        }
-                    }catch(BagitMetsValidationException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        */
+        ValidateBagsExecutor validateBagsExecutor = new ValidateBagsExecutor();
+        validateBagsExecutor.setEnabled(true);
+        context.register("validateBagsCommand",validateBagsExecutor);    
+        
+        ValidateManifestExecutor validateManifestExecutor = new ValidateManifestExecutor();
+        validateManifestExecutor.setEnabled(true);
+        context.register("validateManifestCommand",validateManifestExecutor);
+        
+        ExportExecutor exportExecutor = new ExportExecutor();
+        exportExecutor.setEnabled(true);
+        context.register("testCommand",exportExecutor);
+        
+        RenameExecutor renameExecutor = new RenameExecutor();
+        renameExecutor.setEnabled(true);
+        context.register("renameCommand",renameExecutor);
                
     }
     

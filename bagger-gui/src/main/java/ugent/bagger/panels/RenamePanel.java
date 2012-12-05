@@ -92,13 +92,29 @@ public class RenamePanel extends JPanel{
     private JPanel panelFileTable;
     private ArrayList<File>selectedFiles = new ArrayList<File>();
     private HashMap<String,RenameParams>renameParamsTemplates;
+    private ArrayList<File>forbiddenFiles;
 
+    public ArrayList<File> getForbiddenFiles() {
+        if(forbiddenFiles == null){
+            forbiddenFiles = new ArrayList<File>();
+        }
+        return forbiddenFiles;
+    }
+    public void setForbiddenFiles(ArrayList<File> forbiddenFiles) {
+        this.forbiddenFiles = forbiddenFiles;
+    }
+    public void setStatusMessage(String message){
+        firePropertyChange("statusMessage",null,message);
+    }
+    public void setStatusError(String error){
+        firePropertyChange("statusError",null,error);
+    }
     public HashMap<String, RenameParams> getRenameParamsTemplates() {
         if(renameParamsTemplates == null){
             renameParamsTemplates = (HashMap<String,RenameParams>) Beans.getBean("renameParamsTemplates");
         }
         return renameParamsTemplates;
-    }
+    }    
     public static ArrayList<AbstractFile>getList(File file){
         
         ArrayList<File>files = new ArrayList<File>();                        
@@ -202,14 +218,9 @@ public class RenamePanel extends JPanel{
     }
     public RenamePanel(){
         setLayout(new BorderLayout());
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                SwingUtils.ShowBusy();
-                init();
-                SwingUtils.ShowDone();
-            }        
-        });        
+        SwingUtils.ShowBusy();
+        init();
+        SwingUtils.ShowDone();             
     } 
     public LazyTreeNode getFileSystemTreeNode() {
         if(fileSystemTreeNode == null){
@@ -279,41 +290,50 @@ public class RenamePanel extends JPanel{
                         fileSystemTree.collapseRow(fileSystemTree.getRowForLocation(e.getX(),e.getY()));
                     }
                 } 
-            });
+            });            
             fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
                 @Override
                 public void treeWillExpand(TreeExpansionEvent tee) throws ExpandVetoException {                    
                     
-                    SwingUtils.StatusErrorMessage(null);
-                    SwingUtils.StatusMessage(null);
+                    setStatusError(null);                    
                     
                     TreePath tpath = tee.getPath();
                     LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
                     FileNode fileNode = (FileNode) node.getUserObject();
                     File file = fileNode.getFile();                
+                    
+                    boolean doEnable = file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file);
+                    
                     if(file.isDirectory()){                    
                         if(!file.canRead()){
                             String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
                                 file.getAbsolutePath()
                             });
                             SwingUtils.ShowError(null,error);
-                            SwingUtils.StatusErrorMessage(error);
+                            setStatusError(error);
                             
                             setLastFile(file);
                             reloadFileTable(file);
                                     
                             throw new ExpandVetoException(tee);
                         }else if(!file.canWrite()){
-                            SwingUtils.StatusErrorMessage(
+                            setStatusError(
                                 Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
                                     file.getAbsolutePath()
                                 })    
-                            );                           
+                            );
+                        }else if(getForbiddenFiles().contains(file)){
+                            String error =  Context.getMessage("RenamePanel.error.forbidden",new String [] {
+                                file.getAbsolutePath()
+                            });
+                            setStatusError(error);
+                            SwingUtils.ShowError(null,error);
+                            throw new ExpandVetoException(tee);
                         }else{                            
-                            SwingUtils.StatusMessage(file.getAbsolutePath());
+                            setStatusMessage(file.getAbsolutePath());
                         }
                     }                             
-                    setFormsEnabled(file.isDirectory() && file.canWrite());                                        
+                    setFormsEnabled(doEnable);                                        
                 }
                 @Override
                 public void treeWillCollapse(TreeExpansionEvent tee) throws ExpandVetoException {             
@@ -329,7 +349,7 @@ public class RenamePanel extends JPanel{
                     if(file.isDirectory()){
                         setLastFile(file);
                         reloadFileTable(file);                        
-                        setFormsEnabled(file.isDirectory() && file.canWrite());                        
+                        setFormsEnabled(file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file));                        
                     }                   
                 }
             });           
@@ -746,8 +766,8 @@ public class RenamePanel extends JPanel{
         @Override
         protected Void doInBackground(){
             clearResultTable();         
-            SwingUtils.StatusErrorMessage(null);
-            SwingUtils.StatusMessage(null);
+            setStatusError(null);
+            
             
             numRenamedSuccess = 0;
             numRenamedError = 0;
@@ -849,8 +869,8 @@ public class RenamePanel extends JPanel{
         protected Void doInBackground(){
             clearResultTable();
            
-            SwingUtils.StatusErrorMessage(null);
-            SwingUtils.StatusMessage(null);
+            setStatusError(null);
+            
             numRenamedSuccess = 0;
             numRenamedError = 0;
                         

@@ -169,9 +169,10 @@
         <property name="interceptorFactories">
             <list>                
                 <bean class="org.springframework.richclient.form.builder.support.ColorValidationInterceptorFactory">
-                    <property name="errorColor" value="255,245,245" />
+                    <property name="errorColor" value="237,166,166" />                    
                 </bean>
-                <!--<bean class="org.springframework.richclient.form.builder.support.OverlayValidationInterceptorFactory" />-->               
+                <bean class="org.springframework.richclient.form.builder.support.ShowCaptionInStatusBarInterceptorFactory" />
+                <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />                
                 <bean class="org.springframework.richclient.text.TextComponentPopupInterceptorFactory" />               
                 <bean class="org.springframework.richclient.list.ComboBoxAutoCompletionInterceptorFactory" />
             </list>
@@ -204,9 +205,11 @@
         <property name="viewClass" value="gov.loc.repository.bagger.ui.ConsoleView" />                       
     </bean>
     
+    <!--
     <bean id="renameView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
         <property name="viewClass" value="ugent.bagger.views.RenameView" />                       
     </bean>
+    -->
     
     
  
@@ -717,5 +720,22 @@
             </util:map>
         </entry>    
     </util:map>
+    <util:list id="baginfoStandardFields">
+        <value>DC-Title</value>
+        <value>DC-Subject</value>
+        <value>DC-Description</value>
+        <value>DC-Type</value>
+        <value>DC-Source</value>
+        <value>DC-Relation</value>
+        <value>DC-Coverage</value>
+        <value>DC-Creator</value>
+        <value>DC-Publisher</value>
+        <value>DC-Contributor</value>
+        <value>DC-Rights</value>
+        <value>DC-Date</value>
+        <value>DC-Format</value>
+        <value>DC-Identifier</value>
+        <value>DC-Language</value>        
+    </util:list>
     
 </beans>

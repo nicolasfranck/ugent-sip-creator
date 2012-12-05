@@ -2,13 +2,13 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -34,8 +34,7 @@ public final class BagInfoForm extends AbstractForm {
         if(fieldsScrollPane == null){
             fieldsScrollPane = new JScrollPane(getFieldsPanel());
             fieldsScrollPane.getViewport().setOpaque(false);
-            fieldsScrollPane.setWheelScrollingEnabled(true);   
-            //fieldsScrollPane.setBorder(BorderFactory.createLineBorder(Color.RED));
+            fieldsScrollPane.setWheelScrollingEnabled(true);               
             fieldsScrollPane.setPreferredSize(new Dimension(FORM_WIDTH,500));
             fieldsScrollPane.setMaximumSize(new Dimension(FORM_WIDTH,500));
             fieldsScrollPane.setAlignmentX(Container.LEFT_ALIGNMENT);
@@ -61,7 +60,7 @@ public final class BagInfoForm extends AbstractForm {
     	super(formModel,INFO_FORM_PAGE);        
         setFieldMap(fieldMap);
     }   
-    public HashMap<String,ArrayList<String>> getFieldMap() {        
+    public HashMap<String,ArrayList<String>> getFieldMap() {                
         return fieldMap;
     }
     public void setFieldMap(HashMap<String,ArrayList<String>> fieldMap) {
@@ -75,8 +74,7 @@ public final class BagInfoForm extends AbstractForm {
     }
     public JComponent getFieldsPanel() {
         if(fieldsPanel == null){
-            fieldsPanel = createFormFields();     
-            //fieldsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            fieldsPanel = createFormFields();                 
         }
         return fieldsPanel;
     }
@@ -112,8 +110,7 @@ public final class BagInfoForm extends AbstractForm {
     protected JComponent createFormControl() {        
         return getContentPanel();
     }
-    public void resetFields(){   
-        
+    public void resetFields(){           
         getContentPanel().remove(getFieldsScrollPane());
         setFieldsScrollPane(null);
         setFieldsPanel(null);
@@ -128,7 +125,15 @@ public final class BagInfoForm extends AbstractForm {
         final int index = 2;
         
         formBuilder.row();
-        if (fieldMap != null && !fieldMap.isEmpty()){
+        if(fieldMap != null && fieldMap.isEmpty()){
+            ArrayList<String>fields = getAddFieldPanel().getStandardFields();
+            for(String field:fields){
+                String [] values = {""};
+                fieldMap.put(field,(ArrayList<String>)Arrays.asList(values));
+            }
+        }
+        
+        if(fieldMap != null && !fieldMap.isEmpty()){
             Set<String> keys = fieldMap.keySet();
             if (keys != null){
                 for(Iterator<String> iter = keys.iterator();iter.hasNext();){

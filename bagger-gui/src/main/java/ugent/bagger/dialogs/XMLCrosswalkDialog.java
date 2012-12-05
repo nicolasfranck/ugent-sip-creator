@@ -1,6 +1,7 @@
 package ugent.bagger.dialogs;
 
 import com.anearalone.mets.MdSec;
+import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
@@ -42,6 +45,9 @@ public final class XMLCrosswalkDialog extends JDialog{
         getContentPane().add(createContentPane());
         setTitle(Context.getMessage("XMLCrosswalkDialog.title"));
     }
+    public void log(String message){
+        ApplicationContextUtil.addConsoleMessage(message);
+    }
     public JComponent createContentPane(){
         
         JPanel mainPanel = new JPanel();        
@@ -64,12 +70,15 @@ public final class XMLCrosswalkDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 
+                XMLCrosswalkDialog.this.setVisible(false);
+                
                 if(file == null || transformFromNamespace == null || transformToNamespace == null){
                     return;
                 }
                 
                 SwingUtils.ShowBusy();
                 
+                String error = null;
                 try{
                     
                     Document sourceDoc = XML.XMLToDocument(file);                                    
@@ -79,12 +88,71 @@ public final class XMLCrosswalkDialog extends JDialog{
                     MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                                         
                     XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
                   
-                }catch(Exception e){              
-                    JOptionPane.showMessageDialog(null,e.getMessage());
-                    e.printStackTrace();
+                }catch(ParserConfigurationException e){
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.ParserConfigurationException.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n";
+                }catch(SAXException e){
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.SAXException.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n";
+                }catch(IOException e){                    
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.IOException.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n"; 
+                }catch(TransformerConfigurationException e){
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n";
+                }catch(TransformerException e){
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.TransformerException.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n";
+                }catch(NoNamespaceException e){
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.NoNamespaceException.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n";
+                }catch(IllegalNamespaceException e){
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n";
+                }catch(Exception e){
+                    error = Context.getMessage(
+                        "XMLCrosswalkDialog.transform.Exception.description",
+                        new Object []{
+                            file,e.getMessage()
+                        }
+                    )+"\n";
                 }
                 
-                XMLCrosswalkDialog.this.dispose();                
+                if(error != null){
+                    SwingUtils.ShowError(Context.getMessage("XMLCrosswalkDialog.Exception.title"),error);
+                    log(error);
+                }
+                
+                XMLCrosswalkDialog.this.dispose();
+                
                 SwingUtils.ShowDone();                
             }            
         });
@@ -174,7 +242,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
-                                "XMLCrosswalkDialog.ParserConfigurationException.description",
+                                "XMLCrosswalkDialog.import.ParserConfigurationException.description",
                                 new Object [] {selectedFiles[0],ex.getMessage()}
                             )
                         );
@@ -182,7 +250,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
-                                "XMLCrosswalkDialog.SAXException.description",
+                                "XMLCrosswalkDialog.import.SAXException.description",
                                 new Object [] {selectedFiles[0],ex.getMessage()}
                             )
                         );
@@ -190,7 +258,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
-                                "XMLCrosswalkDialog.IOException.description",
+                                "XMLCrosswalkDialog.import.IOException.description",
                                 new Object [] {selectedFiles[0],ex.getMessage()}
                             )
                         );
@@ -198,7 +266,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
-                                "XMLCrosswalkDialog.NoNamespaceException.description",
+                                "XMLCrosswalkDialog.import.NoNamespaceException.description",
                                 new Object [] {selectedFiles[0]}
                             )
                         );                                             
@@ -206,7 +274,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
-                                "XMLCrosswalkDialog.IllegalNamespaceException.description",
+                                "XMLCrosswalkDialog.import.IllegalNamespaceException.description",
                                 new Object [] {selectedFiles[0],transformFromNamespace}
                             )
                         );
@@ -214,7 +282,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
-                                "XMLCrosswalkDialog.NoTransformationFoundException.description",
+                                "XMLCrosswalkDialog.import.NoTransformationFoundException.description",
                                 new Object [] {selectedFiles[0]}
                             )
                         );

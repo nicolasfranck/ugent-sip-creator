@@ -35,11 +35,13 @@ import ugent.premis.PremisObject;
 public class BagitMetsValidator {    
     public ArrayList<BagitMetsValidationException> validate(File file) throws BagitMetsValidationException{
         ArrayList<BagitMetsValidationException>warnings = new ArrayList<BagitMetsValidationException>();
+        
         //directory?
         if(!file.isDirectory()){
             throw new BagitMetsValidationException(RESULT.BAGIT_NOT_DIRECTORY,file+" is not a directory");
-        }
+        }        
         System.out.println("file "+file+" is directory");
+        
         //all files readable?
         ArrayList<File>notReadableFiles = FUtils.getNotReadableFiles(file);
         if(!notReadableFiles.isEmpty()){
@@ -84,16 +86,16 @@ public class BagitMetsValidator {
                 throw new Exception();
             }
             
-            String schemaPath = MetsUtils.getSchemaPath(document);
+            //String schemaPath = MetsUtils.getSchemaPath(document);
            
             //String schemaPath = "file:///home/nicolas/Bagger-LC/bagger-gui/src/main/resources/metadata/xsd/mets/mets-1.9.xsd";
-            System.out.println("schemaPath: "+schemaPath);
+            /*System.out.println("schemaPath: "+schemaPath);
             URL schemaURL = Context.getResource(schemaPath);            
             System.out.println("schemaURL: "+schemaURL);
             Schema schema = XML.createSchema(schemaURL);                        
             System.out.println("schema created");
             XML.validate(document,schema);
-            System.out.println("validated against schema");
+            System.out.println("validated against schema");*/
             
             mets = new Mets();
             mets.unmarshal(document.getDocumentElement());

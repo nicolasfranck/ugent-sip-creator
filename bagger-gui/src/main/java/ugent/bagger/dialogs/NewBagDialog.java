@@ -32,6 +32,7 @@ public class NewBagDialog extends JDialog {
                 NewBagDialog.this.dispose();
             }
         });
+        setResizable(false);
         setContentPane(panel);
     }    
 }
