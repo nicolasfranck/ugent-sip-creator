@@ -10,6 +10,8 @@ import org.springframework.rules.support.DefaultRulesSource;
 import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.CreateBagsParams;
 import ugent.bagger.params.NewBagParams;
+import ugent.bagger.params.RenameParams;
+import ugent.bagger.params.RenumberParams;
 import ugent.bagger.params.ValidateManifestParams;
 
 
@@ -78,5 +80,15 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         };
         validateManifestParamsRules.add(value("files",filesConstraint));
         addRules(validateManifestParamsRules);
+        
+        //rename
+        Rules renameParamsRules = new Rules(RenameParams.class);
+        renameParamsRules.add(required("source"));
+        addRules(renameParamsRules);
+        
+        //renumber
+        Rules renumberParamsRules = new Rules(RenumberParams.class);
+        renumberParamsRules.add(required("source"));
+        addRules(renumberParamsRules);
     }     
 }

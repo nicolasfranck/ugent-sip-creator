@@ -261,8 +261,6 @@ public class BagView extends DefaultView {
     	getBagTagFileTreePanel().setBorder(border);
     	getBagTagFileTreePanel().setToolTipText(getMessage("bagTree.help"));
 
-    	//getTagManifestPane().setToolTipText(getMessage("compositePane.tab.help"));    	
-
         JSplitPane splitPane = new JSplitPane();
         splitPane.setResizeWeight(0.5);
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);

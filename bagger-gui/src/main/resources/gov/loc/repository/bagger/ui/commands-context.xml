@@ -60,7 +60,7 @@
         <value>validateCommand</value>
         <value>completeCommand</value>
         <value>clearCommand</value>
-        <value>testCommand</value>             
+        <!--<value>testCommand</value>-->
       </list>
     </property>
   </bean>
@@ -96,7 +96,7 @@
   <bean id="aboutCommand" class="org.springframework.richclient.command.support.AboutCommand">
     <property name="aboutTextPath" value="gov/loc/repository/bagger/about.txt" />
   </bean>  
-  <bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu"/>            
+  <!--<bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu"/>-->
   
   <bean id="renameMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
       <property name="members">

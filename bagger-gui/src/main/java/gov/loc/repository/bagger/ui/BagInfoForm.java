@@ -125,13 +125,7 @@ public final class BagInfoForm extends AbstractForm {
         final int index = 2;
         
         formBuilder.row();
-        if(fieldMap != null && fieldMap.isEmpty()){
-            ArrayList<String>fields = getAddFieldPanel().getStandardFields();
-            for(String field:fields){
-                String [] values = {""};
-                fieldMap.put(field,(ArrayList<String>)Arrays.asList(values));
-            }
-        }
+        
         
         if(fieldMap != null && !fieldMap.isEmpty()){
             Set<String> keys = fieldMap.keySet();
