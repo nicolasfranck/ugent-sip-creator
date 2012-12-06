@@ -69,8 +69,7 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
         listeners.get(key).add(l);
     }
     public void firePropertyChange(String key,Object oldValue,Object newValue){
-        if(listeners.containsKey(key)){
-            System.out.println("firePropertyChange for key '"+key+"', size list: "+listeners.get(key).size());
+        if(listeners.containsKey(key)){            
             PropertyChangeEvent event = new PropertyChangeEvent(this,key,oldValue,newValue);
             for(PropertyChangeListener l:listeners.get(key)){
                 l.propertyChange(event);

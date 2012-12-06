@@ -31,16 +31,20 @@ public class CSVWizard extends AbstractWizard {
     CSVWizardPage2 csv2WizardPage;
     HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
 
+    public CSVWizard(String wizardId){
+        super(wizardId);
+    }
+
     public CSVWizardPage1 getCsv1WizardPage() {
         if(csv1WizardPage == null){
-            csv1WizardPage = new CSVWizardPage1("page1");        
+            csv1WizardPage = new CSVWizardPage1("CSVWizardPage1");        
         }
         return csv1WizardPage;
     }    
 
     public CSVWizardPage2 getCsv2WizardPage() {
         if(csv2WizardPage == null){
-            csv2WizardPage = new CSVWizardPage2("page1");
+            csv2WizardPage = new CSVWizardPage2("CSVWizardPage2");
         }
         return csv2WizardPage;
     }

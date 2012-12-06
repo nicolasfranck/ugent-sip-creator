@@ -65,6 +65,7 @@ public final class InfoFormsPane extends JPanel {
     public JLabel getHoleyValue() {
         if(holeyValue == null){
             holeyValue = new JLabel("");
+            holeyValue.setVisible(false);
         }
         return holeyValue;
     }
@@ -95,6 +96,7 @@ public final class InfoFormsPane extends JPanel {
     public JLabel getSerializeValue() {
         if(serializeValue == null){
             serializeValue = new JLabel("");
+            serializeValue.setVisible(false);
         }
         return serializeValue;
     }
@@ -144,6 +146,7 @@ public final class InfoFormsPane extends JPanel {
     public JLabel getBagVersionValue() {
         if(bagVersionValue == null){
             bagVersionValue = new JLabel("");
+            bagVersionValue.setVisible(false);
         }
         return bagVersionValue;
     }
@@ -200,6 +203,7 @@ public final class InfoFormsPane extends JPanel {
         // bag version
         row++;
         JLabel bagVersionLabel = new JLabel(Context.getMessage("bag.label.version"));
+        bagVersionLabel.setVisible(false);
     	bagVersionLabel.setToolTipText(Context.getMessage("bag.versionlist.help"));
     	gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
@@ -212,6 +216,7 @@ public final class InfoFormsPane extends JPanel {
         // is Holey bag?
         row++;
         JLabel holeyLabel = new JLabel(Context.getMessage("bag.label.isholey"));
+        holeyLabel.setVisible(false);
         holeyLabel.setToolTipText(Context.getMessage("bag.isholey.help"));
     	gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);

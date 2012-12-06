@@ -207,8 +207,8 @@ public class SwingUtils {
     }
     public static HashMap<String,String> getUIManagerMessages(){
         if(uiManagerMessages == null){
-            try{
-                uiManagerMessages = new HashMap<String,String>();
+            uiManagerMessages = new HashMap<String, String>();
+            try{                
                 Properties props = new Properties();
                 props.load(Context.getResourceAsStream("gov/loc/repository/bagger/ui/manager.properties"));
                 Enumeration it = props.propertyNames();
@@ -219,9 +219,7 @@ public class SwingUtils {
             }catch(Exception e){                
                 log.debug(e);
             }
-            
         }
         return uiManagerMessages;
     }
-    
 }

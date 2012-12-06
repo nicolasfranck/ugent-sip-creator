@@ -130,17 +130,17 @@ public final class InfoInputPane extends JTabbedPane {
         
         //add tabs  
         addTab(
-            Context.getMessage("infoInputPane.baginfoTab.label"),  
-            null,
-            getBagInfoForm().getControl(),
-            Context.getMessage("infoInputPane.baginfoTab.tooltip")
-        );
-        addTab(
             Context.getMessage("infoInputPane.dmdSecTab.label"),
             null,
             getMdSecPanel(),
             Context.getMessage("infoInputPane.dmdSecTab.tooltip")
-        );                              
+        );  
+        addTab(
+            Context.getMessage("infoInputPane.baginfoTab.label"),  
+            null,
+            getBagInfoForm().getControl(),
+            Context.getMessage("infoInputPane.baginfoTab.tooltip")
+        );                                    
         addTab(
             Context.getMessage("infoInputPane.amdSecTab.label"),
             null,

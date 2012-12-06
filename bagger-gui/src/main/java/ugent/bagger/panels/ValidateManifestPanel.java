@@ -69,7 +69,7 @@ public class ValidateManifestPanel extends JPanel{
         }
         return validateManifestParamsForm;
     }
-    public JComponent createButtonPanel(){
+    public JComponent createButtonPanel(){        
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
         JButton okButton = new JButton(Context.getMessage("ok"));
@@ -80,7 +80,7 @@ public class ValidateManifestPanel extends JPanel{
             public void actionPerformed(ActionEvent ae) {
                 if(getValidateManifestParamsForm().hasErrors()){
                     return;                    
-                }   
+                }                   
                 getValidateManifestParamsForm().commit();
                 SwingUtils.monitor(
                     ValidateManifestPanel.this,
@@ -93,7 +93,7 @@ public class ValidateManifestPanel extends JPanel{
         });
         cancelButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent ae) {                
                 ValidateManifestPanel.this.firePropertyChange("cancel",null,null);
             }            
         });
@@ -147,8 +147,7 @@ public class ValidateManifestPanel extends JPanel{
             int i = 0;                        
             for(File manifestFile:getValidateManifestParams().getFiles()){
                 try{                    
-                    File baseDir = manifestFile.getParentFile();                    
-                    
+                    File baseDir = manifestFile.getParentFile();                                        
                     
                     ManifestReader manifestReader = bagPartFactory.createManifestReader(new FileInputStream(manifestFile),"UTF-8");
                     while(manifestReader.hasNext()){

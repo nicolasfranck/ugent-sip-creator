@@ -1,5 +1,6 @@
 package ugent.bagger.params;
 
+import gov.loc.repository.bagit.BagFactory;
 import java.io.File;
 import java.util.ArrayList;
 import ugent.bagger.bagitmets.MetsFileDateCreated;
@@ -10,8 +11,7 @@ import ugent.bagger.bagitmets.MetsFileDateCreated;
  */
 public class CreateBagsParams {
     private ArrayList<File>directories;
-    private String version;
-    //private String profile = "<no profile>";
+    private String version = BagFactory.Version.V0_96.versionString;    
     private boolean keepEmptyDirectories = false;
     private String metadataPaths = "";
     private String [] metadata;
@@ -86,14 +86,7 @@ public class CreateBagsParams {
     }
     public void setVersion(String version) {
         this.version = version;
-    }
-    /*
-    public String getProfile() {
-        return profile;
-    }
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }*/
+    }   
     public boolean isBagInPlace() {
         return bagInPlace;
     }

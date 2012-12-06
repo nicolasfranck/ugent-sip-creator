@@ -22,6 +22,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.apache.commons.logging.Log;
@@ -56,7 +57,26 @@ public final class CreateBagsPanel extends JPanel{
     private ArrayList<CreateBagResult>createBagResults;
     private ClassTable<CreateBagResult> createBagResultTable;
     private JButton okButton;
-    
+    JLabel labelStatistics;
+
+    public void reportStatistics(int total,int totalSuccess){
+        
+        getLabelStatistics().setText(
+            Context.getMessage(
+                "CreateBagsPanel.labelStatistics",
+                new Object [] {total,totalSuccess}
+            )
+        );
+    }
+    public JLabel getLabelStatistics() {
+        if(labelStatistics == null){
+            labelStatistics = new JLabel();
+        }
+        return labelStatistics;
+    }
+    public void setLabelStatistics(JLabel labelStatistics) {
+        this.labelStatistics = labelStatistics;
+    }
     public CreateBagsPanel(){ 
         setLayout(new BorderLayout());
         add(createContentPane());        
@@ -75,7 +95,9 @@ public final class CreateBagsPanel extends JPanel{
         panel.add(form);        
         
         JComponent buttonPanel = createButtonPanel();
-        panel.add(buttonPanel);     
+        panel.add(buttonPanel);
+        
+        panel.add(getLabelStatistics());
         
         JComponent table = getCreateBagResultTable().getControl();
         final Dimension tDimension = new Dimension(500,200);        
@@ -229,10 +251,13 @@ public final class CreateBagsPanel extends JPanel{
             MetsBag bag = bagView.getBag();
             
             try{ 
+                int totalSuccess = 0;
+                int total = getCreateBagsParams().getDirectories().size();
                
-                for(int i = 0; i< getCreateBagsParams().getDirectories().size();i++){                                
+                for(int i = 0; i< getCreateBagsParams().getDirectories().size();i++){                                                    
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
                     }
                     
@@ -255,8 +280,11 @@ public final class CreateBagsPanel extends JPanel{
                         continue;
                     }
                     
+                    
+                    
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
                     }
                     
@@ -298,10 +326,11 @@ public final class CreateBagsPanel extends JPanel{
                             setProgress(percent);                
                         }
                         continue;
-                    }
+                    }                    
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
                     }
                     
@@ -322,10 +351,11 @@ public final class CreateBagsPanel extends JPanel{
                             }
                             continue;
                         }                        
-                    }
+                    }                    
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
                     }
                     
@@ -372,10 +402,11 @@ public final class CreateBagsPanel extends JPanel{
                             }
                             continue;
                         }
-                    }
+                    }                    
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
                     }                    
                     
@@ -399,8 +430,11 @@ public final class CreateBagsPanel extends JPanel{
                         setProgress(percent);                
                     }
                     
+                    totalSuccess++;
+                    
+                    reportStatistics(total,totalSuccess);
                     addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
-                }
+                }                
                 
             }catch(Exception e){  
                 e.printStackTrace(); 
@@ -427,13 +461,16 @@ public final class CreateBagsPanel extends JPanel{
             //ledig payloads en tags (anders hoopt alles zich in de opeenvolgende bags..)           
             
             try{
+                int total = getCreateBagsParams().getDirectories().size();
+                int totalSuccess = 0;
                 
                 for(int i = 0; i< getCreateBagsParams().getDirectories().size();i++){
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
-                    }
+                    }                    
                     
                     int percent = (int)Math.floor( ((i+1) / ((float)getCreateBagsParams().getDirectories().size()))*100);                                                                        
                     
@@ -466,8 +503,9 @@ public final class CreateBagsPanel extends JPanel{
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
-                    }
+                    }                    
                     
                     //zoek metadata bestanden (todo: haal die uit payload lijst)
                     boolean ok = false;
@@ -512,8 +550,9 @@ public final class CreateBagsPanel extends JPanel{
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
-                    }
+                    }                    
                     
                     //voeg dc toe indien nodig, en mogelijk
                     if(getCreateBagsParams().isAddDC()){
@@ -536,8 +575,9 @@ public final class CreateBagsPanel extends JPanel{
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
-                    }
+                    }                    
                     
                     //schrijf naar bag-info
                     if(getCreateBagsParams().isWriteToBagInfo()){
@@ -587,8 +627,11 @@ public final class CreateBagsPanel extends JPanel{
                     
                     //regular check
                     if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
                         break;
                     }
+                    
+                    reportStatistics(total,totalSuccess);
                     
                     bag.setBagItMets(new DefaultBagItMets());
                     
@@ -607,11 +650,14 @@ public final class CreateBagsPanel extends JPanel{
                         continue;
                     }                                   
                     
+                    totalSuccess++;
+                    
+                    reportStatistics(total,totalSuccess);                    
                     addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                     if(!isDone()){
                         setProgress(percent);                
                     }                  
-                }
+                }                
                 
             }catch(Exception e){
                 e.printStackTrace(); 

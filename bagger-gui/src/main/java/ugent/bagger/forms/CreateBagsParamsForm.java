@@ -12,6 +12,8 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import org.springframework.binding.form.FormModel;
+import org.springframework.binding.validation.ValidationListener;
+import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
@@ -58,23 +60,14 @@ public class CreateBagsParamsForm extends AbstractForm{
         builder.row();
 
         //version
-        ArrayList<String> versionModel = new ArrayList<String>();                
+        /*ArrayList<String> versionModel = new ArrayList<String>();                
         for(BagFactory.Version version:BagFactory.Version.values()){
             versionModel.add(version.versionString);
         }
         Binding versionBinding = bf.createBoundComboBox("version",versionModel.toArray());
-        final JComboBox versionComboBox = ((JComboBox)versionBinding.getControl());
-        
+        final JComboBox versionComboBox = ((JComboBox)versionBinding.getControl());        
         builder.add(versionBinding);
-        builder.row();
-        
-        
-        //profile
-        /*String [] profileNames = BagView.getInstance().getProfileStore().getProfileNames();
-        Binding profileBinding = bf.createBoundComboBox("profile",profileNames);
-        final JComboBox profileComboBox = ((JComboBox)profileBinding.getControl());
-        builder.add(profileBinding);
-        builder.row();*/
+        builder.row();*/     
         
         for(String key:new String [] {"metadataPaths","keepMetadata","addDC","writeToBagInfo"}){
             builder.add(key);
@@ -116,11 +109,26 @@ public class CreateBagsParamsForm extends AbstractForm{
                 
                 boolean success = false;
                 if(list.isEmpty()){
-                    SwingUtils.ShowError("","Gelieve een map te selecteren");
+                    SwingUtils.ShowError(
+                        Context.getMessage("createBagsParamsForm.error.title"),
+                        Context.getMessage("createBagsParamsForm.error.selectoutputDir")                        
+                    );
                 }else if(!list.get(0).canWrite()){
-                    SwingUtils.ShowError("","Systeem kan niet schrijven naar "+list.get(0).getAbsolutePath());
+                    SwingUtils.ShowError(
+                        Context.getMessage("createBagsParamsForm.error.title"),
+                        Context.getMessage(
+                            "createBagsParamsForm.error.outputDirNotWritable",
+                            new Object [] {list.get(0).getAbsolutePath()}
+                        )
+                    );
                 }else if(list.get(0).listFiles().length > 0){
-                    SwingUtils.ShowError("",list.get(0).getAbsolutePath()+" moet leeg zijn");
+                    SwingUtils.ShowError(
+                        Context.getMessage("CreateBagsParamsForm.error.title"),
+                        Context.getMessage(
+                            "createBagsParamsForm.error.outputDirNotEmpty",
+                            new Object [] {list.get(0).getAbsolutePath()}
+                        )                        
+                    );
                 }else{                
                     success = true;
                 }                
@@ -133,17 +141,10 @@ public class CreateBagsParamsForm extends AbstractForm{
         
         getValueModel("metadataPaths").addValueChangeListener(new PropertyChangeListener(){
             @Override
-            public void propertyChange(PropertyChangeEvent pce) {                
+            public void propertyChange(PropertyChangeEvent pce) {                   
                 getValueModel("metadata").setValue(parseMetadataPaths((String) pce.getNewValue()));
             }            
-        });
-        
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                versionComboBox.setSelectedItem(BagFactory.Version.V0_96.versionString);                
-            }            
-        });
+        });        
         
         return builder.getForm();
     }

@@ -192,13 +192,7 @@
     </bean>  
  
     <bean id="bagView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
-        <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView"/>                                
-        <property name="viewProperties">
-        <map>
-            <!--<entry key="bagger" value-ref="bagger" />
-            <entry key="profileStore" value-ref="profiles" />-->
-        </map>
-        </property>
+        <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView"/>                                        
     </bean>
     
     <bean id="consoleView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
@@ -737,5 +731,18 @@
         <value>DC-Identifier</value>
         <value>DC-Language</value>        
     </util:list>
-    
+    <util:map id="exporters" map-class="java.util.HashMap">
+        <entry key="dspace-simple-archive">
+            <util:map>
+                <entry key="name" value="DSpace Simple Archive" />
+                <entry key="class" value="ugent.bagger.exporters.ExportDSpaceSimpleArchive" />
+            </util:map>    
+        </entry>   
+        <entry key="dspace-mets-archive">
+            <util:map>
+                <entry key="name" value="DSpace Mets Archive" />
+                <entry key="class" value="ugent.bagger.exporters.ExportDSpaceMetsArchive" />
+            </util:map>    
+        </entry>
+    </util:map>
 </beans>

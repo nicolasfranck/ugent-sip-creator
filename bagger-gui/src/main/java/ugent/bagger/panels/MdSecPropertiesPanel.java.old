@@ -44,7 +44,9 @@ public class MdSecPropertiesPanel extends JPanel{
     private boolean modusAdding = true;
     private JButton updateButton;
     private JButton removeButton;
-    private JButton addButton;        
+    private JButton addButton;
+    private JButton importButton;
+    private JButton crosswalkButton;    
     private String id;
     private ArrayList<MdSec>exceptions;
    
@@ -153,7 +155,9 @@ public class MdSecPropertiesPanel extends JPanel{
         boolean buttonsEnabled = getMax() > 0 && data.size() >= getMax() ? false:true;        
         
         //creatie buttons
-        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                                
+        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                        
+        importButton = new JButton(Context.getMessage("MdSecPanel.importButton.label"));       
+        importButton.setToolTipText(Context.getMessage("MdSecPanel.importButton.toolTip"));
         removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));                  
         
         enableButtons(buttonsEnabled);
@@ -161,15 +165,15 @@ public class MdSecPropertiesPanel extends JPanel{
         JMenuItem addXMLMenuItem = new JMenuItem(Context.getMessage("addXMLMenuItem.label"));
         JMenuItem crosswalkMenuItem = new JMenuItem(Context.getMessage("crosswalkMenuItem.label"));
         
-        final JPopupMenu addPopupMenu = new JPopupMenu();
-        addPopupMenu.add(addXMLMenuItem);
-        addPopupMenu.add(crosswalkMenuItem);        
+        final JPopupMenu xmlPopupMenu = new JPopupMenu();
+        xmlPopupMenu.add(addXMLMenuItem);
+        xmlPopupMenu.add(crosswalkMenuItem);        
         
         //action listeners
         addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                addPopupMenu.show(addButton,0,addButton.getHeight());
+                xmlPopupMenu.show(addButton,0,addButton.getHeight());
             }
         });
         crosswalkMenuItem.addActionListener(new ActionListener(){
@@ -244,7 +248,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     return;
                 }
                 
-                CSVWizard wizard = new CSVWizard("CSVWizard");
+                CSVWizard wizard = new CSVWizard();
                 CSVWizardDialog dialog = new CSVWizardDialog(wizard);
                 wizard.addPropertyChangeListener("addMdSec",new PropertyChangeListener() {
                     @Override
@@ -274,7 +278,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     return;
                 }
                 
-                BagInfoImportWizard wizard = new BagInfoImportWizard("BagInfoImportWizard");
+                BagInfoImportWizard wizard = new BagInfoImportWizard();
                 BagInfoImportWizardDialog dialog = new BagInfoImportWizardDialog(wizard);
                 wizard.addPropertyChangeListener("addMdSec",new PropertyChangeListener() {
                     @Override
@@ -294,13 +298,22 @@ public class MdSecPropertiesPanel extends JPanel{
                 });
                 dialog.showDialog();
             }            
-        });        
+        });
         
-        addPopupMenu.add(importCSVItem);
-        addPopupMenu.add(importBagInfoItem);
+        final JPopupMenu importPopupMenu = new JPopupMenu();
+        importPopupMenu.add(importCSVItem);
+        importPopupMenu.add(importBagInfoItem);                
+        
+        importButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                importPopupMenu.show(importButton,0,importButton.getHeight());
+            }            
+        });
         
         //voeg toe
-        panel.add(addButton);                            
+        panel.add(addButton);                
+        panel.add(importButton);         
         panel.add(removeButton); 
         
         return panel;
@@ -343,6 +356,7 @@ public class MdSecPropertiesPanel extends JPanel{
         return -1;
     }
     public void enableButtons(boolean enabled){
-        addButton.setEnabled(enabled);              
+        addButton.setEnabled(enabled);
+        importButton.setEnabled(enabled);        
     }
 }

@@ -92,14 +92,14 @@ public final class BagValidationResultPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
-        JButton okButton = new JButton(Context.getMessage("BagValidationResultPanel.okButton.label"));
-        okButton.addActionListener(new ActionListener(){
+        JButton cancelButton = new JButton(Context.getMessage("BagValidationResultPanel.cancelButton.label"));
+        cancelButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                BagValidationResultPanel.this.firePropertyChange("ok",null,null);
+                BagValidationResultPanel.this.firePropertyChange("cancel",null,null);
             }            
         });
-        JButton startButton = new JButton("start");
+        JButton startButton = new JButton(Context.getMessage("BagValidationResultPanel.startButton.label"));
         startButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -108,9 +108,9 @@ public final class BagValidationResultPanel extends JPanel{
                     startValidate();
                 }
             }            
-        });
-        panel.add(okButton);
+        });        
         panel.add(startButton);
+        panel.add(cancelButton);
         return panel;
     }
     public BagValidateParams getBagValidateParams() {

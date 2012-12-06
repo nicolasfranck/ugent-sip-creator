@@ -68,13 +68,14 @@ public class StartNewBagHandler extends AbstractAction {
         metsBag.setName(bagName);
         bagView.getInfoFormsPane().setBagName(bagName);
 
-        bagView.setBagTagFileTree(new BagTree(metsBag.getName(), false));
+        //bagView.setBagTagFileTree(new BagTree(metsBag.getName(), false));
         Collection<BagFile> tags = metsBag.getTags();
+        /*
         for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
             BagFile bf = it.next();
             bagView.getBagTagFileTree().addNode(bf.getFilepath());
         }
-        bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());
+        bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());*/
         
         metsBag.setRootDir(bagView.getBagRootPath());
 

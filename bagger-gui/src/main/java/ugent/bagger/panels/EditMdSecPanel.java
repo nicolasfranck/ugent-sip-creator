@@ -2,6 +2,7 @@ package ugent.bagger.panels;
 
 import com.anearalone.mets.MdSec;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,8 @@ final public class EditMdSecPanel extends JPanel{
         if(textArea == null){
             textArea = new JTextArea();       
             textArea.setEditable(false);
+            textArea.setEnabled(true);
+            textArea.setBackground(Color.WHITE);
             try{
                 String [] data = new String [] {
                     XML.NodeToXML(getMdSec().getMdWrap().getXmlData().get(0),true) 

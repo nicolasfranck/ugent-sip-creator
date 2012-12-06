@@ -13,15 +13,11 @@ import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import gov.loc.repository.bagit.verify.impl.ParallelManifestChecksumVerifier;
 import gov.loc.repository.bagit.verify.impl.ValidVerifierImpl;
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-import javax.xml.validation.Schema;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import ugent.bagger.exceptions.BagitMetsValidationException;
-import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
-import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.XML;
 import ugent.premis.Premis;
@@ -41,6 +37,7 @@ public class BagitMetsValidator {
             throw new BagitMetsValidationException(RESULT.BAGIT_NOT_DIRECTORY,file+" is not a directory");
         }        
         System.out.println("file "+file+" is directory");
+       
         
         //all files readable?
         ArrayList<File>notReadableFiles = FUtils.getNotReadableFiles(file);
@@ -48,7 +45,7 @@ public class BagitMetsValidator {
             throw new BagitMetsValidationException(RESULT.BAGIT_FILES_NOT_READABLE,"not all files in directory "+file+" are readable");
         }
         System.out.println("all files are readable");
-        MetsBag metsBag = new MetsBag(file,null);        
+        MetsBag metsBag = new MetsBag(file,null);    
         
         //validate bag
         CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();

@@ -32,12 +32,15 @@ public class BagInfoImportWizard extends AbstractWizard{
     private BagInfoImportWizardPage1 bagInfoImportWizardPage1;
     HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
     
+    public BagInfoImportWizard(String wizardId){
+        super(wizardId);
+    }
     public void log(String message){
         ApplicationContextUtil.addConsoleMessage(message+"\n");
     }  
     @Override
     public void addPages(){ 
-        bagInfoImportWizardPage1 = new BagInfoImportWizardPage1("page1");
+        bagInfoImportWizardPage1 = new BagInfoImportWizardPage1("BagInfoImportWizardPage1");
         addPage(bagInfoImportWizardPage1);
     }
     @Override

@@ -30,10 +30,11 @@
   <bean id="menuBar" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
       <list>
-        <ref bean="fileMenu" />
-        <ref bean="showViewMenu" />
+        <ref bean="fileMenu" />  
+        <ref bean="bagMenu" />      
         <ref bean="renameMenu" />
-        <ref bean="helpMenu" />
+        <ref bean="consoleMenu" />
+        <ref bean="helpMenu" />                
       </list>
     </property>
   </bean>
@@ -96,12 +97,32 @@
   <bean id="aboutCommand" class="org.springframework.richclient.command.support.AboutCommand">
     <property name="aboutTextPath" value="gov/loc/repository/bagger/about.txt" />
   </bean>  
-  <!--<bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu"/>-->
+  <!--
+  <bean class="org.springframework.richclient.command.support.ShowViewMenu" id="showViewMenu"/>
+  -->
   
   <bean id="renameMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
       <property name="members">
           <list>
               <value>renameCommand</value>
+          </list>              
+      </property>
+  </bean>
+  <bean id="consoleMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
+      <property name="members">
+        <list>
+            <bean class="org.springframework.richclient.command.support.ShowViewCommand">
+                <property name="viewDescriptor" ref="consoleView" />                            
+            </bean>    
+          </list>              
+      </property>
+  </bean>  
+  <bean id="bagMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
+      <property name="members">
+        <list>
+            <bean class="org.springframework.richclient.command.support.ShowViewCommand">
+                <property name="viewDescriptor" ref="bagView" />                            
+            </bean>    
           </list>              
       </property>
   </bean>

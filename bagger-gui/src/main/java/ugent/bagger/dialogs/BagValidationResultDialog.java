@@ -15,7 +15,7 @@ public class BagValidationResultDialog extends JDialog {
     public BagValidationResultDialog(Frame parentFrame,boolean isModal){
         super(parentFrame,isModal);        
         JPanel panel = new BagValidationResultPanel();
-        panel.addPropertyChangeListener("ok",new PropertyChangeListener() {
+        panel.addPropertyChangeListener("cancel",new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
                 dispose();

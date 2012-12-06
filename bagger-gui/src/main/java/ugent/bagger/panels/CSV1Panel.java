@@ -28,7 +28,7 @@ import ugent.bagger.params.CSVParseParams;
 public class CSV1Panel extends JPanel{
     private CSVParseParams csvParseParams;
     private CSVParseParamsForm csvParseParamsForm;
-    private JButton okButton;
+    //private JButton okButton;
     private JButton testButton;   
     private JScrollPane scrollerCSVTable;
     private JTable csvTable;
@@ -99,17 +99,17 @@ public class CSV1Panel extends JPanel{
     }   
     public JPanel createButtonPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        okButton = new JButton(Context.getMessage("ok"));       
+        //okButton = new JButton(Context.getMessage("ok"));       
         testButton = new JButton(Context.getMessage("test"));        
-        panel.add(okButton);       
+        //panel.add(okButton);       
         panel.add(testButton);
         
-        okButton.addActionListener(new ActionListener(){
+        /*okButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 CSV1Panel.this.firePropertyChange("ok",null,null);
             }        
-        });         
+        });*/
         
         testButton.addActionListener(new ActionListener(){
             @Override
