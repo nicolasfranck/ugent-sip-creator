@@ -1,6 +1,7 @@
 package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.ui.handlers.MdSecSourceExecutor;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,4 +34,11 @@ public final class LoadFieldsPanel extends JPanel {
             }        
         });
     }        
+    @Override
+    public void setEnabled(boolean enabled) {       
+        super.setEnabled(enabled);
+        for(Component component:getComponents()){
+            component.setEnabled(enabled);
+        }       
+    }
 }

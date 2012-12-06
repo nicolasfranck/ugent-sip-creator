@@ -1,6 +1,8 @@
 package ugent.bagger.panels;
 
 
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,9 +28,8 @@ import ugent.bagger.params.VelocityTemplate;
  *
  * @author nicolas
  */
-public class CSV2Panel extends JPanel{    
+public class CSV2Panel extends JPanel{        
     
-    private JButton okButton;
     private JButton testButton;   
     private HashMap<String,String>record = new HashMap<String,String>();
     private JTextArea textArea;
@@ -61,7 +62,9 @@ public class CSV2Panel extends JPanel{
                 HashMap<String,String> value = entry.getValue();
                 data.add(new VelocityTemplate(value.get("name"),value.get("path"),value.get("xsd")));
             }
-            templateComboBox = new JComboBox(data.toArray());
+            templateComboBox = new JComboBox(data.toArray());            
+            Dimension dim = new Dimension(Integer.MAX_VALUE,(int)templateComboBox.getPreferredSize().getHeight());
+            templateComboBox.setMaximumSize(dim);            
             templateComboBox.addActionListener(showListener);
         }
         return templateComboBox;
@@ -80,27 +83,16 @@ public class CSV2Panel extends JPanel{
         init();
     }
     public void init(){
-        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));        
+        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));    
         add(getTemplateComboBox());
         add(new JScrollPane(getTextArea()));
         add(createButtonPanel());                      
     } 
       
     public JPanel createButtonPanel(){
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        okButton = new JButton(Context.getMessage("ok"));        
-        testButton = new JButton(Context.getMessage("test"));
-        panel.add(okButton);        
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
+        testButton = new JButton(Context.getMessage("test"));        
         panel.add(testButton);
-        
-        okButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                CSV2Panel.this.firePropertyChange("ok",null,null);
-            }        
-        });        
-        
-                
         testButton.addActionListener(showListener);        
         return panel;
     }    

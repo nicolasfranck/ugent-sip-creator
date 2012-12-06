@@ -26,7 +26,37 @@ import ugent.bagger.tables.ClassTable;
 public class AmdSecsPanel extends JPanel{
     private ArrayList<AmdSec>data;    
     private ClassTable<AmdSecParts>amdSecPartsTable;
-    
+    JButton addButton;
+    JButton removeButton;
+
+    public JButton getAddButton() {
+        if(addButton == null){
+            addButton = new JButton(Context.getMessage("AmdSecsPanel.addButton.label"));
+            addButton.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    AmdSec amdSec = new AmdSec();
+                    getData().add(amdSec);
+                    reset(getData());
+                    startAmdSecDialog(amdSec);
+                }            
+            });
+        }
+        return addButton;
+    }
+    public JButton getRemoveButton() {
+        if(removeButton == null){
+            removeButton = new JButton(Context.getMessage("AmdSecsPanel.removeButton.label"));
+            removeButton.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    deleteSelected();
+                    reset(getData());
+                }            
+            });
+        }
+        return removeButton;
+    }
     public AmdSecsPanel(ArrayList<AmdSec>data){        
         Assert.notNull(data);
         this.data = data;
@@ -83,11 +113,13 @@ public class AmdSecsPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton addButton = new JButton(Context.getMessage("AmdSecsPanel.addButton.label"));
-        JButton removeButton = new JButton(Context.getMessage("AmdSecsPanel.removeButton.label"));
-        panel.add(addButton);
-        panel.add(removeButton);
         
+        /*JButton addButton = new JButton(Context.getMessage("AmdSecsPanel.addButton.label"));
+        JButton removeButton = new JButton(Context.getMessage("AmdSecsPanel.removeButton.label"));*/
+        panel.add(getAddButton());
+        panel.add(getRemoveButton());
+        
+        /*
         addButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -104,7 +136,7 @@ public class AmdSecsPanel extends JPanel{
                 deleteSelected();
                 reset(getData());
             }            
-        });
+        });*/
         
         return panel;
     }
@@ -144,5 +176,11 @@ public class AmdSecsPanel extends JPanel{
         public AmdSec getAmdSec(){
             return amdSec;
         }
+    }
+    @Override
+    public void setEnabled(boolean enabled){
+        super.setEnabled(enabled);
+        getAddButton().setEnabled(enabled);
+        getRemoveButton().setEnabled(enabled);
     }
 }

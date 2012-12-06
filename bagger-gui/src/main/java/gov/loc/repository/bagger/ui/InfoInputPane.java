@@ -114,8 +114,12 @@ public final class InfoInputPane extends JTabbedPane {
         setActionMap(am);                
     }
     public void enableForms(boolean b) {              
-    	getBagInfoForm().getControl().invalidate();
+    	
     	setEnabled(b);
+        //getBagInfoForm().getControl().setEnabled(b);
+        getBagInfoForm().setEnabled(b);
+        getMdSecPanel().setEnabled(b);
+        getAmdSecsPanel().setEnabled(b);
     	invalidate();
     }    
     public void populateForms(){    	                    	
@@ -128,25 +132,26 @@ public final class InfoInputPane extends JTabbedPane {
         removeAll();     
         validate();                
         
-        //add tabs  
+        //add tabs
         addTab(
             Context.getMessage("infoInputPane.dmdSecTab.label"),
             null,
             getMdSecPanel(),
             Context.getMessage("infoInputPane.dmdSecTab.tooltip")
-        );  
+        );
         addTab(
             Context.getMessage("infoInputPane.baginfoTab.label"),  
             null,
             getBagInfoForm().getControl(),
             Context.getMessage("infoInputPane.baginfoTab.tooltip")
-        );                                    
+        );
         addTab(
             Context.getMessage("infoInputPane.amdSecTab.label"),
             null,
             getAmdSecsPanel(),
             Context.getMessage("infoInputPane.amdSecTab.tooltip")                
-        );
+        );                                    
+        
         
     }
     public void verifyForms(){                      

@@ -52,5 +52,10 @@ public class MdSecPanel extends JPanel{
     public void reset(ArrayList<MdSec>mdSec){             
         getDmdSecPropertiesPanel().reset(mdSec);
         setMdSec(mdSec);        
-    }    
+    }   
+    @Override
+    public void setEnabled(boolean enabled){
+        super.setEnabled(enabled);
+        getDmdSecPropertiesPanel().setEnabled(enabled);
+    }
 }

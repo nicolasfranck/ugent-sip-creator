@@ -141,6 +141,7 @@ public final class AddFieldPanel extends JPanel {
 	
     @Override
     public void setEnabled(boolean enabled) {       
+        super.setEnabled(enabled);
         for(Component component:getComponents()){
             component.setEnabled(enabled);
         }       
@@ -195,5 +196,5 @@ public final class AddFieldPanel extends JPanel {
     }
     private boolean isStandardField() {
         return getStandardCheckBox().isSelected();
-    }	    
+    }	        
 }

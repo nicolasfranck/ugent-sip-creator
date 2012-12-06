@@ -209,5 +209,6 @@ public final class BagInfoForm extends AbstractForm {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         getAddFieldPanel().setEnabled(enabled);
+        getLoadFieldsPanel().setEnabled(enabled);
     }
 }

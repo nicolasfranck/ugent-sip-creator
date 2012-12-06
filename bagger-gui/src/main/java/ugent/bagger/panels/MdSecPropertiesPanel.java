@@ -60,6 +60,18 @@ public class MdSecPropertiesPanel extends JPanel{
         add(createContentPane());        
     }
 
+    public JButton getRemoveButton() {
+        if(removeButton == null){
+            removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));
+        }
+        return removeButton;
+    }
+    public JButton getAddButton() {
+        if(addButton == null){
+            addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));   
+        }
+        return addButton;
+    }
     public ArrayList<MdSec> getExceptions() {
         if(exceptions == null){
             exceptions = new ArrayList<MdSec>();
@@ -153,8 +165,8 @@ public class MdSecPropertiesPanel extends JPanel{
         boolean buttonsEnabled = getMax() > 0 && data.size() >= getMax() ? false:true;        
         
         //creatie buttons
-        addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                                
-        removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));                  
+        //addButton = new JButton(Context.getMessage("MdSecPanel.addButton.label"));                                
+        //removeButton = new JButton(Context.getMessage("MdSecPanel.removeButton.label"));                  
         
         enableButtons(buttonsEnabled);
         
@@ -166,10 +178,10 @@ public class MdSecPropertiesPanel extends JPanel{
         addPopupMenu.add(crosswalkMenuItem);        
         
         //action listeners
-        addButton.addActionListener(new ActionListener(){
+        getAddButton().addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                addPopupMenu.show(addButton,0,addButton.getHeight());
+                addPopupMenu.show(getAddButton(),0,getAddButton().getHeight());
             }
         });
         crosswalkMenuItem.addActionListener(new ActionListener(){
@@ -222,7 +234,7 @@ public class MdSecPropertiesPanel extends JPanel{
                 }                
             }
         });
-        removeButton.addActionListener(new ActionListener(){
+        getRemoveButton().addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 getEditDmdSecPropertiesTable().deleteSelected();
@@ -300,8 +312,8 @@ public class MdSecPropertiesPanel extends JPanel{
         addPopupMenu.add(importBagInfoItem);
         
         //voeg toe
-        panel.add(addButton);                            
-        panel.add(removeButton); 
+        panel.add(getAddButton());                            
+        panel.add(getRemoveButton()); 
         
         return panel;
     }
@@ -343,6 +355,12 @@ public class MdSecPropertiesPanel extends JPanel{
         return -1;
     }
     public void enableButtons(boolean enabled){
-        addButton.setEnabled(enabled);              
+        getAddButton().setEnabled(enabled);              
+        getRemoveButton().setEnabled(enabled);
+    }
+    @Override
+    public void setEnabled(boolean enabled){
+        super.setEnabled(enabled);
+        enableButtons(enabled);
     }
 }

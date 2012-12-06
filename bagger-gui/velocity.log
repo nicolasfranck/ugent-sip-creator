@@ -1,35 +1,213 @@
-2012-12-05 09:03:30,227 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-05 09:03:30,227 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-05 09:03:30,229 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-05 09:03:30,231 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-05 09:03:30,231 - Do unicode file recognition:  false
-2012-12-05 09:03:30,232 - FileResourceLoader : adding path '/'
-2012-12-05 09:03:30,232 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-05 09:03:30,239 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-05 09:03:30,239 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-05 09:03:30,240 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-05 09:03:30,242 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-05 09:03:30,242 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-05 09:03:30,243 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-05 09:03:30,261 - Created '20' parsers.
-2012-12-05 09:03:30,266 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-05 09:03:30,266 - Velocimacro : Default library not found.
-2012-12-05 09:03:30,266 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-05 09:03:30,266 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-05 09:03:30,266 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-05 09:03:30,266 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-05 09:03:30,278 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-05 09:03:35,327 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-05 09:03:35,334 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 12:26:32,860 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 12:26:32,861 - Velocity not initialized yet. Calling init()...
-2012-12-06 12:26:32,861 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 12:26:32,861 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 12:26:32,861 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 12:26:32,861 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+2012-12-06 20:29:29,381 - Null reference [template 'velocity/ead-amvb.vm', line 91, column 20] : $record.get("contextManierOverdracht") cannot be resolved.
+2012-12-06 20:29:29,382 - Null reference [template 'velocity/ead-amvb.vm', line 95, column 20] : $record.get("contextKopieEigenaar") cannot be resolved.
+2012-12-06 20:29:29,384 - Null reference [template 'velocity/ead-amvb.vm', line 99, column 20] : $record.get("contextDatumOverdracht") cannot be resolved.
+2012-12-06 20:29:29,385 - Null reference [template 'velocity/ead-amvb.vm', line 103, column 20] : $record.get("contextTypOVerdracht") cannot be resolved.
+2012-12-06 20:29:29,385 - Null reference [template 'velocity/ead-amvb.vm', line 107, column 20] : $record.get("contextOVerdrachtsovereenkomst") cannot be resolved.
+2012-12-06 20:29:29,386 - Null reference [template 'velocity/ead-amvb.vm', line 111, column 20] : $record.get("contextAanwinstnummer") cannot be resolved.
+2012-12-06 20:29:29,386 - Null reference [template 'velocity/ead-amvb.vm', line 117, column 20] : $record.get("inhoudInhoudBereikArchief") cannot be resolved.
+2012-12-06 20:29:29,386 - Null reference [template 'velocity/ead-amvb.vm', line 121, column 20] : $record.get("inhoudAnalogeDocumenten") cannot be resolved.
+2012-12-06 20:29:29,387 - Null reference [template 'velocity/ead-amvb.vm', line 125, column 20] : $record.get("inhoudDigitaleDocumenten") cannot be resolved.
+2012-12-06 20:29:29,390 - Null reference [template 'velocity/ead-amvb.vm', line 129, column 20] : $record.get("inhoudOverlapAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:29,391 - Null reference [template 'velocity/ead-amvb.vm', line 135, column 20] : $record.get("inhoudSelectieDubbels") cannot be resolved.
+2012-12-06 20:29:29,391 - Null reference [template 'velocity/ead-amvb.vm', line 139, column 20] : $record.get("inhoudSelectieOntwerpversies") cannot be resolved.
+2012-12-06 20:29:29,393 - Null reference [template 'velocity/ead-amvb.vm', line 143, column 20] : $record.get("inhoudSelectieLegeMappen") cannot be resolved.
+2012-12-06 20:29:29,394 - Null reference [template 'velocity/ead-amvb.vm', line 147, column 20] : $record.get("inhoudSelectieAndereBestanden") cannot be resolved.
+2012-12-06 20:29:29,395 - Null reference [template 'velocity/ead-amvb.vm', line 151, column 16] : $record.get("inhoudAanvullingen") cannot be resolved.
+2012-12-06 20:29:29,396 - Null reference [template 'velocity/ead-amvb.vm', line 156, column 20] : $record.get("voorwaardenRaadplegingStatus") cannot be resolved.
+2012-12-06 20:29:29,404 - Null reference [template 'velocity/ead-amvb.vm', line 160, column 20] : $record.get("voorwaardenRaadplegingGevoeligeGegevens") cannot be resolved.
+2012-12-06 20:29:29,404 - Null reference [template 'velocity/ead-amvb.vm', line 164, column 20] : $record.get("voorwaardenRaadplegingVertrouwelijkeGegevens") cannot be resolved.
+2012-12-06 20:29:29,405 - Null reference [template 'velocity/ead-amvb.vm', line 168, column 20] : $record.get("voorwaardenRaadplegingPersoonlijkeGegevens") cannot be resolved.
+2012-12-06 20:29:29,412 - Null reference [template 'velocity/ead-amvb.vm', line 172, column 20] : $record.get("voorwaardenRaadplegingMedischeGegevens") cannot be resolved.
+2012-12-06 20:29:29,418 - Null reference [template 'velocity/ead-amvb.vm', line 178, column 20] : $record.get("voorwaardenReproductieStatus") cannot be resolved.
+2012-12-06 20:29:29,419 - Null reference [template 'velocity/ead-amvb.vm', line 182, column 20] : $record.get("voorwaardenReproductieRechthebbende") cannot be resolved.
+2012-12-06 20:29:29,421 - Null reference [template 'velocity/ead-amvb.vm', line 186, column 20] : $record.get("voorwaardenKopieBeschikbaar") cannot be resolved.
+2012-12-06 20:29:29,421 - Null reference [template 'velocity/ead-amvb.vm', line 192, column 20] : $record.get("voorwaardenStaatArchief") cannot be resolved.
+2012-12-06 20:29:29,423 - Null reference [template 'velocity/ead-amvb.vm', line 197, column 16] : $record.get("verwantMateriaalKopieen") cannot be resolved.
+2012-12-06 20:29:29,424 - Null reference [template 'velocity/ead-amvb.vm', line 201, column 20] : $record.get("beschrijvingNotitie") cannot be resolved.
+2012-12-06 20:29:29,424 - Null reference [template 'velocity/ead-amvb.vm', line 205, column 20] : $record.get("beschrijvingDatum") cannot be resolved.
+2012-12-06 20:29:36,939 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:29:38,397 - ResourceManager : found velocity/ead-amvb.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:29:38,398 - Null reference [template 'velocity/ead-amvb.vm', line 7, column 30] : $record.get("inventarisTitel") cannot be resolved.
+2012-12-06 20:29:38,399 - Null reference [template 'velocity/ead-amvb.vm', line 8, column 25] : $record.get("inventarisAuteur") cannot be resolved.
+2012-12-06 20:29:38,400 - Null reference [template 'velocity/ead-amvb.vm', line 11, column 23] : $record.get("inventarisDatumPublicatie") cannot be resolved.
+2012-12-06 20:29:38,401 - Null reference [template 'velocity/ead-amvb.vm', line 12, column 28] : $record.get("inventarisUitgever") cannot be resolved.
+2012-12-06 20:29:38,403 - Null reference [template 'velocity/ead-amvb.vm', line 14, column 34] : $record.get("inventarisPlaatsUitgave") cannot be resolved.
+2012-12-06 20:29:38,409 - Null reference [template 'velocity/ead-amvb.vm', line 19, column 23] : $record.get("profielAuteur") cannot be resolved.
+2012-12-06 20:29:38,409 - Null reference [template 'velocity/ead-amvb.vm', line 21, column 27] : $record.get("profielTaal") cannot be resolved.
+2012-12-06 20:29:38,410 - Null reference [template 'velocity/ead-amvb.vm', line 24, column 24] : $record.get("beschrijvingBeschrijvingsregels") cannot be resolved.
+2012-12-06 20:29:38,411 - Null reference [template 'velocity/ead-amvb.vm', line 31, column 141] : $record.get("identificatieId") cannot be resolved.
+2012-12-06 20:29:38,412 - Null reference [template 'velocity/ead-amvb.vm', line 32, column 54] : $record.get("identificatieTitel") cannot be resolved.
+2012-12-06 20:29:38,413 - Null reference [template 'velocity/ead-amvb.vm', line 33, column 98] : $record.get("identificatieDatering") cannot be resolved.
+2012-12-06 20:29:38,414 - Null reference [template 'velocity/ead-amvb.vm', line 35, column 25] : $record.get("identificatieOmvang") cannot be resolved.
+2012-12-06 20:29:38,414 - Null reference [template 'velocity/ead-amvb.vm', line 36, column 28] : $record.get("identificatieVorm") cannot be resolved.
+2012-12-06 20:29:38,420 - Null reference [template 'velocity/ead-amvb.vm', line 39, column 46] : $record.get("contextNaamArchiefvormer") cannot be resolved.
+2012-12-06 20:29:38,421 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 9] : $inhoudAbstract cannot be resolved.
+2012-12-06 20:29:38,422 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 81] : $record.get("voorwaardenTaalSchrift") cannot be resolved.
+2012-12-06 20:29:38,423 - Null reference [template 'velocity/ead-amvb.vm', line 43, column 37] : $record.get("Bag-Id") cannot be resolved.
+2012-12-06 20:29:38,424 - Null reference [template 'velocity/ead-amvb.vm', line 44, column 22] : $record.get("identificatieBewaarplaats") cannot be resolved.
+2012-12-06 20:29:38,424 - Null reference [template 'velocity/ead-amvb.vm', line 46, column 27] : $record.get("identificatieBewaarinstelling") cannot be resolved.
+2012-12-06 20:29:38,425 - Null reference [template 'velocity/ead-amvb.vm', line 48, column 34] : $record.get("identificatieContactBewaarinstelling") cannot be resolved.
+2012-12-06 20:29:38,426 - Null reference [template 'velocity/ead-amvb.vm', line 54, column 16] : $record.get("contextBeschrijvingArchiefvormer") cannot be resolved.
+2012-12-06 20:29:38,427 - Null reference [template 'velocity/ead-amvb.vm', line 56, column 30] : $record.get("contextContactArchiefvormer") cannot be resolved.
+2012-12-06 20:29:38,434 - Null reference [template 'velocity/ead-amvb.vm', line 62, column 20] : $record.get("contextOorsprBewaarplaats") cannot be resolved.
+2012-12-06 20:29:38,435 - Null reference [template 'velocity/ead-amvb.vm', line 66, column 20] : $record.get("contextRelatieAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:38,438 - Null reference [template 'velocity/ead-amvb.vm', line 70, column 20] : $record.get("contextDatumAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:38,439 - Null reference [template 'velocity/ead-amvb.vm', line 76, column 20] : $record.get("contextNaamOverdrager") cannot be resolved.
+2012-12-06 20:29:38,444 - Null reference [template 'velocity/ead-amvb.vm', line 78, column 34] : $record.get("contextContactOVerdrager") cannot be resolved.
+2012-12-06 20:29:38,444 - Null reference [template 'velocity/ead-amvb.vm', line 83, column 20] : $record.get("contextRelatieOverdragerArchief") cannot be resolved.
+2012-12-06 20:29:38,447 - Null reference [template 'velocity/ead-amvb.vm', line 87, column 20] : $record.get("contextRedenOverdracht") cannot be resolved.
+2012-12-06 20:29:38,452 - Null reference [template 'velocity/ead-amvb.vm', line 91, column 20] : $record.get("contextManierOverdracht") cannot be resolved.
+2012-12-06 20:29:38,452 - Null reference [template 'velocity/ead-amvb.vm', line 95, column 20] : $record.get("contextKopieEigenaar") cannot be resolved.
+2012-12-06 20:29:38,453 - Null reference [template 'velocity/ead-amvb.vm', line 99, column 20] : $record.get("contextDatumOverdracht") cannot be resolved.
+2012-12-06 20:29:38,453 - Null reference [template 'velocity/ead-amvb.vm', line 103, column 20] : $record.get("contextTypOVerdracht") cannot be resolved.
+2012-12-06 20:29:38,456 - Null reference [template 'velocity/ead-amvb.vm', line 107, column 20] : $record.get("contextOVerdrachtsovereenkomst") cannot be resolved.
+2012-12-06 20:29:38,456 - Null reference [template 'velocity/ead-amvb.vm', line 111, column 20] : $record.get("contextAanwinstnummer") cannot be resolved.
+2012-12-06 20:29:38,457 - Null reference [template 'velocity/ead-amvb.vm', line 117, column 20] : $record.get("inhoudInhoudBereikArchief") cannot be resolved.
+2012-12-06 20:29:38,457 - Null reference [template 'velocity/ead-amvb.vm', line 121, column 20] : $record.get("inhoudAnalogeDocumenten") cannot be resolved.
+2012-12-06 20:29:38,458 - Null reference [template 'velocity/ead-amvb.vm', line 125, column 20] : $record.get("inhoudDigitaleDocumenten") cannot be resolved.
+2012-12-06 20:29:38,458 - Null reference [template 'velocity/ead-amvb.vm', line 129, column 20] : $record.get("inhoudOverlapAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:38,459 - Null reference [template 'velocity/ead-amvb.vm', line 135, column 20] : $record.get("inhoudSelectieDubbels") cannot be resolved.
+2012-12-06 20:29:38,464 - Null reference [template 'velocity/ead-amvb.vm', line 139, column 20] : $record.get("inhoudSelectieOntwerpversies") cannot be resolved.
+2012-12-06 20:29:38,468 - Null reference [template 'velocity/ead-amvb.vm', line 143, column 20] : $record.get("inhoudSelectieLegeMappen") cannot be resolved.
+2012-12-06 20:29:38,468 - Null reference [template 'velocity/ead-amvb.vm', line 147, column 20] : $record.get("inhoudSelectieAndereBestanden") cannot be resolved.
+2012-12-06 20:29:38,469 - Null reference [template 'velocity/ead-amvb.vm', line 151, column 16] : $record.get("inhoudAanvullingen") cannot be resolved.
+2012-12-06 20:29:38,472 - Null reference [template 'velocity/ead-amvb.vm', line 156, column 20] : $record.get("voorwaardenRaadplegingStatus") cannot be resolved.
+2012-12-06 20:29:38,472 - Null reference [template 'velocity/ead-amvb.vm', line 160, column 20] : $record.get("voorwaardenRaadplegingGevoeligeGegevens") cannot be resolved.
+2012-12-06 20:29:38,473 - Null reference [template 'velocity/ead-amvb.vm', line 164, column 20] : $record.get("voorwaardenRaadplegingVertrouwelijkeGegevens") cannot be resolved.
+2012-12-06 20:29:38,473 - Null reference [template 'velocity/ead-amvb.vm', line 168, column 20] : $record.get("voorwaardenRaadplegingPersoonlijkeGegevens") cannot be resolved.
+2012-12-06 20:29:38,474 - Null reference [template 'velocity/ead-amvb.vm', line 172, column 20] : $record.get("voorwaardenRaadplegingMedischeGegevens") cannot be resolved.
+2012-12-06 20:29:38,474 - Null reference [template 'velocity/ead-amvb.vm', line 178, column 20] : $record.get("voorwaardenReproductieStatus") cannot be resolved.
+2012-12-06 20:29:38,475 - Null reference [template 'velocity/ead-amvb.vm', line 182, column 20] : $record.get("voorwaardenReproductieRechthebbende") cannot be resolved.
+2012-12-06 20:29:38,475 - Null reference [template 'velocity/ead-amvb.vm', line 186, column 20] : $record.get("voorwaardenKopieBeschikbaar") cannot be resolved.
+2012-12-06 20:29:38,484 - Null reference [template 'velocity/ead-amvb.vm', line 192, column 20] : $record.get("voorwaardenStaatArchief") cannot be resolved.
+2012-12-06 20:29:38,486 - Null reference [template 'velocity/ead-amvb.vm', line 197, column 16] : $record.get("verwantMateriaalKopieen") cannot be resolved.
+2012-12-06 20:29:38,487 - Null reference [template 'velocity/ead-amvb.vm', line 201, column 20] : $record.get("beschrijvingNotitie") cannot be resolved.
+2012-12-06 20:29:38,487 - Null reference [template 'velocity/ead-amvb.vm', line 205, column 20] : $record.get("beschrijvingDatum") cannot be resolved.
+2012-12-06 20:29:39,879 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:29:41,319 - ResourceManager : found velocity/ead-amvb.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:29:41,331 - Null reference [template 'velocity/ead-amvb.vm', line 7, column 30] : $record.get("inventarisTitel") cannot be resolved.
+2012-12-06 20:29:41,332 - Null reference [template 'velocity/ead-amvb.vm', line 8, column 25] : $record.get("inventarisAuteur") cannot be resolved.
+2012-12-06 20:29:41,332 - Null reference [template 'velocity/ead-amvb.vm', line 11, column 23] : $record.get("inventarisDatumPublicatie") cannot be resolved.
+2012-12-06 20:29:41,332 - Null reference [template 'velocity/ead-amvb.vm', line 12, column 28] : $record.get("inventarisUitgever") cannot be resolved.
+2012-12-06 20:29:41,332 - Null reference [template 'velocity/ead-amvb.vm', line 14, column 34] : $record.get("inventarisPlaatsUitgave") cannot be resolved.
+2012-12-06 20:29:41,333 - Null reference [template 'velocity/ead-amvb.vm', line 19, column 23] : $record.get("profielAuteur") cannot be resolved.
+2012-12-06 20:29:41,333 - Null reference [template 'velocity/ead-amvb.vm', line 21, column 27] : $record.get("profielTaal") cannot be resolved.
+2012-12-06 20:29:41,333 - Null reference [template 'velocity/ead-amvb.vm', line 24, column 24] : $record.get("beschrijvingBeschrijvingsregels") cannot be resolved.
+2012-12-06 20:29:41,333 - Null reference [template 'velocity/ead-amvb.vm', line 31, column 141] : $record.get("identificatieId") cannot be resolved.
+2012-12-06 20:29:41,333 - Null reference [template 'velocity/ead-amvb.vm', line 32, column 54] : $record.get("identificatieTitel") cannot be resolved.
+2012-12-06 20:29:41,333 - Null reference [template 'velocity/ead-amvb.vm', line 33, column 98] : $record.get("identificatieDatering") cannot be resolved.
+2012-12-06 20:29:41,334 - Null reference [template 'velocity/ead-amvb.vm', line 35, column 25] : $record.get("identificatieOmvang") cannot be resolved.
+2012-12-06 20:29:41,334 - Null reference [template 'velocity/ead-amvb.vm', line 36, column 28] : $record.get("identificatieVorm") cannot be resolved.
+2012-12-06 20:29:41,334 - Null reference [template 'velocity/ead-amvb.vm', line 39, column 46] : $record.get("contextNaamArchiefvormer") cannot be resolved.
+2012-12-06 20:29:41,334 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 9] : $inhoudAbstract cannot be resolved.
+2012-12-06 20:29:41,334 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 81] : $record.get("voorwaardenTaalSchrift") cannot be resolved.
+2012-12-06 20:29:41,335 - Null reference [template 'velocity/ead-amvb.vm', line 43, column 37] : $record.get("Bag-Id") cannot be resolved.
+2012-12-06 20:29:41,335 - Null reference [template 'velocity/ead-amvb.vm', line 44, column 22] : $record.get("identificatieBewaarplaats") cannot be resolved.
+2012-12-06 20:29:41,335 - Null reference [template 'velocity/ead-amvb.vm', line 46, column 27] : $record.get("identificatieBewaarinstelling") cannot be resolved.
+2012-12-06 20:29:41,335 - Null reference [template 'velocity/ead-amvb.vm', line 48, column 34] : $record.get("identificatieContactBewaarinstelling") cannot be resolved.
+2012-12-06 20:29:41,335 - Null reference [template 'velocity/ead-amvb.vm', line 54, column 16] : $record.get("contextBeschrijvingArchiefvormer") cannot be resolved.
+2012-12-06 20:29:41,336 - Null reference [template 'velocity/ead-amvb.vm', line 56, column 30] : $record.get("contextContactArchiefvormer") cannot be resolved.
+2012-12-06 20:29:41,353 - Null reference [template 'velocity/ead-amvb.vm', line 62, column 20] : $record.get("contextOorsprBewaarplaats") cannot be resolved.
+2012-12-06 20:29:41,354 - Null reference [template 'velocity/ead-amvb.vm', line 66, column 20] : $record.get("contextRelatieAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:41,354 - Null reference [template 'velocity/ead-amvb.vm', line 70, column 20] : $record.get("contextDatumAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:41,354 - Null reference [template 'velocity/ead-amvb.vm', line 76, column 20] : $record.get("contextNaamOverdrager") cannot be resolved.
+2012-12-06 20:29:41,354 - Null reference [template 'velocity/ead-amvb.vm', line 78, column 34] : $record.get("contextContactOVerdrager") cannot be resolved.
+2012-12-06 20:29:41,354 - Null reference [template 'velocity/ead-amvb.vm', line 83, column 20] : $record.get("contextRelatieOverdragerArchief") cannot be resolved.
+2012-12-06 20:29:41,354 - Null reference [template 'velocity/ead-amvb.vm', line 87, column 20] : $record.get("contextRedenOverdracht") cannot be resolved.
+2012-12-06 20:29:41,355 - Null reference [template 'velocity/ead-amvb.vm', line 91, column 20] : $record.get("contextManierOverdracht") cannot be resolved.
+2012-12-06 20:29:41,355 - Null reference [template 'velocity/ead-amvb.vm', line 95, column 20] : $record.get("contextKopieEigenaar") cannot be resolved.
+2012-12-06 20:29:41,355 - Null reference [template 'velocity/ead-amvb.vm', line 99, column 20] : $record.get("contextDatumOverdracht") cannot be resolved.
+2012-12-06 20:29:41,355 - Null reference [template 'velocity/ead-amvb.vm', line 103, column 20] : $record.get("contextTypOVerdracht") cannot be resolved.
+2012-12-06 20:29:41,355 - Null reference [template 'velocity/ead-amvb.vm', line 107, column 20] : $record.get("contextOVerdrachtsovereenkomst") cannot be resolved.
+2012-12-06 20:29:41,356 - Null reference [template 'velocity/ead-amvb.vm', line 111, column 20] : $record.get("contextAanwinstnummer") cannot be resolved.
+2012-12-06 20:29:41,372 - Null reference [template 'velocity/ead-amvb.vm', line 117, column 20] : $record.get("inhoudInhoudBereikArchief") cannot be resolved.
+2012-12-06 20:29:41,373 - Null reference [template 'velocity/ead-amvb.vm', line 121, column 20] : $record.get("inhoudAnalogeDocumenten") cannot be resolved.
+2012-12-06 20:29:41,373 - Null reference [template 'velocity/ead-amvb.vm', line 125, column 20] : $record.get("inhoudDigitaleDocumenten") cannot be resolved.
+2012-12-06 20:29:41,373 - Null reference [template 'velocity/ead-amvb.vm', line 129, column 20] : $record.get("inhoudOverlapAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:41,373 - Null reference [template 'velocity/ead-amvb.vm', line 135, column 20] : $record.get("inhoudSelectieDubbels") cannot be resolved.
+2012-12-06 20:29:41,373 - Null reference [template 'velocity/ead-amvb.vm', line 139, column 20] : $record.get("inhoudSelectieOntwerpversies") cannot be resolved.
+2012-12-06 20:29:41,373 - Null reference [template 'velocity/ead-amvb.vm', line 143, column 20] : $record.get("inhoudSelectieLegeMappen") cannot be resolved.
+2012-12-06 20:29:41,374 - Null reference [template 'velocity/ead-amvb.vm', line 147, column 20] : $record.get("inhoudSelectieAndereBestanden") cannot be resolved.
+2012-12-06 20:29:41,374 - Null reference [template 'velocity/ead-amvb.vm', line 151, column 16] : $record.get("inhoudAanvullingen") cannot be resolved.
+2012-12-06 20:29:41,374 - Null reference [template 'velocity/ead-amvb.vm', line 156, column 20] : $record.get("voorwaardenRaadplegingStatus") cannot be resolved.
+2012-12-06 20:29:41,374 - Null reference [template 'velocity/ead-amvb.vm', line 160, column 20] : $record.get("voorwaardenRaadplegingGevoeligeGegevens") cannot be resolved.
+2012-12-06 20:29:41,374 - Null reference [template 'velocity/ead-amvb.vm', line 164, column 20] : $record.get("voorwaardenRaadplegingVertrouwelijkeGegevens") cannot be resolved.
+2012-12-06 20:29:41,375 - Null reference [template 'velocity/ead-amvb.vm', line 168, column 20] : $record.get("voorwaardenRaadplegingPersoonlijkeGegevens") cannot be resolved.
+2012-12-06 20:29:41,375 - Null reference [template 'velocity/ead-amvb.vm', line 172, column 20] : $record.get("voorwaardenRaadplegingMedischeGegevens") cannot be resolved.
+2012-12-06 20:29:41,375 - Null reference [template 'velocity/ead-amvb.vm', line 178, column 20] : $record.get("voorwaardenReproductieStatus") cannot be resolved.
+2012-12-06 20:29:41,375 - Null reference [template 'velocity/ead-amvb.vm', line 182, column 20] : $record.get("voorwaardenReproductieRechthebbende") cannot be resolved.
+2012-12-06 20:29:41,375 - Null reference [template 'velocity/ead-amvb.vm', line 186, column 20] : $record.get("voorwaardenKopieBeschikbaar") cannot be resolved.
+2012-12-06 20:29:41,376 - Null reference [template 'velocity/ead-amvb.vm', line 192, column 20] : $record.get("voorwaardenStaatArchief") cannot be resolved.
+2012-12-06 20:29:41,384 - Null reference [template 'velocity/ead-amvb.vm', line 197, column 16] : $record.get("verwantMateriaalKopieen") cannot be resolved.
+2012-12-06 20:29:41,384 - Null reference [template 'velocity/ead-amvb.vm', line 201, column 20] : $record.get("beschrijvingNotitie") cannot be resolved.
+2012-12-06 20:29:41,384 - Null reference [template 'velocity/ead-amvb.vm', line 205, column 20] : $record.get("beschrijvingDatum") cannot be resolved.
+2012-12-06 20:29:42,959 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:29:44,537 - ResourceManager : found velocity/ead-amvb.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:29:44,540 - Null reference [template 'velocity/ead-amvb.vm', line 7, column 30] : $record.get("inventarisTitel") cannot be resolved.
+2012-12-06 20:29:44,545 - Null reference [template 'velocity/ead-amvb.vm', line 8, column 25] : $record.get("inventarisAuteur") cannot be resolved.
+2012-12-06 20:29:44,546 - Null reference [template 'velocity/ead-amvb.vm', line 11, column 23] : $record.get("inventarisDatumPublicatie") cannot be resolved.
+2012-12-06 20:29:44,550 - Null reference [template 'velocity/ead-amvb.vm', line 12, column 28] : $record.get("inventarisUitgever") cannot be resolved.
+2012-12-06 20:29:44,556 - Null reference [template 'velocity/ead-amvb.vm', line 14, column 34] : $record.get("inventarisPlaatsUitgave") cannot be resolved.
+2012-12-06 20:29:44,560 - Null reference [template 'velocity/ead-amvb.vm', line 19, column 23] : $record.get("profielAuteur") cannot be resolved.
+2012-12-06 20:29:44,564 - Null reference [template 'velocity/ead-amvb.vm', line 21, column 27] : $record.get("profielTaal") cannot be resolved.
+2012-12-06 20:29:44,564 - Null reference [template 'velocity/ead-amvb.vm', line 24, column 24] : $record.get("beschrijvingBeschrijvingsregels") cannot be resolved.
+2012-12-06 20:29:44,565 - Null reference [template 'velocity/ead-amvb.vm', line 31, column 141] : $record.get("identificatieId") cannot be resolved.
+2012-12-06 20:29:44,565 - Null reference [template 'velocity/ead-amvb.vm', line 32, column 54] : $record.get("identificatieTitel") cannot be resolved.
+2012-12-06 20:29:44,566 - Null reference [template 'velocity/ead-amvb.vm', line 33, column 98] : $record.get("identificatieDatering") cannot be resolved.
+2012-12-06 20:29:44,566 - Null reference [template 'velocity/ead-amvb.vm', line 35, column 25] : $record.get("identificatieOmvang") cannot be resolved.
+2012-12-06 20:29:44,567 - Null reference [template 'velocity/ead-amvb.vm', line 36, column 28] : $record.get("identificatieVorm") cannot be resolved.
+2012-12-06 20:29:44,567 - Null reference [template 'velocity/ead-amvb.vm', line 39, column 46] : $record.get("contextNaamArchiefvormer") cannot be resolved.
+2012-12-06 20:29:44,568 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 9] : $inhoudAbstract cannot be resolved.
+2012-12-06 20:29:44,568 - Null reference [template 'velocity/ead-amvb.vm', line 42, column 81] : $record.get("voorwaardenTaalSchrift") cannot be resolved.
+2012-12-06 20:29:44,569 - Null reference [template 'velocity/ead-amvb.vm', line 43, column 37] : $record.get("Bag-Id") cannot be resolved.
+2012-12-06 20:29:44,572 - Null reference [template 'velocity/ead-amvb.vm', line 44, column 22] : $record.get("identificatieBewaarplaats") cannot be resolved.
+2012-12-06 20:29:44,576 - Null reference [template 'velocity/ead-amvb.vm', line 46, column 27] : $record.get("identificatieBewaarinstelling") cannot be resolved.
+2012-12-06 20:29:44,581 - Null reference [template 'velocity/ead-amvb.vm', line 48, column 34] : $record.get("identificatieContactBewaarinstelling") cannot be resolved.
+2012-12-06 20:29:44,581 - Null reference [template 'velocity/ead-amvb.vm', line 54, column 16] : $record.get("contextBeschrijvingArchiefvormer") cannot be resolved.
+2012-12-06 20:29:44,584 - Null reference [template 'velocity/ead-amvb.vm', line 56, column 30] : $record.get("contextContactArchiefvormer") cannot be resolved.
+2012-12-06 20:29:44,584 - Null reference [template 'velocity/ead-amvb.vm', line 62, column 20] : $record.get("contextOorsprBewaarplaats") cannot be resolved.
+2012-12-06 20:29:44,585 - Null reference [template 'velocity/ead-amvb.vm', line 66, column 20] : $record.get("contextRelatieAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:44,585 - Null reference [template 'velocity/ead-amvb.vm', line 70, column 20] : $record.get("contextDatumAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:44,586 - Null reference [template 'velocity/ead-amvb.vm', line 76, column 20] : $record.get("contextNaamOverdrager") cannot be resolved.
+2012-12-06 20:29:44,592 - Null reference [template 'velocity/ead-amvb.vm', line 78, column 34] : $record.get("contextContactOVerdrager") cannot be resolved.
+2012-12-06 20:29:44,592 - Null reference [template 'velocity/ead-amvb.vm', line 83, column 20] : $record.get("contextRelatieOverdragerArchief") cannot be resolved.
+2012-12-06 20:29:44,604 - Null reference [template 'velocity/ead-amvb.vm', line 87, column 20] : $record.get("contextRedenOverdracht") cannot be resolved.
+2012-12-06 20:29:44,604 - Null reference [template 'velocity/ead-amvb.vm', line 91, column 20] : $record.get("contextManierOverdracht") cannot be resolved.
+2012-12-06 20:29:44,608 - Null reference [template 'velocity/ead-amvb.vm', line 95, column 20] : $record.get("contextKopieEigenaar") cannot be resolved.
+2012-12-06 20:29:44,608 - Null reference [template 'velocity/ead-amvb.vm', line 99, column 20] : $record.get("contextDatumOverdracht") cannot be resolved.
+2012-12-06 20:29:44,609 - Null reference [template 'velocity/ead-amvb.vm', line 103, column 20] : $record.get("contextTypOVerdracht") cannot be resolved.
+2012-12-06 20:29:44,609 - Null reference [template 'velocity/ead-amvb.vm', line 107, column 20] : $record.get("contextOVerdrachtsovereenkomst") cannot be resolved.
+2012-12-06 20:29:44,610 - Null reference [template 'velocity/ead-amvb.vm', line 111, column 20] : $record.get("contextAanwinstnummer") cannot be resolved.
+2012-12-06 20:29:44,610 - Null reference [template 'velocity/ead-amvb.vm', line 117, column 20] : $record.get("inhoudInhoudBereikArchief") cannot be resolved.
+2012-12-06 20:29:44,611 - Null reference [template 'velocity/ead-amvb.vm', line 121, column 20] : $record.get("inhoudAnalogeDocumenten") cannot be resolved.
+2012-12-06 20:29:44,611 - Null reference [template 'velocity/ead-amvb.vm', line 125, column 20] : $record.get("inhoudDigitaleDocumenten") cannot be resolved.
+2012-12-06 20:29:44,618 - Null reference [template 'velocity/ead-amvb.vm', line 129, column 20] : $record.get("inhoudOverlapAnaloogDigitaal") cannot be resolved.
+2012-12-06 20:29:44,619 - Null reference [template 'velocity/ead-amvb.vm', line 135, column 20] : $record.get("inhoudSelectieDubbels") cannot be resolved.
+2012-12-06 20:29:44,619 - Null reference [template 'velocity/ead-amvb.vm', line 139, column 20] : $record.get("inhoudSelectieOntwerpversies") cannot be resolved.
+2012-12-06 20:29:44,624 - Null reference [template 'velocity/ead-amvb.vm', line 143, column 20] : $record.get("inhoudSelectieLegeMappen") cannot be resolved.
+2012-12-06 20:29:44,624 - Null reference [template 'velocity/ead-amvb.vm', line 147, column 20] : $record.get("inhoudSelectieAndereBestanden") cannot be resolved.
+2012-12-06 20:29:44,625 - Null reference [template 'velocity/ead-amvb.vm', line 151, column 16] : $record.get("inhoudAanvullingen") cannot be resolved.
+2012-12-06 20:29:44,625 - Null reference [template 'velocity/ead-amvb.vm', line 156, column 20] : $record.get("voorwaardenRaadplegingStatus") cannot be resolved.
+2012-12-06 20:29:44,628 - Null reference [template 'velocity/ead-amvb.vm', line 160, column 20] : $record.get("voorwaardenRaadplegingGevoeligeGegevens") cannot be resolved.
+2012-12-06 20:29:44,636 - Null reference [template 'velocity/ead-amvb.vm', line 164, column 20] : $record.get("voorwaardenRaadplegingVertrouwelijkeGegevens") cannot be resolved.
+2012-12-06 20:29:44,636 - Null reference [template 'velocity/ead-amvb.vm', line 168, column 20] : $record.get("voorwaardenRaadplegingPersoonlijkeGegevens") cannot be resolved.
+2012-12-06 20:29:44,637 - Null reference [template 'velocity/ead-amvb.vm', line 172, column 20] : $record.get("voorwaardenRaadplegingMedischeGegevens") cannot be resolved.
+2012-12-06 20:29:44,637 - Null reference [template 'velocity/ead-amvb.vm', line 178, column 20] : $record.get("voorwaardenReproductieStatus") cannot be resolved.
+2012-12-06 20:29:44,638 - Null reference [template 'velocity/ead-amvb.vm', line 182, column 20] : $record.get("voorwaardenReproductieRechthebbende") cannot be resolved.
+2012-12-06 20:29:44,638 - Null reference [template 'velocity/ead-amvb.vm', line 186, column 20] : $record.get("voorwaardenKopieBeschikbaar") cannot be resolved.
+2012-12-06 20:29:44,644 - Null reference [template 'velocity/ead-amvb.vm', line 192, column 20] : $record.get("voorwaardenStaatArchief") cannot be resolved.
+2012-12-06 20:29:44,644 - Null reference [template 'velocity/ead-amvb.vm', line 197, column 16] : $record.get("verwantMateriaalKopieen") cannot be resolved.
+2012-12-06 20:29:44,645 - Null reference [template 'velocity/ead-amvb.vm', line 201, column 20] : $record.get("beschrijvingNotitie") cannot be resolved.
+2012-12-06 20:29:44,646 - Null reference [template 'velocity/ead-amvb.vm', line 205, column 20] : $record.get("beschrijvingDatum") cannot be resolved.
+2012-12-06 20:32:15,194 - Log4JLogChute initialized using file 'velocity.log'
+2012-12-06 20:32:15,205 - Velocity not initialized yet. Calling init()...
+2012-12-06 20:32:15,206 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-12-06 20:32:15,208 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-12-06 20:32:15,208 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-12-06 20:32:15,209 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
+	at java.lang.Class.forName(Class.java:264)
 	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
 	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
 	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
@@ -40,108 +218,108 @@ java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
 	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
 	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
+	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:118)
 	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
 	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
 	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
 	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.AbstractButton.doClick(AbstractButton.java:376)
+	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:833)
+	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:877)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
 Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 12:26:32,866 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 12:26:32,866 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 12:26:32,869 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 12:26:32,878 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 12:26:32,879 - Do unicode file recognition:  false
-2012-12-06 12:26:32,879 - FileResourceLoader : adding path '/'
-2012-12-06 12:26:32,880 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 12:26:32,888 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 12:26:32,889 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 12:26:32,889 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 12:26:32,891 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 12:26:32,891 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 12:26:32,892 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 12:26:32,925 - Created '20' parsers.
-2012-12-06 12:26:32,930 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 12:26:32,930 - Velocimacro : Default library not found.
-2012-12-06 12:26:32,931 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 12:26:32,931 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 12:26:32,931 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 12:26:32,931 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 12:26:32,942 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 12:26:37,645 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 12:26:37,651 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:13:33,636 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 13:13:33,636 - Velocity not initialized yet. Calling init()...
-2012-12-06 13:13:33,636 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 13:13:33,636 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 13:13:33,636 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 13:13:33,636 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	... 75 more
+2012-12-06 20:32:15,244 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:32:15,244 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:32:15,255 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-12-06 20:32:15,297 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-12-06 20:32:15,310 - Do unicode file recognition:  false
+2012-12-06 20:32:15,316 - FileResourceLoader : adding path '/'
+2012-12-06 20:32:15,321 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:32:15,434 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-12-06 20:32:15,452 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-12-06 20:32:15,468 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-12-06 20:32:15,490 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-12-06 20:32:15,498 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-12-06 20:32:15,510 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-12-06 20:32:15,750 - Created '20' parsers.
+2012-12-06 20:32:15,795 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-12-06 20:32:15,806 - Velocimacro : Default library not found.
+2012-12-06 20:32:15,806 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-12-06 20:32:15,807 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-12-06 20:32:15,807 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-12-06 20:32:15,807 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-12-06 20:32:15,929 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:38:50,879 - Log4JLogChute initialized using file 'velocity.log'
+2012-12-06 20:38:50,892 - Velocity not initialized yet. Calling init()...
+2012-12-06 20:38:50,892 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-12-06 20:38:50,893 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-12-06 20:38:50,893 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-12-06 20:38:50,893 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
+	at java.lang.Class.forName(Class.java:264)
 	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
 	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
 	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
@@ -152,107 +330,108 @@ java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
 	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
 	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
+	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:117)
+	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:42)
 	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
 	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
 	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.AbstractButton.doClick(AbstractButton.java:376)
+	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:833)
+	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:877)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
 Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 13:13:33,637 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:13:33,638 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:13:33,639 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 13:13:33,641 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 13:13:33,642 - Do unicode file recognition:  false
-2012-12-06 13:13:33,642 - FileResourceLoader : adding path '/'
-2012-12-06 13:13:33,643 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:13:33,650 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 13:13:33,651 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 13:13:33,652 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 13:13:33,653 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 13:13:33,654 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 13:13:33,654 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 13:13:33,673 - Created '20' parsers.
-2012-12-06 13:13:33,678 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 13:13:33,678 - Velocimacro : Default library not found.
-2012-12-06 13:13:33,678 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 13:13:33,678 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 13:13:33,678 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 13:13:33,678 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 13:13:33,691 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:13:38,617 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:48:24,185 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 13:48:24,187 - Velocity not initialized yet. Calling init()...
-2012-12-06 13:48:24,187 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 13:48:24,187 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 13:48:24,187 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 13:48:24,187 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	... 75 more
+2012-12-06 20:38:50,917 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:38:50,917 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:38:50,936 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-12-06 20:38:50,965 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-12-06 20:38:50,982 - Do unicode file recognition:  false
+2012-12-06 20:38:50,984 - FileResourceLoader : adding path '/'
+2012-12-06 20:38:50,987 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:38:51,097 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-12-06 20:38:51,100 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-12-06 20:38:51,109 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-12-06 20:38:51,138 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-12-06 20:38:51,141 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-12-06 20:38:51,158 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-12-06 20:38:51,288 - Created '20' parsers.
+2012-12-06 20:38:51,327 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-12-06 20:38:51,353 - Velocimacro : Default library not found.
+2012-12-06 20:38:51,353 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-12-06 20:38:51,354 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-12-06 20:38:51,354 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-12-06 20:38:51,358 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-12-06 20:38:51,468 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:41:40,463 - Log4JLogChute initialized using file 'velocity.log'
+2012-12-06 20:41:40,468 - Velocity not initialized yet. Calling init()...
+2012-12-06 20:41:40,469 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-12-06 20:41:40,469 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-12-06 20:41:40,470 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-12-06 20:41:40,471 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
+	at java.lang.Class.forName(Class.java:264)
 	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
 	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
 	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
@@ -263,106 +442,108 @@ java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
 	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
 	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
+	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:117)
+	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:42)
 	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
 	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
 	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.AbstractButton.doClick(AbstractButton.java:376)
+	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:833)
+	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:877)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
 Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 13:48:24,188 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:48:24,188 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:48:24,190 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 13:48:24,192 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 13:48:24,193 - Do unicode file recognition:  false
-2012-12-06 13:48:24,193 - FileResourceLoader : adding path '/'
-2012-12-06 13:48:24,194 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:48:24,202 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 13:48:24,203 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 13:48:24,204 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 13:48:24,205 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 13:48:24,206 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 13:48:24,207 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 13:48:24,225 - Created '20' parsers.
-2012-12-06 13:48:24,230 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 13:48:24,231 - Velocimacro : Default library not found.
-2012-12-06 13:48:24,231 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 13:48:24,231 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 13:48:24,231 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 13:48:24,231 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 13:48:24,243 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:55:23,175 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 13:55:23,175 - Velocity not initialized yet. Calling init()...
-2012-12-06 13:55:23,175 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 13:55:23,175 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 13:55:23,175 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 13:55:23,175 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	... 75 more
+2012-12-06 20:41:40,482 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:41:40,491 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:41:40,498 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-12-06 20:41:40,518 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-12-06 20:41:40,526 - Do unicode file recognition:  false
+2012-12-06 20:41:40,527 - FileResourceLoader : adding path '/'
+2012-12-06 20:41:40,529 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:41:40,619 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-12-06 20:41:40,627 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-12-06 20:41:40,642 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-12-06 20:41:40,669 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-12-06 20:41:40,676 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-12-06 20:41:40,686 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-12-06 20:41:40,829 - Created '20' parsers.
+2012-12-06 20:41:40,849 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-12-06 20:41:40,851 - Velocimacro : Default library not found.
+2012-12-06 20:41:40,851 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-12-06 20:41:40,852 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-12-06 20:41:40,852 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-12-06 20:41:40,853 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-12-06 20:41:40,925 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:44:52,159 - Log4JLogChute initialized using file 'velocity.log'
+2012-12-06 20:44:52,164 - Velocity not initialized yet. Calling init()...
+2012-12-06 20:44:52,164 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-12-06 20:44:52,165 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-12-06 20:44:52,165 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-12-06 20:44:52,167 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
+	at java.lang.Class.forName(Class.java:264)
 	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
 	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
 	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
@@ -373,106 +554,111 @@ java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
 	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
 	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
+	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:118)
+	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:43)
 	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
 	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
 	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.AbstractButton.doClick(AbstractButton.java:376)
+	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:833)
+	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:877)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
 Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 13:55:23,179 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:55:23,179 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:55:23,182 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 13:55:23,184 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 13:55:23,185 - Do unicode file recognition:  false
-2012-12-06 13:55:23,185 - FileResourceLoader : adding path '/'
-2012-12-06 13:55:23,185 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:55:23,206 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 13:55:23,207 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 13:55:23,208 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 13:55:23,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 13:55:23,210 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 13:55:23,210 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 13:55:23,229 - Created '20' parsers.
-2012-12-06 13:55:23,233 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 13:55:23,234 - Velocimacro : Default library not found.
-2012-12-06 13:55:23,234 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 13:55:23,234 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 13:55:23,234 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 13:55:23,234 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 13:55:23,246 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:56:31,244 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 13:56:31,244 - Velocity not initialized yet. Calling init()...
-2012-12-06 13:56:31,244 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 13:56:31,244 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 13:56:31,244 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 13:56:31,244 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	... 75 more
+2012-12-06 20:44:52,188 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:44:52,192 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:44:52,202 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-12-06 20:44:52,245 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-12-06 20:44:52,250 - Do unicode file recognition:  false
+2012-12-06 20:44:52,259 - FileResourceLoader : adding path '/'
+2012-12-06 20:44:52,262 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:44:52,341 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-12-06 20:44:52,347 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-12-06 20:44:52,357 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-12-06 20:44:52,367 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-12-06 20:44:52,382 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-12-06 20:44:52,388 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-12-06 20:44:52,526 - Created '20' parsers.
+2012-12-06 20:44:52,627 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-12-06 20:44:52,629 - Velocimacro : Default library not found.
+2012-12-06 20:44:52,630 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-12-06 20:44:52,630 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-12-06 20:44:52,630 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-12-06 20:44:52,630 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-12-06 20:44:52,685 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:45:20,531 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:45:21,805 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:45:27,040 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:49:56,598 - Log4JLogChute initialized using file 'velocity.log'
+2012-12-06 20:49:56,608 - Velocity not initialized yet. Calling init()...
+2012-12-06 20:49:56,609 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
+2012-12-06 20:49:56,609 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+2012-12-06 20:49:56,609 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2012-12-06 20:49:56,609 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
 java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
+	at java.lang.Class.forName(Class.java:264)
 	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
 	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
 	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
@@ -483,427 +669,99 @@ java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
 	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
 	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
 	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
+	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:119)
+	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:43)
 	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
 	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
 	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.AbstractButton.doClick(AbstractButton.java:376)
+	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:833)
+	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:877)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
 Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
 	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 13:56:31,248 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:56:31,248 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:56:31,250 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 13:56:31,252 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 13:56:31,253 - Do unicode file recognition:  false
-2012-12-06 13:56:31,253 - FileResourceLoader : adding path '/'
-2012-12-06 13:56:31,254 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:56:31,260 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 13:56:31,261 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 13:56:31,262 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 13:56:31,263 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 13:56:31,264 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 13:56:31,265 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 13:56:31,284 - Created '20' parsers.
-2012-12-06 13:56:31,288 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 13:56:31,288 - Velocimacro : Default library not found.
-2012-12-06 13:56:31,288 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 13:56:31,288 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 13:56:31,288 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 13:56:31,289 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 13:56:31,300 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:56:54,141 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 13:56:54,141 - Velocity not initialized yet. Calling init()...
-2012-12-06 13:56:54,141 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 13:56:54,141 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 13:56:54,141 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 13:56:54,142 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
-java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
-	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
-	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
-	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
-	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
-	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
-	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1099)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
-	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
-	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
-	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
-	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
-	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
-Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 13:56:54,143 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:56:54,143 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 13:56:54,144 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 13:56:54,147 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 13:56:54,147 - Do unicode file recognition:  false
-2012-12-06 13:56:54,147 - FileResourceLoader : adding path '/'
-2012-12-06 13:56:54,148 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:56:54,164 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 13:56:54,165 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 13:56:54,166 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 13:56:54,167 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 13:56:54,168 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 13:56:54,168 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 13:56:54,188 - Created '20' parsers.
-2012-12-06 13:56:54,193 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 13:56:54,193 - Velocimacro : Default library not found.
-2012-12-06 13:56:54,193 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 13:56:54,193 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 13:56:54,193 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 13:56:54,193 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 13:56:54,205 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:56:57,493 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:56:57,824 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 13:56:57,969 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 14:02:43,090 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 14:02:43,090 - Velocity not initialized yet. Calling init()...
-2012-12-06 14:02:43,090 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 14:02:43,090 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 14:02:43,090 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 14:02:43,090 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
-java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
-	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
-	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
-	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
-	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
-	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
-	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1099)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
-	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
-	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
-	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
-	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
-	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
-Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 14:02:43,095 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 14:02:43,095 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 14:02:43,097 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 14:02:43,099 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 14:02:43,100 - Do unicode file recognition:  false
-2012-12-06 14:02:43,100 - FileResourceLoader : adding path '/'
-2012-12-06 14:02:43,100 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 14:02:43,107 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 14:02:43,108 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 14:02:43,109 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 14:02:43,110 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 14:02:43,111 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 14:02:43,111 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 14:02:43,131 - Created '20' parsers.
-2012-12-06 14:02:43,135 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 14:02:43,136 - Velocimacro : Default library not found.
-2012-12-06 14:02:43,136 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 14:02:43,136 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 14:02:43,136 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 14:02:43,136 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 14:02:43,148 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 14:07:57,625 - Log4JLogChute initialized using file 'velocity.log'
-2012-12-06 14:07:57,625 - Velocity not initialized yet. Calling init()...
-2012-12-06 14:07:57,625 - Starting Apache Velocity v1.5 (compiled: 2007-02-22 08:52:29)
-2012-12-06 14:07:57,625 - Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-2012-12-06 14:07:57,625 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
-2012-12-06 14:07:57,625 - Couldn't find class org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
-java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:247)
-	at org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:63)
-	at org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:95)
-	at org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:147)
-	at org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:208)
-	at org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:728)
-	at org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:240)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1099)
-	at org.apache.velocity.runtime.RuntimeInstance.getTemplate(RuntimeInstance.java:1077)
-	at org.apache.velocity.app.VelocityEngine.getTemplate(VelocityEngine.java:528)
-	at ugent.bagger.helper.CSVUtils.templateToDocument(CSVUtils.java:64)
-	at ugent.bagger.panels.CSV2Panel.showResult(CSV2Panel.java:114)
-	at ugent.bagger.panels.CSV2Panel$1.actionPerformed(CSV2Panel.java:41)
-	at ugent.bagger.wizards.CSVWizardPage2$1.run(CSVWizardPage2.java:43)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:641)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:611)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:178)
-	at java.awt.Dialog$1.run(Dialog.java:1046)
-	at java.awt.Dialog$3.run(Dialog.java:1098)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.awt.Dialog.show(Dialog.java:1096)
-	at java.awt.Component.show(Component.java:1584)
-	at java.awt.Component.setVisible(Component.java:1536)
-	at java.awt.Window.setVisible(Window.java:842)
-	at java.awt.Dialog.setVisible(Dialog.java:986)
-	at org.springframework.richclient.dialog.ApplicationDialog.showDialog(ApplicationDialog.java:405)
-	at ugent.bagger.panels.MdSecPropertiesPanel$7.actionPerformed(MdSecPropertiesPanel.java:266)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
-	at javax.swing.AbstractButton.doClick(AbstractButton.java:357)
-	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:809)
-	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:850)
-	at java.awt.Component.processMouseEvent(Component.java:6288)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
-	at java.awt.Component.processEvent(Component.java:6053)
-	at java.awt.Container.processEvent(Container.java:2041)
-	at java.awt.Component.dispatchEventImpl(Component.java:4651)
-	at java.awt.Container.dispatchEventImpl(Container.java:2099)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4577)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4238)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4168)
-	at java.awt.Container.dispatchEventImpl(Container.java:2085)
-	at java.awt.Window.dispatchEventImpl(Window.java:2478)
-	at java.awt.Component.dispatchEvent(Component.java:4481)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:643)
-	at java.awt.EventQueue.access$000(EventQueue.java:84)
-	at java.awt.EventQueue$1.run(EventQueue.java:602)
-	at java.awt.EventQueue$1.run(EventQueue.java:600)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:98)
-	at java.awt.EventQueue$2.run(EventQueue.java:616)
-	at java.awt.EventQueue$2.run(EventQueue.java:614)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:613)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:269)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
-Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
-	at java.net.URLClassLoader$1.run(URLClassLoader.java:202)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:306)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
-	... 74 more
-2012-12-06 14:07:57,631 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 14:07:57,631 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
-2012-12-06 14:07:57,632 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-2012-12-06 14:07:57,635 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
-2012-12-06 14:07:57,635 - Do unicode file recognition:  false
-2012-12-06 14:07:57,635 - FileResourceLoader : adding path '/'
-2012-12-06 14:07:57,636 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-2012-12-06 14:07:57,643 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-2012-12-06 14:07:57,643 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-2012-12-06 14:07:57,644 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-2012-12-06 14:07:57,645 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-2012-12-06 14:07:57,646 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
-2012-12-06 14:07:57,647 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-2012-12-06 14:07:57,665 - Created '20' parsers.
-2012-12-06 14:07:57,670 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
-2012-12-06 14:07:57,670 - Velocimacro : Default library not found.
-2012-12-06 14:07:57,670 - Velocimacro : allowInline = true : VMs can be defined inline in templates
-2012-12-06 14:07:57,670 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-2012-12-06 14:07:57,670 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
-2012-12-06 14:07:57,670 - Velocimacro : autoload off : VM system will not automatically reload global library macros
-2012-12-06 14:07:57,682 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	... 75 more
+2012-12-06 20:49:56,628 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:49:56,631 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2012-12-06 20:49:56,645 - Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+2012-12-06 20:49:56,669 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2012-12-06 20:49:56,689 - Do unicode file recognition:  false
+2012-12-06 20:49:56,689 - FileResourceLoader : adding path '/'
+2012-12-06 20:49:56,691 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:49:56,790 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+2012-12-06 20:49:56,812 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2012-12-06 20:49:56,828 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2012-12-06 20:49:56,839 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2012-12-06 20:49:56,854 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2012-12-06 20:49:56,869 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2012-12-06 20:49:56,989 - Created '20' parsers.
+2012-12-06 20:49:57,007 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2012-12-06 20:49:57,008 - Velocimacro : Default library not found.
+2012-12-06 20:49:57,009 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2012-12-06 20:49:57,009 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2012-12-06 20:49:57,009 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2012-12-06 20:49:57,010 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2012-12-06 20:49:57,062 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:49:58,935 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:49:59,523 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2012-12-06 20:50:02,964 - ResourceManager : found velocity/oai-dc-simple.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
