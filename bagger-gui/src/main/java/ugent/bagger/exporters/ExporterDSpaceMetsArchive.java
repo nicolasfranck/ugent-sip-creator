@@ -4,7 +4,6 @@ import com.anearalone.mets.FileSec;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
-import gov.loc.repository.bagger.bag.impl.MetsBag;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

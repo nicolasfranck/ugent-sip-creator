@@ -21,6 +21,7 @@ public class ExportExecutor extends AbstractActionCommandExecutor {
         ArrayList<File>files = new ArrayList<File>();
         int i = 0;
         for(File file:new File("/home/nicolas/bags").listFiles()){
+            System.out.println("writing "+file+" to sip!");
             try{
                 Exporter exporter = new ExporterDSpaceMetsArchive();
                 exporter.export(
@@ -29,7 +30,8 @@ public class ExportExecutor extends AbstractActionCommandExecutor {
                 );
             }catch(Exception e){
                 e.printStackTrace();
-            }            
+            }   
+            i++;
         }        
         SwingUtils.ShowDone();
     }

@@ -45,7 +45,7 @@ final public class EditMdSecPanel extends JPanel{
                 }        
             }catch(Exception e){
                 e.printStackTrace();
-            }
+            }           
         }
         return textArea;
     }

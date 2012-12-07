@@ -251,62 +251,16 @@ public class MetsUtils {
         DocumentType docType = doc.getDoctype();        
         
         //elke xml moet namespace bevatten (probeer te herstellen, indien mogelijk)
-        if(namespace == null || namespace.isEmpty()){
-            
-            //baseer je op naam van docType, of op naam root element
-            if(docType != null && docType.getName() != null && getDocTypeMapping().containsKey(docType.getName())){
-                namespace = getDocTypeMapping().get(docType.getName());
-            }else if(
-                doc.getDocumentElement() != null &&
-                getRootNameMapping().containsKey(doc.getDocumentElement().getTagName())
-            ){
-                namespace = getRootNameMapping().get(doc.getDocumentElement().getTagName());
-            }else{
-                throw new NoNamespaceException("no namespace could be found");
-            }            
-            
-            //zorg ervoor dat transformer bij foute validatie errors gooit (default: warnings naar stderr)
-            ErrorListener el = new ErrorListener(){
-                @Override
-                public void warning(TransformerException exception) throws TransformerException {
-                    throw exception;
-                }
-                @Override
-                public void error(TransformerException exception) throws TransformerException {
-                    throw exception;
-                }
-                @Override
-                public void fatalError(TransformerException exception) throws TransformerException {
-                    throw exception;
-                }
-            };
-            //gooi eventuele DTD eruit, en stel attributen voor namespaces in (via omweg, want je kan geen NS wijzigen op Document
-            TransformerFactory tf = TransformerFactory.newInstance();
-            tf.setErrorListener(el);
-            Transformer trans = tf.newTransformer();
-            trans.setErrorListener(el);                                                
-            doc.getDocumentElement().setAttributeNS(
-                "http://www.w3.org/2000/xmlns/",
-                "xmlns:xsi",
-                "http://www.w3.org/1999/XMLSchema-instance"
-            );           
-            doc.getDocumentElement().setAttributeNS(
-                "http://www.w3.org/2000/xmlns/",
-                "xmlns:xlink",
-                "http://www.w3.org/1999/xlink"
-            );                       
-            doc.getDocumentElement().setAttribute("xmlns",namespace);
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            trans.transform(new DOMSource(doc),new StreamResult(bout));
-            doc = XML.XMLToDocument(new ByteArrayInputStream(bout.toByteArray()));
-            
+        if(namespace == null || namespace.isEmpty()){           
+            doc = fixNamespace(doc);
+            namespace = doc.getDocumentElement().getNamespaceURI();            
         } 
         //sommige xml mag niet in mdWrap: vermijd METS binnen METS!
         if(getForbiddenNamespaces().contains(namespace)){
             throw new IllegalNamespaceException("namespace "+namespace+" is forbidden in mdWrap",namespace);
         }
         //indien XSD bekend, dan validatie hierop       
-        String schemaPath = getSchemaPath(doc);
+        String schemaPath = getSchemaPath(doc);        
         if(validate && schemaPath != null){      
             URL schemaURL = Context.getResource(schemaPath);
             log.debug("validating against "+schemaPath);
@@ -467,14 +421,6 @@ public class MetsUtils {
         XSLT.transform(doc,xsltDoc,baginfoOut);                
         return baginfoOut.toByteArray();
     } 
-    /*
-    public static HashMap<String, String> getBagInfoImporters() {
-        if(bagInfoImporters == null){
-            bagInfoImporters = (HashMap<String,String>) Beans.getBean("bagInfoImporters");
-            bagInfoImporters = bagInfoImporters != null ? bagInfoImporters: new HashMap<String,String>();
-        }
-        return bagInfoImporters;
-    }*/
 
     public static ArrayList<VelocityTemplate> getBaginfoTemplates() {
         if(baginfoTemplates == null){
@@ -486,6 +432,42 @@ public class MetsUtils {
             }
         }
         return baginfoTemplates;
+    }
+    public static Document fixNamespace(Document doc) throws NoNamespaceException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException, SAXException, IOException{
+        DocumentType docType = doc.getDoctype();  
+        String namespace = doc.getDocumentElement().getNamespaceURI();
+        //baseer je op naam van docType, of op naam root element
+        if(docType != null && docType.getName() != null && getDocTypeMapping().containsKey(docType.getName())){
+            namespace = getDocTypeMapping().get(docType.getName());
+        }else if(
+            doc.getDocumentElement() != null &&
+            getRootNameMapping().containsKey(doc.getDocumentElement().getTagName())
+        ){
+            namespace = getRootNameMapping().get(doc.getDocumentElement().getTagName());
+        }else{
+            throw new NoNamespaceException("no namespace could be found");
+        }            
+        
+        doc.getDocumentElement().setAttributeNS(
+            "http://www.w3.org/2000/xmlns/",
+            "xmlns:xsi",
+            "http://www.w3.org/1999/XMLSchema-instance"
+        );           
+        doc.getDocumentElement().setAttributeNS(
+            "http://www.w3.org/2000/xmlns/",
+            "xmlns:xlink",
+            "http://www.w3.org/1999/xlink"
+        );                              
+
+        /*
+         * aanpassen van namespace van een element niet mogelijk,
+         * dus daarom uitschrijven en terug inlezen van Document
+        */
+        doc.getDocumentElement().setAttribute("xmlns",namespace);                        
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        XML.DocumentToXML(doc,bout);
+        doc = XML.XMLToDocument(new ByteArrayInputStream(bout.toByteArray())); 
+        return doc;
     }
     
     

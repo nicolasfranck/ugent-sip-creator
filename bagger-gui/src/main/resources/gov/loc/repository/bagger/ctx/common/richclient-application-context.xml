@@ -172,8 +172,11 @@
                     <property name="errorColor" value="237,166,166" />                    
                 </bean>
                 <bean class="org.springframework.richclient.form.builder.support.ShowCaptionInStatusBarInterceptorFactory" />
-                <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />                
-                <bean class="org.springframework.richclient.text.TextComponentPopupInterceptorFactory" />               
+                <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />                      
+                <!--
+                    TODO: messages opzoeken voor undo/redo/cut/copy/paste/selectAll van deze klasse:                    
+                --> 
+                <bean class="org.springframework.richclient.text.TextComponentPopupInterceptorFactory" />                          
                 <bean class="org.springframework.richclient.list.ComboBoxAutoCompletionInterceptorFactory" />
             </list>
         </property>
@@ -563,7 +566,17 @@
                             </util:map>    
                         </entry>    
                     </util:map>    
-                </entry>               
+                </entry> 
+                <entry key="http://purl.org/dc/elements/1.1/">
+                    <util:map>
+                        <entry key="versionable" value="false" />
+                        <entry key="versions">
+                            <util:map>
+                                <entry key="default" value="metadata/xslt/marc2dc.xsl" />
+                            </util:map>    
+                        </entry>    
+                    </util:map>    
+                </entry>                
                 <entry key="http://www.loc.gov/mads/">
                     <util:map>
                         <entry key="versionable" value="false" />
@@ -613,8 +626,56 @@
                         </entry>
                     </util:map>
                 </entry>
+                <entry key="http://www.loc.gov/mods/v3">
+                    <util:map>
+                        <entry key="versionable" value="false" />
+                        <entry key="versions">
+                            <util:map>
+                                <entry key="default" value="metadata/xslt/dc2mods3.xsl" />
+                            </util:map>
+                        </entry>
+                    </util:map>
+                </entry>
             </util:map>            
-        </entry>       
+        </entry>    
+        <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/">
+            <util:map>
+                <entry key="http://www.loc.gov/MARC21/slim">
+                    <util:map>
+                        <entry key="versionable" value="false" />
+                        <entry key="versions">
+                            <util:map>
+                                <entry key="default" value="metadata/xslt/DC2MARC21slim.xsl" />
+                            </util:map>
+                        </entry>
+                    </util:map>
+                </entry>
+                <entry key="http://www.loc.gov/mods/v3">
+                    <util:map>
+                        <entry key="versionable" value="false" />
+                        <entry key="versions">
+                            <util:map>
+                                <entry key="default" value="metadata/xslt/dc2mods3.xsl" />
+                            </util:map>
+                        </entry>
+                    </util:map>
+                </entry>
+            </util:map>  
+        </entry>
+        <entry key="urn:isbn:1-931666-22-9">
+            <util:map>
+                <entry key="http://purl.org/dc/elements/1.1/">
+                    <util:map>
+                        <entry key="versionable" value="false" />
+                        <entry key="versions">
+                            <util:map>
+                                <entry key="default" value="metadata/xslt/ead2dc.xsl" />
+                            </util:map>
+                        </entry>
+                    </util:map>
+                </entry>
+            </util:map>    
+        </entry>   
     </util:map>
     
     <!--

@@ -4,12 +4,17 @@ import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.handlers.UpdateBagHandler;
 import gov.loc.repository.bagger.ui.util.LayoutUtil;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
@@ -27,6 +32,7 @@ public final class InfoFormsPane extends JPanel {
     private JLabel holeyValue;
     private JLabel serializeLabel;
     private JLabel serializeValue;
+    private JLabel saveLabel;
     protected JComboBox bagVersionList;
     private JCheckBox defaultProject;
     private JRadioButton noneButton;
@@ -111,12 +117,71 @@ public final class InfoFormsPane extends JPanel {
             infoPanel.setToolTipText(Context.getMessage("bagView.bagInfoInputPane.help"));
             Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
             infoPanel.setBorder(emptyBorder);
-            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
+
+            /*
+            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);                       
             infoPanel.add(getBagSettingsPanel(), gbc);
-            gbc = LayoutUtil.buildGridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.WEST);
-            infoPanel.add(getInfoInputPane(),gbc);            
+            
+            JLabel label = new JLabel(Context.getMessage("bagView.infoInputPane.name"));            
+            gbc = LayoutUtil.buildGridBagConstraints(0,1, 1, 1,0, 0,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            infoPanel.add(label,gbc);
+            
+            gbc = LayoutUtil.buildGridBagConstraints(0,2, 1, 1, 1, 1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            infoPanel.add(getInfoInputPane(),gbc);*/
+            
+            
+            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);                                               
+            
+            
+            JLabel labelInfoInputPane = new JLabel(Context.getMessage("bagView.infoInputPane.name"));            
+            gbc = LayoutUtil.buildGridBagConstraints(0,0,1,1,0, 0,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            infoPanel.add(labelInfoInputPane,gbc);
+            
+            gbc = LayoutUtil.buildGridBagConstraints(0,1, 1, 1, 1, 1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            infoPanel.add(getInfoInputPane(),gbc);
+            
+            gbc = LayoutUtil.buildGridBagConstraints(0,2,1, 1, 1, 1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            
+            
+            JPanel saveBagPanel = new JPanel(new GridLayout(1,0));
+            JLabel labelSaveBagPanel = new JLabel(Context.getMessage("bagView.saveBagPanel.name"));            
+            saveBagPanel.add(labelSaveBagPanel);
+            saveBagPanel.add(getSaveLabel());
+            
+            infoPanel.add(getBagSettingsPanel(), gbc);
         }
         return infoPanel;
+    }
+    public JLabel getSaveLabel() {
+        if(saveLabel == null){            
+            saveLabel = new JLabel(Context.getMessage("bagView.renameLabel.label"));            
+            saveLabel.setEnabled(false);
+            saveLabel.setHorizontalAlignment(SwingConstants.CENTER);            
+            saveLabel.setIcon(BagView.getInstance().getPropertyImage("bagView.renameLabel.icon"));
+            saveLabel.setToolTipText("Opslaan!");
+            saveLabel.setBorder(new LineBorder(saveLabel.getBackground(),1));
+            saveLabel.addMouseListener(new MouseAdapter(){			
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if(saveLabel.isEnabled()){
+                        if(BagView.getInstance().saveBagAsExecutor.isEnabled()){
+                            BagView.getInstance().saveBagAsExecutor.execute();
+                        }                        
+                    }
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    saveLabel.setBorder(new LineBorder(saveLabel.getBackground(),1));
+                }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if(saveLabel.isEnabled()){
+                        saveLabel.setBorder(new LineBorder(Color.GRAY,1));
+                    }                            
+                }
+            });     
+        }
+        return saveLabel;
     }
     public void setInfoPanel(JPanel infoPanel) {
         this.infoPanel = infoPanel;
@@ -263,5 +328,5 @@ public final class InfoFormsPane extends JPanel {
     	getInfoInputPane().populateForms();
     	getInfoInputPane().enableForms(false);
     	getInfoInputPane().invalidate();
-    }     
+    }        
 }
