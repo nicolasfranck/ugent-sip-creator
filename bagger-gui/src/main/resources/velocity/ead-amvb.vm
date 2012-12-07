@@ -34,12 +34,12 @@
             <physdesc encodinganalog="ISAD(G)3.1.5">
                 <extent>$record.get("identificatieOmvang")</extent>
                 <genreform>$record.get("identificatieVorm")</genreform>
-           </physdesc>       
+            </physdesc>       
             <origination encodinganalog="ISAD(G)3.2.1">
                 <persname rules="ISAAR(CPF)">$record.get("contextNaamArchiefvormer")</persname>
             </origination>
-            <abstract>
-        $inhoudAbstract]</abstract><langmaterial encodinganalog="ISAD(G) 3.4.3">$record.get("voorwaardenTaalSchrift")</langmaterial>
+            <abstract>$record.get("inhoudAbstract")</abstract>
+            <langmaterial encodinganalog="ISAD(G) 3.4.3">$record.get("voorwaardenTaalSchrift")</langmaterial>
             <container type="bagit">$record.get("Bag-Id")</container>
             <physloc>$record.get("identificatieBewaarplaats")</physloc>
             <repository>
