@@ -1,10 +1,11 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import ugent.bagger.bagitmets.validation.BagitMetsValidator;
-import ugent.bagger.exceptions.BagitMetsValidationException;
+import ugent.bagger.exporters.Exporter;
+import ugent.bagger.exporters.ExporterDSpaceMetsArchive;
 import ugent.bagger.helper.SwingUtils;
 
 public class ExportExecutor extends AbstractActionCommandExecutor {
@@ -15,24 +16,21 @@ public class ExportExecutor extends AbstractActionCommandExecutor {
    
     @Override
     public void execute() {        
-       SwingUtils.ShowBusy();
-       ArrayList<File>files = new ArrayList<File>();
+        SwingUtils.ShowBusy();        
+       
+        ArrayList<File>files = new ArrayList<File>();
+        int i = 0;
         for(File file:new File("/home/nicolas/bags").listFiles()){
-            files.add(file);
-        }
-        BagitMetsValidator validator = new BagitMetsValidator();
-        for(File file:files){
             try{
-                ArrayList<BagitMetsValidationException>warnings = validator.validate(file);
-                System.out.println("warnings.size = "+warnings.size());
-                System.out.println("warnings: ");
-                for(BagitMetsValidationException warning:warnings){
-                    System.out.println(warning);
-                }
-            }catch(BagitMetsValidationException e){
+                Exporter exporter = new ExporterDSpaceMetsArchive();
+                exporter.export(
+                    file,
+                    new FileOutputStream(new File("/tmp/dspace-mets-"+i+".zip"))
+                );
+            }catch(Exception e){
                 e.printStackTrace();
-            }
-        }
+            }            
+        }        
         SwingUtils.ShowDone();
     }
 }
