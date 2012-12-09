@@ -81,7 +81,17 @@ public final class XMLCrosswalkDialog extends JDialog{
                 String error = null;
                 try{
                     
-                    Document sourceDoc = XML.XMLToDocument(file);                                    
+                    Document sourceDoc = XML.XMLToDocument(file);    
+                    String namespace = sourceDoc.getDocumentElement().getNamespaceURI();
+                
+                    System.out.println("namespace: "+namespace);
+                    if(namespace == null || namespace.isEmpty()){
+                        System.out.println("fixing namespace");
+                        sourceDoc = MetsUtils.fixNamespace(sourceDoc);
+                        namespace = sourceDoc.getDocumentElement().getNamespaceURI();
+                        System.out.println("namespace: "+namespace);
+                    }
+                    
                     String filename = MetsUtils.getXsltPath(sourceDoc.getDocumentElement(),transformToNamespace);                    
                     Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));                    
                     Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc);                                         
@@ -195,6 +205,16 @@ public final class XMLCrosswalkDialog extends JDialog{
                 if(selectedFiles.length > 0){
                     try{                       
                         Document document = XML.XMLToDocument(selectedFiles[0]);
+                        String namespace = document.getDocumentElement().getNamespaceURI();
+                
+                        System.out.println("namespace: "+namespace);
+                        if(namespace == null || namespace.isEmpty()){
+                            System.out.println("fixing namespace");
+                            document = MetsUtils.fixNamespace(document);
+                            namespace = document.getDocumentElement().getNamespaceURI();
+                            System.out.println("namespace: "+namespace);
+                        }
+                        
                         transformFromNamespace = document.getDocumentElement().getNamespaceURI();                                            
                         
                         //elke xml moet namespace bevatten (geen oude DOCTYPE!)
@@ -286,6 +306,16 @@ public final class XMLCrosswalkDialog extends JDialog{
                                 new Object [] {selectedFiles[0]}
                             )
                         );
+                    }catch(Exception e){
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.import.Exception.description",
+                                new Object []{
+                                    file,e.getMessage()
+                                }
+                            )                            
+                        );                        
                     }
                 }
                 

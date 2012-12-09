@@ -18,6 +18,7 @@ import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.bagitmets.DefaultBagItMets;
+import ugent.bagger.exceptions.BagFetchForbiddenException;
 import ugent.bagger.exceptions.BagNoBagDirException;
 import ugent.bagger.exceptions.BagUnknownFormatException;
 import ugent.bagger.exceptions.FileNotReadableException;
@@ -78,13 +79,10 @@ public class OpenBagHandler extends AbstractAction {
         try{ 
             
             //leesbaar? schrijfbaar?
-            FUtils.checkFile(file,true);            
-            
-            bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
+            FUtils.checkFile(file,true); 
 
             //opgelet: een nieuw DefaultBag wordt aangemaakt, dus
-            //beter geen referentie bijhouden nu naar de oude           
-            
+            //beter geen referentie bijhouden nu naar de oude
             bagView.clearBagHandler.clearExistingBag();      
             
             //formaat correct?
@@ -93,8 +91,9 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
                     file
                 })
-            );            
-
+            );               
+            
+            bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
             bagView.getInfoFormsPane().setBagVersion(bagView.getBag().getVersion());
                         
             String fileName = file.getAbsolutePath();
@@ -212,6 +211,11 @@ public class OpenBagHandler extends AbstractAction {
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagNoBagDirException.title"),
                 Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file})
+            );
+        }catch(BagFetchForbiddenException e){
+            SwingUtils.ShowError(
+                Context.getMessage("clearBagHandler.BagFetchForbiddenException.title"),
+                Context.getMessage("clearBagHandler.BagFetchForbiddenException.description",new Object [] {file})
             );
         }
         

@@ -44,6 +44,14 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
             try{
                 Document inputDoc = XML.XMLToDocument(file);
                 String namespace = inputDoc.getDocumentElement().getNamespaceURI();
+                
+                System.out.println("namespace: "+namespace);
+                if(namespace == null || namespace.isEmpty()){
+                    System.out.println("fixing namespace");
+                    inputDoc = MetsUtils.fixNamespace(inputDoc);
+                    namespace = inputDoc.getDocumentElement().getNamespaceURI();
+                    System.out.println("namespace: "+namespace);
+                }
 
                 if(!MetsUtils.getXsltMap().containsKey(namespace)){                    
                     throw new NoTransformationFoundException();                    

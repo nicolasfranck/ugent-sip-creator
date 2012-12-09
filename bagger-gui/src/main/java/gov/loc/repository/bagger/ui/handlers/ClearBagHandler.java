@@ -22,6 +22,8 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.BagError;
 import ugent.bagger.params.BagErrorNoBagDir;
 import gov.loc.repository.bagger.ui.InfoInputPane;
+import gov.loc.repository.bagit.BagFile;
+import ugent.bagger.exceptions.BagFetchForbiddenException;
 
 public class ClearBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(ClearBagHandler.class);
@@ -40,10 +42,12 @@ public class ClearBagHandler extends AbstractAction {
             log.debug(ex.getMessage());
         }catch(BagNoBagDirException ex){
             log.debug(ex.getMessage());
+        }catch(BagFetchForbiddenException ex){
+            log.debug(ex.getMessage());
         }
     }
 
-    public void closeExistingBag() throws BagUnknownFormatException, BagNoBagDirException {
+    public void closeExistingBag() throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException {
     	// Closes Bag without popping up the Save Dialog Box for a Holey and Serialized Bag 
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
@@ -77,6 +81,8 @@ public class ClearBagHandler extends AbstractAction {
                     log.debug(ex.getMessage());
                 }catch(BagNoBagDirException ex){
                     log.debug(ex.getMessage());
+                }catch(BagFetchForbiddenException e){
+                    log.debug(e.getMessage());
                 }
             }
         };
@@ -87,7 +93,7 @@ public class ClearBagHandler extends AbstractAction {
         dialog.showDialog();
     }
     
-    public void clearExistingBag() throws BagUnknownFormatException, BagNoBagDirException {
+    public void clearExistingBag() throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException {
        
     	newDefaultBag(null);
         BagView bagView = BagView.getInstance();
@@ -112,12 +118,11 @@ public class ClearBagHandler extends AbstractAction {
                 
         
         Mets mets = new Mets();
-        infoInputPane.resetMets(mets);        
-        SwingUtils.setJComponentEnabled(infoInputPane.getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),false);        
+        infoInputPane.resetMets(mets);                
     	bagView.updateClearBag();
     }
 
-    public void newDefaultBag(File f) throws BagUnknownFormatException, BagNoBagDirException {
+    public void newDefaultBag(File f) throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException {
         
     	MetsBag bag = null;
     	String bagName = "";
@@ -132,7 +137,7 @@ public class ClearBagHandler extends AbstractAction {
             if(error instanceof BagErrorNoBagDir){
                 throw new BagNoBagDirException(f);
             }
-            e.printStackTrace();            
+                        
     	}
     	if(f == null) {            
             bagName = Context.getMessage("bag.label.noname");
@@ -145,12 +150,17 @@ public class ClearBagHandler extends AbstractAction {
         //indien bag == null, dan is er iets fout met het formaat van het bestand!
         if(bag != null){
             bag.setName(bagName);
-            bagView.setBag(bag);        
-            SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);
+            bagView.setBag(bag);                    
         }else{          
             throw new BagUnknownFormatException(f);
         }
         
+        //fetch wordt niet ondersteund!
+        for(BagFile tag:bag.getTags()){
+            if(tag.getFilepath().equals("fetch.txt")){
+                throw new BagFetchForbiddenException(f);
+            }
+        }
     }
     public void setConfirmSaveFlag(boolean confirmSaveFlag) {
         this.confirmSaveFlag = confirmSaveFlag;

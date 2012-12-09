@@ -115,8 +115,7 @@ public final class InfoInputPane extends JTabbedPane {
     }
     public void enableForms(boolean b) {              
     	
-    	setEnabled(b);
-        //getBagInfoForm().getControl().setEnabled(b);
+    	setEnabled(b);        
         getBagInfoForm().setEnabled(b);
         getMdSecPanel().setEnabled(b);
         getAmdSecsPanel().setEnabled(b);

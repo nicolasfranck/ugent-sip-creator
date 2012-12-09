@@ -14,6 +14,8 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 import ugent.bagger.filters.FileExtensionFilter;
@@ -113,41 +115,59 @@ public final class InfoFormsPane extends JPanel {
 
     public JPanel getInfoPanel() {
         if(infoPanel == null){
+            infoPanel = new JPanel(new GridBagLayout());
+            infoPanel.setToolTipText(Context.getMessage("bagView.bagInfoInputPane.help"));
+            /*Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
+            infoPanel.setBorder(emptyBorder);*/
+            infoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+            /*
+            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);                       
+            infoPanel.add(getBagSettingsPanel(), gbc);
             
-            infoPanel = new JPanel();
-            infoPanel.setLayout(new BoxLayout(infoPanel,BoxLayout.Y_AXIS));
+            JLabel label = new JLabel(Context.getMessage("bagView.infoInputPane.name"));            
+            gbc = LayoutUtil.buildGridBagConstraints(0,1, 1, 1,0, 0,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            infoPanel.add(label,gbc);
             
-            JLabel labelInfoInputPane = new JLabel(Context.getMessage("bagView.infoInputPane.name"));                                   
-            labelInfoInputPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-            labelInfoInputPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-            infoPanel.add(labelInfoInputPane);            
+            gbc = LayoutUtil.buildGridBagConstraints(0,2, 1, 1, 1, 1,GridBagConstraints.BOTH, GridBagConstraints.WEST);
+            infoPanel.add(getInfoInputPane(),gbc);*/
             
-            getInfoInputPane().setAlignmentX(Component.LEFT_ALIGNMENT);
-            infoPanel.add(getInfoInputPane());            
-           
+            JLabel labelInfoInputPane = new JLabel(Context.getMessage("bagView.infoInputPane.name"));            
+            labelInfoInputPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0,0,1,1,0, 0,GridBagConstraints.HORIZONTAL,GridBagConstraints.FIRST_LINE_START);
+            infoPanel.add(labelInfoInputPane,gbc);
+            
+            gbc = LayoutUtil.buildGridBagConstraints(0,1, 1, 1, 1, 1,GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START);
+            getInfoInputPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            infoPanel.add(getInfoInputPane(),gbc);
+            
+            gbc = LayoutUtil.buildGridBagConstraints(0,2,1, 1, 1, 1,GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START);           
             JPanel saveBagPanel = new JPanel(new GridLayout(1,0));
-            JLabel labelSaveBagPanel = new JLabel(Context.getMessage("bagView.saveBagPanel.name"));                                    
+            saveBagPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            JLabel labelSaveBagPanel = new JLabel(Context.getMessage("bagView.saveBagPanel.name"));                        
+            labelSaveBagPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             saveBagPanel.add(labelSaveBagPanel);
             JPanel buttonsSaveBagPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             buttonsSaveBagPanel.add(getSaveLabel());
-            saveBagPanel.add(buttonsSaveBagPanel);   
-            saveBagPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            saveBagPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-            infoPanel.add(saveBagPanel);
+            saveBagPanel.add(buttonsSaveBagPanel);
             
-            getBagSettingsPanel().setAlignmentX(Component.LEFT_ALIGNMENT);
-            getBagSettingsPanel().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-            infoPanel.add(getBagSettingsPanel());
+            saveBagPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            
+            infoPanel.add(saveBagPanel,gbc);
+            
+            gbc = LayoutUtil.buildGridBagConstraints(0,3,1,1,1,1,GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START);           
+            getBagSettingsPanel().setBorder(BorderFactory.createLineBorder(Color.RED));
+            infoPanel.add(getBagSettingsPanel(), gbc);
         }
         return infoPanel;
     }
     public JLabel getSaveLabel() {
         if(saveLabel == null){            
-            saveLabel = new JLabel(Context.getMessage("saveBagCommand.label"));            
+            saveLabel = new JLabel(Context.getMessage("bagView.renameLabel.label"));            
             saveLabel.setEnabled(false);
             saveLabel.setHorizontalAlignment(SwingConstants.CENTER);            
-            saveLabel.setIcon(getBagView().getPropertyImage("bag.save.thumbnail.icon"));
-            saveLabel.setToolTipText(Context.getMessage("saveBagCommand.label"));
+            saveLabel.setIcon(BagView.getInstance().getPropertyImage("bagView.renameLabel.icon"));
+            saveLabel.setToolTipText("Opslaan!");
             saveLabel.setBorder(new LineBorder(saveLabel.getBackground(),1));
             saveLabel.addMouseListener(new MouseAdapter(){			
                 @Override
@@ -231,7 +251,15 @@ public final class InfoFormsPane extends JPanel {
         this.bagNameValue = bagNameValue;
     }  
     
-    private JPanel createSettingsPanel() {    
+    private JPanel createSettingsPanel() {
+    	/*JPanel contentPane = new JPanel(new BorderLayout(5, 5));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));        
+        contentPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        JPanel mainPanel = new JPanel(new BorderLayout(0, 0));
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        mainPanel.add(createBagSettingsPanel(),BorderLayout.CENTER);		
+        contentPane.add(mainPanel, BorderLayout.NORTH);                        
+    	return contentPane;*/
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
         panel.add(createBagSettingsPanel(),BorderLayout.NORTH);
@@ -243,10 +271,10 @@ public final class InfoFormsPane extends JPanel {
         // bag name
         int row = 0;
         JLabel lblBagName = new JLabel(Context.getMessage("bag.label.name"));
-        GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE,GridBagConstraints.FIRST_LINE_START);
+        GridBagConstraints gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(lblBagName, gbc);        
-        gbc = LayoutUtil.buildGridBagConstraints(1, row, 3, 1, 3, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START);
+        gbc = LayoutUtil.buildGridBagConstraints(1, row, 3, 1, 3, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getBagNameValue(), gbc);
 
@@ -278,10 +306,10 @@ public final class InfoFormsPane extends JPanel {
 		
         // is packed?          
         row++;
-    	gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START);
+    	gbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 0, 0, GridBagConstraints.NONE, GridBagConstraints.WEST);
         gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getSerializeLabel(), gbc);        
-        gbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START);
+        gbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST);
     	gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getSerializeValue(), gbc);
        

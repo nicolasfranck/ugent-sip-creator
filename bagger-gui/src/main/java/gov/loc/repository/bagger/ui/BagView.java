@@ -541,6 +541,7 @@ public class BagView extends DefaultView {
         getInfoFormsPane().getBagVersionValue().setText("");
         getInfoFormsPane().getBagNameValue().setText("");
         getInfoFormsPane().getSerializeValue().setText("");
+        getInfoFormsPane().getSaveLabel().setEnabled(false);
     	addDataToolBarAction.setEnabled(false);
     	removeDataToolBarAction.setEnabled(false);
     	addDataExecutor.setEnabled(false);
@@ -560,6 +561,7 @@ public class BagView extends DefaultView {
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);
         renameLabel.setEnabled(true);
+        getInfoFormsPane().getSaveLabel().setEnabled(true);
         //addTagFileToolBarAction.setEnabled(true);
         getBagButtonPanel().invalidate();
     }
@@ -567,6 +569,7 @@ public class BagView extends DefaultView {
     public void updateOpenBag() {
         addDataToolBarAction.setEnabled(true);
         renameLabel.setEnabled(true);
+        getInfoFormsPane().getSaveLabel().setEnabled(true);
         addDataExecutor.setEnabled(true);
         saveBagExecutor.setEnabled(true);
         //addTagFileToolBarAction.setEnabled(true);        
