@@ -14,6 +14,9 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import org.apache.commons.vfs2.FileSystemException;
+import ugent.bagger.exceptions.BagFetchForbiddenException;
+import ugent.bagger.exceptions.BagNoDataException;
 import ugent.premis.Premis;
 
 /**
@@ -43,11 +46,11 @@ public final class MetsBag extends DefaultBag{
     protected void init(){
         initOldFileList();       
     }
-    public MetsBag() {          
+    public MetsBag() throws BagFetchForbiddenException, FileSystemException, BagNoDataException {          
         super();            
         init();
     }
-    public MetsBag(File rootDir, String version) {
+    public MetsBag(File rootDir, String version) throws BagFetchForbiddenException, FileSystemException, BagNoDataException {
         super(rootDir,version);        
         init();
     }    

@@ -122,13 +122,24 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     }   
     public void deleteSelected(){
         if(getTable().getSelectedRows().length > 0){
+            boolean doDelete = SwingUtils.confirm(
+                Context.getMessage("EditMdSecPropertiesTable.delete.confirm.title"),
+                Context.getMessage(
+                    "EditMdSecPropertiesTable.delete.confirm.description",
+                    new Object [] {getTable().getSelectedRows().length}
+                )
+            );
+            if(!doDelete){
+                return;
+            }
+            
             for(MdSecProperties mdSecProperties:getSelections()){                
                 if(getExceptions().contains(mdSecProperties.getMdSec())){
                     SwingUtils.ShowError(
                         Context.getMessage("EditMdSecPropertiesTable.deleteSelected.deny.title"),
                         Context.getMessage("EditMdSecPropertiesTable.deleteSelected.deny.description")
                     );
-                }else{
+                }else{                    
                     deleteMdSec(mdSecProperties.getMdSec());
                 }                                                
             }            

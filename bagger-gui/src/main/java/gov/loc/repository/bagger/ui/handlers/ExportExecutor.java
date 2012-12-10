@@ -1,5 +1,6 @@
 package gov.loc.repository.bagger.ui.handlers;
 
+import java.awt.Dialog;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import org.springframework.richclient.command.support.AbstractActionCommandExecu
 import ugent.bagger.exporters.Exporter;
 import ugent.bagger.exporters.ExporterDSpaceMetsArchive;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.wizards.ExportWizardDialog;
 
 public class ExportExecutor extends AbstractActionCommandExecutor {
  
@@ -16,8 +18,12 @@ public class ExportExecutor extends AbstractActionCommandExecutor {
    
     @Override
     public void execute() {        
-        SwingUtils.ShowBusy();        
-       
+        SwingUtils.ShowBusy();    
+        
+        ExportWizardDialog dialog = new ExportWizardDialog("ExportWizardDialog");        
+        dialog.showDialog();
+        
+        /*
         ArrayList<File>files = new ArrayList<File>();
         int i = 0;
         for(File file:new File("/home/nicolas/bags").listFiles()){
@@ -33,6 +39,6 @@ public class ExportExecutor extends AbstractActionCommandExecutor {
             }   
             i++;
         }        
-        SwingUtils.ShowDone();
+        SwingUtils.ShowDone();*/
     }
 }

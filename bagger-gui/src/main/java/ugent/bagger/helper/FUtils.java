@@ -335,7 +335,7 @@ public class FUtils {
     }
    
     public static void main(String [] args) {
-        try{
+        /*try{
             checkFile(new File("/root"));
         }catch(FileNotWritableException e){
             System.out.println("file not writable");
@@ -348,6 +348,14 @@ public class FUtils {
         ArrayList<File>list = listFiles(new File("/cdrom"));
         for(File f:list){
             System.out.println("file: "+f);
+        }*/
+        String entry = getEntryStringFor("/home/nicolas/bags/baggie.zip","baggie/data");
+        System.out.println("entry: "+entry);
+        try{            
+            FileObject f = resolveFile(entry+"/rklzjer");
+            System.out.println("entry '"+entry+"' exists: "+f.exists());
+        }catch(Exception e){
+            e.printStackTrace();
         }
         
     }

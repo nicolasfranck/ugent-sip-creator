@@ -39,6 +39,20 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
     	TreePath[] paths = bagView.getBagPayloadTree().getSelectionPaths();
         
     	if (paths != null) {
+            
+            boolean doDelete = SwingUtils.confirm(
+                Context.getMessage("RemoveDataHandler.confirm.title"),
+                Context.getMessage(
+                    "RemoveDataHandler.confirm.description",
+                    new Object [] {paths.length}
+                )
+            );
+            if(!doDelete){
+                SwingUtils.ShowDone();
+                return;
+            }
+            
+            
             DefaultTreeModel model = (DefaultTreeModel)bagView.getBagPayloadTree().getModel();
             for (int i=0; i < paths.length; i++) {
                 TreePath path = paths[i];

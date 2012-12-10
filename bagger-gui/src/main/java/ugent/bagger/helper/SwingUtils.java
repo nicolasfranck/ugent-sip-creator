@@ -222,4 +222,10 @@ public class SwingUtils {
         }
         return uiManagerMessages;
     }
+    public static boolean confirm(String title,String text){
+        return confirm(getFrame(),title,text);
+    }
+    public static boolean confirm(Component parent,String title,String text){               
+        return JOptionPane.showConfirmDialog(parent,text,title,JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;        
+    }
 }

@@ -19,7 +19,12 @@ import java.io.File;
 import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import ugent.bagger.exceptions.BagFetchForbiddenException;
+import ugent.bagger.exceptions.BagNoDataException;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.FUtils;
 
 public class DefaultBag {
     protected static final Log log = LogFactory.getLog(DefaultBag.class);
@@ -69,19 +74,51 @@ public class DefaultBag {
     protected File bagFile = null;
 
 
-    public DefaultBag() {            
+    public DefaultBag() throws BagFetchForbiddenException, FileSystemException, BagNoDataException {            
         this(null,Version.V0_96.versionString);
     }
 
-    public DefaultBag(File rootDir, String version) {
+    public DefaultBag(File rootDir, String version) throws BagFetchForbiddenException, FileSystemException, BagNoDataException {
         this.versionString = version;
         init(rootDir);
     }
 
-    private void init(File rootDir){
+    private void init(File rootDir) throws BagFetchForbiddenException, FileSystemException, BagNoDataException{
         boolean newBag = rootDir == null;
         resetStatus();
         this.rootDir = rootDir;
+        
+        if(!newBag){
+            if(rootDir.isDirectory()){
+                //check fetch.txt
+                File fetchFile = new File(rootDir,"fetch.txt");
+                if(fetchFile.exists()){
+                    throw new BagFetchForbiddenException(rootDir);
+                }
+                //check data directory
+                File dataDir = new File(rootDir,"data");
+                if(!(dataDir.exists() && dataDir.isDirectory())){
+                    throw new BagNoDataException(rootDir);
+                }
+            }else{
+                String basename = rootDir.getName();
+                int index = basename.lastIndexOf('.');
+                String n = index >= 0 ? basename.substring(0,index) : basename;
+
+                //check fetch.txt            
+                String entry = FUtils.getEntryStringFor(rootDir.getAbsolutePath(),n+"/fetch.txt");
+                FileObject fobject = FUtils.resolveFile(entry);
+                if(fobject.exists()){
+                    throw new BagFetchForbiddenException(rootDir);
+                }
+                //check data directory
+                entry = FUtils.getEntryStringFor(rootDir.getAbsolutePath(),n+"/data");
+                fobject = FUtils.resolveFile(entry);
+                if(!fobject.exists()){
+                    throw new BagNoDataException(rootDir);
+                }
+            }       
+        }
 
         log.debug("DefaultBag.init file: "+rootDir+", version: "+versionString);
         

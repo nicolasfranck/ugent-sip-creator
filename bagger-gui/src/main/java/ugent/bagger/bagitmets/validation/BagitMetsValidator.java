@@ -16,6 +16,8 @@ import java.io.File;
 import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import ugent.bagger.exceptions.BagFetchForbiddenException;
+import ugent.bagger.exceptions.BagNoDataException;
 import ugent.bagger.exceptions.BagitMetsValidationException;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.PremisUtils;
@@ -36,8 +38,7 @@ public class BagitMetsValidator {
         if(!file.isDirectory()){
             throw new BagitMetsValidationException(RESULT.BAGIT_NOT_DIRECTORY,file+" is not a directory");
         }        
-        System.out.println("file "+file+" is directory");
-       
+        System.out.println("file "+file+" is directory");       
         
         //all files readable?
         ArrayList<File>notReadableFiles = FUtils.getNotReadableFiles(file);
@@ -45,7 +46,17 @@ public class BagitMetsValidator {
             throw new BagitMetsValidationException(RESULT.BAGIT_FILES_NOT_READABLE,"not all files in directory "+file+" are readable");
         }
         System.out.println("all files are readable");
-        MetsBag metsBag = new MetsBag(file,null);    
+        MetsBag metsBag = null;
+        try{
+            metsBag = new MetsBag(file,null);    
+        }catch(BagFetchForbiddenException e){
+            throw new BagitMetsValidationException(RESULT.BAGIT_FETCH_FORBIDDEN,e.getMessage());
+        }catch(BagNoDataException e){
+            throw new BagitMetsValidationException(RESULT.BAGIT_DATA_MISSING,e.getMessage());
+        }catch(Exception e){
+            throw new BagitMetsValidationException(RESULT.UNKNOWN_EXCEPTION,e.getMessage());
+        }
+        
         
         //validate bag
         CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
@@ -81,12 +92,11 @@ public class BagitMetsValidator {
             System.out.println("ns: "+ns+" <=> "+NS.METS.ns());
             if(!ns.equals(NS.METS.ns())){
                 throw new Exception();
-            }
+            }            
             
-            //String schemaPath = MetsUtils.getSchemaPath(document);
-           
-            //String schemaPath = "file:///home/nicolas/Bagger-LC/bagger-gui/src/main/resources/metadata/xsd/mets/mets-1.9.xsd";
-            /*System.out.println("schemaPath: "+schemaPath);
+            /*
+            String schemaPath = MetsUtils.getSchemaPath(document);           
+            System.out.println("schemaPath: "+schemaPath);
             URL schemaURL = Context.getResource(schemaPath);            
             System.out.println("schemaURL: "+schemaURL);
             Schema schema = XML.createSchema(schemaURL);                        

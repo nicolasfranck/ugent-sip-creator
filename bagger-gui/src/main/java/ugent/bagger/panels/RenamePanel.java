@@ -362,7 +362,7 @@ public class RenamePanel extends JPanel{
         SwingUtils.setJComponentEnabled(getRenameButtonPanel(),enabled && !getRenameParamsForm().hasErrors());
                         
         getRenumberParamsForm().setEnabled(enabled);                    
-        SwingUtils.setJComponentEnabled(getRenumberButtonPanel(),enabled && !getRenameParamsForm().hasErrors());
+        SwingUtils.setJComponentEnabled(getRenumberButtonPanel(),enabled && !getRenumberParamsForm().hasErrors());
     }
     public void setFileSystemTree(JTree fileSystemTree) {
         this.fileSystemTree = fileSystemTree;
@@ -585,8 +585,10 @@ public class RenamePanel extends JPanel{
         getRenumberButtonPanel().add(submitRenumberButton);
         simulateRenumberButton = new JButton(Context.getMessage("simulate"));
         getRenumberButtonPanel().add(simulateRenumberButton);
-
-        //submitButton.setEnabled(false);
+        
+        System.out.println("submitRenumberButton.enabled: "+submitRenumberButton.isEnabled());
+        System.out.println("simulateRenumberButton.enabled: "+simulateRenumberButton.isEnabled());
+        
         submitRenumberButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {                
@@ -602,15 +604,19 @@ public class RenamePanel extends JPanel{
                 renumber();               
             }
         });
+        /*
         getRenumberParamsForm().addValidationListener(new ValidationListener(){
             @Override
             public void validationResultsChanged(ValidationResults results) {                
+                System.out.println("validation results: "+results.toString());
+                for(Object message:results.getMessages()){
+                    System.out.println("message: "+message);
+                }
                 submitRenumberButton.setEnabled(!results.getHasErrors());                
                 simulateRenumberButton.setEnabled(!results.getHasErrors());
             }
-        });
+        });*/
         
-        //simulateButton.setEnabled(false);
         simulateRenumberButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){               
@@ -627,6 +633,9 @@ public class RenamePanel extends JPanel{
             }
         });    
 
+        
+        
+        
         panel.add(getRenumberButtonPanel());
         
         panel.setBorder(BorderFactory.createEmptyBorder(BORDERWIDTH,BORDERWIDTH,BORDERWIDTH,BORDERWIDTH));
@@ -704,9 +713,8 @@ public class RenamePanel extends JPanel{
                 submitRenameButton.setEnabled(!results.getHasErrors());
                 simulateRenameButton.setEnabled(!results.getHasErrors());
             }
-        });
+        });        
         
-        //simulateButton.setEnabled(false);
         simulateRenameButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){               

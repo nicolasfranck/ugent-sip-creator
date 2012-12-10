@@ -20,7 +20,7 @@ public class RenumberParams {
     private PaddingChar paddingChar = PaddingChar.valueOf("NULL");
     private boolean overWrite = false;
     private boolean simulateOnly = false;
-    private ErrorAction onErrorAction = ErrorAction.skip;
+    private ErrorAction onErrorAction = ErrorAction.undoAll;
     private StartPosType startPosType = StartPosType.RELATIVE;
     private StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
     private String separatorBefore = "-";

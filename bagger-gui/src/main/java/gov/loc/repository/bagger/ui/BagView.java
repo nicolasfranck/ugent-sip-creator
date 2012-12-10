@@ -195,7 +195,9 @@ public class BagView extends DefaultView {
 
     public MetsBag getBag() {
         if(bag == null){
-            bag = new MetsBag();
+            try{
+                bag = new MetsBag();
+            }catch(Exception e){}            
         }
         return bag;
     }

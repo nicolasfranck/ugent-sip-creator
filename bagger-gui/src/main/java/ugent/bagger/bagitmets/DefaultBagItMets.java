@@ -52,7 +52,7 @@ public class DefaultBagItMets extends BagItMets{
         Mets mets = null;  
         BagView bagView = BagView.getInstance();
         
-        if(bagView.getBag().getSerialMode() != DefaultBag.NO_MODE){            
+        if(bagView.getBag().getSerialMode() != MetsBag.NO_MODE){            
             pathMets = FUtils.getEntryStringFor(bag.getFile().getAbsolutePath(),bagView.getBag().getName()+"/mets.xml");
         }else{
             pathMets = FUtils.getEntryStringFor(bag.getFile().getAbsolutePath(),"mets.xml");            

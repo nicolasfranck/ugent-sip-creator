@@ -44,16 +44,7 @@ public class RenameParamsForm extends AbstractForm{
             builder.add(field);
             builder.row();
         }        
-        Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
-        final JComboBox comboBox = ((JComboBox)b.getControl());
-        
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                comboBox.setEditable(false)                ;
-                comboBox.setSelectedItem(ErrorAction.ignore);
-            }        
-        });
+        Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());        
         builder.add(b);
         builder.row();
         return builder.getForm();

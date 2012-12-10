@@ -1,19 +1,12 @@
 package ugent.bagger.forms;
 
-import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagit.BagFactory;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
 import org.springframework.binding.form.FormModel;
-import org.springframework.binding.validation.ValidationListener;
-import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
@@ -51,7 +44,14 @@ public class CreateBagsParamsForm extends AbstractForm{
             JFileChooser.DIRECTORIES_ONLY,
             true,
         JFileChooser.OPEN_DIALOG);          
-        Binding fileSelectBinding = new FileSelectBinding(getFormModel(),"directories",fileChooser,"%s geselecteerd",Context.getMessage("csvParseParamsForm.files.buttonText"),SwingUtils.getFrame());        
+        Binding fileSelectBinding = new FileSelectBinding(
+            getFormModel(),
+            "directories",
+            fileChooser,
+            Context.getMessage("JFileChooser.selected"),
+            Context.getMessage("JFileChooser.buttonText"),
+            SwingUtils.getFrame()
+        );        
         builder.add(fileSelectBinding);
         builder.row();
         
@@ -88,7 +88,14 @@ public class CreateBagsParamsForm extends AbstractForm{
         
         //outputDir
         fileChooser = SwingUtils.createFileChooser(null,null,JFileChooser.DIRECTORIES_ONLY,false,JFileChooser.OPEN_DIALOG);        
-        final Binding outputDirBinding = new FileSelectBinding(getFormModel(),"outputDir",fileChooser,"%s geselecteerd",Context.getMessage("csvParseParamsForm.files.buttonText"),SwingUtils.getFrame());                        
+        final Binding outputDirBinding = new FileSelectBinding(
+            getFormModel(),
+            "outputDir",
+            fileChooser,
+            Context.getMessage("JFileChooser.selected"),
+            Context.getMessage("JFileChooser.buttonText"),
+            SwingUtils.getFrame()
+        );                        
         SwingUtils.setJComponentEnabled(outputDirBinding.getControl(),!createBagParams.isBagInPlace());
         builder.add(outputDirBinding);
         builder.row();

@@ -34,11 +34,11 @@ public abstract class Exporter {
                 FileNotFoundException,
                 ParseException;
     ArrayList<BagitMetsValidationException> validate(File file) throws BagitMetsValidationException {
-        ArrayList<BagitMetsValidationException>warnings = new ArrayList<BagitMetsValidationException>();
         
+        ArrayList<BagitMetsValidationException>warnings = new ArrayList<BagitMetsValidationException>();        
         BagitMetsValidator validator = new BagitMetsValidator();
-        validator.validate(file);
-                
+        validator.validate(file);                
         return warnings;    
+        
     }
 }

@@ -14,7 +14,10 @@ public enum Radix {
     }
     @Override
     public String toString(){
-        String translated = Context.getMessage("Radix."+c);
+        String translated = null;
+        try{
+            translated = Context.getMessage("Radix."+c);
+        }catch(Exception e){}        
         return translated != null ? translated : c;        
     }
 }

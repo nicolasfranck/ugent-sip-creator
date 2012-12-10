@@ -793,17 +793,25 @@
         <value>DC-Language</value>        
     </util:list>
     <util:map id="exporters" map-class="java.util.HashMap">
-        <entry key="dspace-simple-archive">
-            <util:map>
-                <entry key="name" value="DSpace Simple Archive" />
+        <entry key="DSpace Simple Archive">
+            <util:map>                
                 <entry key="class" value="ugent.bagger.exporters.ExportDSpaceSimpleArchive" />
             </util:map>    
         </entry>   
-        <entry key="dspace-mets-archive">
-            <util:map>
-                <entry key="name" value="DSpace Mets Archive" />
-                <entry key="class" value="ugent.bagger.exporters.ExportDSpaceMetsArchive" />
+        <entry key="DSpace Mets Archive">
+            <util:map>                
+                <entry key="class" value="ugent.bagger.exporters.ExportDSpaceMetsArchive" />                
+                <!--mdSec list is filtered to check wether its metadata can be exported -->
+                <entry key="metadataFilter" value-ref="namespaceMdSecFilter" />                
             </util:map>    
         </entry>
-    </util:map>
+    </util:map>    
+    
+    <bean id="namespaceMdSecFilter" class="ugent.bagger.exporters.NamespaceMdSecFilter" >
+        <property name="namespaces">
+            <util:list value-type="java.lang.String" list-class="java.util.ArrayList">
+                <value>http://www.loc.gov/mods/v3</value>
+            </util:list>
+        </property>
+    </bean>
 </beans>

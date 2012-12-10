@@ -2,10 +2,8 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.InfoFormsPane;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -18,12 +16,12 @@ import ugent.bagger.exceptions.BagNoBagDirException;
 import ugent.bagger.exceptions.BagUnknownFormatException;
 import ugent.bagger.helper.BagitUtils;
 import ugent.bagger.helper.Context;
-import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.BagError;
 import ugent.bagger.params.BagErrorNoBagDir;
 import gov.loc.repository.bagger.ui.InfoInputPane;
 import gov.loc.repository.bagit.BagFile;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
+import ugent.bagger.exceptions.BagNoDataException;
 
 public class ClearBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(ClearBagHandler.class);
@@ -44,10 +42,12 @@ public class ClearBagHandler extends AbstractAction {
             log.debug(ex.getMessage());
         }catch(BagFetchForbiddenException ex){
             log.debug(ex.getMessage());
+        }catch(BagNoDataException ex){
+            log.debug(ex.getMessage());
         }
     }
 
-    public void closeExistingBag() throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException {
+    public void closeExistingBag() throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException, BagNoDataException {
     	// Closes Bag without popping up the Save Dialog Box for a Holey and Serialized Bag 
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
@@ -83,6 +83,8 @@ public class ClearBagHandler extends AbstractAction {
                     log.debug(ex.getMessage());
                 }catch(BagFetchForbiddenException e){
                     log.debug(e.getMessage());
+                }catch(BagNoDataException e){
+                    log.debug(e.getMessage());
                 }
             }
         };
@@ -93,7 +95,7 @@ public class ClearBagHandler extends AbstractAction {
         dialog.showDialog();
     }
     
-    public void clearExistingBag() throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException {
+    public void clearExistingBag() throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException, BagNoDataException {
        
     	newDefaultBag(null);
         BagView bagView = BagView.getInstance();
@@ -122,23 +124,27 @@ public class ClearBagHandler extends AbstractAction {
     	bagView.updateClearBag();
     }
 
-    public void newDefaultBag(File f) throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException {
+    public void newDefaultBag(File f) throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException, BagNoDataException {
         
     	MetsBag bag = null;
     	String bagName = "";
         BagView bagView = BagView.getInstance();        
         
-    	try {                                
+    	try {               
             bag = new MetsBag(f,null);            
-    	}catch(Exception e){     
+    	}catch(BagNoDataException e){
+            throw e;
+        }catch(BagFetchForbiddenException e){
+            throw e;
+        }catch(Exception e){     
             String message = e.getMessage();
             log.error(message);            
             BagError error = BagitUtils.parseBagError(message);
             if(error instanceof BagErrorNoBagDir){
                 throw new BagNoBagDirException(f);
-            }
-                        
+            }                        
     	}
+        
     	if(f == null) {            
             bagName = Context.getMessage("bag.label.noname");
     	}else{
@@ -153,14 +159,7 @@ public class ClearBagHandler extends AbstractAction {
             bagView.setBag(bag);                    
         }else{          
             throw new BagUnknownFormatException(f);
-        }
-        
-        //fetch wordt niet ondersteund!
-        for(BagFile tag:bag.getTags()){
-            if(tag.getFilepath().equals("fetch.txt")){
-                throw new BagFetchForbiddenException(f);
-            }
-        }
+        }        
     }
     public void setConfirmSaveFlag(boolean confirmSaveFlag) {
         this.confirmSaveFlag = confirmSaveFlag;

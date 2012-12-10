@@ -1,7 +1,5 @@
 package gov.loc.repository.bagger.ui.handlers;
 
-import com.anearalone.mets.AmdSec;
-import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
@@ -11,8 +9,6 @@ import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
@@ -20,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
 import ugent.bagger.exceptions.BagNoBagDirException;
+import ugent.bagger.exceptions.BagNoDataException;
 import ugent.bagger.exceptions.BagUnknownFormatException;
 import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
@@ -28,7 +25,6 @@ import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.premis.Premis;
-import ugent.premis.PremisIO;
 
 public class OpenBagHandler extends AbstractAction {
     private static final Log log = LogFactory.getLog(OpenBagHandler.class);
@@ -76,7 +72,8 @@ public class OpenBagHandler extends AbstractAction {
         
         BagView bagView = BagView.getInstance();        
         
-        try{ 
+        try{
+            bagView.getInfoFormsPane().getInfoInputPane().enableForms(false);      
             
             //leesbaar? schrijfbaar?
             FUtils.checkFile(file,true); 
@@ -103,8 +100,10 @@ public class OpenBagHandler extends AbstractAction {
             int i = name.lastIndexOf('.');
             String baseName = (i >= 0) ? name.substring(0,i):name;
             String extension = "";
+            System.out.println("name: "+name+", baseName: "+baseName);
             if (i > 0 && i < name.length() - 1) {
                 extension = name.substring(i + 1).toLowerCase();
+                System.out.println("extension: "+extension);
                 if (extension.contains("gz")) {
                     bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);                
                     bagView.getBag().setSerialMode(DefaultBag.TAR_GZ_MODE);
@@ -122,11 +121,13 @@ public class OpenBagHandler extends AbstractAction {
                     bagView.getBag().setSerialMode(DefaultBag.ZIP_MODE);
                     bagView.getBag().isSerial(true);
                 } else {                
+                    System.out.println("no mode!");
                     bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);                
                     bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
                     bagView.getBag().isSerial(false);
                 }
             } else {
+                System.out.println("no_label: "+DefaultBag.NO_LABEL);
                 bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);            
                 bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
                 bagView.getBag().isSerial(false);
@@ -173,7 +174,7 @@ public class OpenBagHandler extends AbstractAction {
             try{
                 premis = PremisUtils.setPremis(mets);
             }catch(Exception e){
-                e.printStackTrace();
+                log.debug(e);                
             }
             
             bagView.getBag().setPremis(premis);                
@@ -186,16 +187,19 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.FileNotWritableException.description",new Object [] {file})
             );
         }catch(FileNotReadableException e){
+            log.debug(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotReadableException.title"),
                 Context.getMessage("clearBagHandler.FileNotReadableException.description",new Object [] {file})
             );                     
         }catch(FileNotFoundException e){
+           log.debug(e.getMessage());
            SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotFoundException.title"),
                 Context.getMessage("clearBagHandler.FileNotFoundException.description",new Object [] {file})
             );            
         }catch(BagUnknownFormatException e){
+            log.debug(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagUnknownFormatException.title"),
                 Context.getMessage("clearBagHandler.BagUnknownFormatException.description",new Object [] {file})
@@ -213,9 +217,16 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file})
             );
         }catch(BagFetchForbiddenException e){
+            log.debug(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagFetchForbiddenException.title"),
                 Context.getMessage("clearBagHandler.BagFetchForbiddenException.description",new Object [] {file})
+            );
+        }catch(BagNoDataException e){
+            log.debug(e.getMessage());
+            SwingUtils.ShowError(
+                Context.getMessage("clearBagHandler.BagNoDataException.title"),
+                Context.getMessage("clearBagHandler.BagNoDataException.description",new Object [] {file})
             );
         }
         

@@ -9,9 +9,9 @@ import org.springframework.rules.constraint.property.RequiredIfTrue;
 import org.springframework.rules.support.DefaultRulesSource;
 import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.CreateBagsParams;
+import ugent.bagger.params.ExportParams;
 import ugent.bagger.params.NewBagParams;
 import ugent.bagger.params.RenameParams;
-import ugent.bagger.params.RenumberParams;
 import ugent.bagger.params.ValidateManifestParams;
 
 
@@ -90,9 +90,17 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         renameParamsRules.add(required("source"));
         addRules(renameParamsRules);
         
-        //renumber
-        Rules renumberParamsRules = new Rules(RenumberParams.class);
-        renumberParamsRules.add(required("source"));
-        addRules(renumberParamsRules);
+        //exportParams
+        Rules exportParamsRules = new Rules(ExportParams.class);
+        exportParamsRules.add(required("format"));
+        exportParamsRules.add(value("outputFile",new Constraint(){
+            @Override
+            public boolean test(Object o) {
+                ArrayList<File>list = (ArrayList<File>)o;                
+                System.out.println("outputFile: "+list);
+                return list != null && !list.isEmpty();
+            }        
+        }));   
+        addRules(exportParamsRules);
     }     
 }

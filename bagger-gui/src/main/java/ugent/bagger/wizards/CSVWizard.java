@@ -64,8 +64,7 @@ public class CSVWizard extends AbstractWizard {
                 record.clear();                        
                 
                 //set defaults
-                for(Entry<String,String>entry:defaultMap.entrySet()){
-                    System.out.println("setting default key '"+entry.getKey()+"' with value '"+entry.getValue()+"'");
+                for(Entry<String,String>entry:defaultMap.entrySet()){                 
                     record.put(entry.getKey(),entry.getValue());
                 }
                 //set new values
@@ -80,8 +79,7 @@ public class CSVWizard extends AbstractWizard {
     }
 
     @Override
-    protected boolean onFinish() {
-        
+    protected boolean onFinish() {        
        
         try{                        
             final VelocityTemplate vt = (VelocityTemplate) getCsv2WizardPage().getCsv2Panel().getTemplateComboBox().getSelectedItem();
@@ -111,8 +109,7 @@ public class CSVWizard extends AbstractWizard {
                                 Set<String>keys = defaultMap.keySet();
                                 for(String key:keys){
                                     if(!map.containsKey(key)){
-                                        String value = defaultMap.get(key);
-                                        System.out.println("setting default key '"+key+"' with value '"+value+"'");
+                                        String value = defaultMap.get(key);                                    
                                         map.put(key,value);
                                     }
                                 }

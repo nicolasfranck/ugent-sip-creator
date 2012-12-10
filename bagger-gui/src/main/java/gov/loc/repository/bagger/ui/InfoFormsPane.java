@@ -101,8 +101,7 @@ public final class InfoFormsPane extends JPanel {
 
     public JLabel getSerializeValue() {
         if(serializeValue == null){
-            serializeValue = new JLabel("");
-            serializeValue.setVisible(false);
+            serializeValue = new JLabel("");                        
         }
         return serializeValue;
     }
@@ -232,8 +231,7 @@ public final class InfoFormsPane extends JPanel {
     }  
     
     private JPanel createSettingsPanel() {    
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+        JPanel panel = new JPanel(new BorderLayout());        
         panel.add(createBagSettingsPanel(),BorderLayout.NORTH);
         return panel;
     }
@@ -284,8 +282,7 @@ public final class InfoFormsPane extends JPanel {
         gbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START);
     	gbc.insets = new Insets(0, 0, 5, 5);
         pane.add(getSerializeValue(), gbc);
-       
-        
+               
         return pane;
     }
 

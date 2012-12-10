@@ -45,7 +45,7 @@ public class ExporterDSpaceMetsArchive extends Exporter{
         Mets mets = MetsUtils.readMets(new File(dir,"mets.xml"));
         
         //retrieve metadata
-        ArrayList<MdSec>metadata = getMetadata(mets);
+        ArrayList<MdSec>metadata = getMetadata(mets);        
         
         //create export
         DSpaceSIPMets exporter = new DSpaceSIPMets();        
@@ -56,8 +56,7 @@ public class ExporterDSpaceMetsArchive extends Exporter{
            Element element = mdWrap.getXmlData().get(0);
            exporter.addDescriptiveMD(type,element);           
         }
-        for(FileSec.FileGrp fileGroup:mets.getFileSec().getFileGrp()){
-            System.out.println("fileGroup USE "+fileGroup.getUse());
+        for(FileSec.FileGrp fileGroup:mets.getFileSec().getFileGrp()){            
             if(!fileGroup.getUse().equals("payloads")){
                 continue;
             }

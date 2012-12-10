@@ -3,6 +3,8 @@ package ugent.bagger.wizards;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import org.springframework.binding.validation.ValidationListener;
+import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.wizard.AbstractWizardPage;
 import ugent.bagger.panels.CSV1Panel;
 
@@ -20,6 +22,15 @@ public class CSVWizardPage1 extends AbstractWizardPage {
             csv1Panel = new CSV1Panel();
             csv1Panel.setPreferredSize(new Dimension(500,400));
             csv1Panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+            csv1Panel.getCsvParseParamsForm().addValidationListener(new ValidationListener() {
+                @Override
+                public void validationResultsChanged(ValidationResults results) {                    
+                    if(!results.getHasErrors()){
+                        setPageComplete(false);
+                        setPageComplete(true);
+                    }
+                }
+            });
         }
         return csv1Panel;
     }
@@ -32,7 +43,7 @@ public class CSVWizardPage1 extends AbstractWizardPage {
     }   
     @Override
     public boolean canFlipToNextPage(){                   
-        return !getCsv1Panel().getCsvParseParamsForm().hasErrors();
+        return super.canFlipToNextPage() && !getCsv1Panel().getCsvParseParamsForm().hasErrors();
     }
     
 }

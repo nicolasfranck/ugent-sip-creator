@@ -1,5 +1,7 @@
 package ugent.rename;
 
+import ugent.bagger.helper.Context;
+
 /**
  *
  * @author nicolas
@@ -12,6 +14,10 @@ public enum StartPosRelative {
     }
     @Override
     public String toString(){        
-        return c;
+        String translated = null;
+        try{
+            translated = Context.getMessage("StartPosRelative."+c);
+        }catch(Exception e){}                
+        return translated != null ? translated : c;        
     }
 }

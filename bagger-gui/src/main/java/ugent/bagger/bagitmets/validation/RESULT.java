@@ -8,11 +8,17 @@ package ugent.bagger.bagitmets.validation;
  *
  * @author nicolas
  */
-public enum RESULT {        
+public enum RESULT {     
+    //unknown exception
+    UNKNOWN_EXCEPTION("UNKNOWN_EXCEPTION",true),
     //only directories supported!
     BAGIT_NOT_DIRECTORY("BAGIT_NOT_DIRECTORY",true),
     //directory not fully readable
     BAGIT_FILES_NOT_READABLE("BAGIT_FILES_NOT_READABLE",true),
+    //fetch.txt forbidden
+    BAGIT_FETCH_FORBIDDEN("BAGIT_FETCH_FORBIDDEN",true),
+    //no data directory
+    BAGIT_DATA_MISSING("BAGIT_DATA_MISSING",true),
     //bagit not valid
     BAGIT_NOT_VALID("BAGIT_NOT_VALID",true),
     //mets.xml not found

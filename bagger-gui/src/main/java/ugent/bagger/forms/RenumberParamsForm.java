@@ -2,9 +2,7 @@ package ugent.bagger.forms;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
@@ -143,15 +141,7 @@ public class RenumberParamsForm extends AbstractForm{
         builder.row();
         
         //onError
-        Binding onErrorActionBinding = bf.createBoundComboBox("onErrorAction",ErrorAction.values());
-        final JComboBox comboBox = ((JComboBox)onErrorActionBinding.getControl());
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                comboBox.setEditable(false)                ;
-                comboBox.setSelectedItem(ErrorAction.ignore);
-            }        
-        });
+        Binding onErrorActionBinding = bf.createBoundComboBox("onErrorAction",ErrorAction.values());        
         builder.add(onErrorActionBinding);
         builder.row();
         
