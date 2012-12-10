@@ -51,7 +51,7 @@ public class MdSecProperties {
         mdSec.setSTATUS(status);
     }
     public String getNamespace(){  
-        if(mdSec.getMdWrap() != null && mdSec.getMdWrap().getXmlData() != null && mdSec.getMdWrap().getXmlData().get(0) != null){
+        if(mdSec.getMdWrap() != null && mdSec.getMdWrap().getXmlData() != null && !mdSec.getMdWrap().getXmlData().isEmpty()){
             return mdSec.getMdWrap().getXmlData().get(0).getNamespaceURI();
         }else{
             return "-";
