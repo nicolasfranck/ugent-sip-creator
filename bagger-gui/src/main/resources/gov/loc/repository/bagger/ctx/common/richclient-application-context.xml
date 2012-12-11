@@ -378,8 +378,7 @@
                     </util:map>
                 </entry>    
             </util:map>            
-        </entry>
-        
+        </entry>        
         <entry key="urn:isbn:1-931666-22-9">
             <util:map>
                 <entry key="versionable" value="false" />                
@@ -530,7 +529,17 @@
                     </util:map>
                 </entry>
             </util:map>
-        </entry>        
+        </entry>      
+        <entry key="ISADG">
+            <util:map>
+                <entry key="versionable" value="false" />
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/isad.xsd" />
+                    </util:map>
+                </entry>
+            </util:map>            
+        </entry>
     </util:map>
    
     <util:map id="xsltMap" map-class="java.util.HashMap">
