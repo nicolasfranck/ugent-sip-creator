@@ -15,15 +15,17 @@ import java.util.ArrayList;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.vfs2.FileObject;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.BagitMetsValidationException;
+import ugent.bagger.helper.FUtils;
 
 /**
  *
  * @author nicolas
  */
-public class ExporterDSpaceMetsArchive extends Exporter{       
+public class ExporterDSpaceMetsArchive2 extends Exporter{       
     @Override
     public void export(MetsBag metsBag,Mets mets,OutputStream out) 
             throws                 
@@ -38,7 +40,18 @@ public class ExporterDSpaceMetsArchive extends Exporter{
                 ParseException,
                 Exception
     {           
-        File dir = metsBag.getRootDir();
+        File file = metsBag.getRootDir();
+        
+        System.out.println("rootDir: "+metsBag.getRootDir());
+        System.out.println("bagFile: "+metsBag.getBagFile());
+        
+        String name = file.getName();
+        if(!file.isDirectory()){
+            int pos = name.lastIndexOf('.');
+            name = pos >= 0 ? name.substring(0,pos) : name;
+            System.out.println("name of subdirectory: "+name);
+        }
+        
         
         //validate metsBag and mets
         validate(metsBag,mets);        
@@ -47,7 +60,7 @@ public class ExporterDSpaceMetsArchive extends Exporter{
         ArrayList<MdSec>metadata = getMetadata(mets);        
         
         //create export
-        DSpaceSIPMets exporter = new DSpaceSIPMets();                
+        DSpaceSIPMets2 exporter = new DSpaceSIPMets2();                
         
         for(MdSec mdSec:metadata){
            MdWrap mdWrap = mdSec.getMdWrap();
@@ -55,16 +68,29 @@ public class ExporterDSpaceMetsArchive extends Exporter{
            Element element = mdWrap.getXmlData().get(0);
            exporter.addDescriptiveMD(type,element);           
         }
+        
         for(FileSec.FileGrp fileGroup:mets.getFileSec().getFileGrp()){            
             if(!fileGroup.getUse().equals("payloads")){
                 continue;
             }
-            for(FileSec.FileGrp.File metsFile:fileGroup.getFile()){
-                File payloadFile = new File(dir,metsFile.getFLocat().get(0).getXlinkHREF());
-                System.out.println("adding payload "+payloadFile);
-                DSpaceSIPMets.PackageFile packageFile = new DSpaceSIPMets.PackageFile(payloadFile);
+            for(FileSec.FileGrp.File metsFile:fileGroup.getFile()){   
+                String relativePath = metsFile.getFLocat().get(0).getXlinkHREF();
+                String entryString;
+                String longName;
+                String shortName = relativePath;
+                if(!file.isDirectory()){
+                    entryString = FUtils.getEntryStringFor(file.getAbsolutePath(),name+File.separator+relativePath);
+                    longName = entryString;     
+                }else{
+                    entryString = FUtils.getEntryStringFor(file.getAbsolutePath(),relativePath);
+                    longName = new File(file,relativePath).getAbsolutePath();                    
+                }                                
+                FileObject fobject = FUtils.resolveFile(entryString);                
+                DSpaceSIPMets2.PackageFile packageFile = new DSpaceSIPMets2.PackageFileObject(
+                    fobject,shortName,longName
+                );
                 packageFile.setMetsFile(metsFile);
-                exporter.addPackageFile(packageFile,"ORIGINAL",false);
+                exporter.addPackageFile(packageFile,"ORIGINAL",false);                
             }
         }
         exporter.write(out);

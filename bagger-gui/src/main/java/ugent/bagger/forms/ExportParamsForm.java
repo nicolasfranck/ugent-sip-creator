@@ -10,7 +10,6 @@ import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.FileSelectBinding;
-import ugent.bagger.filters.DirectoryFilter;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.ExportParams;
@@ -39,7 +38,13 @@ public class ExportParamsForm extends AbstractForm{
         ExportParams exportParams = (ExportParams) getFormObject();       
         
         //outputFile
-        JFileChooser fileChooser = SwingUtils.createFileChooser(null,null,JFileChooser.DIRECTORIES_ONLY,false,JFileChooser.SAVE_DIALOG);        
+        JFileChooser fileChooser = SwingUtils.createFileChooser(
+            null,
+            null,
+            JFileChooser.FILES_AND_DIRECTORIES,//save dialog type only accepts non existing files, so one need to see this            
+            false,
+            JFileChooser.SAVE_DIALOG
+        );        
         final Binding outputDirBinding = new FileSelectBinding(
             getFormModel(),
             "outputFile",

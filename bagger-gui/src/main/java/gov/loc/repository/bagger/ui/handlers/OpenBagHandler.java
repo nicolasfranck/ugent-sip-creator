@@ -42,33 +42,31 @@ public class OpenBagHandler extends AbstractAction {
     }
 
     public void openBag() {
-        BagView bagView = BagView.getInstance();
-        File selectFile = new File(File.separator+".");        
-        JFileChooser fo = new JFileChooser(selectFile);
-        fo.setDialogType(JFileChooser.OPEN_DIALOG);
+        BagView bagView = BagView.getInstance();        
         
+        JFileChooser fo = new JFileChooser();
+        fo.setDialogType(JFileChooser.OPEN_DIALOG);        
         fo.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
         fo.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
         fo.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
         fo.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
         fo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        /*
         if(bagView.getBagRootPath() != null){
             fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
-        }
-        fo.setDialogTitle(Context.getMessage("openBagHandler.fileChooser.dialogTitle"));
-        int option = fo.showOpenDialog(SwingUtils.getFrame());
-
-        if (option == JFileChooser.APPROVE_OPTION) {
-            File file = fo.getSelectedFile();
-            if (file == null) {
-                file = bagView.getBagRootPath();
-            }
-            openExistingBag(file);
-        }
+        }*/
+        fo.setDialogTitle(Context.getMessage("openBagHandler.fileChooser.dialogTitle"));        
+        
+        File [] files = SwingUtils.chooseFiles(fo,SwingUtils.getFrame());
+        
+        if(files.length > 0){
+            openExistingBag(files[0]);
+        }        
     }
 
     public void openExistingBag(File file) { 
-        SwingUtils.ShowBusy();        
+        SwingUtils.ShowBusy();                
+        
         
         BagView bagView = BagView.getInstance();        
         

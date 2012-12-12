@@ -1,6 +1,5 @@
 package ugent.bagger.bindings;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -59,12 +58,21 @@ public final class FileSelectBinding extends CustomBinding{
     private void fieldListener(){
         if(!getControl().isEnabled()){
             return;
-        }
-        int freturn = fileChooser.showOpenDialog(parent);
+        }        
+        int freturn;
+        switch(fileChooser.getDialogType()){            
+            case JFileChooser.SAVE_DIALOG:                
+                freturn = fileChooser.showSaveDialog(parent);        
+                break;
+            case JFileChooser.OPEN_DIALOG:
+            default:                
+                freturn = fileChooser.showOpenDialog(parent);        
+                break;
+        }        
         File [] files = {};
-        if(freturn == JFileChooser.APPROVE_OPTION) {
+        if(freturn == JFileChooser.APPROVE_OPTION) {            
             if(fileChooser.isMultiSelectionEnabled()){
-                files = fileChooser.getSelectedFiles();                
+                files = fileChooser.getSelectedFiles();                       
             }else{
                 //when multiSelectionEnabled == false, then getSelectedFiles() returns an empty array!
                 files = new File [] {fileChooser.getSelectedFile()};
@@ -72,8 +80,8 @@ public final class FileSelectBinding extends CustomBinding{
             if(files == null){
                 files = new File [] {};
             }
-        }
-        if(files.length > 0){                        
+        }        
+        if(files.length > 0){                   
             getValueModel().setValue(new ArrayList<File>(Arrays.asList(files)));                        
         }
     }
@@ -93,18 +101,16 @@ public final class FileSelectBinding extends CustomBinding{
         field.invalidate();        
     }
     @Override
-    protected JComponent doBindControl() {
-        FlowLayout layout = new FlowLayout(FlowLayout.LEFT,0,0);        
-        JPanel panel = new JPanel(layout);
-        panel.add(getField());
-        JButton browseButton = new JButton(buttonText);
-        
+    protected JComponent doBindControl() {         
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));        
+        JButton browseButton = new JButton(buttonText);        
         browseButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
                 fieldListener();
             }
-        });
+        });        
+        panel.add(getField());
         panel.add(browseButton);        
         return panel;        
     }

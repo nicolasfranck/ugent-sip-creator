@@ -93,6 +93,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         //exportParams
         Rules exportParamsRules = new Rules(ExportParams.class);
         exportParamsRules.add(required("format"));
+       
         exportParamsRules.add(value("outputFile",new Constraint(){
             @Override
             public boolean test(Object o) {
@@ -100,7 +101,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
                 System.out.println("outputFile: "+list);
                 return list != null && !list.isEmpty();
             }        
-        }));   
+        }));
         addRules(exportParamsRules);
     }     
 }

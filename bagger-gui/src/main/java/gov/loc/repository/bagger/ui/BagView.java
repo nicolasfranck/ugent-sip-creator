@@ -6,7 +6,6 @@ import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -20,7 +19,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.util.Assert;
-import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.helper.Context;
 import ugent.bagger.views.DefaultView;
 
@@ -72,16 +70,7 @@ public class BagView extends DefaultView {
     private JSplitPane mainPanel;
     private JComponent leftPanel;    
     private JComponent renameComponent;
-    private JLabel renameLabel;
-    //interpretatie van file attribuut 'CREATED' (CURRENT_DATE,LAST_MODIFIED)
-    private MetsFileDateCreated metsFileDateCreated = MetsFileDateCreated.CURRENT_DATE;
-   
-    public MetsFileDateCreated getMetsFileDateCreated() {        
-        return metsFileDateCreated;
-    }
-    public void setMetsFileDateCreated(MetsFileDateCreated metsFileDateCreated) {
-        this.metsFileDateCreated = metsFileDateCreated;
-    }
+    private JLabel renameLabel;    
 
     public JLabel getRenameLabel() {
         if(renameLabel == null){            

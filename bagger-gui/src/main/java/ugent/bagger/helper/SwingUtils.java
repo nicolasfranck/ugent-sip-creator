@@ -36,8 +36,20 @@ import org.springframework.richclient.progress.BusyIndicator;
  * @author nicolas
  */
 public class SwingUtils {
-    private static Log log = LogFactory.getLog(SwingUtils.class);
-    private static HashMap<String,String>uiManagerMessages;
+    static Log log = LogFactory.getLog(SwingUtils.class);
+    static HashMap<String,String>uiManagerMessages;
+    static File lastDirectory;
+
+    protected static File getLastDirectory() {
+        if(lastDirectory == null){
+            String home = System.getProperty("user.home");
+            lastDirectory = home != null && !home.isEmpty() ? new File(home) : File.listRoots()[0];            
+        }
+        return lastDirectory;
+    }
+    protected static void setLastDirectory(File lastDirectory) {
+       SwingUtils.lastDirectory = lastDirectory;
+    }
     
     public static JFileChooser createFileChooser(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,int dialogType){
         JFileChooser fileChooser = new JFileChooser();           
@@ -46,18 +58,28 @@ public class SwingUtils {
         fileChooser.setFileSelectionMode(mode);        
         fileChooser.setDialogType(dialogType);       
         fileChooser.setMultiSelectionEnabled(multiSelectionEnabled);        
+        fileChooser.setCurrentDirectory(getLastDirectory());
         return fileChooser;
     }        
     public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled){
         return chooseFiles(title,filter,mode,multiSelectionEnabled,SwingUtils.getFrame(),JFileChooser.OPEN_DIALOG);
     }
     public static File [] chooseFiles(String title,FileFilter filter,int mode,boolean multiSelectionEnabled,Component component,int dialogType){        
-        JFileChooser fchooser = createFileChooser(title,filter,mode,multiSelectionEnabled,dialogType);        
+        return chooseFiles(
+            createFileChooser(title,filter,mode,multiSelectionEnabled,dialogType),
+            component
+        );        
+    }
+    public static File [] chooseFiles(JFileChooser fchooser,Component component){        
+        fchooser.setCurrentDirectory(getLastDirectory());
+        int freturn = 
+            fchooser.getDialogType() == JFileChooser.SAVE_DIALOG ? 
+                fchooser.showSaveDialog(component) : 
+                fchooser.showOpenDialog(component);
         
-        int freturn = fchooser.showOpenDialog(component);
         File [] files = {};
         if(freturn == JFileChooser.APPROVE_OPTION) {
-            if(multiSelectionEnabled){
+            if(fchooser.isMultiSelectionEnabled()){
                 files = fchooser.getSelectedFiles();                
             }else{
                 //when multiSelectionEnabled == false, then getSelectedFiles() returns an empty array!
@@ -66,7 +88,9 @@ public class SwingUtils {
             if(files == null){
                 files = new File [] {};
             }            
-        }               
+        }          
+        setLastDirectory(fchooser.getCurrentDirectory() != null ? fchooser.getCurrentDirectory():lastDirectory);
+        
         return files;
     }
     public static void setJComponentsEnabled(JComponent [] components,boolean enabled){

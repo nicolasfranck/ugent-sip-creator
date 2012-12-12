@@ -2,6 +2,7 @@ package ugent.bagger.exporters;
 
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import ugent.bagger.exceptions.BagitMetsValidationException;
  */
 public abstract class Exporter {           
     abstract ArrayList<MdSec>getMetadata(Mets mets);
-    public abstract void export(File dir,OutputStream out) 
+    public abstract void export(MetsBag metsBag,Mets mets,OutputStream out) 
             throws 
                 IOException,
                 BagitMetsValidationException,
@@ -32,13 +33,11 @@ public abstract class Exporter {
                 TransformerException,
                 SAXException,
                 FileNotFoundException,
-                ParseException;
-    ArrayList<BagitMetsValidationException> validate(File file) throws BagitMetsValidationException {
-        
-        ArrayList<BagitMetsValidationException>warnings = new ArrayList<BagitMetsValidationException>();        
+                ParseException,
+                Exception;
+    ArrayList<BagitMetsValidationException> validate(MetsBag metsBag,Mets mets) throws BagitMetsValidationException {               
         BagitMetsValidator validator = new BagitMetsValidator();
-        validator.validate(file);                
+        ArrayList<BagitMetsValidationException>warnings = validator.validate(metsBag,mets);                
         return warnings;    
-        
     }
 }

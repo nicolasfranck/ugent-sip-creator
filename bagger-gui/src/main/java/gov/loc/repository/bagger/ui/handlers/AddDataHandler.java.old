@@ -34,30 +34,55 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
     }
     public void addData(){
         
-        final BagView bagView = BagView.getInstance();        
-        
-        File [] files = SwingUtils.chooseFiles(
-            Context.getMessage("bag.message.addfiles"), 
-            null, 
-            JFileChooser.FILES_AND_DIRECTORIES, 
-            true
-        );         
+        final BagView bagView = BagView.getInstance();
+        /*
+         * Nicolas Franck: default directory
+         * homedir default, en indien opgegeven lastDir? 
+        */
+        String dir = System.getProperty("JFileChooser.currentDirectory");
+        if(dir == null){           
+            dir = System.getProperty("user.home");           
+        }
+       
+        JFileChooser fc = new JFileChooser(dir);
+
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
+    	fc.setMultiSelectionEnabled(true);
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fc.setDialogTitle(Context.getMessage("bag.message.addfiles"));
+                
+    	int option = fc.showOpenDialog(SwingUtils.getFrame());
+
+        if (option == JFileChooser.APPROVE_OPTION) {
             
-        SwingUtils.ShowBusy();            
-        
-        String message = Context.getMessage("bag.message.filesadded");        
-        addBagData(files);
-        log(message + " " + getFileNames(files));        
-        bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
-        bagView.updateAddData();
-
-        //Nicolas Franck: geen validate of complete nuttig
-        bagView.validateExecutor.setEnabled(false);
-        bagView.validateBagHandler.setEnabled(false);
-        bagView.completeExecutor.setEnabled(false);
-        bagView.completeBagHandler.setEnabled(false);
-
-        SwingUtils.ShowDone();
+            SwingUtils.ShowBusy();            
+            
+            File[] files = fc.getSelectedFiles();
+            String message = Context.getMessage("bag.message.filesadded");
+            if (files != null && files.length >0) {
+                addBagData(files);
+                log(message + " " + getFileNames(files));
+            } else {
+            	File file = fc.getSelectedFile();
+            	addBagData(file, true);
+            	log(message + " " + file.getAbsolutePath());
+            }
+            bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
+            bagView.updateAddData();
+            
+            //Nicolas Franck: geen validate of complete nuttig
+            bagView.validateExecutor.setEnabled(false);
+            bagView.validateBagHandler.setEnabled(false);
+            bagView.completeExecutor.setEnabled(false);
+            bagView.completeBagHandler.setEnabled(false);
+            
+            SwingUtils.ShowDone();
+            
+        }
+     
+        //Nicolas Franck: onthoud laatst geopende map
+        String lastDir = fc.getCurrentDirectory().getAbsolutePath();
+        System.setProperty("java.bagger.filechooser.lastdirectory",lastDir);        
         
     }
     private String getFileNames(File[] files) {

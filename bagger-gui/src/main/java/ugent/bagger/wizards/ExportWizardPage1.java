@@ -36,7 +36,7 @@ public class ExportWizardPage1 extends AbstractWizardPage {
         return exportParamsPanel;
     }
     public void setExportParamsPanel(ExportParamsPanel exportParamsPanel) {
-        this.exportParamsPanel = exportParamsPanel;
+        this.exportParamsPanel = exportParamsPanel;        
     }    
     @Override
     protected JComponent createControl() {                        

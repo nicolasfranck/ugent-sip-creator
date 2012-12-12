@@ -23,8 +23,6 @@ import gov.loc.repository.bagit.Manifest.Algorithm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -38,7 +36,6 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
-import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
@@ -60,8 +57,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     private JRadioButton tarGzButton;
     private JRadioButton tarBz2Button;    
     private JComboBox tagAlgorithmList;
-    private JComboBox payAlgorithmList;        
-    private JComboBox metsFileDateCreatedCombobox;    
+    private JComboBox payAlgorithmList;            
     protected static final String DEFAULT_FINISH_COMMAND_ID = "okCommand";
     protected static final String DEFAULT_CANCEL_COMMAND_ID = "cancelCommand";
     private ActionCommand finishCommand;
@@ -274,20 +270,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
         glbc.ipadx=5;
         layout.setConstraints(bagNameField, glbc);
         glbc.ipadx=0;
-        panel.add(bagNameField);        
-        
-        JLabel metsFileDateCreatedLabel = new JLabel("Date created:");
-        metsFileDateCreatedCombobox = new JComboBox(MetsFileDateCreated.values());
-        metsFileDateCreatedCombobox.setSelectedItem(MetsFileDateCreated.CURRENT_DATE);
-        metsFileDateCreatedCombobox.addItemListener(new ItemListener(){
-            @Override
-            public void itemStateChanged(ItemEvent ie) {
-                if(ie.getStateChange() != ItemEvent.SELECTED){
-                    return;
-                }
-                BagView.getInstance().setMetsFileDateCreated((MetsFileDateCreated)ie.getItem());
-            }            
-        });        
+        panel.add(bagNameField);                
         
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
@@ -311,15 +294,7 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
     	panel.add(payAlgorithmLabel);
         buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
         layout.setConstraints(payAlgorithmList, glbc);
-    	panel.add(payAlgorithmList);        
-        
-        row++;
-        buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
-        layout.setConstraints(metsFileDateCreatedLabel, glbc);
-    	panel.add(metsFileDateCreatedLabel);
-        buildConstraints(glbc, 1, row, 2, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.CENTER); 
-        layout.setConstraints(metsFileDateCreatedCombobox, glbc);
-    	panel.add(metsFileDateCreatedCombobox);        
+    	panel.add(payAlgorithmList);                
         
         row++;
         buildConstraints(glbc, 0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 

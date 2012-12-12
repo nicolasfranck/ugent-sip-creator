@@ -16,13 +16,8 @@ import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.commons.logging.Log;
@@ -251,6 +246,7 @@ public class MetsUtils {
         DocumentType docType = doc.getDoctype();        
         
         //elke xml moet namespace bevatten (probeer te herstellen, indien mogelijk)
+        //=> slecht idee, want dtd en xsd versie verschillen héél vaak
         if(namespace == null || namespace.isEmpty()){           
             doc = fixNamespace(doc);
             namespace = doc.getDocumentElement().getNamespaceURI();            

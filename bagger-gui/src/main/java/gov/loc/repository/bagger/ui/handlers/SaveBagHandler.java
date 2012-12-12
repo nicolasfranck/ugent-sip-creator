@@ -126,17 +126,17 @@ public class SaveBagHandler extends Handler {
 
     public void saveBagAs() {
         BagView bagView = BagView.getInstance();
-    	DefaultBag bag = bagView.getBag();
-        File selectFile = new File(File.separator+".");
+    	DefaultBag bag = bagView.getBag();        
+        
         JFrame frame = new JFrame();
-        JFileChooser fs = new JFileChooser(selectFile);
+        JFileChooser fs = new JFileChooser();
     	fs.setDialogType(JFileChooser.SAVE_DIALOG);
     	fs.setFileSelectionMode(JFileChooser.FILES_ONLY);
     	fs.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
     	fs.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
         fs.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
         fs.setDialogTitle(Context.getMessage("SaveBagHandler.saveBagAs.title"));
-    	fs.setCurrentDirectory(bag.getRootDir());
+    	fs.setCurrentDirectory(bag.getRootDir());        
     	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
             String selectedName = bag.getName();
             if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {

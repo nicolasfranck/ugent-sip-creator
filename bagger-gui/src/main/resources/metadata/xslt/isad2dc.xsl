@@ -4,6 +4,9 @@
             nicolas.franck@ugent.be
     University Library of Ghent
     Mapping ISAD(G) to Dublin Core
+    
+    Based on mappings made in BOM Vlaanderen
+    Cf. http://www.ukoln.ac.uk/cd-focus/tools/isadg2rslp.html
 -->
 <xsl:stylesheet 
     version="1.0" 

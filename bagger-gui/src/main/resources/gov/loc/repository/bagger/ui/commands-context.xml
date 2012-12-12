@@ -81,7 +81,7 @@
         <value>createBagsCommand</value>
         <value>validateManifestCommand</value>   
         <value>separator</value>
-        <!--<value>testCommand</value>-->
+        <value>testCommand</value>
         <bean class="gov.loc.repository.bagger.app.BaggerExit" id="exitCommand" />
       </list>
     </property>

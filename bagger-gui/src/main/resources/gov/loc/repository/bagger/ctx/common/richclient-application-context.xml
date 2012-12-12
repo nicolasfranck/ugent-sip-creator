@@ -685,6 +685,20 @@
                 </entry>
             </util:map>    
         </entry>   
+        <entry key="ISADG">
+            <util:map>
+                <entry key="http://purl.org/dc/elements/1.1/">
+                    <util:map>
+                        <entry key="versionable" value="false" />
+                        <entry key="versions">
+                            <util:map>
+                                <entry key="default" value="metadata/xslt/isad2dc.xsl" />
+                            </util:map>
+                        </entry>
+                    </util:map>
+                </entry>
+            </util:map>    
+        </entry>   
     </util:map>
     
     <!--
@@ -802,14 +816,16 @@
         <value>DC-Language</value>        
     </util:list>
     <util:map id="exporters" map-class="java.util.HashMap">
+        <!--
         <entry key="DSpace Simple Archive">
             <util:map>                
                 <entry key="class" value="ugent.bagger.exporters.ExportDSpaceSimpleArchive" />
             </util:map>    
         </entry>   
+        -->
         <entry key="DSpace Mets Archive">
             <util:map>                
-                <entry key="class" value="ugent.bagger.exporters.ExportDSpaceMetsArchive" />                
+                <entry key="class" value="ugent.bagger.exporters.ExporterDSpaceMetsArchive2" />                
                 <!--mdSec list is filtered to check wether its metadata can be exported -->
                 <entry key="metadataFilter" value-ref="namespaceMdSecFilter" />                
             </util:map>    
@@ -823,4 +839,5 @@
             </util:list>
         </property>
     </bean>
+    
 </beans>

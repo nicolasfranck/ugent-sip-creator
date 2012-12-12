@@ -22,8 +22,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +42,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import ugent.bagger.bagitmets.DefaultBagItMets;
-import ugent.bagger.bagitmets.MetsFileDateCreated;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.MetsUtils;
@@ -181,28 +178,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
 
     public void setAddKeepFilesToEmptyFoldersCheckBox(JCheckBox addKeepFilesToEmptyFoldersCheckBox) {
         this.addKeepFilesToEmptyFoldersCheckBox = addKeepFilesToEmptyFoldersCheckBox;
-    }
-
-    public JComboBox getMetsFileDateCreatedCombobox() {
-        if(metsFileDateCreatedCombobox == null){            
-            metsFileDateCreatedCombobox = new JComboBox(MetsFileDateCreated.values());
-            metsFileDateCreatedCombobox.setSelectedItem(MetsFileDateCreated.CURRENT_DATE);
-            metsFileDateCreatedCombobox.addItemListener(new ItemListener(){
-                @Override
-                public void itemStateChanged(ItemEvent ie) {
-                    if(ie.getStateChange() != ItemEvent.SELECTED){
-                        return;
-                    }                    
-                    getBagView().setMetsFileDateCreated((MetsFileDateCreated)ie.getItem());
-                }
-            });
-        }
-        return metsFileDateCreatedCombobox;
-    }
-
-    public void setMetsFileDateCreatedCombobox(JComboBox metsFileDateCreatedCombobox) {
-        this.metsFileDateCreatedCombobox = metsFileDateCreatedCombobox;
-    }
+    }    
 
     public JTextField getSelectionInfoField() {
         if(selectionInfoField == null){
@@ -257,13 +233,7 @@ public final class NewBagsDialog extends JDialog implements ActionListener {
         layoutAddKeepFilesToEmptyCheckBox(panel,row++);
         layoutSpacer(panel,row++);
        
-        //metsFileDateCreated
-        row++;
-        JLabel metsFileDateCreatedLabel = new JLabel(Context.getMessage("NewBagsDialog.metsFileDateCreated.label"));  
-        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST); 
-        panel.add(metsFileDateCreatedLabel, glbc);
-        glbc = LayoutUtil.buildGridBagConstraints(1, row, 1, 1, 80, 50, GridBagConstraints.HORIZONTAL, GridBagConstraints.WEST); 
-        panel.add(getMetsFileDateCreatedCombobox(), glbc);
+        GridBagConstraints glbc = LayoutUtil.buildGridBagConstraints(0, row, 1, 1, 1, 50, GridBagConstraints.NONE, GridBagConstraints.WEST);        
         
         //metadata paths
         row++;

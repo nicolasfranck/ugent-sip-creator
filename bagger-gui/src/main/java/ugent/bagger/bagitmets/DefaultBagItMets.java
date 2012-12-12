@@ -8,7 +8,6 @@ import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsHdr;
 import com.anearalone.mets.MetsHdr.Agent;
 import com.anearalone.mets.MetsHdr.Agent.ROLE;
-import com.anearalone.mets.MetsHdr.RecordID;
 import com.anearalone.mets.SharedEnums;
 import com.anearalone.mets.StructMap;
 import com.anearalone.mets.StructMap.Div;
@@ -87,15 +86,15 @@ public class DefaultBagItMets extends BagItMets{
             header = new MetsHdr();
             mets.setMetsHdr(header);            
             try{
-                header.setCREATEDATE(DateUtils.DateToGregorianCalender());            
+                header.setCREATEDATE(DateUtils.DateToGregorianCalender());                           
             }catch(Exception e){
-                e.printStackTrace();
+                log.debug(e.getMessage());                
             }
         }
         try{
             header.setLASTMODDATE(DateUtils.DateToGregorianCalender());            
         }catch(Exception e){
-            e.printStackTrace();
+            log.debug(e.getMessage());            
         } 
         header.setID(MetsUtils.createID());        
         
@@ -170,21 +169,16 @@ public class DefaultBagItMets extends BagItMets{
                 
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
-                try{
-                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){                        
+                try{                                          
+                    if(payloadFile.isFile()){                                              
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
+                    }else if(rootDir != null && rootDir.exists()){                                                    
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));                  
+                    }else{                            
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
-                    }else{                        
-                        if(payloadFile.isFile()){                                              
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
-                        }else if(rootDir != null && rootDir.exists()){                                                    
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));                  
-                        }else{                            
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());
-                        }    
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
-                    log.debug(e.getMessage());                    
+                    }                       
+                }catch(Exception e){                    
+                    log.debug(e.getMessage());                                        
                 }                
 
                 //FLocat
@@ -246,20 +240,15 @@ public class DefaultBagItMets extends BagItMets{
                 
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
-                try{
-                    if(bagView.getMetsFileDateCreated() == MetsFileDateCreated.CURRENT_DATE){                        
+                try{                                   
+                    if(tagFile.isFile()){
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(tagFile.lastModified())));
+                    }else if(rootDir != null && rootDir.exists()){
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));
+                    }else{                     
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
-                    }else{                        
-                        if(tagFile.isFile()){
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(tagFile.lastModified())));
-                        }else if(rootDir != null && rootDir.exists()){
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));
-                        }else{                     
-                            metsFile.setCREATED(DateUtils.DateToGregorianCalender());
-                        }
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
+                    }                    
+                }catch(Exception e){                    
                     log.debug(e.getMessage());                    
                 }
                 
@@ -384,14 +373,14 @@ public class DefaultBagItMets extends BagItMets{
          
 
         }catch(Exception e){
-            e.printStackTrace();            
+            log.debug(e.getMessage());                  
         }        
         
         try{
             PremisBagitMetsAnalyser analyser = new PremisBagitMetsAnalyser();
             analyser.analyse(metsBag,mets);
         }catch(Exception e){
-            e.printStackTrace();
+            log.debug(e.getMessage());             
         }
         
         return mets;
