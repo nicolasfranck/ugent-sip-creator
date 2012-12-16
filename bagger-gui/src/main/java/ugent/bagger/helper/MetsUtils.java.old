@@ -26,8 +26,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import ugent.bagger.exceptions.DocumentCreationFailedException;
-import ugent.bagger.exceptions.DtdNoFixFoundException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.MdRefException;
 import ugent.bagger.exceptions.NoNamespaceException;
@@ -220,17 +218,17 @@ public class MetsUtils {
         }
     }
    
-    public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException, TransformerConfigurationException, ClassNotFoundException, IllegalAccessException, DtdNoFixFoundException, InstantiationException, DocumentCreationFailedException{        
+    public static MdSec createMdSec(File file) throws IOException, SAXException, ParserConfigurationException, IllegalNamespaceException, NoNamespaceException, MalformedURLException, TransformerException, Exception{        
         return createMdSec(XML.XMLToDocument(file));        
     }
     public static String createID(){
         //xsd NCName: moet starten met letter of _, colon (':') mag niet voorkomen
         return "_"+UUID.randomUUID().toString();
     }
-    public static MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, TransformerConfigurationException, ClassNotFoundException, IllegalAccessException, InstantiationException, DtdNoFixFoundException, DocumentCreationFailedException{
+    public static MdSec createMdSec(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         return createMdSec(doc,true);
     }
-    public static MdSec createMdSec(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, DtdNoFixFoundException, DocumentCreationFailedException{
+    public static MdSec createMdSec(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         MdSec mdSec = new MdSec(createID());                
         mdSec.setMdWrap(createMdWrap(doc,validate));
         mdSec.setGROUPID(mdSec.getMdWrap().getMDTYPE().toString());         
@@ -241,10 +239,10 @@ public class MetsUtils {
         }
         return mdSec;
     }
-    public static MdSec.MdWrap createMdWrap(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, TransformerConfigurationException, InstantiationException, ClassNotFoundException, IllegalAccessException, DtdNoFixFoundException, DocumentCreationFailedException{
+    public static MdSec.MdWrap createMdWrap(Document doc) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         return createMdWrap(doc,true);
     }
-    public static MdSec.MdWrap createMdWrap(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, DtdNoFixFoundException, DocumentCreationFailedException{
+    public static MdSec.MdWrap createMdWrap(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, Exception{
         String namespace = doc.getDocumentElement().getNamespaceURI();            
         DocumentType docType = doc.getDoctype();        
         
@@ -432,7 +430,6 @@ public class MetsUtils {
         }
         return baginfoTemplates;
     }
-    /*
     public static Document fixNamespace(Document doc) throws NoNamespaceException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException, SAXException, IOException{
         DocumentType docType = doc.getDoctype();  
         String namespace = doc.getDocumentElement().getNamespaceURI();
@@ -458,36 +455,15 @@ public class MetsUtils {
             "xmlns:xlink",
             "http://www.w3.org/1999/xlink"
         );                              
-        
-        //aanpassen van namespace van een element niet mogelijk,
-        //dus daarom uitschrijven en terug inlezen van Document
-        
+
+        /*
+         * aanpassen van namespace van een element niet mogelijk,
+         * dus daarom uitschrijven en terug inlezen van Document
+        */
         doc.getDocumentElement().setAttribute("xmlns",namespace);                        
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         XML.DocumentToXML(doc,bout);
         doc = XML.XMLToDocument(new ByteArrayInputStream(bout.toByteArray())); 
-        return doc;
-    }*/
-    public static Document fixNamespace(Document doc)throws NoNamespaceException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException, SAXException, IOException, DtdNoFixFoundException, DocumentCreationFailedException, TransformerException{
-        DocumentType docType = doc.getDoctype();          
-        String name = 
-            docType != null && docType.getName() != null ? 
-                docType.getName():doc.getDocumentElement().getLocalName();
-        System.out.println("name: "+name);
-        //baseer je op naam van docType, of op naam root element
-        if(!getDtdTransformations().containsKey(name)){
-            throw new DtdNoFixFoundException(name);
-        }        
-        URL xsltResource = Context.getResource(getDtdTransformations().get(name));
-        System.out.println("xsltResource: "+xsltResource);
-        Document xsltDoc = XML.XMLToDocument(xsltResource);
-        if(xsltDoc == null){
-            throw new DocumentCreationFailedException(); 
-        }
-        XML.DocumentToXML(xsltDoc,System.out);
-        doc = XSLT.transform(doc,xsltDoc);
-        XML.DocumentToXML(doc,System.out);
-        
         return doc;
     }
 

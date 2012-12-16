@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Janifer Gatenby (OCLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="holdings">
+		<xs:annotation>
+			<xs:documentation>Data structure describing a bibliographic resource or group of like or similar resources and one or more institution’s copies of the resource or resources</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="holding" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Group of data elements describing one institution’s copies of a bibliographic resource or group of like or similar bibliographic resources</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="institutionIdentifier" type="codeOrIdentifier">
+								<xs:annotation>
+									<xs:documentation>Group of data elements serving as a brief identifier of an institution</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="physicalLocation" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Name of an institution holding one of more copies of a bibliographic resource</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="physicalAddress" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Data element or group of data elements giving location information for an institution.   Can be free format or inherit structure from another schema, e.g. NCIP</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="text" type="xs:string" maxOccurs="unbounded"/>
+										<xs:any namespace="##other"/>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="electronicAddress" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Unique identifier used to identify a device or location within a communications network or service associated with an institution.  Can be free format or inherit structure from another schema, e.g. NCIP</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="text" type="xs:string" maxOccurs="unbounded"/>
+										<xs:any namespace="##other"/>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:choice>
+								<xs:element name="holdingSimple">
+									<xs:annotation>
+										<xs:documentation>Information for a resource or group of resources summarising number of copies, and the number actually available</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="copiesSummary">
+												<xs:annotation>
+													<xs:documentation>Group of data elements summarising the number of copies of a bibliographic resource or resources and their availability</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="copiesCount" type="xs:positiveInteger" default="1">
+															<xs:annotation>
+																<xs:documentation>Count of the number of physical or digital copies associated with a resource.  If unknown set to 1</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="status" type="statusType" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>Group of data elements indicating and predicting actual availability of a group of copies</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="reservationQueueLength" type="xs:nonNegativeInteger" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>Count of the number of people in a reservation queue for a particular resource or group of resources</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="onOrderCount" type="xs:nonNegativeInteger" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>Count of the number of physical or digital copies ordered and awaiting receipt or received but not yet processed</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="copyInformation" minOccurs="0" maxOccurs="unbounded">
+												<xs:annotation>
+													<xs:documentation>Group of data elements providing details of a specific copy of physical or digital resource</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element ref="pieceIdentifier" maxOccurs="unbounded"/>
+														<xs:element ref="resourceIdentifier" minOccurs="0"/>
+														<xs:element ref="form" minOccurs="0"/>
+														<xs:element name="monetaryValuation" type="monetaryValuationType" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>Estimate of the cost of replacing a copy of a resource or an indication of the value placed on a copy</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element ref="sublocation" minOccurs="0" maxOccurs="unbounded"/>
+														<xs:element ref="shelfLocator" minOccurs="0" maxOccurs="unbounded"/>
+														<xs:element name="electronicLocator" type="electronicLocatorType" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>Text string or pointer such as a URL indicating availability and location of an electronic resource</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>Phrase relating to a copy of a bibliographic resource, carrying additional information</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="enumerationAndChronology" type="EnumChron" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>Text string or group of data elements alphabetically identifying a unit of a resource that is published in parts.  Repeatable in the case of multiple numbering sequences</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="availabilityInformation" type="availabilityInformationType" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>Group of data elements summarizing the availability of a particular physical or digital copy of a resource.</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="holdingStructured">
+									<xs:annotation>
+										<xs:documentation>Group of data elements providing descriptive information and an indication of the coverage, completeness, availability and service policy of a bibliographic resource that is published serially or in multiple parts</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="set" maxOccurs="unbounded">
+												<xs:annotation>
+													<xs:documentation>Collection of components of a bibliographic resource including multi-volume publications and resources published serially, often received by a subscription purchases</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="label" type="xs:string" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>Number or phrase serving to identify a set of copies such as a subscription for a resource that is published in multiple parts or serially.  "All sets"is a reserved label indicating a consolidated summary for all sets</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element ref="form" minOccurs="0"/>
+														<xs:element ref="sublocation" minOccurs="0"/>
+														<xs:element name="shelfLocator" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>String of characters that identifies a copy’s or a set's shelving scheme within a sublocation in relation to other copies.  Repeated in the case where runs are stored at different locations</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="electronicLocator" type="electronicLocatorType" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>Text string or pointer such as a URL indicating availability and location of an electronic resource</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="completeness" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>Code indicating the level of holdings of a copy set ranging from complete to signalling gaps or substantial gaps</xs:documentation>
+															</xs:annotation>
+															<xs:simpleType>
+																<xs:restriction base="xs:string">
+																	<xs:enumeration value="0">
+																		<xs:annotation>
+																			<xs:documentation>info not available</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="1">
+																		<xs:annotation>
+																			<xs:documentation>complete</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="2">
+																		<xs:annotation>
+																			<xs:documentation>incomplete</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="3">
+																		<xs:annotation>
+																			<xs:documentation>very incomplete or scattered</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+														<xs:element name="enumerationAndChronology" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>Text string or group of data elements identifying a unit of a resource that is published in parts.  Repeatable in the case of multiple numbering ranges (gaps) and multiple numbering sequences</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="startingEnumAndChronology">
+																		<xs:annotation>
+																			<xs:documentation>Group of data elements indicating the beginning of an enumeration and chronology range </xs:documentation>
+																		</xs:annotation>
+																		<xs:complexType>
+																			<xs:choice>
+																				<xs:element name="text"/>
+																				<xs:element name="structured">
+																					<xs:annotation>
+																						<xs:documentation>Either enumeration or chronology must be present; both may be present</xs:documentation>
+																					</xs:annotation>
+																					<xs:complexType>
+																						<xs:sequence>
+																							<xs:element name="enumeration" type="enumerationType" minOccurs="0" maxOccurs="unbounded">
+																								<xs:annotation>
+																									<xs:documentation>Group of data elements indicating the earliest enumeration such as a volume or issue number within an enumeration range</xs:documentation>
+																								</xs:annotation>
+																							</xs:element>
+																							<xs:element name="chronology" type="chronologyType" minOccurs="0" maxOccurs="unbounded">
+																								<xs:annotation>
+																									<xs:documentation>Group of data elements indicating the date of publication or issue of a part of a multi part resource and distinguishing it from other parts of the same resource</xs:documentation>
+																								</xs:annotation>
+																							</xs:element>
+																						</xs:sequence>
+																					</xs:complexType>
+																				</xs:element>
+																			</xs:choice>
+																		</xs:complexType>
+																	</xs:element>
+																	<xs:element name="endingEnumAndChronology" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Group of data elements indicating the end of an enumeration and chronology range </xs:documentation>
+																		</xs:annotation>
+																		<xs:complexType>
+																			<xs:choice>
+																				<xs:element name="text"/>
+																				<xs:element name="structured">
+																					<xs:annotation>
+																						<xs:documentation>Either enumeration or chronology must be present; both may be present</xs:documentation>
+																					</xs:annotation>
+																					<xs:complexType>
+																						<xs:sequence>
+																							<xs:element name="enumeration" type="enumerationType" minOccurs="0" maxOccurs="unbounded">
+																								<xs:annotation>
+																									<xs:documentation>Group of data elements indicating the last enumeration  such as a volume or issue number within an enumeration range</xs:documentation>
+																								</xs:annotation>
+																							</xs:element>
+																							<xs:element name="chronology" type="chronologyType" minOccurs="0" maxOccurs="unbounded">
+																								<xs:annotation>
+																									<xs:documentation>Group of data elements indicating the date of publication or issue of a part of a multi part resource and distinguishing it from other parts of the same resource</xs:documentation>
+																								</xs:annotation>
+																							</xs:element>
+																						</xs:sequence>
+																					</xs:complexType>
+																				</xs:element>
+																			</xs:choice>
+																		</xs:complexType>
+																	</xs:element>
+																</xs:sequence>
+																<xs:attribute name="unitType" use="optional" default="1">
+																	<xs:annotation>
+																		<xs:documentation>Code qualifying enumeration and chronology to indicate the type of the part being enumerated</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:enumeration value="1">
+																				<xs:annotation>
+																					<xs:documentation>basic</xs:documentation>
+																				</xs:annotation>
+																			</xs:enumeration>
+																			<xs:enumeration value="2">
+																				<xs:annotation>
+																					<xs:documentation>supplement</xs:documentation>
+																				</xs:annotation>
+																			</xs:enumeration>
+																			<xs:enumeration value="3">
+																				<xs:annotation>
+																					<xs:documentation>index</xs:documentation>
+																				</xs:annotation>
+																			</xs:enumeration>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+																<xs:attribute name="altNumbering" type="xs:boolean" use="optional" default="0">
+																	<xs:annotation>
+																		<xs:documentation>Code indicating that an enumeration and chronology is a secondary or parallel sequence</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="note" type="xs:string" use="optional">
+																	<xs:annotation>
+																		<xs:documentation>Text string qualifying and elaborating enumeration and chronology.  E.g. general statement about supplements</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="retention" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>Code that indicates the extent to which individual issues of a serial or multi part resource are retained and the time period for which they are retained</xs:documentation>
+															</xs:annotation>
+															<xs:simpleType>
+																<xs:restriction base="xs:string">
+																	<xs:enumeration value="0">
+																		<xs:annotation>
+																			<xs:documentation>unknown</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="2">
+																		<xs:annotation>
+																			<xs:documentation>replaced by updates</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="3">
+																		<xs:annotation>
+																			<xs:documentation>sample issue retained</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="4">
+																		<xs:annotation>
+																			<xs:documentation>replaced by preservation format</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="5">
+																		<xs:annotation>
+																			<xs:documentation>replaced by cumulation</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="6">
+																		<xs:annotation>
+																			<xs:documentation>limited retention</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="7">
+																		<xs:annotation>
+																			<xs:documentation>no retention</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value="8">
+																		<xs:annotation>
+																			<xs:documentation>permanent retention</xs:documentation>
+																		</xs:annotation>
+																	</xs:enumeration>
+																	<xs:enumeration value=""/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+														<xs:element ref="resourceIdentifier" minOccurs="0"/>
+														<xs:element name="component" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:documentation>Unique bibliographic part of a set, such as a volume of a serial or multi-volume work</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element ref="pieceIdentifier" maxOccurs="unbounded"/>
+																	<xs:element ref="form" minOccurs="0"/>
+																	<xs:element name="monetaryValuation" type="monetaryValuationType" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Estimate of the cost of replacing a copy of a resource or an indication of the value placed on a copy</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element ref="sublocation" minOccurs="0" maxOccurs="unbounded"/>
+																	<xs:element ref="shelfLocator" minOccurs="0" maxOccurs="unbounded"/>
+																	<xs:element name="electronicLocator" type="electronicLocatorType" minOccurs="0" maxOccurs="unbounded">
+																		<xs:annotation>
+																			<xs:documentation>Text string or pointer such as a URL indicating availability and location of an electronic resource</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+																		<xs:annotation>
+																			<xs:documentation>Phrase relating to a copy of a bibliographic resource, carrying additional information</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element name="enumerationAndChronology" type="EnumChron" maxOccurs="unbounded">
+																		<xs:annotation>
+																			<xs:documentation>Text string or group of data elements alphabetically identifying a unit of a resource that is published in parts</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element name="availabilityInformation" type="availabilityInformationType" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Group of data elements summarizing the availabiloity of a particular physical or digital copy set of a bibliographic resource that is published serially or in parts</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+							<xs:element name="summaryPolicy" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Group of data elements for a resource or set of resources and their copies summarizing availability policy, conditions and charges</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="form"/>
+										<xs:element name="availability" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Phrase or structure indicating restrictions which apply in relation to loan, copy or access.  Examples: - not for loan, in library use only, overnight only, circulation limited by user type, term loan, semester loan, available for supply without return, renewal not permitted.  Recommended structure from ISO 2146</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="availableFor"/>
+													<xs:choice>
+														<xs:element name="text" type="xs:string" maxOccurs="unbounded"/>
+														<xs:any namespace="##other"/>
+													</xs:choice>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element ref="reservationPolicy" minOccurs="0"/>
+										<xs:element name="feeInformation" type="feeInformationType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Group of data elements indicating charge amounts for various services relating to the delivery of a resource </xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="summaryHistory" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Group of data elements summarizing circulation and access activity for a resource or group of resources in a given time period</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="countPeriod" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Time period used to calculate a statistical total</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="countPeriodStart" type="xs:dateTime">
+														<xs:annotation>
+															<xs:documentation>Earliest date of a period used for counting</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="countPeriodEnd" type="xs:dateTime">
+														<xs:annotation>
+															<xs:documentation>Last date of a period used for counting</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="totalCirculation" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Group of data elements indicating the circulation activity of a resource or group of resources</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="totalCirculationCount" type="xs:nonNegativeInteger">
+																	<xs:annotation>
+																		<xs:documentation>Number of times that any copy of a resource or group of resources has been lent in a given time period including external loans</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="totalLoansCount" type="xs:nonNegativeInteger" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Number of times that any copy of a resource or group of resources has been lent in a given time period not including external loans</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="totalDCBCount" type="xs:nonNegativeInteger" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Number of times that any copy of a resource or group of resources has been lent directly to an external user (Direct Consortia Borrowing)  in a given time period</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="totalILL" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Group of data elements indicating the number of inter library loan transactions with external libraries in a given period, including incoming and outgoing loans and copies</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="totalILLCount" type="xs:nonNegativeInteger">
+																				<xs:annotation>
+																					<xs:documentation>Number of inter library loan transactions with external libraries in a given period, including incoming and outgoing loans and copies for a resource or group of resources</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="totalILLLent" type="xs:nonNegativeInteger" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Number of times that any copy of a resource or a group of resources has been lent to another library or copied for another library in a given period</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="totalILLBorrowed" type="xs:nonNegativeInteger" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Number of times that any copy of a resource or a group of resources has been borrowed from another library or copied from another library in a given period</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="totalReservationsCount" type="xs:nonNegativeInteger" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Number of times that a resource or group of resources were reserved for use in a given period</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="totalAccessCount" type="xs:nonNegativeInteger" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Number of times that any copy of a resource or group of resources has been accessed in a given time period that implied physical handling or electronic access</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="copiesCount">
+														<xs:annotation>
+															<xs:documentation>Group of data elements summarising the total number of copies held, acquired and discarded in a given time period</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="totalCopiesHeld" type="xs:positiveInteger" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Number of copies of a resource or group of resources that were owned, rented or accessible by an institution in a given time period. The count at the end of the period is applicable.</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="totalAcquired" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Group of data elements concerning number of copies of a resource or group of resources that were acquired by purchase or other means in a given time period</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="totalAcquiredCount" type="xs:nonNegativeInteger">
+																				<xs:annotation>
+																					<xs:documentation>Number of copies of a resource or group of resources that were acquired by purchase or other means in a given time period</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="collection" minOccurs="0" maxOccurs="unbounded">
+																				<xs:annotation>
+																					<xs:documentation>Group of data elements that describe and define a group of resources and their associated copies within an institution’s bibliographic resources</xs:documentation>
+																				</xs:annotation>
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="totalCollectionCount" type="xs:positiveInteger">
+																							<xs:annotation>
+																								<xs:documentation>Number of copies of a resource or group of resources that are included in a collection</xs:documentation>
+																							</xs:annotation>
+																						</xs:element>
+																						<xs:element name="collectionProfile" minOccurs="0" maxOccurs="unbounded">
+																							<xs:annotation>
+																								<xs:documentation>Group of data elements describing and differentiating a collection including location and material type attributes</xs:documentation>
+																							</xs:annotation>
+																							<xs:complexType>
+																								<xs:sequence>
+																									<xs:element name="collectionCode">
+																										<xs:annotation>
+																											<xs:documentation>Code or text string that identifies an attribute of a collection</xs:documentation>
+																										</xs:annotation>
+																									</xs:element>
+																									<xs:element name="collectionDescription">
+																										<xs:annotation>
+																											<xs:documentation>Description of a property or properties that are common to all copies of a collection</xs:documentation>
+																										</xs:annotation>
+																									</xs:element>
+																								</xs:sequence>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="totalDiscardedCount" type="xs:nonNegativeInteger" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Number of copies of a resource or group of resources that were discarded from a collection in a given time period</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="lastActivityInfo" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Group of data elements indicating when a resource or group of resources was last active and the type of activity involved </xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="lastActivityDate" type="xs:dateTime">
+														<xs:annotation>
+															<xs:documentation>Date and time on which a copy or group of copies was last involved in a circulation or delivery transaction that implied physical handling or electronic access, such as a loan, return, transfer or download</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="lastActivityType" type="codeOrIdentifier" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Code or phrase indicating the nature of the last activity of a copy of bibliographic resource.  Examples loan, return, stocktake, transfer</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="resource" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Group of data elements identifying and describing one or more works, created by intellectual effort that may be expressed in physical or digital form.
+If more than one resource is present then the holdings relate to any one of those resources: the resources are treated as interchangeable</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="resourceIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="form" minOccurs="0"/>
+							<xs:element name="partDetail" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Text string identifying a resource in relation to its parent resource.  May be overridden by enumerationAndChronology at copy level and set level but not recommended in combination with holdingStructured.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="EnumChron">
+		<xs:choice>
+			<xs:element name="text"/>
+			<xs:element name="structured">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="enumeration" type="enumerationType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Group of data elements indicating alpha-numeric identification of a component of a multi part resource, such as a volume or issue.  Either enumeration or chronology must be present; both may be present</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="chronology" type="chronologyType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Group of data elements indicating the date of publication or issue of a part of a multi part resource and distinguishing it from other parts of the same resource. Either enumeration or chronology must be present; both may be present</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="unitType" use="optional" default="1">
+			<xs:annotation>
+				<xs:documentation>Code qualifying enumeration and chronology to indicate the type of part being enumerated</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="1">
+						<xs:annotation>
+							<xs:documentation>basic</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="2">
+						<xs:annotation>
+							<xs:documentation>supplement</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="3">
+						<xs:annotation>
+							<xs:documentation>index</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="altNumbering" type="xs:boolean" use="optional" default="0">
+			<xs:annotation>
+				<xs:documentation>Code indicating that an enumeration and chronology is a secondary or parallel sequence</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="note" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Text string qualifying and elaborating enumeration and chronology.  E.g. general statement about supplements</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="codeOrIdentifier">
+		<xs:annotation>
+			<xs:documentation>Group of data elements comprising a value in the form of a code or identifier with an indication of a list or source within which the value is unique.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="value">
+				<xs:annotation>
+					<xs:documentation>Identifier or identifying code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeOrSource">
+				<xs:annotation>
+					<xs:documentation>Code, phrase or pointer indicating a source within which a value is unique</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="pointer" type="xs:anyURI">
+							<xs:annotation>
+								<xs:documentation>Direction to a definitive list of values within which an identifier or code is unique such as a URL or URN</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="text">
+							<xs:annotation>
+								<xs:documentation>Phrase indicating a definitive list of values within which an identifier or code is unique</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="availabilityInformationType">
+		<xs:sequence>
+			<xs:element name="status" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Group of data elements indicating and predicting actual availability of a copy or group of copies</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="availabilityStatus" default="0" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Code that indicates the availability for loan or access of a copy or group of copies in the context of a particular request</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="0">
+										<xs:annotation>
+											<xs:documentation>unknown</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="1">
+										<xs:annotation>
+											<xs:documentation>available</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="2">
+										<xs:annotation>
+											<xs:documentation>not available</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="3">
+										<xs:annotation>
+											<xs:documentation>possibly available</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value=""/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="availableFor" minOccurs="0"/>
+						<xs:element name="dateTimeAvailable" type="xs:dateTime" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Date and time on which a resource or a particular copy of a resource will be ready for delivery or access</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="policy" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Phrase or structure indicating restrictions which apply in relation to loan, copy or access.  Examples:  not for loan, in library use only, overnight only... Recommended structure from ISO 2146</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="##other"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="feeInformation" type="feeInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Group of data elements or single element indicating charge amounts for various services relating to the delivery of a resource</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="reservationPolicy" minOccurs="0"/>
+			<xs:element name="reservationQueue" type="xs:nonNegativeInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Count of the number of people in a reservation queue for a particular copy of a resource</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="statusType">
+		<xs:sequence>
+			<xs:element name="availableCount" type="xs:nonNegativeInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Count of the number of physical or digital copies of a resource that are available for use or delivery in the context of a particular request</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="availableFor" minOccurs="0"/>
+			<xs:element name="earliestDispatchDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date and time on which a resource or any copy of a resource will be ready for delivery</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="pieceIdentifier" type="codeOrIdentifier">
+		<xs:annotation>
+			<xs:documentation>Group of data elements tthat identify a specific instance of a resource</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="resourceIdentifier" type="codeOrIdentifier">
+		<xs:annotation>
+			<xs:documentation>Group of data elements identifying a bibliographic resource or its associated metadata record with an indication of a list or source list within which the identifier is unique</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="form" type="codeOrIdentifier">
+		<xs:annotation>
+			<xs:documentation>Group of data elements concerning physical or digital characteristics of a bibliographic resource that may constrain its use or indicate software that can read and display the resource</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="electronicLocatorType">
+		<xs:choice>
+			<xs:element name="pointer" type="xs:anyURI">
+				<xs:annotation>
+					<xs:documentation>Direction to a definitive list of values within which an identifier or code is unique such as a URL or URN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="text">
+				<xs:annotation>
+					<xs:documentation>Phrase indicating a definitive list of values within which an identifier or code is unique such as a URL or URN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="accessRestrictions" use="optional">
+			<xs:annotation>
+				<xs:documentation>Code that indicates authentication or other requirements necessary in order to access an electronic resource at a specific address.  Used in combination with holding / holdingSimple / availabilityInformation.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="0">
+						<xs:annotation>
+							<xs:documentation>unknown</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="1">
+						<xs:annotation>
+							<xs:documentation>unrestricted access</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="2">
+						<xs:annotation>
+							<xs:documentation>access with authorization</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="3">
+						<xs:annotation>
+							<xs:documentation>preview only</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="4">
+						<xs:annotation>
+							<xs:documentation>no online access</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="5">
+						<xs:annotation>
+							<xs:documentation>restrictions unspecified</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="6">
+						<xs:annotation>
+							<xs:documentation>access restricted URL based</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="shelfLocator" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>String of characters that identifies a copy’s or a set's shelving schem within its sublocation in relation to other copies.  Rarely repeated except in the case of parts being at different locations, e.g. inserted CD within a book</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="sublocation" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Name or code of a section and / or collection of a library or other institution that normally stores a copy or set when it is not in use, on loan or on the reservation shelves. Repeatable in the case of electronic copies that may be accessible from more than one location</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="monetaryValuationType">
+		<xs:simpleContent>
+			<xs:extension base="xs:decimal">
+				<xs:attribute name="currencyCode" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>Code from ISO 4217 indicating the currency of a particular sum of money</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="feeInformationType">
+		<xs:choice>
+			<xs:element name="feeText">
+				<xs:annotation>
+					<xs:documentation>Text string indicating charge amounts for various services relating to the delivery of a resource</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="feeStructured" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Group of data elements indicating charge amounts for various services relating to the delivery of a resource</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="feeReason" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Code or phrase representing the reason for a charge such as a service charge or fee.  Examples: – loan fee, reservation fee, digitization fee, reference look up fee etc.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="feeUnit" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Code or phrase indicating the coverage of a fee amount.  examples: – per image, per page, per 10 pages or part thereof</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="feeAmount">
+							<xs:annotation>
+								<xs:documentation>Sum of money required for a purchase or service</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:decimal">
+										<xs:attribute name="currencyCode" type="xs:string" use="optional">
+											<xs:annotation>
+												<xs:documentation>Code from ISO 4217 indicating the currency of a particular sum of money</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="enumerationType">
+		<xs:sequence>
+			<xs:element name="caption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Label describing the contents and level of an enumeration element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="value">
+				<xs:annotation>
+					<xs:documentation>Number, letter or word that combined with an enumeration caption identifies a unit of a resource that is published in parts and identifying the relationship of the part to the whole resource</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="level" type="xs:integer" use="required">
+			<xs:annotation>
+				<xs:documentation>Number indicating the hierarchical sequence of an enumeration element in relation to other similar elements in an enumeration and chronology group with the broadest element having the lowest level</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="chronologyType">
+		<xs:sequence>
+			<xs:element name="caption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Label describing the contents and level of a chronological element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="value">
+				<xs:annotation>
+					<xs:documentation>Phrase expressing a time period identifying a unit of a resource that is published in parts and identifying the relationship of the part to the whole resource</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="level" type="xs:integer" use="optional">
+			<xs:annotation>
+				<xs:documentation>Number indicating the hierarchical sequence of a chronological element in relation to other similar elements in an enumeration and chronology group with the broadest element having the lowest level</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="availableFor">
+		<xs:annotation>
+			<xs:documentation>Code indicating the nature of service available in relation to a specific bibliographic resource</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="0">
+					<xs:annotation>
+						<xs:documentation>unspecified</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="1">
+					<xs:annotation>
+						<xs:documentation>loan:  request for a loan of a physical resource</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="2">
+					<xs:annotation>
+						<xs:documentation>physical copy: request for a physical copy of a physical or digital resource to be made available for collection or delivery</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="3">
+					<xs:annotation>
+						<xs:documentation>digital copy: request for a digital copy of a physical or digital resource to be made available, e.g. PDF to be made available for collection from a website or delivery to an email address</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="4">
+					<xs:annotation>
+						<xs:documentation>online access: request for authorisation to access a digital resource</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="5">
+					<xs:annotation>
+						<xs:documentation>reference look-up:  request for consultation of a resource by a reference service, e.g. to consult the index or table of contents to determine if specific content is present</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="6">
+					<xs:annotation>
+						<xs:documentation>other</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="reservationPolicy">
+		<xs:annotation>
+			<xs:documentation>Code indicating whether a party owning or managing a resource will accept reservations for the resource</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="0">
+					<xs:annotation>
+						<xs:documentation>unknown</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="1">
+					<xs:annotation>
+						<xs:documentation>will accept</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="2">
+					<xs:annotation>
+						<xs:documentation>will not accept</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="3">
+					<xs:annotation>
+						<xs:documentation>will possibly accept</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+</xs:schema>

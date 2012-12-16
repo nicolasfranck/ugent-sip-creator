@@ -1,0 +1,35 @@
+ead: 
+    site: http://www.loc.gov/ead/
+    versies:
+        ftp://ftp.loc.gov/pub/ead/ead.dtd (2002)
+        http://www.loc.gov/ead/ead.xsd (2002)
+        http://www.loc.gov/ead/ead.rng (2002)
+marc:
+    site: http://www.loc.gov/standards/marcxml/
+    versies:
+        http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd (2002)
+        http://www.loc.gov/standards/marcxml/mrcbxmlfile.dtd (1996 en 2001)
+        http://www.loc.gov/standards/marcxml/mrcaxmlfile.dtd (2002 - 2010)
+mods: 
+    site: http://www.loc.gov/standards/mods/mods-schemas.html
+    versies: allemaal xsd!
+mads:
+    site: http://www.loc.gov/standards/mads/
+    versies: allemaal xsd!
+vracore:
+    site: http://www.loc.gov/standards/vracore/
+    versies: allemaal xsd!
+mix:
+    site: http://www.loc.gov/standards/mix/
+    versies: allemaal xsd
+iso25577:
+    site: http://www.loc.gov/standards/iso25577/
+    versies: allemaal xsd
+iso20775:
+    site: http://www.loc.gov/standards/iso20775/
+    versies: allemaal xsd
+alto:
+    site: http://www.loc.gov/standards/alto/
+    versies: allemaal xsd
+textMD, audioMD, videoMD en AES allemaal xsd: http://www.loc.gov/standards/amdvmd/audiovideoMDschemas.html    
+    

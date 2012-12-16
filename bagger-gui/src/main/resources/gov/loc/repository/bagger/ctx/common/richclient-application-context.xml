@@ -730,7 +730,15 @@
         <entry key="marc" value="http://www.loc.gov/MARC21/slim" />
         <entry key="mods" value="http://www.loc.gov/mods/v3" />
         <entry key="premis" value="info:lc/xmlns/premis-v2" />             
-    </util:map>   
+    </util:map>
+       
+    <util:map id="dtdTransformations" map-class="java.util.HashMap">
+        <entry key="ead" value="metadata/xslt/ead-dtd2schema.xsl" />
+        <entry key="mrcbfile" value="metadata/xslt/MARCBIG2MARC21slim.xsl" />
+        <entry key="mrcafile" value="metadata/xslt/MARCBIG2MARC21slim.xsl" />
+        <entry key="mrca" value="metadata/xslt/MARCBIG2MARC21slim.xsl" />
+        <entry key="mrcb" value="metadata/xslt/MARCBIG2MARC21slim.xsl" />
+    </util:map>
     
     <util:map map-class="java.util.HashMap" id="velocity">
         <entry key="properties" value="velocity.properties" />
