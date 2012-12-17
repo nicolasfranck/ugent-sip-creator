@@ -23,7 +23,7 @@ import ugent.bagger.exceptions.BagitMetsValidationException;
  *
  * @author nicolas
  */
-public class ExporterDSpaceMetsArchive extends Exporter{       
+public class ExporterDSpaceMetsArchive extends Exporter{           
     @Override
     public void export(MetsBag metsBag,Mets mets,OutputStream out) 
             throws                 

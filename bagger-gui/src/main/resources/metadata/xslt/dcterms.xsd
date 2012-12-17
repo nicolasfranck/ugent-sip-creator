@@ -2,9 +2,8 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:dc="http://purl.org/dc/elements/1.1/"
            xmlns:dcmitype="http://purl.org/dc/dcmitype/"
-           xmlns:dcterms="http://purl.org/dc/terms/"
-           xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-           targetNamespace="http://www.openarchives.org/OAI/2.0/oai_dc/"
+           targetNamespace="http://purl.org/dc/terms/"
+           xmlns="http://purl.org/dc/terms/"
            elementFormDefault="qualified"
            attributeFormDefault="unqualified">
 
@@ -63,14 +62,16 @@
   </xs:annotation>
 
 
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/03/xml.xsd" />
-    <xs:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd"/>
-    <xs:import namespace="http://purl.org/dc/dcmitype/" schemaLocation="http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcmitype.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+             schemaLocation="http://www.w3.org/2001/03/xml.xsd">
+  </xs:import>
 
-<xs:element name="dc" type="oai_dc:oai_dcType"/>
+   <xs:import namespace="http://purl.org/dc/elements/1.1/"
+              schemaLocation="dc.xsd"/>
 
-<xs:complexType name="oai_dcType">
-  <xs:choice minOccurs="0" maxOccurs="unbounded">
+   <xs:import namespace="http://purl.org/dc/dcmitype/"
+              schemaLocation="dcmitype.xsd"/>
+
    <xs:element name="title" substitutionGroup="dc:title"/>
    <xs:element name="creator" substitutionGroup="dc:creator"/>
    <xs:element name="subject" substitutionGroup="dc:subject"/>
@@ -86,9 +87,12 @@
    <xs:element name="relation" substitutionGroup="dc:relation"/>
    <xs:element name="coverage" substitutionGroup="dc:coverage"/>
    <xs:element name="rights" substitutionGroup="dc:rights"/>
+
    <xs:element name="alternative" substitutionGroup="title"/>
+
    <xs:element name="tableOfContents" substitutionGroup="description"/>
    <xs:element name="abstract" substitutionGroup="description"/>
+
    <xs:element name="created" substitutionGroup="date"/>
    <xs:element name="valid" substitutionGroup="date"/>
    <xs:element name="available" substitutionGroup="date"/>
@@ -97,8 +101,10 @@
    <xs:element name="dateAccepted" substitutionGroup="date"/>
    <xs:element name="dateCopyrighted" substitutionGroup="date"/>
    <xs:element name="dateSubmitted" substitutionGroup="date"/>
+
    <xs:element name="extent" substitutionGroup="format"/>
    <xs:element name="medium" substitutionGroup="format"/>
+
    <xs:element name="isVersionOf" substitutionGroup="relation"/>
    <xs:element name="hasVersion" substitutionGroup="relation"/>
    <xs:element name="isReplacedBy" substitutionGroup="relation"/>
@@ -112,8 +118,10 @@
    <xs:element name="isFormatOf" substitutionGroup="relation"/>
    <xs:element name="hasFormat" substitutionGroup="relation"/>
    <xs:element name="conformsTo" substitutionGroup="relation"/>
+
    <xs:element name="spatial" substitutionGroup="coverage"/>
    <xs:element name="temporal" substitutionGroup="coverage"/>
+
    <xs:element name="audience" substitutionGroup="dc:any"/>
    <xs:element name="accrualMethod" substitutionGroup="dc:any"/>
    <xs:element name="accrualPeriodicity" substitutionGroup="dc:any"/>
@@ -121,13 +129,14 @@
    <xs:element name="instructionalMethod" substitutionGroup="dc:any"/>
    <xs:element name="provenance" substitutionGroup="dc:any"/>
    <xs:element name="rightsHolder" substitutionGroup="dc:any"/>
+
    <xs:element name="mediator" substitutionGroup="audience"/>
    <xs:element name="educationLevel" substitutionGroup="audience"/>
+
    <xs:element name="accessRights" substitutionGroup="rights"/>
    <xs:element name="license" substitutionGroup="rights"/>
+
    <xs:element name="bibliographicCitation" substitutionGroup="identifier"/>
-  </xs:choice>
-</xs:complexType>
 
   <xs:complexType name="LCSH">
    <xs:simpleContent>

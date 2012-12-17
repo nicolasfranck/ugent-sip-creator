@@ -833,18 +833,43 @@
         -->
         <entry key="DSpace Mets Archive">
             <util:map>                
-                <entry key="class" value="ugent.bagger.exporters.ExporterDSpaceMetsArchive2" />                
+                <entry key="class" value="ugent.bagger.exporters.ExporterDSpaceMetsArchive2" />                                
                 <!--mdSec list is filtered to check wether its metadata can be exported -->
-                <entry key="metadataFilter" value-ref="namespaceMdSecFilter" />                
+                <entry key="metadataFilter" value-ref="namespaceMdSecFilterDSPaceMets" />                
+            </util:map>    
+        </entry>
+        <entry key="DSpace Simple Archive">
+            <util:map>                
+                <entry key="class" value="ugent.bagger.exporters.ExporterDSpaceSimpleArchive" />                                                          
+                <!--mdSec list is filtered to check wether its metadata can be exported -->
+                <entry key="metadataFilter" value-ref="namespaceMdSecFilterDSPaceSimple" />                
+                <entry key="metadataConverter" value-ref="metadataConverterDSPaceSimple" />                
             </util:map>    
         </entry>
     </util:map>    
     
-    <bean id="namespaceMdSecFilter" class="ugent.bagger.exporters.NamespaceMdSecFilter" >
+    <bean id="namespaceMdSecFilterDSPaceMets" class="ugent.bagger.exporters.NamespaceMdSecFilter" >
         <property name="namespaces">
             <util:list value-type="java.lang.String" list-class="java.util.ArrayList">
                 <value>http://www.loc.gov/mods/v3</value>
+                <value>http://www.loc.gov/mods/</value>
             </util:list>
+        </property>
+    </bean>
+    <bean id="namespaceMdSecFilterDSPaceSimple" class="ugent.bagger.exporters.NamespaceMdSecFilter" >
+        <property name="namespaces">
+            <util:list value-type="java.lang.String" list-class="java.util.ArrayList">
+                <value>http://purl.org/dc/elements/1.1/</value>
+                <value>http://www.openarchives.org/OAI/2.0/oai_dc/</value>
+            </util:list>
+        </property>
+    </bean>
+    <bean id="metadataConverterDSPaceSimple" class="ugent.bagger.exporters.NamespaceMetadataConverter" >
+        <property name="config">
+            <util:map map-class="java.util.HashMap">
+                <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/dc2dspace.xsl" />
+                <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="metadata/xslt/dc2dspace.xsl" />
+            </util:map>            
         </property>
     </bean>
     

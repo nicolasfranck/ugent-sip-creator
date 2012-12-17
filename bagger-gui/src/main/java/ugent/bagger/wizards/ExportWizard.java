@@ -26,8 +26,8 @@ import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.BagitMetsValidationException;
 import ugent.bagger.exporters.Exporter;
 import ugent.bagger.exporters.MdSecFilter;
+import ugent.bagger.exporters.MetadataConverter;
 import ugent.bagger.forms.ExportParamsForm;
-import ugent.bagger.helper.ArrayUtils;
 import ugent.bagger.helper.Beans;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
@@ -131,10 +131,18 @@ public class ExportWizard extends AbstractWizard {
                         return true;
                     }
                 }
-            }
+            }           
+            
             
             //export
             final Exporter exporter = (Exporter) Class.forName((String)econfig.get("class")).newInstance();
+            
+            MetadataConverter metadataConverter = null;
+            if(econfig.containsKey("metadataConverter")){
+                metadataConverter = (MetadataConverter) econfig.get("metadataConverter");                
+                exporter.setMetadataConverter(metadataConverter);
+            }
+            
             
             Runnable runnable = new Runnable() {
                 @Override
@@ -162,7 +170,10 @@ public class ExportWizard extends AbstractWizard {
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                         log.debug(ex.getMessage());
-                    } catch(Exception e){}
+                    } catch(Exception e){
+                        e.printStackTrace();
+                        log.debug(e.getMessage());
+                    }
                 }
             };
             BusyIndicator.showWhile(SwingUtils.getFrame(),runnable);            

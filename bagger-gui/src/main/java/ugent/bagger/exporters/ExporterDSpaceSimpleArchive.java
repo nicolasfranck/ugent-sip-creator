@@ -2,7 +2,6 @@ package ugent.bagger.exporters;
 
 import com.anearalone.mets.FileSec;
 import com.anearalone.mets.MdSec;
-import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import java.io.File;
@@ -16,18 +15,19 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.vfs2.FileObject;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.BagitMetsValidationException;
 import ugent.bagger.helper.FUtils;
+import ugent.bagger.helper.XML;
 
 /**
  *
  * @author nicolas
  */
-public class ExporterDSpaceMetsArchive2 extends Exporter{       
+public class ExporterDSpaceSimpleArchive extends Exporter{       
     protected MetadataConverter metadataConverter;
-    
     @Override
     public void export(MetsBag metsBag,Mets mets,OutputStream out) 
             throws                 
@@ -47,9 +47,8 @@ public class ExporterDSpaceMetsArchive2 extends Exporter{
         String name = file.getName();
         if(!file.isDirectory()){
             int pos = name.lastIndexOf('.');
-            name = pos >= 0 ? name.substring(0,pos) : name;            
+            name = pos >= 0 ? name.substring(0,pos) : name;        
         }
-        
         
         //validate metsBag and mets
         validate(metsBag,mets);        
@@ -58,40 +57,52 @@ public class ExporterDSpaceMetsArchive2 extends Exporter{
         ArrayList<MdSec>metadata = getMetadata(mets);        
         
         //create export
-        DSpaceSIPMets2 exporter = new DSpaceSIPMets2();                
+        DSpaceSIPSimpleArchive sip = new DSpaceSIPSimpleArchive();                
         
-        for(MdSec mdSec:metadata){
-           MdWrap mdWrap = mdSec.getMdWrap();
-           String type = mdWrap.getMIMETYPE();
-           Element element = mdWrap.getXmlData().get(0);
-           exporter.addDescriptiveMD(type,element);           
+        //set metadata
+        if(getMetadataConverter() != null){
+            for(MdSec mdSec:getMetadata(mets)){
+                Element element = mdSec.getMdWrap().getXmlData().get(0);
+                Document doc = XML.createDocument();
+                doc.appendChild(doc.importNode(element,true));
+                Document outDoc = getMetadataConverter().convert(doc);
+                if(outDoc == null){
+                    continue;
+                }
+                String schema = outDoc.getDocumentElement().getAttribute("schema");
+                System.out.println("schema: "+schema);
+                if(schema == null || schema.isEmpty()){
+                    schema = "dc";
+                }
+                sip.setMetadata(name,schema,outDoc);
+            }
         }
         
+        
+        //set files
         for(FileSec.FileGrp fileGroup:mets.getFileSec().getFileGrp()){            
             if(!fileGroup.getUse().equals("payloads")){
                 continue;
             }
+            
             for(FileSec.FileGrp.File metsFile:fileGroup.getFile()){   
                 String relativePath = metsFile.getFLocat().get(0).getXlinkHREF();
                 String entryString;
-                String longName;
-                String shortName = relativePath;
+                String longName;                
                 if(!file.isDirectory()){
                     entryString = FUtils.getEntryStringFor(file.getAbsolutePath(),name+File.separator+relativePath);
-                    longName = entryString;     
                 }else{
-                    entryString = FUtils.getEntryStringFor(file.getAbsolutePath(),relativePath);
-                    longName = new File(file,relativePath).getAbsolutePath();                    
-                }                                
-                FileObject fobject = FUtils.resolveFile(entryString);                
-                DSpaceSIPMets2.PackageFile packageFile = new DSpaceSIPMets2.PackageFileObject(
-                    fobject,shortName,longName
+                    entryString = FUtils.getEntryStringFor(file.getAbsolutePath(),relativePath);                    
+                }   
+                longName = relativePath;                                    
+                FileObject fobject = FUtils.resolveFile(entryString);                        
+                DSpaceSIPSimpleArchive.PackageFile packageFile = new DSpaceSIPSimpleArchive.PackageFileObject(
+                    fobject
                 );
-                packageFile.setMetsFile(metsFile);
-                exporter.addPackageFile(packageFile,"ORIGINAL",false);                
+                sip.setFile(name,longName,fobject);                
             }
         }
-        exporter.write(out);
+        sip.write(out);
     }
 
     @Override
@@ -103,9 +114,8 @@ public class ExporterDSpaceMetsArchive2 extends Exporter{
     public MetadataConverter getMetadataConverter() {
         return metadataConverter;
     }
-
     @Override
     public void setMetadataConverter(MetadataConverter converter) {
-        this.metadataConverter = converter;
+        this.metadataConverter = converter;                
     }
 }

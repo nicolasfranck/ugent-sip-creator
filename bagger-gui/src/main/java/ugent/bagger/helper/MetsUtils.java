@@ -395,7 +395,7 @@ public class MetsUtils {
     }
     public static Document generateDCDoc(ArrayList<Element>dcElements,ArrayList<Element>dcCandidates) throws Exception{
         Document dcDoc = null;
-        log.debug("dcElements.size="+dcElements.size()+", dcCandidates.size="+dcCandidates.size());
+        
         if(dcElements.size() <= 0 && dcCandidates.size() > 0){
             Element sourceElement = dcCandidates.get(0);
             String xsltPath = MetsUtils.getXsltPath(sourceElement,MetsUtils.NAMESPACE_DC);
@@ -473,22 +473,17 @@ public class MetsUtils {
         String name = 
             docType != null && docType.getName() != null ? 
                 docType.getName():doc.getDocumentElement().getLocalName();
-        System.out.println("name: "+name);
+
         //baseer je op naam van docType, of op naam root element
         if(!getDtdTransformations().containsKey(name)){
             throw new DtdNoFixFoundException(name);
         }        
         URL xsltResource = Context.getResource(getDtdTransformations().get(name));
-        System.out.println("xsltResource: "+xsltResource);
         Document xsltDoc = XML.XMLToDocument(xsltResource);
         if(xsltDoc == null){
             throw new DocumentCreationFailedException(); 
-        }
-        XML.DocumentToXML(xsltDoc,System.out);
-        doc = XSLT.transform(doc,xsltDoc);
-        XML.DocumentToXML(doc,System.out);
-        
-        return doc;
+        }        
+        return XSLT.transform(doc,xsltDoc);        
     }
 
     public static HashMap<String, String> getDtdTransformations() {

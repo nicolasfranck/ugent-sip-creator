@@ -41,7 +41,7 @@ public class ExportParamsForm extends AbstractForm{
         JFileChooser fileChooser = SwingUtils.createFileChooser(
             null,
             null,
-            JFileChooser.FILES_AND_DIRECTORIES,//save dialog type only accepts non existing files, so one need to see this            
+            JFileChooser.FILES_ONLY,//save dialog type only accepts non existing files, so one need to see this            
             false,
             JFileChooser.SAVE_DIALOG
         );        

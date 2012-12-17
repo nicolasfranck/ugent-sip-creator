@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -33,10 +32,13 @@ public final class BagInfoForm extends AbstractForm {
     public JScrollPane getFieldsScrollPane() {
         if(fieldsScrollPane == null){
             fieldsScrollPane = new JScrollPane(getFieldsPanel());
+            fieldsScrollPane.setOpaque(false);
             fieldsScrollPane.getViewport().setOpaque(false);
-            fieldsScrollPane.setWheelScrollingEnabled(true);               
-            fieldsScrollPane.setPreferredSize(new Dimension(FORM_WIDTH,500));
-            fieldsScrollPane.setMaximumSize(new Dimension(FORM_WIDTH,500));
+            fieldsScrollPane.setBorder(null);
+            fieldsScrollPane.setWheelScrollingEnabled(true);
+            Dimension dim = new Dimension(FORM_WIDTH,500);
+            fieldsScrollPane.setPreferredSize(dim);
+            fieldsScrollPane.setMaximumSize(dim);
             fieldsScrollPane.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
         return fieldsScrollPane;
@@ -47,8 +49,9 @@ public final class BagInfoForm extends AbstractForm {
     public LoadFieldsPanel getLoadFieldsPanel() {
         if(loadFieldsPanel == null){
             loadFieldsPanel = new LoadFieldsPanel();                        
-            loadFieldsPanel.setPreferredSize(new Dimension(FORM_WIDTH,35));            
-            loadFieldsPanel.setMaximumSize(new Dimension(FORM_WIDTH,35));            
+            Dimension dim = new Dimension(FORM_WIDTH,35);
+            loadFieldsPanel.setPreferredSize(dim);            
+            loadFieldsPanel.setMaximumSize(dim);            
             loadFieldsPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
         return loadFieldsPanel;
@@ -83,9 +86,10 @@ public final class BagInfoForm extends AbstractForm {
     }   
     public AddFieldPanel getAddFieldPanel() {
         if(addFieldPanel == null){
-            addFieldPanel = new AddFieldPanel();                        
-            addFieldPanel.setPreferredSize(new Dimension(FORM_WIDTH,35));            
-            addFieldPanel.setMaximumSize(new Dimension(FORM_WIDTH,35));
+            addFieldPanel = new AddFieldPanel();
+            Dimension dim = new Dimension(FORM_WIDTH,35);
+            addFieldPanel.setPreferredSize(dim);            
+            addFieldPanel.setMaximumSize(dim);            
             addFieldPanel.setAlignmentX(Container.LEFT_ALIGNMENT);
         }
         return addFieldPanel;
@@ -97,6 +101,7 @@ public final class BagInfoForm extends AbstractForm {
     protected JPanel getContentPanel() {
         if(contentPanel == null){
             contentPanel = new JPanel();
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
             BoxLayout layout = new BoxLayout(contentPanel,BoxLayout.PAGE_AXIS);       
             contentPanel.setLayout(layout);            
             contentPanel.add(getLoadFieldsPanel());

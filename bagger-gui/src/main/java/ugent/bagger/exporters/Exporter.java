@@ -22,7 +22,9 @@ import ugent.bagger.exceptions.BagitMetsValidationException;
  * @author nicolas
  */
 public abstract class Exporter {           
-    abstract ArrayList<MdSec>getMetadata(Mets mets);
+    public abstract MetadataConverter getMetadataConverter();
+    public abstract void setMetadataConverter(MetadataConverter converter);
+    public abstract ArrayList<MdSec>getMetadata(Mets mets);
     public abstract void export(MetsBag metsBag,Mets mets,OutputStream out) 
             throws 
                 IOException,

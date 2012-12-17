@@ -98,8 +98,22 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
             @Override
             public boolean test(Object o) {
                 ArrayList<File>list = (ArrayList<File>)o;                
-                System.out.println("outputFile: "+list);
-                return list != null && !list.isEmpty();
+                boolean ok = list != null && !list.isEmpty();
+                if(ok){
+                    for(File f:list){
+                        //moet een bestand zijn
+                        if(f.isDirectory()){
+                            ok = false;
+                            break;
+                        }
+                        //bestand wordt steeds aangemaakt, maar parent directory moet er zijn
+                        else if(!f.getParentFile().exists()){
+                            ok = false;
+                            break;
+                        }
+                    }
+                }
+                return ok;
             }        
         }));
         addRules(exportParamsRules);

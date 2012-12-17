@@ -5,6 +5,7 @@ import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -149,8 +150,11 @@ public final class InfoInputPane extends JTabbedPane {
             null,
             getAmdSecsPanel(),
             Context.getMessage("infoInputPane.amdSecTab.tooltip")                
-        );                                    
+        );           
         
+        Dimension dim = getPreferredSize();
+        Dimension mdim = new Dimension(600,(int)dim.getHeight());
+        setMinimumSize(mdim);
         
     }
     public void verifyForms(){                      

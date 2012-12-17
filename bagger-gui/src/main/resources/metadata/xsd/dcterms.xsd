@@ -67,10 +67,10 @@
   </xs:import>
 
    <xs:import namespace="http://purl.org/dc/elements/1.1/"
-              schemaLocation="dc.xsd"/>
+              schemaLocation="http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd"/>
 
    <xs:import namespace="http://purl.org/dc/dcmitype/"
-              schemaLocation="dcmitype.xsd"/>
+              schemaLocation="http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcmitype.xsd"/>
 
    <xs:element name="title" substitutionGroup="dc:title"/>
    <xs:element name="creator" substitutionGroup="dc:creator"/>
