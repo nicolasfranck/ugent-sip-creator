@@ -5,7 +5,6 @@ import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.utilities.namevalue.NameValueReader;
 import gov.loc.repository.bagit.utilities.namevalue.impl.NameValueReaderImpl;
@@ -248,17 +247,14 @@ public final class CreateBagsPanel extends JPanel{
             BusyIndicator.showAt(CreateBagsPanel.this);
             
             
+            BagView bagView = BagView.getInstance();
+            MetsBag bag = bagView.getBag();
+            
             try{ 
                 int totalSuccess = 0;
                 int total = getCreateBagsParams().getDirectories().size();
                
                 for(int i = 0; i< getCreateBagsParams().getDirectories().size();i++){                                                    
-                    File file = getCreateBagsParams().getDirectories().get(i);
-                    
-                    MetsBag metsBag = new MetsBag(null,null);
-                    metsBag.setBagItMets(new DefaultBagItMets());            
-                    metsBag.setRootDir(file);
-                    
                     //regular check
                     if(isCancelled()){
                         reportStatistics(total,totalSuccess);
@@ -269,7 +265,7 @@ public final class CreateBagsPanel extends JPanel{
                     
                     ArrayList<String>errors = new ArrayList<String>();
                     
-                    
+                    File file = getCreateBagsParams().getDirectories().get(i);
                     
                     //leesbaar? schrijfbaar?
                     if(isBadRWDir(file)){
@@ -293,7 +289,10 @@ public final class CreateBagsPanel extends JPanel{
                     }
                     
                     //ledig mets
-                    Mets mets = new Mets();
+                    bagView.getInfoFormsPane().getInfoInputPane().setMets(new Mets());
+                    Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
+                    
+                                        
                     
                     //zoek metadata bestanden (todo: haal die uit payload lijst)
                     boolean ok = false;
@@ -305,6 +304,8 @@ public final class CreateBagsPanel extends JPanel{
                                 if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
                                     MdSec mdSec = MetsUtils.createMdSec(metadataFile);                                    
                                     mets.getDmdSec().add(mdSec);
+                                }else if(metadataFile.getAbsolutePath().endsWith(".csv")){
+                                
                                 }
                                 ok = true;
                             }catch(Exception e){    
@@ -387,8 +388,8 @@ public final class CreateBagsPanel extends JPanel{
                                     field.setName(pair.getName());
                                     field.setLabel(pair.getName());
                                     field.setValue(pair.getValue());
-                                    field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);                                    
-                                    metsBag.addField(field);
+                                    field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
+                                    bag.addField(field);
                                 }
                             }                            
                         }catch(Exception e){
@@ -409,40 +410,20 @@ public final class CreateBagsPanel extends JPanel{
                         break;
                     }                    
                     
-                    String [] ignoreFiles = 
-                        getCreateBagsParams().isKeepMetadata() ? 
-                            new String [] {} : 
-                            getCreateBagsParams().getMetadata();                                        
+                    String [] ignoreFiles = getCreateBagsParams().isKeepMetadata() ? new String [] {} : getCreateBagsParams().getMetadata();                    
                     
-                    if(getCreateBagsParams().isKeepEmptyDirectories()){                                            
-                        try {                            
-                            metsBag.setMets(mets);
-                            metsBag.createPreBagAddKeepFilesToEmptyFolders(file,getCreateBagsParams().getVersion(),ignoreFiles);                                           
-                        } catch (Exception e) {
-                            log.error(e);             
-                            String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
-                            String message = Context.getMessage(
-                                "DefaultBag.createPreBag.Exception.description", 
-                                new Object [] {file,e.getMessage()}
-                            );
-                            log(message);
-                            SwingUtils.ShowError(title,message);    	   
-                        }
-                    }else{	                        
-                        try {                            
-                            metsBag.setMets(mets);
-                            metsBag.createPreBag(file,getCreateBagsParams().getVersion(),ignoreFiles);                      
-                        } catch (Exception e) {
-                            log.error(e); 
-
-                            String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
-                            String message = Context.getMessage(
-                                "DefaultBag.createPreBag.Exception.description", 
-                                new Object [] {file,e.getMessage()}
-                            );
-                            log(message);
-                            SwingUtils.ShowError(title,message);    	   
-                        }
+                    if(bag.isAddKeepFilesToEmptyFolders()){                    
+                        bagView.createBagsHandler.createPreBagAddKeepFilesToEmptyFolders(
+                            file,
+                            getCreateBagsParams().getVersion(),                            
+                            ignoreFiles
+                        );					
+                    }else{							
+                        bagView.createBagsHandler.createPreBag(
+                            file, 
+                            getCreateBagsParams().getVersion(),                           
+                            ignoreFiles
+                        );
                     }
                     
                     if(!isDone()){
@@ -471,8 +452,11 @@ public final class CreateBagsPanel extends JPanel{
         @Override
         protected Object doInBackground() throws Exception {
             
-            BusyIndicator.showAt(CreateBagsPanel.this);           
+            BusyIndicator.showAt(CreateBagsPanel.this);
             
+            BagView bagView = BagView.getInstance();                
+            
+            MetsBag bag = null;
             
             //ledig payloads en tags (anders hoopt alles zich in de opeenvolgende bags..)           
             
@@ -495,6 +479,8 @@ public final class CreateBagsPanel extends JPanel{
                     
                     //ledig mets                    
                     Mets mets = new Mets();
+                    bagView.getInfoFormsPane().getInfoInputPane().setMets(mets);
+                    
                     
                     File out = new File(getCreateBagsParams().getOutputDir().get(0),inputDir.getName());                    
                     
@@ -502,15 +488,16 @@ public final class CreateBagsPanel extends JPanel{
                      *  Lege bag:
                      *      rootDir: null, want map bestaat nog niet (opgeven File die nog niet bestaat geef IOException)                     
                      */
-                    MetsBag metsBag = new MetsBag(null,getCreateBagsParams().getVersion());                    
-                    metsBag.setRootDir(out);                    
+                    bag = new MetsBag(null,getCreateBagsParams().getVersion());                    
+                    bag.setRootDir(out);
+                    bagView.setBag(bag);                   
                     
                     //voeg payloads toe
                     ArrayList<File>listPayloads = FUtils.listFiles(inputDir);
                     
                     for(File file:listPayloads){
                         if(file.isFile()){                                                        
-                            metsBag.addFileToPayload(file);
+                            bag.addFileToPayload(file);
                         }
                     }
                     
@@ -544,7 +531,7 @@ public final class CreateBagsPanel extends JPanel{
                             //haal uit payload lijst
                             if(!getCreateBagsParams().isKeepMetadata()){
                                 String path = "data/"+metadataPath;                            
-                                metsBag.removeBagFile(path);
+                                bag.removeBagFile(path);
                             }                            
                         }else{
                             ok = true;
@@ -623,7 +610,7 @@ public final class CreateBagsPanel extends JPanel{
                                     field.setLabel(pair.getName());
                                     field.setValue(pair.getValue());
                                     field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);
-                                    metsBag.addField(field);
+                                    bag.addField(field);
                                 }
                             }                            
                         }catch(Exception e){
@@ -646,11 +633,11 @@ public final class CreateBagsPanel extends JPanel{
                     
                     reportStatistics(total,totalSuccess);
                     
-                    metsBag.setBagItMets(new DefaultBagItMets());
+                    bag.setBagItMets(new DefaultBagItMets());
                     
                     Writer writer = new FileSystemWriter(new BagFactory());
                     
-                    boolean saveOk = metsBag.write(writer);
+                    boolean saveOk = bag.write(writer);
 
                     if(!saveOk){                        
                         String message = Context.getMessage("bag.warning.savingFailed");
@@ -682,9 +669,5 @@ public final class CreateBagsPanel extends JPanel{
          
             return null;
         }               
-    }    
-           
-    public void log(String message) {
-        ApplicationContextUtil.addConsoleMessage(message);
     }
 }
