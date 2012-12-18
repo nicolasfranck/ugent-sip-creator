@@ -62,7 +62,7 @@ public class ExporterDSpaceMetsArchive2 extends Exporter{
         
         for(MdSec mdSec:metadata){
            MdWrap mdWrap = mdSec.getMdWrap();
-           String type = mdWrap.getMIMETYPE();
+           String type = mdWrap.getMDTYPE() == MdSec.MDTYPE.OTHER ? mdWrap.getOTHERMDTYPE() : mdWrap.getMDTYPE().toString();
            Element element = mdWrap.getXmlData().get(0);
            exporter.addDescriptiveMD(type,element);           
         }

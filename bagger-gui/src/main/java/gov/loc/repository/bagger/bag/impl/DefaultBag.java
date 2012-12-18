@@ -102,17 +102,19 @@ public class DefaultBag {
                 }
             }else{
                 String basename = rootDir.getName();
+                String path = rootDir.getAbsolutePath();
                 int index = basename.lastIndexOf('.');
                 String n = index >= 0 ? basename.substring(0,index) : basename;
+                n = n.toLowerCase().endsWith(".tar") ? n.substring(0,n.length() - ".tar".length()) :n;
 
                 //check fetch.txt            
-                String entry = FUtils.getEntryStringFor(rootDir.getAbsolutePath(),n+"/fetch.txt");
+                String entry = FUtils.getEntryStringFor(path,n+"/fetch.txt");
                 FileObject fobject = FUtils.resolveFile(entry);
                 if(fobject.exists()){
                     throw new BagFetchForbiddenException(rootDir);
                 }
                 //check data directory
-                entry = FUtils.getEntryStringFor(rootDir.getAbsolutePath(),n+"/data");
+                entry = FUtils.getEntryStringFor(path,n+"/data");
                 fobject = FUtils.resolveFile(entry);
                 if(!fobject.exists()){
                     throw new BagNoDataException(rootDir);
@@ -134,8 +136,7 @@ public class DefaultBag {
         }
         initializeBilBag();
 
-        bagInfo = new DefaultBagInfo(bilBag);        
-               
+        bagInfo = new DefaultBagInfo(bilBag);                       
 
         FetchTxt fetchTxt = bilBag.getFetchTxt();
         if (fetchTxt != null && !fetchTxt.isEmpty()) {
@@ -150,8 +151,21 @@ public class DefaultBag {
             }
         }
 
-        this.payloadManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;
-        this.tagManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;
+        /*
+         * BUG: getPayloadManifestAlgorithm() levert hierdoor altijd MD5 op, ook al heb je enkel manifest-sha512.txt
+         */
+                
+        //this.payloadManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;        
+        //this.tagManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;               
+        
+        tagManifestAlgorithm = 
+                !bilBag.getTagManifests().isEmpty() ? 
+                    bilBag.getTagManifests().get(0).getAlgorithm().bagItAlgorithm : 
+                    Manifest.Algorithm.MD5.bagItAlgorithm;
+        payloadManifestAlgorithm = 
+                !bilBag.getPayloadManifests().isEmpty() ? 
+                    bilBag.getPayloadManifests().get(0).getAlgorithm().bagItAlgorithm : 
+                    Manifest.Algorithm.MD5.bagItAlgorithm;
         
         this.bagInfo.updateBagInfoFieldMapFromBilBag(bilBag.getBagInfoTxt());
     }
@@ -631,6 +645,12 @@ public class DefaultBag {
     }    
    
     public static Algorithm resolveAlgorithm(String algorithm){
+        System.out.println("DefaultBag::resolveAlgorithm");
+        System.out.println("MD5: "+Manifest.Algorithm.MD5.bagItAlgorithm);
+        System.out.println("SHA1: "+Manifest.Algorithm.SHA1.bagItAlgorithm);
+        System.out.println("SHA256: "+Manifest.Algorithm.SHA256);
+        System.out.println("SHA512: "+Manifest.Algorithm.SHA512.bagItAlgorithm);
+        
         if(algorithm.equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
             return Algorithm.MD5;
         }else if(algorithm.equalsIgnoreCase(Manifest.Algorithm.SHA1.bagItAlgorithm)) {
@@ -646,7 +666,7 @@ public class DefaultBag {
    
 
     public void generateManifestFiles() {
-        DefaultCompleter completer = new DefaultCompleter(new BagFactory());            
+        DefaultCompleter completer = new DefaultCompleter(new BagFactory());                    
         if (isBuildPayloadManifest) {  
             log.debug("generating payload manifest");
             completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));            

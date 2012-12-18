@@ -9,4 +9,5 @@ import java.util.ArrayList;
  */
 public interface MdSecFilter {
     ArrayList<MdSec>filter(ArrayList<MdSec>data);
+    ArrayList<String>getErrors();
 }

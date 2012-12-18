@@ -28,6 +28,7 @@ import ugent.bagger.exporters.Exporter;
 import ugent.bagger.exporters.MdSecFilter;
 import ugent.bagger.exporters.MetadataConverter;
 import ugent.bagger.forms.ExportParamsForm;
+import ugent.bagger.helper.ArrayUtils;
 import ugent.bagger.helper.Beans;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
@@ -40,8 +41,9 @@ import ugent.bagger.params.ExportParams;
  */
 public class ExportWizard extends AbstractWizard {    
     static final Log log = LogFactory.getLog(ExportWizard.class);
-    ExportWizardPage1 exportWizardPage1;        
-    HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
+    protected ExportWizardPage1 exportWizardPage1;        
+    protected HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
+    protected static final String EOL = System.getProperty("line.separator");
 
     public ExportWizard(String wizardId){
         super(wizardId);
@@ -116,14 +118,15 @@ public class ExportWizard extends AbstractWizard {
              *              Dus daarom verder op eigen risico (confirm-dialog)
              */
             if(econfig.containsKey("metadataFilter")){
-                MdSecFilter mdSecFilter = (MdSecFilter) econfig.get("metadataFilter");                
+                MdSecFilter mdSecFilter = (MdSecFilter) econfig.get("metadataFilter");               
                 ArrayList<MdSec>filteredMdSec = mdSecFilter.filter((ArrayList<MdSec>) mets.getDmdSec());
                 if(filteredMdSec.isEmpty()){
                     boolean proceed = SwingUtils.confirm(                        
                         Context.getMessage("ExportWizard.filteredMdSecEmpty.title"), 
                         Context.getMessage(
                             "ExportWizard.filteredMdSecEmpty.description",new Object []{
-                                exportParams.getFormat()
+                                exportParams.getFormat(),
+                                ArrayUtils.join(mdSecFilter.getErrors().toArray(),EOL)
                             }
                         )
                     );

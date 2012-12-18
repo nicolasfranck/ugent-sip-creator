@@ -19,7 +19,6 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.params.BagError;
 import ugent.bagger.params.BagErrorNoBagDir;
 import gov.loc.repository.bagger.ui.InfoInputPane;
-import gov.loc.repository.bagit.BagFile;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
 import ugent.bagger.exceptions.BagNoDataException;
 

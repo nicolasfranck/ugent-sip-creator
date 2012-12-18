@@ -50,11 +50,7 @@ public class OpenBagHandler extends AbstractAction {
         fo.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
         fo.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
         fo.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
-        fo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        /*
-        if(bagView.getBagRootPath() != null){
-            fo.setCurrentDirectory(bagView.getBagRootPath().getParentFile());
-        }*/
+        fo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);        
         fo.setDialogTitle(Context.getMessage("openBagHandler.fileChooser.dialogTitle"));        
         
         File [] files = SwingUtils.chooseFiles(fo,SwingUtils.getFrame());

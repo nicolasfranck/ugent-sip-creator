@@ -48,4 +48,9 @@ public class NamespaceMdSecFilter implements MdSecFilter{
         
         return filtered;
     }    
+
+    @Override
+    public ArrayList<String> getErrors() {
+        return new ArrayList<String>(namespaces);
+    }
 }

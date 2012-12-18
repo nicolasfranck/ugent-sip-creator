@@ -300,11 +300,12 @@ public class DSpaceSIPMets2 {
         dmdIDs.add(dmdID);
         
         MdSec dmdSec = new MdSec(dmdID);        
-        dmdSec.setGROUPID(dmdGroupID);        
+        dmdSec.setGROUPID(dmdGroupID);                
         
         MdWrap mdWrap;
         try{
             mdWrap = new MdWrap(MdSec.MDTYPE.fromValue(type));
+            mdWrap.setMIMETYPE("text/xml");           
         }catch(Exception e){
             mdWrap = new MdWrap(MdSec.MDTYPE.OTHER);
             mdWrap.setOTHERMDTYPE(type);

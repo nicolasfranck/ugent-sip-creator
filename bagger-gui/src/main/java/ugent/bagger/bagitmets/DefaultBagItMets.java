@@ -104,13 +104,18 @@ public class DefaultBagItMets extends BagItMets{
         header.getAgent().add(agent);        
         
         //manifest informatie
-        Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm());            
-        SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(metsBag.getTagManifestAlgorithm());         
+        Manifest.Algorithm tagManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm());                    
+        SharedEnums.CHECKSUMTYPE tagManifestChecksumType = resolveChecksumType(metsBag.getTagManifestAlgorithm());     
+        
+        System.out.println("metsBag.payloadManifestAlgorithm: "+metsBag.getPayloadManifestAlgorithm());
         Manifest.Algorithm payloadManifestAlg = DefaultBag.resolveAlgorithm(metsBag.getPayloadManifestAlgorithm());            
+        System.out.println("payloadManifestAlg: "+payloadManifestAlg);
         SharedEnums.CHECKSUMTYPE payloadManifestChecksumType = resolveChecksumType(metsBag.getPayloadManifestAlgorithm()); 
         
         Manifest payloadManifest = bag.getPayloadManifest(payloadManifestAlg);
+        System.out.println("payloadManifest: "+payloadManifest);
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);                                
+        System.out.println("tagfileManifest: "+tagfileManifest);
         
         //files
         final HashMap<String,String> fileIdMap = new HashMap<String,String>();
@@ -119,6 +124,9 @@ public class DefaultBagItMets extends BagItMets{
             
             Collection<BagFile>payloads = bag.getPayload();            
             Collection<BagFile>tags = bag.getTags();            
+            
+            System.out.println("payloads: "+payloads.size());
+            System.out.println("tags: "+tags.size());
 
             //fileSec
             FileSec fileSec = mets.getFileSec();
@@ -127,7 +135,7 @@ public class DefaultBagItMets extends BagItMets{
                 mets.setFileSec(fileSec);
             }                       
             List<FileSec.FileGrp> fileGroups = fileSec.getFileGrp();            
-            fileGroups.clear();
+            fileGroups.clear();            
             
             //group payloads
             FileSec.FileGrp payloadGroup = new FileSec.FileGrp();            
@@ -137,15 +145,23 @@ public class DefaultBagItMets extends BagItMets{
         
             for(BagFile bagFile:payloads){
 
+                System.out.println("payload "+bagFile.getFilepath());
+                
                 //xsd:ID moet NCName zijn                    
                 String fileId = MetsUtils.createID();                        
+                
+                System.out.println("payload test 1");
                 
                 //houd mapping filepath <=> fileid bij
                 fileIdMap.put(bagFile.getFilepath(),fileId);                                
                 
+                System.out.println("payload test 2");
+                
                 //SIZE
                 FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                                                            
                 metsFile.setSIZE(bagFile.getSize()); 
+                
+                System.out.println("payload test 3");
         
                 //MIMETYPE
                 String mimeType;                
@@ -158,6 +174,8 @@ public class DefaultBagItMets extends BagItMets{
                     //indien bag geen directory is, maar een tar of zip
                     mimeType = FUtils.getMimeType(bagFile.newInputStream());
                 }
+                
+                System.out.println("payload test 4");
 
                 metsFile.setMIMETYPE(mimeType);                                                                    
                 
@@ -166,6 +184,8 @@ public class DefaultBagItMets extends BagItMets{
                 //CHECKSUM en CHECKSUMTYPE
                 metsFile.setCHECKSUM(checksumFile);
                 metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                                                                          
+                
+                System.out.println("payload test 5");
                 
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
@@ -179,7 +199,9 @@ public class DefaultBagItMets extends BagItMets{
                     }                       
                 }catch(Exception e){                    
                     log.debug(e.getMessage());                                        
-                }                
+                }    
+                
+                System.out.println("payload test 6");
 
                 //FLocat
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();
@@ -189,9 +211,14 @@ public class DefaultBagItMets extends BagItMets{
                 
                 metsFile.getFLocat().add(flocat);
                 
+                System.out.println("payload test 7");
+                
                 payloadFiles.add(metsFile);                                      
             }
             fileGroups.add(payloadGroup);        
+            
+            
+            System.out.println("common test 1");
             
             //group tagfiles
             FileSec.FileGrp tagFileGroup = new FileSec.FileGrp();            
@@ -200,6 +227,7 @@ public class DefaultBagItMets extends BagItMets{
             List<FileSec.FileGrp.File>tagFiles = tagFileGroup.getFile();
             
             for(BagFile bagFile:tags){
+                System.out.println("tag "+bagFile.getFilepath());
                 
                 String filePath = bagFile.getFilepath();
                 
@@ -213,16 +241,25 @@ public class DefaultBagItMets extends BagItMets{
                                    
                 String fileId = MetsUtils.createID();                        
                 
+                System.out.println("tag test 1");
+                
                 fileIdMap.put(filePath,fileId);                
+                
+                System.out.println("tag test 2");
+                
                 
                 //SIZE
                 FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                                            
                 metsFile.setSIZE(bagFile.getSize());                    
+                
+                System.out.println("tag test 3");
 
                 //MIMETYPE
                 String mimeType; 
                 File rootDir = bagView.getBag().getRootDir();
                 File tagFile = new File(rootDir,filePath);                
+                
+                System.out.println("tag test 4");
 
                 if(tagFile.isFile()){                    
                     mimeType = FUtils.getMimeType(tagFile);
@@ -233,6 +270,8 @@ public class DefaultBagItMets extends BagItMets{
 
                 metsFile.setMIMETYPE(mimeType);                                                                    
                 String checksumFile = tagfileManifest.get(filePath);         
+                
+                System.out.println("tag test 5");
 
                 //CHECKSUM en CHECKSUMTYPE
                 metsFile.setCHECKSUM(checksumFile);
@@ -248,10 +287,12 @@ public class DefaultBagItMets extends BagItMets{
                     }else{                     
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                     }                    
-                }catch(Exception e){                    
+                }catch(Exception e){    
+                    e.printStackTrace();
                     log.debug(e.getMessage());                    
                 }
                 
+                System.out.println("tag test 6");
                 
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();                
                 flocat.setLOCTYPE(LocatorElement.LOCTYPE.URL);
@@ -263,6 +304,7 @@ public class DefaultBagItMets extends BagItMets{
             
             fileGroups.add(tagFileGroup);            
             
+            System.out.println("common test 2");
             
             //make node trees            
             DefaultMutableTreeNode rootNodePayloads = null;              
@@ -373,6 +415,7 @@ public class DefaultBagItMets extends BagItMets{
          
 
         }catch(Exception e){
+            e.printStackTrace();
             log.debug(e.getMessage());                  
         }        
         
@@ -380,6 +423,7 @@ public class DefaultBagItMets extends BagItMets{
             PremisBagitMetsAnalyser analyser = new PremisBagitMetsAnalyser();
             analyser.analyse(metsBag,mets);
         }catch(Exception e){
+            e.printStackTrace();
             log.debug(e.getMessage());             
         }
         
