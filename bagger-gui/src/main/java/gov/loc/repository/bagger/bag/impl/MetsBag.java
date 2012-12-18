@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.bag.impl;
 
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.MetsWriter;
-import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.Manifest;
 import gov.loc.repository.bagit.Manifest.Algorithm;
@@ -27,7 +26,17 @@ public final class MetsBag extends DefaultBag{
     BagItMets bagItMets;          
     Premis premis;
     ArrayList<String>oldFileList;        
+    Mets mets;
 
+    public Mets getMets() {
+        if(mets == null){
+            mets = new Mets();
+        }
+        return mets;
+    }
+    public void setMets(Mets mets) {
+        this.mets = mets;
+    }   
     public Premis getPremis() {
         if(premis == null){
             premis = new Premis();
@@ -74,21 +83,15 @@ public final class MetsBag extends DefaultBag{
         //bereken checksums
         generateManifestFiles();
         
-        Mets mets = getBagItMets().onSaveBag(
-            this,
-            BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMets()
-        );
+        setMets(getBagItMets().onSaveBag(this,getMets()));
         
-        if(mets == null){
-            mets = new Mets();
-        }
         File tmpdir = new File(System.getProperty("java.io.tmpdir"));
         File metsFile = new File(tmpdir,"mets.xml");
         metsFile.deleteOnExit();
         
         try{
             MetsWriter metsWriter = new MetsWriter();
-            metsWriter.writeToFile(mets,metsFile);
+            metsWriter.writeToFile(getMets(),metsFile);
             
             try{
                 removeBagFile("mets.xml");  
@@ -142,20 +145,13 @@ public final class MetsBag extends DefaultBag{
             }            
         }
         
-        Mets mets = getBagItMets().onSaveBag(
-            this,
-            BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMets()
-        );
-        
-        if(mets == null){
-            mets = new Mets();
-        }
+        setMets(getBagItMets().onSaveBag(this,getMets()));        
         
         File metsFile = new File(bag.getFile(),"mets.xml");
         
         try{
             MetsWriter metsWriter = new MetsWriter();
-            metsWriter.writeToFile(mets,metsFile);            
+            metsWriter.writeToFile(getMets(),metsFile);            
             
             //manually add checksum
             Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());            
@@ -216,20 +212,13 @@ public final class MetsBag extends DefaultBag{
             }            
         }
         
-        Mets mets = getBagItMets().onSaveBag(
-            this,
-            BagView.getInstance().getInfoFormsPane().getInfoInputPane().getMets()
-        );
-        
-        if(mets == null){
-            mets = new Mets();
-        }
+        setMets(getBagItMets().onSaveBag(this,getMets()));        
         
         File metsFile = new File(bag.getFile(),"mets.xml");
         
         try{
             MetsWriter metsWriter = new MetsWriter();
-            metsWriter.writeToFile(mets,metsFile);            
+            metsWriter.writeToFile(getMets(),metsFile);            
             
             //manually add checksum
             Algorithm ta = resolveAlgorithm(getTagManifestAlgorithm());            

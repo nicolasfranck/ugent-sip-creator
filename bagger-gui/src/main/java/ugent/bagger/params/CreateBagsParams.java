@@ -3,7 +3,6 @@ package ugent.bagger.params;
 import gov.loc.repository.bagit.BagFactory;
 import java.io.File;
 import java.util.ArrayList;
-import ugent.bagger.bagitmets.MetsFileDateCreated;
 
 /**
  *
@@ -19,8 +18,7 @@ public class CreateBagsParams {
     private boolean addDC = false;
     private boolean writeToBagInfo = false;
     private boolean bagInPlace = true;
-    private ArrayList<File> outputDir;
-    private MetsFileDateCreated metsFileDateCreated;
+    private ArrayList<File> outputDir;    
 
     public String[] getMetadata() {
         if(metadata == null){
@@ -92,14 +90,5 @@ public class CreateBagsParams {
     }
     public void setBagInPlace(boolean bagInPlace) {
         this.bagInPlace = bagInPlace;
-    }
-    public MetsFileDateCreated getMetsFileDateCreated() {
-        if(metsFileDateCreated == null){
-            metsFileDateCreated = MetsFileDateCreated.CURRENT_DATE;
-        }
-        return metsFileDateCreated;
-    }
-    public void setMetsFileDateCreated(MetsFileDateCreated metsFileDateCreated) {
-        this.metsFileDateCreated = metsFileDateCreated;
     }    
 }

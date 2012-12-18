@@ -60,6 +60,7 @@ public final class InfoInputPane extends JTabbedPane {
         setMets(mets);
         getMdSecPanel().reset((ArrayList<MdSec>)mets.getDmdSec());
         getAmdSecsPanel().reset((ArrayList<AmdSec>)mets.getAmdSec());        
+        getBagView().getBag().setMets(mets);
     }
     public BagView getBagView(){
         return BagView.getInstance();        

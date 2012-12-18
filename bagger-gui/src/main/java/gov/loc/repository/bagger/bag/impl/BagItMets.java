@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.bag.impl;
 
 import com.anearalone.mets.Mets;
 import com.anearalone.mets.SharedEnums;
-import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.Manifest;
 
 /**

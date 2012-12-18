@@ -58,29 +58,11 @@ public class CreateBagsParamsForm extends AbstractForm{
         //keep empty directories
         builder.add("keepEmptyDirectories");
         builder.row();
-
-        //version
-        /*ArrayList<String> versionModel = new ArrayList<String>();                
-        for(BagFactory.Version version:BagFactory.Version.values()){
-            versionModel.add(version.versionString);
-        }
-        Binding versionBinding = bf.createBoundComboBox("version",versionModel.toArray());
-        final JComboBox versionComboBox = ((JComboBox)versionBinding.getControl());        
-        builder.add(versionBinding);
-        builder.row();*/     
         
         for(String key:new String [] {"metadataPaths","keepMetadata","addDC","writeToBagInfo"}){
             builder.add(key);
             builder.row();
         }   
-        
-        //metsFileDateCreated
-        Binding metsFileDateCreatedBinding = bf.createBoundComboBox(
-            "metsFileDateCreated",
-            MetsFileDateCreated.values()
-        );
-        builder.add(metsFileDateCreatedBinding);
-        builder.row();
         
         //bagInPlace
         builder.add("bagInPlace");

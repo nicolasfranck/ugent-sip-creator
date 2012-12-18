@@ -15,7 +15,6 @@ import com.anearalone.mets.StructMap.Div.Fptr;
 import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.Manifest;
@@ -48,11 +47,10 @@ public class DefaultBagItMets extends BagItMets{
         Bag bag = metsBag.getBag();
         
         String pathMets;            
-        Mets mets = null;  
-        BagView bagView = BagView.getInstance();
+        Mets mets = null;          
         
-        if(bagView.getBag().getSerialMode() != MetsBag.NO_MODE){            
-            pathMets = FUtils.getEntryStringFor(bag.getFile().getAbsolutePath(),bagView.getBag().getName()+"/mets.xml");
+        if(metsBag.getSerialMode() != MetsBag.NO_MODE){            
+            pathMets = FUtils.getEntryStringFor(bag.getFile().getAbsolutePath(),metsBag.getName()+"/mets.xml");
         }else{
             pathMets = FUtils.getEntryStringFor(bag.getFile().getAbsolutePath(),"mets.xml");            
         }        
@@ -75,9 +73,8 @@ public class DefaultBagItMets extends BagItMets{
     };
 
     @Override
-    public Mets onSaveBag(MetsBag metsBag,Mets mets) {        
+    public Mets onSaveBag(MetsBag metsBag,Mets mets) {                
         
-        BagView bagView = BagView.getInstance();
         Bag bag = metsBag.getBag();        
         
         //metsHdr
@@ -256,7 +253,7 @@ public class DefaultBagItMets extends BagItMets{
 
                 //MIMETYPE
                 String mimeType; 
-                File rootDir = bagView.getBag().getRootDir();
+                File rootDir = metsBag.getRootDir();
                 File tagFile = new File(rootDir,filePath);                
                 
                 System.out.println("tag test 4");
