@@ -1,5 +1,6 @@
 package ugent.bagger.panels;
 
+import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -22,6 +23,9 @@ public class ExportParamsPanel extends JPanel{
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));                
         JComponent form = getExportParamsForm().getControl();
         form.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        Dimension dim = form.getPreferredSize();
+        form.setMaximumSize(dim);
+        form.setMinimumSize(dim);
         add(form);        
     }
 

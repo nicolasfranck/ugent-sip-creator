@@ -148,7 +148,7 @@ public class MdSecPropertiesPanel extends JPanel{
         return editDmdSecPropertiesTable;
     }
     public EditMdSecPropertiesTable createMdSecPropertiesTable(){                        
-        return new EditMdSecPropertiesTable(data,new String [] {"namespace","MDTYPE"},"mdSecTable",getExceptions());
+        return new EditMdSecPropertiesTable(data,new String [] {"namespace","MDTYPE","rootName"},"mdSecTable",getExceptions());
     }
     public void setMdSecPropertiesTable(EditMdSecPropertiesTable editDmdSecPropertiesTable) {
         this.editDmdSecPropertiesTable = editDmdSecPropertiesTable;
@@ -206,8 +206,7 @@ public class MdSecPropertiesPanel extends JPanel{
                 });
                 
                 dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);                
-                dialog.setLocationRelativeTo(panel);
-                dialog.pack();
+                SwingUtils.centerOnParent(dialog,true);
                 dialog.setVisible(true);
             }
             

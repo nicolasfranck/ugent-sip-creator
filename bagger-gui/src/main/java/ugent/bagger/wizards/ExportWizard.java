@@ -8,6 +8,7 @@ import gov.loc.repository.bagger.ui.InfoInputPane;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,8 +19,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.binding.validation.ValidationListener;
-import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.wizard.AbstractWizard;
 import org.xml.sax.SAXException;
@@ -82,6 +81,7 @@ public class ExportWizard extends AbstractWizard {
         final ExportParams exportParams = exportParamsPanel.getExportParams();               
         final ExportParamsForm exportParamsForm = exportParamsPanel.getExportParamsForm();
         
+        /*
         exportParamsForm.addValidationListener(new ValidationListener() {
             @Override
             public void validationResultsChanged(ValidationResults results) {
@@ -91,7 +91,7 @@ public class ExportWizard extends AbstractWizard {
                 }
          
             }
-        });
+        });*/
         
         
         if(exportParamsForm.hasErrors()){
@@ -102,12 +102,47 @@ public class ExportWizard extends AbstractWizard {
         
         HashMap<String,HashMap<String,Object>>exportersConfig = null;
         try{
+            final File outputFile = exportParams.getOutputFile().get(0);
+            
             exportersConfig = (HashMap<String,HashMap<String,Object>>) Beans.getBean("exporters");
             System.out.println("exportersConfig: "+exportersConfig);
             System.out.println("format: "+exportParams.getFormat());
             HashMap<String,Object>econfig = exportersConfig.get(exportParams.getFormat());                
             
             System.out.println("econfig: "+econfig);
+            
+            //controle op bestand
+            if(!outputFile.getParentFile().canRead()){
+                SwingUtils.ShowError(
+                    null,
+                    Context.getMessage(
+                        "ExportWizard.parentFileNotReadable",
+                        new Object [] {outputFile.getParentFile().getAbsolutePath()})
+                );
+                return false;
+            }
+            if(!outputFile.getParentFile().canWrite()){
+                SwingUtils.ShowError(
+                    null,
+                    Context.getMessage(
+                        "ExportWizard.parentFileNotWritable",
+                        new Object [] {outputFile.getParentFile().getAbsolutePath()})
+                );
+                return false;
+            }
+            if(outputFile.exists()){
+                boolean proceed = SwingUtils.confirm(
+                    null, 
+                    Context.getMessage(
+                        "ExportWizard.outputFileExists",
+                        new Object [] {outputFile.getAbsolutePath()}
+                    )
+                );
+                if(!proceed){
+                    return false;
+                }                
+            }
+            
             
             /*
              * analyse  -> zit de noodzakelijke metadata er tussen? 
@@ -150,36 +185,46 @@ public class ExportWizard extends AbstractWizard {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
+                    boolean success = false;
+                    
                     try {
-                        exporter.export(metsBag,mets,new BufferedOutputStream(new FileOutputStream(exportParams.getOutputFile().get(0))));
-                    } catch (IOException ex) {
+                        exporter.export(metsBag,mets,new BufferedOutputStream(new FileOutputStream(outputFile)));
+                        success = true;
+                    } catch (IOException ex) {                                                
+                        log.debug(ex.getMessage());
+                    } catch (BagitMetsValidationException ex) {                        
                         ex.printStackTrace();
                         log.debug(ex.getMessage());
-                    } catch (BagitMetsValidationException ex) {
+                    } catch (DatatypeConfigurationException ex) {                    
                         ex.printStackTrace();
                         log.debug(ex.getMessage());
-                    } catch (DatatypeConfigurationException ex) {
+                    } catch (ParserConfigurationException ex) {                        
                         ex.printStackTrace();
                         log.debug(ex.getMessage());
-                    } catch (ParserConfigurationException ex) {
+                    } catch (TransformerException ex) {                        
                         ex.printStackTrace();
                         log.debug(ex.getMessage());
-                    } catch (TransformerException ex) {
-                        ex.printStackTrace();
-                        log.debug(ex.getMessage());
-                    } catch (SAXException ex) {
+                    } catch (SAXException ex) {                        
                         ex.printStackTrace();
                         log.debug(ex.getMessage());
                     } catch (ParseException ex) {
+                        
                         ex.printStackTrace();
                         log.debug(ex.getMessage());
-                    } catch(Exception e){
+                    } catch(Exception e){                        
                         e.printStackTrace();
                         log.debug(e.getMessage());
                     }
+                    
+                    //report                                    
+                    SwingUtils.ShowMessage(
+                        null,
+                        Context.getMessage("ExportWizard.exportSuccessfull.label",new Object []{
+                            outputFile
+                    }));
                 }
             };
-            BusyIndicator.showWhile(SwingUtils.getFrame(),runnable);            
+            BusyIndicator.showWhile(getExportWizardPage1().getControl(),runnable);            
             
             
         }catch(Exception e){

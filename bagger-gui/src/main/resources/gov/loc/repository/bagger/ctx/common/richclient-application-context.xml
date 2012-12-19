@@ -249,7 +249,7 @@
         <entry key="http://www.loc.gov/standards/premis" value="PREMIS" />
         <entry key="urn:isbn:1-931666-22-9" value="EAD" />
         <entry key="http://www.loc.gov/METS/" value="METS" />           
-        <entry key="http://purl.org/dc/elements/1.1/" value="DC" />         
+        <!--<entry key="http://purl.org/dc/elements/1.1/" value="DC" />-->
         <entry key="http://www.loc.gov/mix/v20" value="NISOIMG" />
         <entry key="http://www.loc.gov/mix/v10" value="NISOIMG" />
         <entry key="http://www.loc.gov/AMD/" value="LC-AV" />
@@ -269,7 +269,7 @@
         <entry value="http://www.loc.gov/standards/premis" key="PREMIS-1" />
         <entry value="urn:isbn:1-931666-22-9" key="EAD" />
         <entry value="http://www.loc.gov/METS/" key="METS" />           
-        <entry value="http://purl.org/dc/elements/1.1/" key="DC" />         
+        <!--<entry value="http://purl.org/dc/elements/1.1/" key="DC" />-->
         <entry value="http://www.loc.gov/mix/v20" key="NISOIMG" />
         <entry value="http://www.loc.gov/mix/v10" key="NISOIMG" />
         <entry value="http://www.loc.gov/AMD/" key="LC-AV" />
@@ -417,6 +417,7 @@
                 </entry>
             </util:map>
         </entry>        
+        <!--
         <entry key="http://purl.org/dc/elements/1.1/">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -427,6 +428,7 @@
                 </entry>
             </util:map>
         </entry>        
+        -->
          <entry key="http://www.loc.gov/mix/v20">
             <util:map>
                 <entry key="versionable" value="false"/>
@@ -538,17 +540,10 @@
                 </entry>
             </util:map>            
         </entry>
-    </util:map>
-   
-    <!--
-    <util:map id="xsltMap" map-class="java.util.HashMap">
-        <entry key="http://www.loc.gov/MARC21/slim" value="metadata/xslt/marc2oai_dc.xsl" />        
-        <entry key="http://www.loc.gov/mods/v3" value="metadata/xslt/MODS3-22OAIDC.xsl" />        
-    </util:map>
-    -->
+    </util:map>   
    
     <util:map id="baginfoMap" map-class="java.util.HashMap">
-        <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/dc2baginfo.xsl" />
+        <!--<entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/dc2baginfo.xsl" />-->
         <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="metadata/xslt/dc2baginfo.xsl" />
     </util:map>    
     
@@ -576,6 +571,7 @@
                         </entry>    
                     </util:map>    
                 </entry> 
+                <!--
                 <entry key="http://purl.org/dc/elements/1.1/">
                     <util:map>
                         <entry key="versionable" value="false" />
@@ -586,6 +582,7 @@
                         </entry>    
                     </util:map>    
                 </entry>                
+                -->
                 <entry key="http://www.loc.gov/mads/">
                     <util:map>
                         <entry key="versionable" value="false" />
@@ -623,6 +620,7 @@
                 </entry>
             </util:map>
         </entry>
+        <!--
         <entry key="http://purl.org/dc/elements/1.1/">
             <util:map>
                 <entry key="http://www.loc.gov/MARC21/slim">
@@ -647,6 +645,7 @@
                 </entry>
             </util:map>            
         </entry>    
+        -->
         <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/">
             <util:map>
                 <entry key="http://www.loc.gov/MARC21/slim">
@@ -673,12 +672,12 @@
         </entry>
         <entry key="urn:isbn:1-931666-22-9">
             <util:map>
-                <entry key="http://purl.org/dc/elements/1.1/">
+                <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/">
                     <util:map>
                         <entry key="versionable" value="false" />
                         <entry key="versions">
                             <util:map>
-                                <entry key="default" value="metadata/xslt/ead2dc.xsl" />
+                                <entry key="default" value="metadata/xslt/ead2oai_dc.xsl" />
                             </util:map>
                         </entry>
                     </util:map>
@@ -687,12 +686,12 @@
         </entry>   
         <entry key="ISADG">
             <util:map>
-                <entry key="http://purl.org/dc/elements/1.1/">
+                <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/">
                     <util:map>
                         <entry key="versionable" value="false" />
                         <entry key="versions">
                             <util:map>
-                                <entry key="default" value="metadata/xslt/isad2dc.xsl" />
+                                <entry key="default" value="metadata/xslt/isad2oai_dc.xsl" />
                             </util:map>
                         </entry>
                     </util:map>
@@ -706,8 +705,9 @@
         via node-name weet je niet met welke versie je werkt)
     -->
     <util:map id="rootNameMapping">
-        <entry key="ead" value="urn:isbn:1-931666-22-9" />
-        <entry key="marc" value="http://www.loc.gov/MARC21/slim" />
+        <entry key="ead" value="urn:isbn:1-931666-22-9" />        
+        <entry key="archivaldescription" value="ISADG" />
+        <entry key="record" value="http://www.loc.gov/MARC21/slim" />        
         <entry key="collection" value="http://www.loc.gov/MARC21/slim" />
         <entry key="mods" value="http://www.loc.gov/mods/v3" />
         <entry key="premis" value="info:lc/xmlns/premis-v2" />
@@ -746,7 +746,7 @@
     <util:map map-class="java.util.HashMap" id="velocityTemplates">        
         <entry key="oai-dc-simple">
             <util:map map-class="java.util.HashMap">
-                <entry key="name" value="OAI DC simple" />
+                <entry key="name" value="OAI DC" />
                 <entry key="path" value="velocity/oai-dc-simple.vm" />
                 <entry key="xsd" value="metadata/xsd/oai_dc.xsd" />
             </util:map>    
@@ -767,6 +767,7 @@
                 <entry key="xsd" value="metadata/xsd/oai_dc.xsd" />
             </util:map>    
         </entry>
+        <!--
         <entry key="dc">
             <util:map map-class="java.util.HashMap">
                 <entry key="name" value="Dublin Core" />
@@ -774,6 +775,7 @@
                 <entry key="xsd" value="metadata/xsd/dc.xsd" />
             </util:map>    
         </entry>
+        -->
     </util:map>
     
     <util:map id="renameParamsTemplates" map-class="java.util.HashMap" key-type="java.lang.String" value-type="ugent.bagger.params.RenameParams">
@@ -823,14 +825,7 @@
         <value>DC-Identifier</value>
         <value>DC-Language</value>        
     </util:list>
-    <util:map id="exporters" map-class="java.util.HashMap">
-        <!--
-        <entry key="DSpace Simple Archive">
-            <util:map>                
-                <entry key="class" value="ugent.bagger.exporters.ExportDSpaceSimpleArchive" />
-            </util:map>    
-        </entry>   
-        -->
+    <util:map id="exporters" map-class="java.util.HashMap">    
         <entry key="DSpace Mets Archive">
             <util:map>                
                 <entry key="class" value="ugent.bagger.exporters.ExporterDSpaceMetsArchive2" />                                
@@ -859,7 +854,7 @@
     <bean id="namespaceMdSecFilterDSPaceSimple" class="ugent.bagger.exporters.NamespaceMdSecFilter" >
         <property name="namespaces">
             <util:list value-type="java.lang.String" list-class="java.util.ArrayList">
-                <value>http://purl.org/dc/elements/1.1/</value>
+                <!--<value>http://purl.org/dc/elements/1.1/</value>-->
                 <value>http://www.openarchives.org/OAI/2.0/oai_dc/</value>
             </util:list>
         </property>
@@ -867,7 +862,7 @@
     <bean id="metadataConverterDSPaceSimple" class="ugent.bagger.exporters.NamespaceMetadataConverter" >
         <property name="config">
             <util:map map-class="java.util.HashMap">
-                <entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/dc2dspace.xsl" />
+                <!--<entry key="http://purl.org/dc/elements/1.1/" value="metadata/xslt/dc2dspace.xsl" />-->
                 <entry key="http://www.openarchives.org/OAI/2.0/oai_dc/" value="metadata/xslt/dc2dspace.xsl" />
             </util:map>            
         </property>

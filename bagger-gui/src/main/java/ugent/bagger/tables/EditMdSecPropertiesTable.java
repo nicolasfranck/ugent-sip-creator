@@ -57,9 +57,8 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
                         );                    
                         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                         dialog.setPreferredSize(new Dimension(600,500));   
-                        dialog.setResizable(false);
-                        dialog.setLocationRelativeTo(EditMdSecPropertiesTable.this.getTable());
-                        dialog.pack();                        
+                        dialog.setResizable(false);                        
+                        SwingUtils.centerOnParent(dialog,true);                                     
                         dialog.setVisible(true);                        
                     }catch(Exception e){
                         logger.debug(e.getMessage());                    

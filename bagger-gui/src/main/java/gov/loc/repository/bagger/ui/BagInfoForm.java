@@ -104,7 +104,7 @@ public final class BagInfoForm extends AbstractForm {
             contentPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
             BoxLayout layout = new BoxLayout(contentPanel,BoxLayout.PAGE_AXIS);       
             contentPanel.setLayout(layout);            
-            contentPanel.add(getLoadFieldsPanel());
+            //contentPanel.add(getLoadFieldsPanel());
             contentPanel.add(getAddFieldPanel());            
             contentPanel.add(getFieldsScrollPane());
             contentPanel.setAlignmentX(Container.LEFT_ALIGNMENT);            

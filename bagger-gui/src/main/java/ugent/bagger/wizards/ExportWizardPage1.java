@@ -21,7 +21,9 @@ public class ExportWizardPage1 extends AbstractWizardPage {
     public ExportParamsPanel getExportParamsPanel() {
         if(exportParamsPanel == null){
             exportParamsPanel = new ExportParamsPanel();
-            exportParamsPanel.setPreferredSize(new Dimension(500,400));
+            Dimension dim = exportParamsPanel.getPreferredSize();
+            exportParamsPanel.setMinimumSize(dim);
+            exportParamsPanel.setMaximumSize(dim);            
             exportParamsPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));            
             exportParamsPanel.getExportParamsForm().addValidationListener(new ValidationListener() {
                 @Override

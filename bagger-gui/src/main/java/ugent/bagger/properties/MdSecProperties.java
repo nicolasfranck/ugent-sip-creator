@@ -57,6 +57,13 @@ public class MdSecProperties {
             return "-";
         }        
     }
+    public String getRootName(){
+        if(mdSec.getMdWrap() != null && mdSec.getMdWrap().getXmlData() != null && !mdSec.getMdWrap().getXmlData().isEmpty()){
+            return mdSec.getMdWrap().getXmlData().get(0).getLocalName();
+        }else{
+            return "-";
+        }
+    }
     public MDTYPE getMDTYPE(){        
         if(mdSec.getMdWrap() != null){
             return mdSec.getMdWrap().getMDTYPE();
