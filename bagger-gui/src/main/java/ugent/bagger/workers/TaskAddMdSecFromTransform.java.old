@@ -52,11 +52,16 @@ public class TaskAddMdSecFromTransform extends DefaultWorker {
                     namespace = inputDoc.getDocumentElement().getNamespaceURI();
                     System.out.println("namespace: "+namespace);
                 }
-
-                if(!MetsUtils.getXsltMap().containsKey(namespace)){                    
+                
+                if(!MetsUtils.getCrosswalk().containsKey(namespace)){                    
                     throw new NoTransformationFoundException();                    
                 }
-                URL url = Context.getResource(MetsUtils.getXsltMap().get(namespace));                        
+                String xsltPath = MetsUtils.getXsltPath(inputDoc.getDocumentElement(),namespace);
+                if(xsltPath == null || xsltPath.isEmpty()){
+                    throw new NoTransformationFoundException();                    
+                }                
+                
+                URL url = Context.getResource(xsltPath);                        
                 Document xsltDoc = XML.XMLToDocument(url);
                 if(xsltDoc == null){
                     throw new DocumentCreationFailedException(); 

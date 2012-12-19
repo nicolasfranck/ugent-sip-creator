@@ -1,17 +1,23 @@
 package ugent.rename;
 
+import ugent.bagger.helper.Context;
+
 /**
  *
  * @author nicolas
  */
 public enum PreSort {
-    NONE("no sorting"),FILE_NAME_ASC("file name ascending"),FILE_NAME_DESC("file name descending");
+    FILE_NAME_ASC("FILE_NAME_ASC"),FILE_NAME_DESC("FILE_NAME_DESC");
     private String c;
     private PreSort(String c){
         this.c = c;
     }
     @Override
     public String toString(){
-        return c;
+        String translated = null;
+        try{
+            translated = Context.getMessage("PreSort."+c);
+        }catch(Exception e){}        
+        return translated != null ? translated : c;
     }
 }

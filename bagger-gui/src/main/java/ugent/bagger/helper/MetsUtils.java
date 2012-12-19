@@ -41,8 +41,7 @@ public class MetsUtils {
     
     private static HashMap<String,HashMap<String,Object>>crosswalk;
     private static HashMap<String,HashMap<String,Object>> xsdMap = null;    
-    private static HashMap<String,String> baginfoMap = null;
-    private static HashMap<String,String> xsltMap = null;
+    private static HashMap<String,String> baginfoMap = null;    
     private static HashMap<String,String> namespaceMap = null;
     private static HashMap<String,String> typeMap = null;
     private static HashMap<String,String> rootNameMapping = null;
@@ -51,20 +50,10 @@ public class MetsUtils {
     private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
     private static Log log = LogFactory.getLog(MetsUtils.class);
     public static final String NAMESPACE_DC = "http://purl.org/dc/elements/1.1/";
-    public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/"; 
-    //public static HashMap<String,String>bagInfoImporters;
+    public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/";     
     public static ArrayList<VelocityTemplate>baginfoTemplates;
     public static HashMap<String,String>dtdTransformations;
 
-    public static HashMap<String, String> getXsltMap() {
-        if(xsltMap == null){
-            xsltMap = (HashMap<String,String>) Beans.getBean("xsltMap");
-        }
-        return xsltMap;
-    }
-    public static void setXsltMap(HashMap<String, String> xsltMap) {
-        MetsUtils.xsltMap = xsltMap;
-    }    
     public static HashMap<String, String> getDocTypeMapping() {
         if(docTypeMapping == null){
             docTypeMapping = (HashMap<String,String>) Beans.getBean("docTypeMapping");

@@ -5,7 +5,6 @@ import com.anearalone.mets.MdSec;
 import com.anearalone.mets.MdSec.MdWrap;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import gov.loc.repository.bagit.BagFile;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,9 +27,8 @@ import ugent.premis.PremisObject.PremisObjectType;
  */
 public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
     @Override
-    public void analyse(MetsBag metsBag, Mets mets) {
+    public void analyse(MetsBag metsBag, Mets mets) {        
         
-        System.out.println("premis1");
         //premis        
         Premis premis = metsBag.getPremis();            
         
@@ -41,8 +39,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             if(o.getType() == PremisObjectType.representation && o.getXmlID() != null && o.getXmlID().equals("bagit")){
                 iteratorObject.remove();
             }
-        }
-        System.out.println("premis2");
+        }        
         
         //maak nieuw object van type 'representation' en xmlID 'bagit' aan
         PremisObject pobject = new PremisObject(PremisObject.PremisObjectType.representation);          
@@ -53,11 +50,9 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
         pobject.getObjectIdentifier().add(id); 
         premis.getObject().add(pobject); 
         
-        System.out.println("premis4");
-        
         DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String formattedDate = dformat.format(new Date());        
-        String eventID = DOMHelp.createID();
+        
         
         //eerste keer (indien oude bagit voor het eerst hier wordt ingeladen, dan is er nog geen eventlog)
         //en kan er bijgevolg geen verschil berekent worden        
@@ -66,11 +61,10 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             if(event.getEventType() != null && event.getEventType().equals("bagit")){
                 numBagitEvents++;                
             }
-        }
-        
-        System.out.println("premis5");
+        }        
         
         if(numBagitEvents == 0){        
+            String eventID = DOMHelp.createID();
             
             PremisEvent ev = new PremisEvent();            
             PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
@@ -108,6 +102,8 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             ArrayDiff<String>diff = ArrayUtils.diff(oldFileList,newFileList);
             
             if(!diff.getAdded().isEmpty()){
+                String eventID = DOMHelp.createID();
+                
                 PremisEvent ev = new PremisEvent();
                 PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
                 evid.setEventIdentifierType("dateTime");
@@ -127,6 +123,8 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 premis.getEvent().add(ev);
             }
             if(!diff.getDeleted().isEmpty()){
+                String eventID = DOMHelp.createID();
+                
                 PremisEvent ev = new PremisEvent();
                 PremisEvent.PremisEventIdentifier evid = new PremisEvent.PremisEventIdentifier();
                 evid.setEventIdentifierType("dateTime");
@@ -146,9 +144,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 premis.getEvent().add(ev);
             }
         }   
-        
-        System.out.println("premis6");
-        
+                
         try{            
             AmdSec amdSec = PremisUtils.getAmdSecBagit((ArrayList<AmdSec>)mets.getAmdSec());
             if(amdSec == null){
@@ -177,7 +173,6 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
         
         }catch(Exception e){
             e.printStackTrace();
-        }
-        System.out.println("premis7");
+        }        
     }    
 }

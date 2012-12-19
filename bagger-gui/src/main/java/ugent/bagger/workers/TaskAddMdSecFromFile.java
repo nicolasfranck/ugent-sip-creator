@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import ugent.bagger.exceptions.DtdNoFixFoundException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.helper.Context;
@@ -33,6 +34,9 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
 
         for(int i = 0;i<files.length;i++){                                                        
             File file = files[i];
+            
+            System.out.println("inserting "+file);
+            
             try{
                 MdSec mdSec = MetsUtils.createMdSec(file);                        
                 send(mdSec);                    
@@ -68,6 +72,18 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                 log(Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
                     file
                 })+"\n");                                
+            }catch(DtdNoFixFoundException e){
+                numErrors++;        
+                e.printStackTrace();
+                log(Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
+                    file
+                })+"\n");       
+            }catch(Exception e){
+                numErrors++;        
+                e.printStackTrace();
+                log(Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
+                    file
+                })+"\n");       
             }
             int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
             if(!isDone()){

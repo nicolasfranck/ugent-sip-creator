@@ -644,12 +644,7 @@ public class DefaultBag {
         return newBag != null;
     }    
    
-    public static Algorithm resolveAlgorithm(String algorithm){
-        System.out.println("DefaultBag::resolveAlgorithm");
-        System.out.println("MD5: "+Manifest.Algorithm.MD5.bagItAlgorithm);
-        System.out.println("SHA1: "+Manifest.Algorithm.SHA1.bagItAlgorithm);
-        System.out.println("SHA256: "+Manifest.Algorithm.SHA256);
-        System.out.println("SHA512: "+Manifest.Algorithm.SHA512.bagItAlgorithm);
+    public static Algorithm resolveAlgorithm(String algorithm){        
         
         if(algorithm.equalsIgnoreCase(Manifest.Algorithm.MD5.bagItAlgorithm)) {
             return Algorithm.MD5;

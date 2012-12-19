@@ -25,7 +25,7 @@ public class RenumberParams {
     private StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
     private String separatorBefore = "-";
     private String separatorAfter = "";
-    private PreSort preSort = PreSort.NONE;
+    private PreSort preSort = PreSort.FILE_NAME_ASC;
     private Radix radix = Radix.DECIMAL;
 
     public Radix getRadix() {

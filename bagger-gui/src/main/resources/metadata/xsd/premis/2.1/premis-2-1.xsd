@@ -48,7 +48,7 @@ elementFormDefault="qualified"
 attributeFormDefault="unqualified">
 	<!--   
  Import XLink-->
-	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd"/>
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../../xlink.xsd"/>
 	<!-- 	
 
 An instance is 

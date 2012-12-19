@@ -23,7 +23,7 @@ public class Renumber extends AbstractRenamer{
     private String separatorBefore = "";
     private String separatorAfter = "";
     private PaddingChar paddingChar = PaddingChar.NULL;
-    private PreSort preSort = PreSort.NONE;
+    private PreSort preSort = PreSort.FILE_NAME_ASC;
     private Sequence sequence = new DecimalSequence();
 
     public Sequence getSequence() {        

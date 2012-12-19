@@ -1,0 +1,58 @@
+<xs:schema targetNamespace="http://ltsc.ieee.org/xsd/LOM/extend"
+           xmlns="http://ltsc.ieee.org/xsd/LOM/extend"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           version="IEEE LTSC LOM XML 1.0">
+
+  <xs:annotation>
+    <xs:documentation>
+       This work is licensed under the Creative Commons Attribution-ShareAlike
+       License.  To view a copy of this license, see the file license.txt,
+       visit http://creativecommons.org/licenses/by-sa/2.0 or send a letter to
+       Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
+    </xs:documentation>
+
+    <xs:documentation> 
+       This component schema definition defines the XML Schema content model groups 
+       customElements and customAttributes. The content model groups are defined as 
+       empty groups and are used in conjunction with other component XSDs to support 
+       the validation of strictly conforming LOM data elements. 
+
+       This component XSD should be used if extensions are not to be supported in 
+       LOM XML instances.
+    </xs:documentation>
+    <xs:documentation>
+        *****************************************************************************
+        **                                                                         ** 
+        ** NOTE THIS CHANGE HISTORY IS USED TO DOCUMENT CHANGES TO THE XML SCHEMA  **
+        ** DEFINITION DURING THE BALLOTING PROCESS.  THIS CHANGE HISTORY WILL BE   **
+        ** REMOVED ONCE THE FINAL VERSION OF THE STANDARD IS PUBLISHED.  A NEW     **
+        ** CHANGE HISTORY WILL BE INCLUDED TO INDICATE THE INITIAL RELEASE THAT    **
+        ** MAPS TO THE FINAL STANDARD.                                             **
+        **                                                                         **
+        *****************************************************************************
+        **                           CHANGE HISTORY                                **
+        *****************************************************************************
+        ** 03/15/2004:  1)Updated annoation describing purpose and design of the   **
+        **                XSD.                                                     **
+        **                                                                         **
+        ** 08/24/2004:  1)Updated the Creative Commons Licensing agreement to      **
+        **                reference the Attribution-ShareAlike 2.0                 **
+        **                                                                         **
+        ** 09/27/2004   1)Updated file documentation to correspond with working    **
+        **                draft 3.                                                 **
+        **              2)Added an empty attribute group declaration.  This will   **
+        **                enforce no attribute extensions to LOM data elements.    **
+        *****************************************************************************
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- Model group declarations -->
+
+  <xs:group name="customElements">
+    <xs:choice/>
+  </xs:group>
+
+  <xs:attributeGroup name="customAttributes"/>
+
+</xs:schema>

@@ -19,6 +19,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import ugent.bagger.exceptions.DtdNoFixFoundException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.exceptions.NoTransformationFoundException;
@@ -147,6 +148,10 @@ public final class XMLCrosswalkDialog extends JDialog{
                             file,e.getMessage()
                         }
                     )+"\n";
+                }catch(DtdNoFixFoundException e){                                                
+                    error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
+                        file
+                    })+"\n";                         
                 }catch(Exception e){
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.Exception.description",

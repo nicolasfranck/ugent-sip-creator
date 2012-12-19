@@ -81,8 +81,7 @@
    <!-- <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/unique"
               schemaLocation="unique/loose.xsd"/> -->
 
-   <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/unique"
-              schemaLocation="unique/strict.xsd"/>
+   <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/unique" schemaLocation="unique/strict.xsd"/>
 
    <!-- Vocabulary value validation:  use one of the following                     -->
    <!-- Use vocab/loose.xsd to relax vocabulary value constraints                  -->

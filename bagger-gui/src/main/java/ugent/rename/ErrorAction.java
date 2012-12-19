@@ -18,7 +18,10 @@ public enum ErrorAction {
     }
     @Override
     public String toString(){
-        String translated = Context.getMessage("ErrorAction."+s);
+        String translated = null;
+        try{
+            translated = Context.getMessage("ErrorAction."+s);
+        }catch(Exception e){}        
         return translated != null ? translated : s;        
     }
 }

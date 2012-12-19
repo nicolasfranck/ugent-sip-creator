@@ -93,6 +93,7 @@ public class XML {
         DocumentBuilder db = getDocumentBuilderFactory(validate).newDocumentBuilder();
         //default error-handler simply prints out first 10 errors when validating dtd or xsd on creation
         db.setErrorHandler(getErrorHandler());
+        
         if(!validate){            
             db.setEntityResolver(new EntityResolver() {
                 @Override
@@ -153,9 +154,8 @@ public class XML {
     public static void validate(Document doc,Schema schema) throws SAXException, IOException{
         validate(new DOMSource(doc),schema);
     }
-    public static void validate(Source source,Schema schema) throws SAXException, IOException{
-        Validator validator = schema.newValidator();
-        validator.validate(source);
+    public static void validate(Source source,Schema schema) throws SAXException, IOException{        
+        schema.newValidator().validate(source);
     } 
     public static Schema createSchema(URL schemaURL) throws SAXException, IOException{        
         return createSchema(schemaURL.openStream());        
