@@ -234,27 +234,33 @@ public class MetsUtils {
         return createMdWrap(doc,true);
     }
     public static MdSec.MdWrap createMdWrap(Document doc,boolean validate) throws NoNamespaceException, IllegalNamespaceException, MalformedURLException, SAXException, IOException, TransformerException, ParserConfigurationException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, DtdNoFixFoundException, DocumentCreationFailedException{
-        String namespace = doc.getDocumentElement().getNamespaceURI();            
-        DocumentType docType = doc.getDoctype();        
+        String namespace = doc.getDocumentElement().getNamespaceURI();                    
         
-        //elke xml moet namespace bevatten (probeer te herstellen, indien mogelijk)
-        //=> slecht idee, want dtd en xsd versie verschillen héél vaak
+        //elke xml moet namespace bevatten (probeer te herstellen, indien mogelijk)        
         if(namespace == null || namespace.isEmpty()){           
-            doc = fixNamespace(doc);
-            namespace = doc.getDocumentElement().getNamespaceURI();            
+            try{
+                doc = fixNamespace(doc);
+                namespace = doc.getDocumentElement().getNamespaceURI();            
+            }catch(DtdNoFixFoundException e){
+                log.debug(e.getMessage());
+                e.printStackTrace();
+            }            
         } 
-        //sommige xml mag niet in mdWrap: vermijd METS binnen METS!
-        if(getForbiddenNamespaces().contains(namespace)){
-            throw new IllegalNamespaceException("namespace "+namespace+" is forbidden in mdWrap",namespace);
+        if(namespace != null && !namespace.isEmpty()){  
+            //sommige xml mag niet in mdWrap: vermijd METS binnen METS!
+            if(getForbiddenNamespaces().contains(namespace)){
+                throw new IllegalNamespaceException("namespace "+namespace+" is forbidden in mdWrap",namespace);
+            }
+            //indien XSD bekend, dan validatie hierop       
+            String schemaPath = getSchemaPath(doc);        
+            if(validate && schemaPath != null){      
+                URL schemaURL = Context.getResource(schemaPath);
+                log.debug("validating against "+schemaPath);
+                Schema schema = XML.createSchema(schemaURL);                        
+                XML.validate(doc,schema);            
+            } 
         }
-        //indien XSD bekend, dan validatie hierop       
-        String schemaPath = getSchemaPath(doc);        
-        if(validate && schemaPath != null){      
-            URL schemaURL = Context.getResource(schemaPath);
-            log.debug("validating against "+schemaPath);
-            Schema schema = XML.createSchema(schemaURL);                        
-            XML.validate(doc,schema);            
-        } 
+        
         
         MdSec.MDTYPE mdType = null;
         try{                     
@@ -264,7 +270,9 @@ public class MetsUtils {
         }
         MdSec.MdWrap mdWrap = new MdSec.MdWrap(mdType);                                                            
         if(mdType == MdSec.MDTYPE.OTHER){
-            mdWrap.setOTHERMDTYPE(namespace);
+            mdWrap.setOTHERMDTYPE(
+                namespace != null && !namespace.isEmpty() ? namespace : doc.getDocumentElement().getLocalName()
+            );
         } 
         mdWrap.setMIMETYPE("text/xml");        
         mdWrap.getXmlData().add(doc.getDocumentElement());                
@@ -420,54 +428,18 @@ public class MetsUtils {
             }
         }
         return baginfoTemplates;
-    }
-    /*
-    public static Document fixNamespace(Document doc) throws NoNamespaceException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException, SAXException, IOException{
-        DocumentType docType = doc.getDoctype();  
-        String namespace = doc.getDocumentElement().getNamespaceURI();
-        //baseer je op naam van docType, of op naam root element
-        if(docType != null && docType.getName() != null && getDocTypeMapping().containsKey(docType.getName())){
-            namespace = getDocTypeMapping().get(docType.getName());
-        }else if(
-            doc.getDocumentElement() != null &&
-            getRootNameMapping().containsKey(doc.getDocumentElement().getTagName())
-        ){
-            namespace = getRootNameMapping().get(doc.getDocumentElement().getTagName());
-        }else{
-            throw new NoNamespaceException("no namespace could be found");
-        }            
-        
-        doc.getDocumentElement().setAttributeNS(
-            "http://www.w3.org/2000/xmlns/",
-            "xmlns:xsi",
-            "http://www.w3.org/1999/XMLSchema-instance"
-        );           
-        doc.getDocumentElement().setAttributeNS(
-            "http://www.w3.org/2000/xmlns/",
-            "xmlns:xlink",
-            "http://www.w3.org/1999/xlink"
-        );                              
-        
-        //aanpassen van namespace van een element niet mogelijk,
-        //dus daarom uitschrijven en terug inlezen van Document
-        
-        doc.getDocumentElement().setAttribute("xmlns",namespace);                        
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        XML.DocumentToXML(doc,bout);
-        doc = XML.XMLToDocument(new ByteArrayInputStream(bout.toByteArray())); 
-        return doc;
-    }*/
-    public static Document fixNamespace(Document doc)throws NoNamespaceException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException, SAXException, IOException, DtdNoFixFoundException, DocumentCreationFailedException, TransformerException{
-        DocumentType docType = doc.getDoctype();          
-        String name = 
-            docType != null && docType.getName() != null ? 
-                docType.getName():doc.getDocumentElement().getLocalName();
-
-        //baseer je op naam van docType, of op naam root element
+    }    
+    public static Document fixNamespace(Document doc)throws NoNamespaceException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException, SAXException, IOException, DtdNoFixFoundException, DocumentCreationFailedException, TransformerException{        
+        String name = doc.getDocumentElement().getLocalName();
+        System.out.println("root element: "+name);
+        //baseer je op naam root element
         if(!getDtdTransformations().containsKey(name)){
+            System.out.println("no dtd found! for "+name);
             throw new DtdNoFixFoundException(name);
         }        
+        System.out.println("dtd found!");
         URL xsltResource = Context.getResource(getDtdTransformations().get(name));
+        System.out.println("xsltResource: "+xsltResource);
         Document xsltDoc = XML.XMLToDocument(xsltResource);
         if(xsltDoc == null){
             throw new DocumentCreationFailedException(); 

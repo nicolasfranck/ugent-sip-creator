@@ -41,8 +41,7 @@ public class StartNewBagHandler extends AbstractAction {
             true            
         );        
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);               
-        dialog.setLocationRelativeTo(SwingUtils.getFrame());                 
-        dialog.pack();
+        SwingUtils.centerOnParent(dialog,true);        
         dialog.setVisible(true);             
     }
     public void createNewBag(NewBagParams params) {

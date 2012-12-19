@@ -39,6 +39,19 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
             
             try{
                 MdSec mdSec = MetsUtils.createMdSec(file);                        
+                String namespace = mdSec.getMdWrap().getXmlData().get(0).getNamespaceURI();
+                if(namespace == null || namespace.isEmpty()){
+                    boolean proceed = SwingUtils.confirm(
+                        null,
+                        Context.getMessage("TaskAddMdSecFromFile.warnings.namespacemissing",new Object [] {
+                            file.getAbsolutePath()                        
+                        })
+                    );                    
+                    if(!proceed){                        
+                        numErrors++;
+                        continue;
+                    }
+                }
                 send(mdSec);                    
                 succeeded++;
             }catch(IOException e){                  

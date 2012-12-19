@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -89,6 +87,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                     if(namespace == null || namespace.isEmpty()){
                         System.out.println("fixing namespace");
                         sourceDoc = MetsUtils.fixNamespace(sourceDoc);
+                        System.out.println("sourceDoc: "+sourceDoc);
                         namespace = sourceDoc.getDocumentElement().getNamespaceURI();
                         System.out.println("namespace: "+namespace);
                     }
@@ -100,6 +99,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                     XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
                   
                 }catch(ParserConfigurationException e){
+                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.ParserConfigurationException.description",
                         new Object []{
@@ -107,13 +107,15 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(SAXException e){
+                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.SAXException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     )+"\n";
-                }catch(IOException e){                    
+                }catch(IOException e){  
+                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IOException.description",
                         new Object []{
@@ -121,6 +123,8 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n"; 
                 }catch(TransformerConfigurationException e){
+                    System.out.println("TransformerConfigurationException");
+                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
                         new Object []{
@@ -128,6 +132,8 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(TransformerException e){
+                    System.out.println("TransformerException");
+                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerException.description",
                         new Object []{
@@ -135,6 +141,8 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(NoNamespaceException e){
+                    System.out.println("NoNamespaceException");
+                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.NoNamespaceException.description",
                         new Object []{
@@ -142,17 +150,23 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(IllegalNamespaceException e){
+                    System.out.println("IllegalNamespaceException");
+                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     )+"\n";
-                }catch(DtdNoFixFoundException e){                                                
+                }catch(DtdNoFixFoundException e){     
+                    e.printStackTrace();
+                    System.out.println("oeps, no fix found!");
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
                         file
                     })+"\n";                         
                 }catch(Exception e){
+                    e.printStackTrace();
+                    System.out.println("what the hell??");
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.Exception.description",
                         new Object []{
@@ -311,13 +325,24 @@ public final class XMLCrosswalkDialog extends JDialog{
                                 new Object [] {selectedFiles[0]}
                             )
                         );
-                    }catch(Exception e){
+                    }catch(DtdNoFixFoundException e){     
+                        SwingUtils.ShowError(
+                            Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                            Context.getMessage(
+                                "XMLCrosswalkDialog.import.DtdNoFixFoundException.description",
+                                new Object []{
+                                    selectedFiles[0].getAbsolutePath(),e.getMessage()
+                                }
+                            )                            
+                        );                         
+                    }
+                    catch(Exception e){
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
                                 "XMLCrosswalkDialog.import.Exception.description",
                                 new Object []{
-                                    file,e.getMessage()
+                                    selectedFiles[0].getAbsolutePath(),e.getMessage()
                                 }
                             )                            
                         );                        
