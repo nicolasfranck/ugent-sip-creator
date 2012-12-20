@@ -2,12 +2,12 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,13 +24,13 @@ import ugent.bagger.helper.SwingUtils;
 
 public final class AddFieldPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(AddFieldPanel.class);
-    private JCheckBox standardCheckBox;
-    private JComboBox standardFieldsComboBox;
-    private JTextField customFieldTextField;
-    private JTextField valueField;
-    ArrayList<String>standardFields;
+    static final long serialVersionUID = 1L;
+    static final Log log = LogFactory.getLog(AddFieldPanel.class);
+    JCheckBox standardCheckBox;
+    JComboBox standardFieldsComboBox;
+    JTextField customFieldTextField;
+    JTextField valueField;
+    ArrayList<String>standardFields;    
 
     public ArrayList<String> getStandardFields() {
         if(standardFields == null){
@@ -59,7 +59,8 @@ public final class AddFieldPanel extends JPanel {
 
     public JComboBox getStandardFieldsComboBox() {
         if(standardFieldsComboBox == null){
-            List<String> listModel = getStandardFields();        
+            List<String> listModel = getStandardFields();  
+            
             standardFieldsComboBox = new JComboBox(listModel.toArray());
             standardFieldsComboBox.setName(Context.getMessage("baginfo.field.fieldlist"));
             standardFieldsComboBox.setSelectedItem("");
@@ -74,7 +75,7 @@ public final class AddFieldPanel extends JPanel {
 
     public JTextField getCustomFieldTextField() {
         if(customFieldTextField == null){
-            customFieldTextField = new JTextField(17);
+            customFieldTextField = new JTextField(15);
             customFieldTextField.setToolTipText(Context.getMessage("baginfo.field.name.help"));
             customFieldTextField.setVisible(false);
         }
@@ -87,7 +88,7 @@ public final class AddFieldPanel extends JPanel {
 
     public JTextField getValueField() {
         if(valueField == null){
-            valueField = new JTextField("",20);
+            valueField = new JTextField("",15);
         }
         return valueField;
     }
@@ -177,13 +178,14 @@ public final class AddFieldPanel extends JPanel {
         }
 
         String dialogTitle = Context.getMessage("baginfo.newFieldDialog.title");
-        if (fieldName.trim().isEmpty()) {           
-            
-            SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.fieldRequired"));
-            
+        fieldName = fieldName.trim();
+        if(fieldName.isEmpty()){                       
+            SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.fieldRequired"));            
             return null;
-        }else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){
-                     
+        }else if(!fieldName.matches("^[a-zA-Z0-9_\\-]+$")){
+            SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.fieldInvalid"));            
+            return null;
+        }else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){                     
             SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.valueRequired"));
             return null;
         }

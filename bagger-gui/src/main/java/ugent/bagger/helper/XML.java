@@ -12,12 +12,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import org.apache.log4j.Logger;
 import org.w3c.dom.*;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.*;
 
@@ -120,6 +121,12 @@ public class XML {
     public static SchemaFactory getSchemaFactory(){
         if(sf == null){
             sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);           
+            try{
+                sf.setResourceResolver(new ClasspathResourceResolver());
+            }catch(Exception e){    
+                log.debug(e);
+                e.printStackTrace();
+            }
         }
         return sf;
     }
@@ -147,9 +154,7 @@ public class XML {
         validate(sourceStreamSource,schema);
     }    
     public static void validate(Document doc,URL schemaURL) throws SAXException, IOException{
-        validate(
-            doc,createSchema(schemaURL)            
-        );
+        validate(doc,createSchema(schemaURL));
     }
     public static void validate(Document doc,Schema schema) throws SAXException, IOException{
         validate(new DOMSource(doc),schema);
@@ -340,4 +345,33 @@ public class XML {
         }
 
     }*/
+    private static class ClasspathResourceResolver implements LSResourceResolver {        
+        private ClasspathResourceResolver() throws ClassNotFoundException, IllegalAccessException, InstantiationException {         
+        }        
+        @Override
+        public LSInput resolveResource(String type, String namespaceURI,String publicId, String systemId,String baseURI) {
+            LSInput lsInput = null;
+            System.out.println("ClasspathResourceResolver::resolveResource");
+            System.out.println("type: "+type);
+            System.out.println("namespaceURI: "+namespaceURI);
+            System.out.println("publicId: "+publicId);
+            System.out.println("systemId: "+systemId);
+            System.out.println("baseURI: "+baseURI);
+            try {
+                lsInput = getDOMImplementationLS().createLSInput();
+                URL url = Context.getResource(systemId);                
+                System.out.println("url: "+url);
+                InputStream is = Context.getResourceAsStream(systemId);;                
+                lsInput.setByteStream(is);
+                lsInput.setSystemId(systemId);
+            } catch (ClassNotFoundException ex) {
+                log.debug(ex);                
+            } catch (InstantiationException ex) {
+                log.debug(ex);
+            } catch (IllegalAccessException ex) {
+                log.debug(ex);
+            }            
+            return lsInput;
+        }
+    }
 }

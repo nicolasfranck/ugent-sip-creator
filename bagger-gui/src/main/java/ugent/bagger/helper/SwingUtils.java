@@ -261,6 +261,9 @@ public class SwingUtils {
     public static void ShowDone(){
         BusyIndicator.clearAt(getFrame());
     }
+    public static void ShowWhile(Runnable run){
+        BusyIndicator.showWhile(getFrame(),run);
+    }
     public static HashMap<String,String> getUIManagerMessages(){
         if(uiManagerMessages == null){
             uiManagerMessages = new HashMap<String, String>();

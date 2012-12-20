@@ -49,17 +49,24 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
             openDialogExecutor = new ActionCommandExecutor(){
                 @Override
                 public void execute() {
-                    try{                        
-                        JDialog dialog = new EditMdSecDialog(
-                            SwingUtils.getFrame(),
-                            true,
-                            getSelected().getMdSec()
-                        );                    
-                        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                        dialog.setPreferredSize(new Dimension(600,500));   
-                        dialog.setResizable(false);                        
-                        SwingUtils.centerOnParent(dialog,true);                                     
-                        dialog.setVisible(true);                        
+                    try{          
+                        
+                        SwingUtils.ShowWhile(new Runnable() {
+                            @Override
+                            public void run() {
+                                JDialog dialog = new EditMdSecDialog(
+                                    SwingUtils.getFrame(),
+                                    true,
+                                    getSelected().getMdSec()
+                                );                    
+                                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                                dialog.setPreferredSize(new Dimension(600,500));   
+                                dialog.setResizable(false);                        
+                                SwingUtils.centerOnParent(dialog,true);                                     
+                                dialog.setVisible(true);                        
+                            }
+                        });
+                        
                     }catch(Exception e){
                         logger.debug(e.getMessage());                    
                     }

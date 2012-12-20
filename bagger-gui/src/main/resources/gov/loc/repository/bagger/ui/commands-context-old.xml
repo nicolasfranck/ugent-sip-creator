@@ -7,21 +7,18 @@
     class="org.springframework.richclient.application.support.ApplicationWindowCommandManager">
     <property name="sharedCommandIds">
       <list>
-        
-        <value>createBagsCommand</value>
-        <value>validateCommand</value>
-        <value>completeCommand</value>       
-        
         <value>startCommand</value>        
         <value>openCommand</value>        
+        <value>createBagsCommand</value>
+        <value>validateCommand</value>
+        <value>completeCommand</value>
         <value>clearCommand</value>
         <value>addDataCommand</value>
         <value>removeDataCommand</value>
         <value>saveBagCommand</value>
         <value>saveBagAsCommand</value>
          <value>addTagFileCommand</value>
-        <value>removeTagFileCommand</value>                
-        
+        <value>removeTagFileCommand</value>        
         <value>validateBagsCommand</value>
         <value>validateManifestCommand</value>
         <value>testCommand</value>
@@ -32,7 +29,8 @@
 
   <bean id="menuBar" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
-      <list>        
+      <list>
+        <ref bean="fileMenu" />  
         <ref bean="bagMenu" />      
         <ref bean="renameMenu" />
         <ref bean="consoleMenu" />
@@ -67,15 +65,17 @@
     </property>
   </bean>
 
-  <!--
   <bean id="fileMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
       <list>
         <value>startCommand</value>
-        <value>openCommand</value>                        
+        <value>openCommand</value>                
         <value>validateCommand</value>
         <value>completeCommand</value>
-        <value>clearCommand</value>        
+        <value>clearCommand</value>
+        <value>addDataCommand</value>
+        <value>saveBagCommand</value>
+        <value>saveBagAsCommand</value>
         <value>separator</value>
         <value>validateBagsCommand</value>
         <value>createBagsCommand</value>
@@ -86,7 +86,6 @@
       </list>
     </property>
   </bean>
-  -->
 
   <bean id="helpMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
     <property name="members">
@@ -124,24 +123,6 @@
             <bean class="org.springframework.richclient.command.support.ShowViewCommand">
                 <property name="viewDescriptor" ref="bagView" />                            
             </bean>    
-            
-            <value>separator</value>
-            
-            <value>startCommand</value>
-            <value>openCommand</value> 
-            <value>saveBagCommand</value>
-            <value>saveBagAsCommand</value>                       
-            <value>clearCommand</value>            
-            
-            <value>separator</value>
-            
-            <value>validateBagsCommand</value>
-            <value>createBagsCommand</value>
-            <value>validateManifestCommand</value>   
-            
-            <value>separator</value>
-            
-            <value>testCommand</value>
           </list>              
       </property>
   </bean>

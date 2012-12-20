@@ -15,8 +15,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileFilter;
-import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
 
 public final class InfoFormsPane extends JPanel {
@@ -26,48 +24,15 @@ public final class InfoFormsPane extends JPanel {
     protected JPanel serializeGroupPanel;
     private InfoInputPane infoInputPane;
     private UpdateBagHandler updateBagHandler;
-    protected JLabel bagNameValue;
-    private JButton removeProjectButton;
+    protected JLabel bagNameValue;    
     private JLabel bagVersionValue;    
     private JLabel holeyValue;
     private JLabel serializeLabel;
     private JLabel serializeValue;
     private JLabel saveLabel;
-    protected JComboBox bagVersionList;
-    private JCheckBox defaultProject;
-    private JRadioButton noneButton;
-    private JRadioButton zipButton;
-    private JRadioButton tarButton;
-    private JRadioButton tarGzButton;
-    private JRadioButton tarBz2Button;
-    private FileFilter noFilter;
-    private FileFilter zipFilter;
-    private FileFilter tarFilter;
-   
-    public FileFilter getNoFilter(){
-        return noFilter;
-    }
-    public void setNoFilter(FileFilter noFilter) {
-        this.noFilter = noFilter;
-    }
-    public FileFilter getZipFilter(){
-        if(zipFilter == null){
-            zipFilter = new FileExtensionFilter(new String [] {"zip"},"zip",true);
-        }
-        return zipFilter;
-    }
-    public void setZipFilter(FileFilter zipFilter) {
-        this.zipFilter = zipFilter;
-    }
-    public FileFilter getTarFilter() {
-        if(tarFilter == null){
-            tarFilter = new FileExtensionFilter(new String [] {"tar","tar.gz"},"tar(.gz)",true);
-        }
-        return tarFilter;
-    }
-    public void setTarFilter(FileFilter tarFilter) {
-        this.tarFilter = tarFilter;
-    }
+    protected JComboBox bagVersionList;   
+    
+    
     public JLabel getHoleyValue() {
         if(holeyValue == null){
             holeyValue = new JLabel("");
@@ -142,11 +107,11 @@ public final class InfoFormsPane extends JPanel {
     }
     public JLabel getSaveLabel() {
         if(saveLabel == null){            
-            saveLabel = new JLabel(Context.getMessage("saveBagCommand.label"));            
+            saveLabel = new JLabel(Context.getMessage("saveBag.label"));            
             saveLabel.setEnabled(false);
             saveLabel.setHorizontalAlignment(SwingConstants.CENTER);            
             saveLabel.setIcon(getBagView().getPropertyImage("bag.save.thumbnail.icon"));
-            saveLabel.setToolTipText(Context.getMessage("saveBagCommand.label"));
+            saveLabel.setToolTipText(Context.getMessage("saveBag.label"));
             saveLabel.setBorder(new LineBorder(saveLabel.getBackground(),1));
             saveLabel.addMouseListener(new MouseAdapter(){			
                 @Override

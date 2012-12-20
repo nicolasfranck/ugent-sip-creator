@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="marc">
-    <!--<xsl:import href="MARC21slimUtils.xsl"/>-->
-    <xsl:import href="http://www.loc.gov/standards/marcxml/xslt/MARC21slimUtils.xsl" />
+    <xsl:import href="MARC21slimUtils.xsl"/>
     <xsl:output method="xml" indent="no" encoding="UTF-8"/>
     <xsl:strip-space elements="*"/>
     <!--
@@ -193,7 +192,6 @@
                 <xsl:value-of select="marc:subfield[@code='a']"/>
             </dc:rights>
         </xsl:for-each>
-        <!--</oai_dc:dc>-->
     </xsl:template>
 </xsl:stylesheet>
 

@@ -23,7 +23,6 @@ import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.DocumentCreationFailedException;
@@ -256,7 +255,9 @@ public class MetsUtils {
             if(validate && schemaPath != null){      
                 URL schemaURL = Context.getResource(schemaPath);
                 log.debug("validating against "+schemaPath);
+                System.out.println("schemaURL: "+schemaURL);
                 Schema schema = XML.createSchema(schemaURL);                        
+                System.out.println("validating done!");
                 XML.validate(doc,schema);            
             } 
         }

@@ -15,10 +15,10 @@ to http://www.loc.gov/standards/premis/v1.
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loc.gov/standards/premis/v1" xmlns="http://www.loc.gov/standards/premis/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-  <xs:include schemaLocation="Object-v1-1.xsd"></xs:include>
-  <xs:include schemaLocation="Event-v1-1.xsd"></xs:include>
-  <xs:include schemaLocation="Agent-v1-1.xsd"></xs:include>
-  <xs:include schemaLocation="Rights-v1-1.xsd"></xs:include>
+  <xs:include schemaLocation="metadata/xsd/premis/1.1/Object-v1-1.xsd"></xs:include>
+  <xs:include schemaLocation="metadata/xsd/premis/1.1/Event-v1-1.xsd"></xs:include>
+  <xs:include schemaLocation="metadata/xsd/premis/1.1/Agent-v1-1.xsd"></xs:include>
+  <xs:include schemaLocation="metadata/xsd/premis/1.1/Rights-v1-1.xsd"></xs:include>
   <xs:element name="premis">
     <xs:complexType>
       <xs:sequence>

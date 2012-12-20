@@ -5,12 +5,10 @@ import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.BagFactory.LoadOption;
 import gov.loc.repository.bagit.utilities.SimpleResult;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import ugent.bagger.exceptions.BagFetchForbiddenException;
-import ugent.bagger.exceptions.FileNotReadableException;
-import ugent.bagger.exceptions.FileNotWritableException;
+import javax.swing.filechooser.FileFilter;
+import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.params.BagError;
 import ugent.bagger.params.BagErrorFileNotAllowedInBagDir;
 import ugent.bagger.params.BagErrorFixityFailurePayload;
@@ -33,6 +31,11 @@ public class BagitUtils {
     private static Pattern fileNotAllowedInBagDirPattern = Pattern.compile("(?:Directory|File) (\\S+) not allowed in bag_dir.");
     private static String noPayloadManifests = "Bag does not have any payload manifests.";
     private static String noBagitTxt = "Bag does not have bagit.txt.";
+    private static FileFilter noFilter;
+    private static FileFilter zipFilter;
+    private static FileFilter tarFilter;
+    private static FileFilter tarGzFilter;
+    private static FileFilter tarBz2Filter;
     
     //opgelet: deze opmerking zit NIET SimpleResult, maar in een RuntimeException
     private static String noBagDir = "Unable to find bag_dir in serialized bag";
@@ -76,6 +79,39 @@ public class BagitUtils {
         
         return bagError;
     }
+
+    public static FileFilter getNoFilter() {
+        return noFilter;
+    }
+
+    public static FileFilter getZipFilter() {
+        if(zipFilter == null){
+            zipFilter = new FileExtensionFilter(new String [] {"zip"},"zip",true);
+        }
+        return zipFilter;
+    }
+
+    public static FileFilter getTarFilter() {
+        if(tarFilter == null){
+            tarFilter = new FileExtensionFilter(new String [] {"tar"},"tar",true);
+        }
+        return tarFilter;
+    }
+
+    public static FileFilter getTarGzFilter() {
+        if(tarGzFilter == null){
+            tarGzFilter = new FileExtensionFilter(new String [] {"tar.gz"},"tar.gz",true);
+        }
+        return tarGzFilter;
+    }
+
+    public static FileFilter getTarBz2Filter() {
+        if(tarBz2Filter == null){
+            tarBz2Filter = new FileExtensionFilter(new String [] {"tar.bz2"},"tar.bz2",true);
+        }
+        return tarBz2Filter;
+    }
+    
     public static void main(String [] args){
         File file = new File("/home/nicolas/client.zip");
         BagFactory factory = new BagFactory();

@@ -145,10 +145,47 @@ public class RenamePanel extends JPanel{
                 @Override
                 public void execute() {
                     AbstractFile afile = fileTable.getSelected();
-                    if(afile == null || afile.isFile() || !afile.isReadable()){
+                    
+                    //is geen map
+                    if(afile == null || afile.isFile()){
                         return;
                     }
+                    
                     File file = (File)afile.getFile();
+                    
+                    //map is onleesbaar
+                    if(!file.canRead()){
+                        String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
+                            file.getAbsolutePath()
+                        });
+                        SwingUtils.ShowError(null,error);
+                        setStatusError(error);
+                        return;
+                    }                    
+                    
+                    //map behoort tot lijst van verboden mappen
+                    boolean isForbidden = false;
+                    for(File forbiddenFile:getForbiddenFiles()){
+                        if(forbiddenFile == null){
+                            continue;
+                        }
+                        System.out.println("forbiddenFile: "+forbiddenFile);
+                        System.out.println("file: "+file);
+                        if(forbiddenFile.equals(file) || FUtils.isDescendant(forbiddenFile,file)){
+                            isForbidden = true;
+                            break;
+                        }
+                    }
+                    if(isForbidden){
+                        String error =  Context.getMessage("RenamePanel.error.forbidden",new String [] {
+                            file.getAbsolutePath()
+                        });
+                        setStatusError(error);
+                        SwingUtils.ShowError(null,error);
+                        return;
+                    }
+                    
+                    //herlaad tabel
                     reloadFileTable(file);
                     
                     final LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);                    
@@ -348,8 +385,20 @@ public class RenamePanel extends JPanel{
                     File file = fnode.getFile();
                     if(file.isDirectory()){
                         setLastFile(file);
-                        reloadFileTable(file);                        
-                        setFormsEnabled(file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file));                        
+                        reloadFileTable(file);      
+                        boolean isForbidden = false;
+                        for(File forbiddenFile:getForbiddenFiles()){
+                            if(forbiddenFile == null){
+                                continue;
+                            }
+                            System.out.println("forbiddenFile: "+forbiddenFile);
+                            System.out.println("file: "+file);
+                            if(forbiddenFile.equals(file) || FUtils.isDescendant(forbiddenFile,file)){
+                                isForbidden = true;
+                                break;
+                            }
+                        }
+                        setFormsEnabled(file.isDirectory() && file.canWrite() && !isForbidden);                        
                     }                   
                 }
             });           
@@ -802,9 +851,9 @@ public class RenamePanel extends JPanel{
                 renumber.setPreSort(renumberParams.getPreSort());
                 if(renumberParams.getRadix() == Radix.ALPHABETHICAL){
                     renumber.setSequence(new AlphaSequence());
-                }else if(renumberParams.getRadix() == Radix.HEXADECIMAL){
+                }/*else if(renumberParams.getRadix() == Radix.HEXADECIMAL){
                     renumber.setSequence(new HexadecimalSequence());
-                }else{
+                }*/else{
                     renumber.setSequence(new DecimalSequence());
                 }                
                 

@@ -36,6 +36,8 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.util.GuiStandardUtils;
+import ugent.bagger.filters.FileExtensionFilter;
+import ugent.bagger.helper.BagitUtils;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
@@ -395,32 +397,41 @@ public final class SaveBagDialog extends JDialog implements ActionListener {
             JFileChooser fs = new JFileChooser(selectFile);           
             fs.setDialogType(JFileChooser.SAVE_DIALOG);
             fs.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            fs.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
-            fs.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
-            fs.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
+            
+            fs.addChoosableFileFilter(BagitUtils.getNoFilter());            
+            fs.addChoosableFileFilter(BagitUtils.getZipFilter());
+            fs.addChoosableFileFilter(BagitUtils.getTarFilter());
+            fs.addChoosableFileFilter(BagitUtils.getTarGzFilter());
+            fs.addChoosableFileFilter(BagitUtils.getTarBz2Filter());
+            fs.setFileFilter(null);
+            
             fs.setDialogTitle(Context.getMessage("SaveBagDialog.title"));
             DefaultBag bag = bagView.getBag();
             fs.setCurrentDirectory(bag.getRootDir());
             if (bag.getName() != null && !bag.getName().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
                 String selectedName = bag.getName();
-                if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
+                if(bag.getSerialMode() == DefaultBag.ZIP_MODE){
                     selectedName += "."+DefaultBag.ZIP_LABEL;
-                    fs.setFileFilter(bagView.getInfoFormsPane().getZipFilter());
+                    fs.setFileFilter(BagitUtils.getZipFilter());
                 }
-                else if (
-                    bag.getSerialMode() == DefaultBag.TAR_MODE ||
-                    bag.getSerialMode() == DefaultBag.TAR_GZ_MODE ||
-                    bag.getSerialMode() == DefaultBag.TAR_BZ2_MODE
-                ){
+                else if(bag.getSerialMode() == DefaultBag.TAR_MODE){
                     selectedName += "."+DefaultBag.TAR_LABEL;
-                    fs.setFileFilter(bagView.getInfoFormsPane().getTarFilter());
+                    fs.setFileFilter(BagitUtils.getTarFilter());
+                }
+                else if(bag.getSerialMode() == DefaultBag.TAR_GZ_MODE){
+                    selectedName += "."+DefaultBag.TAR_GZ_LABEL;
+                    fs.setFileFilter(BagitUtils.getTarGzFilter());
+                }
+                else if(bag.getSerialMode() == DefaultBag.TAR_BZ2_MODE){
+                    selectedName += "."+DefaultBag.TAR_BZ2_LABEL;
+                    fs.setFileFilter(BagitUtils.getTarBz2Filter());
                 }
                 else {
-                    fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
+                    fs.setFileFilter(BagitUtils.getNoFilter());
                 }
                 fs.setSelectedFile(new File(selectedName));
             } else {
-                fs.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
+                fs.setFileFilter(BagitUtils.getNoFilter());
             }
             int	option = fs.showSaveDialog(SwingUtils.getFrame());
 

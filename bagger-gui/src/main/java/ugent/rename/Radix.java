@@ -7,7 +7,7 @@ import ugent.bagger.helper.Context;
  * @author nicolas
  */
 public enum Radix {
-    DECIMAL("DECIMAL"),ALPHABETHICAL("ALPHABETHICAL"),HEXADECIMAL("HEXADECIMAL");
+    DECIMAL("DECIMAL"),ALPHABETHICAL("ALPHABETHICAL")/*,HEXADECIMAL("HEXADECIMAL")*/;
     private String c;
     private Radix(String c){
         this.c = c;

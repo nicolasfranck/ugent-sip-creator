@@ -38,7 +38,7 @@ public class RenameParamsForm extends AbstractForm{
             builder.row();
         }
         String [] detailFields = {
-            "copy","overWrite","ignoreCase","regex"
+            "copy",/*"overWrite",*/"ignoreCase","regex"
         };
         for(String field:detailFields){
             builder.add(field);

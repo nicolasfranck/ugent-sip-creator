@@ -20,6 +20,7 @@ import ugent.bagger.exceptions.BagNoDataException;
 import ugent.bagger.exceptions.BagUnknownFormatException;
 import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
+import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.PremisUtils;
@@ -45,11 +46,29 @@ public class OpenBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();        
         
         JFileChooser fo = new JFileChooser();
-        fo.setDialogType(JFileChooser.OPEN_DIALOG);        
-        fo.addChoosableFileFilter(bagView.getInfoFormsPane().getNoFilter());
-        fo.addChoosableFileFilter(bagView.getInfoFormsPane().getZipFilter());
-        fo.addChoosableFileFilter(bagView.getInfoFormsPane().getTarFilter());
-        fo.setFileFilter(bagView.getInfoFormsPane().getNoFilter());
+        fo.setDialogType(JFileChooser.OPEN_DIALOG);                
+        fo.addChoosableFileFilter(null);            
+        fo.addChoosableFileFilter(
+            new FileExtensionFilter(
+                new String [] {"zip"},"zip",true
+            )
+        );
+        fo.addChoosableFileFilter(
+            new FileExtensionFilter(
+                new String [] {"tar"},"tar",true
+            )
+        );
+        fo.addChoosableFileFilter(
+            new FileExtensionFilter(
+                new String [] {"tar.gz"},"tar.gz",true
+            )
+        );
+        fo.addChoosableFileFilter(
+            new FileExtensionFilter(
+                new String [] {"tar.bz2"},"tar.bz2",true
+            )
+        );
+        fo.setFileFilter(null);
         fo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);        
         fo.setDialogTitle(Context.getMessage("openBagHandler.fileChooser.dialogTitle"));        
         

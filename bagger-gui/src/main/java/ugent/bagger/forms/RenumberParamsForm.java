@@ -119,9 +119,10 @@ public class RenumberParamsForm extends AbstractForm{
         builder.row();
               
         //paddingChar
+        /*
         final Binding paddingCharBinding = bf.createBoundComboBox("paddingChar",PaddingChar.values());        
         builder.add(paddingCharBinding);
-        builder.row();
+        builder.row();*/
         
         getFormModel().getValueModel("radix").addValueChangeListener(new PropertyChangeListener(){
             @Override
@@ -131,14 +132,15 @@ public class RenumberParamsForm extends AbstractForm{
                 for(JComponent component:paddingComponents){
                     component.setEnabled(isEnabled);
                 }
-                SwingUtils.setJComponentEnabled(paddingCharBinding.getControl(),isEnabled);
+                //SwingUtils.setJComponentEnabled(paddingCharBinding.getControl(),isEnabled);
             }
             
         });
         
         //overWrite
+        /*
         builder.add("overWrite");
-        builder.row();
+        builder.row();*/
         
         //onError
         Binding onErrorActionBinding = bf.createBoundComboBox("onErrorAction",ErrorAction.values());        

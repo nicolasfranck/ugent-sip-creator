@@ -349,6 +349,7 @@ public class FUtils {
         for(File f:list){
             System.out.println("file: "+f);
         }*/
+        /*
         String entry = getEntryStringFor("/home/nicolas/bags/baggie.zip","baggie/data");
         System.out.println("entry: "+entry);
         try{            
@@ -356,7 +357,10 @@ public class FUtils {
             System.out.println("entry '"+entry+"' exists: "+f.exists());
         }catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
+        File child = new File("/home/nicolas/Bagger-LC");
+        File parent = new File("/home/nicolas");
+        System.out.println(child+" is descendant of "+parent+": "+(isDescendant(parent,child)));
         
     }
     public static void recurseTree(DefaultMutableTreeNode node){
@@ -416,4 +420,15 @@ public class FUtils {
             }
         }
     }
+    public static boolean isDescendant(File parent,File child){        
+        child = child.getParentFile();
+        while(child != null){
+            if(child.equals(parent)){
+                return true;
+            }
+            child = child.getParentFile();
+        }
+        return false;             
+    }
+    
 }

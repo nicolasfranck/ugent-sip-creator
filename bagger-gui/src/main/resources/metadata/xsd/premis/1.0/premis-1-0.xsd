@@ -4,10 +4,10 @@
 <!-- Version 1.0, May 17, 2005 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loc.gov/standards/premis" xmlns="http://www.loc.gov/standards/premis" elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-    <xs:include schemaLocation="Object-v1-0.xsd"></xs:include>
-    <xs:include schemaLocation="Event-v1-0.xsd"></xs:include>
-    <xs:include schemaLocation="Agent-v1-0.xsd"></xs:include>
-    <xs:include schemaLocation="Rights-v1-0.xsd"></xs:include>
+    <xs:include schemaLocation="metadata/xsd/premis/1.0/Object-v1-0.xsd"></xs:include>
+    <xs:include schemaLocation="metadata/xsd/premis/1.0/Event-v1-0.xsd"></xs:include>
+    <xs:include schemaLocation="metadata/xsd/premis/1.0/Agent-v1-0.xsd"></xs:include>
+    <xs:include schemaLocation="metadata/xsd/premis/1.0/Rights-v1-0.xsd"></xs:include>
     <xs:element name="premis">
         <xs:complexType>
             <xs:sequence>

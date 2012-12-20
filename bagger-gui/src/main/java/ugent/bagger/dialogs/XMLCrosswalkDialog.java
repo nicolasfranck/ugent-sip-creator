@@ -95,6 +95,10 @@ public final class XMLCrosswalkDialog extends JDialog{
                     String filename = MetsUtils.getXsltPath(sourceDoc.getDocumentElement(),transformToNamespace);                    
                     Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));                    
                     Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc);                                         
+                    
+                    System.out.println("transformed doc:");
+                    XML.DocumentToXML(transformedDoc,System.out);
+                    
                     MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                                         
                     XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
                   

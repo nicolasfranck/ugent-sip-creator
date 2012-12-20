@@ -29,12 +29,17 @@ public class RenameExecutor extends AbstractActionCommandExecutor {
     
     @Override
     public void execute() {        
-        File file = BagView.getInstance().getBagRootPath();   
-        SwingUtils.ShowBusy();
-        ArrayList<File>forbiddenFiles = new ArrayList<File>();
-        forbiddenFiles.add(file);
-        getRenameDialog().setForbiddenFiles(forbiddenFiles);                
-        getRenameDialog().setVisible(true);
-        SwingUtils.ShowDone();
+        SwingUtils.ShowWhile(new Runnable(){
+            @Override
+            public void run() {
+                File file = BagView.getInstance().getBagRootPath();                   
+                if(file != null){
+                    ArrayList<File>forbiddenFiles = new ArrayList<File>();
+                    forbiddenFiles.add(file);
+                    getRenameDialog().setForbiddenFiles(forbiddenFiles);                
+                }        
+                getRenameDialog().setVisible(true);        
+            }            
+        });
     }
 }
