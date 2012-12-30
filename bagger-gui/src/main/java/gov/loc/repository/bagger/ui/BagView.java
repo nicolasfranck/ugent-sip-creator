@@ -591,8 +591,8 @@ public class BagView extends DefaultView {
     
     public void updateManifestPane() {
         //bagTagFileTree = new BagTree(getBag().getName(), false);
-        Collection<BagFile> tags = getBag().getTags();
-        /*for(Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {            
+        /*Collection<BagFile> tags = getBag().getTags();
+        for(Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {            
             bagTagFileTree.addNode(it.next().getFilepath());
         }
         getBagTagFileTreePanel().refresh(bagTagFileTree);*/

@@ -70,11 +70,15 @@ public final class FileSelectBinding extends CustomBinding{
                 break;
         }        
         File [] files = {};
-        if(freturn == JFileChooser.APPROVE_OPTION) {            
-            if(fileChooser.isMultiSelectionEnabled()){
+        
+        if(freturn == JFileChooser.APPROVE_OPTION) {                        
+            if(
+                fileChooser.getDialogType() == JFileChooser.OPEN_DIALOG && 
+                fileChooser.isMultiSelectionEnabled()            
+            ){                
                 files = fileChooser.getSelectedFiles();                       
             }else{
-                //when multiSelectionEnabled == false, then getSelectedFiles() returns an empty array!
+                //when multiSelectionEnabled == false, then getSelectedFiles() returns an empty array!              
                 files = new File [] {fileChooser.getSelectedFile()};
             }
             if(files == null){

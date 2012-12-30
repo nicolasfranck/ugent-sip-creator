@@ -121,6 +121,7 @@ abstract public class AbstractRenamer {
                         log.debug("making target directories ok");
                         if(isCopy()){                            
                             copy(pair.getSource(),pair.getTarget());
+                            pair.setSuccess(true);
                         }else{                            
                             /*
                                 *  TODO: in Windows wordt target niet overschreven.

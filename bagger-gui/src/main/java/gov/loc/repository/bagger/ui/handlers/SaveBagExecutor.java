@@ -15,7 +15,7 @@ public class SaveBagExecutor extends AbstractActionCommandExecutor {
         BagView bagView = BagView.getInstance();
     
         if(bagView.getBagRootPath().exists()) {
-            bagView.saveBagHandler.setTmpRootPath(bagView.getBagRootPath());
+            //bagView.saveBagHandler.setTmpRootPath(bagView.getBagRootPath());
             bagView.saveBagHandler.confirmWriteBag();
         } else {
             bagView.saveBagHandler.saveBag(bagView.getBagRootPath());

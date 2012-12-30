@@ -119,7 +119,8 @@ public class ClearBagHandler extends AbstractAction {
                 
         
         Mets mets = new Mets();
-        infoInputPane.resetMets(mets);                
+        infoInputPane.resetMets(mets);  
+        metsBag.setMets(mets);
     	bagView.updateClearBag();
     }
 

@@ -12,6 +12,7 @@ import ugent.bagger.params.CreateBagsParams;
 import ugent.bagger.params.ExportParams;
 import ugent.bagger.params.NewBagParams;
 import ugent.bagger.params.RenameParams;
+import ugent.bagger.params.SaveBagParams;
 import ugent.bagger.params.ValidateManifestParams;
 
 
@@ -115,5 +116,26 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
             }        
         }));
         addRules(exportParamsRules);
+        
+        //saveBagParams
+        Rules saveBagParamsRules = new Rules(SaveBagParams.class);
+        saveBagParamsRules.add(value("outputFile",new Constraint(){
+            @Override
+            public boolean test(Object o) {
+                ArrayList<File>list = (ArrayList<File>)o;                
+                boolean ok = list != null && !list.isEmpty();
+                if(ok){
+                    for(File f:list){                        
+                        //bestand wordt steeds aangemaakt, maar parent directory moet er zijn
+                        if(!f.getParentFile().exists()){
+                            ok = false;
+                            break;
+                        }
+                    }
+                }
+                return ok;
+            }        
+        }));
+        addRules(saveBagParamsRules);
     }     
 }

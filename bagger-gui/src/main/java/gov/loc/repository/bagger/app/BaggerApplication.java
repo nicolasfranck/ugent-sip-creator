@@ -30,16 +30,13 @@ public class BaggerApplication {
 
     public static void main(String[] args) {
         String rootContextDirectoryClassPath = "/gov/loc/repository/bagger/ctx";      
-        String startupContextPath = rootContextDirectoryClassPath + "/common/richclient-startup-context.xml";
-        String richclientApplicationContextPath = rootContextDirectoryClassPath
-                + "/common/richclient-application-context.xml";     
+        String startupContextPath = rootContextDirectoryClassPath+"/common/richclient-startup-context.xml";
+        String richclientApplicationContextPath = rootContextDirectoryClassPath+"/common/richclient-application-context.xml";     
        
         try {
             new ApplicationLauncher(
                 startupContextPath, 
-                new String[] {                     
-                    richclientApplicationContextPath 
-                }
+                new String[] { richclientApplicationContextPath }
             );
         }catch (IllegalStateException ex1) {
             log.error("IllegalStateException during startup",ex1);            

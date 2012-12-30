@@ -76,7 +76,9 @@ public class StartNewBagHandler extends AbstractAction {
         }
         bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());*/
         
-        metsBag.setRootDir(bagView.getBagRootPath());
+        
+        //metsBag.setRootDir(bagView.getBagRootPath());
+        metsBag.setRootDir(null);
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms();
     	ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));

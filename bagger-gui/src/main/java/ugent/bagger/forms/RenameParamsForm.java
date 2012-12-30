@@ -1,15 +1,12 @@
 package ugent.bagger.forms;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import ugent.bagger.helper.Context;
 import ugent.bagger.params.RenameParams;
 import ugent.rename.ErrorAction;
 

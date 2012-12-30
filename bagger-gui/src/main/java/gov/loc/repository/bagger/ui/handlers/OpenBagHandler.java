@@ -151,6 +151,9 @@ public class OpenBagHandler extends AbstractAction {
             bagView.getInfoFormsPane().getHoleyValue().invalidate();
             
             bagView.setBagRootPath(file);
+            
+            System.out.println("metsBag.bagFile: "+bagView.getBag().getBagFile());
+            System.out.println("metsBag.rootDir: "+bagView.getBag().getRootDir());
 
             File rootSrc;
             String path;
@@ -190,7 +193,8 @@ public class OpenBagHandler extends AbstractAction {
                 log.debug(e);                
             }
             
-            bagView.getBag().setPremis(premis);                
+            bagView.getBag().setPremis(premis);    
+            bagView.getBag().setMets(mets);
             
             bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);       
             
