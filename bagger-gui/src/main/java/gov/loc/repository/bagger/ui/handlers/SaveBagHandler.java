@@ -21,8 +21,7 @@ import ugent.bagger.workers.LongTask;
 
 public class SaveBagHandler extends Handler {
     private static final Log log = LogFactory.getLog(SaveBagHandler.class);
-    private static final long serialVersionUID = 1L;    
-    //private File tmpRootPath;
+    private static final long serialVersionUID = 1L;        
     private boolean clearAfterSaving = false;
     private String messages;
     
@@ -32,14 +31,12 @@ public class SaveBagHandler extends Handler {
     //wordt uitgevoerd indien men op de toolbarbutton drukt
     @Override
     public void actionPerformed(ActionEvent e) {
-        BagView bagView = BagView.getInstance();
-        DefaultBag bag = bagView.getBag();
-        //bagView.getInfoFormsPane().getUpdateBagHandler().updateBag();
-        if(bagView.getBagRootPath().exists()) {
-            //tmpRootPath = bagView.getBagRootPath();
+        File file = BagView.getInstance().getBag().getFile();
+        
+        if(file.exists()) {            
             confirmWriteBag();
         }else {
-            saveBag(bagView.getBagRootPath());
+            saveBag(file);
         }
     }
     
@@ -51,16 +48,7 @@ public class SaveBagHandler extends Handler {
             Context.getMessage("SaveBagHandler.saving.title"),
             Context.getMessage("SaveBagHandler.saving.description")
         );        
-    }
-    /*
-    public void setTmpRootPath(File f) {
-        this.tmpRootPath = f;
-    }
-
-    public File getTmpRootPath() {
-        return this.tmpRootPath;
-    }*/
-
+    } 
     public void setClearAfterSaving(boolean b) {
         this.clearAfterSaving = b;
     }
@@ -71,7 +59,7 @@ public class SaveBagHandler extends Handler {
 
     public void saveBag(File file) {
     	DefaultBag bag = BagView.getInstance().getBag();
-        bag.setRootDir(file);        
+        bag.setFile(file);        
         execute();
     }
 
@@ -81,12 +69,11 @@ public class SaveBagHandler extends Handler {
             boolean isCancel = true;
             @Override
             protected void onConfirm() {
-                DefaultBag bag = bagView.getBag();
-                if (bag.getSize() > DefaultBag.MAX_SIZE) {
+                MetsBag metsBag = bagView.getBag();
+                if (metsBag.getSize() > DefaultBag.MAX_SIZE) {
                     confirmAcceptBagSize();
-                } else {                    
-                    //bagView.setBagRootPath(tmpRootPath);
-                    saveBag(bagView.getBagRootPath());
+                } else {                                        
+                    saveBag(metsBag.getFile());
                 }
             }
             @Override
@@ -112,9 +99,8 @@ public class SaveBagHandler extends Handler {
         final BagView bagView = BagView.getInstance();
         ConfirmationDialog dialog = new ConfirmationDialog() {
             @Override
-            protected void onConfirm() {
-                //bagView.setBagRootPath(tmpRootPath);
-                saveBag(bagView.getBagRootPath());
+            protected void onConfirm(){                
+                saveBag(bagView.getBag().getFile());
             }
         };
         dialog.setCloseAction(CloseAction.DISPOSE);
@@ -171,21 +157,15 @@ public class SaveBagHandler extends Handler {
 
     public void save(File file) {
         BagView bagView = BagView.getInstance();
-    	MetsBag metsBag = bagView.getBag();
-        if (file == null) {
-            file = bagView.getBagRootPath();
-        }
+    	MetsBag metsBag = bagView.getBag();       
         metsBag.setName(file.getName());        
         
-    	if(file.exists()){
-            //tmpRootPath = file;
+    	if(file.exists()){            
             confirmWriteBag();
     	} else {
-            if (metsBag.getSize() > DefaultBag.MAX_SIZE) {
-                //tmpRootPath = file;
+            if(metsBag.getSize() > DefaultBag.MAX_SIZE){                
                 confirmAcceptBagSize();
-            } else {
-                bagView.setBagRootPath(file);
+            }else{                                
                 saveBag(file);
             }
     	}        
@@ -200,8 +180,6 @@ public class SaveBagHandler extends Handler {
             final BagView bagView = BagView.getInstance();
             MetsBag metsBag = bagView.getBag();
             Mets mets = metsBag.getMets();
-            //Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
-            
             metsBag.setBagItMets(new DefaultBagItMets());
             
             Writer bagWriter = null;
@@ -243,7 +221,7 @@ public class SaveBagHandler extends Handler {
                         if(metsBag.isValidateOnSave()) {
                             bagView.validateBagHandler.validateBag();
                         }                     
-                        File bagFile = metsBag.getBagFile();
+                        File bagFile = metsBag.getFile();
                         log.info("BagView.openExistingBag: " + bagFile);
                         bagView.openBagHandler.openExistingBag(bagFile);
                         bagView.updateSaveBag();

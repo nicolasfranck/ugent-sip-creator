@@ -48,6 +48,7 @@ public class StartNewBagHandler extends AbstractAction {
         BagView bagView = BagView.getInstance();    	
     	
         try{
+            //clear payloads, tags, mets and premis
             bagView.clearBagHandler.clearExistingBag();
         }catch(Exception e){
             e.printStackTrace();
@@ -78,7 +79,7 @@ public class StartNewBagHandler extends AbstractAction {
         
         
         //metsBag.setRootDir(bagView.getBagRootPath());
-        metsBag.setRootDir(null);
+        metsBag.setFile(null);
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms();
     	ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
@@ -93,6 +94,8 @@ public class StartNewBagHandler extends AbstractAction {
         );
         bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
         
+        //already done in clearExistingBag
+        /*
         //reset mets
         Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
         try{
@@ -100,7 +103,9 @@ public class StartNewBagHandler extends AbstractAction {
         }catch(Exception e){
             e.printStackTrace();
         }        
+        
         bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);
+        metsBag.setMets(mets);*/
     	        
         SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
         

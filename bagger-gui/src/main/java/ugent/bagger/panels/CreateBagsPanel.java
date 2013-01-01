@@ -257,7 +257,7 @@ public final class CreateBagsPanel extends JPanel{
                     
                     MetsBag metsBag = new MetsBag(null,null);
                     metsBag.setBagItMets(new DefaultBagItMets());            
-                    metsBag.setRootDir(file);
+                    metsBag.setFile(file);
                     //ledig mets
                     Mets mets = new Mets();
                     metsBag.setMets(mets);
@@ -498,7 +498,7 @@ public final class CreateBagsPanel extends JPanel{
                      *      rootDir: null, want map bestaat nog niet (opgeven File die nog niet bestaat geef IOException)                     
                      */
                     MetsBag metsBag = new MetsBag(null,getCreateBagsParams().getVersion());                    
-                    metsBag.setRootDir(out);
+                    metsBag.setFile(out);
                     metsBag.setBagItMets(new DefaultBagItMets());
                     metsBag.setMets(mets);
                     

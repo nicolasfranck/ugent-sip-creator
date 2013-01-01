@@ -1,7 +1,6 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.SaveBagDialog;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;

@@ -56,7 +56,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
     
     	try {
             bag.setBagItMets(new DefaultBagItMets());            
-            bag.setRootDir(dataFile);
+            bag.setFile(dataFile);
             bag.createPreBag(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
             log.error(e); 
@@ -84,7 +84,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
     
     	try {
             bag.setBagItMets(new DefaultBagItMets());            
-            bag.setRootDir(dataFile);
+            bag.setFile(dataFile);
             bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
             log.error(e);   

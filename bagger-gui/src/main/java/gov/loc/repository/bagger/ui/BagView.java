@@ -30,9 +30,7 @@ public class BagView extends DefaultView {
     private int DEFAULT_HEIGHT = 768;       
     private MetsBag bag;    
     private BagTree bagPayloadTree;
-    //private BagTree bagTagFileTree;
-    private File bagRootPath;
-    private String userHomeDir;    
+    //private BagTree bagTagFileTree;    
     private InfoFormsPane infoFormsPane;
     private BagTreePanel bagPayloadTreePanel;
     //private BagTreePanel bagTagFileTreePanel;
@@ -189,15 +187,7 @@ public class BagView extends DefaultView {
             }catch(Exception e){}            
         }
         return bag;
-    }
-    
-    public void setBagRootPath(File bagRootPath) {
-    	this.bagRootPath = bagRootPath;
-    }
-    
-    public File getBagRootPath() {
-    	return bagRootPath;
-    }
+    }   
     
     public Dimension getMinimumSize() {
         return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -280,11 +270,9 @@ public class BagView extends DefaultView {
     // This populates the default view descriptor declared as the startingPageId
     // property in the richclient-application-context.xml file.
     @Override    
-    protected JComponent createControl() {    	        
-    	this.userHomeDir = System.getProperty("user.home");                
+    protected JComponent createControl(){
     	initializeCommands();
-        return getMainPanel();        
-        
+        return getMainPanel();
     }    
     
     private JComponent createBagPanel(){        

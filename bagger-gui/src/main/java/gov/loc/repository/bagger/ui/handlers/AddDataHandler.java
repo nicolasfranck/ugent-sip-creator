@@ -21,8 +21,8 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         super();        
     }
     @Override
-    public void execute() {                
-        addData();        
+    public void execute() {
+        addData();
     }
     @Override
     public void actionPerformed(ActionEvent e) {                
@@ -43,7 +43,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
             true
         );         
             
-        SwingUtils.ShowBusy();            
+        SwingUtils.ShowBusy();        
         
         String message = Context.getMessage("bag.message.filesadded");        
         addBagData(files);
@@ -56,13 +56,13 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         bagView.validateBagHandler.setEnabled(false);
         bagView.completeExecutor.setEnabled(false);
         bagView.completeBagHandler.setEnabled(false);
-
+        
         SwingUtils.ShowDone();
         
     }
     private String getFileNames(File[] files) {
         
-    	StringBuilder stringBuff = new StringBuilder();
+    	StringBuilder buff = new StringBuilder();
     	int totalFileCount = files.length;
     	int displayCount = 20;
     	if (totalFileCount < 20) {
@@ -70,14 +70,14 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
     	}
     	for (int i = 0; i < displayCount; i++) {
             if (i != 0) {
-                stringBuff.append("\n");
+                buff.append("\n");
             }
-            stringBuff.append(files[i].getAbsolutePath());
+            buff.append(files[i].getAbsolutePath());
     	}
     	if(totalFileCount > displayCount){
-            stringBuff.append("\n").append(totalFileCount - displayCount).append(" more...");
+            buff.append("\n").append(totalFileCount - displayCount).append(" more...");
     	}
-        return stringBuff.toString();
+        return buff.toString();
     }
     public void addBagData(File[] files) {        
         
@@ -87,6 +87,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
                 addBagData(files[i],!(i < files.length-1));                
             }
     	}
+        
     }
     public void addBagData(File file, boolean lastFileFlag) {
         

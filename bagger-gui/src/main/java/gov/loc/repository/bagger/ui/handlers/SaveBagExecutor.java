@@ -1,6 +1,7 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.ui.BagView;
+import java.io.File;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 
 public class SaveBagExecutor extends AbstractActionCommandExecutor {
@@ -13,12 +14,12 @@ public class SaveBagExecutor extends AbstractActionCommandExecutor {
     @Override
     public void execute() {
         BagView bagView = BagView.getInstance();
+        File file = bagView.getBag().getFile();
     
-        if(bagView.getBagRootPath().exists()) {
-            //bagView.saveBagHandler.setTmpRootPath(bagView.getBagRootPath());
+        if(file.exists()) {            
             bagView.saveBagHandler.confirmWriteBag();
         } else {
-            bagView.saveBagHandler.saveBag(bagView.getBagRootPath());
+            bagView.saveBagHandler.saveBag(file);
         }
     }
 }

@@ -3,7 +3,10 @@ package gov.loc.repository.bagger.ui.handlers;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.BagItMets;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
+import gov.loc.repository.bagger.ui.InfoFormsPane;
+import gov.loc.repository.bagger.ui.InfoInputPane;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
@@ -83,10 +86,13 @@ public class OpenBagHandler extends AbstractAction {
         SwingUtils.ShowBusy();                
         
         
-        BagView bagView = BagView.getInstance();        
+        BagView bagView = BagView.getInstance();
+        InfoFormsPane infoFormsPane = bagView.getInfoFormsPane();
+        InfoInputPane infoInputPane = infoFormsPane.getInfoInputPane();
+                
         
         try{
-            bagView.getInfoFormsPane().getInfoInputPane().enableForms(false);      
+            infoInputPane.enableForms(false);      
             
             //leesbaar? schrijfbaar?
             FUtils.checkFile(file,true); 
@@ -101,13 +107,15 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
                     file
                 })
-            );               
+            );       
             
-            bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
-            bagView.getInfoFormsPane().setBagVersion(bagView.getBag().getVersion());
+            MetsBag metsBag = bagView.getBag();  
+            
+            infoInputPane.enableForms(true);
+            infoFormsPane.setBagVersion(bagView.getBag().getVersion());
                         
             String fileName = file.getAbsolutePath();
-            bagView.getInfoFormsPane().setBagName(fileName);
+            infoFormsPane.setBagName(fileName);
 
             String name = file.getName();
             int i = name.lastIndexOf('.');
@@ -118,51 +126,49 @@ public class OpenBagHandler extends AbstractAction {
                 extension = name.substring(i + 1).toLowerCase();
                 System.out.println("extension: "+extension);
                 if (extension.contains("gz")) {
-                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);                
-                    bagView.getBag().setSerialMode(DefaultBag.TAR_GZ_MODE);
-                    bagView.getBag().isSerial(true);
+                    infoFormsPane.getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);                
+                    metsBag.setSerialMode(DefaultBag.TAR_GZ_MODE);
+                    metsBag.isSerial(true);
                 } else if (extension.contains("bz2")) {
-                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);                
-                    bagView.getBag().setSerialMode(DefaultBag.TAR_BZ2_MODE);
-                    bagView.getBag().isSerial(true);
+                    infoFormsPane.getSerializeValue().setText(DefaultBag.TAR_BZ2_LABEL);                
+                    metsBag.setSerialMode(DefaultBag.TAR_BZ2_MODE);
+                    metsBag.isSerial(true);
                 } else if (extension.contains(DefaultBag.TAR_LABEL)) {
-                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.TAR_LABEL);                
-                    bagView.getBag().setSerialMode(DefaultBag.TAR_MODE);
-                    bagView.getBag().isSerial(true);
+                    infoFormsPane.getSerializeValue().setText(DefaultBag.TAR_LABEL);                
+                    metsBag.setSerialMode(DefaultBag.TAR_MODE);
+                    metsBag.isSerial(true);
                 } else if (extension.contains(DefaultBag.ZIP_LABEL)) {                
-                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.ZIP_LABEL);                
-                    bagView.getBag().setSerialMode(DefaultBag.ZIP_MODE);
-                    bagView.getBag().isSerial(true);
+                    infoFormsPane.getSerializeValue().setText(DefaultBag.ZIP_LABEL);                
+                    metsBag.setSerialMode(DefaultBag.ZIP_MODE);
+                    metsBag.isSerial(true);
                 } else {                
                     System.out.println("no mode!");
-                    bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);                
-                    bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
-                    bagView.getBag().isSerial(false);
+                    infoFormsPane.getSerializeValue().setText(DefaultBag.NO_LABEL);                
+                    metsBag.setSerialMode(DefaultBag.NO_MODE);
+                    metsBag.isSerial(false);
                 }
             } else {
                 System.out.println("no_label: "+DefaultBag.NO_LABEL);
-                bagView.getInfoFormsPane().getSerializeValue().setText(DefaultBag.NO_LABEL);            
-                bagView.getBag().setSerialMode(DefaultBag.NO_MODE);
-                bagView.getBag().isSerial(false);
+                infoFormsPane.getSerializeValue().setText(DefaultBag.NO_LABEL);            
+                metsBag.setSerialMode(DefaultBag.NO_MODE);
+                metsBag.isSerial(false);
             }
-            bagView.getInfoFormsPane().getSerializeValue().invalidate();
+            infoFormsPane.getSerializeValue().invalidate();
 
-            bagView.getInfoFormsPane().setHoley(bagView.getBag().isHoley() ? "true":"false");        
-            bagView.getInfoFormsPane().getHoleyValue().invalidate();
+            infoFormsPane.setHoley(bagView.getBag().isHoley() ? "true":"false");        
+            infoFormsPane.getHoleyValue().invalidate();            
             
-            bagView.setBagRootPath(file);
-            
-            System.out.println("metsBag.bagFile: "+bagView.getBag().getBagFile());
-            System.out.println("metsBag.rootDir: "+bagView.getBag().getRootDir());
+            metsBag.setFile(file);
+      
 
             File rootSrc;
             String path;
-            if(bagView.getBag().getFetchTxt() != null){
-                path = bagView.getBag().getFetch().getBaseURL();
-                rootSrc = new File(file,bagView.getBag().getFetchTxt().getFilepath());
+            if(metsBag.getFetchTxt() != null){
+                path = metsBag.getFetch().getBaseURL();
+                rootSrc = new File(file,metsBag.getFetchTxt().getFilepath());
             }else{
                 path = AbstractBagConstants.DATA_DIRECTORY;
-                rootSrc = new File(file,bagView.getBag().getDataDirectory());
+                rootSrc = new File(file,metsBag.getDataDirectory());
             }
 
 
@@ -171,21 +177,20 @@ public class OpenBagHandler extends AbstractAction {
             bagView.updateManifestPane();
             bagView.enableBagSettings(true);            
          
-            bagView.getInfoFormsPane().getInfoInputPane().populateForms();
-            bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);        
+            infoInputPane.populateForms();
+            infoInputPane.enableForms(true);        
             bagView.updateOpenBag();   
 
             //Nicolas Franck: bag-info velden inladen in form blijkbaar niet automatisch (wel na invullen 1ste nieuwe veld)            
-            bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().setFieldMap(
-                bagView.getBag().getInfo().getFieldMap()
+            infoInputPane.getBagInfoForm().setFieldMap(
+                metsBag.getInfo().getFieldMap()
             );
-            bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
+            infoInputPane.getBagInfoForm().resetFields();
 
-            //Nicolas Franck: load mets
+            //Nicolas Franck: load mets and set premis
             BagItMets bagitMets = new DefaultBagItMets();
-            Mets mets = bagitMets.onOpenBag(bagView.getBag());                     
-            
-            //set premis    
+            Mets mets = bagitMets.onOpenBag(metsBag);                                 
+           
             Premis premis = null;
             try{
                 premis = PremisUtils.setPremis(mets);
@@ -193,10 +198,9 @@ public class OpenBagHandler extends AbstractAction {
                 log.debug(e);                
             }
             
-            bagView.getBag().setPremis(premis);    
-            bagView.getBag().setMets(mets);
-            
-            bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);       
+            metsBag.setPremis(premis);    
+            metsBag.setMets(mets);            
+            infoInputPane.resetMets(mets);       
             
         }catch(FileNotWritableException e){
             SwingUtils.ShowError(

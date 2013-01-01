@@ -132,10 +132,7 @@ public class BagitMetsValidator {
         Assert.notNull(metsBag);
         Assert.notNull(mets);
         
-        File file = metsBag.getBagFile();
-        System.out.println("bagFile: "+file);
-        file = metsBag.getRootDir();
-        System.out.println("rootDir: "+file);
+        File file = metsBag.getFile();       
         
         //validate bag
         CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();

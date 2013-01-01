@@ -42,7 +42,7 @@ public class ExporterDSpaceMetsArchive2 extends Exporter{
                 ParseException,
                 Exception
     {           
-        File file = metsBag.getRootDir();        
+        File file = metsBag.getFile();        
         
         String name = file.getName();
         if(!file.isDirectory()){

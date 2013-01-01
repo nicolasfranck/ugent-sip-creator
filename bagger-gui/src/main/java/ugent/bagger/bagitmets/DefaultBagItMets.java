@@ -162,7 +162,7 @@ public class DefaultBagItMets extends BagItMets{
         
                 //MIMETYPE
                 String mimeType;                
-                File rootDir = metsBag.getRootDir();
+                File rootDir = metsBag.getFile();
                 File payloadFile = new File(rootDir,bagFile.getFilepath());                
 
                 if(payloadFile.isFile()){                    
@@ -253,7 +253,7 @@ public class DefaultBagItMets extends BagItMets{
 
                 //MIMETYPE
                 String mimeType; 
-                File rootDir = metsBag.getRootDir();
+                File rootDir = metsBag.getFile();
                 File tagFile = new File(rootDir,filePath);                
                 
                 System.out.println("tag test 4");

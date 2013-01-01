@@ -61,7 +61,7 @@ public class DefaultBag {
     protected boolean isSerialized = false;
     protected boolean dirty = false;
 
-    protected File rootDir = null;
+    protected File file = null;
     protected String name = "bag_";
     protected long size;
     protected long totalSize = 0;
@@ -70,39 +70,38 @@ public class DefaultBag {
     protected DefaultBagInfo bagInfo = null;   
     protected BaggerFetch fetch;    
     
-    protected String versionString = null;
-    protected File bagFile = null;
+    protected String versionString = null;    
 
 
     public DefaultBag() throws BagFetchForbiddenException, FileSystemException, BagNoDataException {            
         this(null,Version.V0_96.versionString);
     }
 
-    public DefaultBag(File rootDir, String version) throws BagFetchForbiddenException, FileSystemException, BagNoDataException {
+    public DefaultBag(File file, String version) throws BagFetchForbiddenException, FileSystemException, BagNoDataException {
         this.versionString = version;
-        init(rootDir);
+        init(file);
     }
 
-    private void init(File rootDir) throws BagFetchForbiddenException, FileSystemException, BagNoDataException{
-        boolean newBag = rootDir == null;
+    private void init(File file) throws BagFetchForbiddenException, FileSystemException, BagNoDataException{
+        boolean newBag = file == null;
         resetStatus();
-        this.rootDir = rootDir;
+        this.file = file;
         
         if(!newBag){
-            if(rootDir.isDirectory()){
+            if(file.isDirectory()){
                 //check fetch.txt
-                File fetchFile = new File(rootDir,"fetch.txt");
+                File fetchFile = new File(file,"fetch.txt");
                 if(fetchFile.exists()){
-                    throw new BagFetchForbiddenException(rootDir);
+                    throw new BagFetchForbiddenException(file);
                 }
                 //check data directory
-                File dataDir = new File(rootDir,"data");
+                File dataDir = new File(file,"data");
                 if(!(dataDir.exists() && dataDir.isDirectory())){
-                    throw new BagNoDataException(rootDir);
+                    throw new BagNoDataException(file);
                 }
             }else{
-                String basename = rootDir.getName();
-                String path = rootDir.getAbsolutePath();
+                String basename = file.getName();
+                String path = file.getAbsolutePath();
                 int index = basename.lastIndexOf('.');
                 String n = index >= 0 ? basename.substring(0,index) : basename;
                 n = n.toLowerCase().endsWith(".tar") ? n.substring(0,n.length() - ".tar".length()) :n;
@@ -111,22 +110,22 @@ public class DefaultBag {
                 String entry = FUtils.getEntryStringFor(path,n+"/fetch.txt");
                 FileObject fobject = FUtils.resolveFile(entry);
                 if(fobject.exists()){
-                    throw new BagFetchForbiddenException(rootDir);
+                    throw new BagFetchForbiddenException(file);
                 }
                 //check data directory
                 entry = FUtils.getEntryStringFor(path,n+"/data");
                 fobject = FUtils.resolveFile(entry);
                 if(!fobject.exists()){
-                    throw new BagNoDataException(rootDir);
+                    throw new BagNoDataException(file);
                 }
             }       
         }
 
-        log.debug("DefaultBag.init file: "+rootDir+", version: "+versionString);
+        log.debug("DefaultBag.init file: "+file+", version: "+versionString);
         
         BagFactory bagFactory = new BagFactory();
         if (!newBag) {
-            bilBag = bagFactory.createBag(this.rootDir);
+            bilBag = bagFactory.createBag(this.file);
             versionString = bilBag.getVersion().versionString;
         } else if (versionString != null) {            
             Version version = Version.valueOfString(versionString);            
@@ -173,14 +172,12 @@ public class DefaultBag {
     protected void initializeBilBag() {
         BagInfoTxt bagInfoTxt = bilBag.getBagInfoTxt();
         if (bagInfoTxt == null) {
-            bagInfoTxt = bilBag.getBagPartFactory().createBagInfoTxt();
-            /* */
+            bagInfoTxt = bilBag.getBagPartFactory().createBagInfoTxt();          
             Set<String> keys = bagInfoTxt.keySet();
             for (Iterator<String> iter = keys.iterator(); iter.hasNext();) {
                 String key = (String) iter.next();
                 bagInfoTxt.remove(key);
-            }
-            /* */
+            }           
             bilBag.putBagFile(bagInfoTxt);
         }
         BagItTxt bagIt = bilBag.getBagItTxt();
@@ -195,7 +192,7 @@ public class DefaultBag {
         PreBag preBag = bagFactory.createPreBag(data);
         if (version == null) {
             log.debug("no version supplied, so using latest");
-            bilBag = preBag.makeBagInPlace(BagFactory.LATEST, false);            
+            bilBag = preBag.makeBagInPlace(BagFactory.LATEST,false);            
         } else {
             log.debug("version supplied: "+Version.valueOfString(version));
             bilBag = preBag.makeBagInPlace(Version.valueOfString(version),false);            
@@ -214,15 +211,7 @@ public class DefaultBag {
         }else{
             bilBag = preBag.makeBagInPlace(Version.valueOfString(version),false, true);            
         }
-    }	
-
-    public File getBagFile() {
-        return bagFile;
-    }
-
-    private void setBagFile(File fname) {
-        this.bagFile = fname;
-    }
+    }	   
 
     public String getDataDirectory() {
         return bilBag.getBagConstants().getDataDirectory();
@@ -262,12 +251,12 @@ public class DefaultBag {
     }
 
     // This directory contains either the bag directory or serialized bag file
-    public void setRootDir(File rootDir) {
-        this.rootDir = rootDir;
+    public void setFile(File file) {
+        this.file = file;
     }
 
-    public File getRootDir() {
-        return rootDir;
+    public File getFile() {
+        return file;
     }
 
 
@@ -484,16 +473,16 @@ public class DefaultBag {
         return pathList;
     }
 
-    public String addTagFile(File file) {
+    public String addTagFile(File tagFile) {
         changeToDirty();
         isComplete(Status.UNKNOWN);
 
         String message = null;
-        if(file != null) {
+        if(tagFile != null) {
             try {
-                bilBag.addFileAsTag(file);
+                bilBag.addFileAsTag(tagFile);
             }catch (Exception e){                
-                message = Context.getMessage("defaultBag.addTagFile.Exception",new Object [] {file,e.getMessage()});
+                message = Context.getMessage("defaultBag.addTagFile.Exception",new Object [] {tagFile,e.getMessage()});
             }
         }
         return message;
@@ -570,14 +559,16 @@ public class DefaultBag {
     protected boolean writeBag(Writer bw) {
       
         File bagFile = null;        
-        String bagName = fileStripSuffix(getRootDir().getName());
-        File parentDir = getRootDir().getParentFile();
+        String bagName = fileStripSuffix(getFile().getName());
+        File parentDir = getFile().getParentFile();
         
         log.debug("DefaultBag.writeBag parentDir: " + parentDir + ", bagName: "+bagName);
 
         setName(bagName);
-        if(serialMode == NO_MODE) {
+        if(serialMode == NO_MODE){
+            
             bagFile = new File(parentDir,getName());
+            
         } else if (serialMode == ZIP_MODE) {
             
             int i = bagName.lastIndexOf('.');
@@ -628,13 +619,14 @@ public class DefaultBag {
             bagFile = new File(parentDir, bagName);
            
         }
-        setBagFile(bagFile);
+        
+        setFile(bagFile);
 
         log.info("Bag-Info to write: " + bilBag.getBagInfoTxt());
 
         isSerialized(false);
-
-        Bag newBag = bw.write(bilBag,bagFile);
+       
+        Bag newBag = bw.write(bilBag,getFile());
         if(newBag != null) {
             bilBag = newBag;
             // write successful
@@ -661,16 +653,38 @@ public class DefaultBag {
    
 
     public void generateManifestFiles() {
-        DefaultCompleter completer = new DefaultCompleter(new BagFactory());                    
-        if (isBuildPayloadManifest) {  
-            log.debug("generating payload manifest");
-            completer.setPayloadManifestAlgorithm(resolveAlgorithm(payloadManifestAlgorithm));            
+       
+        DefaultCompleter completer = new DefaultCompleter(new BagFactory());    
+        
+        Algorithm payloadAlg = resolveAlgorithm(payloadManifestAlgorithm);
+        Manifest payloadMan = bilBag.getPayloadManifest(payloadAlg);
+        
+        Algorithm tagAlg = resolveAlgorithm(tagManifestAlgorithm);
+        Manifest tagMan = bilBag.getPayloadManifest(tagAlg);        
+        
+        //check payloads that to do not exist anymore (bag api fails then!)
+        payloadMan.clear();
+        tagMan.clear();
+        Iterator<BagFile>payloadIt = bilBag.getPayload().iterator();
+        while(payloadIt.hasNext()){
+            BagFile bagFile = payloadIt.next();
+            if(!bagFile.exists()){
+                payloadIt.remove();                
+            }
         }
-        if (isBuildTagManifest) {
+        
+        if(isBuildPayloadManifest){              
+            log.debug("generating payload manifest");
+            completer.setClearExistingPayloadManifests(true);              
+            completer.setCompletePayloadManifests(true);
+            completer.setPayloadManifestAlgorithm(payloadAlg);            
+        }
+        if(isBuildTagManifest){            
             log.debug("generating tag manifest");            
             completer.setClearExistingTagManifests(true);
+            completer.setCompleteTagManifests(true);
             completer.setGenerateTagManifest(true);
-            completer.setTagManifestAlgorithm(resolveAlgorithm(tagManifestAlgorithm));           
+            completer.setTagManifestAlgorithm(tagAlg);           
         }
         if (bilBag.getBagInfoTxt() != null) {
             completer.setGenerateBagInfoTxt(true);
@@ -692,10 +706,10 @@ public class DefaultBag {
         bagInfo.removeField(key);
     }
 
-    public void addFileToPayload(File file) {
+    public void addFileToPayload(File payloadFile) {
         changeToDirty();
         isComplete(Status.UNKNOWN);       
-        bilBag.addFileToPayload(file);
+        bilBag.addFileToPayload(payloadFile);
     }
 
     public Collection<BagFile> getTags() {

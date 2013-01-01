@@ -123,10 +123,8 @@ public class SwingUtils {
         monitor(component,worker,title,note,new ArrayList<PropertyChangeListener>());
     }
     public static void monitor(Component component,SwingWorker worker,String title,String note,List<PropertyChangeListener>listeners){
-        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                                
-        /*progressMonitor.setMillisToDecideToPopup(0);
-        progressMonitor.setMillisToPopup(0);*/
-        progressMonitor.setProgress(0);        
+        ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                                        
+        progressMonitor.setProgress(0);  
         
         worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
         if(listeners != null){
@@ -148,7 +146,7 @@ public class SwingUtils {
                 }else if(
                     "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue() == SwingWorker.StateValue.DONE
                 ){                      
-                    progressMonitor.close();
+                    progressMonitor.close();                   
                 }
             }
         };
@@ -195,7 +193,7 @@ public class SwingUtils {
     }
     public static StatusBar getStatusBar(){
         return Application.instance().getActiveWindow().getStatusBar();
-    }
+    }    
     public static void StatusMessage(String message){
         getStatusBar().setMessage(message);        
     }

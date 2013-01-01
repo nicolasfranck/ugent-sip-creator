@@ -9,10 +9,10 @@ import javax.swing.SwingWorker;
  * @author nicolas
  */
 public abstract class LongTask extends SwingWorker implements ProgressListener,Loggable{       
-    private String lastNote = "";
+    String lastNote = "";    
     @Override
     final public void reportProgress(String activity, Object o, Long count, Long total) {                
-        if(count == null || total == null){
+        if(count == null || total == null){            
             return;
         }
         if(activity.compareTo(lastNote) != 0){            
@@ -27,5 +27,5 @@ public abstract class LongTask extends SwingWorker implements ProgressListener,L
     @Override
     final public void log(String message){
         ApplicationContextUtil.addConsoleMessage(message);
-    }    
+    }   
 }

@@ -32,7 +32,7 @@ public class RenameExecutor extends AbstractActionCommandExecutor {
         SwingUtils.ShowWhile(new Runnable(){
             @Override
             public void run() {
-                File file = BagView.getInstance().getBagRootPath();                   
+                File file = BagView.getInstance().getBag().getFile();                   
                 if(file != null){
                     ArrayList<File>forbiddenFiles = new ArrayList<File>();
                     forbiddenFiles.add(file);

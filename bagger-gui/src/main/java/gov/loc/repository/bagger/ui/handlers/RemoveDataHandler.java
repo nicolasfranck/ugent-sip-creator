@@ -65,7 +65,7 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                 String fileName = null;
                 if (path.getPathCount() > 0){                    
                     filePath = new File(""+path.getPathComponent(0));
-                    for (int j=1; j<path.getPathCount(); j++) {
+                    for (int j = 1; j < path.getPathCount(); j++) {
                         filePath = new File(filePath, ""+path.getPathComponent(j));
                         log.debug("\t" + filePath);
                     }
@@ -93,14 +93,15 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                         try {
                             e.printStackTrace();
                             bag.removePayloadDirectory(fileName);
-                            File file = new File(bag.getRootDir(),fileName);                            
+                            /*
+                            File file = new File(bag.getFile(),fileName);                            
                             if(file.exists()){
                                 if(file.isFile()){
                                     file.delete();                                    
                                 }else{
                                     FileUtils.deleteDirectory(file);
                                 }
-                            }                            
+                            }*/                            
                             if (node instanceof MutableTreeNode) {
                                 model.removeNodeFromParent((MutableTreeNode)node);
                             } else {
