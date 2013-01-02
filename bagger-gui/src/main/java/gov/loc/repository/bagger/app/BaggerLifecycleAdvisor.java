@@ -1,11 +1,13 @@
 package gov.loc.repository.bagger.app;
 
+import gov.loc.repository.bagger.ui.BagView;
 import java.awt.Dimension;
 import java.util.Set;
 import javax.swing.UIManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.ApplicationWindow;
+import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.application.statusbar.StatusBar;
 import ugent.bagger.helper.SwingUtils;
@@ -38,9 +40,22 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
      */
     @Override
     public void onWindowCreated(ApplicationWindow window){
-        super.onWindowCreated(window);        
+        super.onWindowCreated(window);                
+        
         init(); 
     }    
+    @Override
+    public boolean onPreWindowClose(ApplicationWindow window){
+        BagView bagView = BagView.getInstance();
+        if(bagView != null){
+            try{
+                bagView.clearBagHandler.closeExistingBag();
+            }catch(Exception e){
+                e.printStackTrace();
+            }            
+        }
+        return true;
+    }
     @Override
     public StatusBar getStatusBar(){       
         return new BaggerStatusBar();

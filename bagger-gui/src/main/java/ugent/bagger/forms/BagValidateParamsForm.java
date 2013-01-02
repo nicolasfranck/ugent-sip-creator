@@ -46,9 +46,7 @@ public class BagValidateParamsForm extends AbstractForm{
         FileSelectBinding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
             "files",
-            fileChooser,
-            Context.getMessage("bagValidateParamsForm.files.selected"),
-            Context.getMessage("bagValidateParamsForm.files.buttonText"),
+            fileChooser,            
             SwingUtils.getFrame()
         );
         builder.add(fileSelectBinding);                            

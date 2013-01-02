@@ -31,8 +31,7 @@ public class SaveBagHandler extends Handler {
     //wordt uitgevoerd indien men op de toolbarbutton drukt
     @Override
     public void actionPerformed(ActionEvent e) {
-        File file = BagView.getInstance().getBag().getFile();
-        
+        File file = BagView.getInstance().getBag().getFile();        
         if(file.exists()) {            
             confirmWriteBag();
         }else {
@@ -42,7 +41,7 @@ public class SaveBagHandler extends Handler {
     
 
     @Override
-    public void execute(){        
+    public void execute(){           
         SwingUtils.monitor(
             new SaveBagWorker(),
             Context.getMessage("SaveBagHandler.saving.title"),
@@ -57,7 +56,7 @@ public class SaveBagHandler extends Handler {
         return this.clearAfterSaving;
     }
 
-    public void saveBag(File file) {
+    public void saveBag(File file) {        
     	DefaultBag bag = BagView.getInstance().getBag();
         bag.setFile(file);        
         execute();
@@ -68,9 +67,9 @@ public class SaveBagHandler extends Handler {
         ConfirmationDialog dialog = new ConfirmationDialog() {
             boolean isCancel = true;
             @Override
-            protected void onConfirm() {
+            protected void onConfirm() {                
                 MetsBag metsBag = bagView.getBag();
-                if (metsBag.getSize() > DefaultBag.MAX_SIZE) {
+                if(metsBag.getSize() > DefaultBag.MAX_SIZE) {
                     confirmAcceptBagSize();
                 } else {                                        
                     saveBag(metsBag.getFile());
@@ -108,53 +107,6 @@ public class SaveBagHandler extends Handler {
         dialog.setConfirmationMessage(Context.getMessage("bag.dialog.message.accept"));
         dialog.showDialog();
     }
-
-    /*
-    public void saveBagAs() {
-        BagView bagView = BagView.getInstance();
-    	DefaultBag bag = bagView.getBag();        
-        
-        JFrame frame = new JFrame();
-        JFileChooser fs = new JFileChooser();
-    	fs.setDialogType(JFileChooser.SAVE_DIALOG);
-    	fs.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
-    	fs.addChoosableFileFilter(BagitUtils.getNoFilter());
-    	fs.addChoosableFileFilter(BagitUtils.getZipFilter());
-        fs.addChoosableFileFilter(BagitUtils.getTarFilter());
-        fs.addChoosableFileFilter(BagitUtils.getTarGzFilter());
-        fs.addChoosableFileFilter(BagitUtils.getTarBz2Filter());
-        
-        fs.setDialogTitle(Context.getMessage("SaveBagHandler.saveBagAs.title"));
-    	fs.setCurrentDirectory(bag.getRootDir());        
-    	if (bag.getName() != null && !bag.getName().equalsIgnoreCase(Context.getMessage("bag.label.noname"))) {
-            String selectedName = bag.getName();
-            
-            if (bag.getSerialMode() == DefaultBag.ZIP_MODE) {
-                selectedName += "."+DefaultBag.ZIP_LABEL;
-                fs.setFileFilter(BagitUtils.getZipFilter());
-            }else if (bag.getSerialMode() == DefaultBag.TAR_MODE) {
-                selectedName += "."+DefaultBag.TAR_LABEL;
-                fs.setFileFilter(BagitUtils.getTarFilter());
-            }else if(bag.getSerialMode() == DefaultBag.TAR_GZ_MODE){
-                selectedName += "."+DefaultBag.TAR_GZ_LABEL;
-                fs.setFileFilter(BagitUtils.getTarGzFilter());
-            }else if(bag.getSerialMode() == DefaultBag.TAR_BZ2_MODE){
-                selectedName += "."+DefaultBag.TAR_BZ2_LABEL;
-                fs.setFileFilter(BagitUtils.getTarBz2Filter());
-            }else {
-                fs.setFileFilter(BagitUtils.getNoFilter());
-            }
-            fs.setSelectedFile(new File(selectedName));
-    	}
-    	int option = fs.showSaveDialog(frame);
-
-        if (option == JFileChooser.APPROVE_OPTION) {
-            File file = fs.getSelectedFile();
-            save(file);
-        }
-    }*/
-
     public void save(File file) {
         BagView bagView = BagView.getInstance();
     	MetsBag metsBag = bagView.getBag();       
@@ -229,7 +181,7 @@ public class SaveBagHandler extends Handler {
                 }else{                   
                     bagView.updateManifestPane();
                 }                
-            }catch(Exception e){
+            }catch(Exception e){                
                 log(e.getMessage());
                 log.debug(e.getMessage());                
             } 

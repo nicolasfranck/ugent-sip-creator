@@ -49,9 +49,7 @@ public class ValidateManifestParamsForm extends AbstractForm{
         FileSelectBinding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
             "files",
-            fileChooser,
-            Context.getMessage(getId()+".files.selected"),
-            Context.getMessage(getId()+".files.buttonText"),
+            fileChooser,            
             SwingUtils.getFrame()
         );
         builder.add(fileSelectBinding);        

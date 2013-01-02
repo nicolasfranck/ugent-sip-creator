@@ -45,9 +45,7 @@ public class SaveBagParamsForm extends AbstractForm{
         Binding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
             "outputFile",
-            fileChooser,
-            Context.getMessage("JFileChooser.selected"),
-            Context.getMessage("JFileChooser.buttonText"),
+            fileChooser,            
             SwingUtils.getFrame()
         );        
         builder.add(fileSelectBinding);

@@ -3,11 +3,11 @@ package gov.loc.repository.bagger.ui;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -59,9 +59,8 @@ public final class AddFieldPanel extends JPanel {
 
     public JComboBox getStandardFieldsComboBox() {
         if(standardFieldsComboBox == null){
-            List<String> listModel = getStandardFields();  
-            
-            standardFieldsComboBox = new JComboBox(listModel.toArray());
+            List<String> listModel = getStandardFields();              
+            standardFieldsComboBox = new JComboBox(listModel.toArray());            
             standardFieldsComboBox.setName(Context.getMessage("baginfo.field.fieldlist"));
             standardFieldsComboBox.setSelectedItem("");
             standardFieldsComboBox.setToolTipText(Context.getMessage("baginfo.field.fieldlist.help"));
@@ -75,9 +74,12 @@ public final class AddFieldPanel extends JPanel {
 
     public JTextField getCustomFieldTextField() {
         if(customFieldTextField == null){
-            customFieldTextField = new JTextField(15);
+            //customFieldTextField = new JTextField(15);
+            customFieldTextField = new JTextField();            
             customFieldTextField.setToolTipText(Context.getMessage("baginfo.field.name.help"));
             customFieldTextField.setVisible(false);
+            Dimension pdim = getStandardFieldsComboBox().getPreferredSize();
+            customFieldTextField.setPreferredSize(new Dimension((int)pdim.getWidth(),(int)pdim.getHeight()));
         }
         return customFieldTextField;
     }

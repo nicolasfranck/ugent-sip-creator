@@ -39,9 +39,7 @@ public class CSVParseParamsForm extends AbstractForm{
         FileSelectBinding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
             "files",
-            fileChooser,
-            "%s",
-            Context.getMessage("csvParseParamsForm.files.buttonText"),
+            fileChooser,            
             SwingUtils.getFrame()
         );
         builder.add(fileSelectBinding);        

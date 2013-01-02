@@ -50,9 +50,7 @@ public class BagInfoImportForm extends AbstractForm{
         FileSelectBinding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
             "files",
-            fileChooser,
-            Context.getMessage("bagInfoImportForm.files.selected"),
-            Context.getMessage("bagInfoImportForm.files.buttonText"),
+            fileChooser,            
             SwingUtils.getFrame()
         );
         builder.add(fileSelectBinding);        

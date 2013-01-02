@@ -46,9 +46,7 @@ public class CreateBagsParamsForm extends AbstractForm{
         Binding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
             "directories",
-            fileChooser,
-            Context.getMessage("JFileChooser.selected"),
-            Context.getMessage("JFileChooser.buttonText"),
+            fileChooser,            
             SwingUtils.getFrame()
         );        
         builder.add(fileSelectBinding);
@@ -72,9 +70,7 @@ public class CreateBagsParamsForm extends AbstractForm{
         final Binding outputDirBinding = new FileSelectBinding(
             getFormModel(),
             "outputDir",
-            fileChooser,
-            Context.getMessage("JFileChooser.selected"),
-            Context.getMessage("JFileChooser.buttonText"),
+            fileChooser,            
             SwingUtils.getFrame()
         );                        
         SwingUtils.setJComponentEnabled(outputDirBinding.getControl(),!createBagParams.isBagInPlace());

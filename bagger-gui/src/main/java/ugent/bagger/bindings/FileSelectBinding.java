@@ -19,26 +19,27 @@ import org.springframework.richclient.form.binding.support.CustomBinding;
  */
 public final class FileSelectBinding extends CustomBinding{
     
-    private JFileChooser fileChooser;    
-    private JTextField field;
-    private Component parent;
-    private String template;    
-    private String buttonText = "select ..";
+    JFileChooser fileChooser;    
+    JTextField field;
+    Component parent;
+    String template;    
+    String buttonText;
     
-    public FileSelectBinding(FormModel formModel, String formPropertyPath,JFileChooser fileChooser,String template,String buttonText,Component parent){
+    public FileSelectBinding(FormModel formModel, String formPropertyPath,JFileChooser fileChooser,Component parent){
         super(formModel,formPropertyPath,ArrayList.class);   
-        this.fileChooser = fileChooser;
-        this.template = template;
-        this.buttonText = buttonText;
-        this.parent = parent;
+        this.fileChooser = fileChooser;        
+        this.parent = parent;       
+        ArrayList<File>files = (ArrayList<File>)formModel.getValueModel(formPropertyPath).getValue();
+        System.out.println("files: "+files);
+        if(files != null && !files.isEmpty()){            
+            valueModelChanged(files);
+        }        
     }
 
-    public JTextField getField() {
+    protected JTextField getField() {
         if(field == null){
-            field = new JTextField(15); 
-            
-            field.setEditable(false);
-            
+            field = new JTextField(15);             
+            field.setEditable(false);            
             field.addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent me) {
@@ -89,7 +90,7 @@ public final class FileSelectBinding extends CustomBinding{
             getValueModel().setValue(new ArrayList<File>(Arrays.asList(files)));                        
         }
     }
-    public void setField(JTextField field) {
+    protected void setField(JTextField field) {
         this.field = field;
     }
     @Override
@@ -97,17 +98,17 @@ public final class FileSelectBinding extends CustomBinding{
         ArrayList<File>list = (ArrayList<File>)o;        
         
         if(list == null || list.isEmpty()){
-            field.setText(String.format(getTemplate(),0));
+            getField().setText(String.format(getTemplate(),0));
         }else{            
             String t = list.size() > 1 ? String.format(getTemplate(),list.size()):list.get(0).getAbsolutePath();
-            field.setText(t);        
+            getField().setText(t);        
         }
-        field.invalidate();        
+        getField().invalidate();        
     }
     @Override
     protected JComponent doBindControl() {         
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));        
-        JButton browseButton = new JButton(buttonText);        
+        JButton browseButton = new JButton(getButtonText());        
         browseButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -125,13 +126,20 @@ public final class FileSelectBinding extends CustomBinding{
     protected void enabledChanged(){        
         
     }
-    public String getTemplate() {
+    protected String getTemplate() {
         if(template == null){
-            template = "%s selected";
+            String t = (String) UIManager.get("FileSelectBinding.template");
+            template = t != null && t != null ? t: "%s selected";
         }
         return template;
+    }   
+
+    protected String getButtonText() {
+        if(buttonText == null){
+            String t = (String) UIManager.get("FileSelectBinding.buttonText");
+            buttonText = t != null && t != null ? t: "browse..";
+        }
+        return buttonText;
     }
-    public void setTemplate(String template) {
-        this.template = template;
-    }    
+    
 }

@@ -5,21 +5,15 @@ import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Manifest.Algorithm;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.binding.validation.ValidationListener;
-import org.springframework.binding.validation.ValidationResults;
-import org.springframework.richclient.command.ActionCommand;
 import ugent.bagger.forms.SaveBagParamsForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
@@ -32,39 +26,12 @@ import ugent.bagger.params.SaveBagParams;
 public final class SaveBagPanel extends JPanel{
     static final Log log = LogFactory.getLog(CreateBagsPanel.class);
     SaveBagParams saveBagParams;
-    SaveBagParamsForm saveBagParamsForm;   
-    ActionCommand finishCommand;
-    ActionCommand cancelCommand;
-    JButton okButton;
-    JButton cancelButton;
+    SaveBagParamsForm saveBagParamsForm;           
     
     public SaveBagPanel(){
         setLayout(new BorderLayout());
         add(createContentPane());
     }
-
-    protected JButton getOkButton() {
-        if(okButton == null){
-            okButton = new JButton(Context.getMessage("ok"));
-            okButton.setEnabled(false);
-            okButton.addActionListener(new OkSaveBagHandler());
-        }
-        return okButton;
-    }
-
-    protected JButton getCancelButton() {
-        if(cancelButton == null){
-            cancelButton = new JButton(Context.getMessage("cancel"));
-            cancelButton.addActionListener(new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    SaveBagPanel.this.firePropertyChange("close",null,null);
-                }            
-            });
-        }
-        return cancelButton;
-    }
-
     
     public SaveBagParams getSaveBagParams() {
         if(saveBagParams == null){
@@ -80,14 +47,7 @@ public final class SaveBagPanel extends JPanel{
 
     public SaveBagParamsForm getSaveBagParamsForm() {
         if(saveBagParamsForm == null){
-            saveBagParamsForm = new SaveBagParamsForm(getSaveBagParams());
-            saveBagParamsForm.addValidationListener(new ValidationListener(){
-                @Override
-                public void validationResultsChanged(ValidationResults vr) {                   
-                    getOkButton().setEnabled(!vr.getHasErrors());
-                }                
-            });
-            
+            saveBagParamsForm = new SaveBagParamsForm(getSaveBagParams());           
         }
         return saveBagParamsForm;
     }
@@ -98,20 +58,16 @@ public final class SaveBagPanel extends JPanel{
     
     protected JComponent createContentPane() {
         JPanel panel = new JPanel();
-        BoxLayout layout = new BoxLayout(panel,BoxLayout.PAGE_AXIS);
-        panel.setLayout(layout);
-        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        
-        panel.add(getSaveBagParamsForm().getControl());
-        panel.add(createButtonPanel());
-        
+        BoxLayout layout = new BoxLayout(panel,BoxLayout.Y_AXIS);
+        panel.setLayout(layout);        
+        panel.add(getSaveBagParamsForm().getControl());                
         return panel;
-    }
-    protected JPanel createButtonPanel(){
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));       
-        panel.add(getOkButton());        
-        panel.add(getCancelButton());
-        return panel;
+    }    
+    public void save(){
+        if(getSaveBagParamsForm().hasErrors()){
+           return; 
+        }
+        new OkSaveBagHandler().actionPerformed(null);
     }
 
     private class OkSaveBagHandler extends AbstractAction {

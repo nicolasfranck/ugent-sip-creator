@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Loggable;
 
@@ -93,6 +94,20 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         
         final BagView bagView = BagView.getInstance();    	
         try{
+            File bagFile = bagView.getBag().getFile();
+            if(bagFile.isDirectory() && FUtils.isDescendant(bagFile, file)){
+                SwingUtils.ShowError(
+                    null,
+                    Context.getMessage(
+                        "addDataHandler.fileInBag.warning",
+                        new Object [] {file}
+                    )
+                );
+                return;
+            }            
+            
+            System.out.println("file: "+file);
+            
             bagView.getBag().addFileToPayload(file);
             boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);
             if(alreadyExists) {

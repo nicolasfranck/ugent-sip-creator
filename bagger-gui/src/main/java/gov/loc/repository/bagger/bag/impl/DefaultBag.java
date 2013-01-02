@@ -656,11 +656,11 @@ public class DefaultBag {
        
         DefaultCompleter completer = new DefaultCompleter(new BagFactory());    
         
-        Algorithm payloadAlg = resolveAlgorithm(payloadManifestAlgorithm);
-        Manifest payloadMan = bilBag.getPayloadManifest(payloadAlg);
+        Algorithm payloadAlg = resolveAlgorithm(payloadManifestAlgorithm);        
+        Manifest payloadMan = bilBag.getPayloadManifest(payloadAlg);        
         
         Algorithm tagAlg = resolveAlgorithm(tagManifestAlgorithm);
-        Manifest tagMan = bilBag.getPayloadManifest(tagAlg);        
+        Manifest tagMan = bilBag.getTagManifest(tagAlg);                                
         
         //check payloads that to do not exist anymore (bag api fails then!)
         payloadMan.clear();
