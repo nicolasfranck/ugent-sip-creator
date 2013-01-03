@@ -1,6 +1,7 @@
 package ugent.bagger.panels;
 
 
+import gov.loc.repository.bagger.ui.BagView;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -101,6 +102,7 @@ public class RenamePanel extends JPanel{
     public JButton getReloadFileTableButton() {
         if(reloadFileTableButton == null){
             reloadFileTableButton = new JButton(Context.getMessage("RenamePanel.reloadFileTableButton.label"));            
+            reloadFileTableButton.setIcon(BagView.getInstance().getPropertyImage("refresh.icon"));
             reloadFileTableButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae) {
