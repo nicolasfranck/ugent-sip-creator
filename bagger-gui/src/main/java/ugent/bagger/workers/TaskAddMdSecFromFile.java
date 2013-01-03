@@ -17,7 +17,10 @@ import ugent.bagger.helper.SwingUtils;
  * @author nicolas
  */
 public class TaskAddMdSecFromFile extends DefaultWorker {    
-    private File [] files;
+    File [] files;
+    int succeeded = 0;
+    int numErrors = 0;
+    
     public TaskAddMdSecFromFile(File [] files){
         super();
         this.files = files;
@@ -28,14 +31,9 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
         if(files == null){
             return null;
         }
-        
-        int succeeded = 0;
-        int numErrors = 0;
 
         for(int i = 0;i<files.length;i++){                                                        
             File file = files[i];
-            
-            System.out.println("inserting "+file);
             
             try{
                 MdSec mdSec = MetsUtils.createMdSec(file);                        
@@ -101,21 +99,22 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
             int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
             if(!isDone()){
                 setProgress(percent); 
-            }
-            
-        }             
-        
-        //report
-        String report = Context.getMessage("report.message",new Integer []{
-            succeeded,numErrors
-        });
-        String reportLog = Context.getMessage("report.log");
-
-        SwingUtils.ShowMessage(null,report+"\n"+reportLog);
+            }            
+        }    
         
         if(succeeded > 0){
             success(true);
         }
         return null;
     }    
+    @Override
+    public void done(){
+        super.done();
+        //report
+        String report = Context.getMessage("report.message",new Integer []{
+            succeeded,numErrors
+        });
+        String reportLog = Context.getMessage("report.log");
+        SwingUtils.ShowMessage(null,report+"\n"+reportLog);
+    }
 }

@@ -1,5 +1,6 @@
 package gov.loc.repository.bagger.app;
 
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import java.awt.Dimension;
 import java.util.Set;
@@ -7,7 +8,6 @@ import javax.swing.UIManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.ApplicationWindow;
-import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.application.statusbar.StatusBar;
 import ugent.bagger.helper.SwingUtils;
@@ -47,13 +47,24 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     @Override
     public boolean onPreWindowClose(ApplicationWindow window){
         BagView bagView = BagView.getInstance();
-        if(bagView != null){
+        MetsBag metsBag = bagView.getBag();        
+        
+        if(metsBag.isDirty()){
             try{
-                bagView.clearBagHandler.closeExistingBag();
+                bagView.clearBagHandler.confirmCloseBag();
+                if(bagView.clearBagHandler.isConfirmSaveFlag()){
+                    bagView.saveBagHandler.setClearAfterSaving(false);
+                    bagView.saveBagAsHandler.openSaveBagAsFrame();
+                    bagView.clearBagHandler.setConfirmSaveFlag(false);
+                }
+                SwingUtils.waitForWorkers();
             }catch(Exception e){
+                log.error(e);
                 e.printStackTrace();
-            }            
+            }   
         }
+                 
+        
         return true;
     }
     @Override

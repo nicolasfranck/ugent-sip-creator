@@ -459,7 +459,7 @@ public final class CreateBagsPanel extends JPanel{
             BusyIndicator.clearAt(CreateBagsPanel.this);    
             
             return null;
-        }              
+        }               
     }
     
     private class NewBagsWorker extends LongTask {        

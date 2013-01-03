@@ -5,10 +5,13 @@ import gov.loc.repository.bagger.ui.Progress;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.exceptions.FileNotReadableException;
+import ugent.bagger.exceptions.FileNotWritableException;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
@@ -94,8 +97,32 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         
         final BagView bagView = BagView.getInstance();    	
         try{
-            File bagFile = bagView.getBag().getFile();
-            if(bagFile.isDirectory() && FUtils.isDescendant(bagFile, file)){
+            File bagFile = bagView.getBag().getFile();            
+            
+            try{
+                FUtils.checkFile(file,true);
+            }catch(FileNotWritableException e){
+                //doe niets
+            }
+            
+            
+            //lege map verboden
+            if(file.isDirectory()){
+                File [] children = file.listFiles();
+                if(children == null || children.length == 0){
+                    SwingUtils.ShowError(
+                        null,
+                        Context.getMessage(
+                            "addDataHandler.emptyDirectory.warning",
+                            new Object [] {file}
+                        )
+                    );
+                    return;
+                }
+            }
+            
+            //bestanden maken deel uit van de data-map
+            if(bagFile != null && bagFile.isDirectory() && FUtils.isDescendant(bagFile, file)){
                 SwingUtils.ShowError(
                     null,
                     Context.getMessage(
@@ -105,8 +132,6 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
                 );
                 return;
             }            
-            
-            System.out.println("file: "+file);
             
             bagView.getBag().addFileToPayload(file);
             boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);
@@ -119,8 +144,26 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
                 log(message);
                 SwingUtils.ShowError(title,message);
             }
-        }catch (Exception e){
+        }catch(FileNotReadableException e){          
+            String title = Context.getMessage("addDataHandler.FileNotReadableException.title");
+            String message = Context.getMessage(
+                "addDataHandler.FileNotReadableException.message",
+                new Object [] {e.getFile()}
+            ); 
+            log(message);
+            SwingUtils.ShowError(title,message);            
+        }catch(FileNotFoundException e){            
+            String title = Context.getMessage("addDataHandler.FileNotFoundException.title");
+            String message = Context.getMessage(
+                "addDataHandler.FileNotFoundException.message",
+                new Object [] {file}
+            ); 
+            log(message);
+            SwingUtils.ShowError(title,message);            
+        }catch (Exception e){            
+            e.printStackTrace();
             log.error("BagView.addBagData: " + e);
+            
             String title = Context.getMessage("addDataHandler.unknowException.title");
             String message = Context.getMessage(
                 "addDataHandler.fileExists.message",

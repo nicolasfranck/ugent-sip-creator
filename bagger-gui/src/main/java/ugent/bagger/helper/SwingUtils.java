@@ -43,6 +43,7 @@ public class SwingUtils {
     static Log log = LogFactory.getLog(SwingUtils.class);
     static HashMap<String,String>uiManagerMessages;
     static File lastDirectory;
+    static ArrayList<SwingWorker>workers = new ArrayList<SwingWorker>();
 
     protected static File getLastDirectory() {
         if(lastDirectory == null){
@@ -113,6 +114,21 @@ public class SwingUtils {
             button.removeActionListener(l);
         }
     }    
+    public static void waitForWorkers(){
+  
+        for(SwingWorker worker:workers){
+            try{
+                while(!worker.isDone()){                    
+                    Thread.sleep(1000);                    
+                }                
+            }catch(Exception e){
+                e.printStackTrace();
+                log.error(e);
+            }            
+        }
+        workers.clear();
+        
+    }
     public static void monitor(SwingWorker worker,String title,String note){
         monitor(getFrame(),worker,title,note);
     }
@@ -126,7 +142,11 @@ public class SwingUtils {
         ProgressMonitor progressMonitor = new ProgressMonitor(component,title,note,0,100);                                        
         progressMonitor.setProgress(0);  
         
-        worker.addPropertyChangeListener(getProgressListener(progressMonitor));                
+        workers.add(worker);
+        
+        getStatusBar().getProgressMonitor().taskStarted("",-1);
+        
+        worker.addPropertyChangeListener(getProgressListener(progressMonitor,worker));                
         if(listeners != null){
             for(PropertyChangeListener listener:listeners){
                 worker.addPropertyChangeListener(listener);
@@ -134,7 +154,7 @@ public class SwingUtils {
         }        
         worker.execute();
     }
-    private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor){
+    private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor,final SwingWorker worker){
         return new PropertyChangeListener() {
             boolean cancelRemoved = false;
             @Override
@@ -142,11 +162,14 @@ public class SwingUtils {
                 if("progress".compareTo(evt.getPropertyName())==0){ 
                     int progress = (Integer) evt.getNewValue();                     
                     progressMonitor.setProgress(progress);                              
-                    progressMonitor.setNote(progress+"%");                    
+                    progressMonitor.setNote(progress+"%");  
+                    getStatusBar().getProgressMonitor().worked(progress);
                 }else if(
                     "state".compareTo(evt.getPropertyName()) == 0 && evt.getNewValue() == SwingWorker.StateValue.DONE
                 ){                      
-                    progressMonitor.close();                   
+                    progressMonitor.close();          
+                    getStatusBar().getProgressMonitor().done();
+                    workers.remove(worker);
                 }
             }
         };

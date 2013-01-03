@@ -1,23 +1,18 @@
 package gov.loc.repository.bagger.ui.handlers;
 
-import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.BagInfoField;
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import gov.loc.repository.bagger.ui.BagTree;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFile;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
-import java.util.Iterator;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.dialogs.NewBagDialog;
 import ugent.bagger.helper.Context;
-import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.NewBagParams;
 

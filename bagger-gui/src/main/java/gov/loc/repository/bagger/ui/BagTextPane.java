@@ -17,8 +17,7 @@ public final class BagTextPane extends JTextPane {
     private Color textBackground = new Color(240, 240, 240);
 
     public BagTextPane(String message) {
-    	super();
-        
+    	super();        
         setMessage(message);
         setAutoscrolls(true);
         setEditable(false);

@@ -32,11 +32,13 @@ public class SaveBagHandler extends Handler {
     @Override
     public void actionPerformed(ActionEvent e) {
         File file = BagView.getInstance().getBag().getFile();        
-        if(file.exists()) {            
-            confirmWriteBag();
-        }else {
-            saveBag(file);
-        }
+        if(file != null){
+            if(file.exists()) {            
+                confirmWriteBag();
+            }else {
+                saveBag(file);
+            }
+        }        
     }
     
 
@@ -124,13 +126,14 @@ public class SaveBagHandler extends Handler {
     }
     
     private class SaveBagWorker extends LongTask{
+        boolean saveOk = false;
+        final BagView bagView = BagView.getInstance();
+        MetsBag metsBag = bagView.getBag();
+        
         @Override
-        protected Object doInBackground() throws Exception {
+        protected Object doInBackground() throws Exception {          
+           
             
-            SwingUtils.ShowBusy();            
-
-            final BagView bagView = BagView.getInstance();
-            MetsBag metsBag = bagView.getBag();
             Mets mets = metsBag.getMets();
             metsBag.setBagItMets(new DefaultBagItMets());
             
@@ -152,44 +155,55 @@ public class SaveBagHandler extends Handler {
                 }                               
                 
                 bagWriter.addProgressListener(this);                
-                boolean saveOk = metsBag.write(bagWriter);
+                saveOk = metsBag.write(bagWriter);
 
-                if (!saveOk) {                    
-                    String message = Context.getMessage("bag.warning.savingFailed");
-                    SwingUtils.ShowError(null,message);
-                    log(message);
-                } else {
-                    String message = Context.getMessage("bag.saved.description");
-                    String title = Context.getMessage("bag.saved.title");
-                    SwingUtils.ShowMessage(title,message);
-                    log(message);
-                }
-               
-                if(metsBag.isSerialized()){
-                    if(clearAfterSaving){                       
-                        bagView.clearBagHandler.clearExistingBag();
-                        setClearAfterSaving(false);
-                    }else{
-                        if(metsBag.isValidateOnSave()) {
-                            bagView.validateBagHandler.validateBag();
-                        }                     
-                        File bagFile = metsBag.getFile();
-                        log.info("BagView.openExistingBag: " + bagFile);
-                        bagView.openBagHandler.openExistingBag(bagFile);
-                        bagView.updateSaveBag();
-                    }
-                }else{                   
-                    bagView.updateManifestPane();
-                }                
-            }catch(Exception e){                
+                                
+            }catch(Exception e){    
+                e.printStackTrace();
                 log(e.getMessage());
-                log.debug(e.getMessage());                
-            } 
-            
-            SwingUtils.ShowDone();
+                log.error(e.getMessage());                
+            }             
             
             return null;
         }   
+        @Override
+        public void done(){            
+            super.done();          
+            
+            
+            if (!saveOk) {                    
+                String message = Context.getMessage("bag.warning.savingFailed");
+                SwingUtils.ShowError(null,message);
+                log(message);
+            } else {
+                String message = Context.getMessage("bag.saved.description");
+                String title = Context.getMessage("bag.saved.title");
+                SwingUtils.ShowMessage(title,message);
+                log(message);
+            }
+
+            if(metsBag.isSerialized()){
+                if(clearAfterSaving){         
+                    try{
+                        bagView.clearBagHandler.clearExistingBag();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        log.error(e);
+                    }                    
+                    setClearAfterSaving(false);
+                }else{
+                    if(metsBag.isValidateOnSave()) {
+                        bagView.validateBagHandler.validateBag();
+                    }                     
+                    File bagFile = metsBag.getFile();
+                    log.info("BagView.openExistingBag: " + bagFile);
+                    bagView.openBagHandler.openExistingBag(bagFile);
+                    bagView.updateSaveBag();
+                }
+            }else{                   
+                bagView.updateManifestPane();
+            }
+        }
            
     }    
 }

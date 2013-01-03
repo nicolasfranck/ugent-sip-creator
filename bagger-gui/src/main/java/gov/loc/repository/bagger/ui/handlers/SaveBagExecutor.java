@@ -16,10 +16,12 @@ public class SaveBagExecutor extends AbstractActionCommandExecutor {
         BagView bagView = BagView.getInstance();
         File file = bagView.getBag().getFile();
     
-        if(file.exists()) {            
-            bagView.saveBagHandler.confirmWriteBag();
-        } else {
-            bagView.saveBagHandler.saveBag(file);
-        }
+        if(file != null){
+            if(file.exists()) {            
+                bagView.saveBagHandler.confirmWriteBag();
+            } else {
+                bagView.saveBagHandler.saveBag(file);
+            }
+        }        
     }
 }

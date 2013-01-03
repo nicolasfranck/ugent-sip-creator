@@ -10,18 +10,20 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask;
 
 public class ValidateBagHandler extends Handler {
-
-    private static final long serialVersionUID = 1L;       
-    private Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
-    private Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
-    private Pattern tagsFixityFailurePattern = Pattern.compile("Fixity failure in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
-    private Pattern payloadsFixityFailurePattern = Pattern.compile("Fixity failure in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
+    static final Log log = LogFactory.getLog(ValidateBagHandler.class);
+    static final long serialVersionUID = 1L;       
+    Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
+    Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
+    Pattern tagsFixityFailurePattern = Pattern.compile("Fixity failure in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
+    Pattern payloadsFixityFailurePattern = Pattern.compile("Fixity failure in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
 
     public ValidateBagHandler() {
         super();      
@@ -42,10 +44,9 @@ public class ValidateBagHandler extends Handler {
         );
     }
     private class ValidateBagWorker extends LongTask{
+        SimpleResult result;
         @Override
         protected Object doInBackground() throws Exception {
-            
-            SwingUtils.ShowBusy();            
             
             final BagView bagView = BagView.getInstance();
             DefaultBag bag = bagView.getBag();            
@@ -56,8 +57,28 @@ public class ValidateBagHandler extends Handler {
                 ValidVerifierImpl validVerifier = new ValidVerifierImpl(completeVerifier, manifestVerifier);                
                 validVerifier.addProgressListener(this);                
                 
-                SimpleResult result = bag.validateBag(validVerifier);                                
-               
+                result = bag.validateBag(validVerifier);                               
+                   
+            }catch (Exception e){                                                
+                if(isCancelled()){
+                    log.error(e);
+                    log(Context.getMessage("ValidateBagHandler.validationCancelled.label"));
+                    SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
+                }else{
+                    log(Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()}));                    
+                    SwingUtils.ShowError(
+                        Context.getMessage("ValidateBagHandler.validationFailed.title"), 
+                        Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()})
+                    );
+                }
+            }            
+            
+            return null;
+        }            
+        @Override
+        public void done(){
+            super.done();
+            if(result != null){
                 if(!result.isSuccess()){
                     
                     ArrayList<String>payloadsMissing = new ArrayList<String>();
@@ -125,23 +146,7 @@ public class ValidateBagHandler extends Handler {
                     );
                     log(Context.getMessage("ValidateBagHanddler.validationSuccessfull.label"));
                 }
-                   
-            }catch (Exception e){                                                
-                if(isCancelled()){
-                    log(Context.getMessage("ValidateBagHandler.validationCancelled.label"));
-                    SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
-                }else{
-                    log(Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()}));                    
-                    SwingUtils.ShowError(
-                        Context.getMessage("ValidateBagHandler.validationFailed.title"), 
-                        Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()})
-                    );
-                }
             }
-            
-            SwingUtils.ShowDone();
-            
-            return null;
-        }            
+        }
     }
 }

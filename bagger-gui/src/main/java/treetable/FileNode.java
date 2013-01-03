@@ -14,12 +14,10 @@ import org.apache.log4j.Logger;
  */
 public class FileNode { 
     File     file; 
-    Object[] children;
+    Object[] children;   
     
-    
-    private static FileSystemView fsv = FileSystemView.getFileSystemView();
-
-    private static Logger logger = Logger.getLogger(FileNode.class);
+    static FileSystemView fsv = FileSystemView.getFileSystemView();
+    static Logger log = Logger.getLogger(FileNode.class);
 
     public FileNode(File file) { 
 	this.file = file; 
@@ -65,28 +63,28 @@ public class FileNode {
 	}
 	try{            
             File [] fileEntries = file.listFiles();
-            logger.debug("getChildren: fileEntries:"+fileEntries);
+            log.debug("getChildren: fileEntries:"+fileEntries);
             if(fileEntries != null){
                 ArrayList<File> files = new ArrayList<File>();
                 ArrayList<File> directories = new ArrayList<File>();
                 int num = 0;
                 for(File fileEntry:fileEntries){
                     if(!fileEntry.canRead()){
-                        logger.debug("getChildren: fileEntry "+fileEntry+" not readable ('num' now:"+num+")");
+                        log.debug("getChildren: fileEntry "+fileEntry+" not readable ('num' now:"+num+")");
                         continue;
                     }else if(fileEntry.isDirectory()){
-                        logger.debug("getChildren: fileEntry "+fileEntry+" is directory ('num' now:"+num+")");
+                        log.debug("getChildren: fileEntry "+fileEntry+" is directory ('num' now:"+num+")");
                         directories.add(fileEntry);
                         num++;
                     }else if(fileEntry.isFile()){
-                        logger.debug("getChildren: fileEntry "+fileEntry+" is regular file");
+                        log.debug("getChildren: fileEntry "+fileEntry+" is regular file");
                         files.add(fileEntry);
                         num++;
                     }                    
                 }
-                logger.debug("getChildren: directories:"+directories.size());
-                logger.debug("getChildren: files:"+files.size());
-                logger.debug("getChildren: total:"+num);
+                log.debug("getChildren: directories:"+directories.size());
+                log.debug("getChildren: files:"+files.size());
+                log.debug("getChildren: total:"+num);
                 Collections.sort(directories,defaultFileSorter);
                 Collections.sort(files,defaultFileSorter);               
                 children = new FileNode[num];
@@ -102,6 +100,7 @@ public class FileNode {
                 children = new FileNode[]{};
             }
 	}catch(Exception se){
+            log.error(se);
             se.printStackTrace();
             children = new FileNode[]{};
         }

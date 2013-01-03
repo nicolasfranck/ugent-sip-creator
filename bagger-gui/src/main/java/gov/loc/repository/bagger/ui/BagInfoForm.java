@@ -13,18 +13,21 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 
 
 public final class BagInfoForm extends AbstractForm {
-    private static final long serialVersionUID = -3231249644435262577L;
+    static final long serialVersionUID = -3231249644435262577L;
+    static final Log log = LogFactory.getLog(BagInfoForm.class);
     public static final String INFO_FORM_PAGE = "infoPage";
-    private JComponent focusField;    
-    private HashMap<String,ArrayList<String>> fieldMap;
-    private JComponent fieldsPanel;
-    private AddFieldPanel addFieldPanel;
-    private LoadFieldsPanel loadFieldsPanel;
+    JComponent focusField;    
+    HashMap<String,ArrayList<String>> fieldMap;
+    JComponent fieldsPanel;
+    AddFieldPanel addFieldPanel;
+    LoadFieldsPanel loadFieldsPanel;
     JScrollPane fieldsScrollPane;
     JPanel contentPanel;
     final int FORM_WIDTH = 800;

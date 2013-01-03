@@ -142,7 +142,7 @@ public final class BagValidationResultPanel extends JPanel{
     private class ValidateBagsWorker extends DefaultWorker {
         @Override
         protected Void doInBackground(){  
-            SwingUtils.ShowBusy();
+            //SwingUtils.ShowBusy();
             
             try{
                 reset(new ArrayList<BagValidationResult>());                
@@ -186,7 +186,7 @@ public final class BagValidationResultPanel extends JPanel{
                 e.printStackTrace();
             }
             
-            SwingUtils.ShowDone();
+            //SwingUtils.ShowDone();
             return null;
         }        
     }

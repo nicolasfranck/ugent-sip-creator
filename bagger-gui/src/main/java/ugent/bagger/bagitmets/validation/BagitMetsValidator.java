@@ -14,10 +14,13 @@ import gov.loc.repository.bagit.verify.impl.ParallelManifestChecksumVerifier;
 import gov.loc.repository.bagit.verify.impl.ValidVerifierImpl;
 import java.io.File;
 import java.util.ArrayList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileObject;
 import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
 import ugent.bagger.exceptions.BagNoDataException;
 import ugent.bagger.exceptions.BagitMetsValidationException;
@@ -33,6 +36,8 @@ import ugent.premis.PremisObject;
  * @author nicolas
  */
 public class BagitMetsValidator {    
+    static final Log log = LogFactory.getLog(BagitMetsValidator.class);       
+    
     public ArrayList<BagitMetsValidationException> validate(File file) throws BagitMetsValidationException{
         ArrayList<BagitMetsValidationException>warnings = new ArrayList<BagitMetsValidationException>();
         
@@ -122,6 +127,7 @@ public class BagitMetsValidator {
                     System.out.println(warning);
                 }
             }catch(BagitMetsValidationException e){
+                log.error(e);
                 e.printStackTrace();
             }
         }
@@ -233,6 +239,7 @@ public class BagitMetsValidator {
                 fobject = FUtils.resolveFile(entry);
                 exists = fobject.exists();
             }catch(Exception e){
+                log.error(e);
                 e.printStackTrace();
             }            
             if(fobject == null || !exists){

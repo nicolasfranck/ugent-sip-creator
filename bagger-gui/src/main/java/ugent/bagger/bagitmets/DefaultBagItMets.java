@@ -37,10 +37,9 @@ import ugent.bagger.helper.MetsUtils;
  *
  * @author nicolas
  */
-public class DefaultBagItMets extends BagItMets{
+public class DefaultBagItMets extends BagItMets{    
     
-    private static final Log log = LogFactory.getLog(DefaultBagItMets.class);
-       
+    static final Log log = LogFactory.getLog(DefaultBagItMets.class);       
     
     @Override
     public Mets onOpenBag(MetsBag metsBag) {
@@ -57,7 +56,7 @@ public class DefaultBagItMets extends BagItMets{
         try{
             mets = MetsUtils.readMets(FUtils.getInputStreamFor(pathMets));            
         }catch(Exception e){                              
-            log.debug(e.getMessage());            
+            log.error(e.getMessage());            
         }
         if(mets == null){            
             mets = new Mets();
@@ -85,13 +84,13 @@ public class DefaultBagItMets extends BagItMets{
             try{
                 header.setCREATEDATE(DateUtils.DateToGregorianCalender());                           
             }catch(Exception e){
-                log.debug(e.getMessage());                
+                log.error(e.getMessage());                
             }
         }
         try{
             header.setLASTMODDATE(DateUtils.DateToGregorianCalender());            
         }catch(Exception e){
-            log.debug(e.getMessage());            
+            log.error(e.getMessage());            
         } 
         header.setID(MetsUtils.createID());        
         
@@ -176,7 +175,7 @@ public class DefaultBagItMets extends BagItMets{
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                     }                       
                 }catch(Exception e){                    
-                    log.debug(e.getMessage());                                        
+                    log.error(e.getMessage());                                        
                 }    
 
                 //FLocat
@@ -248,7 +247,7 @@ public class DefaultBagItMets extends BagItMets{
                     }                    
                 }catch(Exception e){    
                     e.printStackTrace();
-                    log.debug(e.getMessage());                    
+                    log.error(e.getMessage());                    
                 }
                                 
                 FileSec.FileGrp.File.FLocat flocat = new FileSec.FileGrp.File.FLocat();                
@@ -364,14 +363,14 @@ public class DefaultBagItMets extends BagItMets{
             
             //Bag-Id
             ArrayList<String>listBagIds = metsBag.getInfo().getFieldMap().get("Bag-Id");
-            if(!listBagIds.isEmpty()){
+            if(listBagIds != null && !listBagIds.isEmpty()){
                 mets.setOBJID(listBagIds.get(0));
             }   
          
 
         }catch(Exception e){
             e.printStackTrace();
-            log.debug(e.getMessage());                  
+            log.error(e.getMessage());                  
         }        
         
         try{
@@ -379,7 +378,7 @@ public class DefaultBagItMets extends BagItMets{
             analyser.analyse(metsBag,mets);
         }catch(Exception e){
             e.printStackTrace();
-            log.debug(e.getMessage());             
+            log.error(e.getMessage());             
         }
         
         return mets;

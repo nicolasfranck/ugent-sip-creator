@@ -71,6 +71,8 @@ public class DefaultBag {
     protected BaggerFetch fetch;    
     
     protected String versionString = null;    
+    
+    protected ArrayList<String>deletedDirectories = new ArrayList<String>();
 
 
     public DefaultBag() throws BagFetchForbiddenException, FileSystemException, BagNoDataException {            
@@ -149,13 +151,6 @@ public class DefaultBag {
                 isHoley(false);
             }
         }
-
-        /*
-         * BUG: getPayloadManifestAlgorithm() levert hierdoor altijd MD5 op, ook al heb je enkel manifest-sha512.txt
-         */
-                
-        //this.payloadManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;        
-        //this.tagManifestAlgorithm = Manifest.Algorithm.MD5.bagItAlgorithm;               
         
         tagManifestAlgorithm = 
                 !bilBag.getTagManifests().isEmpty() ? 
@@ -656,22 +651,28 @@ public class DefaultBag {
        
         DefaultCompleter completer = new DefaultCompleter(new BagFactory());    
         
-        Algorithm payloadAlg = resolveAlgorithm(payloadManifestAlgorithm);        
+        Algorithm payloadAlg = resolveAlgorithm(payloadManifestAlgorithm);                
         Manifest payloadMan = bilBag.getPayloadManifest(payloadAlg);        
         
         Algorithm tagAlg = resolveAlgorithm(tagManifestAlgorithm);
-        Manifest tagMan = bilBag.getTagManifest(tagAlg);                                
+        Manifest tagMan = bilBag.getTagManifest(tagAlg);                                  
         
         //check payloads that to do not exist anymore (bag api fails then!)
-        payloadMan.clear();
-        tagMan.clear();
+        if(payloadMan != null){
+            payloadMan.clear();
+        }
+        if(tagMan != null){
+            tagMan.clear();
+        }        
+        
         Iterator<BagFile>payloadIt = bilBag.getPayload().iterator();
         while(payloadIt.hasNext()){
             BagFile bagFile = payloadIt.next();
             if(!bagFile.exists()){
                 payloadIt.remove();                
             }
-        }
+        }    
+        
         
         if(isBuildPayloadManifest){              
             log.debug("generating payload manifest");
@@ -725,6 +726,7 @@ public class DefaultBag {
         changeToDirty();
         isComplete(Status.UNKNOWN);
         log.debug("DefaultBag::removePayloadDirectory('"+fileName+"')");        
+        deletedDirectories.add(fileName);
         bilBag.removePayloadDirectory(fileName);
     }
     public Collection<BagFile> getPayload() {
@@ -744,5 +746,24 @@ public class DefaultBag {
     }   
     public Bag getBag(){
         return bilBag;                    
-    }        
+    }       
+
+    public boolean isDirty() {
+        return dirty;
+    }
+    protected static void removeEmptyDirectories(File dir){
+        System.out.println("removeEmptyDirectories('"+dir+"')");
+        if(dir.isDirectory()){
+            for(File file:dir.listFiles()){                
+                if(file.isDirectory()){
+                    removeEmptyDirectories(file);
+                    File [] list = file.listFiles();
+                    if(list == null || list.length == 0){
+                        System.out.println("removing "+file);
+                        file.delete();
+                    }                    
+                }
+            }
+        }
+    }    
 }

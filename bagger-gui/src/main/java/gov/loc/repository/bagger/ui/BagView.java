@@ -2,14 +2,11 @@ package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.handlers.*;
-import gov.loc.repository.bagit.BagFile;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.Collection;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TreeSelectionEvent;
@@ -30,12 +27,9 @@ public class BagView extends DefaultView {
     private int DEFAULT_HEIGHT = 768;       
     private MetsBag bag;    
     private BagTree bagPayloadTree;
-    //private BagTree bagTagFileTree;    
     private InfoFormsPane infoFormsPane;
     private BagTreePanel bagPayloadTreePanel;
-    //private BagTreePanel bagTagFileTreePanel;
-    private JPanel bagButtonPanel;
-    //private JPanel bagTagButtonPanel;    
+    private JPanel bagButtonPanel;    
     public StartNewBagHandler startNewBagHandler = new StartNewBagHandler();
     public StartExecutor startExecutor = new StartExecutor();
     public OpenBagHandler openBagHandler = new OpenBagHandler();
@@ -58,17 +52,21 @@ public class BagView extends DefaultView {
     public RenameExecutor renameExecutor = new RenameExecutor();
     public ExportExecutor exportExecutor = new ExportExecutor();
     public ValidateManifestExecutor validateManifestExecutor = new ValidateManifestExecutor();
-    public ValidateBagsExecutor validateBagsExecutor = new ValidateBagsExecutor();
-    //public RemoveTagFileHandler removeTagFileHandler;
-    //public AddTagFileHandler addTagFileHandler;
+    public ValidateBagsExecutor validateBagsExecutor = new ValidateBagsExecutor();    
     private JLabel addDataToolBarAction;
-    private JLabel removeDataToolBarAction;    
-    //private JLabel addTagFileToolBarAction;
-    //private JLabel removeTagFileToolbarAction;    
+    private JLabel removeDataToolBarAction;        
     private JSplitPane mainPanel;
     private JComponent leftPanel;    
     private JComponent renameComponent;
     private JLabel renameLabel;    
+    
+    //private BagTree bagTagFileTree;  
+    //private BagTreePanel bagTagFileTreePanel;
+    //private JPanel bagTagButtonPanel;
+    //public RemoveTagFileHandler removeTagFileHandler;
+    //public AddTagFileHandler addTagFileHandler;
+    //private JLabel addTagFileToolBarAction;
+    //private JLabel removeTagFileToolbarAction;
 
     public JLabel getRenameLabel() {
         if(renameLabel == null){            

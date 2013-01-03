@@ -37,13 +37,13 @@ public class ClearBagHandler extends AbstractAction {
         try{
             closeExistingBag();
         }catch(BagUnknownFormatException ex) {
-            log.debug(ex.getMessage());
+            log.error(ex.getMessage());
         }catch(BagNoBagDirException ex){
-            log.debug(ex.getMessage());
+            log.error(ex.getMessage());
         }catch(BagFetchForbiddenException ex){
-            log.debug(ex.getMessage());
+            log.error(ex.getMessage());
         }catch(BagNoDataException ex){
-            log.debug(ex.getMessage());
+            log.error(ex.getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ public class ClearBagHandler extends AbstractAction {
         }
     }
 
-    private void confirmCloseBag() {
+    public void confirmCloseBag() {
         final BagView bagView = BagView.getInstance();
        
         ConfirmationDialog dialog = new ConfirmationDialog() {
@@ -78,13 +78,13 @@ public class ClearBagHandler extends AbstractAction {
                 try{                   
                     clearExistingBag();                    
                 } catch (BagUnknownFormatException ex) {
-                    log.debug(ex.getMessage());
+                    log.error(ex.getMessage());
                 }catch(BagNoBagDirException ex){
-                    log.debug(ex.getMessage());
+                    log.error(ex.getMessage());
                 }catch(BagFetchForbiddenException e){
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 }catch(BagNoDataException e){
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 }
             }
         };
@@ -125,6 +125,7 @@ public class ClearBagHandler extends AbstractAction {
         try{
             PremisUtils.setPremis(mets);
         }catch(Exception e){
+            log.error(e);
             e.printStackTrace();
         }
         

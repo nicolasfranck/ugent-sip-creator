@@ -30,7 +30,7 @@ public final class FileSelectBinding extends CustomBinding{
         this.fileChooser = fileChooser;        
         this.parent = parent;       
         ArrayList<File>files = (ArrayList<File>)formModel.getValueModel(formPropertyPath).getValue();
-        System.out.println("files: "+files);
+        
         if(files != null && !files.isEmpty()){            
             valueModelChanged(files);
         }        

@@ -15,8 +15,11 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.exceptions.DtdNoFixFoundException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
 import ugent.bagger.exceptions.NoNamespaceException;
@@ -33,11 +36,12 @@ import ugent.bagger.helper.XSLT;
  * @author nicolas
  */
 public final class XMLCrosswalkDialog extends JDialog{
-    private File file;        
-    private JTextField fileField;
-    private JTextField transformFromNameSpaceField;
-    private String transformFromNamespace;
-    private String transformToNamespace;
+    static final Log log = LogFactory.getLog(XMLCrosswalkDialog.class);       
+    File file;        
+    JTextField fileField;
+    JTextField transformFromNameSpaceField;
+    String transformFromNamespace;
+    String transformToNamespace;
     
     public XMLCrosswalkDialog(JFrame frame,boolean isModal){
         super(frame,isModal);
@@ -103,6 +107,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                     XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
                   
                 }catch(ParserConfigurationException e){
+                    log.error(e);
                     e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.ParserConfigurationException.description",
@@ -111,6 +116,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(SAXException e){
+                    log.error(e);
                     e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.SAXException.description",
@@ -119,6 +125,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(IOException e){  
+                    log.error(e);
                     e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IOException.description",
@@ -127,7 +134,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n"; 
                 }catch(TransformerConfigurationException e){
-                    System.out.println("TransformerConfigurationException");
+                    log.error(e);                    
                     e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
@@ -136,7 +143,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(TransformerException e){
-                    System.out.println("TransformerException");
+                    log.error(e);                    
                     e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerException.description",
@@ -145,7 +152,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(NoNamespaceException e){
-                    System.out.println("NoNamespaceException");
+                    log.error(e);
                     e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.NoNamespaceException.description",
@@ -154,7 +161,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(IllegalNamespaceException e){
-                    System.out.println("IllegalNamespaceException");
+                    log.error(e);
                     e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
@@ -163,14 +170,14 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     )+"\n";
                 }catch(DtdNoFixFoundException e){     
-                    e.printStackTrace();
-                    System.out.println("oeps, no fix found!");
+                    log.error(e);
+                    e.printStackTrace();                    
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
                         file
                     })+"\n";                         
                 }catch(Exception e){
-                    e.printStackTrace();
-                    System.out.println("what the hell??");
+                    log.error(e);
+                    e.printStackTrace();                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.Exception.description",
                         new Object []{
@@ -282,6 +289,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         invalidate();                                               
                         
                     } catch (ParserConfigurationException ex) {
+                        log.error(ex);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
@@ -290,6 +298,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                             )
                         );
                     } catch (SAXException ex) {
+                        log.error(ex);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
@@ -298,6 +307,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                             )
                         );
                     } catch (IOException ex) {
+                        log.error(ex);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
@@ -306,6 +316,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                             )
                         );
                     }catch(NoNamespaceException e){
+                        log.error(e);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
@@ -314,6 +325,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                             )
                         );                                             
                     }catch(IllegalNamespaceException e){
+                        log.error(e);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
@@ -322,6 +334,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                             )
                         );
                     }catch(NoTransformationFoundException e){
+                        log.error(e);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
@@ -330,6 +343,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                             )
                         );
                     }catch(DtdNoFixFoundException e){     
+                        log.error(e);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(
@@ -341,6 +355,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         );                         
                     }
                     catch(Exception e){
+                        log.error(e);
                         SwingUtils.ShowError(
                             Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                             Context.getMessage(

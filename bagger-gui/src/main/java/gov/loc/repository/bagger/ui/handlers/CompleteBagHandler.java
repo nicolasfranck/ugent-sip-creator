@@ -1,6 +1,6 @@
 package gov.loc.repository.bagger.ui.handlers;
 
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.utilities.SimpleResult;
@@ -47,23 +47,46 @@ public class CompleteBagHandler extends Handler implements Loggable {
         );
     }
     private class CompleteBagWorker extends LongTask {       
+        SimpleResult result;
+        BagView bagView = BagView.getInstance();
+        
         @Override
-        protected Object doInBackground() throws Exception {
-            SwingUtils.ShowBusy();            
+        protected Object doInBackground() throws Exception {           
             
-            BagView bagView = BagView.getInstance();
-            DefaultBag bag = bagView.getBag();
+            MetsBag metsBag = bagView.getBag();
             try {
                 CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
                 completeVerifier.addProgressListener(this);
 
-                final SimpleResult result = bag.completeBag(completeVerifier);
+                result = metsBag.completeBag(completeVerifier);                                           
 
+            }catch(Exception e) {
+                log.error(e.getMessage());
+                            
+                if (isCancelled()) {
+                    log(Context.getMessage("defaultBag.checkCompleteCancelled"));
+                    SwingUtils.ShowError(Context.getMessage("defaultBag.checkCompleteCancelled"),Context.getMessage("defaultBag.checkCompleteCancelled"));
+                }else{
+                    log(Context.getMessage("defaultBag.checkComplete.error.label",new Object [] {e.getMessage()}));
+                    SwingUtils.ShowError(
+                        Context.getMessage("defaultBag.checkComplete.error.title"),
+                        Context.getMessage("defaultBag.checkComplete.error.label",new Object [] {e.getMessage()})
+                    );
+                }
+            }            
+            
+            return null;
+        }     
+        @Override
+        public void done(){
+            super.done();
+            
+            if(result != null){
                 if (!result.isSuccess()) {
                     ArrayList<String>payloadsMissing = new ArrayList<String>();
                     ArrayList<String>tagsMissing = new ArrayList<String>();
-                    
-                    
+
+
                     for(String message:result.getMessages()){            
                         Matcher m1 = payloadsMissingPattern.matcher(message);
                         Matcher m2 = tagsMissingPattern.matcher(message);
@@ -73,9 +96,9 @@ public class CompleteBagHandler extends Handler implements Loggable {
                             tagsMissing.add(m2.group(1));                            
                         }
                     }
-                    
+
                     log(Context.getMessage("CompleteBagHandler.validation.title"));
-                    
+
                     if(payloadsMissing.size() >  0){
                         log(Context.getMessage("CompleteBagHandler.validation.payloadsMissing.title"));
                         for(String filename:payloadsMissing){
@@ -88,40 +111,21 @@ public class CompleteBagHandler extends Handler implements Loggable {
                             log("\t"+filename);                     
                         }
                     }               
-                    
+
                     SwingUtils.ShowError(
                         Context.getMessage("CompleteBagHandler.validationFailed.title"),
                         Context.getMessage("CompleteBagHandler.validationFailed.label",new Object [] {
                             payloadsMissing.size(),tagsMissing.size()
                         })
                     );                  
-                }
-                else {
+                }else {
                     String message = Context.getMessage("defaultBag.bagIsComplete");
                     log(message);
                     SwingUtils.ShowMessage(message,message);                  
                 }
                 
-                log(result.toString());                           
-
-            }catch(Exception e) {
-                log.debug(e.getMessage());
-                            
-                if (isCancelled()) {
-                    log(Context.getMessage("defaultBag.checkCompleteCancelled"));
-                    SwingUtils.ShowError(Context.getMessage("defaultBag.checkCompleteCancelled"),Context.getMessage("defaultBag.checkCompleteCancelled"));
-                }else{
-                    log(Context.getMessage("defaultBag.checkComplete.error.label",new Object [] {e.getMessage()}));
-                    SwingUtils.ShowError(
-                        Context.getMessage("defaultBag.checkComplete.error.title"),
-                        Context.getMessage("defaultBag.checkComplete.error.label",new Object [] {e.getMessage()})
-                    );
-                }
-            }
-            
-            SwingUtils.ShowDone();
-            
-            return null;
-        }               
+                log(result.toString());
+            }            
+        }
     }
 }

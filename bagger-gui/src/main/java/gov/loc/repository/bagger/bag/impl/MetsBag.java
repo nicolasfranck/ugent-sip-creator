@@ -95,17 +95,28 @@ public final class MetsBag extends DefaultBag{
             
             try{
                 removeBagFile("mets.xml");  
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.error(e);
+            }
             addTagFile(metsFile);
             isBuildPayloadManifest(false);
             isBuildTagManifest(true);
             generateManifestFiles();
             isBuildPayloadManifest(true);
+            
+             
           
         }catch(Exception e){             
-            log.debug(e);            
+            log.error(e);            
         }        
-        return writeBag(bw);
+        boolean writeOk = writeBag(bw);
+        
+        if(!isAddKeepFilesToEmptyFolders && getFile().isDirectory()){
+            //check directories that are empty
+            removeEmptyDirectories(new File(getFile(),"data"));           
+        }
+        
+        return writeOk;
     }
     public void createPreBag(File data, String version,String [] ignoreFiles) {
         super.createPreBag(data,version);
@@ -141,7 +152,7 @@ public final class MetsBag extends DefaultBag{
                 }
                 writer.close();
             }catch(Exception e){
-                log.debug(e.getMessage());                
+                log.error(e.getMessage());                
             }            
         }
         
@@ -166,7 +177,7 @@ public final class MetsBag extends DefaultBag{
             writer.close();
             
         }catch(Exception e){              
-            log.debug(e);            
+            log.error(e);            
         } 
     }
     @Override
@@ -208,7 +219,7 @@ public final class MetsBag extends DefaultBag{
                 }
                 writer.close();
             }catch(Exception e){
-                log.debug(e.getMessage());                
+                log.error(e.getMessage());                
             }            
         }
         
@@ -230,7 +241,7 @@ public final class MetsBag extends DefaultBag{
             writer.close();
             
         }catch(Exception e){   
-            log.debug(e.getMessage());                    
+            log.error(e.getMessage());                    
         } 
     }
     

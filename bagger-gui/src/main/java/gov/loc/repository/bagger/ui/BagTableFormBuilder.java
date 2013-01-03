@@ -13,7 +13,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import ugent.bagger.helper.Context;
 
 public class BagTableFormBuilder extends TableFormBuilder {
-    private static final String VALIGN_TOP = TableLayoutBuilder.VALIGN + "=top";
+    static final String VALIGN_TOP = TableLayoutBuilder.VALIGN + "=top";
     ImageIcon requiredIcon;
     private ComponentFactory componentFactory;
     

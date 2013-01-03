@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.ArrayUtils;
 import ugent.bagger.helper.ArrayUtils.ArrayDiff;
 import ugent.bagger.helper.DateUtils;
@@ -26,6 +28,9 @@ import ugent.premis.PremisObject.PremisObjectType;
  * @author nicolas
  */
 public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
+    
+    static final Log log = LogFactory.getLog(PremisBagitMetsAnalyser.class);       
+    
     @Override
     public void analyse(MetsBag metsBag, Mets mets) {        
         
@@ -165,6 +170,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 try{
                     mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
                 }catch(Exception e){
+                    log.error(e);
                     e.printStackTrace();
                 }            
             }            
@@ -172,6 +178,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             amdSec.getDigiprovMD().add(mdSec);
         
         }catch(Exception e){
+            log.error(e);
             e.printStackTrace();
         }        
     }    

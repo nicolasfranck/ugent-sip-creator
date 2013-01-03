@@ -3,6 +3,7 @@ package ugent.bagger.workers;
 import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.ProgressListener;
 import javax.swing.SwingWorker;
+import ugent.bagger.helper.SwingUtils;
 
 /**
  *
@@ -10,6 +11,12 @@ import javax.swing.SwingWorker;
  */
 public abstract class LongTask extends SwingWorker implements ProgressListener,Loggable{       
     String lastNote = "";    
+    public LongTask(){
+        SwingUtils.ShowBusy();
+        SwingUtils.getStatusBar().clear();
+        SwingUtils.getStatusBar().getProgressMonitor().done();
+        SwingUtils.getStatusBar().getProgressMonitor().taskStarted("",100);
+    }
     @Override
     final public void reportProgress(String activity, Object o, Long count, Long total) {                
         if(count == null || total == null){            
@@ -28,4 +35,10 @@ public abstract class LongTask extends SwingWorker implements ProgressListener,L
     final public void log(String message){
         ApplicationContextUtil.addConsoleMessage(message);
     }   
+    @Override 
+    public void done(){
+        super.done();
+        SwingUtils.ShowDone();
+        SwingUtils.getStatusBar().getProgressMonitor().done();
+    }
 }

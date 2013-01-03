@@ -69,11 +69,13 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                         log.debug("\t" + filePath);
                     }
                 }
-                if (filePath != null) {
+                if(filePath != null) {
                     fileName = BaggerFileEntity.normalize(filePath.getPath());
                 }
                 
                 log.debug("removeData filePath: " + fileName);
+                
+                System.out.println("removeData filePath: " + fileName);
                 
                 if (fileName != null && !fileName.isEmpty()) {
                     try {
@@ -87,27 +89,23 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                             DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(node);
                             model.removeNodeFromParent((MutableTreeNode)aNode);
                         }
-                    } catch (Exception e) {                        
+                    } catch (Exception e) {     
+                        log.error(e);
                         e.printStackTrace();
-                        try {
-                            e.printStackTrace();
-                            bag.removePayloadDirectory(fileName);
-                            /*
-                            File file = new File(bag.getFile(),fileName);                            
-                            if(file.exists()){
-                                if(file.isFile()){
-                                    file.delete();                                    
-                                }else{
-                                    FileUtils.deleteDirectory(file);
-                                }
-                            }*/                            
-                            if (node instanceof MutableTreeNode) {
+                        
+                        try {                                                       
+                            bag.removePayloadDirectory(fileName);                                                       
+                            
+                            if(node instanceof MutableTreeNode) {
                                 model.removeNodeFromParent((MutableTreeNode)node);
                             } else {
                                 DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(node);
                                 model.removeNodeFromParent((MutableTreeNode)aNode);
                             }
                         } catch (Exception ex) {                            
+                            log.error(e);
+                            e.printStackTrace();
+                            
                             String title = Context.getMessage("RemoveDataHandler.removeData.Exception.title");
                             String message = Context.getMessage(
                                 "RemoveDataHandler.removeData.Exception.description",

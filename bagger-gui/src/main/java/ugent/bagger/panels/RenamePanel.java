@@ -828,6 +828,7 @@ public class RenamePanel extends JPanel{
     private class TaskRenumber extends DefaultWorker {
         private RenumberParams renumberParams;
         public TaskRenumber(RenumberParams renumberParams){
+            super();
             this.renumberParams = renumberParams;
         }
         @Override
@@ -928,6 +929,7 @@ public class RenamePanel extends JPanel{
     private class TaskRename extends DefaultWorker {
         private RenameParams renameParams;      
         public TaskRename(RenameParams renameParams){
+            super();
             this.renameParams = renameParams;           
         }
         @Override
@@ -1046,6 +1048,6 @@ public class RenamePanel extends JPanel{
             }
             
             return null;
-        }
+        }       
     }
 }

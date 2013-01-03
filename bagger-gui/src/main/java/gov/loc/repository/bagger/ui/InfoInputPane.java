@@ -48,7 +48,7 @@ public final class InfoInputPane extends JTabbedPane {
             try{
                 PremisUtils.setPremis(mets);
             }catch(Exception e){
-                log.debug(e);                
+                log.error(e);                
             }            
         }
         return mets;

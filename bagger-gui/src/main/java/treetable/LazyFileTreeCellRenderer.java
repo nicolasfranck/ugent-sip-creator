@@ -9,12 +9,14 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author nicolas
  */
 public class LazyFileTreeCellRenderer extends DefaultTreeCellRenderer {
+    static Logger log = Logger.getLogger(LazyFileTreeCellRenderer.class);
     private static Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
     private static Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
     private static Icon errorIcon = UIManager.getIcon("FileView.errorIcon");

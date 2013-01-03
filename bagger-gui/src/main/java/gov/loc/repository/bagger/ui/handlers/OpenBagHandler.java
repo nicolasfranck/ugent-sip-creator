@@ -121,10 +121,10 @@ public class OpenBagHandler extends AbstractAction {
             int i = name.lastIndexOf('.');
             String baseName = (i >= 0) ? name.substring(0,i):name;
             String extension = "";
-            System.out.println("name: "+name+", baseName: "+baseName);
+            
             if (i > 0 && i < name.length() - 1) {
                 extension = name.substring(i + 1).toLowerCase();
-                System.out.println("extension: "+extension);
+            
                 if (extension.contains("gz")) {
                     infoFormsPane.getSerializeValue().setText(DefaultBag.TAR_GZ_LABEL);                
                     metsBag.setSerialMode(DefaultBag.TAR_GZ_MODE);
@@ -141,14 +141,12 @@ public class OpenBagHandler extends AbstractAction {
                     infoFormsPane.getSerializeValue().setText(DefaultBag.ZIP_LABEL);                
                     metsBag.setSerialMode(DefaultBag.ZIP_MODE);
                     metsBag.isSerial(true);
-                } else {                
-                    System.out.println("no mode!");
+                } else {                                    
                     infoFormsPane.getSerializeValue().setText(DefaultBag.NO_LABEL);                
                     metsBag.setSerialMode(DefaultBag.NO_MODE);
                     metsBag.isSerial(false);
                 }
-            } else {
-                System.out.println("no_label: "+DefaultBag.NO_LABEL);
+            } else {                
                 infoFormsPane.getSerializeValue().setText(DefaultBag.NO_LABEL);            
                 metsBag.setSerialMode(DefaultBag.NO_MODE);
                 metsBag.isSerial(false);
@@ -195,7 +193,7 @@ public class OpenBagHandler extends AbstractAction {
             try{
                 premis = PremisUtils.setPremis(mets);
             }catch(Exception e){
-                log.debug(e);                
+                log.error(e);                
             }
             
             metsBag.setPremis(premis);    
@@ -208,25 +206,25 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.FileNotWritableException.description",new Object [] {file})
             );
         }catch(FileNotReadableException e){
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotReadableException.title"),
                 Context.getMessage("clearBagHandler.FileNotReadableException.description",new Object [] {file})
             );                     
         }catch(FileNotFoundException e){
-           log.debug(e.getMessage());
+           log.error(e.getMessage());
            SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotFoundException.title"),
                 Context.getMessage("clearBagHandler.FileNotFoundException.description",new Object [] {file})
             );            
         }catch(BagUnknownFormatException e){
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagUnknownFormatException.title"),
                 Context.getMessage("clearBagHandler.BagUnknownFormatException.description",new Object [] {file})
             );
         }catch(BagNoBagDirException ex){
-            log.debug(ex.getMessage());
+            log.error(ex.getMessage());
             /*
              * geserialiseerde bag bevat geen hoofdmap met dezelfde naam
              */
@@ -238,13 +236,13 @@ public class OpenBagHandler extends AbstractAction {
                 Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file})
             );
         }catch(BagFetchForbiddenException e){
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagFetchForbiddenException.title"),
                 Context.getMessage("clearBagHandler.BagFetchForbiddenException.description",new Object [] {file})
             );
         }catch(BagNoDataException e){
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagNoDataException.title"),
                 Context.getMessage("clearBagHandler.BagNoDataException.description",new Object [] {file})

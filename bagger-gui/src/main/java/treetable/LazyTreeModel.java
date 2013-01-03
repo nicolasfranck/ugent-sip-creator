@@ -8,12 +8,14 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import org.apache.log4j.Logger;
 
 /**
  * adrian.tarau
  * http://stackoverflow.com/questions/1974670/java-dynamic-jtree
  */
 public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWillExpandListener {
+    static Logger log = Logger.getLogger(LazyTreeModel.class);
 
     public LazyTreeModel(TreeNode root, JTree tree) {
         super(root);
@@ -102,6 +104,7 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
                     }
                 });
             } catch (Exception e) {
+                log.error(e);
                 e.printStackTrace();
             }            
         }
