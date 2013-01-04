@@ -87,20 +87,15 @@ public final class XMLCrosswalkDialog extends JDialog{
                     Document sourceDoc = XML.XMLToDocument(file);    
                     String namespace = sourceDoc.getDocumentElement().getNamespaceURI();
                 
-                    System.out.println("namespace: "+namespace);
-                    if(namespace == null || namespace.isEmpty()){
-                        System.out.println("fixing namespace");
-                        sourceDoc = MetsUtils.fixNamespace(sourceDoc);
-                        System.out.println("sourceDoc: "+sourceDoc);
-                        namespace = sourceDoc.getDocumentElement().getNamespaceURI();
-                        System.out.println("namespace: "+namespace);
+                    if(namespace == null || namespace.isEmpty()){                
+                        sourceDoc = MetsUtils.fixNamespace(sourceDoc);                        
+                        namespace = sourceDoc.getDocumentElement().getNamespaceURI();                        
                     }
                     
                     String filename = MetsUtils.getXsltPath(sourceDoc.getDocumentElement(),transformToNamespace);                    
                     Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));                    
                     Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc);                                         
-                    
-                    System.out.println("transformed doc:");
+                                        
                     XML.DocumentToXML(transformedDoc,System.out);
                     
                     MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                                         
@@ -237,12 +232,9 @@ public final class XMLCrosswalkDialog extends JDialog{
                         Document document = XML.XMLToDocument(selectedFiles[0]);
                         String namespace = document.getDocumentElement().getNamespaceURI();
                 
-                        System.out.println("namespace: "+namespace);
-                        if(namespace == null || namespace.isEmpty()){
-                            System.out.println("fixing namespace");
+                        if(namespace == null || namespace.isEmpty()){                
                             document = MetsUtils.fixNamespace(document);
-                            namespace = document.getDocumentElement().getNamespaceURI();
-                            System.out.println("namespace: "+namespace);
+                            namespace = document.getDocumentElement().getNamespaceURI();                            
                         }
                         
                         transformFromNamespace = document.getDocumentElement().getNamespaceURI();                                            

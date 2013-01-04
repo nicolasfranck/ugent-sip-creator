@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import ugent.bagger.forms.SaveBagParamsForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.params.BagMode;
 import ugent.bagger.params.SaveBagParams;
 
 /**
@@ -35,7 +36,28 @@ public final class SaveBagPanel extends JPanel{
     
     public SaveBagParams getSaveBagParams() {
         if(saveBagParams == null){
-            saveBagParams = new SaveBagParams();
+            saveBagParams = new SaveBagParams();            
+            MetsBag metsBag = BagView.getInstance().getBag();
+            if(metsBag.getFile() != null){
+                saveBagParams.getOutputFile().add(metsBag.getFile());                
+                saveBagParams.setAlgorithm(MetsBag.resolveAlgorithm(metsBag.getPayloadManifestAlgorithm()));
+                switch(metsBag.getSerialMode()){
+                    case MetsBag.ZIP_MODE:
+                        saveBagParams.setBagMode(BagMode.ZIP_MODE);
+                        break;
+                    case MetsBag.TAR_MODE:
+                        saveBagParams.setBagMode(BagMode.TAR_MODE);
+                        break;
+                    case MetsBag.TAR_GZ_MODE:
+                        saveBagParams.setBagMode(BagMode.TAR_GZ_MODE);
+                        break;
+                    case MetsBag.TAR_BZ2_MODE:
+                        saveBagParams.setBagMode(BagMode.TAR_BZ2_MODE);
+                        break;
+                    default:
+                        saveBagParams.setBagMode(BagMode.NO_MODE);
+                }                
+            }
         }
         return saveBagParams;
     }

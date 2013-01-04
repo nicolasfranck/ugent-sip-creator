@@ -10,7 +10,6 @@ import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.FileSelectBinding;
-import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.ExportParams;
 
@@ -36,6 +35,11 @@ public class ExportParamsForm extends AbstractForm{
         builder.setLabelAttributes("colSpan=1 align=left");   
         
         ExportParams exportParams = (ExportParams) getFormObject();       
+        String [] exporterNames = ExportUtils.getExporterNames();
+        
+        if(exportParams.getFormat() == null || exportParams.getFormat().isEmpty()){
+            exportParams.setFormat(exporterNames[0]);
+        }
         
         //outputFile
         JFileChooser fileChooser = SwingUtils.createFileChooser(
@@ -57,8 +61,9 @@ public class ExportParamsForm extends AbstractForm{
         //format
         Binding formatBinding = bf.createBoundComboBox(
             "format",
-            ExportUtils.getExporterNames()
+            exporterNames
         );        
+        
         builder.add(formatBinding);
         builder.row();
        

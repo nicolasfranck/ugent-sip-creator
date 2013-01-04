@@ -40,9 +40,9 @@ import ugent.bagger.params.ExportParams;
  */
 public class ExportWizard extends AbstractWizard {    
     static final Log log = LogFactory.getLog(ExportWizard.class);
-    protected ExportWizardPage1 exportWizardPage1;        
-    protected HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
-    protected static final String EOL = System.getProperty("line.separator");
+    ExportWizardPage1 exportWizardPage1;        
+    HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
+    static final String EOL = System.getProperty("line.separator");
 
     public ExportWizard(String wizardId){
         super(wizardId);
@@ -81,21 +81,7 @@ public class ExportWizard extends AbstractWizard {
         final ExportParams exportParams = exportParamsPanel.getExportParams();               
         final ExportParamsForm exportParamsForm = exportParamsPanel.getExportParamsForm();
         
-        /*
-        exportParamsForm.addValidationListener(new ValidationListener() {
-            @Override
-            public void validationResultsChanged(ValidationResults results) {
-                System.out.println("results: ");
-                for(Object m:results.getMessages()){
-                    System.out.println("message: "+m);
-                }
-         
-            }
-        });*/
-        
-        
-        if(exportParamsForm.hasErrors()){
-            System.out.println("errors found: ");            
+        if(exportParamsForm.hasErrors()){        
             return false;
         }
         exportParamsForm.commit();
@@ -104,12 +90,8 @@ public class ExportWizard extends AbstractWizard {
         try{
             final File outputFile = exportParams.getOutputFile().get(0);
             
-            exportersConfig = (HashMap<String,HashMap<String,Object>>) Beans.getBean("exporters");
-            System.out.println("exportersConfig: "+exportersConfig);
-            System.out.println("format: "+exportParams.getFormat());
+            exportersConfig = (HashMap<String,HashMap<String,Object>>) Beans.getBean("exporters");            
             HashMap<String,Object>econfig = exportersConfig.get(exportParams.getFormat());                
-            
-            System.out.println("econfig: "+econfig);
             
             //controle op bestand
             if(!outputFile.getParentFile().canRead()){
@@ -129,18 +111,31 @@ public class ExportWizard extends AbstractWizard {
                         new Object [] {outputFile.getParentFile().getAbsolutePath()})
                 );
                 return false;
-            }
+            }            
             if(outputFile.exists()){
-                boolean proceed = SwingUtils.confirm(
-                    null, 
-                    Context.getMessage(
-                        "ExportWizard.outputFileExists",
-                        new Object [] {outputFile.getAbsolutePath()}
-                    )
-                );
-                if(!proceed){
+                if(outputFile.isDirectory()){
+                    SwingUtils.ShowError(
+                        null, 
+                        Context.getMessage(
+                            "ExportWizard.outputFileExistingDirectory", 
+                            new Object [] {
+                                outputFile.getAbsolutePath()
+                            }
+                        )
+                    );
                     return false;
-                }                
+                }else{
+                    boolean proceed = SwingUtils.confirm(
+                        null, 
+                        Context.getMessage(
+                            "ExportWizard.outputFileExists",
+                            new Object [] {outputFile.getAbsolutePath()}
+                        )
+                    );
+                    if(!proceed){
+                        return false;
+                    }
+                }                                    
             }
             
             
@@ -182,38 +177,38 @@ public class ExportWizard extends AbstractWizard {
             }
             
             
-            Runnable runnable = new Runnable() {
+            Runnable runnable = new Runnable() {                
                 @Override
                 public void run() {
+                    
                     boolean success = false;
                     
                     try {
                         exporter.export(metsBag,mets,new BufferedOutputStream(new FileOutputStream(outputFile)));
                         success = true;
                     } catch (IOException ex) {                                                
-                        log.debug(ex.getMessage());
+                        log.error(ex.getMessage());
                     } catch (BagitMetsValidationException ex) {                        
                         ex.printStackTrace();
-                        log.debug(ex.getMessage());
+                        log.error(ex.getMessage());
                     } catch (DatatypeConfigurationException ex) {                    
                         ex.printStackTrace();
-                        log.debug(ex.getMessage());
+                        log.error(ex.getMessage());
                     } catch (ParserConfigurationException ex) {                        
                         ex.printStackTrace();
-                        log.debug(ex.getMessage());
+                        log.error(ex.getMessage());
                     } catch (TransformerException ex) {                        
                         ex.printStackTrace();
-                        log.debug(ex.getMessage());
+                        log.error(ex.getMessage());
                     } catch (SAXException ex) {                        
                         ex.printStackTrace();
-                        log.debug(ex.getMessage());
-                    } catch (ParseException ex) {
-                        
+                        log.error(ex.getMessage());
+                    } catch (ParseException ex) {                        
                         ex.printStackTrace();
-                        log.debug(ex.getMessage());
+                        log.error(ex.getMessage());
                     } catch(Exception e){                        
                         e.printStackTrace();
-                        log.debug(e.getMessage());
+                        log.error(e.getMessage());
                     }
                     
                     //report                                    
@@ -223,12 +218,14 @@ public class ExportWizard extends AbstractWizard {
                             outputFile
                     }));
                 }
-            };
+            };           
+            
             BusyIndicator.showWhile(getExportWizardPage1().getControl(),runnable);            
             
             
-        }catch(Exception e){
+        }catch(Exception e){            
             e.printStackTrace();            
+            log.error(e.getMessage());
         }                
         return true;
     }    
