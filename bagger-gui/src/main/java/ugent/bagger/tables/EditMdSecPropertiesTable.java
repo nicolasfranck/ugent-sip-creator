@@ -49,8 +49,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
             openDialogExecutor = new ActionCommandExecutor(){
                 @Override
                 public void execute() {
-                    try{          
-                        
+                    try{                                  
                         SwingUtils.ShowWhile(new Runnable() {
                             @Override
                             public void run() {

@@ -148,7 +148,8 @@ public class RenumberParamsForm extends AbstractForm{
         builder.row();
         
         //valideer huidige toestand?        
-        getFormModel().commit();       
+        getFormModel().validate();       
+        
         return builder.getForm();
     }
 }

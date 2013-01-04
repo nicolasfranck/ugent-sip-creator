@@ -58,6 +58,8 @@ public class ValidateManifestParamsForm extends AbstractForm{
         Binding bagInfoConverterBinding = bf.createBoundComboBox("algorithm",Manifest.Algorithm.values());        
         builder.add(bagInfoConverterBinding);
         builder.row();
+        
+        getFormModel().validate();
        
         return builder.getForm();
     }

@@ -31,7 +31,7 @@ public class ExportParamsForm extends AbstractForm{
     protected JComponent createFormControl() {    
         
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
-        TableFormBuilder builder = new TableFormBuilder(bf);        
+        TableFormBuilder builder = new TableFormBuilder(bf);                
         builder.setLabelAttributes("colSpan=1 align=left");   
         
         ExportParams exportParams = (ExportParams) getFormObject();       
@@ -66,6 +66,8 @@ public class ExportParamsForm extends AbstractForm{
         
         builder.add(formatBinding);
         builder.row();
+        
+        getFormModel().validate();
        
         return builder.getForm();
     }

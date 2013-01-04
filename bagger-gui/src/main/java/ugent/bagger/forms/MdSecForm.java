@@ -69,6 +69,8 @@ public class MdSecForm extends AbstractForm{
             }
         }); 
         
+        getFormModel().validate();
+        
         return builder.getForm();
     }
 }

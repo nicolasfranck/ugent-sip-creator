@@ -10,6 +10,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -31,6 +34,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.ValidatingFormModel;
@@ -98,6 +102,8 @@ public class RenamePanel extends JPanel{
     ArrayList<File>selectedFiles = new ArrayList<File>();
     HashMap<String,RenameParams>renameParamsTemplates;
     ArrayList<File>forbiddenFiles;
+    
+    CircularFifoBuffer selectedFileBuffer = new CircularFifoBuffer(10);
 
     public JButton getReloadFileTableButton() {
         if(reloadFileTableButton == null){
@@ -106,9 +112,15 @@ public class RenamePanel extends JPanel{
             reloadFileTableButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-                    BusyIndicator.showAt(RenamePanel.this);
-                    reloadFileTable();
-                    BusyIndicator.clearAt(RenamePanel.this);
+                    SwingUtilities.invokeLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            BusyIndicator.showAt(RenamePanel.this);
+                            reloadFileTable();
+                            BusyIndicator.clearAt(RenamePanel.this);
+                        }                            
+                    });
+                    
                 }                
             });           
         }
@@ -122,12 +134,17 @@ public class RenamePanel extends JPanel{
             parentFileButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-                    BusyIndicator.showAt(RenamePanel.this);
-                    if(getLastFile().getParentFile() != null){
-                        setLastFile(getLastFile().getParentFile());
-                        reloadFileTable();
-                    }                    
-                    BusyIndicator.clearAt(RenamePanel.this);
+                    SwingUtilities.invokeLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            BusyIndicator.showAt(RenamePanel.this);
+                            if(getLastFile().getParentFile() != null){
+                                setLastFile(getLastFile().getParentFile());
+                                reloadFileTable();
+                            }                    
+                            BusyIndicator.clearAt(RenamePanel.this);
+                        }
+                    });
                 }                
             });
         }
@@ -190,6 +207,7 @@ public class RenamePanel extends JPanel{
                 new String [] {"name","mimeType"},
                 "fileTable"
             );       
+            
             fileTable.setDoubleClickHandler(new ActionCommandExecutor(){
                 @Override
                 public void execute() {
@@ -200,7 +218,7 @@ public class RenamePanel extends JPanel{
                         return;
                     }
                     
-                    File file = (File)afile.getFile();
+                    final File file = (File)afile.getFile();
                     
                     //map is onleesbaar
                     if(!file.canRead()){
@@ -233,19 +251,22 @@ public class RenamePanel extends JPanel{
                     }
                     
                     //herlaad tabel
-                    reloadFileTable(file);
-                    
-                    final LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);                    
-                    final TreePath tpath = getFileSystemTree().getSelectionPath();                    
-                    final TreePath tpath2 = tpath.pathByAddingChild(node);                       
-                    
                     SwingUtilities.invokeLater(new Runnable(){
                         @Override
-                        public void run() {                            
+                        public void run() { 
+                            BusyIndicator.showAt(RenamePanel.this);
+                            
+                            reloadFileTable(file);                    
+                            LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);                    
+                            TreePath tpath = getFileSystemTree().getSelectionPath();                    
+                            TreePath tpath2 = tpath.pathByAddingChild(node);                       
                             getFileSystemTree().scrollPathToVisible(tpath2);                            
                             getFileSystemTree().setSelectionPath(tpath2);
-                        }                    
-                    });
+                            
+                            BusyIndicator.clearAt(RenamePanel.this);
+                        }
+                    });                  
+                    
                 }
                 
             });
@@ -288,8 +309,7 @@ public class RenamePanel extends JPanel{
                     return label;
                 }  
             });
-            table.setShowGrid(false);
-            
+            table.setShowGrid(false);            
         }
         return fileTable;
     }
@@ -349,8 +369,12 @@ public class RenamePanel extends JPanel{
             SwingUtilities.invokeLater(new Runnable(){
                 @Override
                 public void run() {
+                    BusyIndicator.showAt(RenamePanel.this);
+                    
                     SwingUtils.expandTreeNode(fileSystemTree,fileSystemTreeNode);
                     fileSystemTree.setSelectionPath(new TreePath(fileSystemTreeNode.getPath()));
+                    
+                    BusyIndicator.clearAt(RenamePanel.this);
                 }                    
             });
         }
@@ -672,7 +696,18 @@ public class RenamePanel extends JPanel{
         splitterVertical.setDividerLocation(0.4);
         splitterVertical.setResizeWeight(0.5);
         
-        add(splitterVertical);            
+        add(splitterVertical);  
+        
+        //register escape - listener
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("key pressed: "+e.getKeyCode());
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    System.out.println("escape pressed!");
+                }
+            }
+        });
         
     }    
     protected JPanel getNewRenumberPanel(){
@@ -873,7 +908,8 @@ public class RenamePanel extends JPanel{
         }
         return lastFile;
     }
-    protected void setLastFile(File lastFile) {        
+    protected void setLastFile(File lastFile) { 
+        selectedFileBuffer.add(lastFile);
         getParentFileButton().setEnabled(lastFile.getParentFile() != null);        
         this.lastFile = lastFile;
     }       

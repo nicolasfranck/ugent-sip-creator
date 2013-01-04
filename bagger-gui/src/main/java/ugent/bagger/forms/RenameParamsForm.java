@@ -44,6 +44,9 @@ public class RenameParamsForm extends AbstractForm{
         Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());        
         builder.add(b);
         builder.row();
+        
+        getFormModel().validate();
+        
         return builder.getForm();
     }
 }

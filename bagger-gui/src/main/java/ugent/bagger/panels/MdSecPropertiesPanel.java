@@ -29,6 +29,8 @@ import ugent.bagger.wizards.BagInfoImportWizard;
 import ugent.bagger.wizards.BagInfoImportWizardDialog;
 import ugent.bagger.wizards.CSVWizard;
 import ugent.bagger.wizards.CSVWizardDialog;
+import ugent.bagger.wizards.CrosswalkParamsDialog;
+import ugent.bagger.wizards.CrosswalkParamsWizard;
 import ugent.bagger.workers.TaskAddMdSecFromFile;
 
 /**
@@ -191,7 +193,24 @@ public class MdSecPropertiesPanel extends JPanel{
                     return;
                 }
                 
-                JDialog dialog = new XMLCrosswalkDialog(SwingUtils.getFrame(),true);  
+                CrosswalkParamsWizard wizard = new CrosswalkParamsWizard("CrosswalkParamsWizard");
+                wizard.addPropertyChangeListener("mdSec",new PropertyChangeListener(){
+                    @Override
+                    public void propertyChange(PropertyChangeEvent pce) {                        
+                        MdSec mdSec = (MdSec) pce.getNewValue();
+                        getEditDmdSecPropertiesTable().add(mdSec);
+                        getEditDmdSecPropertiesTable().refresh();
+                        if(getMax() > 0 && data.size() >= getMax()){
+                            enableButtons(false);
+                        }
+                        MdSecPropertiesPanel.this.firePropertyChange("crosswalkMdSec",null,mdSec);
+                    }                    
+                });
+                CrosswalkParamsDialog wdialog = new CrosswalkParamsDialog(wizard);
+                wdialog.setResizable(false);
+                wdialog.showDialog();
+                
+                /*JDialog dialog = new XMLCrosswalkDialog(SwingUtils.getFrame(),true);  
                 dialog.addPropertyChangeListener("mdSec",new PropertyChangeListener(){
                     @Override
                     public void propertyChange(PropertyChangeEvent pce) {                        
@@ -207,7 +226,7 @@ public class MdSecPropertiesPanel extends JPanel{
                 
                 dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);                
                 SwingUtils.centerOnParent(dialog,true);
-                dialog.setVisible(true);
+                dialog.setVisible(true);*/
             }
             
         });

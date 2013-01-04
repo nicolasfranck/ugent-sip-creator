@@ -26,6 +26,7 @@
         <value>validateManifestCommand</value>
         <value>testCommand</value>
         <value>renameCommand</value>
+        
        </list>
     </property>
   </bean>
@@ -142,6 +143,7 @@
             <value>separator</value>
             
             <value>testCommand</value>
+            
           </list>              
       </property>
   </bean>

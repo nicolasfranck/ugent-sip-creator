@@ -255,9 +255,9 @@ public class MetsUtils {
             if(validate && schemaPath != null){      
                 URL schemaURL = Context.getResource(schemaPath);
                 log.debug("validating against "+schemaPath);
-                System.out.println("schemaURL: "+schemaURL);
+                log.debug("schemaURL: "+schemaURL);
                 Schema schema = XML.createSchema(schemaURL);                        
-                System.out.println("validating done!");
+                log.debug("validating done!");
                 XML.validate(doc,schema);            
             } 
         }
@@ -432,15 +432,15 @@ public class MetsUtils {
     }    
     public static Document fixNamespace(Document doc)throws NoNamespaceException, TransformerConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, ParserConfigurationException, SAXException, IOException, DtdNoFixFoundException, DocumentCreationFailedException, TransformerException{        
         String name = doc.getDocumentElement().getLocalName();
-        System.out.println("root element: "+name);
+        log.debug("root element: "+name);
         //baseer je op naam root element
         if(!getDtdTransformations().containsKey(name)){
-            System.out.println("no dtd found! for "+name);
+            log.debug("no dtd found! for "+name);
             throw new DtdNoFixFoundException(name);
         }        
-        System.out.println("dtd found!");
+        log.debug("dtd found!");
         URL xsltResource = Context.getResource(getDtdTransformations().get(name));
-        System.out.println("xsltResource: "+xsltResource);
+        log.debug("xsltResource: "+xsltResource);
         Document xsltDoc = XML.XMLToDocument(xsltResource);
         if(xsltDoc == null){
             throw new DocumentCreationFailedException(); 

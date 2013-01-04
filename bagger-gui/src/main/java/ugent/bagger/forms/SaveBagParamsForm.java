@@ -60,6 +60,9 @@ public class SaveBagParamsForm extends AbstractForm{
         Binding ba = bf.createBoundComboBox("algorithm",Algorithm.values());        
         builder.add(ba);
         builder.row();
+        
+        getFormModel().validate();
+        
         return builder.getForm();
     }
 }

@@ -63,7 +63,9 @@ public class MdWrapForm extends AbstractForm{
                 MDTYPE mdType = (MDTYPE) pce.getNewValue();                   
                 ugent.bagger.helper.SwingUtils.setJComponentsEnabled(componentsOtherMdType,mdType == MDTYPE.OTHER);                 
             }
-        });        
+        });      
+        
+        getFormModel().validate();
 
         return builder.getForm();
     }

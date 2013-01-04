@@ -128,7 +128,9 @@ public class CreateBagsParamsForm extends AbstractForm{
             public void propertyChange(PropertyChangeEvent pce) {                   
                 getValueModel("metadata").setValue(parseMetadataPaths((String) pce.getNewValue()));
             }            
-        });        
+        });  
+        
+        getFormModel().validate();
         
         return builder.getForm();
     }

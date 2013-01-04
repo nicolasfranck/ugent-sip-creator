@@ -26,7 +26,10 @@ public class NewBagParamsForm extends AbstractForm{
         builder.setLabelAttributes("colSpan=1 align=left");                
         //bagId
         builder.add("bagId");        
-        builder.row();                
+        builder.row();           
+        
+        getFormModel().validate();
+        
         return builder.getForm();
     }    
 }

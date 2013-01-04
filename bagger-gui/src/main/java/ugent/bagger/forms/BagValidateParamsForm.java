@@ -54,6 +54,8 @@ public class BagValidateParamsForm extends AbstractForm{
         
         builder.add("valid");
         builder.row();
+        
+        getFormModel().validate();
        
         return builder.getForm();
     }

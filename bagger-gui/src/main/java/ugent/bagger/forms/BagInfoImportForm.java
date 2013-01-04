@@ -62,6 +62,8 @@ public class BagInfoImportForm extends AbstractForm{
         );        
         builder.add(baginfoTemplateBinding);
         builder.row();
+        
+        getFormModel().validate();
        
         return builder.getForm();
     }

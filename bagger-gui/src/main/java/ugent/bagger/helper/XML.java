@@ -351,16 +351,16 @@ public class XML {
         @Override
         public LSInput resolveResource(String type, String namespaceURI,String publicId, String systemId,String baseURI) {
             LSInput lsInput = null;
-            System.out.println("ClasspathResourceResolver::resolveResource");
+            /*System.out.println("ClasspathResourceResolver::resolveResource");
             System.out.println("type: "+type);
             System.out.println("namespaceURI: "+namespaceURI);
             System.out.println("publicId: "+publicId);
             System.out.println("systemId: "+systemId);
-            System.out.println("baseURI: "+baseURI);
+            System.out.println("baseURI: "+baseURI);*/
             try {
                 lsInput = getDOMImplementationLS().createLSInput();
                 URL url = Context.getResource(systemId);                
-                System.out.println("url: "+url);
+                //System.out.println("url: "+url);
                 InputStream is = Context.getResourceAsStream(systemId);;                
                 lsInput.setByteStream(is);
                 lsInput.setSystemId(systemId);
