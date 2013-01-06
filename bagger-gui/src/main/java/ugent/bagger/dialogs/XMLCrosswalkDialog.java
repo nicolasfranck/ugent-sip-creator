@@ -47,9 +47,10 @@ public final class XMLCrosswalkDialog extends JDialog{
         getContentPane().add(createContentPane());
         setTitle(Context.getMessage("XMLCrosswalkDialog.title"));
     }
+    /*
     public void log(String message){
         ApplicationContextUtil.addConsoleMessage(message);
-    }
+    }*/
     public JComponent createContentPane(){
         
         JPanel mainPanel = new JPanel();        
@@ -101,88 +102,79 @@ public final class XMLCrosswalkDialog extends JDialog{
                     XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
                   
                 }catch(ParserConfigurationException e){
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.ParserConfigurationException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(SAXException e){
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.SAXException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(IOException e){  
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IOException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n"; 
+                    ); 
                 }catch(TransformerConfigurationException e){
-                    log.error(e);                    
-                    e.printStackTrace();
+                    log.error(e);
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(TransformerException e){
-                    log.error(e);                    
-                    e.printStackTrace();
+                    log.error(e);
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(NoNamespaceException e){
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.NoNamespaceException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(IllegalNamespaceException e){
                     log.error(e);
-                    e.printStackTrace();
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(DtdNoFixFoundException e){     
-                    log.error(e);
-                    e.printStackTrace();                    
+                    log.error(e);                                        
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
                         file
-                    })+"\n";                         
+                    });                         
                 }catch(Exception e){
-                    log.error(e);
-                    e.printStackTrace();                    
+                    log.error(e);                                       
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.Exception.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }
                 
                 if(error != null){
                     SwingUtils.ShowError(Context.getMessage("XMLCrosswalkDialog.Exception.title"),error);
-                    log(error);
+                    log.error(error);
                 }
                 
                 XMLCrosswalkDialog.this.dispose();

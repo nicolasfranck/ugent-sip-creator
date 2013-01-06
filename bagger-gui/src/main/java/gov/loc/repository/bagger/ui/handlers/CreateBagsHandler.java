@@ -3,7 +3,6 @@ package gov.loc.repository.bagger.ui.handlers;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.Progress;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -14,14 +13,13 @@ import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.dialogs.CreateBagsDialog;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.workers.Loggable;
 
 //Nicolas Franck: based on code of CreateBagInPlaceHandler, but for creation of multiple bagits at once
 //profile uitgeschakeld
 
-public class CreateBagsHandler extends AbstractAction implements Progress,Loggable {
-    private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(CreateBagsHandler.class);   
+public class CreateBagsHandler extends AbstractAction implements Progress/*,Loggable*/ {
+    static final long serialVersionUID = 1L;
+    static final Log log = LogFactory.getLog(CreateBagsHandler.class);   
     
     public CreateBagsHandler() {
         super();           
@@ -51,7 +49,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
         
     	if ((dataFile != null) && (bagItVersion != null)) {            
             String message = "Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion;
-            log.info(message);            
+            log.error(message);            
         }    
     
     	try {
@@ -66,7 +64,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
                 "DefaultBag.createPreBag.Exception.description", 
                 new Object [] {dataFile,e.getMessage()}
             );
-            log(message);
+            log.error(message);
             SwingUtils.ShowError(title,message);    	   
     	}
     }
@@ -79,7 +77,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
         MetsBag bag = bagView.getBag();        
         
     	if ((dataFile != null) && (bagItVersion != null)) {
-            log.info("Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion);
+            log.error("Creating a new bag in place with data: " + dataFile.getName()+ ", version: " + bagItVersion);
         }    
     
     	try {
@@ -93,7 +91,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
                 "DefaultBag.createPreBag.Exception.description", 
                 new Object [] {dataFile,e.getMessage()}
             );
-            log(message);
+            log.error(message);
             SwingUtils.ShowError(title,message); 	    
     	}
     }
@@ -105,9 +103,9 @@ public class CreateBagsHandler extends AbstractAction implements Progress,Loggab
     public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion) {
         createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion,new String [] {});
     }        
-
+    /*
     @Override
     public void log(String message) {
         ApplicationContextUtil.addConsoleMessage(message);
-    }
+    }*/
 }

@@ -139,9 +139,11 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
             public void propertyChange(PropertyChangeEvent pce) {                
                 final BagView bagView = BagView.getInstance();
                 if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){                    
-                    ApplicationContextUtil.addConsoleMessage(Context.getMessage("mdSecTable.addMdSec.start"));
+                    log.error(Context.getMessage("mdSecTable.addMdSec.start"));
+                    //ApplicationContextUtil.addConsoleMessage(Context.getMessage("mdSecTable.addMdSec.start"));
                 }else if(pce.getPropertyName().equals("log")){
-                    ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
+                    log.error(pce.getNewValue().toString());
+                    //ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){                    
 
                     MetsBag metsBag = bagView.getBag();                    
@@ -234,7 +236,7 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                                     digiprovMDBagit.setID("bagit");
                                     getEditDmdSecPropertiesTable().add(digiprovMDBagit);
                                 }catch(Exception e){
-                                    e.printStackTrace();
+                                    log.error(e);                                    
                                 }
                             }else{
                                 digiprovMDBagit.getMdWrap().getXmlData().clear();
@@ -243,14 +245,14 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                             
                             
                         }catch(Exception e){
-                            e.printStackTrace();
+                            log.error(e);
                         }
                         
 
                     }catch(ParseException e){
-                        e.printStackTrace();
+                        log.error(e);
                     }catch(ParserConfigurationException e){
-                        e.printStackTrace();
+                        log.error(e);
                     }
                     
                     

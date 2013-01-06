@@ -1,6 +1,5 @@
 package ugent.bagger.workers;
 
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.ProgressListener;
 import javax.swing.SwingWorker;
 import ugent.bagger.helper.SwingUtils;
@@ -9,7 +8,7 @@ import ugent.bagger.helper.SwingUtils;
  *
  * @author nicolas
  */
-public abstract class LongTask extends SwingWorker implements ProgressListener,Loggable{       
+public abstract class LongTask extends SwingWorker implements ProgressListener /*,Loggable*/{       
     String lastNote = "";    
     public LongTask(){
         SwingUtils.ShowBusy();
@@ -31,10 +30,11 @@ public abstract class LongTask extends SwingWorker implements ProgressListener,L
             setProgress(percent);               
         }        
     }
+    /*
     @Override
     final public void log(String message){
         ApplicationContextUtil.addConsoleMessage(message);
-    }   
+    }*/   
     @Override 
     public void done(){
         super.done();

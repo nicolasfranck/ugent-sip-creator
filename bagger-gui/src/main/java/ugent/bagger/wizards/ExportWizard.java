@@ -187,28 +187,21 @@ public class ExportWizard extends AbstractWizard {
                         exporter.export(metsBag,mets,new BufferedOutputStream(new FileOutputStream(outputFile)));
                         success = true;
                     } catch (IOException ex) {                                                
-                        log.error(ex.getMessage());
-                    } catch (BagitMetsValidationException ex) {                        
-                        ex.printStackTrace();
-                        log.error(ex.getMessage());
+                        log.error(ex);
+                    } catch (BagitMetsValidationException ex) {                                                
+                        log.error(ex);
                     } catch (DatatypeConfigurationException ex) {                    
-                        ex.printStackTrace();
-                        log.error(ex.getMessage());
+                        log.error(ex);
                     } catch (ParserConfigurationException ex) {                        
-                        ex.printStackTrace();
-                        log.error(ex.getMessage());
+                        log.error(ex);
                     } catch (TransformerException ex) {                        
-                        ex.printStackTrace();
-                        log.error(ex.getMessage());
+                        log.error(ex);
                     } catch (SAXException ex) {                        
-                        ex.printStackTrace();
-                        log.error(ex.getMessage());
+                        log.error(ex);
                     } catch (ParseException ex) {                        
-                        ex.printStackTrace();
-                        log.error(ex.getMessage());
-                    } catch(Exception e){                        
-                        e.printStackTrace();
-                        log.error(e.getMessage());
+                        log.error(ex);
+                    } catch(Exception ex){                        
+                        log.error(ex);
                     }
                     
                     //report                                    
@@ -224,8 +217,7 @@ public class ExportWizard extends AbstractWizard {
             
             
         }catch(Exception e){            
-            e.printStackTrace();            
-            log.error(e.getMessage());
+            log.error(e);
         }                
         return true;
     }    

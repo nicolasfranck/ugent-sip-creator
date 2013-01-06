@@ -4,19 +4,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /*
  *  Nicolas Franck
  */
 
 
-public class Renamer extends AbstractRenamer{
-    private static final Log log = LogFactory.getLog(Renamer.class);    
-    private String source;
-    private String destination;   
-    private int patternFlags = Pattern.CANON_EQ;       
+public class Renamer extends AbstractRenamer{      
+    String source;
+    String destination;   
+    int patternFlags = Pattern.CANON_EQ;       
     
     public int getPatternFlags() {        
         return patternFlags;
@@ -33,7 +30,7 @@ public class Renamer extends AbstractRenamer{
         try{                        
             sourcePattern = Pattern.compile(source,getPatternFlags());                           
         }catch(Exception e){
-            log.debug(e.getMessage());
+            log.error(e);
         }       
         return sourcePattern;
     }      

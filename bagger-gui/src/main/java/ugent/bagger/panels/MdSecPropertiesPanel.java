@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.util.Assert;
@@ -38,17 +40,18 @@ import ugent.bagger.workers.TaskAddMdSecFromFile;
  * @author nicolas
  */
 public class MdSecPropertiesPanel extends JPanel{
-    private JComponent buttonPanel;
-    private EditMdSecPropertiesTable editDmdSecPropertiesTable;         
+    static final Log log = LogFactory.getLog(MdSecPropertiesPanel.class);
+    JComponent buttonPanel;
+    EditMdSecPropertiesTable editDmdSecPropertiesTable;         
     protected ArrayList<MdSec>data; 
-    private MdSecForm mdSecForm;
-    private MdWrapForm mdWrapForm;
-    private boolean modusAdding = true;
-    private JButton updateButton;
-    private JButton removeButton;
-    private JButton addButton;        
-    private String id;
-    private ArrayList<MdSec>exceptions;
+    MdSecForm mdSecForm;
+    MdWrapForm mdWrapForm;
+    boolean modusAdding = true;
+    JButton updateButton;
+    JButton removeButton;
+    JButton addButton;        
+    String id;
+    ArrayList<MdSec>exceptions;
    
     public MdSecPropertiesPanel(final ArrayList<MdSec>data,String id){        
         this(data,id,new ArrayList<MdSec>());
@@ -349,9 +352,11 @@ public class MdSecPropertiesPanel extends JPanel{
             public void propertyChange(PropertyChangeEvent pce) {                
                 final BagView bagView = BagView.getInstance();
                 if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){                    
-                    ApplicationContextUtil.addConsoleMessage(Context.getMessage("mdSecTable.addMdSec.start"));
+                    log.error(Context.getMessage("mdSecTable.addMdSec.start"));
+                    //ApplicationContextUtil.addConsoleMessage(Context.getMessage("mdSecTable.addMdSec.start"));
                 }else if(pce.getPropertyName().equals("log")){
-                    ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
+                    log.error(pce.getNewValue().toString());
+                    //ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){
                     getEditDmdSecPropertiesTable().add((MdSec)pce.getNewValue());                    
                     if(getMax() > 0 && data.size() >= getMax()){

@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.Progress;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,9 +14,8 @@ import ugent.bagger.exceptions.FileNotWritableException;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.workers.Loggable;
 
-public class AddDataHandler extends AbstractAction implements Progress,Loggable {
+public class AddDataHandler extends AbstractAction implements Progress /*,Loggable*/ {
     private static final Log log = LogFactory.getLog(AddDataHandler.class);
     private static final long serialVersionUID = 1L;    
 
@@ -32,10 +30,11 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
     public void actionPerformed(ActionEvent e) {                
         execute();                        
     }
+    /*
     @Override
     public void log(String message){
         ApplicationContextUtil.addConsoleMessage(message);
-    }
+    }*/
     public void addData(){
         
         final BagView bagView = BagView.getInstance();        
@@ -51,7 +50,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         
         String message = Context.getMessage("bag.message.filesadded");        
         addBagData(files);
-        log(message + " " + getFileNames(files));        
+        log.error(message + " " + getFileNames(files));        
         bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
         bagView.updateAddData();
 
@@ -87,7 +86,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
         
     	if(files != null){
             for (int i=0; i < files.length; i++) {
-                log.info("addBagData[" + i + "] " + files[i].getName());                
+                log.error("addBagData[" + i + "] " + files[i].getName());                
                 addBagData(files[i],!(i < files.length-1));                
             }
     	}
@@ -141,7 +140,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
                     "addDataHandler.fileExists.message",
                     new Object [] {file.getName()}
                 );                        
-                log(message);
+                log.error(message);
                 SwingUtils.ShowError(title,message);
             }
         }catch(FileNotReadableException e){          
@@ -150,7 +149,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
                 "addDataHandler.FileNotReadableException.message",
                 new Object [] {e.getFile()}
             ); 
-            log(message);
+            log.error(message);
             SwingUtils.ShowError(title,message);            
         }catch(FileNotFoundException e){            
             String title = Context.getMessage("addDataHandler.FileNotFoundException.title");
@@ -158,10 +157,10 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
                 "addDataHandler.FileNotFoundException.message",
                 new Object [] {file}
             ); 
-            log(message);
+            log.error(message);
             SwingUtils.ShowError(title,message);            
         }catch (Exception e){            
-            e.printStackTrace();
+            
             log.error("BagView.addBagData: " + e);
             
             String title = Context.getMessage("addDataHandler.unknowException.title");
@@ -169,7 +168,7 @@ public class AddDataHandler extends AbstractAction implements Progress,Loggable 
                 "addDataHandler.fileExists.message",
                 new Object [] {e.getMessage()}
             ); 
-            log(message);
+            log.error(message);
             SwingUtils.ShowError(title,message);            
         }    	
     }    

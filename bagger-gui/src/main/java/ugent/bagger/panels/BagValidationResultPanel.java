@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import ugent.bagger.forms.BagValidateParamsForm;
 import ugent.bagger.helper.Context;
@@ -27,11 +29,12 @@ import ugent.bagger.workers.DefaultWorker;
  * @author nicolas
  */
 public final class BagValidationResultPanel extends JPanel{
-    private JComponent buttonPanel;
-    private ClassTable<BagValidationResult> bagValidationResultTable;         
-    private ArrayList<BagValidationResult>data = new ArrayList<BagValidationResult>();
-    private BagValidateParams bagValidateParams;
-    private BagValidateParamsForm bagValidateParamsForm;
+    static Log log = LogFactory.getLog(BagValidationResultPanel.class);
+    JComponent buttonPanel;
+    ClassTable<BagValidationResult> bagValidationResultTable;         
+    ArrayList<BagValidationResult>data = new ArrayList<BagValidationResult>();
+    BagValidateParams bagValidateParams;
+    BagValidateParamsForm bagValidateParamsForm;
     
     public BagValidationResultPanel(){
         setLayout(new BorderLayout());
@@ -141,8 +144,7 @@ public final class BagValidationResultPanel extends JPanel{
     }
     private class ValidateBagsWorker extends DefaultWorker {
         @Override
-        protected Void doInBackground(){  
-            //SwingUtils.ShowBusy();
+        protected Void doInBackground(){
             
             try{
                 reset(new ArrayList<BagValidationResult>());                
@@ -183,10 +185,9 @@ public final class BagValidationResultPanel extends JPanel{
                     }
                 }
             }catch(Exception e){
-                e.printStackTrace();
-            }
-            
-            //SwingUtils.ShowDone();
+                log.error(e);                
+            }            
+          
             return null;
         }        
     }

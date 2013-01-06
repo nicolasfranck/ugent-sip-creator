@@ -197,10 +197,11 @@
     <bean id="bagView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
         <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView"/>                                        
     </bean>
-    
+    <!--
     <bean id="consoleView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
         <property name="viewClass" value="gov.loc.repository.bagger.ui.ConsoleView" />                       
     </bean>
+    -->
     
     <!--
     <bean id="renameView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">

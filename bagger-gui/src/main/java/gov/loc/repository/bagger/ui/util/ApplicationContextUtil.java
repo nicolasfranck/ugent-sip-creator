@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.ui.util;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.ConsoleView;
 import java.awt.Image;
 import java.util.Locale;
 import org.springframework.richclient.application.Application;
@@ -28,12 +27,14 @@ public class ApplicationContextUtil {
     public static DefaultBag getCurrentBag() {
         return getBagView().getBag();
     }
+    /*
     public static ConsoleView getConsoleView(){        
         return ConsoleView.getInstance();        
-    }
+    }*/
     private static ApplicationServices getApplicationServices() {
         return ApplicationServicesLocator.services();
-    }    
+    }  
+    /*
     public static void addConsoleMessageByProperty(String messagePropertyName) {     
         if(getConsoleView() == null){            
             ConsoleView.delayedMessages.add(getMessage(messagePropertyName));            
@@ -47,7 +48,7 @@ public class ApplicationContextUtil {
         }else{                        
             getConsoleView().addConsoleMessages(message);                       
         }        
-    }
+    }*/
     @SuppressWarnings("unchecked")
     private static Object getService(Class serviceType) {
         return getApplicationServices().getService(serviceType);

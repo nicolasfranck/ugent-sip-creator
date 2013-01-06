@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvListReader;
 import org.supercsv.prefs.CsvPreference;
@@ -26,12 +28,12 @@ import ugent.bagger.params.CSVParseParams;
  * @author nicolas
  */
 public class CSV1Panel extends JPanel{
-    private CSVParseParams csvParseParams;
-    private CSVParseParamsForm csvParseParamsForm;
-    //private JButton okButton;
-    private JButton testButton;   
-    private JScrollPane scrollerCSVTable;
-    private JTable csvTable;
+    static Log log = LogFactory.getLog(CSV1Panel.class);
+    CSVParseParams csvParseParams;
+    CSVParseParamsForm csvParseParamsForm;    
+    JButton testButton;   
+    JScrollPane scrollerCSVTable;
+    JTable csvTable;
     
     public CSV1Panel(){
         init();
@@ -98,18 +100,9 @@ public class CSV1Panel extends JPanel{
         this.csvParseParamsForm = csvParseParamsForm;
     }   
     public JPanel createButtonPanel(){
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        //okButton = new JButton(Context.getMessage("ok"));       
-        testButton = new JButton(Context.getMessage("test"));        
-        //panel.add(okButton);       
-        panel.add(testButton);
-        
-        /*okButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                CSV1Panel.this.firePropertyChange("ok",null,null);
-            }        
-        });*/
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
+        testButton = new JButton(Context.getMessage("test"));                
+        panel.add(testButton);        
         
         testButton.addActionListener(new ActionListener(){
             @Override
@@ -174,7 +167,7 @@ public class CSV1Panel extends JPanel{
             firePropertyChange("record",null,record);
             
         }catch(Exception e){
-            e.printStackTrace();            
+            log.error(e);            
         }        
               
     }    

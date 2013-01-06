@@ -31,8 +31,8 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.premis.Premis;
 
 public class OpenBagHandler extends AbstractAction {
-    private static final Log log = LogFactory.getLog(OpenBagHandler.class);
-    private static final long serialVersionUID = 1L;   
+    static final Log log = LogFactory.getLog(OpenBagHandler.class);
+    static final long serialVersionUID = 1L;   
 
     public OpenBagHandler() {
         super();        
@@ -102,12 +102,15 @@ public class OpenBagHandler extends AbstractAction {
             bagView.clearBagHandler.clearExistingBag();      
             
             //formaat correct?
-            bagView.clearBagHandler.newDefaultBag(file);                  
-            ApplicationContextUtil.addConsoleMessage(
+            bagView.clearBagHandler.newDefaultBag(file); 
+            log.error(Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
+                file
+            }));
+            /*ApplicationContextUtil.addConsoleMessage(
                 Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
                     file
                 })
-            );       
+            );*/       
             
             MetsBag metsBag = bagView.getBag();  
             

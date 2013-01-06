@@ -7,7 +7,7 @@ import ugent.bagger.helper.SwingUtils;
  *
  * @author nicolas
  */
-public class DefaultWorker extends SwingWorker<Void, Void> implements Loggable,Sendable,Reportable{
+public class DefaultWorker extends SwingWorker<Void, Void> implements /*Loggable,*/Sendable,Reportable{
     boolean success = false;        
     public DefaultWorker(){        
         SwingUtils.ShowBusy();   
@@ -25,10 +25,11 @@ public class DefaultWorker extends SwingWorker<Void, Void> implements Loggable,S
     protected Void doInBackground() throws Exception {        
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    /*
     @Override
     public void log(String message){
         firePropertyChange("log",null,message);        
-    }
+    }*/
     @Override
     public void send(Object o){
         firePropertyChange("send",null,o);        

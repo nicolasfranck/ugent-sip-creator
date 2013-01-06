@@ -62,10 +62,10 @@ public class ValidateBagHandler extends Handler {
             }catch (Exception e){                                                
                 if(isCancelled()){
                     log.error(e);
-                    log(Context.getMessage("ValidateBagHandler.validationCancelled.label"));
+                    //log(Context.getMessage("ValidateBagHandler.validationCancelled.label"));
                     SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
                 }else{
-                    log(Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()}));                    
+                    //log(Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()}));                    
                     SwingUtils.ShowError(
                         Context.getMessage("ValidateBagHandler.validationFailed.title"), 
                         Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()})
@@ -112,30 +112,30 @@ public class ValidateBagHandler extends Handler {
                         )
                     );
                     
-                    log(Context.getMessage("ValidateBagHandler.title"));
+                    log.error(Context.getMessage("ValidateBagHandler.title"));
                     
                     if(payloadsMissing.size() > 0){
-                        log(Context.getMessage("ValidateBagHandler.validation.payloadsMissing.title"));
+                        log.error(Context.getMessage("ValidateBagHandler.validation.payloadsMissing.title"));
                         for(String filename:payloadsMissing){
-                            log("\t"+filename);
+                            log.error("\t"+filename);
                         }
                     }
                     if(tagsMissing.size() > 0){
-                        log(Context.getMessage("ValidateBagHandler.validation.tagsMissing.title"));
+                        log.error(Context.getMessage("ValidateBagHandler.validation.tagsMissing.title"));
                         for(String filename:tagsMissing){
-                            log("\t"+filename);
+                            log.error("\t"+filename);
                         }
                     }
                     if(payloadsFixityFailure.size() > 0){
-                        log(Context.getMessage("ValidateBagHandler.validation.payloadsFixityFailure.title"));
+                        log.error(Context.getMessage("ValidateBagHandler.validation.payloadsFixityFailure.title"));
                         for(String filename:payloadsFixityFailure){
-                            log("\t"+filename);
+                            log.error("\t"+filename);
                         }
                     }
                     if(tagsFixityFailure.size() > 0){
-                        log(Context.getMessage("ValidateBagHandler.validation.tagsFixityFailure.title"));
+                        log.error(Context.getMessage("ValidateBagHandler.validation.tagsFixityFailure.title"));
                         for(String filename:tagsFixityFailure){
-                            log("\t"+filename);
+                            log.error("\t"+filename);
                         }
                     }                    
                     
@@ -143,8 +143,7 @@ public class ValidateBagHandler extends Handler {
                     SwingUtils.ShowMessage(
                         Context.getMessage("ValidateBagHanddler.validationSuccessfull.title"),
                         Context.getMessage("ValidateBagHanddler.validationSuccessfull.label")
-                    );
-                    log(Context.getMessage("ValidateBagHanddler.validationSuccessfull.label"));
+                    );                    
                 }
             }
         }

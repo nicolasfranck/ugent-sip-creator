@@ -20,16 +20,23 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.views.DefaultView;
 
 public class BagView extends DefaultView {
-    private static final Log log = LogFactory.getLog(BagView.class);
-    public static BagView instance;
-    private final static int ONE_SECOND = 1000;
-    private int DEFAULT_WIDTH = 1024;
-    private int DEFAULT_HEIGHT = 768;       
-    private MetsBag bag;    
-    private BagTree bagPayloadTree;
-    private InfoFormsPane infoFormsPane;
-    private BagTreePanel bagPayloadTreePanel;
-    private JPanel bagButtonPanel;    
+    static final Log log = LogFactory.getLog(BagView.class);
+    static BagView instance;
+    
+    int DEFAULT_WIDTH = 1024;
+    int DEFAULT_HEIGHT = 768;       
+    MetsBag bag;    
+    BagTree bagPayloadTree;
+    InfoFormsPane infoFormsPane;
+    BagTreePanel bagPayloadTreePanel;
+    JPanel bagButtonPanel; 
+    JLabel addDataToolBarAction;
+    JLabel removeDataToolBarAction;        
+    JSplitPane mainPanel;
+    JComponent leftPanel;    
+    JComponent renameComponent;
+    JLabel renameLabel;
+    
     public StartNewBagHandler startNewBagHandler = new StartNewBagHandler();
     public StartExecutor startExecutor = new StartExecutor();
     public OpenBagHandler openBagHandler = new OpenBagHandler();
@@ -53,12 +60,8 @@ public class BagView extends DefaultView {
     public ExportExecutor exportExecutor = new ExportExecutor();
     public ValidateManifestExecutor validateManifestExecutor = new ValidateManifestExecutor();
     public ValidateBagsExecutor validateBagsExecutor = new ValidateBagsExecutor();    
-    private JLabel addDataToolBarAction;
-    private JLabel removeDataToolBarAction;        
-    private JSplitPane mainPanel;
-    private JComponent leftPanel;    
-    private JComponent renameComponent;
-    private JLabel renameLabel;    
+    
+        
     
     //private BagTree bagTagFileTree;  
     //private BagTreePanel bagTagFileTreePanel;
@@ -538,6 +541,7 @@ public class BagView extends DefaultView {
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);
         renameLabel.setEnabled(true);
+        exportExecutor.setEnabled(false);
         getInfoFormsPane().getSaveLabel().setEnabled(true);
         //addTagFileToolBarAction.setEnabled(true);
         getBagButtonPanel().invalidate();
@@ -553,6 +557,7 @@ public class BagView extends DefaultView {
         saveBagAsExecutor.setEnabled(true);
         getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
+        exportExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags        
     }  
@@ -566,12 +571,14 @@ public class BagView extends DefaultView {
         saveBagAsExecutor.setEnabled(true);
         getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
+        exportExecutor.setEnabled(true);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags     
     }
     
     public void updateAddData() {
     	saveBagAsExecutor.setEnabled(true);
+        exportExecutor.setEnabled(false);
     	getBagButtonPanel().invalidate();    	
     }
     
@@ -600,14 +607,14 @@ public class BagView extends DefaultView {
         context.register("validateBagsCommand",validateBagsExecutor);    
         
         validateManifestExecutor.setEnabled(true);
-        context.register("validateManifestCommand",validateManifestExecutor);
+        context.register("validateManifestCommand",validateManifestExecutor);        
         
-        exportExecutor.setEnabled(true);
-        context.register("testCommand",exportExecutor);
+        context.register("exportCommand",exportExecutor);
         
         renameExecutor.setEnabled(true);
         context.register("renameCommand",renameExecutor);
-               
+     
+        context.register("openLogFileCommand",new OpenLogFileExecutor());
     }
     
     public void registerTreeListener(String label,final JTree tree){
@@ -656,23 +663,13 @@ public class BagView extends DefaultView {
     public String getPropertyMessage(String propertyName) {
         return getMessage(propertyName);
     }
-
-    /*
-     * Returns true if the Fetch.txt file exists.
-     * This would be true in the case of a Holey Bag
-     * Returns false for all other types of Bags
-     */
-    private boolean checkFetchTxtFile() {        
-        return (getBag().getFetchTxt() != null);        
-    }
-
     /*
      * Disables the Is Complete Bag Button if Fetch.txt file exists.
      * This is true in the case of a Holey Bag
      * The Validate Button is enabled for all other types of Bags
      */
     private void setCompleteExecutor() {        
-        completeExecutor.setEnabled(!checkFetchTxtFile());       
+        completeExecutor.setEnabled(getBag().getFetchTxt() == null);       
     }
     
     /*
@@ -681,6 +678,6 @@ public class BagView extends DefaultView {
      * The Validate Button is enabled for all other types of Bags
      */
     private void setValidateExecutor() {       
-        validateExecutor.setEnabled(!checkFetchTxtFile());       
+        validateExecutor.setEnabled(getBag().getFetchTxt() == null);       
     }       
 }

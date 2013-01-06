@@ -3,7 +3,6 @@ package gov.loc.repository.bagger.ui.handlers;
 import gov.loc.repository.bagger.bag.BaggerFileEntity;
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
@@ -15,11 +14,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
-import ugent.bagger.workers.Loggable;
 
-public class RemoveDataHandler extends AbstractAction implements Loggable{
-    private static final Log log = LogFactory.getLog(RemoveDataHandler.class);
-    private static final long serialVersionUID = 1L;   
+public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
+    static final Log log = LogFactory.getLog(RemoveDataHandler.class);
+    static final long serialVersionUID = 1L;   
 
     public RemoveDataHandler() {
         super();            
@@ -57,8 +55,8 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                 TreePath path = paths[i];
                 Object node = path.getLastPathComponent();
                 
-                log.debug("removeData: " + path.toString());
-                log.debug("removeData pathCount: " + path.getPathCount());
+                log.error("removeData: " + path.toString());
+                log.error("removeData pathCount: " + path.getPathCount());
                 
                 File filePath = null;
                 String fileName = null;
@@ -73,15 +71,13 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                     fileName = BaggerFileEntity.normalize(filePath.getPath());
                 }
                 
-                log.debug("removeData filePath: " + fileName);
-                
-                System.out.println("removeData filePath: " + fileName);
+                log.debug("removeData filePath: " + fileName); 
                 
                 if (fileName != null && !fileName.isEmpty()) {
                     try {
                         bag.removeBagFile(fileName);
                         
-                        log(Context.getMessage("RemoveDataHandler.removeData.success.description",new Object []{fileName}));
+                        log.error(Context.getMessage("RemoveDataHandler.removeData.success.description",new Object []{fileName}));
                         
                         if (node instanceof MutableTreeNode) {
                             model.removeNodeFromParent((MutableTreeNode)node);
@@ -91,7 +87,6 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                         }
                     } catch (Exception e) {     
                         log.error(e);
-                        e.printStackTrace();
                         
                         try {                                                       
                             bag.removePayloadDirectory(fileName);                                                       
@@ -102,16 +97,14 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
                                 DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(node);
                                 model.removeNodeFromParent((MutableTreeNode)aNode);
                             }
-                        } catch (Exception ex) {                            
+                        }catch(Exception ex){                            
                             log.error(e);
-                            e.printStackTrace();
-                            
                             String title = Context.getMessage("RemoveDataHandler.removeData.Exception.title");
                             String message = Context.getMessage(
                                 "RemoveDataHandler.removeData.Exception.description",
                                 new Object [] {fileName,ex.getMessage()}
                             );
-                            log(message);                            
+                            log.error(message);                            
                             SwingUtils.ShowError(title,message);
                         }
                     }
@@ -130,9 +123,9 @@ public class RemoveDataHandler extends AbstractAction implements Loggable{
         
         SwingUtils.ShowDone();
     }
-
+    /*
     @Override
     public void log(String message) {
         ApplicationContextUtil.addConsoleMessage(message);
-    }
+    }*/
 }

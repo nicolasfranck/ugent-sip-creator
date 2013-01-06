@@ -4,6 +4,8 @@ import com.anearalone.mets.MdSec;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 import ugent.bagger.exceptions.DtdNoFixFoundException;
 import ugent.bagger.exceptions.IllegalNamespaceException;
@@ -17,6 +19,7 @@ import ugent.bagger.helper.SwingUtils;
  * @author nicolas
  */
 public class TaskAddMdSecFromFile extends DefaultWorker {    
+    static Log log = LogFactory.getLog(TaskAddMdSecFromFile.class);
     File [] files;
     int succeeded = 0;
     int numErrors = 0;
@@ -54,47 +57,75 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                 succeeded++;
             }catch(IOException e){                  
                 numErrors++;
-                e.printStackTrace();
-                log(Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
+                //e.printStackTrace();
+                log.error(e);
+                /*log(Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
                     file,e.getMessage()
-                }));                    
+                }));*/
+                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
+                    file,e.getMessage()
+                }));
             }catch(SAXException e){                  
                 numErrors++;
-                e.printStackTrace();
-                log(Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
+                //e.printStackTrace();
+                log.error(e);
+                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
                     file,e.getMessage()
-                })+"\n");                                                    
+                }));
+                /*log(Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
+                    file,e.getMessage()
+                })+"\n");*/
             }catch(ParserConfigurationException e){                  
                 numErrors++;
-                e.printStackTrace();
-                log(Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
+                //e.printStackTrace();
+                log.error(e);
+                /*log(Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
                     e.getMessage()
-                })+"\n");                    
+                })+"\n");*/
+                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
+                    e.getMessage()
+                }));
             }catch(IllegalNamespaceException e){                
                 numErrors++;
-                e.printStackTrace();
-                log(Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
+                //e.printStackTrace();
+                log.error(e);
+                /*log(Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
                     file,e.getNamespace()
-                })+"\n");
+                })+"\n");*/
+                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
+                    file,e.getNamespace()
+                }));
             }
             catch(NoNamespaceException e){                          
                 numErrors++;        
-                e.printStackTrace();
-                log(Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
+                //e.printStackTrace();
+                log.error(e);
+                /*log(Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
                     file
-                })+"\n");                                
+                })+"\n");*/
+                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
+                    file
+                }));
             }catch(DtdNoFixFoundException e){
                 numErrors++;        
-                e.printStackTrace();
-                log(Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
+                //e.printStackTrace();
+                log.error(e);
+                /*log(Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
                     file
-                })+"\n");       
+                })+"\n");*/
+                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
+                    file
+                }));
             }catch(Exception e){
                 numErrors++;        
-                e.printStackTrace();
-                log(Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
+                //e.printStackTrace();
+                log.error(e);
+                /*log(Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
                     file
-                })+"\n");       
+                })+"\n");*/
+                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
+                    file
+                }));
             }
             int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
             if(!isDone()){

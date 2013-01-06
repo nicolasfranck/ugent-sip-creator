@@ -13,13 +13,13 @@ import org.apache.commons.logging.LogFactory;
  * @author nicolas
  */
 abstract public class AbstractRenamer {
-    private static final Log log = LogFactory.getLog(AbstractRenamer.class);
-    private RenameListener renameListener;
-    private boolean copy = false;
-    private boolean copyDirectoryContent = false;
-    private boolean overwrite = false;
-    private ArrayList<File> inputFiles;
-    private boolean simulateOnly = false;
+    protected static final Log log = LogFactory.getLog(AbstractRenamer.class);
+    RenameListener renameListener;
+    boolean copy = false;
+    boolean copyDirectoryContent = false;
+    boolean overwrite = false;
+    ArrayList<File> inputFiles;
+    boolean simulateOnly = false;
     
     public boolean isSimulateOnly() {
         return simulateOnly;
@@ -90,7 +90,9 @@ abstract public class AbstractRenamer {
         }        
         
         ErrorAction action = ErrorAction.undoAll;
+        
         log.debug("AbstractRenamer::rename => pair.size() is "+pairs.size());
+        
         for(int i = 0;i < pairs.size();i++){
             RenameFilePair pair = pairs.get(i);
             
@@ -136,29 +138,23 @@ abstract public class AbstractRenamer {
                     l.onRenameSuccess(pair,i);
                 }
             }catch(TargetExistsException e){
-                log.debug("error occurred: "+e.getMessage());                
-                e.printStackTrace();
+                log.error(e);
                 action = l.onError(pair,RenameError.TARGET_EXISTS,e.getMessage(),i);                                        
             }catch(ParentNotWritableException e){                
-                log.debug("error occurred: "+e.getMessage());                
-                e.printStackTrace();
+                log.error(e);                               
                 action = l.onError(pair,RenameError.PARENT_NOT_WRITABLE,e.getMessage(),i);
             }catch(FileNotFoundException e){
-                log.debug("error occurred: "+e.getMessage());                
-                e.printStackTrace();
+                log.error(e);                                
                 action = l.onError(pair,RenameError.FILE_NOT_FOUND,e.getMessage(),i);
             }catch(IOException e){
-                log.debug("error occurred: "+e.getMessage());                
-                e.printStackTrace();
+                log.error(e);                              
                 action = l.onError(pair,RenameError.IO_EXCEPTION,e.getMessage(),i);
             }catch(SecurityException e){
-                log.debug("error occurred: "+e.getMessage());                
-                e.printStackTrace();
+                log.error(e);                                
                 action = l.onError(pair,RenameError.SECURITY_EXCEPTION,e.getMessage(),i);
             }            
             catch(Exception e){
-                log.debug("error occurred: "+e.getMessage());             
-                e.printStackTrace();
+                log.error(e);                            
                 action = l.onError(pair,RenameError.UNKNOWN_ERROR,e.getMessage(),i);
             }            
             

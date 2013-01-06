@@ -77,11 +77,11 @@ public class CreateBagsParamsForm extends AbstractForm{
         builder.add(outputDirBinding);
         builder.row();
         
-        //relatie bagInPlace en outputDir
+        //relatie bagInPlace en outputDir        
         getValueModel("bagInPlace").addValueChangeListener(new PropertyChangeListener(){
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                Boolean b = (Boolean) pce.getNewValue();
+                Boolean b = (Boolean) pce.getNewValue();                
                 SwingUtils.setJComponentEnabled(outputDirBinding.getControl(),!b);                
             }            
         });
@@ -91,7 +91,7 @@ public class CreateBagsParamsForm extends AbstractForm{
             public void propertyChange(PropertyChangeEvent pce) {
                 ArrayList<File>list = (ArrayList<File>)pce.getNewValue();
                 
-                boolean success = false;
+                boolean success = false;                
                 if(list.isEmpty()){
                     SwingUtils.ShowError(
                         Context.getMessage("createBagsParamsForm.error.title"),

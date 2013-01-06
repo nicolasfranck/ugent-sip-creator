@@ -5,10 +5,10 @@ package ugent.rename;
  * @author nicolas
  */
 public class DecimalSequence implements Sequence{
-    private int i = 0;   
-    private int padding = 0;
-    private boolean isSet = false;
-    private int step = 1;
+    int i = 0;   
+    int padding = 0;
+    boolean isSet = false;
+    int step = 1;
     
     private String getFormatString(){
         String formatString = "%";

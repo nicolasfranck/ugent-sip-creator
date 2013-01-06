@@ -4,27 +4,24 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *
  * @author nicolas
  */
-public class Renumber extends AbstractRenamer{    
-    private static final Log log = LogFactory.getLog(Renumber.class);    
-    private int start = 0;
-    private int end = 0;
-    private int step = 1;
-    private StartPosType startPosType = StartPosType.ABSOLUTE;
-    private int startPos = 0;
-    private StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
-    private int padding = 1;
-    private String separatorBefore = "";
-    private String separatorAfter = "";
-    private PaddingChar paddingChar = PaddingChar.NULL;
-    private PreSort preSort = PreSort.FILE_NAME_ASC;
-    private Sequence sequence = new DecimalSequence();
+public class Renumber extends AbstractRenamer{
+    int start = 0;
+    int end = 0;
+    int step = 1;
+    StartPosType startPosType = StartPosType.ABSOLUTE;
+    int startPos = 0;
+    StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
+    int padding = 1;
+    String separatorBefore = "";
+    String separatorAfter = "";
+    PaddingChar paddingChar = PaddingChar.NULL;
+    PreSort preSort = PreSort.FILE_NAME_ASC;
+    Sequence sequence = new DecimalSequence();
 
     public Sequence getSequence() {        
         return sequence;

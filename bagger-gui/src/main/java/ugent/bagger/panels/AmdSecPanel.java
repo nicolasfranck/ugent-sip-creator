@@ -12,12 +12,11 @@ import org.springframework.util.Assert;
  * @author nicolas
  */
 public final class AmdSecPanel extends JTabbedPane{
-    private AmdSec amdSec;
-    
-    private RightsMdSecPropertiesPanel rightsMdSecPropertiesPanel;
-    private TechMdSecPropertiesPanel techMdSecPropertiesPanel;
-    private DigiprovMdSecPropertiesPanel digiprovMdSecPropertiesPanel;
-    private SourceMdSecPropertiesPanel sourceMdSecPropertiesPanel;
+    AmdSec amdSec;    
+    RightsMdSecPropertiesPanel rightsMdSecPropertiesPanel;
+    TechMdSecPropertiesPanel techMdSecPropertiesPanel;
+    DigiprovMdSecPropertiesPanel digiprovMdSecPropertiesPanel;
+    SourceMdSecPropertiesPanel sourceMdSecPropertiesPanel;
     
     public AmdSecPanel(AmdSec amdSec){
         Assert.notNull(amdSec);

@@ -14,8 +14,8 @@ import ugent.bagger.properties.MdSecProperties;
  * @author nicolas
  */
 public class MdSecPropertiesTable extends AbstractObjectTable{        
-    private ArrayList<MdSec>data;    
-    private HashMap<String,ArrayList<PropertyChangeListener>>listeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
+    ArrayList<MdSec>data;    
+    HashMap<String,ArrayList<PropertyChangeListener>>listeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
     
     public static ArrayList<MdSecProperties> toProperties(final ArrayList<MdSec>data){
         ArrayList<MdSecProperties>props = new ArrayList<MdSecProperties>();

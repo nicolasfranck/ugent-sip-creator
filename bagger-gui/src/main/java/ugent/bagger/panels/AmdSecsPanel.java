@@ -24,8 +24,8 @@ import ugent.bagger.tables.ClassTable;
  * @author nicolas
  */
 public class AmdSecsPanel extends JPanel{
-    private ArrayList<AmdSec>data;    
-    private ClassTable<AmdSecParts>amdSecPartsTable;
+    ArrayList<AmdSec>data;    
+    ClassTable<AmdSecParts>amdSecPartsTable;
     JButton addButton;
     JButton removeButton;
 
@@ -113,31 +113,8 @@ public class AmdSecsPanel extends JPanel{
     }
     public JComponent createButtonPanel(){
         final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        
-        /*JButton addButton = new JButton(Context.getMessage("AmdSecsPanel.addButton.label"));
-        JButton removeButton = new JButton(Context.getMessage("AmdSecsPanel.removeButton.label"));*/
         panel.add(getAddButton());
-        panel.add(getRemoveButton());
-        
-        /*
-        addButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                AmdSec amdSec = new AmdSec();
-                getData().add(amdSec);
-                reset(getData());
-                startAmdSecDialog(amdSec);
-            }            
-        });
-        
-        removeButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                deleteSelected();
-                reset(getData());
-            }            
-        });*/
-        
+        panel.add(getRemoveButton());        
         return panel;
     }
     public void deleteSelected(){

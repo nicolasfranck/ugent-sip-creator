@@ -16,6 +16,8 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.w3c.dom.Document;
 import ugent.bagger.helper.Beans;
@@ -29,13 +31,13 @@ import ugent.bagger.params.VelocityTemplate;
  * @author nicolas
  */
 public class CSV2Panel extends JPanel{        
-    
-    private JButton testButton;   
-    private HashMap<String,String>record = new HashMap<String,String>();
-    private JTextArea textArea;
-    private JComboBox templateComboBox;
-    private HashMap<String,HashMap<String,String>>velocityTemplates;    
-    private ActionListener showListener = new ActionListener(){
+    static Log log = LogFactory.getLog(CSV2Panel.class);
+    JButton testButton;   
+    HashMap<String,String>record = new HashMap<String,String>();
+    JTextArea textArea;
+    JComboBox templateComboBox;
+    HashMap<String,HashMap<String,String>>velocityTemplates;    
+    ActionListener showListener = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent ae) {
             BusyIndicator.showAt(CSV2Panel.this);                
@@ -111,7 +113,7 @@ public class CSV2Panel extends JPanel{
             getTextArea().setText(out.toString());
             
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e);            
         }        
     }    
 }

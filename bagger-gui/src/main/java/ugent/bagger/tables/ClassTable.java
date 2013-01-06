@@ -1,7 +1,6 @@
 package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
-import gov.loc.repository.bagger.app.BaggerStatusBar;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;

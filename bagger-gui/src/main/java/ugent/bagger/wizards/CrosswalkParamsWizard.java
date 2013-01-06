@@ -1,7 +1,6 @@
 package ugent.bagger.wizards;
 
 import com.anearalone.mets.MdSec;
-import gov.loc.repository.bagger.ui.BagView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -14,7 +13,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.wizard.AbstractWizard;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -27,8 +25,6 @@ import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.helper.XML;
 import ugent.bagger.helper.XSLT;
-import ugent.bagger.panels.MdSecPanel;
-import ugent.bagger.panels.MdSecPropertiesPanel;
 import ugent.bagger.params.CrosswalkParams;
 
 /**
@@ -105,62 +101,55 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                     firePropertyChange("mdSec",null,mdSec);            
 
                 }catch(ParserConfigurationException e){
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.ParserConfigurationException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(SAXException e){
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.SAXException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(IOException e){  
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                   
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IOException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n"; 
+                    ); 
                 }catch(TransformerConfigurationException e){
-                    log.error(e);                    
-                    e.printStackTrace();
+                    log.error(e);
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(TransformerException e){
-                    log.error(e);                    
-                    e.printStackTrace();
+                    log.error(e); 
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(NoNamespaceException e){
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                   
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.NoNamespaceException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }catch(IllegalNamespaceException e){
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error(e);                  
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
                         new Object []{
@@ -168,26 +157,27 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                         }
                     )+"\n";
                 }catch(DtdNoFixFoundException e){     
-                    log.error(e);
-                    e.printStackTrace();                    
+                    log.error(e);                                      
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
                         file
-                    })+"\n";                         
+                    });                         
                 }catch(Exception e){
-                    log.error(e);
-                    e.printStackTrace();                    
+                    log.error(e);                                      
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.Exception.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
                 }
                 
                 SwingUtils.ShowDone();
                 
                 if(error != null){
-                    SwingUtils.ShowError(Context.getMessage("XMLCrosswalkDialog.Exception.title"),error);            
+                    SwingUtils.ShowError(
+                        Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                        error
+                    );            
                 }
             }
         };

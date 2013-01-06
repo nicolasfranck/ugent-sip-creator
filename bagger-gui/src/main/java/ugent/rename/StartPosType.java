@@ -13,8 +13,11 @@ public enum StartPosType {
         this.c = c;
     }
     @Override
-    public String toString(){        
-        String translated = Context.getMessage("StartPosType."+c);
+    public String toString(){    
+        String translated = null;
+        try{
+            translated = Context.getMessage("StartPosType."+c);
+        }catch(Exception e){}        
         return translated != null ? translated : c;
     }
 }

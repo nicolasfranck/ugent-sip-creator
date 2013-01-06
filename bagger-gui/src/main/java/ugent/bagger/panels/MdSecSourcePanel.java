@@ -35,13 +35,13 @@ import ugent.bagger.tables.MdSecPropertiesTable;
  * @author nicolas
  */
 public class MdSecSourcePanel extends JPanel{
-    private static Log log = LogFactory.getLog(MdSecSourcePanel.class);
-    private MdSecPropertiesTable mdSecPropertiesTable;
-    private Mets mets;
-    private JButton okButton;
-    private JButton cancelButton;    
-    private ArrayList<MdSec>dcMdSecs = new ArrayList<MdSec>();
-    private ArrayList<MdSec>dcCandidateMdSecs = new ArrayList<MdSec>();    
+    static final Log log = LogFactory.getLog(MdSecSourcePanel.class);
+    MdSecPropertiesTable mdSecPropertiesTable;
+    Mets mets;
+    JButton okButton;
+    JButton cancelButton;    
+    ArrayList<MdSec>dcMdSecs = new ArrayList<MdSec>();
+    ArrayList<MdSec>dcCandidateMdSecs = new ArrayList<MdSec>();    
    
     public MdSecSourcePanel(Mets mets){        
         Assert.notNull(mets);
@@ -107,7 +107,7 @@ public class MdSecSourcePanel extends JPanel{
                 try{
                     loadFromMdSec(getMdSecPropertiesTable().getSelected().getMdSec());
                 }catch(Exception e){
-                    e.printStackTrace();
+                    log.error(e);
                 }                                
                 SwingUtils.ShowDone();
                 firePropertyChange("ok",null,null);
@@ -174,9 +174,7 @@ public class MdSecSourcePanel extends JPanel{
             
             
         }catch(Exception e){
-            log.error(e);
-            e.printStackTrace();
-        }
-        
+            log.error(e);            
+        }        
     }
 }

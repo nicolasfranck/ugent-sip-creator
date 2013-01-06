@@ -52,16 +52,15 @@ import ugent.bagger.workers.LongTask;
  * @author nicolas
  */
 public final class CreateBagsPanel extends JPanel{
-    private static final Log log = LogFactory.getLog(CreateBagsPanel.class);
-    private CreateBagsParams createBagsParams;
-    private CreateBagsParamsForm createBagsParamsForm;
-    private ArrayList<CreateBagResult>createBagResults;
-    private ClassTable<CreateBagResult> createBagResultTable;
-    private JButton okButton;
+    static final Log log = LogFactory.getLog(CreateBagsPanel.class);
+    CreateBagsParams createBagsParams;
+    CreateBagsParamsForm createBagsParamsForm;
+    ArrayList<CreateBagResult>createBagResults;
+    ClassTable<CreateBagResult> createBagResultTable;
+    JButton okButton;
     JLabel labelStatistics;
 
-    public void reportStatistics(int total,int totalSuccess){
-        
+    public void reportStatistics(int total,int totalSuccess){        
         getLabelStatistics().setText(
             Context.getMessage(
                 "CreateBagsPanel.labelStatistics",
@@ -72,6 +71,13 @@ public final class CreateBagsPanel extends JPanel{
     public JLabel getLabelStatistics() {
         if(labelStatistics == null){
             labelStatistics = new JLabel();
+            labelStatistics.setAlignmentX(LEFT_ALIGNMENT);
+            labelStatistics.setText(
+                Context.getMessage(
+                    "CreateBagsPanel.labelStatistics",
+                    new Object [] {0,0}
+                )
+            );
         }
         return labelStatistics;
     }
@@ -88,19 +94,22 @@ public final class CreateBagsPanel extends JPanel{
     }
     protected JComponent createContentPane() {
         JPanel panel = new JPanel();
-        BoxLayout layout = new BoxLayout(panel,BoxLayout.PAGE_AXIS);
+        BoxLayout layout = new BoxLayout(panel,BoxLayout.Y_AXIS);
         panel.setLayout(layout);
         panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));       
         
         JComponent form = getCreateBagsParamsForm().getControl();
+        form.setAlignmentX(LEFT_ALIGNMENT);
         panel.add(form);        
         
         JComponent buttonPanel = createButtonPanel();
+        buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
         panel.add(buttonPanel);
         
         panel.add(getLabelStatistics());
         
         JComponent table = getCreateBagResultTable().getControl();
+        table.setAlignmentX(LEFT_ALIGNMENT);
         final Dimension tDimension = new Dimension(500,200);        
         JScrollPane scroller = new JScrollPane(table);
         scroller.setPreferredSize(tDimension);
@@ -306,8 +315,8 @@ public final class CreateBagsPanel extends JPanel{
                                 }
                                 ok = true;
                             }catch(Exception e){    
-                                log(e.getMessage());
-                                log.debug(e);
+                                //log(e.getMessage());
+                                log.error(e);
                                 errors.add(e.getMessage());                                                              
                             }
                         }else{
@@ -339,8 +348,8 @@ public final class CreateBagsPanel extends JPanel{
                                 mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
                             }
                         }catch(Exception e){
-                            log(e.getMessage());                      
-                            e.printStackTrace(); 
+                            //log(e.getMessage());                      
+                            log.error(e);
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -389,8 +398,8 @@ public final class CreateBagsPanel extends JPanel{
                                 }
                             }                            
                         }catch(Exception e){
-                            log(e.getMessage());                         
-                            e.printStackTrace();
+                            //log(e.getMessage());                         
+                            log.error(e);
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -421,7 +430,7 @@ public final class CreateBagsPanel extends JPanel{
                                 "DefaultBag.createPreBag.Exception.description", 
                                 new Object [] {file,e.getMessage()}
                             );
-                            log(message);
+                            //log(message);
                             SwingUtils.ShowError(title,message);    	   
                         }
                     }else{	                        
@@ -435,7 +444,7 @@ public final class CreateBagsPanel extends JPanel{
                                 "DefaultBag.createPreBag.Exception.description", 
                                 new Object [] {file,e.getMessage()}
                             );
-                            log(message);
+                            //log(message);
                             SwingUtils.ShowError(title,message);    	   
                         }
                     }
@@ -450,9 +459,8 @@ public final class CreateBagsPanel extends JPanel{
                     addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                 }                
                 
-            }catch(Exception e){  
-                e.printStackTrace(); 
-                log(e.getMessage());                
+            }catch(Exception e){                  
+                //log(e.getMessage());                
                 log.error(e);
             }
             
@@ -533,9 +541,9 @@ public final class CreateBagsPanel extends JPanel{
                                 }
                                 ok = true;
                             }catch(Exception e){ 
-                                e.printStackTrace(); 
-                                log(e.getMessage());
-                                log.debug(e);
+                                //e.printStackTrace(); 
+                                //log(e.getMessage());
+                                log.error(e);
                                 errors.add(e.getMessage());
                             }
                             //haal uit payload lijst
@@ -572,8 +580,8 @@ public final class CreateBagsPanel extends JPanel{
                                 mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
                             }                           
                         }catch(Exception e){
-                            log(e.getMessage());
-                            e.printStackTrace();
+                            //log(e.getMessage());
+                            log.error(e);                            
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -606,9 +614,8 @@ public final class CreateBagsPanel extends JPanel{
                                 dcDoc = MetsUtils.generateDCDoc(dcElements,dcCandidates);
                             }
                             
-                            if(dcDoc != null){                               
+                            if(dcDoc != null){                                                               
                                 
-                                byte [] baginfo = MetsUtils.DCToBagInfo(dcDoc);
                                 ByteArrayInputStream baginfoIn = new ByteArrayInputStream(MetsUtils.DCToBagInfo(dcDoc));
                                 NameValueReaderImpl reader = new NameValueReaderImpl(
                                     "UTF-8",baginfoIn,"bagInfoTxt"
@@ -624,8 +631,8 @@ public final class CreateBagsPanel extends JPanel{
                                 }
                             }                            
                         }catch(Exception e){
-                            log(e.getMessage());
-                            e.printStackTrace();
+                            //log(e.getMessage());
+                            log.error(e);
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -652,7 +659,8 @@ public final class CreateBagsPanel extends JPanel{
                     if(!saveOk){                        
                         String message = Context.getMessage("bag.warning.savingFailed");
                         SwingUtils.ShowError(null,message);
-                        log(message);  
+                        log.error(message);
+                        //log(message);  
                         addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                         if(!isDone()){
                             setProgress(percent);                
@@ -669,9 +677,8 @@ public final class CreateBagsPanel extends JPanel{
                     }                  
                 }                
                 
-            }catch(Exception e){
-                e.printStackTrace(); 
-                log(e.getMessage());
+            }catch(Exception e){                
+                //log(e.getMessage());
                 log.error(e);                
             }
         
@@ -680,8 +687,8 @@ public final class CreateBagsPanel extends JPanel{
             return null;
         }               
     }    
-           
+    /*       
     public void log(String message) {
         ApplicationContextUtil.addConsoleMessage(message);
-    }
+    }*/
 }

@@ -17,8 +17,8 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.NewBagParams;
 
 public class StartNewBagHandler extends AbstractAction {
-    private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(StartNewBagHandler.class);
+    static final long serialVersionUID = 1L;
+    static final Log log = LogFactory.getLog(StartNewBagHandler.class);
     
     public StartNewBagHandler() {
         super();       
@@ -46,7 +46,7 @@ public class StartNewBagHandler extends AbstractAction {
             //clear payloads, tags, mets and premis
             bagView.clearBagHandler.clearExistingBag();
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e);
         }
     	MetsBag metsBag = bagView.getBag();
         
@@ -77,7 +77,10 @@ public class StartNewBagHandler extends AbstractAction {
         metsBag.setFile(null);
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms();
-    	ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
+        
+        log.error(Context.getMessage("bag.frame.newbaginmemory"));
+    	//ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
+        
     	bagView.updateNewBag();
     	
     	// set bagItVersion

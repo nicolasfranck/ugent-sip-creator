@@ -131,8 +131,7 @@ public class SaveBagHandler extends Handler {
         MetsBag metsBag = bagView.getBag();
         
         @Override
-        protected Object doInBackground() throws Exception {          
-           
+        protected Object doInBackground() throws Exception {
             
             Mets mets = metsBag.getMets();
             metsBag.setBagItMets(new DefaultBagItMets());
@@ -158,9 +157,8 @@ public class SaveBagHandler extends Handler {
                 saveOk = metsBag.write(bagWriter);
 
                                 
-            }catch(Exception e){    
-                e.printStackTrace();
-                log(e.getMessage());
+            }catch(Exception e){                    
+                //log(e.getMessage());
                 log.error(e.getMessage());                
             }             
             
@@ -168,26 +166,25 @@ public class SaveBagHandler extends Handler {
         }   
         @Override
         public void done(){            
-            super.done();          
-            
+            super.done();
             
             if (!saveOk) {                    
                 String message = Context.getMessage("bag.warning.savingFailed");
                 SwingUtils.ShowError(null,message);
-                log(message);
+                log.error(message);
+                //log(message);
             } else {
                 String message = Context.getMessage("bag.saved.description");
                 String title = Context.getMessage("bag.saved.title");
-                SwingUtils.ShowMessage(title,message);
-                log(message);
+                SwingUtils.ShowMessage(title,message);                
+                //log(message);
             }
 
             if(metsBag.isSerialized()){
                 if(clearAfterSaving){         
                     try{
                         bagView.clearBagHandler.clearExistingBag();
-                    }catch(Exception e){
-                        e.printStackTrace();
+                    }catch(Exception e){                        
                         log.error(e);
                     }                    
                     setClearAfterSaving(false);

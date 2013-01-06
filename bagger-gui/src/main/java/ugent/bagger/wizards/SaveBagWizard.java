@@ -15,8 +15,7 @@ import org.springframework.richclient.wizard.AbstractWizard;
 public class SaveBagWizard extends AbstractWizard {    
     static final Log log = LogFactory.getLog(SaveBagWizard.class);
     SaveBagWizardPage1 saveBagWizardPage1;    
-    protected HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
-    protected static final String EOL = System.getProperty("line.separator");
+    protected HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();    
 
     public SaveBagWizard(String wizardId){
         super(wizardId);

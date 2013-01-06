@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.richclient.wizard.AbstractWizard;
 import org.supercsv.io.CsvMapReader;
@@ -27,6 +29,7 @@ import ugent.bagger.params.VelocityTemplate;
  * @author nicolas
  */
 public class CSVWizard extends AbstractWizard {    
+    static Log log = LogFactory.getLog(CSVWizard.class);
     CSVWizardPage1 csv1WizardPage;
     CSVWizardPage2 csv2WizardPage;
     HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
@@ -119,8 +122,8 @@ public class CSVWizard extends AbstractWizard {
                                 firePropertyChange("addMdSec",mdSec,mdSec);                                
                             }
                             firePropertyChange("doneMdSec",null,null);                            
-                        }catch(Exception e){                           
-                            e.printStackTrace();
+                        }catch(Exception e){ 
+                            log.error(e);                         
                         }                        
                     }                    
                 };                
@@ -130,7 +133,7 @@ public class CSVWizard extends AbstractWizard {
             }            
             
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e);            
         }
         
         return true;

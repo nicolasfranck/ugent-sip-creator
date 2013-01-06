@@ -1,6 +1,5 @@
 package ugent.bagger.panels;
 
-
 import gov.loc.repository.bagger.ui.BagView;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -68,7 +67,7 @@ import ugent.rename.*;
  * @author nicolas
  */
 public class RenamePanel extends JPanel{
-    static Log logger = LogFactory.getLog(RenamePanel.class);
+    static final Log logger = LogFactory.getLog(RenamePanel.class);
     static final int BORDERWIDTH = 10;        
     JPanel panelSouth;
     JPanel panelRenamer;
@@ -914,7 +913,8 @@ public class RenamePanel extends JPanel{
         this.lastFile = lastFile;
     }       
     private class TaskRenumber extends DefaultWorker {
-        private RenumberParams renumberParams;
+        final Log log = LogFactory.getLog(TaskRenumber.class);
+        RenumberParams renumberParams;
         public TaskRenumber(RenumberParams renumberParams){
             super();
             this.renumberParams = renumberParams;
@@ -970,7 +970,8 @@ public class RenamePanel extends JPanel{
                                 pair.getSource(),pair.getTarget(),errorStr
                             }
                         );
-                        log(message);
+                        log.error(message);
+                        //log(message);
                         
                         return renumberParams.getOnErrorAction();
                     }
@@ -1007,15 +1008,16 @@ public class RenamePanel extends JPanel{
                 renumber.rename();                
             }catch(Exception e){
                 String message = Context.getMessage("RenamePanel.unknownException.message",new Object [] {e.getMessage()});
-                log(message);
-                logger.error(e.getMessage());
+                //log(message);
+                log.error(e.getMessage());
             }
             
             return null;
         }
     }
     private class TaskRename extends DefaultWorker {
-        private RenameParams renameParams;      
+        final Log log = LogFactory.getLog(TaskRename.class);
+        RenameParams renameParams;      
         public TaskRename(RenameParams renameParams){
             super();
             this.renameParams = renameParams;           
@@ -1094,7 +1096,8 @@ public class RenamePanel extends JPanel{
                                 pair.getSource(),pair.getTarget(),errorStr
                             }
                         );
-                        log(message);                        
+                        //log(message);                        
+                        log.error(message);
                         return renameParams.getOnErrorAction();
                     }
                     @Override
@@ -1131,8 +1134,8 @@ public class RenamePanel extends JPanel{
                 renamer.rename();
             }catch(Exception e){
                 String message = Context.getMessage("RenamePanel.unknownException.message",new Object [] {e.getMessage()});
-                log(message);
-                logger.error(e.getMessage());
+                //log(message);
+                log.error(e.getMessage());
             }
             
             return null;

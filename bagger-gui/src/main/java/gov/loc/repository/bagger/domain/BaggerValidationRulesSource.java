@@ -3,9 +3,14 @@ package gov.loc.repository.bagger.domain;
 import com.anearalone.mets.MdSec;
 import java.io.File;
 import java.util.ArrayList;
+import org.springframework.binding.PropertyAccessStrategy;
 import org.springframework.rules.Rules;
+import org.springframework.rules.constraint.CompoundConstraint;
 import org.springframework.rules.constraint.Constraint;
 import org.springframework.rules.constraint.property.RequiredIfTrue;
+import org.springframework.rules.constraint.XOr;
+import org.springframework.rules.constraint.property.AbstractPropertyConstraint;
+import org.springframework.rules.constraint.property.PropertyConstraint;
 import org.springframework.rules.support.DefaultRulesSource;
 import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.CreateBagsParams;
@@ -43,25 +48,29 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         }
         Constraint directoriesConstraint = new Constraint(){
             @Override
-            public boolean test(Object o) {
+            public boolean test(Object o) {                
                 ArrayList<File>directories = (ArrayList<File>)o;
                 return directories != null && !directories.isEmpty();
             }            
         };
         createBagsParamsRules.add("directories",directoriesConstraint);                
-        Constraint con = ifTrue(value("bagInPlace",new Constraint(){
+           
+        
+        PropertyConstraint bagInPlaceOutputDir = new AbstractPropertyConstraint("bagInPlace"){
             @Override
-            public boolean test(Object o) {                
-                return !((Boolean)o);
-            }        
-        }),value("outputDir",new Constraint(){
-            @Override
-            public boolean test(Object o) {
-                ArrayList<File>list = (ArrayList<File>)o;                
-                return list != null && !list.isEmpty();
-            }        
-        })); 
-        createBagsParamsRules.add(new RequiredIfTrue("outputDir",createBagsParamsRules.all(new Constraint [] {con})));                
+            protected boolean test(PropertyAccessStrategy pas) {                
+                Boolean bagInPlace = (Boolean) pas.getPropertyValue("bagInPlace");
+                ArrayList<File>outputDir = (ArrayList<File>) pas.getPropertyValue("outputDir");                
+               
+                if(bagInPlace){
+                    return true;
+                }else{
+                    return outputDir != null && !outputDir.isEmpty();
+                }
+            }
+        };       
+        createBagsParamsRules.add(bagInPlaceOutputDir);
+        
         Constraint metadataPaths = regexp("^[a-zA-Z0-9_\\-\\.]*(?:,[a-zA-Z0-9_\\-\\.]+)*$");
         createBagsParamsRules.add(value("metadataPaths",metadataPaths));        
         addRules(createBagsParamsRules);
