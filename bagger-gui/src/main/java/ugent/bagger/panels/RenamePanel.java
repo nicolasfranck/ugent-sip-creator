@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import org.apache.commons.logging.Log;
@@ -408,12 +409,19 @@ public class RenamePanel extends JPanel{
                 public void run() {
                     BusyIndicator.showAt(RenamePanel.this);
                     
-                    SwingUtils.expandTreeNode(fileSystemTree,fileSystemTreeNode);
+                    //laad lijst van schijven (C:, D:, E: ..)
+                    SwingUtils.expandTreeNode(fileSystemTree,fileSystemTreeNode,1);
+                    //open bestandslijst 1ste schijf
+                    if(fileSystemTreeNode.getChildCount() > 0){
+                        SwingUtils.expandTreeNode(fileSystemTree,(DefaultMutableTreeNode)fileSystemTreeNode.getChildAt(0),1);
+                    }
+                    
                     fileSystemTree.setSelectionPath(new TreePath(fileSystemTreeNode.getPath()));
                     
                     BusyIndicator.clearAt(RenamePanel.this);
                 }                    
             });
+            
         }
         return fileSystemTreeNode;
     }

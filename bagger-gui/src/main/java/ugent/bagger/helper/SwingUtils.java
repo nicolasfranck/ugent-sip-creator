@@ -200,10 +200,22 @@ public class SwingUtils {
         return Application.instance().getActiveWindow().getControl();
     }
     public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node){
-        tree.expandPath(new TreePath(node.getPath()));        
+        /*tree.expandPath(new TreePath(node.getPath()));        
         for(int i = 0;i < node.getChildCount();i++){
             expandTreeNode(tree,(DefaultMutableTreeNode) node.getChildAt(i));
-        }        
+        }*/
+        expandTreeNode(tree,node,Integer.MAX_VALUE);
+    }
+    public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node,int depth){
+        if(depth <= 0){
+            return;
+        }
+        System.out.println("depth: "+depth);
+        tree.expandPath(new TreePath(node.getPath()));                
+        for(int i = 0;i < node.getChildCount();i++){
+            System.out.println("child["+i+"]: "+node.getChildAt(i));
+            expandTreeNode(tree,(DefaultMutableTreeNode) node.getChildAt(i),depth - 1);
+        }
     }
     public static void ShowMessage(String title,String message){
         ShowMessage(title,message,JOptionPane.INFORMATION_MESSAGE);
