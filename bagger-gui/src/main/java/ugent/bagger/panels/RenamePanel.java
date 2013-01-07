@@ -329,10 +329,8 @@ public class RenamePanel extends JPanel{
         this.fileTable = fileTable;
     }
     public RenamePanel(){
-        setLayout(new BorderLayout());
-        SwingUtils.ShowBusy();
-        init();
-        SwingUtils.ShowDone();             
+        setLayout(new BorderLayout());        
+        init();             
     } 
     public LazyTreeNode getFileSystemTreeNode() {
         if(fileSystemTreeNode == null){
@@ -340,51 +338,24 @@ public class RenamePanel extends JPanel{
             //hieronder komen de verschillende roots van het bestandssysteem
             File rootFile = new File("");     
             fileSystemTreeNode = new LazyTreeNode("",new FileNode(rootFile),true);
-        
-            //sommige systemen hebben meerdere roots (C:/, D:/)
             
-            /*for(File file:File.listRoots()){
-                
-                if(!fsv.isFileSystemRoot(file)){                      
-                    continue;
-                }
-                
-                FileNode fn = new FileNode(file);
-                final LazyTreeNode node = new LazyTreeNode(
-                    file.getAbsolutePath(),
-                    fn,
-                    file.isDirectory()
-                );    
-                
-                File [] children = file.listFiles();
-                if(children == null){
-                    continue;
-                }
-                for(File child:children){                                
-                    LazyTreeNode childNode = new LazyTreeNode(
-                        child.getAbsolutePath(), 
-                        new FileNode(child), 
-                        child.isDirectory()
-                    );                    
-                    node.add(childNode);                                        
-                }                
-                
-                fileSystemTreeNode.add(node);
-            }*/
+            //sommige systemen hebben meerdere roots (C:/, D:/)
             File [] roots = File.listRoots();
+            System.out.println("roots: "+roots);
             for(int i = 0;i < roots.length;i++){
                 File file = roots[i];
+
                 if(!fsv.isFileSystemRoot(file)){                      
                     continue;
-                }
-                
+                }                
+
                 FileNode fn = new FileNode(file);
                 final LazyTreeNode node = new LazyTreeNode(
                     file.getAbsolutePath(),
                     fn,
                     file.isDirectory()
                 );    
-                
+
                 //laadt enkel children van eerste schijf
                 if(i == 0){
                     File [] children = file.listFiles();
@@ -399,28 +370,10 @@ public class RenamePanel extends JPanel{
                         );                    
                         node.add(childNode);                                        
                     }
-                }           
-                
+                }                           
                 fileSystemTreeNode.add(node);
-            }
+            }          
             
-            SwingUtilities.invokeLater(new Runnable(){
-                @Override
-                public void run() {
-                    BusyIndicator.showAt(RenamePanel.this);
-                    
-                    //laad lijst van schijven (C:, D:, E: ..)
-                    SwingUtils.expandTreeNode(fileSystemTree,fileSystemTreeNode,1);
-                    //open bestandslijst 1ste schijf
-                    if(fileSystemTreeNode.getChildCount() > 0){
-                        SwingUtils.expandTreeNode(fileSystemTree,(DefaultMutableTreeNode)fileSystemTreeNode.getChildAt(0),1);
-                    }
-                    
-                    fileSystemTree.setSelectionPath(new TreePath(fileSystemTreeNode.getPath()));
-                    
-                    BusyIndicator.clearAt(RenamePanel.this);
-                }                    
-            });
             
         }
         return fileSystemTreeNode;
@@ -430,95 +383,114 @@ public class RenamePanel extends JPanel{
     }
     public JTree getFileSystemTree() {
         if(fileSystemTree == null){
-            fileSystemTree = new JTree(); 
-            fileSystemModel = new FileLazyTreeModel(getFileSystemTreeNode(),fileSystemTree,Mode.DIRECTORIES_ONLY);
-            fileSystemTree.setModel(fileSystemModel);            
-            fileSystemTree.setCellRenderer(new LazyFileTreeCellRenderer());
-            fileSystemTree.setRootVisible(false);
-            fileSystemTree.setShowsRootHandles(false);
-            fileSystemTree.addMouseListener(new MouseAdapter(){
+            fileSystemTree = new JTree();                    
+            
+            SwingUtilities.invokeLater(new Runnable(){
                 @Override
-                public void mouseClicked(MouseEvent e){
-                    if(fileSystemTree.isCollapsed(fileSystemTree.getRowForLocation(e.getX(),e.getY()))) {
-                        fileSystemTree.expandRow(fileSystemTree.getRowForLocation(e.getX(),e.getY()));
-                    }
-                    else{
-                        fileSystemTree.collapseRow(fileSystemTree.getRowForLocation(e.getX(),e.getY()));
-                    }
-                } 
-            });            
-            fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
-                @Override
-                public void treeWillExpand(TreeExpansionEvent tee) throws ExpandVetoException {                    
+                public void run() {
+                    BusyIndicator.showAt(RenamePanel.this);
                     
-                    setStatusError(null);                    
-                    
-                    TreePath tpath = tee.getPath();
-                    LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
-                    FileNode fileNode = (FileNode) node.getUserObject();
-                    File file = fileNode.getFile();                
-                    
-                    boolean doEnable = file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file);
-                    
-                    if(file.isDirectory()){                    
-                        if(!file.canRead()){
-                            String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
-                                file.getAbsolutePath()
-                            });
-                            SwingUtils.ShowError(null,error);
-                            setStatusError(error);
-                            
-                            setLastFile(file);
-                            reloadFileTable();
-                                    
-                            throw new ExpandVetoException(tee);
-                        }else if(!file.canWrite()){
-                            setStatusError(
-                                Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
-                                    file.getAbsolutePath()
-                                })    
-                            );
-                        }else if(getForbiddenFiles().contains(file)){
-                            String error =  Context.getMessage("RenamePanel.error.forbidden",new String [] {
-                                file.getAbsolutePath()
-                            });
-                            setStatusError(error);
-                            SwingUtils.ShowError(null,error);
-                            throw new ExpandVetoException(tee);
-                        }else{                            
-                            setStatusMessage(file.getAbsolutePath());
-                        }
-                    }                             
-                    setFormsEnabled(doEnable);                                        
-                }
-                @Override
-                public void treeWillCollapse(TreeExpansionEvent tee) throws ExpandVetoException {             
-                }                
-            });
-            fileSystemTree.addTreeSelectionListener(new TreeSelectionListener(){
-                @Override
-                public void valueChanged(TreeSelectionEvent tse) {            
-                    TreePath tpath = tse.getPath();
-                    LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
-                    FileNode fnode = (FileNode) node.getUserObject();
-                    File file = fnode.getFile();
-                    if(file.isDirectory()){
-                        setLastFile(file);
-                        reloadFileTable();      
-                        boolean isForbidden = false;
-                        for(File forbiddenFile:getForbiddenFiles()){
-                            if(forbiddenFile == null){
-                                continue;
-                            }                            
-                            if(forbiddenFile.equals(file) || FUtils.isDescendant(forbiddenFile,file)){
-                                isForbidden = true;
-                                break;
+                    fileSystemModel = new FileLazyTreeModel(getFileSystemTreeNode(),fileSystemTree,Mode.DIRECTORIES_ONLY);
+                    fileSystemTree.setModel(fileSystemModel);            
+                    fileSystemTree.setCellRenderer(new LazyFileTreeCellRenderer());
+                    fileSystemTree.setRootVisible(false);
+                    fileSystemTree.setShowsRootHandles(false);
+                    fileSystemTree.addMouseListener(new MouseAdapter(){
+                        @Override
+                        public void mouseClicked(MouseEvent e){
+                            if(fileSystemTree.isCollapsed(fileSystemTree.getRowForLocation(e.getX(),e.getY()))) {
+                                fileSystemTree.expandRow(fileSystemTree.getRowForLocation(e.getX(),e.getY()));
                             }
+                            else{
+                                fileSystemTree.collapseRow(fileSystemTree.getRowForLocation(e.getX(),e.getY()));
+                            }
+                        } 
+                    });            
+                    fileSystemTree.addTreeWillExpandListener(new TreeWillExpandListener() {
+                        @Override
+                        public void treeWillExpand(TreeExpansionEvent tee) throws ExpandVetoException {                    
+
+                            setStatusError(null);                    
+
+                            TreePath tpath = tee.getPath();
+                            LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
+                            FileNode fileNode = (FileNode) node.getUserObject();
+                            File file = fileNode.getFile();                
+
+                            boolean doEnable = file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file);
+
+                            if(file.isDirectory()){                    
+                                if(!file.canRead()){
+                                    String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
+                                        file.getAbsolutePath()
+                                    });
+                                    SwingUtils.ShowError(null,error);
+                                    setStatusError(error);
+
+                                    setLastFile(file);
+                                    reloadFileTable();
+
+                                    throw new ExpandVetoException(tee);
+                                }else if(!file.canWrite()){
+                                    setStatusError(
+                                        Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
+                                            file.getAbsolutePath()
+                                        })    
+                                    );
+                                }else if(getForbiddenFiles().contains(file)){
+                                    String error =  Context.getMessage("RenamePanel.error.forbidden",new String [] {
+                                        file.getAbsolutePath()
+                                    });
+                                    setStatusError(error);
+                                    SwingUtils.ShowError(null,error);
+                                    throw new ExpandVetoException(tee);
+                                }else{                            
+                                    setStatusMessage(file.getAbsolutePath());
+                                }
+                            }                             
+                            setFormsEnabled(doEnable);                                        
                         }
-                        setFormsEnabled(file.isDirectory() && file.canWrite() && !isForbidden);                        
-                    }                   
-                }
-            });           
+                        @Override
+                        public void treeWillCollapse(TreeExpansionEvent tee) throws ExpandVetoException {             
+                        }                
+                    });
+                    fileSystemTree.addTreeSelectionListener(new TreeSelectionListener(){
+                        @Override
+                        public void valueChanged(TreeSelectionEvent tse) {            
+                            TreePath tpath = tse.getPath();
+                            LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
+                            FileNode fnode = (FileNode) node.getUserObject();
+                            File file = fnode.getFile();
+                            if(file.isDirectory()){
+                                setLastFile(file);
+                                reloadFileTable();      
+                                boolean isForbidden = false;
+                                for(File forbiddenFile:getForbiddenFiles()){
+                                    if(forbiddenFile == null){
+                                        continue;
+                                    }                            
+                                    if(forbiddenFile.equals(file) || FUtils.isDescendant(forbiddenFile,file)){
+                                        isForbidden = true;
+                                        break;
+                                    }
+                                }
+                                setFormsEnabled(file.isDirectory() && file.canWrite() && !isForbidden);                        
+                            }                   
+                        }
+                    });  
+                    
+                    //laad lijst van schijven (C:, D:, E: ..)
+                    SwingUtils.expandTreeNode(fileSystemTree,fileSystemTreeNode,1);
+                    //open bestandslijst 1ste schijf
+                    if(fileSystemTreeNode.getChildCount() > 0){
+                        SwingUtils.expandTreeNode(fileSystemTree,(DefaultMutableTreeNode)fileSystemTreeNode.getChildAt(0),1);
+                    }
+
+                    fileSystemTree.setSelectionPath(new TreePath(fileSystemTreeNode.getPath()));                                        
+                    
+                    BusyIndicator.clearAt(RenamePanel.this);
+                }                    
+            });
                    
         }
         return fileSystemTree;
