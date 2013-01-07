@@ -196,7 +196,7 @@ public class OpenBagHandler extends AbstractAction {
             try{
                 premis = PremisUtils.setPremis(mets);
             }catch(Exception e){
-                log.error(e);                
+                log.error(e.getMessage());             
             }
             
             metsBag.setPremis(premis);    

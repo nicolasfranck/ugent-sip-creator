@@ -127,7 +127,7 @@ public class BagitMetsValidator {
                     System.out.println(warning);
                 }
             }catch(BagitMetsValidationException e){
-                log.error(e);
+                log.error(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -239,7 +239,7 @@ public class BagitMetsValidator {
                 fobject = FUtils.resolveFile(entry);
                 exists = fobject.exists();
             }catch(Exception e){
-                log.error(e);
+                log.error(e.getMessage());
                 e.printStackTrace();
             }            
             if(fobject == null || !exists){

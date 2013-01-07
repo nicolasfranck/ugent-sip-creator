@@ -185,7 +185,7 @@ public class SaveBagHandler extends Handler {
                     try{
                         bagView.clearBagHandler.clearExistingBag();
                     }catch(Exception e){                        
-                        log.error(e);
+                        log.error(e.getMessage());
                     }                    
                     setClearAfterSaving(false);
                 }else{

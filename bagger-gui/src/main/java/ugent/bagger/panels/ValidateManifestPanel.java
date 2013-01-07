@@ -160,7 +160,7 @@ public class ValidateManifestPanel extends JPanel{
                         addValidateManifestResult(new ValidateManifestResult(manifestFile,childFile,fixity.getFixityValue(),checksumComputed));
                     }                        
                 }catch(FileNotFoundException e){
-                    log.error(e);
+                    log.error(e.getMessage());
                 }
                 int percent = (int)Math.floor( ((++i) / ((float)getValidateManifestParams().getFiles().size()))*100);                    
                 setProgress(percent);                                

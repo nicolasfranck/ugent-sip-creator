@@ -9,9 +9,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -33,7 +30,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
-import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.ValidatingFormModel;
@@ -67,7 +63,7 @@ import ugent.rename.*;
  * @author nicolas
  */
 public class RenamePanel extends JPanel{
-    static final Log logger = LogFactory.getLog(RenamePanel.class);
+    static final Log log = LogFactory.getLog(RenamePanel.class);
     static final int BORDERWIDTH = 10;        
     JPanel panelSouth;
     JPanel panelRenamer;
@@ -81,6 +77,7 @@ public class RenamePanel extends JPanel{
     JButton submitRenumberButton;          
     JButton reloadFileTableButton;
     JButton parentFileButton;
+    JLabel lastFileLabel;
     File lastFile;    
     JTable resultTable;
     DefaultTableModel resultTableModel;
@@ -100,10 +97,14 @@ public class RenamePanel extends JPanel{
     JPanel panelFileTable;
     ArrayList<File>selectedFiles = new ArrayList<File>();
     HashMap<String,RenameParams>renameParamsTemplates;
-    ArrayList<File>forbiddenFiles;
-    
-    CircularFifoBuffer selectedFileBuffer = new CircularFifoBuffer(10);
+    ArrayList<File>forbiddenFiles;    
 
+    public JLabel getLastFileLabel() {
+        if(lastFileLabel == null){
+            lastFileLabel = new JLabel(getLastFile().getAbsolutePath(),SwingConstants.RIGHT);                                    
+        }
+        return lastFileLabel;
+    }    
     public JButton getReloadFileTableButton() {
         if(reloadFileTableButton == null){
             reloadFileTableButton = new JButton(Context.getMessage("RenamePanel.reloadFileTableButton.label"));            
@@ -130,6 +131,7 @@ public class RenamePanel extends JPanel{
         if(parentFileButton == null){            
             parentFileButton = new JButton(Context.getMessage("RenamePanel.parentFileButton.label"));                        
             parentFileButton.setIcon(UIManager.getIcon("FileChooser.upFolderIcon"));
+            parentFileButton.setEnabled(getLastFile().getParentFile() != null);
             parentFileButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -155,6 +157,7 @@ public class RenamePanel extends JPanel{
             fileTableButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));                        
             fileTableButtonPanel.add(getParentFileButton()); 
             fileTableButtonPanel.add(getReloadFileTableButton());
+            fileTableButtonPanel.add(getLastFileLabel());
         }
         return fileTableButtonPanel;
     }
@@ -209,7 +212,8 @@ public class RenamePanel extends JPanel{
             
             fileTable.setDoubleClickHandler(new ActionCommandExecutor(){
                 @Override
-                public void execute() {
+                public void execute() {                    
+                    
                     AbstractFile afile = fileTable.getSelected();
                     
                     //is geen map
@@ -252,17 +256,18 @@ public class RenamePanel extends JPanel{
                     //herlaad tabel
                     SwingUtilities.invokeLater(new Runnable(){
                         @Override
-                        public void run() { 
+                        public void run() {                             
                             BusyIndicator.showAt(RenamePanel.this);
                             
-                            reloadFileTable(file);                    
+                            setLastFile(file);
+                            reloadFileTable();                    
                             LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);                    
                             TreePath tpath = getFileSystemTree().getSelectionPath();                    
                             TreePath tpath2 = tpath.pathByAddingChild(node);                       
                             getFileSystemTree().scrollPathToVisible(tpath2);                            
                             getFileSystemTree().setSelectionPath(tpath2);
                             
-                            BusyIndicator.clearAt(RenamePanel.this);
+                            BusyIndicator.clearAt(RenamePanel.this);                            
                         }
                     });                  
                     
@@ -312,7 +317,7 @@ public class RenamePanel extends JPanel{
         }
         return fileTable;
     }
-    public void reloadFileTable(){
+    public void reloadFileTable(){        
         reloadFileTable(getLastFile()); 
     }
     public void reloadFileTable(File file){         
@@ -336,7 +341,8 @@ public class RenamePanel extends JPanel{
             fileSystemTreeNode = new LazyTreeNode("",new FileNode(rootFile),true);
         
             //sommige systemen hebben meerdere roots (C:/, D:/)
-            for(File file:File.listRoots()){
+            
+            /*for(File file:File.listRoots()){
                 
                 if(!fsv.isFileSystemRoot(file)){                      
                     continue;
@@ -361,6 +367,38 @@ public class RenamePanel extends JPanel{
                     );                    
                     node.add(childNode);                                        
                 }                
+                
+                fileSystemTreeNode.add(node);
+            }*/
+            File [] roots = File.listRoots();
+            for(int i = 0;i < roots.length;i++){
+                File file = roots[i];
+                if(!fsv.isFileSystemRoot(file)){                      
+                    continue;
+                }
+                
+                FileNode fn = new FileNode(file);
+                final LazyTreeNode node = new LazyTreeNode(
+                    file.getAbsolutePath(),
+                    fn,
+                    file.isDirectory()
+                );    
+                
+                //laadt enkel children van eerste schijf
+                if(i == 0){
+                    File [] children = file.listFiles();
+                    if(children == null){
+                        continue;
+                    }
+                    for(File child:children){                                
+                        LazyTreeNode childNode = new LazyTreeNode(
+                            child.getAbsolutePath(), 
+                            new FileNode(child), 
+                            child.isDirectory()
+                        );                    
+                        node.add(childNode);                                        
+                    }
+                }           
                 
                 fileSystemTreeNode.add(node);
             }
@@ -696,18 +734,6 @@ public class RenamePanel extends JPanel{
         splitterVertical.setResizeWeight(0.5);
         
         add(splitterVertical);  
-        
-        //register escape - listener
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                System.out.println("key pressed: "+e.getKeyCode());
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    System.out.println("escape pressed!");
-                }
-            }
-        });
-        
     }    
     protected JPanel getNewRenumberPanel(){
         JPanel panel = new JPanel();
@@ -907,10 +933,10 @@ public class RenamePanel extends JPanel{
         }
         return lastFile;
     }
-    protected void setLastFile(File lastFile) { 
-        selectedFileBuffer.add(lastFile);
-        getParentFileButton().setEnabled(lastFile.getParentFile() != null);        
-        this.lastFile = lastFile;
+    protected void setLastFile(File lastFile) {                 
+        getParentFileButton().setEnabled(lastFile.getParentFile() != null);     
+        getLastFileLabel().setText(lastFile.getAbsolutePath());
+        this.lastFile = lastFile;        
     }       
     private class TaskRenumber extends DefaultWorker {
         final Log log = LogFactory.getLog(TaskRenumber.class);

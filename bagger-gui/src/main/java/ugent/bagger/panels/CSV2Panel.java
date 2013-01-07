@@ -113,7 +113,7 @@ public class CSV2Panel extends JPanel{
             getTextArea().setText(out.toString());
             
         }catch(Exception e){
-            log.error(e);            
+            log.error(e.getMessage());
         }        
     }    
 }

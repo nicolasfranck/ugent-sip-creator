@@ -19,7 +19,7 @@ import ugent.bagger.helper.SwingUtils;
  * @author nicolas
  */
 public class TaskAddMdSecFromFile extends DefaultWorker {    
-    static Log log = LogFactory.getLog(TaskAddMdSecFromFile.class);
+    static final Log log = LogFactory.getLog(TaskAddMdSecFromFile.class);
     File [] files;
     int succeeded = 0;
     int numErrors = 0;
@@ -38,6 +38,8 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
         for(int i = 0;i<files.length;i++){                                                        
             File file = files[i];
             
+            String error = null;
+            
             try{
                 MdSec mdSec = MetsUtils.createMdSec(file);                        
                 String namespace = mdSec.getMdWrap().getXmlData().get(0).getNamespaceURI();
@@ -55,78 +57,43 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                 }
                 send(mdSec);                    
                 succeeded++;
-            }catch(IOException e){                  
-                numErrors++;
-                //e.printStackTrace();
-                log.error(e);
-                /*log(Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
+            }catch(IOException e){                                  
+                error = Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
                     file,e.getMessage()
-                }));*/
-                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
+                });                
+            }catch(SAXException e){                                  
+                error = Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
                     file,e.getMessage()
-                }));
-            }catch(SAXException e){                  
-                numErrors++;
-                //e.printStackTrace();
-                log.error(e);
-                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
-                    file,e.getMessage()
-                }));
-                /*log(Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
-                    file,e.getMessage()
-                })+"\n");*/
-            }catch(ParserConfigurationException e){                  
-                numErrors++;
-                //e.printStackTrace();
-                log.error(e);
-                /*log(Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
+                });                
+            }catch(ParserConfigurationException e){                                  
+                error = Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
                     e.getMessage()
-                })+"\n");*/
-                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
-                    e.getMessage()
-                }));
-            }catch(IllegalNamespaceException e){                
+                });
+            }catch(IllegalNamespaceException e){                                
+                error = Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
+                    file,e.getNamespace()
+                });
+            }
+            catch(NoNamespaceException e){                                                 
+                error = Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
+                    file
+                });
+            }catch(DtdNoFixFoundException e){                                    
+                error = Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
+                    file
+                });
+            }catch(Exception e){                                        
+                error = Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
+                    file
+                });
+            }
+            
+            if(error != null){
                 numErrors++;
-                //e.printStackTrace();
-                log.error(e);
-                /*log(Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
-                    file,e.getNamespace()
-                })+"\n");*/
-                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
-                    file,e.getNamespace()
-                }));
+                SwingUtils.ShowError(null,error);
+                log.error(error);
             }
-            catch(NoNamespaceException e){                          
-                numErrors++;        
-                //e.printStackTrace();
-                log.error(e);
-                /*log(Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
-                    file
-                })+"\n");*/
-                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
-                    file
-                }));
-            }catch(DtdNoFixFoundException e){
-                numErrors++;        
-                //e.printStackTrace();
-                log.error(e);
-                /*log(Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
-                    file
-                })+"\n");*/
-                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
-                    file
-                }));
-            }catch(Exception e){
-                numErrors++;        
-                //e.printStackTrace();
-                log.error(e);
-                /*log(Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
-                    file
-                })+"\n");*/
-                SwingUtils.ShowError(null,Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
-                    file
-                }));
-            }
+            
             int percent = (int)Math.floor( ((i+1) / ((float)files.length))*100);                                                                        
             if(!isDone()){
                 setProgress(percent); 

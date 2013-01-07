@@ -138,23 +138,23 @@ abstract public class AbstractRenamer {
                     l.onRenameSuccess(pair,i);
                 }
             }catch(TargetExistsException e){
-                log.error(e);
+                log.error(e.getMessage());
                 action = l.onError(pair,RenameError.TARGET_EXISTS,e.getMessage(),i);                                        
             }catch(ParentNotWritableException e){                
-                log.error(e);                               
+                log.error(e.getMessage());
                 action = l.onError(pair,RenameError.PARENT_NOT_WRITABLE,e.getMessage(),i);
             }catch(FileNotFoundException e){
-                log.error(e);                                
+                log.error(e.getMessage());
                 action = l.onError(pair,RenameError.FILE_NOT_FOUND,e.getMessage(),i);
             }catch(IOException e){
-                log.error(e);                              
+                log.error(e.getMessage());
                 action = l.onError(pair,RenameError.IO_EXCEPTION,e.getMessage(),i);
             }catch(SecurityException e){
-                log.error(e);                                
+                log.error(e.getMessage());
                 action = l.onError(pair,RenameError.SECURITY_EXCEPTION,e.getMessage(),i);
             }            
             catch(Exception e){
-                log.error(e);                            
+                log.error(e.getMessage());
                 action = l.onError(pair,RenameError.UNKNOWN_ERROR,e.getMessage(),i);
             }            
             

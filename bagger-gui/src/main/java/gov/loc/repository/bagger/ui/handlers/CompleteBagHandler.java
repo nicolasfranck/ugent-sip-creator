@@ -51,8 +51,10 @@ public class CompleteBagHandler extends Handler /*implements Loggable*/ {
         
         @Override
         protected Object doInBackground() throws Exception {           
-            
+                        
             MetsBag metsBag = bagView.getBag();
+            log.error(Context.getMessage("CompleteBagHandler.validationStarted",new Object [] {metsBag.getFile()}));
+            
             try {
                 CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
                 completeVerifier.addProgressListener(this);
@@ -120,8 +122,12 @@ public class CompleteBagHandler extends Handler /*implements Loggable*/ {
                     String message = Context.getMessage("defaultBag.bagIsComplete");
                     log.error(message);
                     SwingUtils.ShowMessage(message,message);                  
-                }                
-                log.error(result.toString());
+                }             
+                
+                log.debug(result.toString());
+                
+                log.error(Context.getMessage("CompleteBagHandler.validationDone",new Object [] {BagView.getInstance().getBag().getFile()}));
+
             }            
         }
     }

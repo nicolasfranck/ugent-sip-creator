@@ -107,7 +107,7 @@ public class MdSecSourcePanel extends JPanel{
                 try{
                     loadFromMdSec(getMdSecPropertiesTable().getSelected().getMdSec());
                 }catch(Exception e){
-                    log.error(e);
+                    log.error(e.getMessage());
                 }                                
                 SwingUtils.ShowDone();
                 firePropertyChange("ok",null,null);
@@ -174,7 +174,7 @@ public class MdSecSourcePanel extends JPanel{
             
             
         }catch(Exception e){
-            log.error(e);            
+            log.error(e.getMessage());
         }        
     }
 }

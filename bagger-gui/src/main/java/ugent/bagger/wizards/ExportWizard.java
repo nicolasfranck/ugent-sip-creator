@@ -186,22 +186,22 @@ public class ExportWizard extends AbstractWizard {
                     try {
                         exporter.export(metsBag,mets,new BufferedOutputStream(new FileOutputStream(outputFile)));
                         success = true;
-                    } catch (IOException ex) {                                                
-                        log.error(ex);
-                    } catch (BagitMetsValidationException ex) {                                                
-                        log.error(ex);
-                    } catch (DatatypeConfigurationException ex) {                    
-                        log.error(ex);
-                    } catch (ParserConfigurationException ex) {                        
-                        log.error(ex);
-                    } catch (TransformerException ex) {                        
-                        log.error(ex);
-                    } catch (SAXException ex) {                        
-                        log.error(ex);
-                    } catch (ParseException ex) {                        
-                        log.error(ex);
-                    } catch(Exception ex){                        
-                        log.error(ex);
+                    } catch (IOException e) {                                                
+                        log.error(e.getMessage());
+                    } catch (BagitMetsValidationException e) {                                                
+                        log.error(e.getMessage());
+                    } catch (DatatypeConfigurationException e) {                    
+                        log.error(e.getMessage());
+                    } catch (ParserConfigurationException e) {                        
+                        log.error(e.getMessage());
+                    } catch (TransformerException e) {                        
+                        log.error(e.getMessage());
+                    } catch (SAXException e) {                        
+                        log.error(e.getMessage());
+                    } catch (ParseException e) {                        
+                        log.error(e.getMessage());
+                    } catch(Exception e){                        
+                        log.error(e.getMessage());
                     }
                     
                     //report                                    
@@ -217,7 +217,7 @@ public class ExportWizard extends AbstractWizard {
             
             
         }catch(Exception e){            
-            log.error(e);
+            log.error(e.getMessage());
         }                
         return true;
     }    

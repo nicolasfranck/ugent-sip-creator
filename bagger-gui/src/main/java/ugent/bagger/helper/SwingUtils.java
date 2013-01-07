@@ -123,7 +123,7 @@ public class SwingUtils {
                 }                
             }catch(Exception e){
                 e.printStackTrace();
-                log.error(e);
+                log.error(e.getMessage());
             }            
         }
         workers.clear();

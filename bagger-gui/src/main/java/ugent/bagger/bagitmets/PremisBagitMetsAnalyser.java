@@ -170,7 +170,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 try{
                     mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
                 }catch(Exception e){
-                    log.error(e);
+                    log.error(e.getMessage());
                     e.printStackTrace();
                 }            
             }            
@@ -178,7 +178,7 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
             amdSec.getDigiprovMD().add(mdSec);
         
         }catch(Exception e){
-            log.error(e);
+            log.error(e.getMessage());
             e.printStackTrace();
         }        
     }    

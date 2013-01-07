@@ -48,7 +48,7 @@ public final class InfoInputPane extends JTabbedPane {
             try{
                 PremisUtils.setPremis(mets);
             }catch(Exception e){
-                log.error(e);                
+                log.error(e.getMessage());              
             }            
         }
         return mets;
@@ -109,7 +109,7 @@ public final class InfoInputPane extends JTabbedPane {
                     invalidate();
                     repaint();
                 }catch (Exception e){
-                    log.error(e);                    
+                    log.error(e.getMessage());                 
                 }
             }
         });

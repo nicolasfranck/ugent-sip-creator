@@ -316,7 +316,7 @@ public final class CreateBagsPanel extends JPanel{
                                 ok = true;
                             }catch(Exception e){    
                                 //log(e.getMessage());
-                                log.error(e);
+                                log.error(e.getMessage());
                                 errors.add(e.getMessage());                                                              
                             }
                         }else{
@@ -349,7 +349,7 @@ public final class CreateBagsPanel extends JPanel{
                             }
                         }catch(Exception e){
                             //log(e.getMessage());                      
-                            log.error(e);
+                            log.error(e.getMessage());
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -399,7 +399,7 @@ public final class CreateBagsPanel extends JPanel{
                             }                            
                         }catch(Exception e){
                             //log(e.getMessage());                         
-                            log.error(e);
+                            log.error(e.getMessage());
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -424,7 +424,7 @@ public final class CreateBagsPanel extends JPanel{
                         try {
                             metsBag.createPreBagAddKeepFilesToEmptyFolders(file,getCreateBagsParams().getVersion(),ignoreFiles);                                           
                         } catch (Exception e) {
-                            log.error(e);             
+                            log.error(e.getMessage());
                             String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
                             String message = Context.getMessage(
                                 "DefaultBag.createPreBag.Exception.description", 
@@ -437,7 +437,7 @@ public final class CreateBagsPanel extends JPanel{
                         try {
                             metsBag.createPreBag(file,getCreateBagsParams().getVersion(),ignoreFiles);                      
                         } catch (Exception e) {
-                            log.error(e); 
+                            log.error(e.getMessage());
 
                             String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
                             String message = Context.getMessage(
@@ -461,7 +461,7 @@ public final class CreateBagsPanel extends JPanel{
                 
             }catch(Exception e){                  
                 //log(e.getMessage());                
-                log.error(e);
+                log.error(e.getMessage());
             }
             
             BusyIndicator.clearAt(CreateBagsPanel.this);    
@@ -543,7 +543,7 @@ public final class CreateBagsPanel extends JPanel{
                             }catch(Exception e){ 
                                 //e.printStackTrace(); 
                                 //log(e.getMessage());
-                                log.error(e);
+                                log.error(e.getMessage());
                                 errors.add(e.getMessage());
                             }
                             //haal uit payload lijst
@@ -581,7 +581,7 @@ public final class CreateBagsPanel extends JPanel{
                             }                           
                         }catch(Exception e){
                             //log(e.getMessage());
-                            log.error(e);                            
+                            log.error(e.getMessage());
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -632,7 +632,7 @@ public final class CreateBagsPanel extends JPanel{
                             }                            
                         }catch(Exception e){
                             //log(e.getMessage());
-                            log.error(e);
+                            log.error(e.getMessage());
                             errors.add(e.getMessage());
                             addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                             if(!isDone()){
@@ -679,7 +679,7 @@ public final class CreateBagsPanel extends JPanel{
                 
             }catch(Exception e){                
                 //log(e.getMessage());
-                log.error(e);                
+                log.error(e.getMessage());
             }
         
             BusyIndicator.clearAt(CreateBagsPanel.this);

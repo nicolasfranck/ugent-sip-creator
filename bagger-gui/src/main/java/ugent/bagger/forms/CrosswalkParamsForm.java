@@ -1,8 +1,5 @@
 package ugent.bagger.forms;
 
-import java.awt.Component;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -11,7 +8,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -23,7 +19,6 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.Binding;
-import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.richclient.list.DynamicComboBoxListModel;
@@ -112,6 +107,8 @@ public class CrosswalkParamsForm extends AbstractForm{
                 
                         String transformFromNamespace = null;
                         String transformToNamespace = null;
+                        
+                        String error = null;
 
                         try{                       
                             Document document = XML.XMLToDocument(files.get(0));
@@ -163,85 +160,60 @@ public class CrosswalkParamsForm extends AbstractForm{
                             //enable combobox
                             transformComboBox.setEnabled(true);                      
 
-                        } catch (ParserConfigurationException ex) {
-                            log.error(ex);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.ParserConfigurationException.description",
-                                    new Object [] {files.get(0),ex.getMessage()}
-                                )
+                        } catch (ParserConfigurationException e) {                            
+                            error =   Context.getMessage(
+                                "XMLCrosswalkDialog.import.ParserConfigurationException.description",
+                                new Object [] {files.get(0),e.getMessage()}                                
                             );
-                        } catch (SAXException ex) {
-                            log.error(ex);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.SAXException.description",
-                                    new Object [] {files.get(0),ex.getMessage()}
-                                )
+                        } catch (SAXException e) {                            
+                            error = Context.getMessage(
+                                "XMLCrosswalkDialog.import.SAXException.description",
+                                new Object [] {files.get(0),e.getMessage()}                                
                             );
-                        } catch (IOException ex) {
-                            log.error(ex);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.IOException.description",
-                                    new Object [] {files.get(0),ex.getMessage()}
-                                )
+                        } catch (IOException e) {                            
+                            error = Context.getMessage(
+                                "XMLCrosswalkDialog.import.IOException.description",
+                                new Object [] {files.get(0),e.getMessage()}                                
                             );
                         }catch(NoNamespaceException e){
-                            log.error(e);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.NoNamespaceException.description",
-                                    new Object [] {files.get(0)}
-                                )
+                            error = Context.getMessage(
+                                "XMLCrosswalkDialog.import.NoNamespaceException.description",
+                                new Object [] {files.get(0)}                                
                             );                                             
                         }catch(IllegalNamespaceException e){
-                            log.error(e);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.IllegalNamespaceException.description",
-                                    new Object [] {files.get(0),transformFromNamespace}
-                                )
+                            error = Context.getMessage(
+                                "XMLCrosswalkDialog.import.IllegalNamespaceException.description",
+                                new Object [] {files.get(0),transformFromNamespace}                                
                             );
                         }catch(NoTransformationFoundException e){
-                            log.error(e);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.NoTransformationFoundException.description",
-                                    new Object [] {files.get(0)}
-                                )
+                            error = Context.getMessage(
+                                "XMLCrosswalkDialog.import.NoTransformationFoundException.description",
+                                new Object [] {files.get(0)}                                
                             );
                         }catch(DtdNoFixFoundException e){     
-                            log.error(e);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.DtdNoFixFoundException.description",
-                                    new Object []{
-                                        files.get(0).getAbsolutePath(),e.getMessage()
-                                    }
-                                )                            
+                            error = Context.getMessage(
+                                "XMLCrosswalkDialog.import.DtdNoFixFoundException.description",
+                                new Object []{
+                                    files.get(0).getAbsolutePath(),e.getMessage()
+                                }                                                         
                             );                         
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                            log.error(e);
-                            SwingUtils.ShowError(
-                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
-                                Context.getMessage(
-                                    "XMLCrosswalkDialog.import.Exception.description",
-                                    new Object []{
-                                        files.get(0).getAbsolutePath(),e.getMessage()
-                                    }
-                                )                            
+                        }catch(Exception e){
+                            error = Context.getMessage(
+                                "XMLCrosswalkDialog.import.Exception.description",
+                                new Object []{
+                                    files.get(0).getAbsolutePath(),e.getMessage()
+                                }                                                         
                             );                        
                         }
+                        
+                        if(error != null){
+                            SwingUtils.ShowError(
+                                Context.getMessage("XMLCrosswalkDialog.Exception.title"),
+                                error                            
+                            );       
+                            log.error(error);
+                        }
+                        
                         SwingUtils.ShowDone();
                     }                    
                 });               

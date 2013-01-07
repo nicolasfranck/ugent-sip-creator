@@ -236,7 +236,7 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                                     digiprovMDBagit.setID("bagit");
                                     getEditDmdSecPropertiesTable().add(digiprovMDBagit);
                                 }catch(Exception e){
-                                    log.error(e);                                    
+                                    log.error(e.getMessage());
                                 }
                             }else{
                                 digiprovMDBagit.getMdWrap().getXmlData().clear();
@@ -245,14 +245,14 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
                             
                             
                         }catch(Exception e){
-                            log.error(e);
+                            log.error(e.getMessage());
                         }
                         
 
                     }catch(ParseException e){
-                        log.error(e);
+                        log.error(e.getMessage());
                     }catch(ParserConfigurationException e){
-                        log.error(e);
+                        log.error(e.getMessage());
                     }
                     
                     

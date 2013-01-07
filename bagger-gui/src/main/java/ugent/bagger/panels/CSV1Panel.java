@@ -167,7 +167,7 @@ public class CSV1Panel extends JPanel{
             firePropertyChange("record",null,record);
             
         }catch(Exception e){
-            log.error(e);            
+            log.error(e.getMessage());
         }        
               
     }    

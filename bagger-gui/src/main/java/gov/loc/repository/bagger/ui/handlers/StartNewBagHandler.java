@@ -46,7 +46,7 @@ public class StartNewBagHandler extends AbstractAction {
             //clear payloads, tags, mets and premis
             bagView.clearBagHandler.clearExistingBag();
         }catch(Exception e){
-            log.error(e);
+            log.error(e.getMessage());
         }
     	MetsBag metsBag = bagView.getBag();
         
@@ -78,7 +78,8 @@ public class StartNewBagHandler extends AbstractAction {
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms();
         
-        log.error(Context.getMessage("bag.frame.newbaginmemory"));
+        log.error(Context.getMessage("StartNewBagHandler.newBagCreated.label"));
+        
     	//ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
         
     	bagView.updateNewBag();

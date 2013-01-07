@@ -30,7 +30,7 @@ public class Renamer extends AbstractRenamer{
         try{                        
             sourcePattern = Pattern.compile(source,getPatternFlags());                           
         }catch(Exception e){
-            log.error(e);
+            log.error(e.getMessage());
         }       
         return sourcePattern;
     }      

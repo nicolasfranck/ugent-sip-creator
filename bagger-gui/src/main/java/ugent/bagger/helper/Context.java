@@ -41,9 +41,9 @@ public class Context{
             URL url = new URL(str);            
             in = url.openStream();
         }catch(MalformedURLException e){
-            log.error(e);
+            log.error(e.getMessage());
         }catch(IOException e){
-            log.error(e);            
+            log.error(e.getMessage()); 
         }        
         if(in == null){
             in = Context.class.getClassLoader().getResourceAsStream(str);

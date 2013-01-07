@@ -32,7 +32,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     public EditMdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id,ArrayList<MdSec>exceptions){
         super(data,cols,id);          
         setExceptions(exceptions);
-        setDoubleClickHandler(getOpenDialogExecutor());        
+        setDoubleClickHandler(getOpenDialogExecutor());                
     }
 
     public ArrayList<MdSec> getExceptions() {
@@ -80,6 +80,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     @Override
     protected void configureTable(JTable table){          
         super.configureTable(table);
+        
         //replace default action on enter
         table.getActionMap().put("selectNextRowCell",new AbstractAction(){
             @Override

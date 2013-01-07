@@ -59,7 +59,7 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
                 }
                 SwingUtils.waitForWorkers();
             }catch(Exception e){
-                log.error(e);
+                log.error(e.getMessage());
                 e.printStackTrace();
             }   
         }

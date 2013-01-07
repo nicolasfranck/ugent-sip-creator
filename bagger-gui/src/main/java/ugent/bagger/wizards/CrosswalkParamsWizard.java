@@ -100,69 +100,60 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                     MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                                              
                     firePropertyChange("mdSec",null,mdSec);            
 
-                }catch(ParserConfigurationException e){
-                    log.error(e);                    
+                }catch(ParserConfigurationException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.ParserConfigurationException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     );
-                }catch(SAXException e){
-                    log.error(e);                    
+                }catch(SAXException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.SAXException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     );
-                }catch(IOException e){  
-                    log.error(e);                   
+                }catch(IOException e){                      
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IOException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     ); 
-                }catch(TransformerConfigurationException e){
-                    log.error(e);
+                }catch(TransformerConfigurationException e){                  
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     );
-                }catch(TransformerException e){
-                    log.error(e); 
+                }catch(TransformerException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     );
-                }catch(NoNamespaceException e){
-                    log.error(e);                   
+                }catch(NoNamespaceException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.NoNamespaceException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     );
-                }catch(IllegalNamespaceException e){
-                    log.error(e);                  
+                }catch(IllegalNamespaceException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
                         new Object []{
                             file,e.getMessage()
                         }
                     )+"\n";
-                }catch(DtdNoFixFoundException e){     
-                    log.error(e);                                      
+                }catch(DtdNoFixFoundException e){                         
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
                         file
                     });                         
-                }catch(Exception e){
-                    log.error(e);                                      
+                }catch(Exception e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.Exception.description",
                         new Object []{
@@ -177,7 +168,8 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                     SwingUtils.ShowError(
                         Context.getMessage("XMLCrosswalkDialog.Exception.title"),
                         error
-                    );            
+                    );  
+                    log.error(error);
                 }
             }
         };

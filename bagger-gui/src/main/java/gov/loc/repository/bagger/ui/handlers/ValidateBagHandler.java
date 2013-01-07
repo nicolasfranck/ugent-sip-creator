@@ -51,6 +51,8 @@ public class ValidateBagHandler extends Handler {
             final BagView bagView = BagView.getInstance();
             DefaultBag bag = bagView.getBag();            
             
+            log.error(Context.getMessage("ValidateBagHandler.validationStarted",new Object [] {bag.getFile()}));
+            
             try {
                 CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
                 ParallelManifestChecksumVerifier manifestVerifier = new ParallelManifestChecksumVerifier();
@@ -61,7 +63,7 @@ public class ValidateBagHandler extends Handler {
                    
             }catch (Exception e){                                                
                 if(isCancelled()){
-                    log.error(e);
+                    log.error(e.getMessage());
                     //log(Context.getMessage("ValidateBagHandler.validationCancelled.label"));
                     SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
                 }else{
@@ -144,7 +146,15 @@ public class ValidateBagHandler extends Handler {
                         Context.getMessage("ValidateBagHanddler.validationSuccessfull.title"),
                         Context.getMessage("ValidateBagHanddler.validationSuccessfull.label")
                     );                    
+                    log.error(Context.getMessage("ValidateBagHanddler.validationSuccessfull.label"));
                 }
+                
+                log.error(
+                    Context.getMessage(
+                        "ValidateBagHandler.validationDone",
+                        new Object [] {BagView.getInstance().getBag().getFile()}
+                    )
+                );
             }
         }
     }

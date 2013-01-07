@@ -86,7 +86,7 @@ public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
                             model.removeNodeFromParent((MutableTreeNode)aNode);
                         }
                     } catch (Exception e) {     
-                        log.error(e);
+                        log.error(e.getMessage());
                         
                         try {                                                       
                             bag.removePayloadDirectory(fileName);                                                       
@@ -98,7 +98,7 @@ public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
                                 model.removeNodeFromParent((MutableTreeNode)aNode);
                             }
                         }catch(Exception ex){                            
-                            log.error(e);
+                            log.error(e.getMessage());
                             String title = Context.getMessage("RemoveDataHandler.removeData.Exception.title");
                             String message = Context.getMessage(
                                 "RemoveDataHandler.removeData.Exception.description",

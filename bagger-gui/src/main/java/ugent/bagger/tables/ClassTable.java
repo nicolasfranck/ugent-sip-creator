@@ -1,6 +1,8 @@
 package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -25,11 +27,11 @@ public class ClassTable<T> extends AbstractObjectTable {
     
     public ClassTable(final ArrayList<T>data,String [] cols,String id){
         super(id,cols);                 
-        setData(data);        
+        setData(data);         
     }        
     @Override
     protected void configureTable(JTable table) {
-        table.setFillsViewportHeight(true);            
+        table.setFillsViewportHeight(true);             
     }
     @Override
     protected Object[] getDefaultInitialData(){               

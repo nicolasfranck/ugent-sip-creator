@@ -57,7 +57,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress/*,Logg
             bag.setFile(dataFile);
             bag.createPreBag(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
-            log.error(e); 
+            log.error(e.getMessage()); 
             
             String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
             String message = Context.getMessage(
@@ -85,7 +85,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress/*,Logg
             bag.setFile(dataFile);
             bag.createPreBagAddKeepFilesToEmptyFolders(dataFile,bagItVersion,ignoreFiles);                      
     	} catch (Exception e) {
-            log.error(e);   
+            log.error(e.getMessage());   
             String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
             String message = Context.getMessage(
                 "DefaultBag.createPreBag.Exception.description", 

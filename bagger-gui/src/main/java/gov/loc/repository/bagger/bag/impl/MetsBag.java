@@ -96,7 +96,7 @@ public final class MetsBag extends DefaultBag{
             try{
                 removeBagFile("mets.xml");  
             }catch(Exception e){
-                log.error(e);
+                log.error(e.getMessage());
             }
             addTagFile(metsFile);
             isBuildPayloadManifest(false);
@@ -107,7 +107,7 @@ public final class MetsBag extends DefaultBag{
              
           
         }catch(Exception e){             
-            log.error(e);            
+            log.error(e.getMessage());          
         }        
         boolean writeOk = writeBag(bw);
         
@@ -177,7 +177,7 @@ public final class MetsBag extends DefaultBag{
             writer.close();
             
         }catch(Exception e){              
-            log.error(e);            
+            log.error(e.getMessage());          
         } 
     }
     @Override

@@ -2,9 +2,7 @@ package ugent.bagger.panels;
 
 import com.anearalone.mets.MdSec;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.BorderLayout;
-import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +18,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.util.Assert;
-import ugent.bagger.dialogs.XMLCrosswalkDialog;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.forms.MdSecForm;
 import ugent.bagger.forms.MdWrapForm;

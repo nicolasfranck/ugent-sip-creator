@@ -104,7 +104,7 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
                     }
                 });
             } catch (Exception e) {
-                log.error(e);
+                log.error(e.getMessage());
                 e.printStackTrace();
             }            
         }

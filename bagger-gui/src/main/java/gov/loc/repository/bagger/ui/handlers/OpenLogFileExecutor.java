@@ -35,7 +35,7 @@ public class OpenLogFileExecutor extends AbstractActionCommandExecutor {
             }            
             SwingUtils.ShowDone();
         }catch(IOException e){
-            log.error(e);
+            log.error(e.getMessage());
             SwingUtils.ShowError(
                 null,
                 Context.getMessage("OpenLogFileExecutor.IOException",new Object [] {

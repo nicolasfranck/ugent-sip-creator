@@ -102,7 +102,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                     XMLCrosswalkDialog.this.firePropertyChange("mdSec",null,mdSec);
                   
                 }catch(ParserConfigurationException e){
-                    log.error(e);                    
+                    log.error(e.getMessage());              
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.ParserConfigurationException.description",
                         new Object []{
@@ -110,7 +110,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     );
                 }catch(SAXException e){
-                    log.error(e);                    
+                    log.error(e.getMessage());                
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.SAXException.description",
                         new Object []{
@@ -118,7 +118,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     );
                 }catch(IOException e){  
-                    log.error(e);                    
+                    log.error(e.getMessage());                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IOException.description",
                         new Object []{
@@ -126,7 +126,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     ); 
                 }catch(TransformerConfigurationException e){
-                    log.error(e);
+                    log.error(e.getMessage());
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
                         new Object []{
@@ -134,7 +134,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     );
                 }catch(TransformerException e){
-                    log.error(e);
+                    log.error(e.getMessage());
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerException.description",
                         new Object []{
@@ -142,7 +142,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     );
                 }catch(NoNamespaceException e){
-                    log.error(e);                    
+                    log.error(e.getMessage());             
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.NoNamespaceException.description",
                         new Object []{
@@ -150,7 +150,7 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     );
                 }catch(IllegalNamespaceException e){
-                    log.error(e);
+                    log.error(e.getMessage());
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
                         new Object []{
@@ -158,12 +158,12 @@ public final class XMLCrosswalkDialog extends JDialog{
                         }
                     );
                 }catch(DtdNoFixFoundException e){     
-                    log.error(e);                                        
+                    log.error(e.getMessage());                               
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
                         file
                     });                         
                 }catch(Exception e){
-                    log.error(e);                                       
+                    log.error(e.getMessage());                              
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.Exception.description",
                         new Object []{

@@ -185,7 +185,7 @@ public final class BagValidationResultPanel extends JPanel{
                     }
                 }
             }catch(Exception e){
-                log.error(e);                
+                log.error(e.getMessage());
             }            
           
             return null;
