@@ -40,7 +40,7 @@ import org.springframework.richclient.progress.BusyIndicator;
  * @author nicolas
  */
 public class SwingUtils {
-    static Log log = LogFactory.getLog(SwingUtils.class);
+    static final Log log = LogFactory.getLog(SwingUtils.class);
     static HashMap<String,String>uiManagerMessages;
     static File lastDirectory;
     static ArrayList<SwingWorker>workers = new ArrayList<SwingWorker>();
@@ -209,11 +209,9 @@ public class SwingUtils {
     public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node,int depth){
         if(depth <= 0){
             return;
-        }
-        System.out.println("depth: "+depth);
+        }        
         tree.expandPath(new TreePath(node.getPath()));                
-        for(int i = 0;i < node.getChildCount();i++){
-            System.out.println("child["+i+"]: "+node.getChildAt(i));
+        for(int i = 0;i < node.getChildCount();i++){         
             expandTreeNode(tree,(DefaultMutableTreeNode) node.getChildAt(i),depth - 1);
         }
     }

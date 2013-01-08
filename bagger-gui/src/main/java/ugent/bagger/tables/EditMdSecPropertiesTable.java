@@ -23,13 +23,13 @@ import ugent.bagger.properties.MdSecProperties;
  * @author nicolas
  */
 public class EditMdSecPropertiesTable extends MdSecPropertiesTable{            
-    private ActionCommandExecutor openDialogExecutor;        
-    private ArrayList<MdSec>exceptions;
+    ActionCommandExecutor openDialogExecutor;        
+    ArrayList<MdSec>exceptions;
     
     public EditMdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
         this(data,cols,id,new ArrayList<MdSec>());
     }  
-    public EditMdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id,ArrayList<MdSec>exceptions){
+    public EditMdSecPropertiesTable(final ArrayList<MdSec>data,final String [] cols,final String id,final ArrayList<MdSec>exceptions){
         super(data,cols,id);          
         setExceptions(exceptions);
         setDoubleClickHandler(getOpenDialogExecutor());                

@@ -27,7 +27,8 @@
         <value>exportCommand</value>
         <value>renameCommand</value>
         
-        <value>openLogFileCommand</value>
+        <value>openLogFileCommand</value>      
+        
         
        </list>
     </property>

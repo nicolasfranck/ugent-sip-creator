@@ -74,8 +74,10 @@ public class RenamePanel extends JPanel{
     JPanel fileTableButtonPanel;
     JButton simulateRenameButton;
     JButton submitRenameButton;
+    JButton resetRenameButton;
     JButton simulateRenumberButton;
     JButton submitRenumberButton;          
+    JButton resetRenumberButton;
     JButton reloadFileTableButton;
     JButton parentFileButton;
     JLabel lastFileLabel;
@@ -203,10 +205,9 @@ public class RenamePanel extends JPanel{
         
     }
     public ClassTable<AbstractFile> getFileTable() {
-        if(fileTable == null){                        
-            final ArrayList<AbstractFile>afiles = getList(getLastFile());            
-            fileTable = new ClassTable<AbstractFile>(
-                afiles,
+        if(fileTable == null){                                    
+            fileTable = new ClassTable<AbstractFile>(                
+                new ArrayList<AbstractFile>(),
                 new String [] {"name","mimeType"},
                 "fileTable"
             );       
@@ -314,7 +315,15 @@ public class RenamePanel extends JPanel{
                     return label;
                 }  
             });
-            table.setShowGrid(false);            
+            table.setShowGrid(false);
+            
+            SwingUtilities.invokeLater(new Runnable(){
+                @Override
+                public void run() {
+                    fileTable.reset(getList(getLastFile()));
+                }                
+            });
+            
         }
         return fileTable;
     }
@@ -341,7 +350,7 @@ public class RenamePanel extends JPanel{
             
             //sommige systemen hebben meerdere roots (C:/, D:/)
             File [] roots = File.listRoots();
-            System.out.println("roots: "+roots);
+            
             for(int i = 0;i < roots.length;i++){
                 File file = roots[i];
 
@@ -733,6 +742,8 @@ public class RenamePanel extends JPanel{
         getRenumberButtonPanel().add(submitRenumberButton);
         simulateRenumberButton = new JButton(Context.getMessage("simulate"));
         getRenumberButtonPanel().add(simulateRenumberButton);        
+        resetRenumberButton = new JButton(Context.getMessage("reset"));
+        getRenumberButtonPanel().add(resetRenumberButton);
         
         submitRenumberButton.addActionListener(new ActionListener(){
             @Override
@@ -765,6 +776,15 @@ public class RenamePanel extends JPanel{
                 renumber();               
             }
         });    
+        
+        resetRenumberButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                RenumberParams newParams = new RenumberParams();
+                setRenumberParams(newParams);
+                getRenumberParamsForm().setFormObject(newParams);                
+            }            
+        });
 
         
         Dimension bpdim = getRenumberButtonPanel().getPreferredSize();
@@ -833,9 +853,9 @@ public class RenamePanel extends JPanel{
         getRenameButtonPanel().add(submitRenameButton);
         simulateRenameButton = new JButton(Context.getMessage("simulate"));
         getRenameButtonPanel().add(simulateRenameButton);
+        resetRenameButton = new JButton(Context.getMessage("reset"));                
+        getRenameButtonPanel().add(resetRenameButton);
         
-
-        //submitButton.setEnabled(false);
         submitRenameButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {                
@@ -851,11 +871,13 @@ public class RenamePanel extends JPanel{
                 rename();                
             }
         });
+        
         renameForm.addValidationListener(new ValidationListener(){
             @Override
             public void validationResultsChanged(ValidationResults results) {                
                 submitRenameButton.setEnabled(!results.getHasErrors());
                 simulateRenameButton.setEnabled(!results.getHasErrors());
+                resetRenameButton.setEnabled(true);
             }
         });        
         
@@ -873,7 +895,16 @@ public class RenamePanel extends JPanel{
                 //wordt in achtergrond uitgevoerd, dus liefst geen statements hier achter!
                 rename();                
             }
-        });       
+        });      
+        
+        resetRenameButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                RenameParams newParams = new RenameParams();
+                setRenameParams(newParams);
+                getRenameParamsForm().setFormObject(newParams);                
+            }            
+        });
         
         getRenameButtonPanel().setAlignmentX(LEFT_ALIGNMENT);        
         
@@ -976,8 +1007,7 @@ public class RenamePanel extends JPanel{
                                 pair.getSource(),pair.getTarget(),errorStr
                             }
                         );
-                        log.error(message);
-                        //log(message);
+                        log.error(message);                        
                         
                         return renumberParams.getOnErrorAction();
                     }
@@ -1012,10 +1042,8 @@ public class RenamePanel extends JPanel{
                     }
                 });                
                 renumber.rename();                
-            }catch(Exception e){
-                String message = Context.getMessage("RenamePanel.unknownException.message",new Object [] {e.getMessage()});
-                //log(message);
-                log.error(e.getMessage());
+            }catch(Exception e){                
+                log.error(Context.getMessage("RenamePanel.unknownException.message",new Object [] {e.getMessage()}));
             }
             
             return null;
@@ -1101,8 +1129,7 @@ public class RenamePanel extends JPanel{
                             new Object [] {
                                 pair.getSource(),pair.getTarget(),errorStr
                             }
-                        );
-                        //log(message);                        
+                        );                                                
                         log.error(message);
                         return renameParams.getOnErrorAction();
                     }
@@ -1139,11 +1166,9 @@ public class RenamePanel extends JPanel{
                 });
                 renamer.rename();
             }catch(Exception e){
-                String message = Context.getMessage("RenamePanel.unknownException.message",new Object [] {e.getMessage()});
-                //log(message);
+                String message = Context.getMessage("RenamePanel.unknownException.message",new Object [] {e.getMessage()});                
                 log.error(e.getMessage());
-            }
-            
+            }            
             return null;
         }       
     }

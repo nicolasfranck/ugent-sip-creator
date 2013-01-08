@@ -7,7 +7,6 @@ import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.wizard.AbstractWizardPage;
 import ugent.bagger.panels.CrosswalkParamsPanel;
-import ugent.bagger.panels.ExportParamsPanel;
 
 /**
  *

@@ -1,15 +1,11 @@
 package ugent.bagger.tables;
 
 import com.anearalone.mets.MdSec;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import ugent.bagger.properties.MdSecProperties;
 
@@ -31,8 +27,9 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
     @Override
     protected void configureTable(JTable table) {
         table.setFillsViewportHeight(true);        
+        table.setCellSelectionEnabled(true);
     }
-    public MdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
+    public MdSecPropertiesTable(final ArrayList<MdSec>data,final String [] cols,final String id){
         super(id,cols);         
         setData(data);           
     }        

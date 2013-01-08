@@ -1,8 +1,6 @@
 package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -13,7 +11,10 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.table.support.AbstractObjectTable;
+import ugent.bagger.helper.SwingUtils;
 
 /**
  *
@@ -28,10 +29,23 @@ public class ClassTable<T> extends AbstractObjectTable {
     public ClassTable(final ArrayList<T>data,String [] cols,String id){
         super(id,cols);                 
         setData(data);         
+        
+        
+        
+        ActionCommand testCommand = new ActionCommand("copyCommand"){            
+            @Override
+            protected void doExecuteCommand() {
+                SwingUtils.ShowMessage(null,"Test!");
+            }
+        };        
+        CommandGroup commandGroup = CommandGroup.createCommandGroup(testCommand);
+        setPopupCommandGroup(commandGroup);
+        
     }        
     @Override
     protected void configureTable(JTable table) {
         table.setFillsViewportHeight(true);             
+        table.setCellSelectionEnabled(true);
     }
     @Override
     protected Object[] getDefaultInitialData(){               
