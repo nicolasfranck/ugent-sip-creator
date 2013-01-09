@@ -29,7 +29,7 @@ public class ClassTable<T> extends AbstractObjectTable {
     
     public ClassTable(final ArrayList<T>data,String [] cols,String id){
         super(id,cols);                 
-        setData(data);                
+        setData(data);         
         ActionCommand testCommand = new ActionCommand("copyCommand"){            
             @Override
             protected void doExecuteCommand() {                

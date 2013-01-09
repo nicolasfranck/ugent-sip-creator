@@ -10,7 +10,7 @@ public class AddDataExecutor extends AbstractActionCommandExecutor {
         super();       
     }
     @Override
-    public void execute() {
+    public void execute() {  
         BagView.getInstance().addDataHandler.addData();
     }
 }

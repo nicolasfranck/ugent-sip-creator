@@ -97,7 +97,28 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             }
             
             //bestanden maken deel uit van de data-map
-            if(bagFile != null && bagFile.isDirectory() && FUtils.isDescendant(bagFile,file)){
+            /*
+             * ook de bag mag niet aan zichzelf worden toegevoegd
+             * reden: vb. 'baggie' toevoegen aan bag 'baggie'
+             *  1. creatie virtueel path baggie onder payloads
+             *  2. berekening checksums, i.e. van alles onder 'baggie'
+             *  3. schrijven bag:
+             *      3.1. manifests,mets.xml en andere tags worden geschreven 
+             *      3.2. kopiëren van payloads naar data-map.
+             * 
+             *      => geen probleem voor alles onder baggie/data,
+             *      maar nog vóór het schrijven worden de tags en 
+             *      de manifests die je wil toevoegen gewijzigd (3.1).
+             *      je berekent dus checksums, wijzigt dan die 
+             *      bestanden en dan voeg je ze toe..
+             *      die tags en manifests zullen dus negatief valideren.
+             */
+            if(
+                bagFile != null && (
+                    (bagFile.isDirectory() && FUtils.isDescendant(bagFile,file)) ||
+                    (bagFile.getAbsoluteFile().getAbsolutePath().equals(file.getAbsoluteFile().getAbsolutePath()))
+                )
+            ){
                 SwingUtils.ShowError(
                     null,
                     Context.getMessage(
