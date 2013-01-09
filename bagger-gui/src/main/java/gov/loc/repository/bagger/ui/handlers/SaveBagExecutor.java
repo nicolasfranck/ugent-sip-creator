@@ -5,7 +5,7 @@ import java.io.File;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 
 public class SaveBagExecutor extends AbstractActionCommandExecutor {
-    private static final long serialVersionUID = 1L;       
+    static final long serialVersionUID = 1L;       
  
     public SaveBagExecutor() {
         super();        

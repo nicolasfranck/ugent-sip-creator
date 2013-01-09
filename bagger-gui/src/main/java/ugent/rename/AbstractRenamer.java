@@ -20,8 +20,9 @@ abstract public class AbstractRenamer {
     boolean overwrite = false;
     ArrayList<File> inputFiles;
     boolean simulateOnly = false;
+    boolean isWindowsOS = System.getProperty("os.name").toLowerCase().contains("windows");    
     
-    public boolean isSimulateOnly() {
+    public boolean isSimulateOnly() {        
         return simulateOnly;
     }
     public void setSimulateOnly(boolean simulateOnly) {
@@ -102,21 +103,36 @@ abstract public class AbstractRenamer {
             l.onRenameStart(pair,i);            
             try{
                 if(isSimulateOnly()){
-                    if(!isOverwrite() && pair.getTarget().exists()){                        
-                        throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
+                    if(!isOverwrite() && pair.getTarget().exists()){
+                        //Windows: A.TXT levert true op, wanneer enkel a.txt bestaat (file existence check is case insensitive).
+                        //kan dus a.txt naar A.txt hernoemen, hoewel file check true oplevert..
+                        if(isWindowsOS){                            
+                            log.error("Windows systeem gedetecteerd!");
+                            if(pair.getTarget().getName().equals(pair.getSource().getName())){
+                                throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
+                            }
+                        }else{
+                            throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
+                        }                        
+                        
                     }else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }else{
                         pair.setSuccess(true);                        
                     }
-                }else{
-                    //zorg ervoor dat geen enkel ander process bezig is met deze bestanden!
-                    //vooral van belang in Windows, niet in Linux
-                    //FileChannel channelSource = new RandomAccessFile(pair.getSource(),"rw").getChannel();                                        
-                    //channelSource.lock();                    
+                }else{                                  
                     
-                    if(!isOverwrite() && pair.getTarget().exists()){                        
-                        throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
+                    if(!isOverwrite() && pair.getTarget().exists()){                                                     
+                        //Windows: A.TXT levert true op, wanneer enkel a.txt bestaat (file existence check is case insensitive).
+                        //kan dus a.txt naar A.txt hernoemen, hoewel file check true oplevert..
+                        if(isWindowsOS){                            
+                            log.error("Windows systeem gedetecteerd!");
+                            if(pair.getTarget().getName().equals(pair.getSource().getName())){
+                                throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
+                            }
+                        }else{
+                            throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
+                        } 
                     }else{
                         log.debug("making target directories");
                         pair.getTarget().getParentFile().mkdirs();                                           

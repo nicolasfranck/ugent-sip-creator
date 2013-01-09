@@ -1,11 +1,15 @@
 package ugent.bagger.tables;
 
 import com.anearalone.mets.MdSec;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JTable;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.table.support.AbstractObjectTable;
 import ugent.bagger.properties.MdSecProperties;
 
@@ -32,6 +36,20 @@ public class MdSecPropertiesTable extends AbstractObjectTable{
     public MdSecPropertiesTable(final ArrayList<MdSec>data,final String [] cols,final String id){
         super(id,cols);         
         setData(data);           
+        ActionCommand testCommand = new ActionCommand("copyCommand"){            
+            @Override
+            protected void doExecuteCommand() {                
+                JTable table = MdSecPropertiesTable.this.getTable();
+                int row = table.getSelectedRow();
+                int column = table.getSelectedColumn();
+                if(row >=0 && column >= 0){                                                            
+                    StringSelection transfer = new StringSelection(table.getValueAt(row,column).toString());
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transfer,transfer);                    
+                }
+            }
+        };        
+        CommandGroup commandGroup = CommandGroup.createCommandGroup(testCommand);
+        setPopupCommandGroup(commandGroup);
     }        
     @Override
     protected Object[] getDefaultInitialData(){                       

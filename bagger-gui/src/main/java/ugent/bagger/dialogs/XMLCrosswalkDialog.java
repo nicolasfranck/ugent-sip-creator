@@ -46,11 +46,7 @@ public final class XMLCrosswalkDialog extends JDialog{
         super(frame,isModal);
         getContentPane().add(createContentPane());
         setTitle(Context.getMessage("XMLCrosswalkDialog.title"));
-    }
-    /*
-    public void log(String message){
-        ApplicationContextUtil.addConsoleMessage(message);
-    }*/
+    }    
     public JComponent createContentPane(){
         
         JPanel mainPanel = new JPanel();        

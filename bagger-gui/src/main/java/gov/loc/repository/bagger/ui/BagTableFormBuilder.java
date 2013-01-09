@@ -15,7 +15,7 @@ import ugent.bagger.helper.Context;
 public class BagTableFormBuilder extends TableFormBuilder {
     static final String VALIGN_TOP = TableLayoutBuilder.VALIGN + "=top";
     ImageIcon requiredIcon;
-    private ComponentFactory componentFactory;
+    ComponentFactory componentFactory;
     
     public BagTableFormBuilder(BindingFactory bindingFactory, ImageIcon requiredIcon) {
     	super(bindingFactory);

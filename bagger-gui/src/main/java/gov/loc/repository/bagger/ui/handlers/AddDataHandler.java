@@ -16,8 +16,8 @@ import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.SwingUtils;
 
 public class AddDataHandler extends AbstractAction implements Progress /*,Loggable*/ {
-    private static final Log log = LogFactory.getLog(AddDataHandler.class);
-    private static final long serialVersionUID = 1L;    
+    static final Log log = LogFactory.getLog(AddDataHandler.class);
+    static final long serialVersionUID = 1L;    
 
     public AddDataHandler() {
         super();        
@@ -29,12 +29,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
     @Override
     public void actionPerformed(ActionEvent e) {                
         execute();                        
-    }
-    /*
-    @Override
-    public void log(String message){
-        ApplicationContextUtil.addConsoleMessage(message);
-    }*/
+    }    
     public void addData(){
         
         final BagView bagView = BagView.getInstance();        
@@ -50,7 +45,10 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
         
         String message = Context.getMessage("bag.message.filesadded");        
         addBagData(files);
-        log.error(message + " " + getFileNames(files));        
+        log.error(message);        
+        for(File file:files){
+            log.error("\t"+file.getAbsolutePath());
+        }
         bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
         bagView.updateAddData();
 
@@ -62,35 +60,14 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
         
         SwingUtils.ShowDone();
         
-    }
-    private String getFileNames(File[] files) {
-        
-    	StringBuilder buff = new StringBuilder();
-    	int totalFileCount = files.length;
-    	int displayCount = 20;
-    	if (totalFileCount < 20) {
-            displayCount = totalFileCount;
-    	}
-    	for (int i = 0; i < displayCount; i++) {
-            if (i != 0) {
-                buff.append("\n");
-            }
-            buff.append(files[i].getAbsolutePath());
-    	}
-    	if(totalFileCount > displayCount){
-            buff.append("\n").append(totalFileCount - displayCount).append(" more...");
-    	}
-        return buff.toString();
-    }
-    public void addBagData(File[] files) {        
-        
+    }    
+    public void addBagData(File[] files) {                
     	if(files != null){
             for (int i=0; i < files.length; i++) {
                 log.error("addBagData[" + i + "] " + files[i].getName());                
                 addBagData(files[i],!(i < files.length-1));                
             }
-    	}
-        
+    	}        
     }
     public void addBagData(File file, boolean lastFileFlag) {
         
@@ -102,8 +79,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 FUtils.checkFile(file,true);
             }catch(FileNotWritableException e){
                 //doe niets
-            }
-            
+            }            
             
             //lege map verboden
             if(file.isDirectory()){
@@ -121,7 +97,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             }
             
             //bestanden maken deel uit van de data-map
-            if(bagFile != null && bagFile.isDirectory() && FUtils.isDescendant(bagFile, file)){
+            if(bagFile != null && bagFile.isDirectory() && FUtils.isDescendant(bagFile,file)){
                 SwingUtils.ShowError(
                     null,
                     Context.getMessage(

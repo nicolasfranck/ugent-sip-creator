@@ -29,12 +29,7 @@ public abstract class LongTask extends SwingWorker implements ProgressListener /
         if(!isDone()){
             setProgress(percent);               
         }        
-    }
-    /*
-    @Override
-    final public void log(String message){
-        ApplicationContextUtil.addConsoleMessage(message);
-    }*/   
+    }    
     @Override 
     public void done(){
         super.done();

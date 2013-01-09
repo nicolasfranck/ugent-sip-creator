@@ -7,7 +7,6 @@ import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.InfoFormsPane;
 import gov.loc.repository.bagger.ui.InfoInputPane;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.impl.AbstractBagConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -88,8 +87,7 @@ public class OpenBagHandler extends AbstractAction {
         
         BagView bagView = BagView.getInstance();
         InfoFormsPane infoFormsPane = bagView.getInfoFormsPane();
-        InfoInputPane infoInputPane = infoFormsPane.getInfoInputPane();
-                
+        InfoInputPane infoInputPane = infoFormsPane.getInfoInputPane();                
         
         try{
             infoInputPane.enableForms(false);      
@@ -105,12 +103,7 @@ public class OpenBagHandler extends AbstractAction {
             bagView.clearBagHandler.newDefaultBag(file); 
             log.error(Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
                 file
-            }));
-            /*ApplicationContextUtil.addConsoleMessage(
-                Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
-                    file
-                })
-            );*/       
+            }));                
             
             MetsBag metsBag = bagView.getBag();  
             
@@ -159,8 +152,7 @@ public class OpenBagHandler extends AbstractAction {
             infoFormsPane.setHoley(bagView.getBag().isHoley() ? "true":"false");        
             infoFormsPane.getHoleyValue().invalidate();            
             
-            metsBag.setFile(file);
-      
+            metsBag.setFile(file);      
 
             File rootSrc;
             String path;
@@ -171,7 +163,6 @@ public class OpenBagHandler extends AbstractAction {
                 path = AbstractBagConstants.DATA_DIRECTORY;
                 rootSrc = new File(file,metsBag.getDataDirectory());
             }
-
 
             bagView.getBagPayloadTree().populateNodes(bagView.getBag(),path,rootSrc,true);
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());

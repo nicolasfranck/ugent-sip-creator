@@ -15,17 +15,15 @@ import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.FUtils;
 
 public final class BagTree extends JTree {
-    private static final long serialVersionUID = -5361474872106399068L;
-    private static final Log log = LogFactory.getLog(BagTree.class);
-    private int BAGTREE_WIDTH = 400;
-    private int BAGTREE_HEIGHT = 160;
-    private int BAGTREE_ROW_MODIFIER = 22;
-    private File bagDir;
-    private DefaultTreeModel bagTreeModel;
-    private TreePath rootPath;
-    private String basePath;
-    private DefaultMutableTreeNode parentNode = new DefaultMutableTreeNode(AbstractBagConstants.DATA_DIRECTORY);
-   
+    static final long serialVersionUID = -5361474872106399068L;
+    static final Log log = LogFactory.getLog(BagTree.class);
+    int BAGTREE_WIDTH = 400;
+    int BAGTREE_HEIGHT = 160;
+    int BAGTREE_ROW_MODIFIER = 22;    
+    DefaultTreeModel bagTreeModel;
+    TreePath rootPath;
+    String basePath;
+    DefaultMutableTreeNode parentNode = new DefaultMutableTreeNode(AbstractBagConstants.DATA_DIRECTORY);   
 	
     public BagView getBagView(){
         return BagView.getInstance();
@@ -59,7 +57,7 @@ public final class BagTree extends JTree {
     public void populateNodes(DefaultBag bag, String path, File rootSrc, boolean isParent) {
         basePath = path;
 
-        log.debug("BagTree.populateNodes");  
+        log.debug("BagTree.populateNodes"); 
         
        
         if (bag.getPayload() != null && rootSrc.listFiles() != null) {
@@ -117,6 +115,12 @@ public final class BagTree extends JTree {
         for (int i=0; i < parentNode.getChildCount(); i++) {
             DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) parentNode.getChildAt(i);
             String child = childNode.toString();
+            /*
+             * In Windows, file name existence is checked case-insensitive. So, while
+             * a.txt and A.txt can exist in the same harddrive, they cannot coexist
+             * within the same directory. 
+             * In Linux file names can have these names
+             */
             if(child.equalsIgnoreCase(node)){
                 b = true;
                 break;
@@ -135,13 +139,7 @@ public final class BagTree extends JTree {
     }	
     public DefaultMutableTreeNode getParentNode() {
         return parentNode;
-    }
-    public File getBagDir() {
-        return bagDir;
-    }
-    public void setBagDir(File file) {
-        this.bagDir = file;
-    }
+    }    
     public DefaultTreeModel getBagTreeModel() {
         return bagTreeModel;
     }

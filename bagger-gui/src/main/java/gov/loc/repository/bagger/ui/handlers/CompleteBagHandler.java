@@ -28,12 +28,7 @@ public class CompleteBagHandler extends Handler /*implements Loggable*/ {
     @Override
     public void actionPerformed(ActionEvent e) {        
         completeBag();
-    }
-    /*
-    @Override
-    public void log(String message){
-        ApplicationContextUtil.addConsoleMessage(message);
-    }*/
+    }    
     public void completeBag(){        
         execute();    	
     }

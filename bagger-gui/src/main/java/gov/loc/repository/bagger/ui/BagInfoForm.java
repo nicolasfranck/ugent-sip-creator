@@ -27,7 +27,7 @@ public final class BagInfoForm extends AbstractForm {
     HashMap<String,ArrayList<String>> fieldMap;
     JComponent fieldsPanel;
     AddFieldPanel addFieldPanel;
-    LoadFieldsPanel loadFieldsPanel;
+    //LoadFieldsPanel loadFieldsPanel;
     JScrollPane fieldsScrollPane;
     JPanel contentPanel;
     final int FORM_WIDTH = 800;
@@ -49,6 +49,7 @@ public final class BagInfoForm extends AbstractForm {
     public void setFieldsScrollPane(JScrollPane fieldsScrollPane) {
         this.fieldsScrollPane = fieldsScrollPane;
     }    
+    /*
     public LoadFieldsPanel getLoadFieldsPanel() {
         if(loadFieldsPanel == null){
             loadFieldsPanel = new LoadFieldsPanel();                        
@@ -61,7 +62,7 @@ public final class BagInfoForm extends AbstractForm {
     }
     public void setLoadFieldsPanel(LoadFieldsPanel loadFieldsPanel) {
         this.loadFieldsPanel = loadFieldsPanel;
-    }
+    }*/
     public BagInfoForm(FormModel formModel,HashMap<String,ArrayList<String>> fieldMap, boolean enabled) {
     	super(formModel,INFO_FORM_PAGE);        
         setFieldMap(fieldMap);
@@ -217,6 +218,6 @@ public final class BagInfoForm extends AbstractForm {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         getAddFieldPanel().setEnabled(enabled);
-        getLoadFieldsPanel().setEnabled(enabled);
+        //getLoadFieldsPanel().setEnabled(enabled);
     }
 }

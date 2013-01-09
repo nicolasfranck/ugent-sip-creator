@@ -1,6 +1,8 @@
 package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -14,7 +16,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.table.support.AbstractObjectTable;
-import ugent.bagger.helper.SwingUtils;
 
 /**
  *
@@ -28,19 +29,21 @@ public class ClassTable<T> extends AbstractObjectTable {
     
     public ClassTable(final ArrayList<T>data,String [] cols,String id){
         super(id,cols);                 
-        setData(data);         
-        
-        
-        
+        setData(data);                
         ActionCommand testCommand = new ActionCommand("copyCommand"){            
             @Override
-            protected void doExecuteCommand() {
-                SwingUtils.ShowMessage(null,"Test!");
+            protected void doExecuteCommand() {                
+                JTable table = ClassTable.this.getTable();
+                int row = table.getSelectedRow();
+                int column = table.getSelectedColumn();
+                if(row >=0 && column >= 0){                                                            
+                    StringSelection transfer = new StringSelection(table.getValueAt(row,column).toString());
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transfer,transfer);                    
+                }
             }
         };        
         CommandGroup commandGroup = CommandGroup.createCommandGroup(testCommand);
-        setPopupCommandGroup(commandGroup);
-        
+        setPopupCommandGroup(commandGroup);        
     }        
     @Override
     protected void configureTable(JTable table) {

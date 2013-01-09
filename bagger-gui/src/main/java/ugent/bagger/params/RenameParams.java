@@ -7,15 +7,37 @@ import ugent.rename.ErrorAction;
  * @author nicolas
  */
 public class RenameParams {
-    private String source;    
-    private String destination;
-    private boolean copy = false;
-    private boolean regex = false;
-    private ErrorAction onErrorAction = ErrorAction.undoAll;
-    private boolean ignoreCase = false;
-    private boolean overWrite = false;
-    private boolean simulateOnly = false;
+    String source;    
+    String destination;
+    boolean copy = false;
+    boolean regex = false;
+    ErrorAction onErrorAction = ErrorAction.undoAll;
+    boolean ignoreCase = false;
+    boolean overWrite = false;
+    boolean simulateOnly = false;
+    boolean renameExtension = false;
+    String prefix;
+    String postfix;
 
+    public boolean isRenameExtension() {
+        return renameExtension;
+    }
+
+    public void setRenameExtension(boolean renameExtension) {
+        this.renameExtension = renameExtension;
+    }
+    public String getPrefix() {
+        return prefix;
+    }
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+    public String getPostfix() {
+        return postfix;
+    }
+    public void setPostfix(String postfix) {
+        this.postfix = postfix;
+    }
     public boolean isRegex() {
         return regex;
     }

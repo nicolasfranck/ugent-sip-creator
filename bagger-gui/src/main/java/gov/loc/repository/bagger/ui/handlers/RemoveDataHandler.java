@@ -113,6 +113,7 @@ public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
 
             bagView.getBagPayloadTree().removeSelectionPaths(paths);
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
+            bagView.updateAddData();
             
             //Nicolas Franck: geen validate of complete nuttig
             bagView.validateExecutor.setEnabled(false);
@@ -122,10 +123,5 @@ public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
     	}
         
         SwingUtils.ShowDone();
-    }
-    /*
-    @Override
-    public void log(String message) {
-        ApplicationContextUtil.addConsoleMessage(message);
-    }*/
+    }    
 }

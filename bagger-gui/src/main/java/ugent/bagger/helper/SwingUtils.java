@@ -300,7 +300,7 @@ public class SwingUtils {
             uiManagerMessages = new HashMap<String, String>();
             try{                
                 Properties props = new Properties();
-                props.load(Context.getResourceAsStream("gov/loc/repository/bagger/ui/manager.properties"));
+                props.load(Context.getResourceAsStream("gov/loc/repository/bagger/ui/uimanager.properties"));
                 Enumeration it = props.propertyNames();
                 while(it.hasMoreElements()){
                     String key = (String) it.nextElement();

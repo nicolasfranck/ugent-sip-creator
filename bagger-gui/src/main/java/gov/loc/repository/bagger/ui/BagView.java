@@ -19,7 +19,7 @@ import org.springframework.util.Assert;
 import ugent.bagger.helper.Context;
 import ugent.bagger.views.DefaultView;
 
-public class BagView extends DefaultView {
+public final class BagView extends DefaultView {
     static final Log log = LogFactory.getLog(BagView.class);
     static BagView instance;
     
@@ -96,7 +96,7 @@ public class BagView extends DefaultView {
                         renameLabel.setBorder(new LineBorder(Color.GRAY,1));
                     }                            
                 }
-            });     
+            });             
         }
         return renameLabel;
     }
@@ -512,7 +512,9 @@ public class BagView extends DefaultView {
         completeExecutor.setEnabled(false);
         addDataExecutor.setEnabled(false);
         saveBagExecutor.setEnabled(false);
-        saveBagAsExecutor.setEnabled(false);        
+        saveBagAsExecutor.setEnabled(false);
+        renameExecutor.setEnabled(true);
+        getRenameLabel().setEnabled(true);
     }
 
     public void updateClearBag() {
@@ -532,53 +534,60 @@ public class BagView extends DefaultView {
     	clearExecutor.setEnabled(false);
     	validateExecutor.setEnabled(false);
     	completeExecutor.setEnabled(false);
-        renameLabel.setEnabled(false);
+        getRenameLabel().setEnabled(true);
+        renameExecutor.setEnabled(true);
     	getBagButtonPanel().invalidate();    	
     }
 
     public void updateNewBag() {        
         enableBagSettings(true);
         addDataToolBarAction.setEnabled(true);
-        addDataExecutor.setEnabled(true);
-        renameLabel.setEnabled(true);
+        addDataExecutor.setEnabled(true);        
         exportExecutor.setEnabled(false);
         getInfoFormsPane().getSaveLabel().setEnabled(true);
+        getRenameLabel().setEnabled(false);
+        renameExecutor.setEnabled(false);
         //addTagFileToolBarAction.setEnabled(true);
         getBagButtonPanel().invalidate();
     }
 
     public void updateOpenBag() {
-        addDataToolBarAction.setEnabled(true);
-        renameLabel.setEnabled(true);
+        addDataToolBarAction.setEnabled(true);        
         getInfoFormsPane().getSaveLabel().setEnabled(true);
         addDataExecutor.setEnabled(true);
-        saveBagExecutor.setEnabled(true);
-        //addTagFileToolBarAction.setEnabled(true);        
-        saveBagAsExecutor.setEnabled(true);
+        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0);
+        //addTagFileToolBarAction.setEnabled(getBag().getPayload().size() > 0);        
+        saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
         getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
         exportExecutor.setEnabled(true);
+        getRenameLabel().setEnabled(false);   
+        renameExecutor.setEnabled(false);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags        
     }  
     
-    public void updateSaveBag() {
-        addDataToolBarAction.setEnabled(true);
-        renameLabel.setEnabled(true);
+    public void updateSaveBag() {        
+        addDataToolBarAction.setEnabled(true);        
         addDataExecutor.setEnabled(true);
-        saveBagExecutor.setEnabled(true);
-        //addTagFileToolBarAction.setEnabled(true);        
-        saveBagAsExecutor.setEnabled(true);
+        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0);
+        //addTagFileToolBarAction.setEnabled(getBag().getPayload().size() > 0);        
+        saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
         getBagButtonPanel().invalidate();
         clearExecutor.setEnabled(true);
         exportExecutor.setEnabled(true);
+        renameExecutor.setEnabled(false);
+        getRenameLabel().setEnabled(false);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags     
     }
     
-    public void updateAddData() {
-    	saveBagAsExecutor.setEnabled(true);
+    public void updateAddData() {        
+    	saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
+        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0);
         exportExecutor.setEnabled(false);
+        renameExecutor.setEnabled(false);
+        getRenameLabel().setEnabled(false);
     	getBagButtonPanel().invalidate();    	
     }
     
@@ -609,9 +618,8 @@ public class BagView extends DefaultView {
         validateManifestExecutor.setEnabled(true);
         context.register("validateManifestCommand",validateManifestExecutor);        
         
-        context.register("exportCommand",exportExecutor);
+        context.register("exportCommand",exportExecutor);        
         
-        renameExecutor.setEnabled(true);
         context.register("renameCommand",renameExecutor);
      
         context.register("openLogFileCommand",new OpenLogFileExecutor());

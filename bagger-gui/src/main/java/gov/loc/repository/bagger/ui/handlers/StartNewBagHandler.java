@@ -80,7 +80,6 @@ public class StartNewBagHandler extends AbstractAction {
         
         log.error(Context.getMessage("StartNewBagHandler.newBagCreated.label"));
         
-    	//ApplicationContextUtil.addConsoleMessage(Context.getMessage("bag.frame.newbaginmemory"));
         
     	bagView.updateNewBag();
     	

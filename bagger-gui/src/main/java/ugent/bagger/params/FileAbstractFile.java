@@ -3,7 +3,9 @@ package ugent.bagger.params;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
+import java.text.DateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -11,7 +13,9 @@ import java.util.Iterator;
  * @author nicolas
  */
 public class FileAbstractFile extends AbstractFile{
-    private File file;
+    File file;    
+    static DateFormat formatter = DateFormat.getInstance();
+    
     public FileAbstractFile(File file){
         this.file = file;
     }
@@ -31,8 +35,13 @@ public class FileAbstractFile extends AbstractFile{
     }
 
     @Override
-    public long lastModified() {
+    public long getLastModified() {
         return file.lastModified();
+    }
+    @Override
+    public Date getLastModifiedDate(){                
+        return new Date(getLastModified());
+        //return formatter.format(new Date(getLastModified()));
     }
 
     @Override

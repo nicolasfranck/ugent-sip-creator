@@ -5,7 +5,7 @@ import javax.swing.AbstractAction;
 import ugent.bagger.wizards.SaveBagWizardDialog;
 
 public class SaveBagAsHandler extends AbstractAction {
-    private static final long serialVersionUID = 1L;    
+    static final long serialVersionUID = 1L;    
 
     public SaveBagAsHandler() {
         super();        

@@ -139,11 +139,9 @@ public class DigiprovMdSecPropertiesPanel extends MdSecPropertiesPanel{
             public void propertyChange(PropertyChangeEvent pce) {                
                 final BagView bagView = BagView.getInstance();
                 if(pce.getPropertyName().equals("state") && pce.getNewValue() == SwingWorker.StateValue.STARTED){                    
-                    log.error(Context.getMessage("mdSecTable.addMdSec.start"));
-                    //ApplicationContextUtil.addConsoleMessage(Context.getMessage("mdSecTable.addMdSec.start"));
+                    log.error(Context.getMessage("mdSecTable.addMdSec.start"));                    
                 }else if(pce.getPropertyName().equals("log")){
-                    log.error(pce.getNewValue().toString());
-                    //ApplicationContextUtil.addConsoleMessage(pce.getNewValue().toString());                    
+                    log.error(pce.getNewValue().toString());                    
                 }else if(pce.getPropertyName().equals("send")){                    
 
                     MetsBag metsBag = bagView.getBag();                    

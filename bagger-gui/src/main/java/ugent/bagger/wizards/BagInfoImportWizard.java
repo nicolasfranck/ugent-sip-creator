@@ -37,11 +37,7 @@ public class BagInfoImportWizard extends AbstractWizard{
     
     public BagInfoImportWizard(String wizardId){
         super(wizardId);
-    }
-    /*
-    public void log(String message){
-        ApplicationContextUtil.addConsoleMessage(message+"\n");
-    }*/  
+    }     
     @Override
     public void addPages(){ 
         bagInfoImportWizardPage1 = new BagInfoImportWizardPage1("BagInfoImportWizardPage1");
@@ -86,64 +82,56 @@ public class BagInfoImportWizard extends AbstractWizard{
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.NoNamespaceException",new Object [] {file,e.getMessage()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.NoNamespaceException",new Object [] {file,e.getMessage()}));
+                        );                        
                     }catch(IllegalNamespaceException e){
                         numErrors++;
                         log.error(e.getMessage());
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.IllegalNamespaceException",new Object [] {file,e.getNamespace()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.IllegalNamespaceException",new Object [] {file,e.getNamespace()}));
+                        );                        
                     }catch(MalformedURLException e){
                         numErrors++;
                         log.error(e.getMessage());
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.MalformedURLException",new Object [] {file,e.getMessage()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.MalformedURLException",new Object [] {file,e.getMessage()}));
+                        );                       
                     }catch(SAXException e){
                         numErrors++;
                         log.error(e.getMessage());
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.SAXException",new Object [] {file,e.getMessage()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.SAXException",new Object [] {file,e.getMessage()}));
+                        );                        
                     }catch(IOException e){
                         numErrors++;
                         log.error(e.getMessage());
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.IOException",new Object [] {file,e.getMessage()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.IOException",new Object [] {file,e.getMessage()}));
+                        );                        
                     }catch(TransformerException e){
                         numErrors++;
                         log.error(e.getMessage());
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.TransformerException",new Object [] {file,e.getMessage()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.TransformerException",new Object [] {file,e.getMessage()}));
+                        );                        
                     }catch(ParserConfigurationException e){
                         numErrors++;
                         log.error(e.getMessage());
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.ParserConfigurationException",new Object [] {file,e.getMessage()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.ParserConfigurationException",new Object [] {file,e.getMessage()}));
+                        );                        
                     }catch(Exception e){
                         numErrors++;
                         log.error(e.getMessage());
                         SwingUtils.ShowError(
                             null,
                             Context.getMessage("bagInfoImportWizard.Exception",new Object [] {file,e.getMessage()})
-                        );
-                        //log(Context.getMessage("bagInfoImportWizard.Exception",new Object [] {file,e.getMessage()}));
+                        );                        
                     }     
                     
                     int percent = (int)Math.floor(
@@ -159,8 +147,7 @@ public class BagInfoImportWizard extends AbstractWizard{
                 });
                 String reportLog = Context.getMessage("report.log");
                 SwingUtils.ShowMessage(null,report+"\n"+reportLog);
-
-                //table.refresh();
+                
                 BagInfoImportWizard.this.firePropertyChange("doneMdSec",null,null);
             }else{
                 //geen importer gevonden

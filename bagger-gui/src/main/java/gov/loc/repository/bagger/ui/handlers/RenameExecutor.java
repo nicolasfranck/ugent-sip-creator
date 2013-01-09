@@ -10,8 +10,8 @@ import ugent.bagger.dialogs.RenameDialog;
 import ugent.bagger.helper.SwingUtils;
 
 public class RenameExecutor extends AbstractActionCommandExecutor {
-    private static final long serialVersionUID = 1L;  
-    private RenameDialog renameDialog;
+    static final long serialVersionUID = 1L;  
+    RenameDialog renameDialog;
  
     public RenameExecutor() {
         super();        

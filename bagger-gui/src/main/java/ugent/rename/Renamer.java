@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import ugent.bagger.helper.FUtils;
 
 /*
  *  Nicolas Franck
@@ -12,9 +13,31 @@ import java.util.regex.Pattern;
 
 public class Renamer extends AbstractRenamer{      
     String source;
-    String destination;   
-    int patternFlags = Pattern.CANON_EQ;       
-    
+    String destination;  
+    String prefix;
+    String postfix;    
+    boolean renameExtension = false;
+    int patternFlags = Pattern.CANON_EQ;     
+    String [] doubleFileExtension = {"tar.gz","tar.bz2","tar.z","tar.xz","tar.lz"};
+
+    public boolean isRenameExtension() {
+        return renameExtension;
+    }
+    public void setRenameExtension(boolean renameExtension) {
+        this.renameExtension = renameExtension;
+    }   
+    public String getPrefix() {
+        return prefix;
+    }
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+    public String getPostfix() {
+        return postfix;
+    }
+    public void setPostfix(String postfix) {
+        this.postfix = postfix;
+    }    
     public int getPatternFlags() {        
         return patternFlags;
     }    
@@ -28,8 +51,8 @@ public class Renamer extends AbstractRenamer{
     private Pattern compileSourcePattern() {                  
         Pattern sourcePattern = null;
         try{                        
-            sourcePattern = Pattern.compile(source,getPatternFlags());                           
-        }catch(Exception e){
+            sourcePattern = Pattern.compile(getSource(),getPatternFlags());                           
+        }catch(Exception e){            
             log.error(e.getMessage());
         }       
         return sourcePattern;
@@ -55,9 +78,8 @@ public class Renamer extends AbstractRenamer{
     
     @Override
     protected ArrayList<RenameFilePair> getFilePairs(){
-        Pattern sp = compileSourcePattern();       
-        if(
-            sp == null ||             
+               
+        if(                         
             getInputFiles().size() <= 0
         ){            
             return null;
@@ -66,66 +88,87 @@ public class Renamer extends AbstractRenamer{
         for(int i = 0;i<getInputFiles().size();i++){
             File sourceFile = getInputFiles().get(i);
             String baseName = sourceFile.getName();
-            Matcher matcher = sp.matcher(baseName);                            
-            String newName = matcher.replaceAll(getDestination()); 
-            if(newName.compareTo(baseName) == 0){
+            
+            String extension = null;
+            
+            
+            //extensie ook mee betrekken in rename?
+            if(!isRenameExtension()){
+                boolean isDoubleExtension = false;
+                //controleer speciale gevallen
+                for(String n:doubleFileExtension){
+                    if(baseName.toLowerCase().endsWith("."+n)){
+                        //en niet 'extension = n', want de test wordt case-insensitive uitgevoerd..
+                        extension = baseName.substring(baseName.length() - n.length());
+                        isDoubleExtension = true;
+                        baseName = baseName.substring(0,baseName.length() - n.length() - 1);
+                        break;
+                    }
+                }
+                if(!isDoubleExtension){
+                    int pos = baseName.lastIndexOf('.');
+                    extension = pos >= 0 ? baseName.substring(pos + 1):"";
+                    baseName = pos >= 0 ? baseName.substring(0,pos) : baseName;                    
+                }                
+            }            
+            
+            String newName = null;
+            
+            //indien source == "", dan worden alle lettergrenzen vervangen door de destination
+            //dus niet zomaar vervangen..
+            if(!getSource().isEmpty()){
+                Pattern sp = compileSourcePattern();
+                Matcher matcher = sp.matcher(baseName);              
+                newName = matcher.replaceAll(getDestination()); 
+            }else{
+                newName = baseName;
+            }
+            
+            
+            if(getPrefix() != null){
+                newName = getPrefix() + newName;
+            }
+            if(getPostfix() != null){                
+                newName += getPostfix();                
+            }
+            if(!isRenameExtension()){
+                newName += (extension != null ? "."+extension : "");
+            }            
+            
+            if(newName.compareTo(sourceFile.getName()) == 0){                
                 continue;
             }
+            
             File destinationFile = new File(sourceFile.getParentFile(),newName);
             pairs.add(new RenameFilePair(sourceFile,destinationFile));
         }
         return pairs;
     }
-    /*
+    
     public static void main(String [] args){
         Renamer renamer = new Renamer();
-        String [] inputFiles = new String [] {
-            "/pruts/a-2.txt","/pruts/b-3.txt"
-        };
-        ArrayList<File>files = new ArrayList<File>();
-        for(String s:inputFiles){
-            files.add(new File(s));
-        }
+        
+        ArrayList<File>files = FUtils.listFiles("/home/njfranck/test/torename");        
         
         System.out.println("inputFiles: "+files.size());
         renamer.setInputFiles(files);
-        renamer.setSource("\\d+");
-        renamer.setDestination("");        
-        renamer.setSimulateOnly(true);        
-        renamer.setPatternFlag(Pattern.CANON_EQ);
+        renamer.setSource("txt");
+        renamer.setDestination("TXT");        
+        renamer.setSimulateOnly(true); 
+        renamer.setRenameExtension(true);
+        //renamer.setPrefix("rug01-");
+        //renamer.setPostfix("-post");
+        
+        ArrayList<RenameFilePair>pairs = renamer.getFilePairs();        
+        
         renamer.setRenameListener(new RenameListenerAdapter(){            
             @Override
             public boolean approveList(final ArrayList<RenameFilePair> list){
-                System.out.println("approveList");
-                //controleer of target niet voorkomt in source list
-                int numFound = 0;
-                ArrayList<String>seen = new ArrayList<String>();
-                for(RenameFilePair pair:list){
-                    if(!seen.contains(pair.getSource().getAbsolutePath())){
-                        seen.add(pair.getSource().getAbsolutePath());
-                    }else{
-                        numFound++;
-                    }
-                    if(!seen.contains(pair.getTarget().getAbsolutePath())){
-                        seen.add(pair.getTarget().getAbsolutePath());
-                    }else{
-                        numFound++;
-                    }
-                }
-                System.out.println("equals? "+("a".equals("a") ? "yes":"no"));
-                System.out.println("seen.size: "+seen.size());
-                System.out.println("numFound: "+numFound);
-                boolean approved = true;
-                if(numFound > 0){
-                    int answer = JOptionPane.showConfirmDialog(SwingUtils.getFrame(),"Waarschuwing: "+numFound+" dreigen overschreven te worden. Bent u zeker?");
-                    approved = answer == JOptionPane.OK_OPTION;
-                }
-                return approved;
+                return true;
             }
             @Override
             public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr, int index) {
-                System.out.println("error: "+errorStr);
-                //return ErrorAction.undoAll;
+                System.out.println("error: "+errorStr);                
                 return ErrorAction.ignore;
             }
             @Override
@@ -134,5 +177,5 @@ public class Renamer extends AbstractRenamer{
             }            
         });
         renamer.rename();
-    }*/
+    }
 }

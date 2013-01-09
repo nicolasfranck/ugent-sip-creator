@@ -1,5 +1,6 @@
 package ugent.bagger.params;
 
+import java.util.Date;
 import org.apache.commons.net.ftp.FTPFile;
 
 /**
@@ -24,9 +25,10 @@ public class FTPAbstractFile extends AbstractFile {
         return file;
     }
     @Override
-    public long lastModified() {
+    public long getLastModified() {
         return file.getTimestamp().getTimeInMillis();
     }
+    
     @Override
     public boolean isReadable() {
         return file.hasPermission(FTPFile.USER_ACCESS,FTPFile.READ_PERMISSION);
@@ -49,4 +51,8 @@ public class FTPAbstractFile extends AbstractFile {
     public String getMimeType() {
         throw new UnsupportedOperationException("Not supported yet.");
     }    
+    @Override
+    public Date getLastModifiedDate(){
+        return new Date(getLastModified());
+    }
 }

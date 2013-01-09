@@ -20,10 +20,9 @@ import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask;
 
 public class SaveBagHandler extends Handler {
-    private static final Log log = LogFactory.getLog(SaveBagHandler.class);
-    private static final long serialVersionUID = 1L;        
-    private boolean clearAfterSaving = false;
-    private String messages;
+    static final Log log = LogFactory.getLog(SaveBagHandler.class);
+    static final long serialVersionUID = 1L;        
+    boolean clearAfterSaving = false;    
     
     public SaveBagHandler() {
         super();        
@@ -39,8 +38,7 @@ public class SaveBagHandler extends Handler {
                 saveBag(file);
             }
         }        
-    }
-    
+    }   
 
     @Override
     public void execute(){           
@@ -157,8 +155,7 @@ public class SaveBagHandler extends Handler {
                 saveOk = metsBag.write(bagWriter);
 
                                 
-            }catch(Exception e){                    
-                //log(e.getMessage());
+            }catch(Exception e){                                    
                 log.error(e.getMessage());                
             }             
             
@@ -171,13 +168,11 @@ public class SaveBagHandler extends Handler {
             if (!saveOk) {                    
                 String message = Context.getMessage("bag.warning.savingFailed");
                 SwingUtils.ShowError(null,message);
-                log.error(message);
-                //log(message);
+                log.error(message);                
             } else {
                 String message = Context.getMessage("bag.saved.description");
                 String title = Context.getMessage("bag.saved.title");
-                SwingUtils.ShowMessage(title,message);                
-                //log(message);
+                SwingUtils.ShowMessage(title,message);                                
             }
 
             if(metsBag.isSerialized()){

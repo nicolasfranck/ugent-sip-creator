@@ -5,10 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import org.springframework.binding.PropertyAccessStrategy;
 import org.springframework.rules.Rules;
-import org.springframework.rules.constraint.CompoundConstraint;
 import org.springframework.rules.constraint.Constraint;
-import org.springframework.rules.constraint.property.RequiredIfTrue;
-import org.springframework.rules.constraint.XOr;
 import org.springframework.rules.constraint.property.AbstractPropertyConstraint;
 import org.springframework.rules.constraint.property.PropertyConstraint;
 import org.springframework.rules.support.DefaultRulesSource;
@@ -94,9 +91,9 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         addRules(validateManifestParamsRules);
         
         //rename
-        Rules renameParamsRules = new Rules(RenameParams.class);
+        /*Rules renameParamsRules = new Rules(RenameParams.class);
         renameParamsRules.add(required("source"));
-        addRules(renameParamsRules);
+        addRules(renameParamsRules);*/
         
         //exportParams
         Rules exportParamsRules = new Rules(ExportParams.class);

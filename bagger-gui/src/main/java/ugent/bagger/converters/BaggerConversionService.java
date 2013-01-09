@@ -12,6 +12,7 @@ public class BaggerConversionService extends DefaultConversionServiceFactoryBean
         DefaultConversionService service = (DefaultConversionService) super.createConversionService();
         service.addConverter(new StringToCharConverter());
         service.addConverter(new CharToStringConverter());
+        service.addConverter(new DateToStringConverter());
         return service;
     }
 }

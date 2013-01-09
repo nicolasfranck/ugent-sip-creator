@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.PropertyAccessException;
 import org.springframework.richclient.application.ApplicationLauncher;
 
+
 /**
  * Main driver that starts the Bagger spring rich client application.
  */

@@ -100,8 +100,37 @@ public class RenamePanel extends JPanel{
     JPanel panelFileTable;
     ArrayList<File>selectedFiles = new ArrayList<File>();
     HashMap<String,RenameParams>renameParamsTemplates;
-    ArrayList<File>forbiddenFiles;    
+    ArrayList<File>forbiddenFiles;  
+    
+    JComboBox renameParamsTemplatesComboBox;
 
+    public JComboBox getRenameParamsTemplatesComboBox() {
+        if(renameParamsTemplatesComboBox == null){
+            ContextObject [] list = new ContextObject[getRenameParamsTemplates().keySet().size()];
+            Object [] keys = getRenameParamsTemplates().keySet().toArray();
+            for(int i = 0;i < keys.length;i++){
+                list[i] = new ContextObject(
+                    getRenameParamsTemplates().get(keys[i]),
+                    "renameParamsTemplates."+keys[i]+".label"
+                );            
+            }
+            renameParamsTemplatesComboBox = new JComboBox(list);
+            renameParamsTemplatesComboBox.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    ContextObject contextObject = (ContextObject) renameParamsTemplatesComboBox.getSelectedItem();                
+                    RenameParams params = (RenameParams) contextObject.getObject();
+                    if(params != null){
+                        setRenameParams(params);
+                        getRenameParamsForm().setFormObject(params);
+                    }
+                }                       
+            });
+            renameParamsTemplatesComboBox.setAlignmentX(LEFT_ALIGNMENT);
+        }
+        return renameParamsTemplatesComboBox;
+    }
+    
     public JLabel getLastFileLabel() {
         if(lastFileLabel == null){
             lastFileLabel = new JLabel(getLastFile().getAbsolutePath(),SwingConstants.RIGHT);                                    
@@ -208,7 +237,7 @@ public class RenamePanel extends JPanel{
         if(fileTable == null){                                    
             fileTable = new ClassTable<AbstractFile>(                
                 new ArrayList<AbstractFile>(),
-                new String [] {"name","mimeType"},
+                new String [] {"name","mimeType","lastModifiedDate"},
                 "fileTable"
             );       
             
@@ -510,6 +539,8 @@ public class RenamePanel extends JPanel{
                         
         getRenumberParamsForm().setEnabled(enabled);                    
         SwingUtils.setJComponentEnabled(getRenumberButtonPanel(),enabled && !getRenumberParamsForm().hasErrors());
+        
+        getRenameParamsTemplatesComboBox().setEnabled(enabled);
     }
     public void setFileSystemTree(JTree fileSystemTree) {
         this.fileSystemTree = fileSystemTree;
@@ -802,33 +833,11 @@ public class RenamePanel extends JPanel{
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));        
         
         //templates
-        JPanel renameParamsTemplatesPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
-        ContextObject [] list = new ContextObject[getRenameParamsTemplates().keySet().size()];
-        Object [] keys = getRenameParamsTemplates().keySet().toArray();
-        for(int i = 0;i < keys.length;i++){
-            list[i] = new ContextObject(
-                getRenameParamsTemplates().get(keys[i]),
-                "renameParamsTemplates."+keys[i]+".label"
-            );            
-        }
-        final JComboBox renameParamsTemplatesComboBox = new JComboBox(list);
-        renameParamsTemplatesComboBox.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                ContextObject contextObject = (ContextObject) renameParamsTemplatesComboBox.getSelectedItem();                
-                RenameParams params = (RenameParams) contextObject.getObject();
-                if(params != null){
-                    setRenameParams(params);
-                    getRenameParamsForm().setFormObject(params);
-                }
-            }                       
-        });
-        renameParamsTemplatesComboBox.setAlignmentX(LEFT_ALIGNMENT);       
+        JPanel renameParamsTemplatesPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));                       
         JLabel renameParamsTemplatesLabel = new JLabel(Context.getMessage("renamePanel.renameParamsTemplatesLabel.label"));
-        renameParamsTemplatesLabel.setAlignmentX(LEFT_ALIGNMENT);        
-        
+        renameParamsTemplatesLabel.setAlignmentX(LEFT_ALIGNMENT);                
         renameParamsTemplatesPanel.add(renameParamsTemplatesLabel);
-        renameParamsTemplatesPanel.add(renameParamsTemplatesComboBox);
+        renameParamsTemplatesPanel.add(getRenameParamsTemplatesComboBox());
         
         Dimension tpdim = renameParamsTemplatesPanel.getPreferredSize();
         renameParamsTemplatesPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE,(int)tpdim.getHeight()));
@@ -1075,6 +1084,11 @@ public class RenamePanel extends JPanel{
                 renamer.setCopy(renameParams.isCopy());               
                 renamer.setSimulateOnly(renameParams.isSimulateOnly());                                
                 renamer.setOverwrite(renameParams.isOverWrite());            
+                
+                renamer.setPrefix(renameParams.getPrefix());
+                renamer.setPostfix(renameParams.getPostfix());
+                renamer.setRenameExtension(renameParams.isRenameExtension());
+                
                 if(renameParams.isIgnoreCase()){
                     renamer.setPatternFlag(Pattern.CASE_INSENSITIVE);
                 }else{

@@ -1,6 +1,7 @@
 package ugent.bagger.params;
 
 import eu.medsea.mimeutil.MimeUtil;
+import java.util.Date;
 
 /**
  *
@@ -13,7 +14,8 @@ public abstract class AbstractFile {
     public abstract String getName();
     public abstract long getSize();
     public abstract Object getFile();
-    public abstract long lastModified();
+    public abstract long getLastModified();
+    public abstract Date getLastModifiedDate();
     public abstract boolean isReadable();
     public abstract boolean isWritable();
     public abstract boolean isDirectory();

@@ -102,10 +102,5 @@ public class CreateBagsHandler extends AbstractAction implements Progress/*,Logg
     */
     public void createPreBagAddKeepFilesToEmptyFolders(File dataFile, String bagItVersion) {
         createPreBagAddKeepFilesToEmptyFolders(dataFile, bagItVersion,new String [] {});
-    }        
-    /*
-    @Override
-    public void log(String message) {
-        ApplicationContextUtil.addConsoleMessage(message);
-    }*/
+    }            
 }

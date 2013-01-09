@@ -1,12 +1,12 @@
 package gov.loc.repository.bagger.ui;
 
 import gov.loc.repository.bagger.bag.BagInfoField;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -139,7 +139,8 @@ public final class AddFieldPanel extends JPanel {
         ArrayList<String> list = (ArrayList<String>) Beans.getBean("baginfoStandardFields");
         if(list == null){
             list = new ArrayList<String>();
-        }        
+        } 
+        Collections.sort(list);
         return list;
     }	
 	
@@ -168,7 +169,7 @@ public final class AddFieldPanel extends JPanel {
     
 	
     private BagInfoField createBagInfoField() {
-        BagView bagView = ApplicationContextUtil.getBagView();
+        BagView bagView = BagView.getInstance();
        
         BagInfoField field = new BagInfoField();
 
