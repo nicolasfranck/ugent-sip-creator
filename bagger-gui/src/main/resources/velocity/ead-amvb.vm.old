@@ -8,201 +8,201 @@
                 <author>$!{record.get("inventarisAuteur")}</author>
             </titlestmt>
             <publicationstmt>
-                <date>$record.get("inventarisDatumPublicatie")</date>
-                <publisher>$record.get("inventarisUitgever")</publisher>
+                <date>$!{record.get("inventarisDatumPublicatie")}</date>
+                <publisher>$!{record.get("inventarisUitgever")}</publisher>
                 <address>
-                    <addressline>$record.get("inventarisPlaatsUitgave")</addressline>
+                    <addressline>$!{record.get("inventarisPlaatsUitgave")}</addressline>
                 </address>
             </publicationstmt>
         </filedesc>
         <profiledesc>
-            <creation>$record.get("profielAuteur")</creation>
+            <creation>$!{record.get("profielAuteur")}</creation>
             <langusage>Inventaris opgesteld in
-                <language>$record.get("profielTaal")</language>
+                <language>$!{record.get("profielTaal")}</language>
             </langusage>
             <descrules encodinganalog="ISAD 3.7.2">Inventaris opgesteld volgens de standaard beschrijvingsregels van
-                <title>$record.get("beschrijvingBeschrijvingsregels")</title>
+                <title>$!{record.get("beschrijvingBeschrijvingsregels")}</title>
             </descrules>
         </profiledesc>
     </eadheader>
     <archdesc level="collection">
         <did>
          <head>Descriptive Summary</head>
-            <unitid encodinganalog="ISAD(G)3.1.1" countrycode="[iso3166-1 landcode]" repositorycode="[iso15511 ISIL code archiefinstelling">$record.get("identificatieId")</unitid>
-            <unittitle encodinganalog="ISAD(G)3.1.2">$record.get("identificatieTitel")</unittitle>
-            <unitdate encodinganalog="ISAD(G)3.1.3" type="inclusive" normal="[ISO8601 datering]">$record.get("identificatieDatering")</unitdate>
+            <unitid encodinganalog="ISAD(G)3.1.1" countrycode="[iso3166-1 landcode]" repositorycode="[iso15511 ISIL code archiefinstelling">$!{record.get("identificatieId")}</unitid>
+            <unittitle encodinganalog="ISAD(G)3.1.2">$!{record.get("identificatieTitel")}</unittitle>
+            <unitdate encodinganalog="ISAD(G)3.1.3" type="inclusive" normal="[ISO8601 datering]">$!{record.get("identificatieDatering")}</unitdate>
             <physdesc encodinganalog="ISAD(G)3.1.5">
-                <extent>$record.get("identificatieOmvang")</extent>
-                <genreform>$record.get("identificatieVorm")</genreform>
+                <extent>$!{record.get("identificatieOmvang")}</extent>
+                <genreform>$!{record.get("identificatieVorm")}</genreform>
             </physdesc>       
             <origination encodinganalog="ISAD(G)3.2.1">
-                <persname rules="ISAAR(CPF)">$record.get("contextNaamArchiefvormer")</persname>
+                <persname rules="ISAAR(CPF)">$!{record.get("contextNaamArchiefvormer")}</persname>
             </origination>
-            <abstract>$record.get("inhoudAbstract")</abstract>
-            <langmaterial encodinganalog="ISAD(G) 3.4.3">$record.get("voorwaardenTaalSchrift")</langmaterial>
-            <container type="bagit">$record.get("Bag-Id")</container>
-            <physloc>$record.get("identificatieBewaarplaats")</physloc>
+            <abstract>$!{record.get("inhoudAbstract")}</abstract>
+            <langmaterial encodinganalog="ISAD(G) 3.4.3">$!{record.get("voorwaardenTaalSchrift")}</langmaterial>
+            <container type="bagit">$!{record.get("Bag-Id")}</container>
+            <physloc>$!{record.get("identificatieBewaarplaats")}</physloc>
             <repository>
-                <corpname>$record.get("identificatieBewaarinstelling")</corpname>
+                <corpname>$!{record.get("identificatieBewaarinstelling")}</corpname>
                 <address>
-                    <addressline>$record.get("identificatieContactBewaarinstelling")</addressline>
+                    <addressline>$!{record.get("identificatieContactBewaarinstelling")}</addressline>
                 </address>
             </repository>
         </did>
         <bioghist encodinganalog="ISAD(G)3.2.2">
             <head>biografie/insitiutionele geschiedenis:</head>
-            <p>$record.get("contextBeschrijvingArchiefvormer")</p>
+            <p>$!{record.get("contextBeschrijvingArchiefvormer")}</p>
             <address>
-                <addressline>$record.get("contextContactArchiefvormer")</addressline>
+                <addressline>$!{record.get("contextContactArchiefvormer")}</addressline>
             </address>
         </bioghist>
         <custodhist encodinganalog="ISAD(G)3.2.3">
             <custodhist>
                 <head>oorspronkelijke bewaarplaats van het archief:</head>
-                <p>$record.get("contextOorsprBewaarplaats")</p>
+                <p>$!{record.get("contextOorsprBewaarplaats")}</p>
             </custodhist>
             <custodhist>
                 <head>relatie analoog/digitaal archief:</head>
-                <p>$record.get("contextRelatieAnaloogDigitaal")</p>
+                <p>$!{record.get("contextRelatieAnaloogDigitaal")}</p>
             </custodhist>
             <custodhist>
                 <head>overstap analoog/digitaal:</head>
-                <p>$record.get("contextDatumAnaloogDigitaal")</p>
+                <p>$!{record.get("contextDatumAnaloogDigitaal")}</p>
             </custodhist>
         </custodhist>
         <acqinfo encodinganalog="ISAD(G)3.2.4">
             <acqinfo>
                 <head>overdrager</head>
-                <p>$record.get("contextNaamOverdrager")</p>
+                <p>$!{record.get("contextNaamOverdrager")}</p>
                 <address>
-                    <addressline>$record.get("contextContactOVerdrager")</addressline>
+                    <addressline>$!{record.get("contextContactOVerdrager")}</addressline>
                 </address>
             </acqinfo>
             <acqinfo>
                 <head>relatie overdrager t.a.v. het archief</head>
-                <p>$record.get("contextRelatieOverdragerArchief")</p>
+                <p>$!{record.get("contextRelatieOverdragerArchief")}</p>
             </acqinfo>
             <acqinfo>
                 <head>reden overdracht</head>
-                <p>$record.get("contextRedenOverdracht")</p>
+                <p>$!{record.get("contextRedenOverdracht")}</p>
             </acqinfo>
             <acqinfo>
                 <head>manier overdracht</head>
-                <p>$record.get("contextManierOverdracht")</p>
+                <p>$!{record.get("contextManierOverdracht")}</p>
             </acqinfo>
             <acqinfo>
                 <head>kopiebijeigenaar</head>
-                <p>$record.get("contextKopieEigenaar")</p>
+                <p>$!{record.get("contextKopieEigenaar")}</p>
             </acqinfo>
             <acqinfo>
                 <head>datum overdracht</head>
-                <p>$record.get("contextDatumOverdracht")</p>
+                <p>$!{record.get("contextDatumOverdracht")}</p>
             </acqinfo>
             <acqinfo>
                 <head>type overdracht</head>
-                <p>$record.get("contextTypOVerdracht")</p>
+                <p>$!{record.get("contextTypOVerdracht")}</p>
             </acqinfo>
             <acqinfo>
                 <head>overdrachtsovereenkomst</head>
-                <p>$record.get("contextOVerdrachtsovereenkomst")</p>
+                <p>$!{record.get("contextOVerdrachtsovereenkomst")}</p>
             </acqinfo>
             <acqinfo>
                 <head>aanwinstnummer</head>
-                <p>$record.get("contextAanwinstnummer")</p>
+                <p>$!{record.get("contextAanwinstnummer")}</p>
             </acqinfo>
         </acqinfo>
         <scopecontent encodinganalog="ISAD(G)3.3.1">
             <scopecontent>
                 <head>Inhoud en bereik:</head>
-                <p>$record.get("inhoudInhoudBereikArchief")</p>
+                <p>$!{record.get("inhoudInhoudBereikArchief")}</p>
             </scopecontent>
             <scopecontent>
                 <head>Inhoud analogedocumenten:</head>
-                <p>$record.get("inhoudAnalogeDocumenten")</p>
+                <p>$!{record.get("inhoudAnalogeDocumenten")}</p>
             </scopecontent>
             <scopecontent>
                 <head>Inhoud digitaledocumenten:</head>
-                <p>$record.get("inhoudDigitaleDocumenten")</p>
+                <p>$!{record.get("inhoudDigitaleDocumenten")}</p>
             </scopecontent>
             <scopecontent>
                 <head>overlap analoog/digitaal</head>
-                <p>$record.get("inhoudOverlapAnaloogDigitaal")</p>
+                <p>$!{record.get("inhoudOverlapAnaloogDigitaal")}</p>
             </scopecontent>
         </scopecontent>
         <appraisal encodinganalog="ISAD(G)3.3.2">
             <appraisal>
                 <head>Dubbels:</head>
-                <p>$record.get("inhoudSelectieDubbels")</p>
+                <p>$!{record.get("inhoudSelectieDubbels")}</p>
             </appraisal>
             <appraisal>
                 <head>Ontwerpversies:</head>
-                <p>$record.get("inhoudSelectieOntwerpversies")</p>
+                <p>$!{record.get("inhoudSelectieOntwerpversies")}</p>
             </appraisal>   
             <appraisal>
                 <head>Lege Mappen:</head>
-                <p>$record.get("inhoudSelectieLegeMappen")</p>
+                <p>$!{record.get("inhoudSelectieLegeMappen")}</p>
             </appraisal>   
             <appraisal>
                 <head>AndereBestanden:</head>
-                <p>$record.get("inhoudSelectieAndereBestanden")</p>
+                <p>$!{record.get("inhoudSelectieAndereBestanden")}</p>
             </appraisal>   
         </appraisal>
         <accruals encodinganalog="ISAD(G) 3.3.3">
-            <p>$record.get("inhoudAanvullingen")</p>
+            <p>$!{record.get("inhoudAanvullingen")}</p>
         </accruals>
         <accessrestrict encodinganalog="ISAD(G) 3.4.1">
             <accessrestrict>
                 <head>status toegang</head>
-                <p>$record.get("voorwaardenRaadplegingStatus")</p>
+                <p>$!{record.get("voorwaardenRaadplegingStatus")}</p>
             </accessrestrict>
             <accessrestrict>
                 <head>gevoelige gegevens:</head>
-                <p>$record.get("voorwaardenRaadplegingGevoeligeGegevens")</p>
+                <p>$!{record.get("voorwaardenRaadplegingGevoeligeGegevens")}</p>
             </accessrestrict>
             <accessrestrict>
                 <head>vertrouwelijke gegevens:</head>
-                <p>$record.get("voorwaardenRaadplegingVertrouwelijkeGegevens")</p>
+                <p>$!{record.get("voorwaardenRaadplegingVertrouwelijkeGegevens")}</p>
             </accessrestrict>
             <accessrestrict>
                 <head>persoonlijke gegevens:</head>
-                <p>$record.get("voorwaardenRaadplegingPersoonlijkeGegevens")</p>
+                <p>$!{record.get("voorwaardenRaadplegingPersoonlijkeGegevens")}</p>
             </accessrestrict>
             <accessrestrict>
                 <head>medische gegevens:</head>
-                <p>$record.get("voorwaardenRaadplegingMedischeGegevens")</p>
+                <p>$!{record.get("voorwaardenRaadplegingMedischeGegevens")}</p>
             </accessrestrict>
         </accessrestrict>
         <userestrict encodinganalog="ISAD(G) 3.4.2">
             <userestrict>
                 <head>status auteursrechten</head>
-                <p>$record.get("voorwaardenReproductieStatus")</p>
+                <p>$!{record.get("voorwaardenReproductieStatus")}</p>
             </userestrict>
             <userestrict>
                 <head>rechthebbenden</head>
-                <p>$record.get("voorwaardenReproductieRechthebbende")</p>
+                <p>$!{record.get("voorwaardenReproductieRechthebbende")}</p>
             </userestrict>
             <userestrict>
                 <head>Kopie beschikbaar?</head>
-                <p>$record.get("voorwaardenKopieBeschikbaar")</p>
+                <p>$!{record.get("voorwaardenKopieBeschikbaar")}</p>
             </userestrict>
         </userestrict>
         <phystech encodinganalog="ISAD(G) 3.4.4">
             <phystech>
                 <head>stat van het archief:</head>
-                <p>$record.get("voorwaardenStaatArchief")</p>
+                <p>$!{record.get("voorwaardenStaatArchief")}</p>
             </phystech>
         </phystech>
         <altformavail encodinganalog="ISAD(G) 3.5.2">
             <head>Kopieen in andere bewaarinstellingen:</head>
-            <p>$record.get("verwantMateriaalKopieen")</p>
+            <p>$!{record.get("verwantMateriaalKopieen")}</p>
         </altformavail>
         <processinfo>
             <processinfo encodinganalog="ISAD(G) 3.7.1">
-                <p>$record.get("beschrijvingNotitie")</p>
+                <p>$!{record.get("beschrijvingNotitie")}</p>
             </processinfo>
             <processinfo encodinganalog="ISAD(G) 3.7.3">
                 <head>Datum beschrijving:</head>
-                <p>$record.get("beschrijvingDatum")</p>
+                <p>$!{record.get("beschrijvingDatum")}</p>
             </processinfo>
         </processinfo>
         </archdesc>

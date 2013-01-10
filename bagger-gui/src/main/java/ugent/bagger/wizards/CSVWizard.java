@@ -123,6 +123,7 @@ public class CSVWizard extends AbstractWizard {
                             }
                             firePropertyChange("doneMdSec",null,null);                            
                         }catch(Exception e){ 
+                            e.printStackTrace();
                             log.error(e.getMessage());
                         }                        
                     }                    
@@ -133,6 +134,7 @@ public class CSVWizard extends AbstractWizard {
             }            
             
         }catch(Exception e){
+            e.printStackTrace();
             log.error(e.getMessage());
         }
         
