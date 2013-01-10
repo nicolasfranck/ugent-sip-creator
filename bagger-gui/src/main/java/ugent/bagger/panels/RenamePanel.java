@@ -120,6 +120,7 @@ public class RenamePanel extends JPanel{
                 public void actionPerformed(ActionEvent ae) {
                     ContextObject contextObject = (ContextObject) renameParamsTemplatesComboBox.getSelectedItem();                
                     RenameParams params = (RenameParams) contextObject.getObject();
+                    System.out.println("source: "+params.getSource());
                     if(params != null){
                         setRenameParams(params);
                         getRenameParamsForm().setFormObject(params);

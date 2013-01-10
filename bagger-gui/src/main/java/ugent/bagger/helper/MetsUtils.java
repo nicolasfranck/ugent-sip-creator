@@ -38,16 +38,16 @@ import ugent.bagger.params.VelocityTemplate;
  */
 public class MetsUtils {
     
-    private static HashMap<String,HashMap<String,Object>>crosswalk;
-    private static HashMap<String,HashMap<String,Object>> xsdMap = null;    
-    private static HashMap<String,String> baginfoMap = null;    
-    private static HashMap<String,String> namespaceMap = null;
-    private static HashMap<String,String> typeMap = null;
-    private static HashMap<String,String> rootNameMapping = null;
-    private static HashMap<String,String> docTypeMapping = null;
-    private static ArrayList<String>forbiddenNamespaces = null;
-    private static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
-    private static Log log = LogFactory.getLog(MetsUtils.class);
+    static HashMap<String,HashMap<String,Object>>crosswalk;
+    static HashMap<String,HashMap<String,Object>> xsdMap = null;    
+    static HashMap<String,String> baginfoMap = null;    
+    static HashMap<String,String> namespaceMap = null;
+    static HashMap<String,String> typeMap = null;
+    static HashMap<String,String> rootNameMapping = null;
+    static HashMap<String,String> docTypeMapping = null;
+    static ArrayList<String>forbiddenNamespaces = null;
+    static Pattern ncname_forbidden = Pattern.compile("[^a-zA-Z0-9_-]");    
+    static final Log log = LogFactory.getLog(MetsUtils.class);
     public static final String NAMESPACE_DC = "http://purl.org/dc/elements/1.1/";
     public static final String NAMESPACE_OAI_DC = "http://www.openarchives.org/OAI/2.0/oai_dc/";     
     public static ArrayList<VelocityTemplate>baginfoTemplates;

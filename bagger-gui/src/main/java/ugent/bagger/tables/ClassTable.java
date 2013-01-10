@@ -49,6 +49,7 @@ public class ClassTable<T> extends AbstractObjectTable {
     protected void configureTable(JTable table) {
         table.setFillsViewportHeight(true);             
         table.setCellSelectionEnabled(true);
+        table.setRowHeight(20);
     }
     @Override
     protected Object[] getDefaultInitialData(){               

@@ -739,6 +739,31 @@
                 <property name="destination" value="" />                
             </bean>  
         </entry>
+        <entry key="removeEvilCharacters">
+            <bean class="ugent.bagger.params.RenameParams">
+                <property name="regex" value="true" />                                
+                <property name="source">                    
+                    <value><![CDATA[[/\\\+\*\s\t"'\?!:\{\}<>\[\]\(\)]+]]></value>
+                </property>
+                <property name="destination" value="" />                
+            </bean>  
+        </entry>
+        <!--
+        <entry key="toUpperCase">
+            <bean class="ugent.bagger.params.RenameParams">
+                <property name="regex" value="true" />                                
+                <property name="source" value="(.*)" />
+                <property name="destination" value="\U\1" />                
+            </bean>  
+        </entry>
+        <entry key="toLowerCase">
+            <bean class="ugent.bagger.params.RenameParams">
+                <property name="regex" value="true" />                                
+                <property name="source" value="(.*)" />
+                <property name="destination" value="\L\1" />                
+            </bean>  
+        </entry>
+        -->
     </util:map>
     
     <util:map id="csvDefaultMapConfig" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.util.HashMap" >

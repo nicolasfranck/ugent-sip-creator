@@ -4,11 +4,8 @@
  */
 package ugent.bagger.helper;
 
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.writer.Writer;
-import gov.loc.repository.bagit.writer.impl.FileSystemWriter;
-import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -16,7 +13,7 @@ import java.io.File;
  */
 public class Test3 {
     public static void main(String...args){
-        BagFactory bf = new BagFactory();
+        /*BagFactory bf = new BagFactory();
         Bag bag = bf.createBag();
         
         bag.addFileToPayload(new File("/home/njfranck/test/a.txt"));
@@ -26,6 +23,13 @@ public class Test3 {
         
         Writer bw = new FileSystemWriter(bf);
         
-        bw.write(bag,new File("/home/njfranck/test/bag-a"));
+        bw.write(bag,new File("/home/njfranck/test/bag-a"));*/
+        Pattern pattern = Pattern.compile("(.*)");
+        System.out.println("pattern: "+pattern);
+        String text = "hello/\\";
+        Matcher matcher = pattern.matcher(text);        
+        
+        String newText = matcher.replaceAll("\\U$1");
+        System.out.println(text+" => "+newText);
     }
 }

@@ -27,20 +27,23 @@ public class RenameParamsForm extends AbstractForm{
 
         SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
         TableFormBuilder builder = new TableFormBuilder(bf);        
-        builder.setLabelAttributes("colSpan=1 align=left");        
+        builder.setLabelAttributes("colSpan=1 align=left");                
         
-        String [] commonFields = {"source","destination"};
+        String [] commonFields = {"source","destination","regex","ignoreCase","renameExtension"};
         for(String field:commonFields){
             builder.add(field);
             builder.row();
-        }
+        }               
+        
         String [] detailFields = {
-            /*"copy","overWrite",*/"ignoreCase","regex","prefix","postfix","renameExtension"
+            /*"copy","overWrite",*/"prefix","postfix"
         };
         for(String field:detailFields){
             builder.add(field);
             builder.row();
         }        
+        
+        
         Binding b = bf.createBoundComboBox("onErrorAction",ErrorAction.values());        
         builder.add(b);
         builder.row();

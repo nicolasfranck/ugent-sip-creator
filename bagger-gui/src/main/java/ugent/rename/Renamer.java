@@ -52,7 +52,9 @@ public class Renamer extends AbstractRenamer{
         Pattern sourcePattern = null;
         try{                        
             sourcePattern = Pattern.compile(getSource(),getPatternFlags());                           
-        }catch(Exception e){            
+        }catch(Exception e){  
+            System.out.println("source compiling failed: "+e.getMessage());
+            e.printStackTrace();
             log.error(e.getMessage());
         }       
         return sourcePattern;
@@ -118,8 +120,13 @@ public class Renamer extends AbstractRenamer{
             //dus niet zomaar vervangen..
             if(!getSource().isEmpty()){
                 Pattern sp = compileSourcePattern();
-                Matcher matcher = sp.matcher(baseName);              
-                newName = matcher.replaceAll(getDestination()); 
+                if(sp != null){
+                    System.out.println("baseName: "+baseName);
+                    newName = sp.matcher(baseName).replaceAll(getDestination()); 
+                    System.out.println("newName: "+newName);
+                }else{
+                    newName = baseName;
+                }               
             }else{
                 newName = baseName;
             }

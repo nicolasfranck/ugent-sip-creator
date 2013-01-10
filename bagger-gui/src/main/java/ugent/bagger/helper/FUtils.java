@@ -9,12 +9,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.apache.log4j.Logger;
+import ugent.bagger.exceptions.FileNameNotPortableException;
 import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
 
@@ -23,12 +26,14 @@ import ugent.bagger.exceptions.FileNotWritableException;
  * @author nicolas
  */
 public class FUtils {
-    private static Logger log = Logger.getLogger(FUtils.class);
-    private static final HashMap<String,Double> sizes;
-    private static MessageDigest md5DigestInstance;
-    private static final String [] sizeNames = {        
+    static final Logger log = Logger.getLogger(FUtils.class);
+    static final HashMap<String,Double> sizes;
+    static MessageDigest md5DigestInstance;
+    static final String [] sizeNames = {        
       "TB","GB","MB","KB","B"
     };   
+    static Pattern safeFileNamePattern = Pattern.compile("^[a-zA-Z0-9\\.\\-_]+$");
+    
     public static Comparator defaultFileSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1, File f2){
@@ -332,37 +337,8 @@ public class FUtils {
             node.add(componentsToTreeNode(components,offset + 1));
         }
         return node;
-    }
-   
-    public static void main(String [] args) {
-        /*try{
-            checkFile(new File("/root"));
-        }catch(FileNotWritableException e){
-            System.out.println("file not writable");
-        }catch(FileNotReadableException e){
-            System.out.println("file not readable");
-        }catch(FileNotFoundException e){
-            System.out.println("file not found");
-        }
-        
-        ArrayList<File>list = listFiles(new File("/cdrom"));
-        for(File f:list){
-            System.out.println("file: "+f);
-        }*/
-        /*
-        String entry = getEntryStringFor("/home/nicolas/bags/baggie.zip","baggie/data");
-        System.out.println("entry: "+entry);
-        try{            
-            FileObject f = resolveFile(entry+"/rklzjer");
-            System.out.println("entry '"+entry+"' exists: "+f.exists());
-        }catch(Exception e){
-            e.printStackTrace();
-        }*/
-        File child = new File("/home/nicolas/Bagger-LC");
-        File parent = new File("/home/nicolas");
-        System.out.println(child+" is descendant of "+parent+": "+(isDescendant(parent,child)));
-        
-    }
+    }  
+    
     public static void recurseTree(DefaultMutableTreeNode node){
         recurseTree(node,0);
     }
@@ -430,5 +406,27 @@ public class FUtils {
         }
         return false;             
     }
-    
+    public static void checkSafeFiles(File file)throws FileNameNotPortableException{
+        if(!isSafeFile(file)){
+            throw new FileNameNotPortableException(file);
+        }
+        if(file.isDirectory()){
+            for(File child:file.listFiles()){
+                checkSafeFiles(child);
+            }
+        }
+    }
+    public static boolean isSafeFile(File file){
+        return isSafeFileName(file.getName());
+    }
+    public static boolean isSafeFileName(String name){        
+        return safeFileNamePattern.matcher(name).find();        
+    }
+    public static void main(String...args){
+        try{
+            checkSafeFiles(new File("/home/njfranck/test/bag-a"));
+        }catch(FileNameNotPortableException e){
+            e.printStackTrace();
+        }
+    }
 }

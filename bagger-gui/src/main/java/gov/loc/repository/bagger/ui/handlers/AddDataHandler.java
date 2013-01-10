@@ -9,6 +9,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.exceptions.FileNameNotPortableException;
 import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
 import ugent.bagger.helper.Context;
@@ -76,10 +77,34 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             File bagFile = bagView.getBag().getFile();            
             
             try{
+                //leesbaar?
                 FUtils.checkFile(file,true);
+                //bestandsnamen cross platform overdraagbaar?
+                FUtils.checkSafeFiles(file);
             }catch(FileNotWritableException e){
                 //doe niets
-            }            
+            }catch(FileNameNotPortableException e){
+                //één of meerdere bestandsnamen zijn niet portabel
+                if(file.isDirectory()){
+                    SwingUtils.ShowError(
+                        null,
+                        Context.getMessage(
+                            "addDataHandler.FileNameNotPortableException.directory.message",
+                            new Object [] {file,e.getFile()}
+                        )
+                    );
+                }else{
+                    SwingUtils.ShowError(
+                        null,
+                        Context.getMessage(
+                            "addDataHandler.FileNameNotPortableException.file.message",
+                            new Object [] {file}
+                        )
+                    );
+                }
+                
+                return;
+            }
             
             //lege map verboden
             if(file.isDirectory()){

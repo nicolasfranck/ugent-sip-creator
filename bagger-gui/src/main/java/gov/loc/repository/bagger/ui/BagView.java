@@ -555,7 +555,7 @@ public final class BagView extends DefaultView {
         addDataToolBarAction.setEnabled(true);        
         getInfoFormsPane().getSaveLabel().setEnabled(true);
         addDataExecutor.setEnabled(true);
-        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0);
+        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0 && getBag().getFile() != null && getBag().getFile().exists());
         //addTagFileToolBarAction.setEnabled(getBag().getPayload().size() > 0);        
         saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
         getBagButtonPanel().invalidate();
@@ -570,7 +570,7 @@ public final class BagView extends DefaultView {
     public void updateSaveBag() {        
         addDataToolBarAction.setEnabled(true);        
         addDataExecutor.setEnabled(true);
-        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0);
+        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0 && getBag().getFile() != null && getBag().getFile().exists());
         //addTagFileToolBarAction.setEnabled(getBag().getPayload().size() > 0);        
         saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
         getBagButtonPanel().invalidate();
@@ -584,7 +584,7 @@ public final class BagView extends DefaultView {
     
     public void updateAddData() {        
     	saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
-        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0);
+        saveBagExecutor.setEnabled(getBag().getPayload().size() > 0 && getBag().getFile() != null && getBag().getFile().exists());
         exportExecutor.setEnabled(false);
         renameExecutor.setEnabled(false);
         getRenameLabel().setEnabled(false);

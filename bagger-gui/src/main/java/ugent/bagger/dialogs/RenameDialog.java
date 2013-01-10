@@ -43,14 +43,14 @@ public class RenameDialog extends JDialog {
                 @Override
                 public void propertyChange(PropertyChangeEvent pce) {
                     String message = (String) pce.getNewValue();
-                    setStatusMessage(message);
+                    setStatusMessage(message != null && !message.isEmpty() ? message:" ");
                 }
             });
             renamePanel.addPropertyChangeListener("statusError",new PropertyChangeListener() {
                 @Override
                 public void propertyChange(PropertyChangeEvent pce) {
                     String error = (String) pce.getNewValue();
-                    setStatusError(error);
+                    setStatusError(error != null && !error.isEmpty() ? error:" ");
                 }
             });            
         }
