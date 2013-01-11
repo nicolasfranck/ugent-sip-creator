@@ -2,8 +2,8 @@ package ugent.rename;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import ugent.bagger.helper.FUtils;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Renumber extends AbstractRenamer{
     String separatorBefore = "";
     String separatorAfter = "";
     PaddingChar paddingChar = PaddingChar.NULL;
-    PreSort preSort = PreSort.FILE_NAME_ASC;
+    PreSort preSort = PreSort.NO_SORT;
     Sequence sequence = new DecimalSequence();
 
     public Sequence getSequence() {        
@@ -29,10 +29,16 @@ public class Renumber extends AbstractRenamer{
     public void setSequence(Sequence sequence) {
         this.sequence = sequence;
     }
-    private static Comparator defaultFileSorter =  new Comparator<File>(){
+    static final Comparator fileNameSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1,File f2){                        
             return f1.getName().compareToIgnoreCase(f2.getName());
+        }
+    };
+    static final Comparator fileDateModifiedSorter =  new Comparator<File>(){
+        @Override
+        public int compare(File f1,File f2){                        
+            return (int)(f1.lastModified() - f2.lastModified());            
         }
     };
 
@@ -123,12 +129,12 @@ public class Renumber extends AbstractRenamer{
         ArrayList<RenameFilePair>pairs = new ArrayList<RenameFilePair>();
         
         ArrayList<File>files = getInputFiles();
-        if(preSort.equals(PreSort.FILE_NAME_ASC)){
-            Collections.sort(files,defaultFileSorter);
-        }else if(preSort.equals(PreSort.FILE_NAME_DESC)){
-            Collections.sort(files,defaultFileSorter);
-            Collections.reverse(files);
-        }
+        /*if(preSort == PreSort.FILE_NAME){
+            Collections.sort(files,fileNameSorter);
+        }else if(preSort == PreSort.FILE_DATE_MODIFIED){
+            Collections.sort(files,fileDateModifiedSorter);            
+        }*/
+        FileSorter.sort(files,preSort);
         
         int i = start;
         sequence.setCounter(start);
@@ -179,10 +185,10 @@ public class Renumber extends AbstractRenamer{
 
         return pairs;
     } 
-    /*
+    
     public static void main(String [] args){
         Renumber renumber = new Renumber();
-        ArrayList<File>inputFiles = FUtils.listFiles("/home/nicolas/java");
+        ArrayList<File>inputFiles = FUtils.listFiles("/home/njfranck/test");
         System.out.println("num files: "+inputFiles.size());
         renumber.setSimulateOnly(true);
         renumber.setInputFiles(inputFiles);
@@ -192,6 +198,13 @@ public class Renumber extends AbstractRenamer{
         renumber.setStep(4);
         renumber.setPadding(4);
         renumber.setEnd(200);
+        renumber.setPreSort(PreSort.FILE_DATE_MODIFIED);
+        renumber.setRenameListener(new RenameListenerAdapter() {
+            @Override
+            public void onRenameSuccess(RenameFilePair pair, int index) {
+                System.out.println(pair.getSource()+" => "+pair.getTarget());
+            }            
+        });
         renumber.rename();
-    }*/
+    }
 }

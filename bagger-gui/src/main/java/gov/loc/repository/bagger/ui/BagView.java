@@ -60,6 +60,7 @@ public final class BagView extends DefaultView {
     public ExportExecutor exportExecutor = new ExportExecutor();
     public ValidateManifestExecutor validateManifestExecutor = new ValidateManifestExecutor();
     public ValidateBagsExecutor validateBagsExecutor = new ValidateBagsExecutor();    
+    public OpenLogFileExecutor openLogFileExecutor = new OpenLogFileExecutor();
     
         
     
@@ -509,12 +510,17 @@ public final class BagView extends DefaultView {
         createBagsExecutor.setEnabled(true);        
     	clearExecutor.setEnabled(false);
         validateExecutor.setEnabled(false);
+        validateBagHandler.setEnabled(false);
         completeExecutor.setEnabled(false);
+        completeBagHandler.setEnabled(false);
         addDataExecutor.setEnabled(false);
         saveBagExecutor.setEnabled(false);
         saveBagAsExecutor.setEnabled(false);
         renameExecutor.setEnabled(true);
         getRenameLabel().setEnabled(true);
+        validateBagsExecutor.setEnabled(true);
+        validateManifestExecutor.setEnabled(true);
+        openLogFileExecutor.setEnabled(true);
     }
 
     public void updateClearBag() {
@@ -533,14 +539,17 @@ public final class BagView extends DefaultView {
     	//removeTagFileToolbarAction.setEnabled(false);
     	clearExecutor.setEnabled(false);
     	validateExecutor.setEnabled(false);
+        validateBagHandler.setEnabled(false);
     	completeExecutor.setEnabled(false);
+        completeBagHandler.setEnabled(false);        
         getRenameLabel().setEnabled(true);
         renameExecutor.setEnabled(true);
-    	getBagButtonPanel().invalidate();    	
+    	getBagButtonPanel().invalidate();            
     }
 
     public void updateNewBag() {        
         enableBagSettings(true);
+        clearExecutor.setEnabled(true);
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);        
         exportExecutor.setEnabled(false);
@@ -548,7 +557,9 @@ public final class BagView extends DefaultView {
         getRenameLabel().setEnabled(false);
         renameExecutor.setEnabled(false);
         //addTagFileToolBarAction.setEnabled(true);
-        getBagButtonPanel().invalidate();
+        getBagButtonPanel().invalidate();        
+        setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
+        setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags     
     }
 
     public void updateOpenBag() {
@@ -564,7 +575,7 @@ public final class BagView extends DefaultView {
         getRenameLabel().setEnabled(false);   
         renameExecutor.setEnabled(false);
         setCompleteExecutor();  // Disables the Is Complete Bag Button for Holey Bags  
-        setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags        
+        setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags                
     }  
     
     public void updateSaveBag() {        
@@ -586,7 +597,11 @@ public final class BagView extends DefaultView {
     	saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
         saveBagExecutor.setEnabled(getBag().getPayload().size() > 0 && getBag().getFile() != null && getBag().getFile().exists());
         exportExecutor.setEnabled(false);
-        renameExecutor.setEnabled(false);
+        renameExecutor.setEnabled(false);        
+        validateExecutor.setEnabled(false);
+        validateBagHandler.setEnabled(false);
+        completeExecutor.setEnabled(false);
+        completeBagHandler.setEnabled(false);        
         getRenameLabel().setEnabled(false);
     	getBagButtonPanel().invalidate();    	
     }
@@ -611,18 +626,11 @@ public final class BagView extends DefaultView {
     	context.register("addDataCommand", addDataExecutor);
     	context.register("saveBagCommand", saveBagExecutor);
     	context.register("saveBagAsCommand", saveBagAsExecutor);
-        
-        validateBagsExecutor.setEnabled(true);
         context.register("validateBagsCommand",validateBagsExecutor);    
-        
-        validateManifestExecutor.setEnabled(true);
         context.register("validateManifestCommand",validateManifestExecutor);        
-        
-        context.register("exportCommand",exportExecutor);        
-        
+        context.register("exportCommand",exportExecutor);
         context.register("renameCommand",renameExecutor);
-     
-        context.register("openLogFileCommand",new OpenLogFileExecutor());
+        context.register("openLogFileCommand",openLogFileExecutor);
     }
     
     public void registerTreeListener(String label,final JTree tree){
@@ -670,22 +678,25 @@ public final class BagView extends DefaultView {
 
     public String getPropertyMessage(String propertyName) {
         return getMessage(propertyName);
-    }
-    /*
-     * Disables the Is Complete Bag Button if Fetch.txt file exists.
-     * This is true in the case of a Holey Bag
-     * The Validate Button is enabled for all other types of Bags
-     */
-    private void setCompleteExecutor() {        
-        completeExecutor.setEnabled(getBag().getFetchTxt() == null);       
-    }
-    
-    /*
-     * Disables the Validate Bag Button if Fetch.txt file exists.
-     * This is true in the case of a Holey Bag
-     * The Validate Button is enabled for all other types of Bags
-     */
-    private void setValidateExecutor() {       
-        validateExecutor.setEnabled(getBag().getFetchTxt() == null);       
+    }    
+    public void setCompleteExecutor() {        
+        boolean enable = 
+            getBag().getFetchTxt() == null && 
+            getBag().getFile() != null && 
+            getBag().getFile().exists() &&
+            !getBag().isDirty()
+        ;
+        completeExecutor.setEnabled(enable);       
+        completeBagHandler.setEnabled(enable);
+    }    
+    public void setValidateExecutor() {       
+        boolean enable = 
+            getBag().getFetchTxt() == null && 
+            getBag().getFile() != null && 
+            getBag().getFile().exists() &&
+            !getBag().isDirty()
+        ;
+        validateExecutor.setEnabled(enable);       
+        validateBagHandler.setEnabled(enable);
     }       
 }

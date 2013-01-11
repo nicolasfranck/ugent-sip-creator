@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.helper.BagitUtils;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
@@ -20,10 +21,10 @@ import ugent.bagger.workers.LongTask;
 public class ValidateBagHandler extends Handler {
     static final Log log = LogFactory.getLog(ValidateBagHandler.class);
     static final long serialVersionUID = 1L;       
-    Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
+    /*Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
     Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
     Pattern tagsFixityFailurePattern = Pattern.compile("Fixity failure in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
-    Pattern payloadsFixityFailurePattern = Pattern.compile("Fixity failure in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
+    Pattern payloadsFixityFailurePattern = Pattern.compile("Fixity failure in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");*/
 
     public ValidateBagHandler() {
         super();      
@@ -87,12 +88,14 @@ public class ValidateBagHandler extends Handler {
                     ArrayList<String>tagsMissing = new ArrayList<String>();
                     ArrayList<String>payloadsFixityFailure = new ArrayList<String>();
                     ArrayList<String>tagsFixityFailure = new ArrayList<String>();               
+                    ArrayList<String>filesNotInManifest = new ArrayList<String>();
                     
                     for(String message:result.getMessages()){
-                        Matcher m1 = payloadsMissingPattern.matcher(message);
-                        Matcher m2 = tagsMissingPattern.matcher(message);
-                        Matcher m3 = payloadsFixityFailurePattern.matcher(message);
-                        Matcher m4 = tagsFixityFailurePattern.matcher(message);
+                        Matcher m1 = BagitUtils.payloadsMissingPattern.matcher(message);
+                        Matcher m2 = BagitUtils.tagsMissingPattern.matcher(message);
+                        Matcher m3 = BagitUtils.payloadsFixityFailurePattern.matcher(message);
+                        Matcher m4 = BagitUtils.tagsFixityFailurePattern.matcher(message);
+                        Matcher m5 = BagitUtils.fileNotInManifestPattern.matcher(message);
                         
                         if(m1.matches()){
                             payloadsMissing.add(m1.group(1));
@@ -102,6 +105,8 @@ public class ValidateBagHandler extends Handler {
                             payloadsFixityFailure.add(m3.group(1));
                         }else if(m4.matches()){
                             tagsFixityFailure.add(m4.group(1));
+                        }else if(m5.matches()){
+                            filesNotInManifest.add(m5.group(1));
                         }
                     }
                     
@@ -109,7 +114,11 @@ public class ValidateBagHandler extends Handler {
                         Context.getMessage("ValidateBagHandler.validationFailed.title"),
                         Context.getMessage(
                             "ValidateBagHandler.validationFailed.label",new Object [] {
-                                payloadsMissing.size(),tagsMissing.size(),payloadsFixityFailure.size(),tagsFixityFailure.size()
+                                payloadsMissing.size(),
+                                tagsMissing.size(),
+                                payloadsFixityFailure.size(),
+                                tagsFixityFailure.size(),
+                                filesNotInManifest.size()
                             }
                         )
                     );
@@ -140,6 +149,12 @@ public class ValidateBagHandler extends Handler {
                             log.error("\t"+filename);
                         }
                     }                    
+                    if(filesNotInManifest.size() > 0){
+                        log.error(Context.getMessage("ValidateBagHandler.validation.filesNotInManifest.title"));
+                        for(String filename:filesNotInManifest){
+                            log.error("\t"+filename);
+                        }
+                    }
                     
                 }else{
                     SwingUtils.ShowMessage(

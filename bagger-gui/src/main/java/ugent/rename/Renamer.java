@@ -2,7 +2,6 @@ package ugent.rename;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import ugent.bagger.helper.FUtils;
 
@@ -52,9 +51,7 @@ public class Renamer extends AbstractRenamer{
         Pattern sourcePattern = null;
         try{                        
             sourcePattern = Pattern.compile(getSource(),getPatternFlags());                           
-        }catch(Exception e){  
-            System.out.println("source compiling failed: "+e.getMessage());
-            e.printStackTrace();
+        }catch(Exception e){
             log.error(e.getMessage());
         }       
         return sourcePattern;
@@ -95,7 +92,7 @@ public class Renamer extends AbstractRenamer{
             
             
             //extensie ook mee betrekken in rename?
-            if(!isRenameExtension()){
+            if(sourceFile.isFile() && !isRenameExtension()){
                 boolean isDoubleExtension = false;
                 //controleer speciale gevallen
                 for(String n:doubleFileExtension){
@@ -138,7 +135,7 @@ public class Renamer extends AbstractRenamer{
             if(getPostfix() != null){                
                 newName += getPostfix();                
             }
-            if(!isRenameExtension()){
+            if(sourceFile.isFile() && !isRenameExtension()){
                 newName += (extension != null ? "."+extension : "");
             }            
             

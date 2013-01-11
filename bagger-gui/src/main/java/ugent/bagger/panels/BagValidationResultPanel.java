@@ -81,7 +81,7 @@ public final class BagValidationResultPanel extends JPanel{
     }
     protected JComponent createContentPane() {
         JPanel panel = new JPanel();        
-        BoxLayout layout = new BoxLayout(panel,BoxLayout.PAGE_AXIS);
+        BoxLayout layout = new BoxLayout(panel,BoxLayout.Y_AXIS);
         panel.setLayout(layout);
         
         JComponent form = getBagValidateParamsForm().getControl();

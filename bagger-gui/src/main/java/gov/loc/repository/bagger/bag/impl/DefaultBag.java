@@ -735,7 +735,7 @@ public class DefaultBag {
     public FetchTxt getFetchTxt() {
         return bilBag.getFetchTxt();
     }
-    protected void changeToDirty() {
+    public void changeToDirty() {
         this.dirty = true;
         isValid(Status.UNKNOWN);
     }

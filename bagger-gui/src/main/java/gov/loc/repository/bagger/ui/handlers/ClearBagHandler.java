@@ -52,7 +52,7 @@ public class ClearBagHandler extends AbstractAction {
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
         MetsBag metsBag = bagView.getBag();
-    	if(metsBag.isHoley() || metsBag.isSerial()){
+    	if(metsBag.isHoley() || metsBag.isSerial() || metsBag.getFile() == null || !metsBag.getFile().exists()){
             clearExistingBag();
         }else{
             confirmCloseBag();

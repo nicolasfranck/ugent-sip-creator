@@ -1,7 +1,5 @@
 package ugent.bagger.panels;
 
-
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -85,7 +83,7 @@ public class CSV2Panel extends JPanel{
         init();
     }
     public void init(){
-        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));    
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));    
         add(getTemplateComboBox());
         add(new JScrollPane(getTextArea()));
         add(createButtonPanel());                      

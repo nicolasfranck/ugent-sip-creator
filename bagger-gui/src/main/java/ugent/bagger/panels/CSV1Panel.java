@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
@@ -18,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvListReader;
 import org.supercsv.prefs.CsvPreference;
+import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.forms.CSVParseParamsForm;
 import ugent.bagger.helper.CSVUtils;
 import ugent.bagger.helper.Context;
@@ -28,7 +31,7 @@ import ugent.bagger.params.CSVParseParams;
  * @author nicolas
  */
 public class CSV1Panel extends JPanel{
-    static Log log = LogFactory.getLog(CSV1Panel.class);
+    static final Log log = LogFactory.getLog(CSV1Panel.class);
     CSVParseParams csvParseParams;
     CSVParseParamsForm csvParseParamsForm;    
     JButton testButton;   
@@ -63,7 +66,7 @@ public class CSV1Panel extends JPanel{
     }
     
     public void init(){
-        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         add(getCsvParseParamsForm().getControl());
         add(createButtonPanel());       
         add(getScrollerCSVTable());
@@ -113,9 +116,16 @@ public class CSV1Panel extends JPanel{
         return panel;
     }
     public void reloadDataCSVTable(){        
-        
+        String error = null;
         try{
-            File file = getCsvParseParams().getFiles().get(0);
+            File file = getCsvParseParams().getFiles().get(0);            
+            
+            if(!file.exists()){
+                throw new FileNotFoundException();
+            }
+            if(!file.canRead()){
+                throw new FileNotReadableException(file);
+            } 
             
             CsvPreference csvPreference = CSVUtils.createCSVPreference(
                 getCsvParseParams().getQuoteChar(),
@@ -166,9 +176,31 @@ public class CSV1Panel extends JPanel{
             }
             firePropertyChange("record",null,record);
             
-        }catch(Exception e){
+        }catch(FileNotFoundException e){
             log.error(e.getMessage());
-        }        
+            error = Context.getMessage(
+                 "CSVWizard.FileNotFoundException.message",
+                 new Object []{e.getMessage()}
+            );                            
+         }catch(FileNotReadableException e){
+            log.error(e.getMessage());
+            error = Context.getMessage(
+                 "CSVWizard.FileNotReadableException.message",
+                 new Object []{e.getMessage()}
+            );                            
+         }catch(IOException e){
+             log.error(e.getMessage());
+             error = Context.getMessage(
+                 "CSVWizard.IOException.message",
+                 new Object []{e.getMessage()}
+             );                            
+         }catch(Exception e){
+             log.error(e.getMessage());
+             error = Context.getMessage(
+                 "CSVWizard.Exception.message",
+                 new Object []{e.getMessage()}
+             );                            
+         }       
               
     }    
 }

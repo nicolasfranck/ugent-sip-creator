@@ -5,7 +5,9 @@ import gov.loc.repository.bagger.ui.BagView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -18,18 +20,21 @@ import org.supercsv.io.CsvMapReader;
 import org.supercsv.io.ICsvMapReader;
 import org.supercsv.prefs.CsvPreference;
 import org.w3c.dom.Document;
+import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.helper.CSVUtils;
+import ugent.bagger.helper.Context;
 import ugent.bagger.helper.MetsUtils;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.VelocityTemplate;
+
 
 /**
  *
  * @author nicolas
  */
 public class CSVWizard extends AbstractWizard {    
-    static Log log = LogFactory.getLog(CSVWizard.class);
+    static final Log log = LogFactory.getLog(CSVWizard.class);
     CSVWizardPage1 csv1WizardPage;
     CSVWizardPage2 csv2WizardPage;
     HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
@@ -93,7 +98,15 @@ public class CSVWizard extends AbstractWizard {
                 Runnable runnable = new Runnable(){
                     @Override
                     public void run() {   
+                        String error = null;
                         try{
+                            if(!file.exists()){
+                                throw new FileNotFoundException();
+                            }
+                            if(!file.canRead()){
+                                throw new FileNotReadableException(file);
+                            }                                                       
+                            
                             CsvPreference csvPreference = CSVUtils.createCSVPreference(
                                 csvParseParams.getQuoteChar(),
                                 csvParseParams.getDelimiterChar(),
@@ -122,10 +135,34 @@ public class CSVWizard extends AbstractWizard {
                                 firePropertyChange("addMdSec",mdSec,mdSec);                                
                             }
                             firePropertyChange("doneMdSec",null,null);                            
-                        }catch(Exception e){ 
-                            e.printStackTrace();
+                        }catch(FileNotFoundException e){
+                           log.error(e.getMessage());
+                           error = Context.getMessage(
+                                "CSVWizard.FileNotFoundException.message",
+                                new Object []{e.getMessage()}
+                           );                            
+                        }catch(FileNotReadableException e){
+                           log.error(e.getMessage());
+                           error = Context.getMessage(
+                                "CSVWizard.FileNotReadableException.message",
+                                new Object []{e.getMessage()}
+                           );                            
+                        }catch(IOException e){
                             log.error(e.getMessage());
-                        }                        
+                            error = Context.getMessage(
+                                "CSVWizard.IOException.message",
+                                new Object []{e.getMessage()}
+                            );                            
+                        }catch(Exception e){
+                            log.error(e.getMessage());
+                            error = Context.getMessage(
+                                "CSVWizard.Exception.message",
+                                new Object []{e.getMessage()}
+                            );                            
+                        }
+                        if(error != null){
+                            SwingUtils.ShowError(null,error);
+                        }
                     }                    
                 };                
                 
@@ -133,8 +170,7 @@ public class CSVWizard extends AbstractWizard {
                 
             }            
             
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception e){            
             log.error(e.getMessage());
         }
         

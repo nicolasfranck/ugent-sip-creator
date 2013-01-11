@@ -54,10 +54,12 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
         bagView.updateAddData();
 
         //Nicolas Franck: geen validate of complete nuttig
+        //=> zie updateAddData() in BagView
+        /*
         bagView.validateExecutor.setEnabled(false);
         bagView.validateBagHandler.setEnabled(false);
         bagView.completeExecutor.setEnabled(false);
-        bagView.completeBagHandler.setEnabled(false);
+        bagView.completeBagHandler.setEnabled(false);*/
         
         SwingUtils.ShowDone();
         
@@ -82,9 +84,12 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 //bestandsnamen cross platform overdraagbaar?
                 FUtils.checkSafeFiles(file);
             }catch(FileNotWritableException e){
+                log.error(e.getMessage());
                 //doe niets
             }catch(FileNameNotPortableException e){
                 //één of meerdere bestandsnamen zijn niet portabel
+                log.error(e.getMessage());                
+                
                 if(file.isDirectory()){
                     SwingUtils.ShowError(
                         null,

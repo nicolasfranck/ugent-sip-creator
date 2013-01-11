@@ -49,7 +49,7 @@ public class MdSecSourcePanel extends JPanel{
         init();
     }           
     private void init() {        
-        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         add(new JScrollPane(getMdSecPropertiesTable().getControl()));
         add(createButtonPanel());        
     }

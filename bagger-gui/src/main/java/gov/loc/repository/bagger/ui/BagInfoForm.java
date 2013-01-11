@@ -106,7 +106,7 @@ public final class BagInfoForm extends AbstractForm {
         if(contentPanel == null){
             contentPanel = new JPanel();
             contentPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-            BoxLayout layout = new BoxLayout(contentPanel,BoxLayout.PAGE_AXIS);       
+            BoxLayout layout = new BoxLayout(contentPanel,BoxLayout.Y_AXIS);       
             contentPanel.setLayout(layout);            
             //contentPanel.add(getLoadFieldsPanel());
             contentPanel.add(getAddFieldPanel());            

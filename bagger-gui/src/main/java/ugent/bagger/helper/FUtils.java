@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.vfs2.FileObject;
@@ -241,7 +240,8 @@ public class FUtils {
         return mimeType;        
     }    
     public static String getEntryStringFor(String source,String entry){
-        String entryString = null;        
+        String entryString = null;  
+        //TODO: encoderen van source en entry!!
         if(source.endsWith(".tar.gz")){
             entryString = "tgz:file://"+source+"!/"+entry;
         }else if(source.endsWith(".tar")){

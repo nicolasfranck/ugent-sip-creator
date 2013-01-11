@@ -12,7 +12,7 @@ import ugent.bagger.panels.CSV2Panel;
  * @author nicolas
  */
 public class CSVWizardPage2 extends AbstractWizardPage {        
-    private CSV2Panel csv2Panel;    
+    CSV2Panel csv2Panel;    
     public CSVWizardPage2(String pageId){
         super(pageId);        
     }

@@ -2,6 +2,8 @@ package ugent.bagger.tables;
 
 import ca.odell.glazedlists.EventList;
 import com.anearalone.mets.MdSec;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
+import gov.loc.repository.bagger.ui.BagView;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,12 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     ActionCommandExecutor openDialogExecutor;        
     ArrayList<MdSec>exceptions;
     
+    protected BagView getBagView(){
+        return BagView.getInstance();
+    }
+    protected MetsBag getMetsBag(){
+        return getBagView().getBag();
+    }
     public EditMdSecPropertiesTable(final ArrayList<MdSec>data,String [] cols,String id){
         this(data,cols,id,new ArrayList<MdSec>());
     }  
@@ -111,7 +119,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     public void reset(final ArrayList<MdSec>data){                
         setData(data);
         firePropertyChange("reset",null,null);
-        refresh();
+        refresh();        
     }
     public void refresh(){        
         EventList rows = getFinalEventList();        
@@ -128,7 +136,10 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     }
     public void add(MdSec mdSec){        
         getData().add(mdSec);     
-        firePropertyChange("add",null,mdSec);
+        getMetsBag().changeToDirty();
+        getBagView().setCompleteExecutor();
+        getBagView().setValidateExecutor();
+        firePropertyChange("add",null,mdSec);        
     }   
     public void deleteSelected(){
         if(getTable().getSelectedRows().length > 0){

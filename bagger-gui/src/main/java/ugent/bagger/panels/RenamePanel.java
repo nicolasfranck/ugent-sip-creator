@@ -19,6 +19,8 @@ import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -345,6 +347,15 @@ public class RenamePanel extends JPanel{
                     return label;
                 }  
             });
+            System.out.println("rowSorter: "+table.getRowSorter());
+            /*table.getRowSorter().addRowSorterListener(new RowSorterListener(){
+                @Override
+                public void sorterChanged(RowSorterEvent rse) {
+                    System.out.println("rowSorter: "+rse.getSource());
+                    System.out.println("previousRowCount: "+rse.getPreviousRowCount());
+                    System.out.println("type: "+rse.getType());
+                }                
+            });*/
             table.setShowGrid(false);
             
             SwingUtilities.invokeLater(new Runnable(){
@@ -572,7 +583,7 @@ public class RenamePanel extends JPanel{
             resultTable.setRowSelectionAllowed(false);
             RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(resultTableModel);
             resultTable.setRowSorter(sorter);
-            
+            resultTable.setRowHeight(20);
             resultTable.setDefaultRenderer(Object.class,new TableCellRenderer(){
                 @Override
                 public Component getTableCellRendererComponent(JTable jtable, Object o, boolean isSelected, boolean hasFocus, int row, int col) {

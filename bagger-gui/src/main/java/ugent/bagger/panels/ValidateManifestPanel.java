@@ -46,7 +46,7 @@ public class ValidateManifestPanel extends JPanel{
         init();
     }
     public void init(){
-        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         
         JComponent form = getValidateManifestParamsForm().getControl();        
         add(form);

@@ -12,21 +12,21 @@ import ugent.rename.StartPosType;
  * @author nicolas
  */
 public class RenumberParams {
-    private int start = 0;
-    private int end = 0;
-    private int step = 1;
-    private int startPos = 0;
-    private int padding = 1;
-    private PaddingChar paddingChar = PaddingChar.valueOf("NULL");
-    private boolean overWrite = false;
-    private boolean simulateOnly = false;
-    private ErrorAction onErrorAction = ErrorAction.undoAll;
-    private StartPosType startPosType = StartPosType.RELATIVE;
-    private StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
-    private String separatorBefore = "-";
-    private String separatorAfter = "";
-    private PreSort preSort = PreSort.FILE_NAME_ASC;
-    private Radix radix = Radix.DECIMAL;
+    int start = 0;
+    int end = 0;
+    int step = 1;
+    int startPos = 0;
+    int padding = 1;
+    PaddingChar paddingChar = PaddingChar.valueOf("NULL");
+    boolean overWrite = false;
+    boolean simulateOnly = false;
+    ErrorAction onErrorAction = ErrorAction.undoAll;
+    StartPosType startPosType = StartPosType.RELATIVE;
+    StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
+    String separatorBefore = "-";
+    String separatorAfter = "";
+    PreSort preSort = PreSort.NO_SORT;
+    Radix radix = Radix.DECIMAL;
 
     public Radix getRadix() {
         return radix;

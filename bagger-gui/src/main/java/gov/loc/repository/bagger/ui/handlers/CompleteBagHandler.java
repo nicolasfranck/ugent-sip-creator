@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import ugent.bagger.helper.BagitUtils;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
@@ -18,8 +19,8 @@ import ugent.bagger.workers.LongTask;
 public class CompleteBagHandler extends Handler /*implements Loggable*/ {
     static final long serialVersionUID = 1L;   
     static final Log log = LogFactory.getLog(CompleteBagHandler.class);
-    Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
-    Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
+    //Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
+    //Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
 
     public CompleteBagHandler() {
         super();           
@@ -33,7 +34,7 @@ public class CompleteBagHandler extends Handler /*implements Loggable*/ {
         execute();    	
     }
     @Override
-    public void execute() {        
+    public void execute() {                
         SwingUtils.monitor(
             new CompleteBagWorker(),
             Context.getMessage("CompleteBagHandler.validating.title"),
@@ -81,14 +82,18 @@ public class CompleteBagHandler extends Handler /*implements Loggable*/ {
                 if (!result.isSuccess()) {
                     ArrayList<String>payloadsMissing = new ArrayList<String>();
                     ArrayList<String>tagsMissing = new ArrayList<String>();
+                    ArrayList<String>filesNotInManifest = new ArrayList<String>();
 
-                    for(String message:result.getMessages()){            
-                        Matcher m1 = payloadsMissingPattern.matcher(message);
-                        Matcher m2 = tagsMissingPattern.matcher(message);
+                    for(String message:result.getMessages()){                          
+                        Matcher m1 = BagitUtils.payloadsMissingPattern.matcher(message);
+                        Matcher m2 = BagitUtils.tagsMissingPattern.matcher(message);
+                        Matcher m3 = BagitUtils.fileNotInManifestPattern.matcher(message);
                         if(m1.matches()){
                             payloadsMissing.add(m1.group(1));                            
                         }else if(m2.matches()){
                             tagsMissing.add(m2.group(1));                            
+                        }else if(m3.matches()){
+                            filesNotInManifest.add(m3.group(1));
                         }
                     }
 
@@ -105,12 +110,18 @@ public class CompleteBagHandler extends Handler /*implements Loggable*/ {
                         for(String filename:tagsMissing){
                             log.error("\t"+filename);                     
                         }
-                    }               
+                    }           
+                    if(filesNotInManifest.size() > 0){
+                        log.error(Context.getMessage("CompleteBagHandler.validation.filesNotInManifest.title"));
+                        for(String filename:filesNotInManifest){
+                            log.error("\t"+filename);
+                        }
+                    }
 
                     SwingUtils.ShowError(
                         Context.getMessage("CompleteBagHandler.validationFailed.title"),
                         Context.getMessage("CompleteBagHandler.validationFailed.label",new Object [] {
-                            payloadsMissing.size(),tagsMissing.size()
+                            payloadsMissing.size(),tagsMissing.size(),filesNotInManifest.size()
                         })
                     );                  
                 }else {
