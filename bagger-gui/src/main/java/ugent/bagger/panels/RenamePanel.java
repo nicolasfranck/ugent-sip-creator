@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +21,6 @@ import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.RowSorterEvent;
-import javax.swing.event.RowSorterListener;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -122,7 +122,7 @@ public class RenamePanel extends JPanel{
                 public void actionPerformed(ActionEvent ae) {
                     ContextObject contextObject = (ContextObject) renameParamsTemplatesComboBox.getSelectedItem();                
                     RenameParams params = (RenameParams) contextObject.getObject();
-                    System.out.println("source: "+params.getSource());
+                    
                     if(params != null){
                         setRenameParams(params);
                         getRenameParamsForm().setFormObject(params);
@@ -258,7 +258,7 @@ public class RenamePanel extends JPanel{
                     final File file = (File)afile.getFile();
                     
                     //map is onleesbaar
-                    if(!file.canRead()){
+                    if(!Files.isReadable(file.toPath())){
                         String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
                             file.getAbsolutePath()
                         });
@@ -346,16 +346,7 @@ public class RenamePanel extends JPanel{
                     
                     return label;
                 }  
-            });
-            System.out.println("rowSorter: "+table.getRowSorter());
-            /*table.getRowSorter().addRowSorterListener(new RowSorterListener(){
-                @Override
-                public void sorterChanged(RowSorterEvent rse) {
-                    System.out.println("rowSorter: "+rse.getSource());
-                    System.out.println("previousRowCount: "+rse.getPreviousRowCount());
-                    System.out.println("type: "+rse.getType());
-                }                
-            });*/
+            });            
             table.setShowGrid(false);
             
             SwingUtilities.invokeLater(new Runnable(){
@@ -465,12 +456,13 @@ public class RenamePanel extends JPanel{
                             TreePath tpath = tee.getPath();
                             LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
                             FileNode fileNode = (FileNode) node.getUserObject();
-                            File file = fileNode.getFile();                
+                            File file = fileNode.getFile();
+                            Path path = file.toPath();
 
-                            boolean doEnable = file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file);
+                            boolean doEnable = file.isDirectory() && Files.isWritable(path) && !getForbiddenFiles().contains(file);
 
                             if(file.isDirectory()){                    
-                                if(!file.canRead()){
+                                if(!Files.isReadable(path)){
                                     String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
                                         file.getAbsolutePath()
                                     });
@@ -481,7 +473,7 @@ public class RenamePanel extends JPanel{
                                     reloadFileTable();
 
                                     throw new ExpandVetoException(tee);
-                                }else if(!file.canWrite()){
+                                }else if(!Files.isWritable(path)){
                                     setStatusError(
                                         Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
                                             file.getAbsolutePath()
@@ -524,7 +516,7 @@ public class RenamePanel extends JPanel{
                                         break;
                                     }
                                 }
-                                setFormsEnabled(file.isDirectory() && file.canWrite() && !isForbidden);                        
+                                setFormsEnabled(file.isDirectory() && Files.isWritable(file.toPath()) && !isForbidden);                        
                             }                   
                         }
                     });  
@@ -594,14 +586,22 @@ public class RenamePanel extends JPanel{
                     String labelFailed = Context.getMessage("failed");
 
                     if(row >= 0){
+                        
                         String value = null;
-                        RenameFilePair pair = (RenameFilePair)o;                        
+                        RenameFilePair pair = (RenameFilePair)o;             
+                        
+                        String parentDir = getLastFile().getAbsolutePath();
+                        String relativeSource = pair.getSource().getAbsolutePath().replace(parentDir+File.separatorChar,"");
+                        String relativeTarget = pair.getTarget().getAbsolutePath().replace(parentDir+File.separatorChar,"");
+                                                
                         switch(col){                            
                             case 0:                                
-                                value = pair.getSource().getName();
+                                //value = pair.getSource().getName();
+                                value = relativeSource;
                                 break;
                             case 1:
-                                value = pair.getTarget().getName();
+                                //value = pair.getTarget().getName();
+                                value = relativeTarget;
                                 break;
                             case 2:
                                 value = pair.isSimulateOnly() ? labelSimulation:(pair.isSuccess() ? labelSuccess:labelFailed);
@@ -1095,7 +1095,8 @@ public class RenamePanel extends JPanel{
                 renamer.setDestination(renameParams.getDestination() != null ? renameParams.getDestination():"");                
                 renamer.setCopy(renameParams.isCopy());               
                 renamer.setSimulateOnly(renameParams.isSimulateOnly());                                
-                renamer.setOverwrite(renameParams.isOverWrite());            
+                renamer.setOverwrite(renameParams.isOverWrite());
+                renamer.setRecursive(renameParams.isRecursive());
                 
                 renamer.setPrefix(renameParams.getPrefix());
                 renamer.setPostfix(renameParams.getPostfix());
@@ -1157,6 +1158,7 @@ public class RenamePanel extends JPanel{
                             }
                         );                                                
                         log.error(message);
+                        System.out.println("onError: "+renameParams.getOnErrorAction());
                         return renameParams.getOnErrorAction();
                     }
                     @Override
@@ -1164,7 +1166,8 @@ public class RenamePanel extends JPanel{
                         numRenamedSuccess++;
                     }
                     @Override
-                    public void onRenameEnd(RenameFilePair pair,int index) {                        
+                    public void onRenameEnd(RenameFilePair pair,int index) {
+                        System.out.println(pair.getSource()+" => "+pair.getTarget()+" (success:"+pair.isSuccess()+")");
                         resultTableModel.insertRow(resultTableModel.getRowCount(),new Object []{                        
                             pair,
                             pair,

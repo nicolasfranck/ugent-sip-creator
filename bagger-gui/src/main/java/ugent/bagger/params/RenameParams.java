@@ -16,9 +16,16 @@ public class RenameParams {
     boolean overWrite = false;
     boolean simulateOnly = false;
     boolean renameExtension = false;
+    boolean recursive = false;
     String prefix;
-    String postfix;
+    String postfix;    
 
+    public boolean isRecursive() {
+        return recursive;
+    }
+    public void setRecursive(boolean recursive) {
+        this.recursive = recursive;
+    }    
     public boolean isRenameExtension() {
         return renameExtension;
     }

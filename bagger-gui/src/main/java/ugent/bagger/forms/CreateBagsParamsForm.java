@@ -3,6 +3,7 @@ package ugent.bagger.forms;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -97,7 +98,7 @@ public class CreateBagsParamsForm extends AbstractForm{
                         Context.getMessage("createBagsParamsForm.error.title"),
                         Context.getMessage("createBagsParamsForm.error.selectoutputDir")                        
                     );
-                }else if(!list.get(0).canWrite()){
+                }else if(!Files.isWritable(list.get(0).toPath())){
                     SwingUtils.ShowError(
                         Context.getMessage("createBagsParamsForm.error.title"),
                         Context.getMessage(

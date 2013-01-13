@@ -1,6 +1,7 @@
 package treetable;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -69,7 +70,7 @@ public class FileNode {
                 ArrayList<File> directories = new ArrayList<File>();
                 int num = 0;
                 for(File fileEntry:fileEntries){
-                    if(!fileEntry.canRead()){
+                    if(!Files.isReadable(fileEntry.toPath())){
                         log.debug("getChildren: fileEntry "+fileEntry+" not readable ('num' now:"+num+")");
                         continue;
                     }else if(fileEntry.isDirectory()){

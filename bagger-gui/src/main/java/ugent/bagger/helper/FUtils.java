@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -353,9 +355,9 @@ public class FUtils {
     }
     public static ArrayList<File> getBadDirs(File file){
         ArrayList<File>badDirs = new ArrayList<File>();
-        
+        Path path = file.toPath();
         if(file.isDirectory()){
-            if(!file.canRead() || !file.canWrite()){
+            if(!Files.isReadable(path) || !Files.isWritable(path)){
                 badDirs.add(file);
             }else{
                 for(File f:file.listFiles()){  
@@ -368,7 +370,7 @@ public class FUtils {
     public static ArrayList<File> getNotReadableFiles(File file){
         ArrayList<File>notReadableFiles = new ArrayList<File>();
        
-        if(!file.canRead()){
+        if(!Files.isReadable(file.toPath())){
             notReadableFiles.add(file);
         }else{
             for(File f:file.listFiles()){  
@@ -385,9 +387,9 @@ public class FUtils {
         
         if(!file.exists()){
             throw new FileNotFoundException();
-        }else if(!file.canRead()){
+        }else if(!Files.isReadable(file.toPath())){
             throw new FileNotReadableException(file);
-        }else if(!file.canWrite()){
+        }else if(!Files.isWritable(file.toPath())){
             throw new FileNotWritableException(file);
         }
         if(recurse && file.isDirectory()){

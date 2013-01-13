@@ -7,11 +7,13 @@ import ugent.bagger.helper.Context;
  * @author nicolas
  */
 public enum ErrorAction {
-    ignore("ignore"),
+    //same as 'skip' 
+    //ignore("ignore"),
     skip("skip"),   
     undoAll("undoAll"),
-    abort("abort"),
-    retry("retry");
+    abort("abort");
+    //dangerous: can lead to infinite loop
+    //,retry("retry");
     private String s;
     private ErrorAction(String s){
         this.s = s;

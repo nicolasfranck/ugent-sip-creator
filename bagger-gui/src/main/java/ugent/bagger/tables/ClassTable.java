@@ -50,8 +50,6 @@ public class ClassTable<T> extends AbstractObjectTable {
         table.setFillsViewportHeight(true);             
         table.setCellSelectionEnabled(true);
         table.setRowHeight(20);
-        
-        System.out.println("sorting columns: "+getTableSorter().getSortingColumns());
     }
     @Override
     protected Object[] getDefaultInitialData(){               
@@ -71,7 +69,7 @@ public class ClassTable<T> extends AbstractObjectTable {
     }   
     public void refresh(){            
         EventList rows = getFinalEventList();        
-        rows.getReadWriteLock().writeLock().lock();        
+        rows.getReadWriteLock().writeLock().lock();                
         try {
             rows.clear();
             rows.addAll(getData());                       

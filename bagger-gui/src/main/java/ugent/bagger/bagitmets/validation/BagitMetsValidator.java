@@ -13,6 +13,7 @@ import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import gov.loc.repository.bagit.verify.impl.ParallelManifestChecksumVerifier;
 import gov.loc.repository.bagit.verify.impl.ValidVerifierImpl;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -73,7 +74,7 @@ public class BagitMetsValidator {
         System.out.println(file+" contains a mets.xml");
             
         //mets.xml readable?
-        if(!metsFile.canRead()){
+        if(!Files.isReadable(metsFile.toPath())){
             throw new BagitMetsValidationException(RESULT.METS_NOT_READABLE,"mets.xml is not readable");
         }
         

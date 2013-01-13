@@ -3,6 +3,7 @@ package ugent.rename;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -102,6 +103,10 @@ abstract public class AbstractRenamer {
             pair.setSuccess(false);
             l.onRenameStart(pair,i);            
             try{
+                if(!pair.getSource().exists() || !pair.getTarget().getParentFile().exists()){
+                    throw new FileNotFoundException();
+                }
+                
                 if(isSimulateOnly()){
                     if(!isOverwrite() && pair.getTarget().exists()){
                         //Windows: A.TXT levert true op, wanneer enkel a.txt bestaat (file existence check is case insensitive).
@@ -115,7 +120,10 @@ abstract public class AbstractRenamer {
                             throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
                         }                        
                         
-                    }else if(!pair.getTarget().getParentFile().canWrite()){
+                    }/*else if(!pair.getTarget().getParentFile().canWrite()){
+                        throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
+                    }*/
+                    else if(!Files.isWritable(pair.getTarget().getParentFile().toPath())){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }else{
                         pair.setSuccess(true);                        
@@ -133,7 +141,13 @@ abstract public class AbstractRenamer {
                         }else{
                             throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
                         } 
-                    }else{
+                    }/*else if(!pair.getTarget().getParentFile().canWrite()){
+                        throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
+                    }*/
+                    else if(!Files.isWritable(pair.getTarget().getParentFile().toPath())){
+                        throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
+                    }
+                    else{
                         log.debug("making target directories");
                         pair.getTarget().getParentFile().mkdirs();                                           
                         log.debug("making target directories ok");
@@ -152,12 +166,14 @@ abstract public class AbstractRenamer {
                 if(pair.isSuccess()){
                     numSuccess++;
                     l.onRenameSuccess(pair,i);
+                }else{
+                    throw new Exception();
                 }
             }catch(TargetExistsException e){
                 log.error(e.getMessage());
                 action = l.onError(pair,RenameError.TARGET_EXISTS,e.getMessage(),i);                                        
             }catch(ParentNotWritableException e){                
-                log.error(e.getMessage());
+                log.error(e.getMessage());                
                 action = l.onError(pair,RenameError.PARENT_NOT_WRITABLE,e.getMessage(),i);
             }catch(FileNotFoundException e){
                 log.error(e.getMessage());
@@ -168,22 +184,28 @@ abstract public class AbstractRenamer {
             }catch(SecurityException e){
                 log.error(e.getMessage());
                 action = l.onError(pair,RenameError.SECURITY_EXCEPTION,e.getMessage(),i);
-            }            
-            catch(Exception e){
+            }catch(Exception e){
                 log.error(e.getMessage());
                 action = l.onError(pair,RenameError.UNKNOWN_ERROR,e.getMessage(),i);
             }            
             
             /* check if renaming operation was successful */
-            if(!pair.isSuccess()){                    
+            if(!pair.isSuccess()){
+                
+                System.out.println("errorAction: "+action);
+                
                 /* take action */
-                if(action == ErrorAction.retry){
-                    /* retry rename operation */
+                /*if(action == ErrorAction.retry){
+                    //retry rename operation
+                    System.out.println("retrying");
                     i--;
-                }else if(action == ErrorAction.skip){
+                }else*/ if(action == ErrorAction.skip){
                     /* skip to next file/directory */
+                    System.out.println("skipping");
+                    l.onRenameEnd(pair, i);
                     continue;
                 }else if(action == ErrorAction.undoAll){
+                    System.out.println("undoing all changes");
                     if(!isSimulateOnly()){                        
                         for(int j = i ; j >= 0; j--){
                             final RenameFilePair t = pairs.get(j);
@@ -207,6 +229,7 @@ abstract public class AbstractRenamer {
                     break;
                 }else if(action == ErrorAction.abort){
                     /* abort */
+                    System.out.println("aborting");
                     l.onRenameEnd(pair, i);
                     break;
                 }

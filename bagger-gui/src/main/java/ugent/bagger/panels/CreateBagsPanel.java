@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -206,7 +208,8 @@ public final class CreateBagsPanel extends JPanel{
                             Context.getMessage("NewBagsDialog.NewBagsInPlaceWorker.title"),
                             Context.getMessage("NewBagsDialog.NewBagsInPlaceWorker.label")
                         );                   
-                    }else if(!(outputDir != null && outputDir.isDirectory() && outputDir.canWrite() && !FUtils.hasChildren(outputDir))){                
+                    }else if(!(outputDir != null && outputDir.isDirectory() && Files.isWritable(outputDir.toPath())
+                         && !FUtils.hasChildren(outputDir))){                
                         SwingUtils.ShowError(
                             Context.getMessage("NewBagsDialog.outputDir.browse.title"),
                             Context.getMessage("NewBagsDialog.outputDir.browse.title")
@@ -234,7 +237,8 @@ public final class CreateBagsPanel extends JPanel{
     }    
     private class NewBagsInPlaceWorker extends LongTask{
         public boolean isBadRWDir(File file){
-            return file.isDirectory() && (!file.canRead() || !file.canWrite());            
+            Path path = file.toPath();
+            return file.isDirectory() && (!Files.isReadable(path) || !Files.isWritable(path));            
         }
         public ArrayList<File> getBadRWDirs(File file){
             ArrayList<File>badDirs = new ArrayList<File>();

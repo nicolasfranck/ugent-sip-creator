@@ -3,6 +3,7 @@ package ugent.bagger.params;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -46,12 +47,12 @@ public class FileAbstractFile extends AbstractFile{
 
     @Override
     public boolean isReadable() {
-        return file.canRead();
+        return Files.isReadable(file.toPath());
     }
 
     @Override
     public boolean isWritable() {
-        return file.canWrite();
+        return Files.isWritable(file.toPath());
     }
 
     @Override

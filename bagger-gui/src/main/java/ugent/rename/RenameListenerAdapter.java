@@ -15,7 +15,7 @@ public class RenameListenerAdapter implements RenameListener{
     }
     @Override
     public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr,int index) {
-        return ErrorAction.ignore;
+        return ErrorAction.skip;
     }
     @Override
     public void onRenameStart(RenameFilePair pair,int index){
@@ -28,6 +28,5 @@ public class RenameListenerAdapter implements RenameListener{
     }
     @Override
     public void onEnd(final ArrayList<RenameFilePair> list,int numSuccess){
-    }
-   
+    }   
 }
