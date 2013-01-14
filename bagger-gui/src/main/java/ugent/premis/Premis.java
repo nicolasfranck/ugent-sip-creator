@@ -135,6 +135,7 @@ public class Premis implements ElementInterface{
         }
         
     }
+    /*
     public static void main(String [] args){
         try{
             Document doc = XML.XMLToDocument(new File("/home/nicolas/premis_pp2.xml"));
@@ -176,5 +177,5 @@ public class Premis implements ElementInterface{
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 }

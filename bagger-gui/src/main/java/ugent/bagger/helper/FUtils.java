@@ -410,9 +410,12 @@ public class FUtils {
         return false;             
     }
     public static void checkSafeFiles(File file)throws FileNameNotPortableException{
+        System.out.println("FUtils::checkSafeFiles('"+file+"')");
         if(!isSafeFile(file)){
             throw new FileNameNotPortableException(file);
+            
         }
+        System.out.println(file+" is safe");
         if(file.isDirectory()){
             for(File child:file.listFiles()){
                 checkSafeFiles(child);
@@ -425,11 +428,12 @@ public class FUtils {
     public static boolean isSafeFileName(String name){        
         return safeFileNamePattern.matcher(name).find();        
     }
+    /*
     public static void main(String...args){
         try{
             checkSafeFiles(new File("/home/njfranck/test/bag-a"));
         }catch(FileNameNotPortableException e){
             e.printStackTrace();
         }
-    }
+    }*/
 }

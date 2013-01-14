@@ -1,10 +1,12 @@
 package gov.loc.repository.bagger.ui.handlers;
 
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.Progress;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
@@ -41,12 +43,12 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             true
         );         
             
-        SwingUtils.ShowBusy();        
-        
+        SwingUtils.ShowBusy();                
         String message = Context.getMessage("bag.message.filesadded");        
         addBagData(files);
         log.error(message);        
         for(File file:files){
+            
             log.error("\t"+file.getAbsolutePath());
         }
         bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
@@ -73,18 +75,22 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
     }
     public void addBagData(File file, boolean lastFileFlag) {
         
-        final BagView bagView = BagView.getInstance();    	
+        final BagView bagView = BagView.getInstance();  
+        final MetsBag metsBag = bagView.getBag();
         try{
-            File bagFile = bagView.getBag().getFile();            
+            File bagFile = metsBag.getFile();            
             
-            try{
+            try{               
                 //leesbaar?
-                FUtils.checkFile(file,true);
-                //bestandsnamen cross platform overdraagbaar?
-                FUtils.checkSafeFiles(file);
+                FUtils.checkFile(file,true);                
             }catch(FileNotWritableException e){
                 log.error(e.getMessage());
                 //doe niets
+            }
+            
+            try{                
+                //bestandsnamen cross platform overdraagbaar?                
+                FUtils.checkSafeFiles(file);
             }catch(FileNameNotPortableException e){
                 //één of meerdere bestandsnamen zijn niet portabel
                 log.error(e.getMessage());                
@@ -168,6 +174,19 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 );                        
                 log.error(message);
                 SwingUtils.ShowError(title,message);
+            }else{
+                if(file.isDirectory()){
+                    File rootDir = file.getParentFile();
+                    ArrayList<File>descendants = FUtils.listFiles(file);
+                    for(File descendant:descendants){
+                        String entry = descendant.getAbsolutePath().replace(rootDir.getAbsolutePath()+File.separatorChar,"");
+                        metsBag.getNewEntries().put(entry,descendant);                        
+                        System.out.println("adding "+entry+" => "+descendant.getAbsolutePath());
+                    }
+                }else{
+                    metsBag.getNewEntries().put(file.getName(),file);                    
+                    System.out.println("adding "+file.getName()+" => "+file.getAbsolutePath());
+                }
             }
         }catch(FileNotReadableException e){          
             String title = Context.getMessage("addDataHandler.FileNotReadableException.title");

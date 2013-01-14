@@ -113,6 +113,7 @@ public class BagitMetsValidator {
         
         return warnings;
     }
+    /*
     public static void main(String [] args){
         ArrayList<File>files = new ArrayList<File>();
         for(File file:new File("/home/nicolas/bags").listFiles()){
@@ -131,7 +132,7 @@ public class BagitMetsValidator {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
     public ArrayList<BagitMetsValidationException> validate(MetsBag metsBag,Mets mets) throws BagitMetsValidationException{
         ArrayList<BagitMetsValidationException>warnings = new ArrayList<BagitMetsValidationException>();
         

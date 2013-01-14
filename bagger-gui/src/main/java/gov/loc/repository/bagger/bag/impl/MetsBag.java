@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import org.apache.commons.vfs2.FileSystemException;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
@@ -26,8 +27,19 @@ public final class MetsBag extends DefaultBag{
     BagItMets bagItMets;          
     Premis premis;
     ArrayList<String>oldFileList;        
+    HashMap<String,File>newEntries;
     Mets mets;
 
+    public HashMap<String, File> getNewEntries() {
+        if(newEntries == null){
+            newEntries = new HashMap<String, File>();                   
+        }
+        return newEntries;
+    }
+
+    //log of all files added to the payload (good to track the file path of the new files,
+    //because these cannot be derived from BagFile
+       
     public Mets getMets() {
         if(mets == null){
             mets = new Mets();

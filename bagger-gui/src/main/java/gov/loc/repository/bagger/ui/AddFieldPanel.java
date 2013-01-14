@@ -29,8 +29,20 @@ public final class AddFieldPanel extends JPanel {
     JComboBox standardFieldsComboBox;
     JTextField customFieldTextField;
     JTextField valueField;
-    ArrayList<String>standardFields;    
+    ArrayList<String>standardFields;   
+    ArrayList<String>baginfoReadonlyFields;
 
+    public ArrayList<String> getBaginfoReadonlyFields() {
+        if(baginfoReadonlyFields == null){            
+            try{
+                baginfoReadonlyFields = (ArrayList<String>)Beans.getBean("baginfoReadonlyFields");
+            }catch(Exception e){}
+            if(baginfoReadonlyFields == null){
+                baginfoReadonlyFields = new ArrayList<String>();
+            }            
+        }
+        return baginfoReadonlyFields;
+    }
     public ArrayList<String> getStandardFields() {
         if(standardFields == null){
             standardFields = retrieveStandardFields();
@@ -188,6 +200,9 @@ public final class AddFieldPanel extends JPanel {
             return null;
         }else if(getValueField().getText() == null || getValueField().getText().trim().isEmpty()){                     
             SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.valueRequired"));
+            return null;
+        }else if(getBaginfoReadonlyFields().contains(fieldName)){
+            SwingUtils.ShowError(dialogTitle,Context.getMessage("baginfo.newFieldDialog.error.fieldReadonly",new Object []{fieldName}));
             return null;
         }
 

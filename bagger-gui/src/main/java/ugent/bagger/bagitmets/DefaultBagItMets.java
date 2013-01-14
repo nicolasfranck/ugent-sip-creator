@@ -245,8 +245,7 @@ public class DefaultBagItMets extends BagItMets{
                     }else{                     
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
                     }                    
-                }catch(Exception e){    
-                    e.printStackTrace();
+                }catch(Exception e){                       
                     log.error(e.getMessage());                    
                 }
                                 
@@ -368,16 +367,14 @@ public class DefaultBagItMets extends BagItMets{
             }   
          
 
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception e){            
             log.error(e.getMessage());                  
         }        
         
         try{
             PremisBagitMetsAnalyser analyser = new PremisBagitMetsAnalyser();
             analyser.analyse(metsBag,mets);
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception e){            
             log.error(e.getMessage());             
         }
         

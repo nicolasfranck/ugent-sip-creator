@@ -45,6 +45,7 @@ public class DecimalSequence implements Sequence{
     public int getPadding() {
         return padding;
     }
+    /*
     public static void main(String [] args){
         Sequence seq = new DecimalSequence();        
         seq.setPadding(10);        
@@ -52,7 +53,7 @@ public class DecimalSequence implements Sequence{
         for(int i = 0;i<1000;i++){
             System.out.println(seq.next());
         }
-    }
+    }*/
 
     @Override
     public int getCounter() {

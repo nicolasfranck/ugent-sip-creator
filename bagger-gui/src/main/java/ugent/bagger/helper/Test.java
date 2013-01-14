@@ -1,17 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ugent.bagger.helper;
 
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.BagFile;
-import gov.loc.repository.bagit.Manifest;
-import gov.loc.repository.bagit.writer.impl.FileSystemWriter;
-import java.io.File;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+
 
 /**
  *
@@ -19,25 +14,17 @@ import java.util.Map;
  */
 public class Test {
     public static void main(String...args){
-        BagFactory bf = new BagFactory();        
-        Bag bag = bf.createBag(new File("/home/nicolas/baggie3"));
-        Manifest payloadManifest = bag.getPayloadManifest(Manifest.Algorithm.MD5);
-        Manifest tagManifest = bag.getTagManifest(Manifest.Algorithm.MD5);
         
-        Iterator<BagFile>itPayloads = bag.getPayload().iterator();
-        while(itPayloads.hasNext()){
-            BagFile bagFile = itPayloads.next();
-            System.out.println("bagFile: "+bagFile.getFilepath()+" exists: "+bagFile.exists());
-            if(!bagFile.exists()){
-                itPayloads.remove();
-                payloadManifest.remove(bagFile.getFilepath());
-            }
+        try  {
+           FileSystem fs = FileSystems.getDefault();
+           Path path = fs.getPath("/home/njfranck/examples.desktop");
+           BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);           
+           
+           System.out.println("creationTime: "+ attributes.creationTime());
+           System.out.println("lastAccessTime: "+ attributes.lastAccessTime());
+           System.out.println("lastModifiedTime: "+ attributes.lastModifiedTime());
+        }catch (IOException e) { 
+             e.printStackTrace();
         }
-        //bag.removeBagFile("data/InfoInputPane.java");
-        /**/
-        
-        FileSystemWriter bagWriter = new FileSystemWriter(bf);
-       
-        bag = bagWriter.write(bag,new File("/home/nicolas/baggie3"));
     }
 }

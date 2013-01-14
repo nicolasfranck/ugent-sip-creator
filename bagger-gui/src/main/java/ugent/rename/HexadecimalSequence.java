@@ -45,6 +45,7 @@ public class HexadecimalSequence implements Sequence{
     public int getPadding() {
         return padding;
     }
+    /*
     public static void main(String [] args){
         Sequence seq = new HexadecimalSequence();        
         seq.setPadding(3);
@@ -53,8 +54,7 @@ public class HexadecimalSequence implements Sequence{
         for(int i = 0;i<1000;i++){
             System.out.println(seq.next());
         }
-    }
-
+    }*/
     @Override
     public int getCounter() {
         return i;

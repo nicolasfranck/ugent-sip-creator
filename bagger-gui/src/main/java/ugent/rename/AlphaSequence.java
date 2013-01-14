@@ -45,6 +45,7 @@ public class AlphaSequence implements Sequence {
         }        
         return alpha(now).toString();
     }
+    /*
     public static void main(String [] args){
         Sequence seq = new AlphaSequence();  
         
@@ -52,7 +53,7 @@ public class AlphaSequence implements Sequence {
         for(int i = 0;i< 20;i++){
             System.out.println(seq.next());            
         }       
-    }
+    }*/
     @Override
     public void setPadding(int padding) {
         this.padding = padding;

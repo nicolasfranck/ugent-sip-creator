@@ -3,15 +3,16 @@ package gov.loc.repository.bagger.ui.handlers;
 import gov.loc.repository.bagger.bag.BagInfoField;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import gov.loc.repository.bagit.BagFile;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.AbstractAction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.dialogs.NewBagDialog;
+import ugent.bagger.helper.Beans;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.NewBagParams;
@@ -56,6 +57,16 @@ public class StartNewBagHandler extends AbstractAction {
         field.setValue(params.getBagId());        
         metsBag.getInfo().addField(field);
         
+        //default fields
+        ArrayList<String> list = (ArrayList<String>) Beans.getBean("baginfoStandardFields");
+        for(String key:list){
+            BagInfoField f = new BagInfoField();
+            f.setLabel(key);
+            f.setName(key);
+            f.setValue("");
+            metsBag.getInfo().addField(f);            
+        }
+        
     	bagView.getInfoFormsPane().getInfoInputPane().enableForms(true);
 
     	String bagName = Context.getMessage("bag.label.noname");
@@ -63,16 +74,8 @@ public class StartNewBagHandler extends AbstractAction {
         bagView.getInfoFormsPane().setBagName(bagName);
 
         //bagView.setBagTagFileTree(new BagTree(metsBag.getName(), false));
-        Collection<BagFile> tags = metsBag.getTags();
-        /*
-        for (Iterator<BagFile> it=tags.iterator(); it.hasNext(); ) {
-            BagFile bf = it.next();
-            bagView.getBagTagFileTree().addNode(bf.getFilepath());
-        }
-        bagView.getBagTagFileTreePanel().refresh(bagView.getBagTagFileTree());*/
+        Collection<BagFile> tags = metsBag.getTags();       
         
-        
-        //metsBag.setRootDir(bagView.getBagRootPath());
         metsBag.setFile(null);
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms();
@@ -89,20 +92,8 @@ public class StartNewBagHandler extends AbstractAction {
         bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().setFieldMap(
             metsBag.getInfo().getFieldMap()
         );
-        bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();
+        bagView.getInfoFormsPane().getInfoInputPane().getBagInfoForm().resetFields();       
         
-        //already done in clearExistingBag
-        /*
-        //reset mets
-        Mets mets = bagView.getInfoFormsPane().getInfoInputPane().getMets();
-        try{
-            PremisUtils.setPremis(mets);
-        }catch(Exception e){
-            e.printStackTrace();
-        }        
-        
-        bagView.getInfoFormsPane().getInfoInputPane().resetMets(mets);
-        metsBag.setMets(mets);*/
     	        
         SwingUtils.setJComponentEnabled(bagView.getInfoFormsPane().getInfoInputPane().getMdSecPanel().getDmdSecPropertiesPanel().getButtonPanel(),true);                
         

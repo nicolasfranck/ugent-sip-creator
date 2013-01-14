@@ -3,7 +3,6 @@ package ugent.rename;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
-import ugent.bagger.helper.FUtils;
 
 /**
  *
@@ -129,11 +128,7 @@ public class Renumber extends AbstractRenamer{
         ArrayList<RenameFilePair>pairs = new ArrayList<RenameFilePair>();
         
         ArrayList<File>files = getInputFiles();
-        /*if(preSort == PreSort.FILE_NAME){
-            Collections.sort(files,fileNameSorter);
-        }else if(preSort == PreSort.FILE_DATE_MODIFIED){
-            Collections.sort(files,fileDateModifiedSorter);            
-        }*/
+        
         FileSorter.sort(files,preSort);
         
         int i = start;

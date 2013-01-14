@@ -154,8 +154,7 @@ public class RenamePanel extends JPanel{
                             reloadFileTable();
                             BusyIndicator.clearAt(RenamePanel.this);
                         }                            
-                    });
-                    
+                    });                   
                 }                
             });           
         }
