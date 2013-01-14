@@ -219,8 +219,7 @@ public class PremisAgent implements ElementInterface{
             this.agentIdentifierValue = agentIdentifierValue;
         }
         @Override
-        public void unmarshal(Element root) throws ParseException {
-            
+        public void unmarshal(Element root) throws ParseException {            
             ArrayList<Element>children = (ArrayList<Element>) DOMHelp.getChildElements(root);
             for(Element child:children) {
                 String localName = child.getLocalName();

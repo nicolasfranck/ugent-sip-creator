@@ -18,10 +18,10 @@ import ugent.bagger.helper.XML;
  * @author nicolas
  */
 final public class EditMdSecPanel extends JPanel{
-    private JComponent buttonPanel;    
-    private MdSecForm mdSecForm;
-    private MdSec mdSec;    
-    private JTextArea textArea;    
+    JComponent buttonPanel;    
+    MdSecForm mdSecForm;
+    MdSec mdSec;    
+    JTextArea textArea;    
     
     public EditMdSecPanel(final MdSec mdSec){        
         assert(mdSec != null);

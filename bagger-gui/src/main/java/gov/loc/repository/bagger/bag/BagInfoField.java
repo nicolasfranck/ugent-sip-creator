@@ -6,24 +6,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public final class BagInfoField {
-    private static final long serialVersionUID = 1L;
-    private static final Log logger = LogFactory.getLog(BagInfoField.class);
+    static final long serialVersionUID = 1L;
+    static final Log logger = LogFactory.getLog(BagInfoField.class);
     public static final int TEXTFIELD_COMPONENT = 1;
     public static final int TEXTAREA_COMPONENT = 2;
     public static final int LIST_COMPONENT = 3;
     public static final String TEXTFIELD_CODE = "TF";
     public static final String TEXTAREA_CODE = "TA";
     public static final int MAX_VALUE = 32;
-    private String name = "";
-    private String label = "";
-    private String value = "";
-    private List<String> elements = new ArrayList<String>();
-    private int componentType = TEXTFIELD_COMPONENT;
-    private boolean isEnabled = true;
-    private boolean isRequired = false;
-    private boolean isRequiredvalue = false;
-    private boolean isEditable = true;
-    private boolean isProfile = false;
+    String name = "";
+    String label = "";
+    String value = "";
+    List<String> elements = new ArrayList<String>();
+    int componentType = TEXTFIELD_COMPONENT;
+    boolean isEnabled = true;
+    boolean isRequired = false;
+    boolean isRequiredvalue = false;
+    boolean isEditable = true;
+    boolean isProfile = false;
 
     public BagInfoField() {
     	

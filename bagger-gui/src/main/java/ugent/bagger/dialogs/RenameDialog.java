@@ -1,6 +1,5 @@
 package ugent.bagger.dialogs;
 
-import gov.loc.repository.bagger.ui.BagView;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Frame;
@@ -12,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EtchedBorder;
 import ugent.bagger.helper.Context;
 import ugent.bagger.panels.RenamePanel;
@@ -66,7 +66,7 @@ public class RenameDialog extends JDialog {
     public RenameDialog(Frame parentFrame,boolean isModal){
         super(parentFrame,true);   
         setTitle(Context.getMessage("RenameDialog.title"));
-        setContentPane(createContentPanel());        
+        setContentPane(new JScrollPane(createContentPanel()));        
     }    
     public JPanel createContentPanel(){
         JPanel panel = new JPanel(new BorderLayout());

@@ -14,17 +14,17 @@ import org.w3c.dom.NamedNodeMap;
  */
 public class PremisEvent implements ElementInterface{
     
-    private PremisEventIdentifier eventIdentifier;
-    private String eventType;
-    private String eventDateTime;
-    private String eventDetail;
-    private ArrayList<PremisEventOutcomeInformation>eventOutcomeInformation;      
-    private ArrayList<PremisLinkingAgentIdentifier>linkingAgentIdentifier;
-    private ArrayList<PremisLinkingObjectIdentifier>linkingObjectIdentifier;
+    PremisEventIdentifier eventIdentifier;
+    String eventType;
+    String eventDateTime;
+    String eventDetail;
+    ArrayList<PremisEventOutcomeInformation>eventOutcomeInformation;      
+    ArrayList<PremisLinkingAgentIdentifier>linkingAgentIdentifier;
+    ArrayList<PremisLinkingObjectIdentifier>linkingObjectIdentifier;
     
     //attributes
-    private String xmlID;
-    private String version;    
+    String xmlID;
+    String version;    
 
     public ArrayList<PremisLinkingAgentIdentifier> getLinkingAgentIdentifier() {
         if(linkingAgentIdentifier == null){
@@ -185,8 +185,8 @@ public class PremisEvent implements ElementInterface{
     
     
     public static class PremisEventIdentifier implements ElementInterface{
-        private String eventIdentifierType;
-        private String eventIdentifierValue;
+        String eventIdentifierType;
+        String eventIdentifierValue;
 
         public String getEventIdentifierType() {
             return eventIdentifierType;
@@ -228,9 +228,9 @@ public class PremisEvent implements ElementInterface{
         }
     }
     public static class PremisEventOutcomeInformation implements ElementInterface{
-        private String eventOutcome;
-        private ArrayList<Element> eventOutcomeDetail;
-        private ArrayList<MdSec> mdSec;
+        String eventOutcome;
+        ArrayList<Element> eventOutcomeDetail;
+        ArrayList<MdSec> mdSec;
         
         public ArrayList<MdSec> getMdSec() {
             if(mdSec == null){

@@ -197,7 +197,7 @@
     </bean>  
  
     <bean id="bagView" class="org.springframework.richclient.application.support.DefaultViewDescriptor">
-        <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView"/>                                        
+        <property name="viewClass" value="gov.loc.repository.bagger.ui.BagView"/>                                                   
     </bean>
  
     <util:list id="metsSchemaURLS">        
@@ -795,6 +795,9 @@
         <value>DC-Format</value>
         <value>DC-Identifier</value>
         <value>DC-Language</value>        
+    </util:list>
+    <util:list id="baginfoReadonlyFields">
+        <value>Bag-Id</value>
     </util:list>
     <util:map id="exporters" map-class="java.util.HashMap">    
         <entry key="DSpace Mets Archive">

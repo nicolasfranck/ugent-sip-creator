@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
+import ugent.bagger.helper.Beans;
 
 
 public final class BagInfoForm extends AbstractForm {
@@ -135,6 +136,10 @@ public final class BagInfoForm extends AbstractForm {
         
         formBuilder.row();
         
+        ArrayList<String>baginfoReadonlyFields = new ArrayList<String>();
+        try{
+            baginfoReadonlyFields = (ArrayList<String>)Beans.getBean("baginfoReadonlyFields");
+        }catch(Exception e){}
         
         if(fieldMap != null && !fieldMap.isEmpty()){
             Set<String> keys = fieldMap.keySet();
@@ -143,12 +148,16 @@ public final class BagInfoForm extends AbstractForm {
                     final String key = (String) iter.next();                    
                     ArrayList<String>values = fieldMap.get(key);                 
                     
+                    boolean isReadOnly = baginfoReadonlyFields.contains(key);
+                    
                     for(int i = 0;i < values.size();i++){
                         final String value = values.get(i);
                         
                         formBuilder.row();
                         rowCount++;
                         ImageIcon imageIcon = getBagView().getPropertyImage("bag.delete.image");
+                        
+                        
                         JButton removeButton = new JButton(imageIcon);
                         Dimension dimension = removeButton.getPreferredSize();
                         dimension.width = imageIcon.getIconWidth();
@@ -174,6 +183,7 @@ public final class BagInfoForm extends AbstractForm {
                                 });
                             }                            
                         });
+                        removeButton.setEnabled(!isReadOnly);
                         
                         int componentType = BagInfoField.TEXTFIELD_COMPONENT;
                         if(value.length() > 50){
@@ -183,7 +193,7 @@ public final class BagInfoForm extends AbstractForm {
                             case BagInfoField.TEXTAREA_COMPONENT:
                                 JComponent[] tlist = formBuilder.addTextArea(key,false,key,removeButton, "");
                                 JComponent textarea = tlist[index];
-                                textarea.setEnabled(true);                             
+                                textarea.setEnabled(!isReadOnly);                             
                                 ((NoTabTextArea) textarea).setText(value);
                                 ((NoTabTextArea) textarea).setBorder(new EmptyBorder(1,1,1,1));
                                 ((NoTabTextArea) textarea).setLineWrap(true);                                
@@ -194,13 +204,14 @@ public final class BagInfoForm extends AbstractForm {
                             case BagInfoField.TEXTFIELD_COMPONENT:
                                 JComponent[] flist = formBuilder.add(key,false,key,removeButton,"");
                                 JComponent comp = flist[index];
-                                comp.setEnabled(true);                                
+                                comp.setEnabled(!isReadOnly);                                
                                 ((JTextField) comp).setText(value);
-                                if (rowCount == 1) {
+                                if(rowCount == 1){
                                     focusField = comp;
                                 }
                                 break;
-                        }
+                        }  
+                        
                     }
                    
                 }

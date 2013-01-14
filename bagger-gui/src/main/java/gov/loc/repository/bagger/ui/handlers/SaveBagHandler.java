@@ -192,8 +192,6 @@ public class SaveBagHandler extends Handler {
                     bagView.openBagHandler.openExistingBag(bagFile);
                     bagView.updateSaveBag();
                 }
-            }else{                   
-                bagView.updateManifestPane();
             }
         }
            

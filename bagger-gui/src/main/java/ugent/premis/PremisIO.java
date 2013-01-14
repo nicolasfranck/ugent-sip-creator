@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.text.ParseException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
@@ -26,9 +27,12 @@ public class PremisIO {
         premis.unmarshal(doc.getDocumentElement());
         return premis;
     }
-    public static void write(Premis premis,OutputStream out,boolean pretty) throws ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException{        
+    public static void write(Premis premis,OutputStream out,boolean pretty) throws ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException{                
         XML.DocumentToXML(toDocument(premis),out,pretty);
     }    
+    public static void write(Premis premis,Writer writer,boolean pretty) throws ClassNotFoundException, ParserConfigurationException, InstantiationException, IllegalAccessException{
+        XML.DocumentToXML(toDocument(premis),writer,pretty);
+    }
     public static Document toDocument(Premis premis) throws ParserConfigurationException{
         Document doc = XML.createDocument();
         Element e = doc.createElementNS(NS.PREMIS.ns(),"premis:premis");        

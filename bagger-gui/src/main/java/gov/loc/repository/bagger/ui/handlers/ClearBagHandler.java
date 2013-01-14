@@ -128,7 +128,7 @@ public class ClearBagHandler extends AbstractAction {
             log.error(e.getMessage());
             e.printStackTrace();
         }
-        
+        infoInputPane.enableForms(false);
     	bagView.updateClearBag();
     }
 

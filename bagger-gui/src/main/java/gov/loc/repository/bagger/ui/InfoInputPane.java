@@ -19,13 +19,13 @@ import ugent.bagger.panels.AmdSecsPanel;
 import ugent.bagger.panels.MdSecPanel;
 
 public final class InfoInputPane extends JTabbedPane {
-    private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(InfoInputPane.class);    
-    private BagInfoForm bagInfoForm;    
-    private HierarchicalFormModel infoFormModel;    
-    private Mets mets;
-    private MdSecPanel metsPanel;
-    private AmdSecsPanel amdSecsPanel;    
+    static final long serialVersionUID = 1L;
+    static final Log log = LogFactory.getLog(InfoInputPane.class);    
+    BagInfoForm bagInfoForm;    
+    HierarchicalFormModel infoFormModel;    
+    Mets mets;
+    MdSecPanel metsPanel;
+    AmdSecsPanel amdSecsPanel;    
      
     public AmdSecsPanel getAmdSecsPanel() {
         if(amdSecsPanel == null){            
@@ -146,12 +146,13 @@ public final class InfoInputPane extends JTabbedPane {
             getBagInfoForm().getControl(),
             Context.getMessage("infoInputPane.baginfoTab.tooltip")
         );
+        /*
         addTab(
             Context.getMessage("infoInputPane.amdSecTab.label"),
             null,
             getAmdSecsPanel(),
             Context.getMessage("infoInputPane.amdSecTab.tooltip")                
-        );           
+        );*/           
         
         Dimension dim = getPreferredSize();
         Dimension mdim = new Dimension(600,(int)dim.getHeight());

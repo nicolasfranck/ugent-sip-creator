@@ -237,10 +237,11 @@ public class RenamePanel extends JPanel{
         
     }
     public ClassTable<AbstractFile> getFileTable() {
-        if(fileTable == null){                                    
+        if(fileTable == null){       
+            final String [] columns = {"name","mimeType","lastModifiedDate"};
             fileTable = new ClassTable<AbstractFile>(                
                 new ArrayList<AbstractFile>(),
-                new String [] {"name","mimeType","lastModifiedDate"},
+                columns,
                 "fileTable"
             );       
             
@@ -265,7 +266,7 @@ public class RenamePanel extends JPanel{
                         SwingUtils.ShowError(null,error);
                         setStatusError(error);
                         return;
-                    }                    
+                    }  
                     
                     //map behoort tot lijst van verboden mappen
                     boolean isForbidden = false;
@@ -279,7 +280,7 @@ public class RenamePanel extends JPanel{
                         }
                     }
                     if(isForbidden){
-                        String error =  Context.getMessage("RenamePanel.error.forbidden",new String [] {
+                        String error = Context.getMessage("RenamePanel.error.forbidden",new String [] {
                             file.getAbsolutePath()
                         });
                         setStatusError(error);
@@ -294,12 +295,15 @@ public class RenamePanel extends JPanel{
                             BusyIndicator.showAt(RenamePanel.this);
                             
                             setLastFile(file);
-                            reloadFileTable();                    
+                            reloadFileTable();         
+                            
+                            /*
                             LazyTreeNode node = new LazyTreeNode(file.getAbsolutePath(),new FileNode(file),true);                    
                             TreePath tpath = getFileSystemTree().getSelectionPath();                    
                             TreePath tpath2 = tpath.pathByAddingChild(node);                       
                             getFileSystemTree().scrollPathToVisible(tpath2);                            
                             getFileSystemTree().setSelectionPath(tpath2);
+                            */
                             
                             BusyIndicator.clearAt(RenamePanel.this);                            
                         }
@@ -322,8 +326,8 @@ public class RenamePanel extends JPanel{
                 }                
             });
             table.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer(){
-                private Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
-                private Icon fileIcon = UIManager.getIcon("FileView.fileIcon");               
+                Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
+                Icon fileIcon = UIManager.getIcon("FileView.fileIcon");               
         
                 @Override
                 public Component getTableCellRendererComponent(JTable jtable,Object o,boolean isSelected, boolean hasFocus, int rowIndex, int vColIndex) {                                        
@@ -349,6 +353,20 @@ public class RenamePanel extends JPanel{
             });            
             table.setShowGrid(false);
             
+            table.getTableHeader().addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent mouseEvent) {
+                    int index = table.convertColumnIndexToModel(table.columnAtPoint(mouseEvent.getPoint()));
+                    if(index >= 0){                        
+                        if(columns[index].equals("name")){
+                            getRenumberParamsForm().getValueModel("preSort").setValue(PreSort.FILE_NAME);
+                        }else if(columns[index].equals("lastModifiedDate")){
+                            getRenumberParamsForm().getValueModel("preSort").setValue(PreSort.FILE_DATE_MODIFIED);
+                        }
+                    }
+                }                
+            });
+            
             SwingUtilities.invokeLater(new Runnable(){
                 @Override
                 public void run() {
@@ -360,11 +378,23 @@ public class RenamePanel extends JPanel{
         return fileTable;
     }
     public void reloadFileTable(){        
-        reloadFileTable(getLastFile()); 
+        reloadFileTable(getLastFile());
+        
     }
     public void reloadFileTable(File file){         
         getFileTable().clearSort();        
         getFileTable().reset(getList(file));                
+        setFormsEnabled(file.isDirectory() && Files.isWritable(file.toPath()) && !getForbiddenFiles().contains(file));
+        //map niet schrijfbaar
+        if(!Files.isWritable(file.toPath())){
+            setStatusError(
+                Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
+                    file.getAbsolutePath()
+                })    
+            );
+        }else{
+            setStatusMessage(file.getAbsolutePath());
+        }
     }
     public void setFileTable(ClassTable<AbstractFile> fileTable) {
         this.fileTable = fileTable;
@@ -515,8 +545,7 @@ public class RenamePanel extends JPanel{
                                         isForbidden = true;
                                         break;
                                     }
-                                }
-                                setFormsEnabled(file.isDirectory() && Files.isWritable(file.toPath()) && !isForbidden);                        
+                                }                                
                             }                   
                         }
                     });  

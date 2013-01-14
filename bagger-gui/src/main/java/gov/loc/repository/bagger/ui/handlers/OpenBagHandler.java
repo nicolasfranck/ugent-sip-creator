@@ -165,8 +165,7 @@ public class OpenBagHandler extends AbstractAction {
             }
 
             bagView.getBagPayloadTree().populateNodes(bagView.getBag(),path,rootSrc,true);
-            bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
-            bagView.updateManifestPane();
+            bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());            
             bagView.enableBagSettings(true);            
          
             infoInputPane.populateForms();
