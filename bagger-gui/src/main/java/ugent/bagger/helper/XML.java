@@ -12,7 +12,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.*;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -28,10 +29,10 @@ import org.xml.sax.*;
  */
 public class XML {
 
-    private static SchemaFactory sf = null;
-    private static DOMImplementationRegistry registry = null;
-    private static DOMImplementationLS impl = null;    
-    private static Logger log = Logger.getLogger(XML.class);
+    static SchemaFactory sf = null;
+    static DOMImplementationRegistry registry = null;
+    static DOMImplementationLS impl = null;    
+    static final Log log = LogFactory.getLog(XML.class);
 
     
     /*
@@ -345,8 +346,8 @@ public class XML {
         }
 
     }*/
-    private static class ClasspathResourceResolver implements LSResourceResolver {        
-        private ClasspathResourceResolver() throws ClassNotFoundException, IllegalAccessException, InstantiationException {         
+    static class ClasspathResourceResolver implements LSResourceResolver {        
+        ClasspathResourceResolver() throws ClassNotFoundException, IllegalAccessException, InstantiationException {         
         }        
         @Override
         public LSInput resolveResource(String type, String namespaceURI,String publicId, String systemId,String baseURI) {

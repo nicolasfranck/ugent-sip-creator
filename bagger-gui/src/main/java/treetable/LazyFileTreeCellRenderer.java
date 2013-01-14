@@ -9,20 +9,21 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
  * @author nicolas
  */
 public class LazyFileTreeCellRenderer extends DefaultTreeCellRenderer {
-    static Logger log = Logger.getLogger(LazyFileTreeCellRenderer.class);
-    private static Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
-    private static Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
-    private static Icon errorIcon = UIManager.getIcon("FileView.errorIcon");
-    private static Icon computerIcon = UIManager.getIcon( "FileView.computerIcon" );    
-    private static Icon diskIcon = UIManager.getIcon( "FileView.hardDriveIcon" );
-    private static FileSystemView fsv = FileSystemView.getFileSystemView();
+    static final Log log = LogFactory.getLog(LazyFileTreeCellRenderer.class);
+    static Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
+    static Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
+    static Icon errorIcon = UIManager.getIcon("FileView.errorIcon");
+    static Icon computerIcon = UIManager.getIcon( "FileView.computerIcon" );    
+    static Icon diskIcon = UIManager.getIcon( "FileView.hardDriveIcon" );
+    static FileSystemView fsv = FileSystemView.getFileSystemView();
 
     @Override
     public Component getTreeCellRendererComponent(

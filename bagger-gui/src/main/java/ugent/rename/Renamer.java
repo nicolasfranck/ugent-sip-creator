@@ -54,7 +54,7 @@ public class Renamer extends AbstractRenamer{
         this.patternFlags &= ~patternFlag;
     }   
 
-    private Pattern compileSourcePattern() {                  
+    Pattern compileSourcePattern() {                  
         Pattern sourcePattern = null;
         try{                        
             sourcePattern = Pattern.compile(getSource(),getPatternFlags());                           
@@ -155,8 +155,6 @@ public class Renamer extends AbstractRenamer{
             if(newName.compareTo(sourceFile.getName()) == 0){                
                 continue;
             }
-     
-            
             
             File destinationFile = new File(sourceFile.getParentFile(),newName);
             pairs.add(new RenameFilePair(sourceFile,destinationFile));
@@ -164,87 +162,10 @@ public class Renamer extends AbstractRenamer{
         return pairs;
     }
     @Override
-    protected ArrayList<RenameFilePair> getFilePairs(){
-               
-        return getFilePairs(getInputFiles());
-        /*
-        if(                         
-            getInputFiles().size() <= 0
-        ){            
-            return null;
-        }
-        ArrayList<RenameFilePair>pairs = new ArrayList<RenameFilePair>();        
-        for(int i = 0;i<getInputFiles().size();i++){
-            File sourceFile = getInputFiles().get(i);
-            String baseName = sourceFile.getName();
-            String oldName = baseName;
-            
-            String extension = null;
-            
-            
-            //extensie ook mee betrekken in rename?
-            if(sourceFile.isFile() && !isRenameExtension()){
-                boolean isDoubleExtension = false;
-                //controleer speciale gevallen
-                for(String n:doubleFileExtension){
-                    if(baseName.toLowerCase().endsWith("."+n)){
-                        //en niet 'extension = n', want de test wordt case-insensitive uitgevoerd..
-                        extension = baseName.substring(baseName.length() - n.length());
-                        isDoubleExtension = true;
-                        baseName = baseName.substring(0,baseName.length() - n.length() - 1);
-                        break;
-                    }
-                }
-                if(!isDoubleExtension){
-                    int pos = baseName.lastIndexOf('.');
-                    extension = pos >= 0 ? baseName.substring(pos + 1):"";
-                    baseName = pos >= 0 ? baseName.substring(0,pos) : baseName;                    
-                }                
-            }            
-            
-            String newName = null;
-            
-            //indien source == "", dan worden alle lettergrenzen vervangen door de destination
-            //dus niet zomaar vervangen..
-            if(!getSource().isEmpty()){
-                Pattern sp = compileSourcePattern();
-                if(sp != null){
-                    System.out.println("baseName: "+baseName);
-                    newName = sp.matcher(baseName).replaceAll(getDestination()); 
-                    System.out.println("newName: "+newName);
-                }else{
-                    newName = baseName;
-                }               
-            }else{
-                newName = baseName;
-            }
-            
-            
-            if(getPrefix() != null){
-                newName = getPrefix() + newName;
-            }
-            if(getPostfix() != null){                
-                newName += getPostfix();                
-            }
-            if(sourceFile.isFile() && !isRenameExtension()){
-                newName += (extension != null ? "."+extension : "");
-            }            
-            
-            if(newName.compareTo(sourceFile.getName()) == 0){                
-                continue;
-            }
-     
-            //recursief?
-            if(isRecursive() && sourceFile.isDirectory()){
-                pairs.addAll(getFilePairs());
-            }
-            
-            File destinationFile = new File(sourceFile.getParentFile(),newName);
-            pairs.add(new RenameFilePair(sourceFile,destinationFile));
-        }
-        return pairs;*/
+    protected ArrayList<RenameFilePair> getFilePairs(){               
+        return getFilePairs(getInputFiles());        
     }
-    
+    /*
     public static void main(String [] args){
         Renamer renamer = new Renamer();
         
@@ -253,8 +174,7 @@ public class Renamer extends AbstractRenamer{
             Arrays.asList(
                 new File("/home/njfranck/test/torename").listFiles()
             )
-        );
-        //ArrayList<File>files = FUtils.listFiles("/home/njfranck/test/torename");        
+        );        
         
         System.out.println("inputFiles: "+files.size());
         renamer.setInputFiles(files);
@@ -283,26 +203,6 @@ public class Renamer extends AbstractRenamer{
                 System.out.println("source: "+pair.getSource()+" => "+pair.getTarget());
             }            
         });
-        renamer.rename();
-        /*
-        ArrayList<File>reverseFileList = getReverseFileList(new File("/home/njfranck/test"));
-        for(File file:reverseFileList){
-            System.out.println(file);
-        }*/
-    }
-    public static ArrayList<File>getReverseFileList(File file){
-        ArrayList<File>list = new ArrayList<File>();        
-            
-        File [] children = file.listFiles();
-        if(children != null){
-            for(File child:children){
-                if(child.isDirectory()){
-                    list.addAll(getReverseFileList(child));                
-                }   
-                list.add(child);
-            }
-        }        
-        
-        return list;
-    }
+        renamer.rename();        
+    }*/
 }

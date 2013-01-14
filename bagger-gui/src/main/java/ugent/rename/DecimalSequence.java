@@ -10,7 +10,7 @@ public class DecimalSequence implements Sequence{
     boolean isSet = false;
     int step = 1;
     
-    private String getFormatString(){
+    String getFormatString(){
         String formatString = "%";
         if(padding > 0){
             formatString += "0"+padding;
@@ -72,6 +72,5 @@ public class DecimalSequence implements Sequence{
     @Override
     public void setStep(int step) {
         this.step = step;
-    }
-    
+    }    
 }

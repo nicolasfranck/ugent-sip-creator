@@ -7,7 +7,7 @@ package ugent.rename;
 public enum PaddingChar {
     NULL('0'),SPACE(' ');
     public char c;
-    private PaddingChar(char c){
+    PaddingChar(char c){
         this.c = c;
     }   
     @Override

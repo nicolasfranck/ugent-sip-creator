@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.Application;
 
 public class Context{
-    private static final Log log = LogFactory.getLog(Context.class);
+    static final Log log = LogFactory.getLog(Context.class);
 
     public static String getMessage(String propertyName){  
         return getMessage(propertyName,null);        

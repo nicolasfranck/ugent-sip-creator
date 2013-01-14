@@ -8,7 +8,7 @@ import org.apache.commons.net.ftp.FTPFile;
  * @author nicolas
  */
 public class FTPAbstractFile extends AbstractFile {
-    private FTPFile file;
+    FTPFile file;
     public FTPAbstractFile(FTPFile file){
         this.file = file;
     }

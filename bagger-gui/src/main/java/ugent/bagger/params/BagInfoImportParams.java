@@ -9,8 +9,8 @@ import ugent.bagger.helper.MetsUtils;
  * @author nicolas
  */
 public class BagInfoImportParams {
-    private ArrayList<File>files;
-    private VelocityTemplate template;
+    ArrayList<File>files;
+    VelocityTemplate template;
 
     public ArrayList<File> getFiles() {
         if(files == null){

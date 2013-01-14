@@ -5,9 +5,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public final class BagInfoField {
-    static final long serialVersionUID = 1L;
-    static final Log logger = LogFactory.getLog(BagInfoField.class);
+public final class BagInfoField {    
+    static final Log log = LogFactory.getLog(BagInfoField.class);
     public static final int TEXTFIELD_COMPONENT = 1;
     public static final int TEXTAREA_COMPONENT = 2;
     public static final int LIST_COMPONENT = 3;

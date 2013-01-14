@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * @author nicolas
  */
 public class BagValidateParams {    
-    private boolean valid;
-    private ArrayList<File>files = new ArrayList<File>();
+    boolean valid;
+    ArrayList<File>files = new ArrayList<File>();
     
     public boolean isValid() {
         return valid;

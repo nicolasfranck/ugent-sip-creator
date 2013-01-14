@@ -8,7 +8,8 @@ package ugent.bagger.filters;
 import java.io.File;
 import java.nio.file.Files;
 import javax.swing.filechooser.FileFilter;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -16,8 +17,8 @@ import org.apache.log4j.Logger;
  */
 public final class DirectoryFilter extends FileFilter{
     
-    private String description;  
-    private static final Logger log = Logger.getLogger(DirectoryFilter.class);
+    String description;  
+    static final Log log = LogFactory.getLog(DirectoryFilter.class);
     
     public DirectoryFilter(String description){      
         setDescription(description);

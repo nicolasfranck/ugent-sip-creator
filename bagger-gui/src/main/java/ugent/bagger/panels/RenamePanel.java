@@ -721,7 +721,7 @@ public class RenamePanel extends JPanel{
     public void setRenameParamsForm(RenameParamsForm renamePairForm) {
         this.renameParamsForm = renamePairForm;
     }     
-    private void init() {
+    void init() {
         //split pane
         JSplitPane splitterVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT);        
         
@@ -999,7 +999,7 @@ public class RenamePanel extends JPanel{
         getLastFileLabel().setText(lastFile.getAbsolutePath());
         this.lastFile = lastFile;        
     }       
-    private class TaskRenumber extends DefaultWorker {
+    class TaskRenumber extends DefaultWorker {
         final Log log = LogFactory.getLog(TaskRenumber.class);
         RenumberParams renumberParams;
         public TaskRenumber(RenumberParams renumberParams){
@@ -1099,7 +1099,7 @@ public class RenamePanel extends JPanel{
             return null;
         }
     }
-    private class TaskRename extends DefaultWorker {
+    class TaskRename extends DefaultWorker {
         final Log log = LogFactory.getLog(TaskRename.class);
         RenameParams renameParams;      
         public TaskRename(RenameParams renameParams){

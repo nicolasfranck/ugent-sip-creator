@@ -7,7 +7,6 @@ import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.BagitUtils;
@@ -16,13 +15,10 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask;
 
-public class CompleteBagHandler extends Handler /*implements Loggable*/ {
-    static final long serialVersionUID = 1L;   
-    static final Log log = LogFactory.getLog(CompleteBagHandler.class);
-    //Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
-    //Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
+public class CompleteBagHandler extends Handler {
+    static final Log log = LogFactory.getLog(CompleteBagHandler.class);    
 
-    public CompleteBagHandler() {
+    public CompleteBagHandler() {        
         super();           
     }
 
@@ -41,7 +37,7 @@ public class CompleteBagHandler extends Handler /*implements Loggable*/ {
             Context.getMessage("CompleteBagHandler.validating.description")
         );
     }
-    private class CompleteBagWorker extends LongTask {       
+    class CompleteBagWorker extends LongTask {       
         SimpleResult result;
         BagView bagView = BagView.getInstance();
         

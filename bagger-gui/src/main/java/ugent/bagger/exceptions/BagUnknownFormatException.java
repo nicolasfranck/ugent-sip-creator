@@ -7,7 +7,7 @@ import java.io.File;
  * @author nicolas
  */
 public class BagUnknownFormatException extends Exception{
-    private File file;
+    File file;
     public BagUnknownFormatException(File file){
         this.file = file;
     }    

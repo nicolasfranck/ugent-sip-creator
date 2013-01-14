@@ -13,8 +13,8 @@ import org.w3c.dom.NamedNodeMap;
  */
 public class PremisRights implements ElementInterface {    
     //attributes
-    private String xmlID;
-    private String version;
+    String xmlID;
+    String version;
     //elements
     ArrayList<PremisRightsStatement>rightsStatement;
     ArrayList<Element>rightsExtension;

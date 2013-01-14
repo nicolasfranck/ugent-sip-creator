@@ -12,8 +12,8 @@ import javax.swing.tree.TreeNode;
  * @author nicolas
  */
 public class FileLazyTreeModel extends LazyTreeModel{
-    private Mode mode = Mode.FILES_AND_DIRECTORIES;
-    private static Comparator defaultFileSorter =  new Comparator<File>(){
+    Mode mode = Mode.FILES_AND_DIRECTORIES;
+    static Comparator defaultFileSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1, File f2){
             return f1.getName().compareToIgnoreCase(f2.getName());

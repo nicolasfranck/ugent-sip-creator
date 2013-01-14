@@ -13,7 +13,7 @@ import ugent.bagger.panels.CrosswalkParamsPanel;
  * @author nicolas
  */
 public class CrosswalkParamsPage1 extends AbstractWizardPage {        
-    private CrosswalkParamsPanel crosswalkParamsPanel;    
+    CrosswalkParamsPanel crosswalkParamsPanel;    
     
     public CrosswalkParamsPage1(String pageId){
         super(pageId);

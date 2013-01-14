@@ -9,8 +9,7 @@ import org.springframework.richclient.command.support.AbstractActionCommandExecu
 import ugent.bagger.dialogs.RenameDialog;
 import ugent.bagger.helper.SwingUtils;
 
-public class RenameExecutor extends AbstractActionCommandExecutor {
-    static final long serialVersionUID = 1L;  
+public class RenameExecutor extends AbstractActionCommandExecutor {    
     RenameDialog renameDialog;
  
     public RenameExecutor() {

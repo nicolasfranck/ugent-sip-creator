@@ -5,12 +5,12 @@ package ugent.rename;
  * @author nicolas
  */
 public class HexadecimalSequence implements Sequence{
-    private int i = 0;
-    private int padding = 0;
-    private int step = 1;
-    private boolean isSet = false;
+    int i = 0;
+    int padding = 0;
+    int step = 1;
+    boolean isSet = false;
     
-    private String getFormatString(){
+    String getFormatString(){
         String formatString = "%";
         if(padding > 0){
             formatString += "0"+padding;

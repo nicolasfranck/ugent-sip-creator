@@ -24,8 +24,7 @@ import ugent.bagger.params.BagError;
 import ugent.bagger.params.BagErrorNoBagDir;
 
 public class ClearBagHandler extends AbstractAction {
-    static final Log log = LogFactory.getLog(ClearBagHandler.class);
-    static final long serialVersionUID = 1L;   
+    static final Log log = LogFactory.getLog(ClearBagHandler.class);    
     boolean confirmSaveFlag = false;
     
     public ClearBagHandler() {

@@ -64,7 +64,7 @@ public class DefaultBagItMets extends BagItMets{
         
         return mets;
     }
-    private static Comparator defaultBagFileSorter =  new Comparator<BagFile>(){
+    static Comparator defaultBagFileSorter =  new Comparator<BagFile>(){
         @Override
         public int compare(BagFile f1, BagFile f2){
             return f1.getFilepath().compareToIgnoreCase(f2.getFilepath());            

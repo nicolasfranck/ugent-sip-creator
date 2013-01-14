@@ -7,8 +7,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * http://stackoverflow.com/questions/1974670/java-dynamic-jtree
  */
 public class LazyTreeNode extends DefaultMutableTreeNode {
-    private boolean loaded;
-    private String id;
+    boolean loaded;
+    String id;
 
     public LazyTreeNode(String id) {
         this(id, null);

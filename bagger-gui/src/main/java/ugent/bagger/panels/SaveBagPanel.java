@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -92,8 +91,7 @@ public final class SaveBagPanel extends JPanel{
         new OkSaveBagHandler().actionPerformed(null);
     }
 
-    private class OkSaveBagHandler extends AbstractAction {
-	private static final long serialVersionUID = 1L;
+    class OkSaveBagHandler extends AbstractAction {
 
         @Override
 	public void actionPerformed(ActionEvent e) {

@@ -9,16 +9,16 @@ import java.util.ArrayList;
  * @author nicolas
  */
 public class CreateBagsParams {
-    private ArrayList<File>directories;
-    private String version = BagFactory.Version.V0_96.versionString;    
-    private boolean keepEmptyDirectories = false;
-    private String metadataPaths = "";
-    private String [] metadata;
-    private boolean keepMetadata = true;
-    private boolean addDC = false;
-    private boolean writeToBagInfo = false;
-    private boolean bagInPlace = true;
-    private ArrayList<File> outputDir;    
+    ArrayList<File>directories;
+    String version = BagFactory.Version.V0_96.versionString;    
+    boolean keepEmptyDirectories = false;
+    String metadataPaths = "";
+    String [] metadata;
+    boolean keepMetadata = true;
+    boolean addDC = false;
+    boolean writeToBagInfo = false;
+    boolean bagInPlace = true;
+    ArrayList<File> outputDir;    
 
     public String[] getMetadata() {
         if(metadata == null){

@@ -9,7 +9,6 @@ import gov.loc.repository.bagit.verify.impl.ValidVerifierImpl;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.BagitUtils;
@@ -19,12 +18,7 @@ import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask;
 
 public class ValidateBagHandler extends Handler {
-    static final Log log = LogFactory.getLog(ValidateBagHandler.class);
-    static final long serialVersionUID = 1L;       
-    /*Pattern tagsMissingPattern = Pattern.compile("File (\\S+) in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
-    Pattern payloadsMissingPattern = Pattern.compile("File (\\S+) in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt missing from bag\\.");
-    Pattern tagsFixityFailurePattern = Pattern.compile("Fixity failure in manifest tagmanifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");
-    Pattern payloadsFixityFailurePattern = Pattern.compile("Fixity failure in manifest manifest-(?:md5|sha1|sha256|sha512)\\.txt: (\\S+)");*/
+    static final Log log = LogFactory.getLog(ValidateBagHandler.class);   
 
     public ValidateBagHandler() {
         super();      
@@ -44,7 +38,7 @@ public class ValidateBagHandler extends Handler {
             Context.getMessage("ValidateBagHandler.monitor.label")
         );
     }
-    private class ValidateBagWorker extends LongTask{
+    class ValidateBagWorker extends LongTask{
         SimpleResult result;
         @Override
         protected Object doInBackground() throws Exception {

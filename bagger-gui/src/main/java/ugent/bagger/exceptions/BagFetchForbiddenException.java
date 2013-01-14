@@ -7,7 +7,7 @@ import java.io.File;
  * @author nicolas
  */
 public class BagFetchForbiddenException extends Exception{
-    private File file;
+    File file;
     public BagFetchForbiddenException(File file){
         this.file = file;
     }    

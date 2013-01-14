@@ -21,14 +21,14 @@ public enum NS {
     XMP("adobe:ns:meta/"),
     XMLNS("http://www.w3.org/2000/xmlns/");
 
-    private String ns;
-    private String schema;
+    String ns;
+    String schema;
 
-    private NS(String ns) {
+    NS(String ns) {
         this.ns = ns;
     };
 
-    private NS(String ns, String schemaLoc) {
+    NS(String ns, String schemaLoc) {
         this.ns = ns;
         this.schema = schemaLoc;
     };

@@ -136,7 +136,7 @@ public class ValidateManifestPanel extends JPanel{
     public void setValidateManifestResults(ArrayList<ValidateManifestResult> validateManifestResults) {
         this.validateManifestResults = validateManifestResults;
     }    
-    private class ValidateManifestWorker extends LongTask {                
+    class ValidateManifestWorker extends LongTask {                
         @Override
         protected Object doInBackground() {            
             

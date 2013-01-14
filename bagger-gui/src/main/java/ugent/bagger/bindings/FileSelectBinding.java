@@ -56,7 +56,7 @@ public final class FileSelectBinding extends CustomBinding{
         }
         return field;
     }
-    private void fieldListener(){
+    void fieldListener(){
         if(!getControl().isEnabled()){
             return;
         }        

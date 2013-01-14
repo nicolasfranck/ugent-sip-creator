@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * @author nicolas
  */
 public class ValidateManifestParams {
-    private ArrayList<File> files;
-    private Manifest.Algorithm algorithm;
+    ArrayList<File> files;
+    Manifest.Algorithm algorithm;
 
     public ArrayList<File> getFiles() {
         if(files == null){

@@ -30,8 +30,7 @@ import ugent.bagger.helper.SwingUtils;
 import ugent.premis.Premis;
 
 public class OpenBagHandler extends AbstractAction {
-    static final Log log = LogFactory.getLog(OpenBagHandler.class);
-    static final long serialVersionUID = 1L;   
+    static final Log log = LogFactory.getLog(OpenBagHandler.class);    
 
     public OpenBagHandler() {
         super();        

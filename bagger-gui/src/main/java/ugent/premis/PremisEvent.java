@@ -286,10 +286,10 @@ public class PremisEvent implements ElementInterface{
         }
     }
     public static class PremisLinkingAgentIdentifier implements ElementInterface{
-        private String linkAgentXmlID;
-        private String linkingAgentIdentifierType;
-        private String linkingAgentIdentifierValue;
-        private ArrayList<String>linkingAgentRoles;        
+        String linkAgentXmlID;
+        String linkingAgentIdentifierType;
+        String linkingAgentIdentifierValue;
+        ArrayList<String>linkingAgentRoles;        
 
         public String getLinkAgentXmlID() {
             return linkAgentXmlID;
@@ -370,9 +370,9 @@ public class PremisEvent implements ElementInterface{
         
     }
     public static class PremisLinkingObjectIdentifier implements ElementInterface{
-        private String linkingObjectIdentifierType;
-        private String linkingObjectIdentifierValue;
-        private String linkObjectXmlID;
+        String linkingObjectIdentifierType;
+        String linkingObjectIdentifierValue;
+        String linkObjectXmlID;
 
         public String getLinkingObjectIdentifierType() {
             return linkingObjectIdentifierType;

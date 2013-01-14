@@ -10,8 +10,8 @@ import ugent.bagger.helper.Context;
  * for labelling the component, while preserving the original object intact
  */
 public class ContextObject {
-    private Object object;
-    private String key;
+    Object object;
+    String key;
     public ContextObject(Object object,String key){
         this.object = object;
         this.key = key;

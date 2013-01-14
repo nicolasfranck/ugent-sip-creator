@@ -16,8 +16,7 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
 public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
-    static final Log log = LogFactory.getLog(RemoveDataHandler.class);
-    static final long serialVersionUID = 1L;   
+    static final Log log = LogFactory.getLog(RemoveDataHandler.class);    
 
     public RemoveDataHandler() {
         super();            

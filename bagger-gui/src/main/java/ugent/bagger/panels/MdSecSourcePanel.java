@@ -48,7 +48,7 @@ public class MdSecSourcePanel extends JPanel{
         setMets(mets);
         init();
     }           
-    private void init() {        
+    void init() {        
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         add(new JScrollPane(getMdSecPropertiesTable().getControl()));
         add(createButtonPanel());        

@@ -6,16 +6,12 @@ import ugent.bagger.helper.Context;
  *
  * @author nicolas
  */
-public enum ErrorAction {
-    //same as 'skip' 
-    //ignore("ignore"),
+public enum ErrorAction {    
     skip("skip"),   
     undoAll("undoAll"),
-    abort("abort");
-    //dangerous: can lead to infinite loop
-    //,retry("retry");
-    private String s;
-    private ErrorAction(String s){
+    abort("abort");    
+    String s;
+    ErrorAction(String s){
         this.s = s;
     }
     @Override

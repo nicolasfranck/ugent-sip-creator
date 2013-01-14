@@ -6,8 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 
 public class ClearBagExecutor extends AbstractActionCommandExecutor {
-    static final Log log = LogFactory.getLog(ClearBagExecutor.class);    
-    static final long serialVersionUID = 1L; 
+    static final Log log = LogFactory.getLog(ClearBagExecutor.class);        
  
     public ClearBagExecutor() {
         super();       

@@ -5,7 +5,7 @@ package ugent.bagger.params;
  * @author nicolas
  */
 public class BagErrorPayloadMissing implements BagError{
-    private String path;
+    String path;
     public BagErrorPayloadMissing(String path){
         this.path = path;
     }

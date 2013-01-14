@@ -7,10 +7,10 @@ import java.io.File;
  * @author nicolas
  */
 public class ValidateManifestResult {
-    private File manifestFile;
-    private File file;
-    private String checksumFound;
-    private String checksumComputed;   
+    File manifestFile;
+    File file;
+    String checksumFound;
+    String checksumComputed;   
     
     public ValidateManifestResult(File manifestFile,File file,String checksumFound,String checksumComputed){
         this.manifestFile = manifestFile;

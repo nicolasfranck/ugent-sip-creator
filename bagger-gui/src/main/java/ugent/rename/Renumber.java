@@ -116,7 +116,7 @@ public class Renumber extends AbstractRenamer{
     public void setPaddingChar(PaddingChar paddingChar) {
         this.paddingChar = paddingChar;
     }
-    private String getFormatString(){
+    String getFormatString(){
         String formatString = "%";
         if(padding > 0){
             formatString += paddingChar+""+padding;
@@ -185,7 +185,7 @@ public class Renumber extends AbstractRenamer{
 
         return pairs;
     } 
-    
+    /*
     public static void main(String [] args){
         Renumber renumber = new Renumber();
         ArrayList<File>inputFiles = FUtils.listFiles("/home/njfranck/test");
@@ -206,5 +206,5 @@ public class Renumber extends AbstractRenamer{
             }            
         });
         renumber.rename();
-    }
+    }*/
 }

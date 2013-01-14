@@ -8,8 +8,8 @@ import ugent.bagger.helper.Context;
  */
 public enum StartPosType {
     ABSOLUTE("ABSOLUTE"),RELATIVE("RELATIVE");
-    private String c;
-    private StartPosType(String c){
+    String c;
+    StartPosType(String c){
         this.c = c;
     }
     @Override

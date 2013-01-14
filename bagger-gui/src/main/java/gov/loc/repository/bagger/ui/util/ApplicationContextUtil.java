@@ -18,11 +18,11 @@ public class ApplicationContextUtil {
         ImageSource source = (ImageSource) getService(ImageSource.class);
         return source.getImage(imageName);
     }      
-    private static ApplicationServices getApplicationServices() {
+    static ApplicationServices getApplicationServices() {
         return ApplicationServicesLocator.services();
     }      
     @SuppressWarnings("unchecked")
-    private static Object getService(Class serviceType) {
+    static Object getService(Class serviceType) {
         return getApplicationServices().getService(serviceType);
     }
 }

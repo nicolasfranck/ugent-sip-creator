@@ -18,8 +18,7 @@ import ugent.bagger.helper.SwingUtils;
 
 public class AddDataHandler extends AbstractAction implements Progress /*,Loggable*/ {
     static final Log log = LogFactory.getLog(AddDataHandler.class);
-    static final long serialVersionUID = 1L;    
-
+  
     public AddDataHandler() {
         super();        
     }

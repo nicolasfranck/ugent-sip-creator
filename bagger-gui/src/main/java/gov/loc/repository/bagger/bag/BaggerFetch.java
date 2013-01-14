@@ -7,11 +7,11 @@ import org.apache.commons.logging.LogFactory;
  * @author Jon Steinbach
  */
 public class BaggerFetch {
-    private static final long serialVersionUID = 1L;
-    private static final Log log = LogFactory.getLog(BaggerFetch.class);
-    private String baseURL;
-    private String userName;
-    private String userPassword;
+    
+    static final Log log = LogFactory.getLog(BaggerFetch.class);
+    String baseURL;
+    String userName;
+    String userPassword;
 
     public BaggerFetch() {
         log.debug("BaggerFetch");

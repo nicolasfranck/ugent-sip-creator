@@ -132,7 +132,7 @@ public class AmdSecsPanel extends JPanel{
         }
     }
     public static class AmdSecParts {
-        private AmdSec amdSec;
+        AmdSec amdSec;
         
         public AmdSecParts(AmdSec amdSec){
             Assert.notNull(amdSec);

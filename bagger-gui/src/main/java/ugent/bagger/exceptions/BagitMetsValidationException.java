@@ -7,7 +7,7 @@ import ugent.bagger.bagitmets.validation.RESULT;
  * @author nicolas
  */
 public class BagitMetsValidationException extends Exception {
-    private RESULT result;    
+    RESULT result;    
     public BagitMetsValidationException() {
         super();
     }

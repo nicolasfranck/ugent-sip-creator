@@ -16,8 +16,7 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.NewBagParams;
 
-public class StartNewBagHandler extends AbstractAction {
-    static final long serialVersionUID = 1L;
+public class StartNewBagHandler extends AbstractAction {   
     static final Log log = LogFactory.getLog(StartNewBagHandler.class);
     
     public StartNewBagHandler() {

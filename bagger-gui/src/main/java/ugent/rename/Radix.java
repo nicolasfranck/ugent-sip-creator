@@ -8,8 +8,8 @@ import ugent.bagger.helper.Context;
  */
 public enum Radix {
     DECIMAL("DECIMAL"),ALPHABETHICAL("ALPHABETHICAL")/*,HEXADECIMAL("HEXADECIMAL")*/;
-    private String c;
-    private Radix(String c){
+    String c;
+    Radix(String c){
         this.c = c;
     }
     @Override

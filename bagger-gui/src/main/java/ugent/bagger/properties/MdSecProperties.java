@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
  * @author nicolas
  */
 public class MdSecProperties {
-    private MdSec mdSec;
+    MdSec mdSec;
     public MdSecProperties(MdSec mdSec){
         Assert.notNull(mdSec);
         this.mdSec = mdSec;

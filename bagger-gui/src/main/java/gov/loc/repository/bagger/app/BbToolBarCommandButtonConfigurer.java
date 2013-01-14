@@ -16,7 +16,7 @@ public class BbToolBarCommandButtonConfigurer extends ToolBarCommandButtonConfig
    /**
     * Indicates if large icons should be used.
     */
-   private Boolean useLargeIcons;
+   Boolean useLargeIcons;
 
    /**
     * Creates this command button configurer.

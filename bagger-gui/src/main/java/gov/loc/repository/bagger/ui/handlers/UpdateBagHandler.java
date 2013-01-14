@@ -4,8 +4,7 @@ import gov.loc.repository.bagger.ui.BagView;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
-public class UpdateBagHandler extends AbstractAction {
-    static final long serialVersionUID = 1L;
+public class UpdateBagHandler extends AbstractAction {   
   
     public UpdateBagHandler() {
         super();            

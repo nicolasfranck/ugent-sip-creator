@@ -154,7 +154,7 @@ public class SwingUtils {
         }        
         worker.execute();
     }
-    private static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor,final SwingWorker worker){
+    static PropertyChangeListener getProgressListener(final ProgressMonitor progressMonitor,final SwingWorker worker){
         return new PropertyChangeListener() {
             boolean cancelRemoved = false;
             @Override
@@ -177,7 +177,7 @@ public class SwingUtils {
     public static DefaultMutableTreeNode pathToTreeNode(Object [] objects){
         return pathToTreeNode(objects,0);
     }
-    private static DefaultMutableTreeNode pathToTreeNode(Object [] objects,int offset){
+    static DefaultMutableTreeNode pathToTreeNode(Object [] objects,int offset){
         if(objects == null || objects.length == 0 || offset >= objects.length || offset < 0){
             return null;
         }
@@ -199,11 +199,7 @@ public class SwingUtils {
     public static JFrame getFrame(){
         return Application.instance().getActiveWindow().getControl();
     }
-    public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node){
-        /*tree.expandPath(new TreePath(node.getPath()));        
-        for(int i = 0;i < node.getChildCount();i++){
-            expandTreeNode(tree,(DefaultMutableTreeNode) node.getChildAt(i));
-        }*/
+    public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node){        
         expandTreeNode(tree,node,Integer.MAX_VALUE);
     }
     public static void expandTreeNode(JTree tree,DefaultMutableTreeNode node,int depth){

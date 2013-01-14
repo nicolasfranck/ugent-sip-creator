@@ -5,8 +5,8 @@ package ugent.bagger.params;
  * @author nicolas
  */
 public class BagErrorFixityFailurePayload implements BagErrorFixityFailure{
-    private String path;
-    private String fixity;    
+    String path;
+    String fixity;    
     
     public BagErrorFixityFailurePayload(String path,String fixity){
         this.path = path;

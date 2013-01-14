@@ -9,7 +9,7 @@ package ugent.bagger.exceptions;
  * @author nicolas
  */
 public class IllegalNamespaceException extends Exception {
-    private String namespace;
+    String namespace;
     public IllegalNamespaceException() {
         super();
     }

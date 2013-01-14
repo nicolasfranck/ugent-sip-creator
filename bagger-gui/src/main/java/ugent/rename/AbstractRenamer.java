@@ -190,22 +190,14 @@ abstract public class AbstractRenamer {
             }            
             
             /* check if renaming operation was successful */
-            if(!pair.isSuccess()){
-                
-                System.out.println("errorAction: "+action);
+            if(!pair.isSuccess()){                
                 
                 /* take action */
-                /*if(action == ErrorAction.retry){
-                    //retry rename operation
-                    System.out.println("retrying");
-                    i--;
-                }else*/ if(action == ErrorAction.skip){
-                    /* skip to next file/directory */
-                    System.out.println("skipping");
+                if(action == ErrorAction.skip){
+                    /* skip to next file/directory */                
                     l.onRenameEnd(pair, i);
                     continue;
-                }else if(action == ErrorAction.undoAll){
-                    System.out.println("undoing all changes");
+                }else if(action == ErrorAction.undoAll){                    
                     if(!isSimulateOnly()){                        
                         for(int j = i ; j >= 0; j--){
                             final RenameFilePair t = pairs.get(j);
@@ -228,8 +220,7 @@ abstract public class AbstractRenamer {
                     l.onRenameEnd(pair, i);
                     break;
                 }else if(action == ErrorAction.abort){
-                    /* abort */
-                    System.out.println("aborting");
+                    /* abort */                    
                     l.onRenameEnd(pair, i);
                     break;
                 }

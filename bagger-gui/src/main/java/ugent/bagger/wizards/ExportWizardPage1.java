@@ -13,7 +13,7 @@ import ugent.bagger.panels.ExportParamsPanel;
  * @author nicolas
  */
 public class ExportWizardPage1 extends AbstractWizardPage {        
-    private ExportParamsPanel exportParamsPanel;    
+    ExportParamsPanel exportParamsPanel;    
     
     public ExportWizardPage1(String pageId){
         super(pageId);

@@ -74,9 +74,9 @@ public enum RESULT {
     //warning: no dmdSec
     METS_DMDSEC_MISSING("METS_DMDSEC_MISSING",false);
     
-    private String type;
-    private boolean error;
-    private RESULT(String type,boolean error){
+    String type;
+    boolean error;
+    RESULT(String type,boolean error){
         this.type = type;
         this.error = error;
     }

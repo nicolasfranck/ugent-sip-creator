@@ -3,8 +3,7 @@ package gov.loc.repository.bagger.ui;
 import java.awt.event.KeyEvent;
 import javax.swing.JTextArea;
 
-public class NoTabTextArea extends JTextArea {
-    private static final long serialVersionUID = 1L;
+public class NoTabTextArea extends JTextArea {    
 
     public NoTabTextArea(int row, int cols) {
         super(row, cols);

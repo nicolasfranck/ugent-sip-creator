@@ -53,7 +53,7 @@ public class BagInfoImportWizard extends AbstractWizard{
         return true;
     }    
     
-    private class BagInfoImporterWorker extends DefaultWorker {
+    class BagInfoImporterWorker extends DefaultWorker {
         @Override
         protected Void doInBackground() throws Exception {
             

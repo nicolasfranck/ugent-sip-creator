@@ -7,7 +7,7 @@ import java.io.File;
  * @author nicolas
  */
 public class BagNoBagDirException extends Exception{
-    private File file;
+    File file;
     public BagNoBagDirException(File file){
         this.file = file;
     }    

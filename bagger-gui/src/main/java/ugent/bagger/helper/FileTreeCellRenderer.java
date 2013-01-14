@@ -14,8 +14,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  * @author nicolas
  */
 public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
-    private Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
-    private Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
+    Icon directoryIcon = (Icon) UIManager.getIcon("FileView.directoryIcon");
+    Icon fileIcon = (Icon) UIManager.getIcon("FileView.fileIcon");
 
     @Override
     public Component getTreeCellRendererComponent(

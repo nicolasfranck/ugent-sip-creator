@@ -9,7 +9,7 @@ package ugent.bagger.exceptions;
  * @author nicolas
  */
 public class ValidationException extends Exception {
-    private String namespace;
+    String namespace;
     public ValidationException() {
         super();
     }

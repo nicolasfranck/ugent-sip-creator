@@ -3,11 +3,9 @@ package gov.loc.repository.bagger.ui.handlers;
 import gov.loc.repository.bagger.ui.BagView;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 
-public class CompleteExecutor extends AbstractActionCommandExecutor {
-    static final long serialVersionUID = 1L;	
-
+public class CompleteExecutor extends AbstractActionCommandExecutor {    
     public CompleteExecutor() {
-        super();		
+        super();		        
     }
     @Override
     public void execute(){        

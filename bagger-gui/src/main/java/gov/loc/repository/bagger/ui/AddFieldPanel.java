@@ -23,8 +23,7 @@ import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
 public final class AddFieldPanel extends JPanel {
-
-    static final long serialVersionUID = 1L;
+    
     static final Log log = LogFactory.getLog(AddFieldPanel.class);
     JCheckBox standardCheckBox;
     JComboBox standardFieldsComboBox;
@@ -119,8 +118,8 @@ public final class AddFieldPanel extends JPanel {
     }
 	
 	
-    private class StandardFieldCheckBoxAction extends AbstractAction {
-        private static final long serialVersionUID = 1L;
+    class StandardFieldCheckBoxAction extends AbstractAction {
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             JCheckBox checkbox = (JCheckBox) e.getSource();
@@ -135,7 +134,7 @@ public final class AddFieldPanel extends JPanel {
         }
     }
 	
-    private ArrayList<String> retrieveStandardFields() {
+    ArrayList<String> retrieveStandardFields() {
         ArrayList<String> list = (ArrayList<String>) Beans.getBean("baginfoStandardFields");
         if(list == null){
             list = new ArrayList<String>();
@@ -153,8 +152,7 @@ public final class AddFieldPanel extends JPanel {
     }
 	
 	
-    private class AddFieldAction extends AbstractAction {
-        private static final long serialVersionUID = 1L;
+    class AddFieldAction extends AbstractAction {        
 
         @Override
         public void actionPerformed(ActionEvent e) {            
@@ -168,7 +166,7 @@ public final class AddFieldPanel extends JPanel {
     }
     
 	
-    private BagInfoField createBagInfoField() {
+    BagInfoField createBagInfoField() {
         BagView bagView = BagView.getInstance();
        
         BagInfoField field = new BagInfoField();
@@ -200,7 +198,7 @@ public final class AddFieldPanel extends JPanel {
 		
     	return field;
     }
-    private boolean isStandardField() {
+    boolean isStandardField() {
         return getStandardCheckBox().isSelected();
     }	        
 }

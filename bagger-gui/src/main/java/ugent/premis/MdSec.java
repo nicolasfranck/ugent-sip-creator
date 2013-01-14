@@ -271,7 +271,7 @@ public class MdSec implements ElementInterface {
             this.mdtype = mdtype;            
         }
 
-        private MdRef() {            
+        MdRef() {            
         }
 
         /**
@@ -937,7 +937,7 @@ public class MdSec implements ElementInterface {
         ISO_19115_2003_NAP("ISO 19115:2003 NAP"), //
         OTHER("OTHER");
 
-        private final String value;
+        final String value;
 
         MDTYPE(String v) {
             value = v;
@@ -982,7 +982,7 @@ public class MdSec implements ElementInterface {
         TIGER("TIGER"), //
         WHIRLPOOL("WHIRLPOOL");
 
-        private final String value;
+        final String value;
 
         CHECKSUMTYPE(String v) {
             value = v;

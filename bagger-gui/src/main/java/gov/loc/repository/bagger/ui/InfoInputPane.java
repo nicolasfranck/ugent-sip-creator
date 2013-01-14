@@ -1,6 +1,5 @@
 package gov.loc.repository.bagger.ui;
 
-import com.anearalone.mets.AmdSec;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
@@ -15,24 +14,24 @@ import org.springframework.binding.form.HierarchicalFormModel;
 import org.springframework.richclient.form.FormModelHelper;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.PremisUtils;
-import ugent.bagger.panels.AmdSecsPanel;
 import ugent.bagger.panels.MdSecPanel;
 
 public final class InfoInputPane extends JTabbedPane {
-    static final long serialVersionUID = 1L;
+    
     static final Log log = LogFactory.getLog(InfoInputPane.class);    
     BagInfoForm bagInfoForm;    
     HierarchicalFormModel infoFormModel;    
     Mets mets;
     MdSecPanel metsPanel;
-    AmdSecsPanel amdSecsPanel;    
+    //AmdSecsPanel amdSecsPanel;    
      
+    /*
     public AmdSecsPanel getAmdSecsPanel() {
         if(amdSecsPanel == null){            
             amdSecsPanel = new AmdSecsPanel((ArrayList<AmdSec>)getMets().getAmdSec());
         }
         return amdSecsPanel;
-    }
+    }*/
     public MdSecPanel getMdSecPanel(){
         if(metsPanel == null){
             metsPanel = new MdSecPanel((ArrayList<MdSec>)getMets().getDmdSec(),"");            
@@ -59,7 +58,7 @@ public final class InfoInputPane extends JTabbedPane {
     public void resetMets(Mets mets){        
         setMets(mets);
         getMdSecPanel().reset((ArrayList<MdSec>)mets.getDmdSec());
-        getAmdSecsPanel().reset((ArrayList<AmdSec>)mets.getAmdSec());        
+        //getAmdSecsPanel().reset((ArrayList<AmdSec>)mets.getAmdSec());
         getBagView().getBag().setMets(mets);
     }
     public BagView getBagView(){
@@ -94,8 +93,7 @@ public final class InfoInputPane extends JTabbedPane {
     	populateForms();                       
         getInputMap().put(KeyStroke.getKeyStroke("F2"), "tabNext");
         ActionMap am = getActionMap();
-        am.put("tabNext", new AbstractAction("tabNext") {
-            private static final long serialVersionUID = 1L;
+        am.put("tabNext", new AbstractAction("tabNext") {            
             @Override
             public void actionPerformed(ActionEvent evt) {                
                 try {
@@ -120,14 +118,14 @@ public final class InfoInputPane extends JTabbedPane {
     	setEnabled(b);        
         getBagInfoForm().setEnabled(b);
         getMdSecPanel().setEnabled(b);
-        getAmdSecsPanel().setEnabled(b);
+        //getAmdSecsPanel().setEnabled(b);
     	invalidate();
     }    
     public void populateForms(){    	                    	
         createTabbedUiComponentsWithForms();        
     }
     // Create a tabbed pane for the information forms and checkbox panel
-    private void createTabbedUiComponentsWithForms() {                
+    void createTabbedUiComponentsWithForms() {                
         
         //revalidate
         removeAll();     
@@ -182,7 +180,7 @@ public final class InfoInputPane extends JTabbedPane {
     	invalidate();
     	repaint();        
     }    
-    private void updateBagInfo(){                      
+    void updateBagInfo(){                      
         getMetsBag().updateBagInfo(getBagInfoForm().getFieldMap());        
     }    
 }

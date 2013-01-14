@@ -1,10 +1,10 @@
 package gov.loc.repository.bagger.model;
 
 public class BagStatus {	
-    private static BagStatus instance = new BagStatus();
-    private StatusModel validationStatus = new StatusModel();
-    private StatusModel completenessStatus = new StatusModel();
-    private StatusModel profileComplianceStatus = new StatusModel();
+    static final BagStatus instance = new BagStatus();
+    StatusModel validationStatus = new StatusModel();
+    StatusModel completenessStatus = new StatusModel();
+    StatusModel profileComplianceStatus = new StatusModel();
 
     public StatusModel getValidationStatus() {
         return validationStatus;

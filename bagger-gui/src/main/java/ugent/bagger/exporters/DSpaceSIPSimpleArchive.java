@@ -1,14 +1,11 @@
 package ugent.bagger.exporters;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +16,6 @@ import org.apache.commons.vfs2.FileObject;
 import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import ugent.bagger.helper.FUtils;
 import ugent.bagger.helper.XML;
 
 /**
@@ -150,6 +146,7 @@ public class DSpaceSIPSimpleArchive {
             return fileObject.getContent().getInputStream();
         }        
     }
+    /*
     public static void main(String [] args){
         File [] directories = new File [] {
             new File("/home/nicolas/pakket"),
@@ -177,5 +174,5 @@ public class DSpaceSIPSimpleArchive {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 }

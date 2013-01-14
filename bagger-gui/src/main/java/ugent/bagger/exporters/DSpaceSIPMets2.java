@@ -90,40 +90,40 @@ import ugent.premis.PremisObject;
  */
 public class DSpaceSIPMets2 {
     // Describes the DSpace SIP version implemented here
-    private static final String METS_PROFILE = "DSpace METS SIP Profile 1.0";
+    static final String METS_PROFILE = "DSpace METS SIP Profile 1.0";
 
     // default value for validate
-    private static final boolean VALIDATE_DEFAULT = true;
+    static final boolean VALIDATE_DEFAULT = true;
 
     // Filename of manifest, relative to package toplevel
-    private static final String METS_FILE = "mets.xml";    
+    static final String METS_FILE = "mets.xml";    
 
     // Put all DMD sections for the Item into one group with this ID
-    private String dmdGroupID = createID();
+    String dmdGroupID = createID();
 
     // attempt to validate the METS manifest before writing SIP
-    private boolean validate = VALIDATE_DEFAULT;
+    boolean validate = VALIDATE_DEFAULT;
 
     // Zip file compression level
-    private int compression = 0;
+    int compression = 0;
 
     /**
      * Table of files to add to package, such as mdRef'd metadata.
      * Key is relative pathname of file, value a record of associated paths.
      */
-    //private Map<String,PackageFile> zipFiles = new HashMap<String,PackageFile>();
+    //Map<String,PackageFile> zipFiles = new HashMap<String,PackageFile>();
 
     // map of bundle name to list of relative-file-paths in that bundle.
-    private HashMap<String,ArrayList<PackageFile>>bundles = new HashMap<String,ArrayList<PackageFile>>();
+    HashMap<String,ArrayList<PackageFile>>bundles = new HashMap<String,ArrayList<PackageFile>>();
 
     // relative path of Primary Bitstream (PBS) if any
-    private PackageFile primaryPackageFile = null;
+    PackageFile primaryPackageFile = null;
 
     // METS manifest object
-    private Mets mets = null;
+    Mets mets = null;
 
     // DMDs to refer back to from structmap
-    private List<String> dmdIDs = new ArrayList<String>();
+    List<String> dmdIDs = new ArrayList<String>();
 
     // Simple record, holds the data about each file in this package.
     

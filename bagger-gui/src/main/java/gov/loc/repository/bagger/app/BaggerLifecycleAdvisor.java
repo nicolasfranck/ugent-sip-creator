@@ -19,8 +19,8 @@ import ugent.bagger.helper.SwingUtils;
  * @author Jon Steinbach
  */
 public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
-    private static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
-    private static void init(){               
+    static final Log log = LogFactory.getLog(BaggerLifecycleAdvisor.class);
+    static void init(){               
                 
         //set dimensions
         Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                

@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.FUtils;
 
 public final class BagTree extends JTree {
-    static final long serialVersionUID = -5361474872106399068L;
+    
     static final Log log = LogFactory.getLog(BagTree.class);
     int BAGTREE_WIDTH = 400;
     int BAGTREE_HEIGHT = 160;
@@ -45,7 +45,7 @@ public final class BagTree extends JTree {
         
     }
 	
-    private void initialize() {
+    void initialize() {
         setModel(new DefaultTreeModel(parentNode));
         rootPath = new TreePath(parentNode.getPath());
         setAnchorSelectionPath(rootPath);
@@ -105,7 +105,7 @@ public final class BagTree extends JTree {
         return false;
     }
 
-    private boolean nodeAlreadyExists(String path) {        
+    boolean nodeAlreadyExists(String path) {        
         DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(path);
         String node = aNode.toString();
         boolean b = parentNode.isNodeChild(aNode);

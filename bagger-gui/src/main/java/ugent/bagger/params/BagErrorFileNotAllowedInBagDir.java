@@ -5,7 +5,7 @@ package ugent.bagger.params;
  * @author nicolas
  */
 public class BagErrorFileNotAllowedInBagDir implements BagError{
-    private String path;    
+    String path;    
     public BagErrorFileNotAllowedInBagDir(String path){
         this.path = path;        
     }

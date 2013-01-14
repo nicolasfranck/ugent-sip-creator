@@ -18,18 +18,18 @@ import javax.swing.border.LineBorder;
 import ugent.bagger.helper.Context;
 
 public final class InfoFormsPane extends JPanel {
-    private static final long serialVersionUID = -5988111446773491301L;   
-    private JPanel bagSettingsPanel;
-    private JPanel infoPanel;
+    
+    JPanel bagSettingsPanel;
+    JPanel infoPanel;
     protected JPanel serializeGroupPanel;
-    private InfoInputPane infoInputPane;
-    private UpdateBagHandler updateBagHandler;
+    InfoInputPane infoInputPane;
+    UpdateBagHandler updateBagHandler;
     protected JLabel bagNameValue;    
-    private JLabel bagVersionValue;    
-    private JLabel holeyValue;
-    private JLabel serializeLabel;
-    private JLabel serializeValue;
-    private JLabel saveLabel;
+    JLabel bagVersionValue;    
+    JLabel holeyValue;
+    JLabel serializeLabel;
+    JLabel serializeValue;
+    JLabel saveLabel;
     protected JComboBox bagVersionList;   
     
     
@@ -195,12 +195,12 @@ public final class InfoFormsPane extends JPanel {
         this.bagNameValue = bagNameValue;
     }  
     
-    private JPanel createSettingsPanel() {    
+    JPanel createSettingsPanel() {    
         JPanel panel = new JPanel(new BorderLayout());        
         panel.add(createBagSettingsPanel(),BorderLayout.NORTH);
         return panel;
     }
-    private JPanel createBagSettingsPanel() {
+    JPanel createBagSettingsPanel() {
         JPanel pane = new JPanel(new GridBagLayout());        
 
         // bag name

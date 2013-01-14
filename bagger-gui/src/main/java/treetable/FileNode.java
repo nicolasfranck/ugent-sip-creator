@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.filechooser.FileSystemView;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /* A FileNode is a derivative of the File class - though we delegate to 
  * the File object rather than subclassing it. It is used to maintain a 
@@ -18,14 +19,14 @@ public class FileNode {
     Object[] children;   
     
     static FileSystemView fsv = FileSystemView.getFileSystemView();
-    static Logger log = Logger.getLogger(FileNode.class);
+    static Log log = LogFactory.getLog(FileNode.class);
 
     public FileNode(File file) { 
 	this.file = file; 
     }
 
     // Used to sort the file names.
-    private static Comparator defaultFileSorter =  new Comparator<File>(){
+    static Comparator defaultFileSorter =  new Comparator<File>(){
         @Override
         public int compare(File f1, File f2){
             return f1.getName().compareToIgnoreCase(f2.getName());

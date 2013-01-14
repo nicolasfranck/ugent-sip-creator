@@ -21,7 +21,7 @@ import ugent.bagger.helper.Beans;
 
 
 public final class BagInfoForm extends AbstractForm {
-    static final long serialVersionUID = -3231249644435262577L;
+    
     static final Log log = LogFactory.getLog(BagInfoForm.class);
     public static final String INFO_FORM_PAGE = "infoPage";
     JComponent focusField;    
@@ -222,7 +222,7 @@ public final class BagInfoForm extends AbstractForm {
         }
         return formBuilder.getForm();
     }      
-    private Component[] getFieldComponents() {
+    Component[] getFieldComponents() {
        return getFieldsPanel().getComponents();
     }
     @Override

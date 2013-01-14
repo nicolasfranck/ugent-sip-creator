@@ -9,8 +9,7 @@ import org.springframework.richclient.command.support.AbstractActionCommandExecu
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
 
-public class OpenLogFileExecutor extends AbstractActionCommandExecutor {
-    static final long serialVersionUID = 1L;
+public class OpenLogFileExecutor extends AbstractActionCommandExecutor {    
     static final Log log = LogFactory.getLog(OpenLogFileExecutor.class);
 
     public OpenLogFileExecutor() {

@@ -4,8 +4,6 @@ import gov.loc.repository.bagger.ui.BagView;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 
 public class SaveBagAsExecutor extends AbstractActionCommandExecutor {
-    static final long serialVersionUID = 1L;       
-  
     public SaveBagAsExecutor() {
         super();        
     }

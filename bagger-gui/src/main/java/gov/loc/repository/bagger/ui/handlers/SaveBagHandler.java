@@ -20,8 +20,7 @@ import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask;
 
 public class SaveBagHandler extends Handler {
-    static final Log log = LogFactory.getLog(SaveBagHandler.class);
-    static final long serialVersionUID = 1L;        
+    static final Log log = LogFactory.getLog(SaveBagHandler.class);    
     boolean clearAfterSaving = false;    
     
     public SaveBagHandler() {
@@ -90,7 +89,7 @@ public class SaveBagHandler extends Handler {
         dialog.showDialog();
     }
 
-    private void cancelWriteBag() {
+    void cancelWriteBag() {
     	clearAfterSaving = false;
     }
 
@@ -123,7 +122,7 @@ public class SaveBagHandler extends Handler {
     	}        
     }
     
-    private class SaveBagWorker extends LongTask{
+    class SaveBagWorker extends LongTask{
         boolean saveOk = false;
         final BagView bagView = BagView.getInstance();
         MetsBag metsBag = bagView.getBag();

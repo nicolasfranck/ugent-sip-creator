@@ -14,12 +14,12 @@ import org.springframework.richclient.form.binding.support.CustomBinding;
  * @author nicolas
  */
 public final class JSpinnerNumberBinding extends CustomBinding{
-    private int min;
-    private int max;
-    private int init;
-    private int step;
-    private JSpinner spinner;
-    private SpinnerModel spinnerModel;
+    int min;
+    int max;
+    int init;
+    int step;
+    JSpinner spinner;
+    SpinnerModel spinnerModel;
     public JSpinnerNumberBinding(FormModel formModel, String formPropertyPath,int init,int min,int max,int step){
         super(formModel,formPropertyPath,Integer.class);
         setMin(min);

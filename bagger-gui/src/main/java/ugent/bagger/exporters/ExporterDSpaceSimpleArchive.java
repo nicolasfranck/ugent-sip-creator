@@ -70,7 +70,7 @@ public class ExporterDSpaceSimpleArchive extends Exporter{
                     continue;
                 }
                 String schema = outDoc.getDocumentElement().getAttribute("schema");
-                System.out.println("schema: "+schema);
+                
                 if(schema == null || schema.isEmpty()){
                     schema = "dc";
                 }

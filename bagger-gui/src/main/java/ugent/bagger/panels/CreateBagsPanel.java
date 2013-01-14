@@ -235,7 +235,7 @@ public final class CreateBagsPanel extends JPanel{
         panel.add(getOkButton());
         return panel;
     }    
-    private class NewBagsInPlaceWorker extends LongTask{
+    class NewBagsInPlaceWorker extends LongTask{
         public boolean isBadRWDir(File file){
             Path path = file.toPath();
             return file.isDirectory() && (!Files.isReadable(path) || !Files.isWritable(path));            
@@ -468,7 +468,7 @@ public final class CreateBagsPanel extends JPanel{
         }               
     }
     
-    private class NewBagsWorker extends LongTask {        
+    class NewBagsWorker extends LongTask {        
         @Override
         protected Object doInBackground() throws Exception {
             

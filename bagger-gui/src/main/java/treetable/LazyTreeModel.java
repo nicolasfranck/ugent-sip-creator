@@ -8,14 +8,15 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * adrian.tarau
  * http://stackoverflow.com/questions/1974670/java-dynamic-jtree
  */
 public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWillExpandListener {
-    static Logger log = Logger.getLogger(LazyTreeModel.class);
+    static Log log = LogFactory.getLog(LazyTreeModel.class);
 
     public LazyTreeModel(TreeNode root, JTree tree) {
         super(root);
@@ -84,7 +85,7 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
         }
     }
 
-    private void setLoading2(final LazyTreeNode parentNode, final boolean reload) {
+    void setLoading2(final LazyTreeNode parentNode, final boolean reload) {
         if (reload) {
             setChildren(parentNode, createReloadingNode());
         } else {
@@ -92,7 +93,7 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
         }
     }
 
-    private void setLoading(final LazyTreeNode parentNode, final boolean reload) {
+    void setLoading(final LazyTreeNode parentNode, final boolean reload) {
         if (SwingUtilities.isEventDispatchThread()) {
             setLoading2(parentNode, reload);
         }else{
@@ -110,11 +111,11 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
         }
     }
 
-    private LazyTreeNode findNode(String id) {
+    LazyTreeNode findNode(String id) {
         return findNode(id, (LazyTreeNode) getRoot());
     }
 
-    private LazyTreeNode findNode(String id, LazyTreeNode parent) {
+    LazyTreeNode findNode(String id, LazyTreeNode parent) {
         int count = parent.getChildCount();
         for (int i = 0; i < count; i++) {
             LazyTreeNode node = (LazyTreeNode) parent.getChildAt(i);
@@ -142,9 +143,9 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
         return new LazyTreeNode(null, "Refreshing...", false);
     }
 
-    private class LoadNodesWorker implements Runnable {
+    class LoadNodesWorker implements Runnable {
 
-        private LazyTreeNode parentNode;
+        LazyTreeNode parentNode;
         LoadNodesWorker(LazyTreeNode parent) {
             this.parentNode = parent;
         }

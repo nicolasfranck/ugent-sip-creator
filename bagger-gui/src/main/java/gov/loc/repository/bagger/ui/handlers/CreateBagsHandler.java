@@ -17,8 +17,7 @@ import ugent.bagger.helper.SwingUtils;
 //Nicolas Franck: based on code of CreateBagInPlaceHandler, but for creation of multiple bagits at once
 //profile uitgeschakeld
 
-public class CreateBagsHandler extends AbstractAction implements Progress/*,Loggable*/ {
-    static final long serialVersionUID = 1L;
+public class CreateBagsHandler extends AbstractAction implements Progress/*,Loggable*/ {    
     static final Log log = LogFactory.getLog(CreateBagsHandler.class);   
     
     public CreateBagsHandler() {

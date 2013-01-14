@@ -9,12 +9,12 @@ import org.supercsv.prefs.CsvPreference;
  * @author nicolas
  */
 public class CSVParseParams {   
-    private CsvPreference csvPreference = CsvPreference.STANDARD_PREFERENCE;
-    private char delimiterChar = (char) CsvPreference.STANDARD_PREFERENCE.getDelimiterChar();
-    private char quoteChar = (char) CsvPreference.STANDARD_PREFERENCE.getQuoteChar();
-    private String endOfLineSymbols = CsvPreference.STANDARD_PREFERENCE.getEndOfLineSymbols();
-    private boolean surroundingSpacesNeedQuotes = CsvPreference.STANDARD_PREFERENCE.isSurroundingSpacesNeedQuotes();
-    private ArrayList<File> files;
+    CsvPreference csvPreference = CsvPreference.STANDARD_PREFERENCE;
+    char delimiterChar = (char) CsvPreference.STANDARD_PREFERENCE.getDelimiterChar();
+    char quoteChar = (char) CsvPreference.STANDARD_PREFERENCE.getQuoteChar();
+    String endOfLineSymbols = CsvPreference.STANDARD_PREFERENCE.getEndOfLineSymbols();
+    boolean surroundingSpacesNeedQuotes = CsvPreference.STANDARD_PREFERENCE.isSurroundingSpacesNeedQuotes();
+    ArrayList<File> files;
     
     public ArrayList<File> getFiles() {
         if(files == null){

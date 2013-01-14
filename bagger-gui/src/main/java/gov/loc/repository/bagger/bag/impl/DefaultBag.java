@@ -84,7 +84,7 @@ public class DefaultBag {
         init(file);
     }
 
-    private void init(File file) throws BagFetchForbiddenException, FileSystemException, BagNoDataException{
+    void init(File file) throws BagFetchForbiddenException, FileSystemException, BagNoDataException{
         boolean newBag = file == null;
         resetStatus();
         this.file = file;
@@ -335,11 +335,11 @@ public class DefaultBag {
         return isValidateOnSave;
     }
 
-    private void isComplete(Status status) {
+    void isComplete(Status status) {
         BagStatus.getInstance().getCompletenessStatus().setStatus(status);
     }
 
-    private void isValid(Status status) {
+    void isValid(Status status) {
         BagStatus.getInstance().getValidationStatus().setStatus(status);
     }
    
@@ -752,14 +752,14 @@ public class DefaultBag {
         return dirty;
     }
     protected static void removeEmptyDirectories(File dir){
-        System.out.println("removeEmptyDirectories('"+dir+"')");
+        log.debug("removeEmptyDirectories('"+dir+"')");
         if(dir.isDirectory()){
             for(File file:dir.listFiles()){                
                 if(file.isDirectory()){
                     removeEmptyDirectories(file);
                     File [] list = file.listFiles();
                     if(list == null || list.length == 0){
-                        System.out.println("removing "+file);
+                        log.debug("removing "+file);
                         file.delete();
                     }                    
                 }

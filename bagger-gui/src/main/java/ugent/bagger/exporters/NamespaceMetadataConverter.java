@@ -18,13 +18,11 @@ public class NamespaceMetadataConverter implements MetadataConverter{
     public Document convert(Document doc) throws Exception{
         Document outDoc = null;
         String namespace = doc.getDocumentElement().getNamespaceURI();
-        System.out.println("namespace: "+namespace);
+       
         if(getConfig().containsKey(namespace)){            
-            URL xsltURL = Context.getResource(getConfig().get(namespace));
-            System.out.println("xsltURL: "+xsltURL);
+            URL xsltURL = Context.getResource(getConfig().get(namespace));       
             Document xsltDoc = XML.XMLToDocument(xsltURL);
-            outDoc = XSLT.transform(doc,xsltDoc);
-            XML.DocumentToXML(outDoc,System.out);
+            outDoc = XSLT.transform(doc,xsltDoc);            
         }        
         return outDoc;
     }

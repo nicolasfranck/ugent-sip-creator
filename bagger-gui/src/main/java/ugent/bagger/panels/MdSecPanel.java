@@ -11,9 +11,9 @@ import javax.swing.JPanel;
  * @author nicolas
  */
 public class MdSecPanel extends JPanel{    
-    private DmdSecPropertiesPanel dmdSecPropertiesPanel;
-    private ArrayList<MdSec>mdSec;    
-    private String id;
+    DmdSecPropertiesPanel dmdSecPropertiesPanel;
+    ArrayList<MdSec>mdSec;    
+    String id;
 
     public String getId() {
         return id;
@@ -32,7 +32,7 @@ public class MdSecPanel extends JPanel{
         init(mdSec);
         this.id = id;
     }
-    private void init(ArrayList<MdSec>mdSec){
+    void init(ArrayList<MdSec>mdSec){
         setLayout(new BorderLayout());                                
         setMdSec(mdSec);                        
         setDmdSecPropertiesPanel(new DmdSecPropertiesPanel(mdSec,getId()));        

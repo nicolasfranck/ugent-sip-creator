@@ -10,8 +10,8 @@ import ugent.bagger.params.BagInfoImportParams;
  * @author nicolas
  */
 public class BagInfoImportWizardPage1 extends AbstractWizardPage {
-    private BagInfoImportForm bagInfoImportForm;
-    private BagInfoImportParams bagInfoImportParams;
+    BagInfoImportForm bagInfoImportForm;
+    BagInfoImportParams bagInfoImportParams;
     
     public BagInfoImportWizardPage1(String pageId){
         super(pageId);

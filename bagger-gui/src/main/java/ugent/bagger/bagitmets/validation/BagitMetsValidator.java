@@ -21,7 +21,6 @@ import org.apache.commons.vfs2.FileObject;
 import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import ugent.bagger.bagitmets.DefaultBagItMets;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
 import ugent.bagger.exceptions.BagNoDataException;
 import ugent.bagger.exceptions.BagitMetsValidationException;

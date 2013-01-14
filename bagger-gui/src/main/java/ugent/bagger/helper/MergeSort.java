@@ -49,8 +49,8 @@
 package ugent.bagger.helper;
 
 public abstract class MergeSort extends Object {
-    protected Object           toSort[];
-    protected Object           swapSpace[];
+    protected Object toSort[];
+    protected Object swapSpace[];
 
     public void sort(Object array[]) {
 	if(array != null && array.length > 1)

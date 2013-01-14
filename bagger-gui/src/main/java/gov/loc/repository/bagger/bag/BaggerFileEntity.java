@@ -24,13 +24,13 @@ import org.apache.commons.logging.LogFactory;
  * @author Jon Steinbach
  */
 public class BaggerFileEntity {
-    private static final Log log = LogFactory.getLog(BaggerFileEntity.class);
-    private File rootParent;				// c:\\user\my documents\
-    private File rootSrc;					// c:\\user\my documents\datadir\dir1\file1
-    private File bagSrc;					// c:\\user\my documents\bag\data\datadir\dir1\file
-    private String normalizedName;			// datadir\dir1\file1
-    private boolean isInBag = false;
-    private boolean isIncluded = true;
+    static final Log log = LogFactory.getLog(BaggerFileEntity.class);
+    File rootParent;				// c:\\user\my documents\
+    File rootSrc;					// c:\\user\my documents\datadir\dir1\file1
+    File bagSrc;					// c:\\user\my documents\bag\data\datadir\dir1\file
+    String normalizedName;			// datadir\dir1\file1
+    boolean isInBag = false;
+    boolean isIncluded = true;
 
     public BaggerFileEntity(){
     }
@@ -147,8 +147,7 @@ public class BaggerFileEntity {
                 else {
                     delta = 1;
                 }
-                filenameWithoutBasePath = normFilename.substring(normBasePath.length() + delta);
-                //log.info("filenamewithoutbasepath: " + filenameWithoutBasePath);
+                filenameWithoutBasePath = normFilename.substring(normBasePath.length() + delta);                
             }
         }
         log.debug(MessageFormat.format("Removing {0} from {1} resulted in {2}", basePath, filename, filenameWithoutBasePath));

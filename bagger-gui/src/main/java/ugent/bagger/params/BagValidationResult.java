@@ -9,11 +9,11 @@ import java.util.Date;
  * @author nicolas
  */
 public class BagValidationResult {
-    private File file;
-    private SimpleResult result;
-    private boolean valid;
-    private boolean complete;
-    private Date date = new Date();
+    File file;
+    SimpleResult result;
+    boolean valid;
+    boolean complete;
+    Date date = new Date();
     
     public BagValidationResult(File file,SimpleResult result,boolean valid,boolean complete){
         this.file = file;

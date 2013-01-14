@@ -7,8 +7,8 @@ import javax.swing.JComponent;
  * @author nicolas
  */
 public class ComponentLocation {
-    private JComponent parentComponent;
-    private int indexChild;
+    JComponent parentComponent;
+    int indexChild;
 
     public ComponentLocation(JComponent parentComponent,int indexChild){
         this.parentComponent = parentComponent;

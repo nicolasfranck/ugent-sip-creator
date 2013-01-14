@@ -8,11 +8,11 @@ public class AlphaSequence implements Sequence {
     /*
      * source: http://stackoverflow.com/questions/8710719/generating-an-alphabetic-sequence-in-java
      */
-    private int now;
-    private static char[] vs;
-    private int padding = 0;
-    private int step = 1;
-    private boolean isSet = false;
+    int now;
+    static char[] vs;
+    int padding = 0;
+    int step = 1;
+    boolean isSet = false;
     static {
         vs = new char['Z' - 'A' + 1];
         for(char i='A'; i<='Z';i++) {
@@ -20,7 +20,7 @@ public class AlphaSequence implements Sequence {
         }
     }   
     
-    private StringBuilder alpha(int i){
+    StringBuilder alpha(int i){
         assert i > 0;        
         char r = vs[i % vs.length];
         int n = i / vs.length;

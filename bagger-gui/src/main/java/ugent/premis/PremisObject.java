@@ -114,8 +114,8 @@ public class PremisObject implements ElementInterface{
 
     public static enum PremisObjectType {
         representation("representation"),file("file"),bitstream("bitstream");
-        private String c;
-        private PremisObjectType(String c){
+        String c;
+        PremisObjectType(String c){
             this.c = c;
         }
     }
@@ -378,8 +378,8 @@ public class PremisObject implements ElementInterface{
         } 
     }
     public static class PremisObjectIdentifier implements ElementInterface {
-        private String objectIdentifierType;
-        private String objectIdentifierValue;
+        String objectIdentifierType;
+        String objectIdentifierValue;
 
         public String getObjectIdentifierType() {
             return objectIdentifierType;
@@ -423,12 +423,12 @@ public class PremisObject implements ElementInterface{
         
     }
     public static class PremisObjectCharacteristics implements ElementInterface {
-        private int compositionLevel;
-        private ArrayList<PremisFixity>fixity;
-        private long size;
-        private ArrayList<PremisFormat>format;        
-        private ArrayList<PremisCreatingApplication>creatingApplication;
-        private ArrayList<PremisInhibitors>inhibitors;
+        int compositionLevel;
+        ArrayList<PremisFixity>fixity;
+        long size;
+        ArrayList<PremisFormat>format;        
+        ArrayList<PremisCreatingApplication>creatingApplication;
+        ArrayList<PremisInhibitors>inhibitors;
         ArrayList<Element> objectCharacteristicsExtension;  
         ArrayList<MdSec>mdSec;
         
@@ -566,9 +566,9 @@ public class PremisObject implements ElementInterface{
                       
     }
     public static class PremisFixity implements ElementInterface{
-        private String messageDigestAlgorithm;
-        private String messageDigest;
-        private String messageDigestOriginator;
+        String messageDigestAlgorithm;
+        String messageDigest;
+        String messageDigestOriginator;
 
         public String getMessageDigestAlgorithm() {
             return messageDigestAlgorithm;
@@ -620,9 +620,9 @@ public class PremisObject implements ElementInterface{
         }             
     }
     public static class PremisFormat implements ElementInterface{
-        private PremisFormatDesignation formatDesignation;
-        private PremisFormatRegistry formatRegistry;
-        private String formatNote;
+        PremisFormatDesignation formatDesignation;
+        PremisFormatRegistry formatRegistry;
+        String formatNote;
 
         public String getFormatNote() {
             return formatNote;
@@ -681,8 +681,8 @@ public class PremisObject implements ElementInterface{
         }
     }  
     public static class PremisFormatDesignation implements ElementInterface{
-        private String formatName;
-        private String formatVersion;
+        String formatName;
+        String formatVersion;
 
         public String getFormatName() {
             return formatName;
@@ -727,9 +727,9 @@ public class PremisObject implements ElementInterface{
         }           
     }
     public static class PremisFormatRegistry implements ElementInterface{
-        private String formatRegistryName;
-        private String formatRegistryKey;
-        private String formatRegistryRole;
+        String formatRegistryName;
+        String formatRegistryKey;
+        String formatRegistryRole;
 
         public String getFormatRegistryName() {
             return formatRegistryName;
@@ -861,7 +861,7 @@ public class PremisObject implements ElementInterface{
         String significantPropertiesType;
         String significantPropertiesValue;
         ArrayList<Element>significantPropertiesExtension;        
-        private ArrayList<MdSec> mdSec;
+        ArrayList<MdSec> mdSec;
         
         public ArrayList<MdSec> getMdSec() {
             if(mdSec == null){
@@ -1482,7 +1482,7 @@ public class PremisObject implements ElementInterface{
     public static class PremisSignatureInformation implements ElementInterface{
         PremisSignature signature;
         ArrayList<Element>signatureInformationExtension;
-        private ArrayList<MdSec> mdSec;
+        ArrayList<MdSec> mdSec;
         
         public ArrayList<MdSec> getMdSec() {
             if(mdSec == null){
@@ -1550,7 +1550,7 @@ public class PremisObject implements ElementInterface{
         String signatureValidationRules;
         ArrayList<String>signatureProperties;
         ArrayList<Element> keyInformation;
-        private ArrayList<MdSec> mdSec;
+        ArrayList<MdSec> mdSec;
         
         public ArrayList<MdSec> getMdSec() {
             if(mdSec == null){

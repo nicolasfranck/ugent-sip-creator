@@ -3,7 +3,8 @@ package ugent.bagger.filters;
 import java.io.File;
 import java.nio.file.Files;
 import javax.swing.filechooser.FileFilter;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -11,10 +12,10 @@ import org.apache.log4j.Logger;
  */
 public final class FileExtensionFilter extends FileFilter{
     
-    private String description;  
-    private static Logger logger = Logger.getLogger(FileExtensionFilter.class);
-    private String [] extensions;
-    private boolean ignoreCase = false;           
+    String description;  
+    static final Log log = LogFactory.getLog(FileExtensionFilter.class);
+    String [] extensions;
+    boolean ignoreCase = false;           
 
     public boolean isIgnoreCase() {
         return ignoreCase;
@@ -28,7 +29,7 @@ public final class FileExtensionFilter extends FileFilter{
     public void setExtensions(String [] extensions) {
         this.extensions = extensions;
     }
-    private boolean extensionValid(String filename){
+    boolean extensionValid(String filename){
         int posDot = filename.lastIndexOf(".");
         if(posDot < 0) {
             return false;

@@ -14,7 +14,7 @@ public enum BagMode {
     TAR_BZ2_MODE("TAR_BZ2_MODE",4);
     String label;
     int bagitMode;
-    private BagMode(String label,int bagitMode){
+    BagMode(String label,int bagitMode){
         this.label = label;
         this.bagitMode = bagitMode;
     }

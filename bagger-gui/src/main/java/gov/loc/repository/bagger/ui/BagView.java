@@ -226,7 +226,7 @@ public final class BagView extends DefaultView {
         return getMainPanel();
     }    
     
-    private JComponent createBagPanel(){        
+    JComponent createBagPanel(){        
     	
     	LineBorder border = new LineBorder(Color.GRAY,1);
 
@@ -265,7 +265,7 @@ public final class BagView extends DefaultView {
         return bagPanel;
     }
     
-    private JPanel createBagButtonPanel() {
+    JPanel createBagButtonPanel() {
     	
     	addDataHandler = new AddDataHandler();
     	removeDataHandler = new RemoveDataHandler();
@@ -340,7 +340,7 @@ public final class BagView extends DefaultView {
     	getBagPayloadTreePanel().setEnabled(b);    
         getInfoFormsPane().getInfoInputPane().setEnabled(b);
     }   
-    private void initializeCommands() {
+    void initializeCommands() {
     	startExecutor.setEnabled(true);
     	openExecutor.setEnabled(true);
         createBagsExecutor.setEnabled(true);        

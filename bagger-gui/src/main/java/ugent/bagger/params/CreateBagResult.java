@@ -8,9 +8,9 @@ import ugent.bagger.helper.ArrayUtils;
  * @author nicolas
  */
 public class CreateBagResult {
-    private File inputFile;
-    private File outputFile;
-    private String [] errors; 
+    File inputFile;
+    File outputFile;
+    String [] errors; 
 
     public CreateBagResult(File inputFile,File outputFile,String [] errors){
         this.inputFile = inputFile;

@@ -27,7 +27,7 @@ import org.springframework.richclient.application.ApplicationLauncher;
  */
 public class BaggerApplication {
 
-    private static final Log log = LogFactory.getLog(BaggerApplication.class);
+    static final Log log = LogFactory.getLog(BaggerApplication.class);
 
     public static void main(String[] args) {
         String rootContextDirectoryClassPath = "/gov/loc/repository/bagger/ctx";      

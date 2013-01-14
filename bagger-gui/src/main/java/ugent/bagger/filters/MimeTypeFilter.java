@@ -7,7 +7,8 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.filechooser.FileFilter;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -19,9 +20,9 @@ public class MimeTypeFilter extends FileFilter{
         MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
     }
 
-    private String description;
-    private MimeType mimeType;
-    private static Logger logger = Logger.getLogger(MimeTypeFilter.class);
+    String description;
+    MimeType mimeType;
+    static final Log log = LogFactory.getLog(MimeTypeFilter.class);
 
     public MimeType getMimeType(){
         return mimeType;
@@ -35,27 +36,27 @@ public class MimeTypeFilter extends FileFilter{
     }
     @Override
     public boolean accept(File file) {
-        logger.debug("filtering file: "+file.getAbsolutePath());
+        log.debug("filtering file: "+file.getAbsolutePath());
         return Files.isReadable(file.toPath()) && (
             file.isDirectory() ||
             isMimeTypeCorrect(file)
         );
     }
-    private boolean isMimeTypeCorrect(File file){
-        logger.debug("isMimeTypeCorrect of file '"+file.getAbsolutePath()+"'");
-        logger.debug("check against mimeType '"+mimeType+"'");
+    boolean isMimeTypeCorrect(File file){
+        log.debug("isMimeTypeCorrect of file '"+file.getAbsolutePath()+"'");
+        log.debug("check against mimeType '"+mimeType+"'");
         Collection mimes = MimeUtil.getMimeTypes(file);
-        logger.debug("num mimeTypes found:"+mimes.size());
+        log.debug("num mimeTypes found:"+mimes.size());
         if(!mimes.isEmpty()){
             Iterator it = mimes.iterator();
             while(it.hasNext()){
                 MimeType mimeTypeFound = (MimeType) it.next();
-                logger.debug("file has mimeType '"+mimeTypeFound+"'");
+                log.debug("file has mimeType '"+mimeTypeFound+"'");
 
                 if(
                     mimeTypeFound.toString().compareTo(mimeType.toString()) == 0
                 ){
-                    logger.debug("found!");
+                    log.debug("found!");
                     return true;
                 }
             }

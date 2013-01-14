@@ -17,11 +17,11 @@ import ugent.premis.PremisObject.PremisObjectType;
  * @author nicolas
  */
 public class Premis implements ElementInterface{      
-    private String version = "2.2";
-    private ArrayList<PremisObject>object;
-    private ArrayList<PremisEvent>event;
-    private ArrayList<PremisAgent>agent;
-    private ArrayList<PremisRights>rights;
+    String version = "2.2";
+    ArrayList<PremisObject>object;
+    ArrayList<PremisEvent>event;
+    ArrayList<PremisAgent>agent;
+    ArrayList<PremisRights>rights;
 
     public String getVersion() {
         return version;

@@ -1,7 +1,5 @@
 package ugent.bagger.helper;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,7 +15,8 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,8 +26,8 @@ import org.w3c.dom.Node;
  * @author nicolas
  */
 public class XSLT {
-    private static TransformerFactory tf;
-    private static Logger log = Logger.getLogger(XSLT.class);
+    static TransformerFactory tf;
+    static final Log log = LogFactory.getLog(XSLT.class);
 
     public static TransformerFactory getTransformerFactory() {
         if(tf == null){

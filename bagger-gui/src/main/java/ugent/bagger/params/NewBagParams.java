@@ -7,8 +7,8 @@ import ugent.bagger.helper.MetsUtils;
  * @author nicolas
  */
 public class NewBagParams {
-    private String version;
-    private String bagId;
+    String version;
+    String bagId;
 
     public String getVersion() {
         return version;

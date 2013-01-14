@@ -1,7 +1,6 @@
 package ugent.bagger.helper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *
@@ -54,14 +53,13 @@ public class ArrayUtils {
             return deleted;
         }               
     }
+    /*
     public static void main(String [] main){
         String [] a = {"a","b","c","e"};
         String [] b = {"a","b","c","d"};
         ArrayList<Object>lista = new ArrayList<Object>(Arrays.asList(a));
         ArrayList<Object>listb = new ArrayList<Object>(Arrays.asList(b));        
         
-        ArrayDiff diff = diff(lista,listb);
-        System.out.println("added: "+diff.getAdded().size());
-        System.out.println("deleted: "+diff.getDeleted().size());
-    }
+        ArrayDiff diff = diff(lista,listb);      
+    }*/
 }

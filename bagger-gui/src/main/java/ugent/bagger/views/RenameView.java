@@ -9,7 +9,7 @@ import ugent.bagger.panels.RenamePanel;
  * @author nicolas
  */
 public class RenameView extends DefaultView{
-    private RenamePanel renamePanel;
+    RenamePanel renamePanel;
 
     public RenamePanel getRenamePanel() {
         if(renamePanel == null){

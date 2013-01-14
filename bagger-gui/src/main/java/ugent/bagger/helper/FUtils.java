@@ -13,11 +13,12 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
-import org.apache.log4j.Logger;
 import ugent.bagger.exceptions.FileNameNotPortableException;
 import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
@@ -27,7 +28,7 @@ import ugent.bagger.exceptions.FileNotWritableException;
  * @author nicolas
  */
 public class FUtils {
-    static final Logger log = Logger.getLogger(FUtils.class);
+    static final Log log = LogFactory.getLog(FUtils.class);
     static final HashMap<String,Double> sizes;
     static MessageDigest md5DigestInstance;
     static final String [] sizeNames = {        

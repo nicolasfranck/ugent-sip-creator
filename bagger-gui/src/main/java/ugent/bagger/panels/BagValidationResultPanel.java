@@ -142,7 +142,7 @@ public final class BagValidationResultPanel extends JPanel{
             Context.getMessage("ValidateBagsWorker.validating.description")
         );        
     }
-    private class ValidateBagsWorker extends DefaultWorker {
+    class ValidateBagsWorker extends DefaultWorker {
         @Override
         protected Void doInBackground(){
             

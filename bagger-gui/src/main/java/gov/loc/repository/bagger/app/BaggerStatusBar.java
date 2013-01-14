@@ -12,7 +12,7 @@ import org.springframework.richclient.application.statusbar.support.StatusBarPro
  */
 public class BaggerStatusBar extends DefaultStatusBar{
     JProgressBar progressBar;
-    private Dimension progressDimension = new Dimension(300,20);
+    Dimension progressDimension = new Dimension(300,20);
 
     @Override
     protected StatusBarProgressMonitor createStatusBarProgressMonitor() {

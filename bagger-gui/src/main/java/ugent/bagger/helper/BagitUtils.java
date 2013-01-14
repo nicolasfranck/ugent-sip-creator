@@ -121,7 +121,7 @@ public class BagitUtils {
         }
         return tarBz2Filter;
     }
-    
+    /*
     public static void main(String [] args){
         File file = new File("/home/njfranck/bags/baggie2");
         BagFactory factory = new BagFactory();
@@ -131,5 +131,5 @@ public class BagitUtils {
             System.out.println("error: '"+error+"'");
             System.out.println("error translated: "+parseBagError(error));
         }
-    }
+    }*/
 }
