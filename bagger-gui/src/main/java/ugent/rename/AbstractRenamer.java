@@ -3,7 +3,6 @@ package ugent.rename;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -123,7 +122,7 @@ abstract public class AbstractRenamer {
                     }/*else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }*/
-                    else if(!Files.isWritable(pair.getTarget().getParentFile().toPath())){
+                    else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }else{
                         pair.setSuccess(true);                        
@@ -144,7 +143,7 @@ abstract public class AbstractRenamer {
                     }/*else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }*/
-                    else if(!Files.isWritable(pair.getTarget().getParentFile().toPath())){
+                    else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }
                     else{

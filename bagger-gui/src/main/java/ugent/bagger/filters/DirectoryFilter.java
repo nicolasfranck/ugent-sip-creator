@@ -6,7 +6,6 @@
 package ugent.bagger.filters;
 
 import java.io.File;
-import java.nio.file.Files;
 import javax.swing.filechooser.FileFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,7 +24,7 @@ public final class DirectoryFilter extends FileFilter{
     }  
     @Override
     public boolean accept(File file) {
-        return file.isDirectory() && Files.isReadable(file.toPath());
+        return file.isDirectory() && file.canRead();
     }   
     public void setDescription(String description) {
         this.description = description;

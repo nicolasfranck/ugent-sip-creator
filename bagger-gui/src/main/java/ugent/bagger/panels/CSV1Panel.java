@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
@@ -124,7 +123,7 @@ public class CSV1Panel extends JPanel{
             if(!file.exists()){
                 throw new FileNotFoundException();
             }
-            if(!Files.isReadable(file.toPath())){
+            if(!file.canRead()){
                 throw new FileNotReadableException(file);
             } 
             

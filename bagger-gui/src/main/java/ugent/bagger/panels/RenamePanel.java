@@ -12,8 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -258,7 +256,7 @@ public class RenamePanel extends JPanel{
                     final File file = (File)afile.getFile();
                     
                     //map is onleesbaar
-                    if(!Files.isReadable(file.toPath())){
+                    if(!file.canRead()){
                         String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
                             file.getAbsolutePath()
                         });
@@ -383,9 +381,9 @@ public class RenamePanel extends JPanel{
     public void reloadFileTable(File file){         
         getFileTable().clearSort();        
         getFileTable().reset(getList(file));                
-        setFormsEnabled(file.isDirectory() && Files.isWritable(file.toPath()) && !getForbiddenFiles().contains(file));
+        setFormsEnabled(file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file));
         //map niet schrijfbaar
-        if(!Files.isWritable(file.toPath())){
+        if(!file.canWrite()){
             setStatusError(
                 Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
                     file.getAbsolutePath()
@@ -486,12 +484,12 @@ public class RenamePanel extends JPanel{
                             LazyTreeNode node = (LazyTreeNode) tpath.getLastPathComponent();
                             FileNode fileNode = (FileNode) node.getUserObject();
                             File file = fileNode.getFile();
-                            Path path = file.toPath();
+                            
 
-                            boolean doEnable = file.isDirectory() && Files.isWritable(path) && !getForbiddenFiles().contains(file);
+                            boolean doEnable = file.isDirectory() && file.canWrite() && !getForbiddenFiles().contains(file);
 
                             if(file.isDirectory()){                    
-                                if(!Files.isReadable(path)){
+                                if(!file.canRead()){
                                     String error = Context.getMessage("RenamePanel.error.dirnotreadable",new String [] {
                                         file.getAbsolutePath()
                                     });
@@ -502,7 +500,7 @@ public class RenamePanel extends JPanel{
                                     reloadFileTable();
 
                                     throw new ExpandVetoException(tee);
-                                }else if(!Files.isWritable(path)){
+                                }else if(!file.canWrite()){
                                     setStatusError(
                                         Context.getMessage("RenamePanel.error.dirnotwritable",new String [] {
                                             file.getAbsolutePath()

@@ -47,20 +47,11 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
         String message = Context.getMessage("bag.message.filesadded");        
         addBagData(files);
         log.error(message);        
-        for(File file:files){
-            
+        for(File file:files){            
             log.error("\t"+file.getAbsolutePath());
         }
         bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
         bagView.updateAddData();
-
-        //Nicolas Franck: geen validate of complete nuttig
-        //=> zie updateAddData() in BagView
-        /*
-        bagView.validateExecutor.setEnabled(false);
-        bagView.validateBagHandler.setEnabled(false);
-        bagView.completeExecutor.setEnabled(false);
-        bagView.completeBagHandler.setEnabled(false);*/
         
         SwingUtils.ShowDone();
         
@@ -174,19 +165,6 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 );                        
                 log.error(message);
                 SwingUtils.ShowError(title,message);
-            }else{
-                if(file.isDirectory()){
-                    File rootDir = file.getParentFile();
-                    ArrayList<File>descendants = FUtils.listFiles(file);
-                    for(File descendant:descendants){
-                        String entry = descendant.getAbsolutePath().replace(rootDir.getAbsolutePath()+File.separatorChar,"");
-                        metsBag.getNewEntries().put(entry,descendant);                        
-                        System.out.println("adding "+entry+" => "+descendant.getAbsolutePath());
-                    }
-                }else{
-                    metsBag.getNewEntries().put(file.getName(),file);                    
-                    System.out.println("adding "+file.getName()+" => "+file.getAbsolutePath());
-                }
             }
         }catch(FileNotReadableException e){          
             String title = Context.getMessage("addDataHandler.FileNotReadableException.title");

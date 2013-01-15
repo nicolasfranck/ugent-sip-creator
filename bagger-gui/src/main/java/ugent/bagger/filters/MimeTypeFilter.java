@@ -3,7 +3,6 @@ package ugent.bagger.filters;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.filechooser.FileFilter;
@@ -37,7 +36,7 @@ public class MimeTypeFilter extends FileFilter{
     @Override
     public boolean accept(File file) {
         log.debug("filtering file: "+file.getAbsolutePath());
-        return Files.isReadable(file.toPath()) && (
+        return file.canRead() && (
             file.isDirectory() ||
             isMimeTypeCorrect(file)
         );

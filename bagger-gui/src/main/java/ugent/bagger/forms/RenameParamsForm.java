@@ -29,7 +29,7 @@ public class RenameParamsForm extends AbstractForm{
         TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");                
                 
-        for(String field:new String [] {"source","destination","ignoreCase","renameExtension","recursive","prefix","postfix","regex"}){
+        for(String field:new String [] {"source","destination","ignoreCase",/*"renameExtension",*/"recursive","prefix","postfix","regex"}){
             builder.add(field);
             builder.row();
         }                       

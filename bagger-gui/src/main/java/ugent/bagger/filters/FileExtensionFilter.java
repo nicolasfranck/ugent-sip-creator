@@ -1,7 +1,6 @@
 package ugent.bagger.filters;
 
 import java.io.File;
-import java.nio.file.Files;
 import javax.swing.filechooser.FileFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,7 +56,7 @@ public final class FileExtensionFilter extends FileFilter{
         if(isIgnoreCase()) {
             name = name.toLowerCase();
         }                       
-        return Files.isReadable(file.toPath()) && (
+        return file.canRead() && (
             file.isDirectory() ||
             extensionValid(name)            
         );

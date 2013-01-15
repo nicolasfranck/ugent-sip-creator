@@ -1,3 +1,2 @@
-2013-01-10 09:14:24,011 - org.apache.commons.vfs.FileSystemException: Incorrect file system URI "zip:file:///home/njfranck/bags/baggie1.zip!/baggie1/data/VEP_00008_A/EML/berichten/20060425-NIEUWSBRIEF - Nieuwste CD Willem Vermandere op TEN VREDE !/" in name "zip:file:///home/njfranck/bags/baggie1.zip!/baggie1/data/VEP_00008_A/EML/berichten/20060425-NIEUWSBRIEF - Nieuwste CD Willem Vermandere op TEN VREDE !-96403.eml", was expecting "zip:file:///home/njfranck/bags/baggie1.zip!/".
-
-	=> probleem met bestandsnamen..
+- newEntries
+- rapport-weergave voor validatiefouten

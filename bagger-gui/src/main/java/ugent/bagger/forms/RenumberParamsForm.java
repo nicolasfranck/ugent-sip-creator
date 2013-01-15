@@ -49,9 +49,10 @@ public class RenumberParamsForm extends AbstractForm{
         ));              
         builder.row(); 
         
+        /*
         final Binding radixBinding = bf.createBoundComboBox("radix",Radix.values());
         builder.add(radixBinding); 
-        builder.row();
+        builder.row();*/
         
         builder.add("separatorBefore");   
         builder.row();

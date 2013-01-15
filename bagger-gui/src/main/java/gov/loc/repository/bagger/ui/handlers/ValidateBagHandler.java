@@ -1,19 +1,26 @@
 package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.bag.impl.DefaultBag;
+import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
+import gov.loc.repository.bagit.Manifest;
 import gov.loc.repository.bagit.utilities.SimpleResult;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
 import gov.loc.repository.bagit.verify.impl.ParallelManifestChecksumVerifier;
 import gov.loc.repository.bagit.verify.impl.ValidVerifierImpl;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
+import javax.swing.JDialog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.BagitUtils;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.panels.BagErrorPanel;
+import ugent.bagger.params.Failure;
+import ugent.bagger.params.FixityFailure;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask;
 
@@ -58,11 +65,9 @@ public class ValidateBagHandler extends Handler {
                    
             }catch (Exception e){                                                
                 if(isCancelled()){
-                    log.error(e.getMessage());
-                    //log(Context.getMessage("ValidateBagHandler.validationCancelled.label"));
+                    log.error(e.getMessage());                    
                     SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
-                }else{
-                    //log(Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()}));                    
+                }else{                    
                     SwingUtils.ShowError(
                         Context.getMessage("ValidateBagHandler.validationFailed.title"), 
                         Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()})
@@ -78,13 +83,18 @@ public class ValidateBagHandler extends Handler {
             if(result != null){
                 if(!result.isSuccess()){
                     
+                    MetsBag metsBag = BagView.getInstance().getBag();
+                    Manifest payloadManifest = metsBag.getBag().getPayloadManifest(MetsBag.resolveAlgorithm(metsBag.getPayloadManifestAlgorithm()));
+                    Manifest tagManifest = metsBag.getBag().getTagManifest(MetsBag.resolveAlgorithm(metsBag.getTagManifestAlgorithm()));
+                    
                     ArrayList<String>payloadsMissing = new ArrayList<String>();
                     ArrayList<String>tagsMissing = new ArrayList<String>();
                     ArrayList<String>payloadsFixityFailure = new ArrayList<String>();
                     ArrayList<String>tagsFixityFailure = new ArrayList<String>();               
                     ArrayList<String>filesNotInManifest = new ArrayList<String>();
                     
-                    for(String message:result.getMessages()){
+                    for(String message:result.getMessages()){                        
+                        
                         Matcher m1 = BagitUtils.payloadsMissingPattern.matcher(message);
                         Matcher m2 = BagitUtils.tagsMissingPattern.matcher(message);
                         Matcher m3 = BagitUtils.payloadsFixityFailurePattern.matcher(message);
@@ -95,7 +105,7 @@ public class ValidateBagHandler extends Handler {
                             payloadsMissing.add(m1.group(1));
                         }else if(m2.matches()){
                             tagsMissing.add(m2.group(1));
-                        }else if(m3.matches()){
+                        }else if(m3.matches()){                            
                             payloadsFixityFailure.add(m3.group(1));
                         }else if(m4.matches()){
                             tagsFixityFailure.add(m4.group(1));
@@ -104,7 +114,7 @@ public class ValidateBagHandler extends Handler {
                         }
                     }
                     
-                    SwingUtils.ShowError(
+                    /*SwingUtils.ShowError(
                         Context.getMessage("ValidateBagHandler.validationFailed.title"),
                         Context.getMessage(
                             "ValidateBagHandler.validationFailed.label",new Object [] {
@@ -115,7 +125,39 @@ public class ValidateBagHandler extends Handler {
                                 filesNotInManifest.size()
                             }
                         )
-                    );
+                    );*/
+                    
+                    //rapport
+                    
+                    JDialog dialog = new JDialog(SwingUtils.getFrame(),true);
+                    dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                    
+                    ArrayList<Failure>missingFiles = new ArrayList<Failure>();
+                    for(String payload:payloadsMissing){
+                        missingFiles.add(new Failure(payload));
+                    }
+                    for(String tag:tagsMissing){
+                        missingFiles.add(new Failure(tag));
+                    }                    
+                    
+                    ArrayList<Failure>newFiles = new ArrayList<Failure>();                    
+                    for(String nf:filesNotInManifest){
+                        newFiles.add(new Failure(nf));
+                    }
+                    
+                    ArrayList<FixityFailure>fixityFailure = new ArrayList<FixityFailure>();
+                    for(String payload:payloadsFixityFailure){
+                        fixityFailure.add(new FixityFailure(payload,payloadManifest.get(payload)));
+                    }
+                    for(String tag:tagsFixityFailure){
+                        fixityFailure.add(new FixityFailure(tag,tagManifest.get(tag)));
+                    }
+                    
+                    BagErrorPanel panel = new BagErrorPanel(missingFiles,fixityFailure,newFiles);                    
+                    
+                    dialog.setContentPane(panel);
+                    dialog.pack();
+                    dialog.setVisible(true);
                     
                     log.error(Context.getMessage("ValidateBagHandler.title"));
                     

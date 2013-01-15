@@ -4,14 +4,19 @@ import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.utilities.SimpleResult;
 import gov.loc.repository.bagit.verify.impl.CompleteVerifierImpl;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
+import javax.swing.JDialog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.BagitUtils;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.panels.BagErrorPanel;
+import ugent.bagger.params.Failure;
+import ugent.bagger.params.FixityFailure;
 import ugent.bagger.workers.Handler;
 import ugent.bagger.workers.LongTask;
 
@@ -114,12 +119,38 @@ public class CompleteBagHandler extends Handler {
                         }
                     }
 
+                    /*
                     SwingUtils.ShowError(
                         Context.getMessage("CompleteBagHandler.validationFailed.title"),
                         Context.getMessage("CompleteBagHandler.validationFailed.label",new Object [] {
                             payloadsMissing.size(),tagsMissing.size(),filesNotInManifest.size()
                         })
-                    );                  
+                    );*/
+                    
+                    JDialog dialog = new JDialog(SwingUtils.getFrame(),true);
+                    dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                    
+                    ArrayList<Failure>missingFiles = new ArrayList<Failure>();
+                    for(String payload:payloadsMissing){
+                        missingFiles.add(new Failure(payload));
+                    }
+                    for(String tag:tagsMissing){
+                        missingFiles.add(new Failure(tag));
+                    }                    
+                    
+                    ArrayList<Failure>newFiles = new ArrayList<Failure>();                    
+                    for(String nf:filesNotInManifest){
+                        newFiles.add(new Failure(nf));
+                    }
+                    
+                    ArrayList<FixityFailure>fixityFailure = new ArrayList<FixityFailure>();                    
+                    
+                    BagErrorPanel panel = new BagErrorPanel(missingFiles,fixityFailure,newFiles);                    
+                    
+                    dialog.setContentPane(panel);
+                    dialog.pack();
+                    dialog.setVisible(true);
+                    
                 }else {
                     String message = Context.getMessage("defaultBag.bagIsComplete");
                     log.error(message);

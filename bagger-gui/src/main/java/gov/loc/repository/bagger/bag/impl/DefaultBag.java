@@ -414,7 +414,7 @@ public class DefaultBag {
         }
         return list;        
     }
-
+    /*
     public String getDataContent() {
         totalSize = 0;
         StringBuilder dcontent = new StringBuilder();
@@ -443,12 +443,11 @@ public class DefaultBag {
     }
     public int getDataNumber() {
         return bilBag.getPayload().size();
-    }
+    }*/
     
     public List<String> getPayloadPaths() {
         ArrayList<String> pathList = new ArrayList<String>();
-        Collection<BagFile> payload = bilBag.getPayload();
-        
+        Collection<BagFile> payload = bilBag.getPayload();        
         if(payload != null) {
             for (Iterator<BagFile> it = payload.iterator(); it.hasNext();) {                
                 pathList.add(it.next().getFilepath());
@@ -516,8 +515,8 @@ public class DefaultBag {
     }    
     
     public SimpleResult completeBag(CompleteVerifierImpl completeVerifier) {
-        prepareBilBagInfoIfDirty();
-        
+        prepareBilBagInfoIfDirty();        
+       
         SimpleResult result = completeVerifier.verify(bilBag);
 
         if(completeVerifier.isCancelled()) {
@@ -531,9 +530,9 @@ public class DefaultBag {
     }
 
     public SimpleResult validateBag(ValidVerifierImpl validVerifier) {
-        prepareBilBagInfoIfDirty();
-       
-        SimpleResult result = validVerifier.verify(bilBag);        
+        prepareBilBagInfoIfDirty();       
+     
+        SimpleResult result = validVerifier.verifyFailSlow(bilBag);        
 
         if(validVerifier.isCancelled()) {
             isValid(Status.UNKNOWN);        

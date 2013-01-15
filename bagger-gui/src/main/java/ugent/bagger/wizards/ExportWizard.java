@@ -11,8 +11,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,10 +93,9 @@ public class ExportWizard extends AbstractWizard {
             exportersConfig = (HashMap<String,HashMap<String,Object>>) Beans.getBean("exporters");            
             HashMap<String,Object>econfig = exportersConfig.get(exportParams.getFormat());                
             
-            Path path = outputFile.toPath();
-            Path pathParent = outputFile.getParentFile().toPath();
+            
             //controle op bestand
-            if(!Files.isReadable(pathParent)){
+            if(!outputFile.getParentFile().canRead()){
                 SwingUtils.ShowError(
                     null,
                     Context.getMessage(
@@ -107,7 +104,7 @@ public class ExportWizard extends AbstractWizard {
                 );
                 return false;
             }
-            if(!Files.isWritable(pathParent)){
+            if(!outputFile.getParentFile().canWrite()){
                 SwingUtils.ShowError(
                     null,
                     Context.getMessage(

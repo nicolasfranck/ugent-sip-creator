@@ -13,10 +13,12 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import org.apache.commons.vfs2.FileSystemException;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
 import ugent.bagger.exceptions.BagNoDataException;
+import ugent.bagger.helper.FUtils;
 import ugent.premis.Premis;
 
 /**
@@ -261,4 +263,44 @@ public final class MetsBag extends DefaultBag{
     public void createPreBagAddKeepFilesToEmptyFolders(File data,String version){
         createPreBagAddKeepFilesToEmptyFolders(data,version,new String [] {});
     }    
+    @Override
+    public void addFileToPayload(File payloadFile){
+        super.addFileToPayload(payloadFile);
+        
+        if(payloadFile.isDirectory()){
+            File rootDir = payloadFile.getParentFile();
+            ArrayList<File>descendants = FUtils.listFiles(payloadFile);
+            for(File descendant:descendants){
+                String entry = descendant.getAbsolutePath().replace(rootDir.getAbsolutePath()+File.separatorChar,"");
+                entry = "data/"+entry.replace('\\','/');
+                getNewEntries().put(entry,descendant);                        
+                System.out.println("adding "+entry+" => "+descendant.getAbsolutePath());
+            }
+        }else{
+            getNewEntries().put(payloadFile.getName(),payloadFile);                    
+            System.out.println("adding "+payloadFile.getName()+" => "+payloadFile.getAbsolutePath());
+        }
+        System.out.println(getNewEntries());
+    }
+    @Override
+    public void removeBagFile(String fileName){
+        super.removeBagFile(fileName);
+        getNewEntries().remove(fileName);
+        System.out.println(getNewEntries());
+        
+    }    
+    @Override
+    public void removePayloadDirectory(String fileName){
+        super.removePayloadDirectory(fileName);
+        Iterator<Entry<String,File>>iterator = getNewEntries().entrySet().iterator();
+        
+        while(iterator.hasNext()){
+            Entry<String,File>entry = iterator.next();
+            if(entry.getKey().startsWith(fileName)){
+                iterator.remove();                
+                System.out.println("removing "+entry.getKey()+" from "+fileName);
+            }
+        }
+        System.out.println(getNewEntries());
+    }
 }
