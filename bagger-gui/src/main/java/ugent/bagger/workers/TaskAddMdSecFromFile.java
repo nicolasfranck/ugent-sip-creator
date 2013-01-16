@@ -110,7 +110,7 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
         super.done();
         //report
         String report = Context.getMessage("report.message",new Integer []{
-            succeeded,numErrors
+            files.length,succeeded,numErrors
         });
         String reportLog = Context.getMessage("report.log");
         SwingUtils.ShowMessage(null,report+"\n"+reportLog);

@@ -31,7 +31,7 @@ import ugent.bagger.workers.DefaultWorker;
  * @author nicolas
  */
 public class BagInfoImportWizard extends AbstractWizard{    
-    static Log log = LogFactory.getLog(BagInfoImportWizard.class);
+    static final Log log = LogFactory.getLog(BagInfoImportWizard.class);
     BagInfoImportWizardPage1 bagInfoImportWizardPage1;
     HashMap<String,ArrayList<PropertyChangeListener>>propertyChangeListeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
     
@@ -143,7 +143,7 @@ public class BagInfoImportWizard extends AbstractWizard{
 
                 //report
                 String report = Context.getMessage("report.message",new Integer []{
-                    numSuccess,numErrors
+                    files.size(),numSuccess,numErrors
                 });
                 String reportLog = Context.getMessage("report.log");
                 SwingUtils.ShowMessage(null,report+"\n"+reportLog);

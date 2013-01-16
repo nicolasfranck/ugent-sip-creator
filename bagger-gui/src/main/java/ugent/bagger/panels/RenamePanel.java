@@ -352,6 +352,8 @@ public class RenamePanel extends JPanel{
             });            
             table.setShowGrid(false);
             
+            System.out.println("editor: "+table.getEditorComponent());
+            
             table.getTableHeader().addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent mouseEvent) {
