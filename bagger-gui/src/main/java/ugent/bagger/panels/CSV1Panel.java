@@ -8,9 +8,10 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
@@ -24,6 +25,7 @@ import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.forms.CSVParseParamsForm;
 import ugent.bagger.helper.CSVUtils;
 import ugent.bagger.helper.Context;
+import ugent.bagger.helper.SwingUtils;
 import ugent.bagger.params.CSVParseParams;
 
 /**
@@ -44,7 +46,7 @@ public class CSV1Panel extends JPanel{
 
     public JScrollPane getScrollerCSVTable() {
         if(scrollerCSVTable == null){
-            scrollerCSVTable = new JScrollPane(getCsvTable());     
+            scrollerCSVTable = new JScrollPane(getCsvTable(),JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);     
             scrollerCSVTable.setPreferredSize(new Dimension(500,300));
         }
         return scrollerCSVTable;
@@ -55,7 +57,15 @@ public class CSV1Panel extends JPanel{
 
     public JTable getCsvTable() {
         if(csvTable == null){
-            csvTable = new JTable();            
+            csvTable = new JTable(){
+                @Override
+                public boolean getScrollableTracksViewportWidth(){
+                    return getPreferredSize().width < getParent().getWidth();
+                }
+            };   
+            //verhinder dat kolombreedten aangepast worden opdat het in de view van de scrollpane zou kunnen
+            csvTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            
             csvTable.setFillsViewportHeight(true);
         }
         return csvTable;
@@ -73,8 +83,8 @@ public class CSV1Panel extends JPanel{
     }
      
     public CSVParseParams getCsvParseParams() {
-        if(csvParseParams == null){
-            csvParseParams = new CSVParseParams();
+        if(csvParseParams == null){            
+            csvParseParams = new CSVParseParams();            
         }
         return csvParseParams;
     }
@@ -128,13 +138,13 @@ public class CSV1Panel extends JPanel{
             } 
             
             CsvPreference csvPreference = CSVUtils.createCSVPreference(
-                getCsvParseParams().getQuoteChar(),
-                getCsvParseParams().getDelimiterChar(),
+                getCsvParseParams().getQuoteChar().getChar(),
+                getCsvParseParams().getDelimiterChar().getChar(),
                 getCsvParseParams().getEndOfLineSymbols(),
                 getCsvParseParams().isSurroundingSpacesNeedQuotes()
             );            
             
-            ICsvListReader listReader = new CsvListReader(new FileReader(file),csvPreference);                       
+            ICsvListReader listReader = new CsvListReader(new InputStreamReader(new FileInputStream(file),"UTF8"),csvPreference);                       
             final Object [] cols = listReader.getHeader(true);               
             ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
             
@@ -201,6 +211,8 @@ public class CSV1Panel extends JPanel{
                  new Object []{e.getMessage()}
              );                            
          }       
-              
+         if(error != null){
+             SwingUtils.ShowError(null,error);
+         }
     }    
 }

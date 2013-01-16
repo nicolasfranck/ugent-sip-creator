@@ -171,8 +171,8 @@ public final class BagInfoForm extends AbstractForm {
                             public void actionPerformed(ActionEvent ae) {                                                                
                                 if(fieldMap.containsKey(key)){                                    
                                     fieldMap.get(key).remove(value);
-                                    if(fieldMap.get(key).isEmpty()){
-                                        fieldMap.remove(key);
+                                    if(fieldMap.get(key).isEmpty()){                                                                                
+                                        getBag().removeBagInfoField(key);
                                     }
                                 }                                
                                 SwingUtilities.invokeLater(new Runnable(){

@@ -408,12 +408,10 @@ public class FUtils {
         return false;             
     }
     public static void checkSafeFiles(File file)throws FileNameNotPortableException{
-        System.out.println("FUtils::checkSafeFiles('"+file+"')");
+        
         if(!isSafeFile(file)){
-            throw new FileNameNotPortableException(file);
-            
-        }
-        System.out.println(file+" is safe");
+            throw new FileNameNotPortableException(file);            
+        }        
         if(file.isDirectory()){
             for(File child:file.listFiles()){
                 checkSafeFiles(child);

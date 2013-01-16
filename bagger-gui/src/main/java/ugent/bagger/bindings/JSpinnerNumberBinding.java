@@ -37,7 +37,7 @@ public final class JSpinnerNumberBinding extends CustomBinding{
 
     public SpinnerModel getSpinnerModel() {
         if(spinnerModel == null){             
-            spinnerModel = new SpinnerNumberModel(getInit(),getMin(),getMax(),getStep());        
+            spinnerModel = new SpinnerNumberModel(getInit(),getMin(),getMax(),getStep());                    
         }
         return spinnerModel;
     }
@@ -78,7 +78,7 @@ public final class JSpinnerNumberBinding extends CustomBinding{
                         formPropertyPath
                     ).setValue(getSpinnerModel().getValue());
                 }                
-            });            
+            });              
         }
         return spinner;
     }

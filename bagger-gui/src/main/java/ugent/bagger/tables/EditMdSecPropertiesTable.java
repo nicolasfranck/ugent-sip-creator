@@ -137,6 +137,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
     public void add(MdSec mdSec){        
         getData().add(mdSec);     
         getMetsBag().changeToDirty();
+        getMetsBag().setChanged(true);
         getBagView().setCompleteExecutor();
         getBagView().setValidateExecutor();
         firePropertyChange("add",null,mdSec);        

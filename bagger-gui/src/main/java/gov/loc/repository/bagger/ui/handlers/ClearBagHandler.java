@@ -51,14 +51,18 @@ public class ClearBagHandler extends AbstractAction {
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
         MetsBag metsBag = bagView.getBag();
-    	if(metsBag.isHoley() || metsBag.isSerial() || metsBag.getFile() == null || !metsBag.getFile().exists()){
+    	if(!metsBag.isChanged()){
             clearExistingBag();
-        }else{
+        }else {
             confirmCloseBag();
-        }    
-        if (isConfirmSaveFlag()){            
+        }
+        if (isConfirmSaveFlag()){          
             bagView.saveBagHandler.setClearAfterSaving(true);
-            bagView.saveBagAsHandler.openSaveBagAsFrame();
+            if(metsBag.getFile() != null && metsBag.getFile().exists()){
+                bagView.saveBagHandler.saveBag(metsBag.getFile());       
+            }else{                
+                bagView.saveBagAsHandler.openSaveBagAsFrame();
+            }            
             setConfirmSaveFlag(false);            
         }
     }
@@ -97,13 +101,12 @@ public class ClearBagHandler extends AbstractAction {
     public void clearExistingBag() throws BagUnknownFormatException, BagNoBagDirException, BagFetchForbiddenException, BagNoDataException {
        
     	newDefaultBag(null);
+        
         BagView bagView = BagView.getInstance();
     	MetsBag metsBag = bagView.getBag();
         InfoFormsPane infoFormsPane = bagView.getInfoFormsPane();
         InfoInputPane infoInputPane = infoFormsPane.getInfoInputPane();
         
-    	metsBag.clear();        
-    	
         bagView.setBagPayloadTree(bagView.createBagPayloadTree(AbstractBagConstants.DATA_DIRECTORY, true));        
     	bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
     	//bagView.setBagTagFileTree(new BagTree(ApplicationContextUtil.getMessage("bag.label.noname"), false));
@@ -158,7 +161,7 @@ public class ClearBagHandler extends AbstractAction {
             bagName = f.getName();
             String fileName = f.getAbsolutePath();
             bagView.getInfoFormsPane().setBagName(fileName);
-    	}        
+    	}                
         
         //indien bag == null, dan is er iets fout met het formaat van het bestand!
         if(bag != null){

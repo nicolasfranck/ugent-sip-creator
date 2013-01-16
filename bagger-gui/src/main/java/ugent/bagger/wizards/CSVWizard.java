@@ -5,9 +5,10 @@ import gov.loc.repository.bagger.ui.BagView;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -108,13 +109,13 @@ public class CSVWizard extends AbstractWizard {
                             }                                                       
                             
                             CsvPreference csvPreference = CSVUtils.createCSVPreference(
-                                csvParseParams.getQuoteChar(),
-                                csvParseParams.getDelimiterChar(),
+                                csvParseParams.getQuoteChar().getChar(),
+                                csvParseParams.getDelimiterChar().getChar(),
                                 csvParseParams.getEndOfLineSymbols(),
                                 csvParseParams.isSurroundingSpacesNeedQuotes()
                             ); 
                             
-                            ICsvMapReader mapReader = new CsvMapReader(new FileReader(file),csvPreference);                       
+                            ICsvMapReader mapReader = new CsvMapReader(new InputStreamReader(new FileInputStream(file),"UTF8"),csvPreference);                       
                             final String [] cols = mapReader.getHeader(true); 
                             
                             HashMap<String,ArrayList<String>>fieldMap = BagView.getInstance().getInfoFormsPane().getInfoInputPane().getBagInfoForm().getFieldMap();

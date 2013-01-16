@@ -506,7 +506,7 @@ public final class BagView extends DefaultView {
             getBag().getFetchTxt() == null && 
             getBag().getFile() != null && 
             getBag().getFile().exists() &&
-            !getBag().isDirty()
+            !getBag().isChanged()
         ;
         completeExecutor.setEnabled(enable);       
         completeBagHandler.setEnabled(enable);
@@ -516,7 +516,7 @@ public final class BagView extends DefaultView {
             getBag().getFetchTxt() == null && 
             getBag().getFile() != null && 
             getBag().getFile().exists() &&
-            !getBag().isDirty()
+            !getBag().isChanged()
         ;
         validateExecutor.setEnabled(enable);       
         validateBagHandler.setEnabled(enable);

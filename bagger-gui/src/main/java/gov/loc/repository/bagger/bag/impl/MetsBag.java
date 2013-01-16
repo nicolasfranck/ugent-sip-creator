@@ -13,12 +13,10 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import org.apache.commons.vfs2.FileSystemException;
 import ugent.bagger.exceptions.BagFetchForbiddenException;
 import ugent.bagger.exceptions.BagNoDataException;
-import ugent.bagger.helper.FUtils;
 import ugent.premis.Premis;
 
 /**
@@ -263,6 +261,7 @@ public final class MetsBag extends DefaultBag{
     public void createPreBagAddKeepFilesToEmptyFolders(File data,String version){
         createPreBagAddKeepFilesToEmptyFolders(data,version,new String [] {});
     }    
+    /*
     @Override
     public void addFileToPayload(File payloadFile){
         super.addFileToPayload(payloadFile);
@@ -302,5 +301,5 @@ public final class MetsBag extends DefaultBag{
             }
         }
         System.out.println(getNewEntries());
-    }
+    }*/
 }

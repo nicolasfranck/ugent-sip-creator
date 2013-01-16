@@ -46,8 +46,7 @@ public class BagitUtils {
     //opgelet: deze opmerking zit NIET SimpleResult, maar in een RuntimeException
     static String noBagDir = "Unable to find bag_dir in serialized bag";
 
-    public static BagError parseBagError(String error){
-        System.out.println("error: "+error);
+    public static BagError parseBagError(String error){        
         
         Matcher matcherTagsMissing = tagsMissingPattern.matcher(error);
         Matcher matcherPayloadsMissingPattern = payloadsMissingPattern.matcher(error);

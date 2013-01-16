@@ -5,12 +5,16 @@ import javax.swing.JFileChooser;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.richclient.form.binding.Binding;
+import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.FileSelectBinding;
 import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.params.CSVDelimiterChar;
 import ugent.bagger.params.CSVParseParams;
+import ugent.bagger.params.CSVQuoteChar;
 
 
 
@@ -28,7 +32,8 @@ public class CSVParseParamsForm extends AbstractForm{
     }    
     @Override
     protected JComponent createFormControl() {    
-        TableFormBuilder builder = new TableFormBuilder(getBindingFactory());        
+        SwingBindingFactory bf = (SwingBindingFactory) getBindingFactory();
+        TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");   
         
         JFileChooser fileChooser = SwingUtils.createFileChooser(
@@ -45,14 +50,13 @@ public class CSVParseParamsForm extends AbstractForm{
         builder.add(fileSelectBinding);        
         builder.row();
         
-        String [] fields = {
-            "delimiterChar","quoteChar"
-        };        
+        Binding bindingDelimiterChar = bf.createBoundComboBox("delimiterChar",CSVDelimiterChar.values());
+        builder.add(bindingDelimiterChar);
+        builder.row();
         
-        for(String field:fields){
-            builder.add(field);
-            builder.row();
-        }
+        Binding bindingQuoteChar = bf.createBoundComboBox("quoteChar",CSVQuoteChar.values());
+        builder.add(bindingQuoteChar);
+        builder.row();        
         
         builder.add("surroundingSpacesNeedQuotes");
         builder.row();

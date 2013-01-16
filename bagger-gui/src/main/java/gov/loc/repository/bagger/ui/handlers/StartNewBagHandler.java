@@ -77,6 +77,7 @@ public class StartNewBagHandler extends AbstractAction {
         Collection<BagFile> tags = metsBag.getTags();       
         
         metsBag.setFile(null);
+        metsBag.setChanged(false);
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms();
         

@@ -60,12 +60,10 @@ public class DefaultBag {
     protected boolean isValidateOnSave = false;
     protected boolean isSerialized = false;
     protected boolean dirty = false;
-
     protected File file = null;
     protected String name = "bag_";
     protected long size;
     protected long totalSize = 0;
-
     protected Bag bilBag;
     protected DefaultBagInfo bagInfo = null;   
     protected BaggerFetch fetch;    
@@ -73,6 +71,9 @@ public class DefaultBag {
     protected String versionString = null;    
     
     protected ArrayList<String>deletedDirectories = new ArrayList<String>();
+    
+    
+    protected boolean changed = false;
 
 
     public DefaultBag() throws BagFetchForbiddenException, FileSystemException, BagNoDataException {            
@@ -468,6 +469,7 @@ public class DefaultBag {
     }
 
     public String addTagFile(File tagFile) {
+        changed = true;
         changeToDirty();
         isComplete(Status.UNKNOWN);
 
@@ -693,20 +695,25 @@ public class DefaultBag {
     }
 
     public void clear() {       
+        changed = true;
         bagInfo.clearFields();		
     }
 
     public void addField(BagInfoField field) {
+        changed = true;
         changeToDirty();       
         bagInfo.addField(field);
     }
 
     public void removeBagInfoField(String key) {
+        System.out.println("removing field "+key);
+        changed = true;
         changeToDirty();        
         bagInfo.removeField(key);
     }
 
     public void addFileToPayload(File payloadFile) {
+        changed = true;
         changeToDirty();
         isComplete(Status.UNKNOWN);       
         bilBag.addFileToPayload(payloadFile);
@@ -717,11 +724,13 @@ public class DefaultBag {
     }
 
     public void removeBagFile(String fileName) {
+        changed = true;
         changeToDirty();
         isComplete(Status.UNKNOWN);		
         bilBag.removeBagFile(fileName);
     }
     public void removePayloadDirectory(String fileName) {
+        changed = true;
         changeToDirty();
         isComplete(Status.UNKNOWN);
         log.debug("DefaultBag::removePayloadDirectory('"+fileName+"')");        
@@ -765,4 +774,11 @@ public class DefaultBag {
             }
         }
     }    
+
+    public boolean isChanged() {
+        return changed;
+    }
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
 }

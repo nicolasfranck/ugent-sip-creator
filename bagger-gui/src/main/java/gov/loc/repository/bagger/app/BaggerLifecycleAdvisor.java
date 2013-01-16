@@ -40,8 +40,7 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
      */
     @Override
     public void onWindowCreated(ApplicationWindow window){
-        super.onWindowCreated(window);                
-        
+        super.onWindowCreated(window);                        
         init(); 
     }    
     @Override
@@ -49,7 +48,8 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
         BagView bagView = BagView.getInstance();
         MetsBag metsBag = bagView.getBag();        
         
-        if(metsBag.isDirty()){
+        
+        if(metsBag.isChanged()){
             try{
                 bagView.clearBagHandler.confirmCloseBag();
                 if(bagView.clearBagHandler.isConfirmSaveFlag()){
