@@ -21,6 +21,7 @@ abstract public class AbstractRenamer {
     ArrayList<File> inputFiles;
     boolean simulateOnly = false;
     boolean isWindowsOS = System.getProperty("os.name").toLowerCase().contains("windows");    
+    protected String [] doubleFileExtension = {"tar.gz","tar.bz2","tar.z","tar.xz","tar.lz"};
     
     public boolean isSimulateOnly() {        
         return simulateOnly;

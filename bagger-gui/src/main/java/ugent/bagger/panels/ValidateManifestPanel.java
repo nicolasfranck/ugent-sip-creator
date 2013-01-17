@@ -1,6 +1,7 @@
 package ugent.bagger.panels;
 
 import gov.loc.repository.bagit.BagFactory;
+import gov.loc.repository.bagit.Manifest.Algorithm;
 import gov.loc.repository.bagit.ManifestReader;
 import gov.loc.repository.bagit.ManifestReader.FilenameFixity;
 import gov.loc.repository.bagit.utilities.MessageDigestHelper;
@@ -20,8 +21,11 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.core.DefaultMessage;
+import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.progress.BusyIndicator;
 import ugent.bagger.forms.ValidateManifestParamsForm;
 import ugent.bagger.helper.Context;
@@ -48,17 +52,27 @@ public class ValidateManifestPanel extends JPanel{
     public void init(){
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         
+        TitlePane titlePane = new TitlePane(5);  
+    	titlePane.setTitle(Context.getMessage("ValidateManifestPanel.title"));
+    	titlePane.setMessage(new DefaultMessage(Context.getMessage("ValidateManifestPanel.description")));        
+        JComponent titleComponent = titlePane.getControl();         
+        add(titleComponent);
+        
         JComponent form = getValidateManifestParamsForm().getControl();        
+        form.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         add(form);
         
-        add(createButtonPanel()); 
+        JComponent buttonPanel = createButtonPanel();
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        add(buttonPanel); 
         
-        JComponent table = getValidateManifestResultTable().getControl();         
+        JTable table = (JTable)getValidateManifestResultTable().getControl();
         JScrollPane scroller = new JScrollPane(table);
         scroller.setPreferredSize(new Dimension(500,200));
+        scroller.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         add(scroller);
         
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        
     }
     public ValidateManifestParams getValidateManifestParams() {
         if(validateManifestParams == null){
@@ -150,15 +164,28 @@ public class ValidateManifestPanel extends JPanel{
             int i = 0;                        
             for(File manifestFile:getValidateManifestParams().getFiles()){
                 try{                    
-                    File baseDir = manifestFile.getParentFile();                                      
+                    File baseDir = manifestFile.getParentFile();    
+                    
+                    Algorithm algorithm = Algorithm.MD5;
+                    
+                    String manifestFileLowerCase = manifestFile.getName().toLowerCase();
+                    for(Algorithm alg:Algorithm.values()){                        
+                        if(manifestFileLowerCase.contains(alg.bagItAlgorithm)){                            
+                            algorithm = alg;
+                            break;
+                        }
+                    }
                     
                     ManifestReader manifestReader = bagPartFactory.createManifestReader(new FileInputStream(manifestFile),"UTF-8");
                     while(manifestReader.hasNext()){
                         FilenameFixity fixity = manifestReader.next();                            
                         File childFile = new File(baseDir,fixity.getFilename());                                                                        
-                        String checksumComputed = MessageDigestHelper.generateFixity(childFile,getValidateManifestParams().getAlgorithm());                            
+                        String checksumComputed = MessageDigestHelper.generateFixity(childFile,algorithm);                            
                         addValidateManifestResult(new ValidateManifestResult(manifestFile,childFile,fixity.getFixityValue(),checksumComputed));
-                    }                        
+                    }  
+                    
+                    int percent = (int)Math.floor( ((i+1) / ((float)getValidateManifestParams().getFiles().size()))*100);
+                    setProgress(percent);
                 }catch(FileNotFoundException e){
                     log.error(e.getMessage());
                 }

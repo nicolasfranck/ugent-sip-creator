@@ -14,7 +14,7 @@ public class ValidateBagsExecutor extends AbstractActionCommandExecutor{
     public void execute(){          
         BagValidationResultDialog dialog = new BagValidationResultDialog(SwingUtils.getFrame(),true);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
-        dialog.pack();
+        SwingUtils.centerOnParent(dialog,true);
         dialog.setVisible(true);
     }
 }

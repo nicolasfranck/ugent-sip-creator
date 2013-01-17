@@ -26,8 +26,6 @@ import javax.swing.event.TreeWillExpandListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
@@ -350,9 +348,8 @@ public class RenamePanel extends JPanel{
                     return label;
                 }  
             });            
-            table.setShowGrid(false);
+            table.setShowGrid(false);           
             
-            System.out.println("editor: "+table.getEditorComponent());
             
             table.getTableHeader().addMouseListener(new MouseAdapter(){
                 @Override
@@ -603,8 +600,10 @@ public class RenamePanel extends JPanel{
             resultTable = new JTable(getResultTableModel());
             resultTable.setFillsViewportHeight(true);
             resultTable.setRowSelectionAllowed(false);
+            /*
             RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(resultTableModel);
             resultTable.setRowSorter(sorter);
+            */
             resultTable.setRowHeight(20);
             resultTable.setDefaultRenderer(Object.class,new TableCellRenderer(){
                 @Override
@@ -625,12 +624,10 @@ public class RenamePanel extends JPanel{
                         String relativeTarget = pair.getTarget().getAbsolutePath().replace(parentDir+File.separatorChar,"");
                                                 
                         switch(col){                            
-                            case 0:                                
-                                //value = pair.getSource().getName();
+                            case 0:                                                                
                                 value = relativeSource;
                                 break;
-                            case 1:
-                                //value = pair.getTarget().getName();
+                            case 1:                                
                                 value = relativeTarget;
                                 break;
                             case 2:

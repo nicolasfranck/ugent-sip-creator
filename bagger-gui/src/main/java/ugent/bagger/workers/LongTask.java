@@ -8,7 +8,7 @@ import ugent.bagger.helper.SwingUtils;
  *
  * @author nicolas
  */
-public abstract class LongTask extends SwingWorker implements ProgressListener /*,Loggable*/{       
+public abstract class LongTask extends SwingWorker implements ProgressListener {       
     String lastNote = "";    
     public LongTask(){
         SwingUtils.ShowBusy();

@@ -47,7 +47,8 @@ public class RenumberParamsForm extends AbstractForm{
         builder.add(new JSpinnerNumberBinding(
             getFormModel(),"step",renumberParams.getStep(),1,Integer.MAX_VALUE,1
         ));              
-        builder.row(); 
+        builder.row();        
+        
         
         /*
         final Binding radixBinding = bf.createBoundComboBox("radix",Radix.values());

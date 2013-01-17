@@ -17,8 +17,7 @@ public class Renamer extends AbstractRenamer{
     String postfix;    
     boolean renameExtension = false;
     boolean recursive = false;
-    int patternFlags = Pattern.CANON_EQ;     
-    String [] doubleFileExtension = {"tar.gz","tar.bz2","tar.z","tar.xz","tar.lz"};
+    int patternFlags = Pattern.CANON_EQ;         
 
     public boolean isRecursive() {
         return recursive;

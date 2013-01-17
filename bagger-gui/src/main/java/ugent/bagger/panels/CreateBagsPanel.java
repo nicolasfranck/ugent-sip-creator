@@ -25,11 +25,15 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import org.springframework.richclient.command.ActionCommandExecutor;
+import org.springframework.richclient.core.DefaultMessage;
+import org.springframework.richclient.dialog.TitlePane;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -92,26 +96,35 @@ public final class CreateBagsPanel extends JPanel{
         this.createBagsParams = createBagsParams;           
     }
     protected JComponent createContentPane() {
+                
         JPanel panel = new JPanel();
         BoxLayout layout = new BoxLayout(panel,BoxLayout.Y_AXIS);
         panel.setLayout(layout);
-        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));       
         
-        JComponent form = getCreateBagsParamsForm().getControl();
-        form.setAlignmentX(LEFT_ALIGNMENT);
+        TitlePane titlePane = new TitlePane(5);  
+    	titlePane.setTitle(Context.getMessage("CreateBagsPanel.title"));
+    	titlePane.setMessage(new DefaultMessage(Context.getMessage("CreateBagsPanel.description")));        
+        JComponent titleComponent = titlePane.getControl();         
+        panel.add(titleComponent);
+        
+        panel.add(new JSeparator(), BorderLayout.SOUTH); 
+        
+        JComponent form = getCreateBagsParamsForm().getControl();       
+        form.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         panel.add(form);        
         
-        JComponent buttonPanel = createButtonPanel();
-        buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
+        JComponent buttonPanel = createButtonPanel();      
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         panel.add(buttonPanel);
         
+        getLabelStatistics().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         panel.add(getLabelStatistics());
         
-        JComponent table = getCreateBagResultTable().getControl();
-        table.setAlignmentX(LEFT_ALIGNMENT);
-        final Dimension tDimension = new Dimension(500,200);        
+        JTable table = (JTable)getCreateBagResultTable().getControl();
+        final Dimension tDimension = new Dimension(400,200);        
         JScrollPane scroller = new JScrollPane(table);
         scroller.setPreferredSize(tDimension);
+        scroller.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         panel.add(scroller);
         
         return panel;
@@ -235,7 +248,6 @@ public final class CreateBagsPanel extends JPanel{
     }    
     class NewBagsInPlaceWorker extends LongTask{
         public boolean isBadRWDir(File file){
-
             return file.isDirectory() && (!file.canRead() || !file.canWrite());            
         }
         public ArrayList<File> getBadRWDirs(File file){
@@ -255,8 +267,7 @@ public final class CreateBagsPanel extends JPanel{
         @Override
         protected Object doInBackground() throws Exception {          
             
-            BusyIndicator.showAt(CreateBagsPanel.this);
-            
+            BusyIndicator.showAt(CreateBagsPanel.this);            
             
             try{ 
                 int totalSuccess = 0;
@@ -281,8 +292,6 @@ public final class CreateBagsPanel extends JPanel{
                     int percent = (int)Math.floor( ((i+1) / ((float)getCreateBagsParams().getDirectories().size()))*100);                                                                        
                     
                     ArrayList<String>errors = new ArrayList<String>();
-                    
-                    
                     
                     //leesbaar? schrijfbaar?
                     if(isBadRWDir(file)){

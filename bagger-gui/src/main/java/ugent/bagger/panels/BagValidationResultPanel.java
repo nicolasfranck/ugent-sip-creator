@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import javax.swing.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.ActionCommandExecutor;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.core.DefaultMessage;
+import org.springframework.richclient.dialog.TitlePane;
 import ugent.bagger.forms.BagValidateParamsForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
@@ -29,7 +33,7 @@ import ugent.bagger.workers.DefaultWorker;
  * @author nicolas
  */
 public final class BagValidationResultPanel extends JPanel{
-    static Log log = LogFactory.getLog(BagValidationResultPanel.class);
+    static final Log log = LogFactory.getLog(BagValidationResultPanel.class);
     JComponent buttonPanel;
     ClassTable<BagValidationResult> bagValidationResultTable;         
     ArrayList<BagValidationResult>data = new ArrayList<BagValidationResult>();
@@ -72,6 +76,25 @@ public final class BagValidationResultPanel extends JPanel{
                     }
                 }                
             });
+            CommandGroup commandGroup = bagValidationResultTable.getPopupCommandGroup();
+            
+            if(commandGroup != null){
+                commandGroup.add(new ActionCommand("bagValidationResultOpenCommand"){            
+                    @Override
+                    protected void doExecuteCommand() {                
+                        BagValidationResult vresult = bagValidationResultTable.getSelected();
+                        if(vresult != null && vresult.getFile() != null){
+                            BagView.getInstance().openBagHandler.openExistingBag(vresult.getFile());
+                        }
+                    }
+                });
+                commandGroup.add(new ActionCommand("bagValidationResultShowErrorsCommand"){            
+                    @Override
+                    protected void doExecuteCommand() {
+                     
+                    }                    
+                });                
+            }
         }
         return bagValidationResultTable;
     }
@@ -80,16 +103,31 @@ public final class BagValidationResultPanel extends JPanel{
         this.bagValidationResultTable = bagValidationResultTable;
     }
     protected JComponent createContentPane() {
+        
         JPanel panel = new JPanel();        
         BoxLayout layout = new BoxLayout(panel,BoxLayout.Y_AXIS);
         panel.setLayout(layout);
         
-        JComponent form = getBagValidateParamsForm().getControl();
-        panel.add(form);
-        panel.add(new JScrollPane(getBagValidationResultTable().getControl()));        
-        panel.add(getButtonPanel());        
+        TitlePane titlePane = new TitlePane(3);  
+    	titlePane.setTitle(Context.getMessage("BagValidationResultPanel.title"));
+    	titlePane.setMessage(new DefaultMessage(Context.getMessage("BagValidationResultPanel.description")));        
+        JComponent titleComponent = titlePane.getControl();        
         
-        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        panel.add(titleComponent);
+        panel.add(new JSeparator(), BorderLayout.SOUTH);    
+        
+        JComponent form = getBagValidateParamsForm().getControl();
+        form.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        panel.add(form);
+        
+        JTable table = (JTable) getBagValidationResultTable().getControl();        
+        JScrollPane scrollerTable = new JScrollPane(table);
+        scrollerTable.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        panel.add(scrollerTable);        
+        
+        getButtonPanel().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        panel.add(getButtonPanel());               
+        
         
         return panel;
     }

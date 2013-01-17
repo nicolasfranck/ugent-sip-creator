@@ -39,7 +39,7 @@ public class CreateBagsHandler extends AbstractAction implements Progress/*,Logg
     
         CreateBagsDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),true);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
-        dialog.pack();
+        SwingUtils.centerOnParent(dialog,true);
         dialog.setVisible(true);
     }
     public void createPreBag(File dataFile, String bagItVersion,String [] ignoreFiles) {

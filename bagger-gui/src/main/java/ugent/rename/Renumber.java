@@ -3,6 +3,7 @@ package ugent.rename;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
+import ugent.bagger.helper.FUtils;
 
 /**
  *
@@ -10,18 +11,25 @@ import java.util.Comparator;
  */
 public class Renumber extends AbstractRenamer{
     int start = 0;
-    int end = 0;
+    int end = Integer.MAX_VALUE;
     int step = 1;
     StartPosType startPosType = StartPosType.ABSOLUTE;
-    int startPos = 0;
-    StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
+    int startPos = 0;    
+    StartPosRelative startPosRelative = StartPosRelative.END;
     int padding = 1;
     String separatorBefore = "";
     String separatorAfter = "";
     PaddingChar paddingChar = PaddingChar.NULL;
     PreSort preSort = PreSort.NO_SORT;
     Sequence sequence = new DecimalSequence();
+    boolean renameExtension = false;
 
+    public boolean isRenameExtension() {
+        return renameExtension;
+    }
+    public void setRenameExtension(boolean renameExtension) {
+        this.renameExtension = renameExtension;
+    }    
     public Sequence getSequence() {        
         return sequence;
     }
@@ -145,8 +153,32 @@ public class Renumber extends AbstractRenamer{
                 break;               
             }            
             String nameInputFile = inputFile.getName();
+            String originalNameInputFile = nameInputFile;
+            String extension = null;
             
-            int index = 0;           
+            
+            //extensie ook mee betrekken in rename?
+            if(inputFile.isFile() && !isRenameExtension()){
+                boolean isDoubleExtension = false;
+                //controleer speciale gevallen
+                for(String n:doubleFileExtension){
+                    if(nameInputFile.toLowerCase().endsWith("."+n)){
+                        //en niet 'extension = n', want de test wordt case-insensitive uitgevoerd..
+                        extension = nameInputFile.substring(nameInputFile.length() - n.length());
+                        isDoubleExtension = true;
+                        nameInputFile = nameInputFile.substring(0,nameInputFile.length() - n.length() - 1);
+                        break;
+                    }
+                }
+                if(!isDoubleExtension){
+                    int pos = nameInputFile.lastIndexOf('.');
+                    extension = pos >= 0 ? nameInputFile.substring(pos + 1):"";
+                    nameInputFile = pos >= 0 ? nameInputFile.substring(0,pos) : nameInputFile;                    
+                }                
+            }
+            System.out.println("source: "+inputFile+" ,nameInputFile: "+nameInputFile+", extension:"+extension);
+            int index = 0;                      
+            
             
             if(startPosType == StartPosType.ABSOLUTE){            
                 if((nameInputFile.length() - 1) < startPos){
@@ -158,10 +190,7 @@ public class Renumber extends AbstractRenamer{
                 if(startPosRelative == StartPosRelative.BEGIN){
                     index = 0;
                 }else if(startPosRelative == StartPosRelative.END){
-                    index = nameInputFile.length() - 1;
-                }else{
-                    int posDot = nameInputFile.lastIndexOf('.');
-                    index = posDot >= 0 ? posDot:nameInputFile.length() - 1;
+                    index = nameInputFile.length();
                 }
             }
             String left = index > 0 ? nameInputFile.substring(0,index):"";
@@ -169,6 +198,11 @@ public class Renumber extends AbstractRenamer{
             
             String formattedNumber = sequence.next();
             String nameOutputFile = left+separatorBefore+formattedNumber+separatorAfter+right;            
+            
+            //extensie ook mee betrekken in rename => extension er terug aan kleven
+            if(inputFile.isFile() && !isRenameExtension()){
+                nameOutputFile += (extension != null ? "."+extension : "");
+            }
         
             pairs.add(new RenameFilePair(
                 inputFile,
@@ -180,7 +214,7 @@ public class Renumber extends AbstractRenamer{
 
         return pairs;
     } 
-    /*
+    
     public static void main(String [] args){
         Renumber renumber = new Renumber();
         ArrayList<File>inputFiles = FUtils.listFiles("/home/njfranck/test");
@@ -188,12 +222,11 @@ public class Renumber extends AbstractRenamer{
         renumber.setSimulateOnly(true);
         renumber.setInputFiles(inputFiles);
         renumber.setStartPosType(StartPosType.RELATIVE);
-        renumber.setStartPosRelative(StartPosRelative.BEFORE_EXTENSION);
-        renumber.setStart(1);
-        renumber.setStep(4);
-        renumber.setPadding(4);
-        renumber.setEnd(200);
-        renumber.setPreSort(PreSort.FILE_DATE_MODIFIED);
+        renumber.setStartPosRelative(StartPosRelative.BEGIN);
+        renumber.setRenameExtension(true);
+        
+        renumber.setSeparatorAfter("-");
+        renumber.setPadding(10);        
         renumber.setRenameListener(new RenameListenerAdapter() {
             @Override
             public void onRenameSuccess(RenameFilePair pair, int index) {
@@ -201,5 +234,5 @@ public class Renumber extends AbstractRenamer{
             }            
         });
         renumber.rename();
-    }*/
+    }
 }

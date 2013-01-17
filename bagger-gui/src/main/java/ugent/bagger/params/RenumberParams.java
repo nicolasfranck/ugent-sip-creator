@@ -13,7 +13,7 @@ import ugent.rename.StartPosType;
  */
 public class RenumberParams {
     int start = 0;
-    int end = 0;
+    int end = Integer.MAX_VALUE;
     int step = 1;
     int startPos = 0;
     int padding = 1;
@@ -21,8 +21,8 @@ public class RenumberParams {
     boolean overWrite = false;
     boolean simulateOnly = false;
     ErrorAction onErrorAction = ErrorAction.undoAll;
-    StartPosType startPosType = StartPosType.RELATIVE;
-    StartPosRelative startPosRelative = StartPosRelative.BEFORE_EXTENSION;
+    StartPosType startPosType = StartPosType.RELATIVE;    
+    StartPosRelative startPosRelative = StartPosRelative.END;
     String separatorBefore = "-";
     String separatorAfter = "";
     PreSort preSort = PreSort.NO_SORT;

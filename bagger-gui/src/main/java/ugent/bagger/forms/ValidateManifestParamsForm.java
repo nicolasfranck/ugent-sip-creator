@@ -1,12 +1,10 @@
 package ugent.bagger.forms;
 
-import gov.loc.repository.bagit.Manifest;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.FileSelectBinding;
@@ -53,11 +51,7 @@ public class ValidateManifestParamsForm extends AbstractForm{
             SwingUtils.getFrame()
         );
         builder.add(fileSelectBinding);        
-        builder.row();       
-        
-        Binding bagInfoConverterBinding = bf.createBoundComboBox("algorithm",Manifest.Algorithm.values());        
-        builder.add(bagInfoConverterBinding);
-        builder.row();
+        builder.row();         
         
         getFormModel().validate();
        

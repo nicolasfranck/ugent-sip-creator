@@ -13,7 +13,7 @@ public class ValidateManifestExecutor extends AbstractActionCommandExecutor {
     public void execute() {        
         ValidateManifestDialog dialog = new ValidateManifestDialog(SwingUtils.getFrame(),true);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
-        dialog.pack();
+        SwingUtils.centerOnParent(dialog,true);
         dialog.setVisible(true);
     }
 }

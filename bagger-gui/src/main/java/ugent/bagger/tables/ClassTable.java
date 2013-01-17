@@ -22,7 +22,7 @@ import org.springframework.richclient.table.support.AbstractObjectTable;
  * @author nicolas
  */
 public class ClassTable<T> extends AbstractObjectTable {
-    static Log log = LogFactory.getLog(ClassTable.class);
+    static final Log log = LogFactory.getLog(ClassTable.class);
     ArrayList<T>data;
     EventList eventList;
     HashMap<String,ArrayList<PropertyChangeListener>>listeners = new HashMap<String,ArrayList<PropertyChangeListener>>();
@@ -41,7 +41,7 @@ public class ClassTable<T> extends AbstractObjectTable {
                     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transfer,transfer);                    
                 }
             }
-        };        
+        };         
         CommandGroup commandGroup = CommandGroup.createCommandGroup(testCommand);
         setPopupCommandGroup(commandGroup);        
     }        
@@ -49,7 +49,7 @@ public class ClassTable<T> extends AbstractObjectTable {
     protected void configureTable(JTable table) {
         table.setFillsViewportHeight(true);             
         table.setCellSelectionEnabled(true);
-        table.setRowHeight(25);
+        table.setRowHeight(25);        
     }
     @Override
     protected Object[] getDefaultInitialData(){               
