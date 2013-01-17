@@ -97,6 +97,8 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                     Document xsltDoc = XML.XMLToDocument(Context.getResource(filename));                    
                     Document transformedDoc = XSLT.transform(sourceDoc,xsltDoc);                                         
 
+                    
+                    
                     MdSec mdSec = MetsUtils.createMdSec(transformedDoc);                                              
                     firePropertyChange("mdSec",null,mdSec);            
 
@@ -107,6 +109,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                   
                 }catch(SAXException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.SAXException.description",
@@ -114,6 +117,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                   
                 }catch(IOException e){                      
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IOException.description",
@@ -121,6 +125,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     ); 
+                    
                 }catch(TransformerConfigurationException e){                  
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerConfigurationException.description",
@@ -128,6 +133,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                   
                 }catch(TransformerException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.TransformerException.description",
@@ -135,6 +141,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    
                 }catch(NoNamespaceException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.NoNamespaceException.description",
@@ -142,13 +149,15 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    
                 }catch(IllegalNamespaceException e){                    
                     error = Context.getMessage(
                         "XMLCrosswalkDialog.transform.IllegalNamespaceException.description",
                         new Object []{
                             file,e.getMessage()
                         }
-                    )+"\n";
+                    );
+                    
                 }catch(DtdNoFixFoundException e){                         
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
                         file
@@ -160,6 +169,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    
                 }
                 
                 SwingUtils.ShowDone();

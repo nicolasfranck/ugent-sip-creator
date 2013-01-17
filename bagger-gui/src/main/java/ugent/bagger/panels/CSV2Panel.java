@@ -23,6 +23,7 @@ import ugent.bagger.helper.CSVUtils;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.XML;
 import ugent.bagger.params.VelocityTemplate;
+import ugent.bagger.swing.JPopupTextArea;
 
 /**
  *
@@ -71,7 +72,7 @@ public class CSV2Panel extends JPanel{
     }
     public JTextArea getTextArea() {
         if(textArea == null){
-            textArea = new JTextArea();
+            textArea = new JPopupTextArea();
         }
         return textArea;
     }    

@@ -27,6 +27,7 @@ import ugent.bagger.filters.FileExtensionFilter;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.PremisUtils;
 import ugent.bagger.helper.SwingUtils;
+import ugent.bagger.swing.JPopupTextArea;
 import ugent.bagger.tables.EditMdSecPropertiesTable;
 import ugent.bagger.wizards.BagInfoImportWizard;
 import ugent.bagger.wizards.BagInfoImportWizardDialog;
@@ -140,7 +141,7 @@ public class MdSecPropertiesPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     Premis premis = BagView.getInstance().getBag().getPremis();
-                    JTextArea textArea = new JTextArea();
+                    JTextArea textArea = new JPopupTextArea();
                     textArea.setEditable(false);
                     textArea.setBackground(Color.WHITE);
                     textArea.setEnabled(true);
@@ -160,7 +161,7 @@ public class MdSecPropertiesPanel extends JPanel{
                     JDialog dialog = new JDialog(SwingUtils.getFrame(),true);
                     dialog.setContentPane(panel);
                     dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
-                    dialog.pack();
+                    SwingUtils.centerOnParent(dialog,true);
                     dialog.setVisible(true);
                 }                
             });

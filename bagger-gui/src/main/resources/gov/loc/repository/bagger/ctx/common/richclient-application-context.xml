@@ -549,7 +549,7 @@
                         <entry key="versionable" value="false" />
                         <entry key="versions">
                             <util:map>
-                                <entry key="default" value="metadata/xslt/MARC21slim2MODS3.xsl" />
+                                <entry key="default" value="metadata/xslt/MARC21slim2MODS3-4.xsl" />
                             </util:map>    
                         </entry>    
                     </util:map>    

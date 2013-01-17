@@ -158,6 +158,28 @@ public class ValidateManifestPanel extends JPanel{
             
             reset(new ArrayList<ValidateManifestResult>());
             
+            //controleer bestanden
+            for(File file:getValidateManifestParams().getFiles()){
+                if(!file.exists()){
+                    SwingUtils.ShowError(
+                        null,
+                        Context.getMessage("ValidateManifestWorker.FileNotFoundException.description",new Object []{file})
+                    );
+                    return null;
+                }
+            }
+            
+            
+            for(File file:getValidateManifestParams().getFiles()){
+                if(!file.canRead()){
+                    SwingUtils.ShowError(
+                        null,
+                        Context.getMessage("ValidateManifestWorker.FileNotReadableException.description",new Object []{file})
+                    );
+                    return null;
+                }
+            }
+            
             BagFactory bagFactory = new BagFactory();            
             BagPartFactoryImpl bagPartFactory = new BagPartFactoryImpl(bagFactory,new BagConstantsImpl());
             
@@ -176,7 +198,7 @@ public class ValidateManifestPanel extends JPanel{
                         }
                     }
                     
-                    ManifestReader manifestReader = bagPartFactory.createManifestReader(new FileInputStream(manifestFile),"UTF-8");
+                    ManifestReader manifestReader = bagPartFactory.createManifestReader(new FileInputStream(manifestFile),"UTF8");
                     while(manifestReader.hasNext()){
                         FilenameFixity fixity = manifestReader.next();                            
                         File childFile = new File(baseDir,fixity.getFilename());                                                                        
@@ -188,6 +210,7 @@ public class ValidateManifestPanel extends JPanel{
                     setProgress(percent);
                 }catch(FileNotFoundException e){
                     log.error(e.getMessage());
+                    
                 }
                 int percent = (int)Math.floor( ((++i) / ((float)getValidateManifestParams().getFiles().size()))*100);                    
                 setProgress(percent);                                

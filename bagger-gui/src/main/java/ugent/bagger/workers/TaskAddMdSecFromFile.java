@@ -60,32 +60,39 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
             }catch(IOException e){                                  
                 error = Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
                     file,e.getMessage()
-                });                
+                });   
+                
             }catch(SAXException e){                                  
                 error = Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
                     file,e.getMessage()
-                });                
+                });       
+                
             }catch(ParserConfigurationException e){                                  
                 error = Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
                     e.getMessage()
                 });
+               
             }catch(IllegalNamespaceException e){                                
                 error = Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
                     file,e.getNamespace()
                 });
+                
             }
             catch(NoNamespaceException e){                                                 
                 error = Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
                     file
                 });
+               
             }catch(DtdNoFixFoundException e){                                    
                 error = Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
                     file
                 });
+               
             }catch(Exception e){                                        
                 error = Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
                     file
                 });
+                
             }
             
             if(error != null){
