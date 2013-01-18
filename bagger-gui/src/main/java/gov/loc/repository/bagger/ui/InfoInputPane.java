@@ -22,16 +22,8 @@ public final class InfoInputPane extends JTabbedPane {
     BagInfoForm bagInfoForm;    
     HierarchicalFormModel infoFormModel;    
     Mets mets;
-    MdSecPanel metsPanel;
-    //AmdSecsPanel amdSecsPanel;    
-     
-    /*
-    public AmdSecsPanel getAmdSecsPanel() {
-        if(amdSecsPanel == null){            
-            amdSecsPanel = new AmdSecsPanel((ArrayList<AmdSec>)getMets().getAmdSec());
-        }
-        return amdSecsPanel;
-    }*/
+    MdSecPanel metsPanel;    
+    
     public MdSecPanel getMdSecPanel(){
         if(metsPanel == null){
             metsPanel = new MdSecPanel((ArrayList<MdSec>)getMets().getDmdSec(),"");            
@@ -57,8 +49,7 @@ public final class InfoInputPane extends JTabbedPane {
     }
     public void resetMets(Mets mets){        
         setMets(mets);
-        getMdSecPanel().reset((ArrayList<MdSec>)mets.getDmdSec());
-        //getAmdSecsPanel().reset((ArrayList<AmdSec>)mets.getAmdSec());
+        getMdSecPanel().reset((ArrayList<MdSec>)mets.getDmdSec());        
         getBagView().getBag().setMets(mets);
     }
     public BagView getBagView(){
@@ -113,12 +104,10 @@ public final class InfoInputPane extends JTabbedPane {
         });
         setActionMap(am);                
     }
-    public void enableForms(boolean b) {              
-    	
+    public void enableForms(boolean b){                  	
     	setEnabled(b);        
         getBagInfoForm().setEnabled(b);
-        getMdSecPanel().setEnabled(b);
-        //getAmdSecsPanel().setEnabled(b);
+        getMdSecPanel().setEnabled(b);        
     	invalidate();
     }    
     public void populateForms(){    	                    	
@@ -143,19 +132,11 @@ public final class InfoInputPane extends JTabbedPane {
             null,
             getBagInfoForm().getControl(),
             Context.getMessage("infoInputPane.baginfoTab.tooltip")
-        );
-        /*
-        addTab(
-            Context.getMessage("infoInputPane.amdSecTab.label"),
-            null,
-            getAmdSecsPanel(),
-            Context.getMessage("infoInputPane.amdSecTab.tooltip")                
-        );*/           
+        );                       
         
-        Dimension dim = getPreferredSize();
-        Dimension mdim = new Dimension(600,(int)dim.getHeight());
-        setMinimumSize(mdim);
-        
+        Dimension mdim = new Dimension(550,600);        
+        setPreferredSize(mdim);
+        setMinimumSize(mdim);        
     }
     public void verifyForms(){                      
         if(!getBagInfoForm().hasErrors()){

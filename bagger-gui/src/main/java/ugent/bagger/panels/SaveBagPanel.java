@@ -7,6 +7,7 @@ import gov.loc.repository.bagit.Manifest.Algorithm;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -56,6 +57,11 @@ public final class SaveBagPanel extends JPanel{
                     default:
                         saveBagParams.setBagMode(BagMode.NO_MODE);
                 }                
+            }else{
+                ArrayList<String>bagIds = metsBag.getInfo().getFieldMap().get("Bag-Id");
+                if(!bagIds.isEmpty()){                   
+                    saveBagParams.getOutputFile().add(new File(SwingUtils.getLastDirectory(),bagIds.get(0)));
+                }
             }
         }
         return saveBagParams;

@@ -12,7 +12,7 @@ import org.springframework.binding.validation.ValidationResults;
 import ugent.bagger.forms.MdSecForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.XML;
-import ugent.bagger.swing.JPopupTextArea;
+
 
 /**
  *
@@ -33,7 +33,7 @@ final public class EditMdSecPanel extends JPanel{
 
     public JTextArea getTextArea() {
         if(textArea == null){
-            textArea = new JPopupTextArea();       
+            textArea = new JTextArea();       
             textArea.setEditable(false);
             textArea.setEnabled(true);
             textArea.setBackground(Color.WHITE);

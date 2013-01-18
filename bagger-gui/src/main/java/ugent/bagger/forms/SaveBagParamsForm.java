@@ -33,14 +33,17 @@ public class SaveBagParamsForm extends AbstractForm{
         TableFormBuilder builder = new TableFormBuilder(bf);        
         builder.setLabelAttributes("colSpan=1 align=left");        
         
+        SaveBagParams saveBagParams = (SaveBagParams)getFormObject();
         //outputFile        
+        
         JFileChooser fileChooser = SwingUtils.createFileChooser(
              null,
              null,
              JFileChooser.FILES_AND_DIRECTORIES,
              true,
              JFileChooser.SAVE_DIALOG
-        );          
+        );   
+               
         Binding fileSelectBinding = new FileSelectBinding(
             getFormModel(),
             "outputFile",

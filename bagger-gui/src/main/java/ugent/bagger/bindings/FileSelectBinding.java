@@ -86,8 +86,10 @@ public final class FileSelectBinding extends CustomBinding{
                 files = new File [] {};
             }
         }        
-        if(files.length > 0){                   
-            getValueModel().setValue(new ArrayList<File>(Arrays.asList(files)));                        
+        if(files.length > 0){     
+            ArrayList<File>newList = new ArrayList<File>(Arrays.asList(files));
+            getValueModel().setValue(newList);
+            valueModelChanged(newList);
         }
     }
     protected void setField(JTextField field) {
@@ -101,7 +103,10 @@ public final class FileSelectBinding extends CustomBinding{
             getField().setText(String.format(getTemplate(),0));
         }else{            
             String t = list.size() > 1 ? String.format(getTemplate(),list.size()):list.get(0).getAbsolutePath();
-            getField().setText(t);        
+            getField().setText(t); 
+            if(!list.isEmpty()){
+                fileChooser.setSelectedFile(list.get(0));
+            }
         }
         getField().invalidate();        
     }

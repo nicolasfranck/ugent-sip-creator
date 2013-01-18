@@ -45,7 +45,7 @@ public class SwingUtils {
     static File lastDirectory;
     static ArrayList<SwingWorker>workers = new ArrayList<SwingWorker>();
 
-    protected static File getLastDirectory() {
+    public static File getLastDirectory() {
         if(lastDirectory == null){
             String home = System.getProperty("user.home");
             lastDirectory = home != null && !home.isEmpty() ? new File(home) : File.listRoots()[0];            

@@ -7,7 +7,11 @@ import ugent.bagger.helper.Context;
  * @author nicolas
  */
 public enum PreSort {
-    NO_SORT("NO_SORT"),FILE_NAME("FILE_NAME"),FILE_DATE_MODIFIED("FILE_DATE_MODIFIED");
+    NO_SORT("NO_SORT"),
+    FILE_NAME_ASC("FILE_NAME_ASC"),
+    FILE_NAME_DESC("FILE_NAME_DESC"),
+    FILE_DATE_MODIFIED_ASC("FILE_DATE_MODIFIED_ASC"),
+    FILE_DATE_MODIFIED_DESC("FILE_DATE_MODIFIED_DESC");
     String c;
     PreSort(String c){
         this.c = c;

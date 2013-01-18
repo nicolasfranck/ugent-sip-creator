@@ -23,9 +23,17 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     static void init(){               
                 
         //set dimensions
+        
+        
+        /*
         Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                
+        if(dim.getWidth() > 1024){
+            dim = new Dimension(1024,768);
+        }
+        
         SwingUtils.getFrame().setPreferredSize(dim);
         SwingUtils.getFrame().setBounds(0,0,(int)dim.getWidth(),(int)dim.getHeight());                                
+        */        
             
         //set ui-manager keys
         Set<String>keys = SwingUtils.getUIManagerMessages().keySet();

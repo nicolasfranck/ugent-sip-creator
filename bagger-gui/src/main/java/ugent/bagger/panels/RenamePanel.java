@@ -1,5 +1,6 @@
 package ugent.bagger.panels;
 
+import ca.odell.glazedlists.gui.AbstractTableComparatorChooser;
 import gov.loc.repository.bagger.ui.BagView;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.naming.ldap.SortKey;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -93,7 +95,7 @@ public class RenamePanel extends JPanel{
     JTree fileSystemTree;
     LazyTreeNode fileSystemTreeNode;
     static FileSystemView fsv = FileSystemView.getFileSystemView();    
-    ClassTable<AbstractFile> fileTable;
+    FileTable fileTable;
     JScrollPane scrollerFileTable;
     JPanel panelFileTable;
     ArrayList<File>selectedFiles = new ArrayList<File>();
@@ -231,10 +233,10 @@ public class RenamePanel extends JPanel{
         return afiles;        
         
     }
-    public ClassTable<AbstractFile> getFileTable() {
+    public FileTable getFileTable() {
         if(fileTable == null){       
             final String [] columns = {"name","mimeType","lastModifiedDate"};
-            fileTable = new ClassTable<AbstractFile>(                
+            fileTable = new FileTable(                
                 new ArrayList<AbstractFile>(),
                 columns,
                 "fileTable"
@@ -348,19 +350,33 @@ public class RenamePanel extends JPanel{
                     return label;
                 }  
             });            
-            table.setShowGrid(false);           
-            
+            table.setShowGrid(false);
             
             table.getTableHeader().addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent mouseEvent) {
                     int index = table.convertColumnIndexToModel(table.columnAtPoint(mouseEvent.getPoint()));
-                    if(index >= 0){                        
-                        if(columns[index].equals("name")){
-                            getRenumberParamsForm().getValueModel("preSort").setValue(PreSort.FILE_NAME);
-                        }else if(columns[index].equals("lastModifiedDate")){
-                            getRenumberParamsForm().getValueModel("preSort").setValue(PreSort.FILE_DATE_MODIFIED);
-                        }
+                    if(index >= 0){ 
+                        try{          
+                            
+                            List<Integer>sortingColumns = fileTable.getSorter().getSortingColumns();                            
+                            if(sortingColumns.isEmpty()){
+                                return;
+                            }
+                            boolean isReverse = fileTable.getSorter().isColumnReverse(sortingColumns.get(0));
+                            
+                            PreSort preSort = PreSort.NO_SORT;
+                            if(columns[index].equals("name")){
+                                preSort = !isReverse ? PreSort.FILE_NAME_ASC : PreSort.FILE_NAME_DESC;
+
+                            }else if(columns[index].equals("lastModifiedDate")){
+                                preSort = !isReverse ? PreSort.FILE_DATE_MODIFIED_ASC : PreSort.FILE_DATE_MODIFIED_DESC;
+                            }
+
+                            getRenumberParamsForm().getValueModel("preSort").setValue(preSort);
+                        }catch(Exception e){
+                            log.error(e.getMessage());                            
+                        }                        
                     }
                 }                
             });
@@ -394,9 +410,7 @@ public class RenamePanel extends JPanel{
             setStatusMessage(file.getAbsolutePath());
         }
     }
-    public void setFileTable(ClassTable<AbstractFile> fileTable) {
-        this.fileTable = fileTable;
-    }
+    
     public RenamePanel(){
         setLayout(new BorderLayout());        
         init();             
@@ -1262,5 +1276,13 @@ public class RenamePanel extends JPanel{
             }            
             return null;
         }       
+    }
+    public static class FileTable extends ClassTable<AbstractFile>{
+        public FileTable(ArrayList<AbstractFile>files,String [] cols,String id){
+            super(files,cols,id);            
+        }
+        public AbstractTableComparatorChooser getSorter(){
+            return getTableSorter();
+        }
     }
 }

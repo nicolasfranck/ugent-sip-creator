@@ -2,7 +2,10 @@ package ugent.rename;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import ugent.bagger.helper.FUtils;
 
 /**
@@ -35,19 +38,7 @@ public class Renumber extends AbstractRenamer{
     }
     public void setSequence(Sequence sequence) {
         this.sequence = sequence;
-    }
-    static final Comparator fileNameSorter =  new Comparator<File>(){
-        @Override
-        public int compare(File f1,File f2){                        
-            return f1.getName().compareToIgnoreCase(f2.getName());
-        }
-    };
-    static final Comparator fileDateModifiedSorter =  new Comparator<File>(){
-        @Override
-        public int compare(File f1,File f2){                        
-            return (int)(f1.lastModified() - f2.lastModified());            
-        }
-    };
+    }   
 
     public PreSort getPreSort() {
         return preSort;
@@ -216,7 +207,7 @@ public class Renumber extends AbstractRenamer{
     } 
     
     public static void main(String [] args){
-        Renumber renumber = new Renumber();
+        /*Renumber renumber = new Renumber();
         ArrayList<File>inputFiles = FUtils.listFiles("/home/njfranck/test");
         System.out.println("num files: "+inputFiles.size());
         renumber.setSimulateOnly(true);
@@ -233,6 +224,18 @@ public class Renumber extends AbstractRenamer{
                 System.out.println(pair.getSource()+" => "+pair.getTarget());
             }            
         });
-        renumber.rename();
+        renumber.rename();*/
+        ArrayList<File>files = new ArrayList<File>(Arrays.asList(new File("/home/njfranck/TESTDATA_TIM/2.Hernummer/5.sorteer").listFiles()));
+        for(File file:files){
+            
+            System.out.println(file+" => "+new Date(file.lastModified()).toString()+"("+file.lastModified()+")");
+        }
+        FileSorter.sort(files,PreSort.FILE_DATE_MODIFIED_DESC);
+        System.out.println("after sorting:");
+        
+        for(File file:files){
+            
+            System.out.println(file+" => "+new Date(file.lastModified()).toString()+"("+file.lastModified()+")");
+        }
     }
 }

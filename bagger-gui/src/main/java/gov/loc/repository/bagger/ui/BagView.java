@@ -37,6 +37,7 @@ public final class BagView extends DefaultView {
     JComponent renameComponent;
     JLabel renameLabel;
     
+    
     public StartNewBagHandler startNewBagHandler = new StartNewBagHandler();
     public StartExecutor startExecutor = new StartExecutor();
     public OpenBagHandler openBagHandler = new OpenBagHandler();
@@ -124,7 +125,9 @@ public final class BagView extends DefaultView {
             JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getInfoFormsPane());
             splitter.setDividerLocation(0.3);
             splitter.setResizeWeight(0.5);
-            mainPanel = new JScrollPane(splitter);            
+            mainPanel = new JScrollPane(splitter); 
+            Dimension dim = new Dimension(1024,768);
+            mainPanel.setPreferredSize(dim);
         }
         return mainPanel;
     }
@@ -171,14 +174,14 @@ public final class BagView extends DefaultView {
         }
         return bag;
     }   
-    
+    /*
     public Dimension getMinimumSize() {
         return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public Dimension getPreferredSize() {
         return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }    
+    } */   
     public ImageIcon getPropertyImage(String name) {        
         return new ImageIcon(getImageSource().getImage(name));        
     }

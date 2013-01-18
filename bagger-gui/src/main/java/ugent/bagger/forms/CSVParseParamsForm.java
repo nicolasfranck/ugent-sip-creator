@@ -58,8 +58,8 @@ public class CSVParseParamsForm extends AbstractForm{
         builder.add(bindingQuoteChar);
         builder.row();        
         
-        builder.add("surroundingSpacesNeedQuotes");
-        builder.row();
+        /*builder.add("surroundingSpacesNeedQuotes");
+        builder.row();*/
         return builder.getForm();
     }
 }
