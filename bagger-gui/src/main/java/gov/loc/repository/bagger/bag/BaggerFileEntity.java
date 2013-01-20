@@ -34,11 +34,9 @@ public class BaggerFileEntity {
 
     public BaggerFileEntity(){
     }
-
-    public BaggerFileEntity(File f) {
-        this.rootSrc = f;
+    public BaggerFileEntity(File rootSrc) {
+        this.rootSrc = rootSrc;
     }
-
     public BaggerFileEntity(File rootParent, File rootSrc, File bagParent) {
         this.rootParent = rootParent;
         this.rootSrc = rootSrc;
@@ -49,7 +47,6 @@ public class BaggerFileEntity {
             isInBag = true;
         }
     }
-
     public BaggerFileEntity(File rootParent, File rootSrc, File bagParent, File bagSrc) {
         this.rootParent = rootParent;
         this.rootSrc = rootSrc;
@@ -58,70 +55,56 @@ public class BaggerFileEntity {
             isInBag = true;
         }
     }
-
     @Override
     public String toString() {
-        return this.getNormalizedName();
+        return getNormalizedName();
     }
-    public void setNormalizedName(String name) {
-        this.normalizedName = name;
+    public void setNormalizedName(String normalizedName) {
+        this.normalizedName = normalizedName;
     }
-
     public String getNormalizedName() {
-        return this.normalizedName;
+        return normalizedName;
     }
 
-    public void setRootParent(File file) {
-        this.rootParent = file;
+    public void setRootParent(File rootParent) {
+        this.rootParent = rootParent;
     }
-
     public File getRootParent() {
-        return this.rootParent;
+        return rootParent;
     }
-
-    public void setRootSrc(File file) {
-        this.rootSrc = file;
+    public void setRootSrc(File rootSrc) {
+        this.rootSrc = rootSrc;
     }
-
     public File getRootSrc() {
-        return this.rootSrc;
+        return rootSrc;
     }
-
     public void setBagSrc(File bagDir, File src) {
         this.bagSrc = new File(bagDir,src.getPath());       
     }
-
-    public void setBagSrc(File file) {
-        this.bagSrc = file;
+    public void setBagSrc(File bagSrc) {
+        this.bagSrc = bagSrc;
     }
-
     public File getBagSrc() {
         return bagSrc;
     }
-
-    public void setIsInBag(boolean b) {
-        this.isInBag = b;
+    public void setIsInBag(boolean isInBag) {
+        this.isInBag = isInBag;
     }
-
     public boolean getIsInBag() {
         return isInBag;
     }
-
-    public void setIsIncluded(boolean b) {
-        this.isIncluded = b;
+    public void setIsIncluded(boolean isIncluded) {
+        this.isIncluded = isIncluded;
     }
-
     public boolean getIsIncluded() {
         return isIncluded;
     }
-
     public boolean copyRootToBag() {
         boolean success = false;
         // TODO perform the copy
-        this.isInBag = true;
+        isInBag = true;
         return success;
     }
-
     public static String removeBasePath(String basePath, String filename) throws RuntimeException {
         if (filename == null) {
             throw new RuntimeException("Cannot remove basePath from null");
@@ -129,22 +112,19 @@ public class BaggerFileEntity {
         String normBasePath = normalize(basePath);
         String normFilename = normalize(filename);
         String filenameWithoutBasePath = null;
-        if (basePath == null) {
+        if(basePath == null){
             filenameWithoutBasePath = normFilename;
-        }
-        else {
-            if (! normFilename.startsWith(normBasePath)) {
+        }else{
+            if(! normFilename.startsWith(normBasePath)){
                 throw new RuntimeException(MessageFormat.format("Cannot remove basePath {0} from {1}", basePath, filename));
             }
-            if (normBasePath.equals(normFilename)) {
+            if(normBasePath.equals(normFilename)){
                 filenameWithoutBasePath = "";
-            }
-            else {
+            }else{
                 int delta;
-                if (normBasePath.endsWith("/") || normBasePath.endsWith("\\")) {
+                if(normBasePath.endsWith("/") || normBasePath.endsWith("\\")){
                     delta = 0;
-                }
-                else {
+                }else{
                     delta = 1;
                 }
                 filenameWithoutBasePath = normFilename.substring(normBasePath.length() + delta);                

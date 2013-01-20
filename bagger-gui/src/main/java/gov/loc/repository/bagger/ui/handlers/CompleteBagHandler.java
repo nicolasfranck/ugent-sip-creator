@@ -119,14 +119,7 @@ public class CompleteBagHandler extends Handler {
                         }
                     }
 
-                    /*
-                    SwingUtils.ShowError(
-                        Context.getMessage("CompleteBagHandler.validationFailed.title"),
-                        Context.getMessage("CompleteBagHandler.validationFailed.label",new Object [] {
-                            payloadsMissing.size(),tagsMissing.size(),filesNotInManifest.size()
-                        })
-                    );*/
-                    
+                                        
                     JDialog dialog = new JDialog(SwingUtils.getFrame(),true);
                     dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     
@@ -148,7 +141,7 @@ public class CompleteBagHandler extends Handler {
                     BagErrorPanel panel = new BagErrorPanel(missingFiles,fixityFailure,newFiles);                    
                     
                     dialog.setContentPane(panel);
-                    dialog.pack();
+                    SwingUtils.centerOnParent(dialog,true);
                     dialog.setVisible(true);
                     
                 }else {

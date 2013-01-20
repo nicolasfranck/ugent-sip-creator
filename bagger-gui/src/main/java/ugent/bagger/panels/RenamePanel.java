@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.naming.ldap.SortKey;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -135,6 +134,9 @@ public class RenamePanel extends JPanel{
     public JLabel getLastFileLabel() {
         if(lastFileLabel == null){
             lastFileLabel = new JLabel(getLastFile().getAbsolutePath(),SwingConstants.RIGHT);                                    
+            lastFileLabel.setForeground(
+                getLastFile().canRead() && getLastFile().canWrite() ? Color.BLACK : Color.red
+            );
         }
         return lastFileLabel;
     }    
@@ -1011,6 +1013,9 @@ public class RenamePanel extends JPanel{
     protected void setLastFile(File lastFile) {                 
         getParentFileButton().setEnabled(lastFile.getParentFile() != null);     
         getLastFileLabel().setText(lastFile.getAbsolutePath());
+        getLastFileLabel().setForeground(
+            lastFile.canRead() && lastFile.canWrite() ? Color.BLACK : Color.red
+        );
         this.lastFile = lastFile;        
     }       
     class TaskRenumber extends DefaultWorker {

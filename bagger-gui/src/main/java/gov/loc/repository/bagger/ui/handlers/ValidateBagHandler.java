@@ -114,19 +114,6 @@ public class ValidateBagHandler extends Handler {
                         }
                     }
                     
-                    /*SwingUtils.ShowError(
-                        Context.getMessage("ValidateBagHandler.validationFailed.title"),
-                        Context.getMessage(
-                            "ValidateBagHandler.validationFailed.label",new Object [] {
-                                payloadsMissing.size(),
-                                tagsMissing.size(),
-                                payloadsFixityFailure.size(),
-                                tagsFixityFailure.size(),
-                                filesNotInManifest.size()
-                            }
-                        )
-                    );*/
-                    
                     //rapport
                     
                     JDialog dialog = new JDialog(SwingUtils.getFrame(),true);
@@ -156,7 +143,7 @@ public class ValidateBagHandler extends Handler {
                     BagErrorPanel panel = new BagErrorPanel(missingFiles,fixityFailure,newFiles);                    
                     
                     dialog.setContentPane(panel);
-                    dialog.pack();
+                    SwingUtils.centerOnParent(dialog,true);
                     dialog.setVisible(true);
                     
                     log.error(Context.getMessage("ValidateBagHandler.title"));

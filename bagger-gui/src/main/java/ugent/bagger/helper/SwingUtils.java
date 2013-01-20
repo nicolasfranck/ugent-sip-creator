@@ -220,9 +220,10 @@ public class SwingUtils {
     public static void ShowMessage(String title,String message,int type){
         JOptionPane.showMessageDialog(getFrame(),message,title,type);
     }
-    public static StatusBar getStatusBar(){
+    public static StatusBar getStatusBar(){        
         return Application.instance().getActiveWindow().getStatusBar();
     }    
+    
     public static void StatusMessage(String message){
         getStatusBar().setMessage(message);        
     }

@@ -70,10 +70,9 @@ public final class BagTree extends JTree {
             List<DefaultMutableTreeNode>structuredList = FUtils.listToStructure(payload.toArray(new String [] {}));                        
             
             if(structuredList.size() > 0){
-                if(isParent) {
+                if(isParent){
                     parentNode = structuredList.get(0);
-                }
-                else {
+                }else{
                     parentNode.add(structuredList.get(0));
                 }
             }
@@ -92,10 +91,9 @@ public final class BagTree extends JTree {
             
             DefaultMutableTreeNode node = FUtils.toTreeNode(file);            
            
-            if(isParent) {
+            if(isParent){
                 parentNode = node;
-            }
-            else {
+            }else{
                 parentNode.add(node);
             }
             initialize();

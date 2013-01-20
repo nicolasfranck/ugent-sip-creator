@@ -134,7 +134,7 @@ public final class InfoInputPane extends JTabbedPane {
             Context.getMessage("infoInputPane.baginfoTab.tooltip")
         );                       
         
-        Dimension mdim = new Dimension(550,600);        
+        Dimension mdim = new Dimension(550,400);        
         setPreferredSize(mdim);
         setMinimumSize(mdim);        
     }

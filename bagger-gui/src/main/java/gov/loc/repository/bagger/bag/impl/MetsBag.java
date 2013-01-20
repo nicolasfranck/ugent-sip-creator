@@ -115,7 +115,6 @@ public final class MetsBag extends DefaultBag{
             isBuildTagManifest(true);
             generateManifestFiles();
             isBuildPayloadManifest(true);
-            
              
           
         }catch(Exception e){             

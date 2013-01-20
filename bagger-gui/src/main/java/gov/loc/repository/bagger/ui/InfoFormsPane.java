@@ -250,19 +250,15 @@ public final class InfoFormsPane extends JPanel {
                
         return pane;
     }
-
     public void setBagVersion(String value) {
     	getBagVersionValue().setText(value);
     }
-
     public String getBagVersion() {
     	return getBagVersionValue().getText();
     }
-    
     public void setHoley(String value) {
     	getHoleyValue().setText(value);
     }
-
     public void setBagName(String name) {
     	if (name == null || name.length() < 1) {
             return;

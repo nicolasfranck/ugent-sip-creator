@@ -66,15 +66,11 @@ public class DefaultBag {
     protected long totalSize = 0;
     protected Bag bilBag;
     protected DefaultBagInfo bagInfo = null;   
-    protected BaggerFetch fetch;    
-    
+    protected BaggerFetch fetch;
     protected String versionString = null;    
     
     protected ArrayList<String>deletedDirectories = new ArrayList<String>();
-    
-    
     protected boolean changed = false;
-
 
     public DefaultBag() throws BagFetchForbiddenException, FileSystemException, BagNoDataException {            
         this(null,Version.V0_96.versionString);

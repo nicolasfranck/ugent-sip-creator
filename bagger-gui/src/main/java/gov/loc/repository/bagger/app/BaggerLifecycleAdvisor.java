@@ -2,7 +2,6 @@ package gov.loc.repository.bagger.app;
 
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.util.Set;
 import javax.swing.UIManager;

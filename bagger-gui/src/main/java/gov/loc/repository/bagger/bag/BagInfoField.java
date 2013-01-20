@@ -22,7 +22,7 @@ public final class BagInfoField {
     boolean isRequired = false;
     boolean isRequiredvalue = false;
     boolean isEditable = true;
-    boolean isProfile = false;
+    //boolean isProfile = false;
 
     public BagInfoField() {
     	
@@ -99,19 +99,18 @@ public final class BagInfoField {
     public boolean isRequiredvalue() {
     	return this.isRequiredvalue;
     }
-
+    /*
     public void isProfile(boolean b) {
     	this.isProfile = b;
-    }
-    
+    }    
     public boolean isProfile() {
     	return this.isProfile;
-    }
-    
+    }*/    
     public void buildElements(List<String> elements){
         this.elements = elements;
     }   
    
+    /*
     @Override
     public String toString() {
     	StringBuilder sb = new StringBuilder();
@@ -126,5 +125,5 @@ public final class BagInfoField {
     	sb.append("isEnabled: ").append(isEnabled()).append("\n");
     	sb.append("isEditable: ").append(isEditable()).append("\n");
     	return sb.toString();
-    }
+    }*/
 }

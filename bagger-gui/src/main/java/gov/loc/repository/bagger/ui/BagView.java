@@ -23,8 +23,6 @@ public final class BagView extends DefaultView {
     static final Log log = LogFactory.getLog(BagView.class);
     static BagView instance;
     
-    int DEFAULT_WIDTH = 1024;
-    int DEFAULT_HEIGHT = 768;       
     MetsBag bag;    
     BagTree bagPayloadTree;
     InfoFormsPane infoFormsPane;
@@ -36,7 +34,6 @@ public final class BagView extends DefaultView {
     JComponent leftPanel;    
     JComponent renameComponent;
     JLabel renameLabel;
-    
     
     public StartNewBagHandler startNewBagHandler = new StartNewBagHandler();
     public StartExecutor startExecutor = new StartExecutor();
@@ -54,9 +51,9 @@ public final class BagView extends DefaultView {
     public CompleteExecutor completeExecutor = new CompleteExecutor();    
     public ClearBagHandler clearBagHandler = new ClearBagHandler();
     public ClearBagExecutor clearExecutor = new ClearBagExecutor();
-    public AddDataHandler addDataHandler;
+    public AddDataHandler addDataHandler = new AddDataHandler();    	
     public AddDataExecutor addDataExecutor = new AddDataExecutor();
-    public RemoveDataHandler removeDataHandler;
+    public RemoveDataHandler removeDataHandler = new RemoveDataHandler();
     public RenameExecutor renameExecutor = new RenameExecutor();
     public ExportExecutor exportExecutor = new ExportExecutor();
     public ValidateManifestExecutor validateManifestExecutor = new ValidateManifestExecutor();
@@ -89,8 +86,7 @@ public final class BagView extends DefaultView {
                     }                            
                 }
             });             
-        }
-        
+        }        
         return renameLabel;
     }
     public JComponent getRenameComponent() {
@@ -105,36 +101,24 @@ public final class BagView extends DefaultView {
         }
         return renameComponent;
     }
-
     public void setRenameComponent(JComponent renameComponent) {
         this.renameComponent = renameComponent;
     }
-    
     public JComponent getLeftPanel() {
         if(leftPanel == null){
             leftPanel = createBagPanel();
         }
         return leftPanel;
-    }
-    public void setLeftPanel(JComponent leftPanel) {
-        this.leftPanel = leftPanel;
     }    
-    
     public JComponent getMainPanel(){        
         if(mainPanel == null){
             JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,getLeftPanel(),getInfoFormsPane());
             splitter.setDividerLocation(0.3);
-            splitter.setResizeWeight(0.5);
-            mainPanel = new JScrollPane(splitter); 
-            Dimension dim = new Dimension(1024,768);
-            mainPanel.setPreferredSize(dim);
+            splitter.setResizeWeight(0.5);            
+            mainPanel = new JScrollPane(splitter);             
         }
         return mainPanel;
-    }
-    public void setMainPanel(JSplitPane mainPanel) {
-        this.mainPanel = mainPanel;
-    }          
-    
+    }       
     public BagView() {
         //verhinder meer dan één instantie
         Assert.isNull(instance);
@@ -148,8 +132,7 @@ public final class BagView extends DefaultView {
     }
     public void setBagButtonPanel(JPanel bagButtonPanel) {
         this.bagButtonPanel = bagButtonPanel;
-    }    
-    
+    }
     public InfoFormsPane getInfoFormsPane() {
         if(infoFormsPane == null){
             infoFormsPane = new InfoFormsPane();
@@ -157,15 +140,12 @@ public final class BagView extends DefaultView {
         }
         return infoFormsPane;
     }
-
     public void setInfoFormsPane(InfoFormsPane infoFormsPane) {
         this.infoFormsPane = infoFormsPane;
-    }    
-    
+    }
     public void setBag(MetsBag bag) {
         this.bag = bag;
     }
-
     public MetsBag getBag() {
         if(bag == null){
             try{
@@ -173,19 +153,10 @@ public final class BagView extends DefaultView {
             }catch(Exception e){}            
         }
         return bag;
-    }   
-    /*
-    public Dimension getMinimumSize() {
-        return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
-
-    public Dimension getPreferredSize() {
-        return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    } */   
+    }  
     public ImageIcon getPropertyImage(String name) {        
         return new ImageIcon(getImageSource().getImage(name));        
     }
-
     public void setBagPayloadTree(BagTree bagPayloadTree) {
         this.bagPayloadTree = bagPayloadTree;
     }
@@ -215,12 +186,10 @@ public final class BagView extends DefaultView {
             bagPayloadTreePanel = new BagTreePanel(getBagPayloadTree());
         }
         return bagPayloadTreePanel;
-    }
-
+    }    
     public void setBagPayloadTreePanel(BagTreePanel bagPayloadTreePanel) {
         this.bagPayloadTreePanel = bagPayloadTreePanel;
-    }    
-    
+    }
     // This populates the default view descriptor declared as the startingPageId
     // property in the richclient-application-context.xml file.
     @Override    
@@ -262,17 +231,13 @@ public final class BagView extends DefaultView {
 
         payloadPanel.add(getBagPayloadTreePanel(), BorderLayout.CENTER);        
         
-        
         bagPanel.add(payloadPanel);
         
         return bagPanel;
     }
     
     JPanel createBagButtonPanel() {
-    	
-    	addDataHandler = new AddDataHandler();
-    	removeDataHandler = new RemoveDataHandler();
-    	
+    	    	
     	JPanel buttonPanel = new JPanel();
 	buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
 		
@@ -331,10 +296,7 @@ public final class BagView extends DefaultView {
 		
         final JLabel spacerLabel = new JLabel("    ");
         buttonPanel.add(spacerLabel);
-		
-    	addDataHandler = new AddDataHandler();
-    	removeDataHandler = new RemoveDataHandler();
-
+	
         return buttonPanel;
     }    
 
@@ -495,15 +457,10 @@ public final class BagView extends DefaultView {
                 }
             });*/
     	}
-    }   
-
+    }
     public static BagView getInstance() {
         return instance;
-    }
-
-    public String getPropertyMessage(String propertyName) {
-        return getMessage(propertyName);
-    }    
+    } 
     public void setCompleteExecutor() {        
         boolean enable = 
             getBag().getFetchTxt() == null && 
