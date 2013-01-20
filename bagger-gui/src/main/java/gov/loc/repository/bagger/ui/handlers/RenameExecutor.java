@@ -2,7 +2,7 @@ package gov.loc.repository.bagger.ui.handlers;
 
 import gov.loc.repository.bagger.ui.BagView;
 import java.awt.Dialog;
-import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.util.ArrayList;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
@@ -19,9 +19,10 @@ public class RenameExecutor extends AbstractActionCommandExecutor {
     public RenameDialog getRenameDialog() {
         if(renameDialog == null){
             renameDialog = new RenameDialog(SwingUtils.getFrame(),true);
-            renameDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);                          
-            Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();  
-            renameDialog.setBounds(0,0,(int)dim.getWidth(),(int)dim.getHeight());            
+            renameDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            renameDialog.setBounds(
+                GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()
+            );
         }
         return renameDialog;
     }

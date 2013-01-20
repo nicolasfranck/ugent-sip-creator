@@ -3,6 +3,7 @@ package gov.loc.repository.bagger.app;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.util.Set;
 import javax.swing.UIManager;
 import org.apache.commons.logging.Log;
@@ -23,17 +24,11 @@ public class BaggerLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor{
     static void init(){               
                 
         //set dimensions
-        
-        
-        /*
-        Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();                
-        if(dim.getWidth() > 1024){
-            dim = new Dimension(1024,768);
-        }
-        
-        SwingUtils.getFrame().setPreferredSize(dim);
-        SwingUtils.getFrame().setBounds(0,0,(int)dim.getWidth(),(int)dim.getHeight());                                
-        */        
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        SwingUtils.getFrame().setMaximizedBounds(env.getMaximumWindowBounds());
+        SwingUtils.getFrame().setExtendedState(
+                SwingUtils.getFrame().getExtendedState() | SwingUtils.getFrame().MAXIMIZED_BOTH
+        );
             
         //set ui-manager keys
         Set<String>keys = SwingUtils.getUIManagerMessages().keySet();
