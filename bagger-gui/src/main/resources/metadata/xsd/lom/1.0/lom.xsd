@@ -72,7 +72,7 @@
 
    <!-- Learning Object Metadata -->
 
-   <xs:include schemaLocation="common/anyElement.xsd"/>
+   <xs:include schemaLocation="metadata/xsd/lom/1.0/common/anyElement.xsd"/>
 
    <!-- LOM data element uniqueness constraints:  use one of the following         -->
    <!-- Use unique/loose.xsd to relax element uniqueness constraints               -->
@@ -81,7 +81,7 @@
    <!-- <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/unique"
               schemaLocation="unique/loose.xsd"/> -->
 
-   <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/unique" schemaLocation="unique/strict.xsd"/>
+   <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/unique" schemaLocation="metadata/xsd/lom/1.0/unique/strict.xsd"/>
 
    <!-- Vocabulary value validation:  use one of the following                     -->
    <!-- Use vocab/loose.xsd to relax vocabulary value constraints                  -->
@@ -92,7 +92,7 @@
               schemaLocation="vocab/loose.xsd"/> -->
 
    <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/vocab"
-              schemaLocation="vocab/strict.xsd"/> 
+              schemaLocation="metadata/xsd/lom/1.0/vocab/strict.xsd"/> 
 
    <!-- <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/vocab"
               schemaLocation="vocab/custom.xsd"/> -->
@@ -102,16 +102,16 @@
    <!-- Use extend/custom.xsd to allow element/attribute extension                 -->
 
    <xs:import namespace="http://ltsc.ieee.org/xsd/LOM/extend"
-             schemaLocation="extend/strict.xsd"/>  
+             schemaLocation="metadata/xsd/lom/1.0/extend/strict.xsd"/>  
 
    <!--<xs:import namespace="http://ltsc.ieee.org/xsd/LOM/extend"
               schemaLocation="extend/custom.xsd"/> -->
 
-   <xs:include schemaLocation="common/dataTypes.xsd"/>
-   <xs:include schemaLocation="common/elementNames.xsd"/>
-   <xs:include schemaLocation="common/elementTypes.xsd"/>
-   <xs:include schemaLocation="common/rootElement.xsd"/>
-   <xs:include schemaLocation="common/vocabValues.xsd"/>
-   <xs:include schemaLocation="common/vocabTypes.xsd"/>
+   <xs:include schemaLocation="metadata/xsd/lom/1.0/common/dataTypes.xsd"/>
+   <xs:include schemaLocation="metadata/xsd/lom/1.0/common/elementNames.xsd"/>
+   <xs:include schemaLocation="metadata/xsd/lom/1.0/common/elementTypes.xsd"/>
+   <xs:include schemaLocation="metadata/xsd/lom/1.0/common/rootElement.xsd"/>
+   <xs:include schemaLocation="metadata/xsd/lom/1.0/common/vocabValues.xsd"/>
+   <xs:include schemaLocation="metadata/xsd/lom/1.0/common/vocabTypes.xsd"/>
 
 </xs:schema>

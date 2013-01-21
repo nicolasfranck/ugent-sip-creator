@@ -66,17 +66,17 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                 error = Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
                     file,e.getMessage()
                 });       
-                
+                e.printStackTrace();
             }catch(ParserConfigurationException e){                                  
                 error = Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
                     e.getMessage()
                 });
-               
+                e.printStackTrace();
             }catch(IllegalNamespaceException e){                                
                 error = Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
                     file,e.getNamespace()
                 });
-                
+                e.printStackTrace();
             }
             catch(NoNamespaceException e){                                                 
                 error = Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
@@ -88,11 +88,12 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
                     file
                 });
                
+                e.printStackTrace();
             }catch(Exception e){                                        
                 error = Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
                     file
                 });
-                
+                e.printStackTrace();
             }
             
             if(error != null){

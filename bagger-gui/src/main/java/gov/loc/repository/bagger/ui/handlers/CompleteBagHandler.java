@@ -52,6 +52,13 @@ public class CompleteBagHandler extends Handler {
             MetsBag metsBag = bagView.getBag();
             log.error(Context.getMessage("CompleteBagHandler.validationStarted",new Object [] {metsBag.getFile()}));
             
+            SwingUtils.getStatusBar().setMessage(
+                Context.getMessage(
+                    "StatusBar.completeBag.message",
+                    new Object []{metsBag.getFile().getAbsolutePath()}
+                )
+            );
+            
             try {
                 CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
                 completeVerifier.addProgressListener(this);
@@ -85,7 +92,9 @@ public class CompleteBagHandler extends Handler {
                     ArrayList<String>tagsMissing = new ArrayList<String>();
                     ArrayList<String>filesNotInManifest = new ArrayList<String>();
 
-                    for(String message:result.getMessages()){                          
+                    for(String message:result.getMessages()){    
+                        
+                        /*
                         Matcher m1 = BagitUtils.payloadsMissingPattern.matcher(message);
                         Matcher m2 = BagitUtils.tagsMissingPattern.matcher(message);
                         Matcher m3 = BagitUtils.fileNotInManifestPattern.matcher(message);
@@ -95,6 +104,33 @@ public class CompleteBagHandler extends Handler {
                             tagsMissing.add(m2.group(1));                            
                         }else if(m3.matches()){
                             filesNotInManifest.add(m3.group(1));
+                        }*/
+                        
+                        Matcher m = null;
+                        
+                        if(
+                            (m = BagitUtils.payloadsMissingPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            payloadsMissing.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.tagsMissingPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            tagsMissing.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.fileNotInManifestPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            filesNotInManifest.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.fileNotAllowedInBagDirPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            filesNotInManifest.add(m.group(1));
                         }
                     }
 
@@ -153,6 +189,8 @@ public class CompleteBagHandler extends Handler {
                 log.debug(result.toString());
                 
                 log.error(Context.getMessage("CompleteBagHandler.validationDone",new Object [] {BagView.getInstance().getBag().getFile()}));
+                
+                SwingUtils.getStatusBar().setMessage("");
 
             }            
         }

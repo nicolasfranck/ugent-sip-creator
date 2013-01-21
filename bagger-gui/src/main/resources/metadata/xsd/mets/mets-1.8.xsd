@@ -154,7 +154,7 @@ mptr and area elements for mapping MPEG21 DII Identifier values
 	7. xlink:extendedLink support added to the <structLink> element by means of a new <smLinkGrp> element, and its child <smLocatorLink> and <smArcLink> elements.
 -->
 <xsd:schema xmlns="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loc.gov/METS/" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd"/>
+	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="metadata/xsd/xlink.xsd"/>
 	<xsd:element name="mets">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">METS: Metadata Encoding and Transmission Standard.

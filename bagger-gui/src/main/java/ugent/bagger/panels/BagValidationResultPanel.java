@@ -149,8 +149,19 @@ public final class BagValidationResultPanel extends JPanel{
                     startValidate();
                 }
             }            
-        });        
+        });      
+        JButton openButton = new JButton(Context.getMessage("BagValidationResultPanel.openButton.label"));
+        openButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                BagValidationResult vresult = bagValidationResultTable.getSelected();
+                if(vresult != null && vresult.getFile() != null){
+                    BagView.getInstance().openBagHandler.openExistingBag(vresult.getFile());
+                }
+            }        
+        });
         panel.add(startButton);
+        panel.add(openButton);
         panel.add(cancelButton);
         return panel;
     }

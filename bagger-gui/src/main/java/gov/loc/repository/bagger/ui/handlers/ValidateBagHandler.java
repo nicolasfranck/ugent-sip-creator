@@ -51,9 +51,16 @@ public class ValidateBagHandler extends Handler {
         protected Object doInBackground() throws Exception {
             
             final BagView bagView = BagView.getInstance();
-            DefaultBag bag = bagView.getBag();            
+            MetsBag metsBag = bagView.getBag();  
             
-            log.error(Context.getMessage("ValidateBagHandler.validationStarted",new Object [] {bag.getFile()}));
+            SwingUtils.getStatusBar().setMessage(
+                Context.getMessage(
+                    "StatusBar.validateBag.message",
+                    new Object []{metsBag.getFile().getAbsolutePath()}
+                )
+            );
+            
+            log.error(Context.getMessage("ValidateBagHandler.validationStarted",new Object [] {metsBag.getFile()}));
             
             try {
                 CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
@@ -61,7 +68,10 @@ public class ValidateBagHandler extends Handler {
                 ValidVerifierImpl validVerifier = new ValidVerifierImpl(completeVerifier, manifestVerifier);                
                 validVerifier.addProgressListener(this);                
                 
-                result = bag.validateBag(validVerifier);                               
+                result = metsBag.validateBag(validVerifier); 
+                for(String message:result.getMessages()){
+                    System.out.println("message: "+message);
+                }
                    
             }catch (Exception e){                                                
                 if(isCancelled()){
@@ -95,11 +105,14 @@ public class ValidateBagHandler extends Handler {
                     
                     for(String message:result.getMessages()){                        
                         
+                        /*
                         Matcher m1 = BagitUtils.payloadsMissingPattern.matcher(message);
                         Matcher m2 = BagitUtils.tagsMissingPattern.matcher(message);
                         Matcher m3 = BagitUtils.payloadsFixityFailurePattern.matcher(message);
                         Matcher m4 = BagitUtils.tagsFixityFailurePattern.matcher(message);
                         Matcher m5 = BagitUtils.fileNotInManifestPattern.matcher(message);
+                        Matcher m6 = BagitUtils.fileNotAllowedInBagDirPattern.matcher(message);
+                        
                         
                         if(m1.matches()){
                             payloadsMissing.add(m1.group(1));
@@ -111,6 +124,48 @@ public class ValidateBagHandler extends Handler {
                             tagsFixityFailure.add(m4.group(1));
                         }else if(m5.matches()){
                             filesNotInManifest.add(m5.group(1));
+                        }else if(m6.matches()){
+                            filesNotInManifest.add(m6.group(1));
+                        }*/
+                        
+                        Matcher m = null;
+                        
+                        
+                        if(
+                            (m = BagitUtils.payloadsMissingPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            payloadsMissing.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.tagsMissingPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            tagsMissing.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.payloadsFixityFailurePattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            payloadsFixityFailure.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.tagsFixityFailurePattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            tagsFixityFailure.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.fileNotInManifestPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            filesNotInManifest.add(m.group(1));
+                        }
+                        else if(
+                            (m = BagitUtils.fileNotAllowedInBagDirPattern.matcher(message)) != null &&
+                            m.matches()
+                        ){
+                            filesNotInManifest.add(m.group(1));
                         }
                     }
                     
@@ -193,6 +248,8 @@ public class ValidateBagHandler extends Handler {
                         new Object [] {BagView.getInstance().getBag().getFile()}
                     )
                 );
+                
+                SwingUtils.getStatusBar().setMessage("");
             }
         }
     }

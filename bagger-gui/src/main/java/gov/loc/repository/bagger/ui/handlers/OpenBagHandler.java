@@ -83,6 +83,9 @@ public class OpenBagHandler extends AbstractAction {
     public void openExistingBag(File file) { 
         SwingUtils.ShowBusy();                
         
+        SwingUtils.getStatusBar().setMessage(
+            Context.getMessage("StatusBar.openBag.message",new Object []{file.getAbsolutePath()})
+        );
         
         BagView bagView = BagView.getInstance();
         InfoFormsPane infoFormsPane = bagView.getInfoFormsPane();
@@ -142,7 +145,7 @@ public class OpenBagHandler extends AbstractAction {
                     metsBag.isSerial(false);
                 }
             } else {                
-                infoFormsPane.getSerializeValue().setText(DefaultBag.NO_LABEL);            
+                infoFormsPane.getSerializeValue().setText(Context.getMessage("DefaultBag.mode.no_label"));            
                 metsBag.setSerialMode(DefaultBag.NO_MODE);
                 metsBag.isSerial(false);
             }
@@ -241,6 +244,7 @@ public class OpenBagHandler extends AbstractAction {
             );
         }
         
+        SwingUtils.getStatusBar().setMessage("");
         SwingUtils.ShowDone();
     }           
 }

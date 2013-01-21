@@ -32,8 +32,8 @@ As of March 19, 2010 this is the only version of MADS that has ever been officia
 
 -->
 <xsd:schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.loc.gov/mads/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mods="http://www.loc.gov/mods/v3" targetNamespace="http://www.loc.gov/mads/" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/mods/xlink.xsd"/>
-	<xsd:import namespace="http://www.loc.gov/mods/v3" schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-1.xsd"/>
+	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="metadata/xsd/xlink.xsd"/>
+	<xsd:import namespace="http://www.loc.gov/mods/v3" schemaLocation="metadata/xsd/mods/mods-3-1.xsd"/>
 	<!-- 
 	Root Elements:
 	

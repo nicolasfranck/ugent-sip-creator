@@ -57,6 +57,10 @@ public class StartNewBagHandler extends AbstractAction {
         field.setValue(params.getBagId());        
         metsBag.getInfo().addField(field);
         
+        SwingUtils.getStatusBar().setMessage(
+            Context.getMessage("StatusBar.newBag.message",new Object []{params.getBagId()})
+        );
+        
         //default fields
         ArrayList<String> list = (ArrayList<String>) Beans.getBean("baginfoStandardFields");
         for(String key:list){

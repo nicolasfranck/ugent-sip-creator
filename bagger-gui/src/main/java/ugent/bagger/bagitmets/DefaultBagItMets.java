@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.DateUtils;
@@ -110,19 +111,47 @@ public class DefaultBagItMets extends BagItMets{
         Manifest tagfileManifest = bag.getTagManifest(tagManifestAlg);                                        
         
         //files
+        int num = 0;
         final HashMap<String,String> fileIdMap = new HashMap<String,String>();
         
         try{                     
             
             Collection<BagFile>payloads = bag.getPayload();            
-            Collection<BagFile>tags = bag.getTags();            
+            Collection<BagFile>tags = bag.getTags();     
+            HashMap<String,XMLGregorianCalendar>oldDatesCreated = new HashMap<String, XMLGregorianCalendar>();
             
             //fileSec
             FileSec fileSec = mets.getFileSec();
             if(fileSec == null){
                 fileSec = new FileSec();
                 mets.setFileSec(fileSec);
-            }                       
+            }   
+            
+            //sla oude datums van creatie op
+            for(FileSec.FileGrp fileGroup:fileSec.getFileGrp()){
+                if(!fileGroup.getID().equals("payloads")){
+                    continue;
+                }
+                List<FileSec.FileGrp.File>pFiles = fileGroup.getFile();
+                for(FileSec.FileGrp.File pFile:pFiles){
+                    if(
+                        pFile.getCREATED() != null &&
+                        !pFile.getFLocat().isEmpty()
+                    ){
+                        System.out.println(
+                            "storing "+
+                            pFile.getFLocat().get(0).getXlinkHREF() +
+                            " => " +
+                            pFile.getCREATED()
+                        );
+                        oldDatesCreated.put(
+                            pFile.getFLocat().get(0).getXlinkHREF(),
+                            pFile.getCREATED()
+                        );
+                    }
+                }
+            }
+            
             List<FileSec.FileGrp> fileGroups = fileSec.getFileGrp();            
             fileGroups.clear();            
             
@@ -134,46 +163,76 @@ public class DefaultBagItMets extends BagItMets{
         
             for(BagFile bagFile:payloads){
                 
+                File rootDir = metsBag.getFile();
+                //payloadFile == naar data-map gekopiëerd bestand
+                //newFile == oude locatie
+                File payloadFile = new File(rootDir,bagFile.getFilepath());
+                File newFile = metsBag.getNewEntries().get(bagFile.getFilepath());
+                
+                System.out.println("newFile: "+newFile);
+                System.out.println("payloadFile: "+payloadFile);
+                
                 //xsd:ID moet NCName zijn                    
-                String fileId = MetsUtils.createID();                        
+                //String fileId = MetsUtils.createID();                        
+                String fileId = "DS."+(num++);
+                
                 
                 //houd mapping filepath <=> fileid bij
                 fileIdMap.put(bagFile.getFilepath(),fileId);                                
                 
                 //SIZE
-                FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                                                            
-                metsFile.setSIZE(bagFile.getSize()); 
+                FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);  
+                if(newFile != null){
+                    metsFile.setSIZE(newFile.length()); 
+                }else{
+                    metsFile.setSIZE(bagFile.getSize());
+                }
+                
                 
                 //MIMETYPE
                 String mimeType;                
-                File rootDir = metsBag.getFile();
-                File payloadFile = new File(rootDir,bagFile.getFilepath());                
-
-                if(payloadFile.isFile()){                    
-                    mimeType = FUtils.getMimeType(payloadFile);
-                }else{                                            
-                    //indien bag geen directory is, maar een tar of zip
-                    mimeType = FUtils.getMimeType(bagFile.newInputStream());
+                                
+                if(newFile != null){
+                    mimeType = FUtils.getMimeType(newFile);
+                }else{
+                    if(payloadFile.isFile()){                    
+                        mimeType = FUtils.getMimeType(payloadFile);
+                    }else{                                            
+                        //indien bag geen directory is, maar een tar of zip
+                        mimeType = FUtils.getMimeType(bagFile.newInputStream());
+                    }
                 }
-                
                 metsFile.setMIMETYPE(mimeType);                                                                    
-                
-                String checksumFile = payloadManifest.get(bagFile.getFilepath());                                         
-                
+                                
                 //CHECKSUM en CHECKSUMTYPE
+                String checksumFile = payloadManifest.get(bagFile.getFilepath());                                         
                 metsFile.setCHECKSUM(checksumFile);
                 metsFile.setCHECKSUMTYPE(payloadManifestChecksumType);                                                                                                          
                 
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
-                try{                                          
-                    if(payloadFile.isFile()){                                              
+                try{
+                    
+                    //nieuwe bestanden (apart bij te houden, want payloadFile is het gekopiëerde bestand!)
+                    if(newFile != null){
+                        metsFile.setCREATED(
+                            DateUtils.DateToGregorianCalender(
+                                new Date(newFile.lastModified())
+                            )
+                        );
+                    }
+                    //oude bestanden in bestaande bag
+                    else if(oldDatesCreated.containsKey(bagFile.getFilepath())){
+                        metsFile.setCREATED(oldDatesCreated.get(bagFile.getFilepath()));
+                    }else if(payloadFile.isFile()){                            
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(payloadFile.lastModified())));                    
                     }else if(rootDir != null && rootDir.exists()){                                                    
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));                  
                     }else{                            
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender());
-                    }                       
+                    }
+                    
+                                           
                 }catch(Exception e){                    
                     log.error(e.getMessage());                                        
                 }    
@@ -199,6 +258,9 @@ public class DefaultBagItMets extends BagItMets{
             for(BagFile bagFile:tags){
                 
                 String filePath = bagFile.getFilepath();
+                File rootDir = metsBag.getFile();
+                File tagFile = new File(rootDir,filePath);
+                File newFile = metsBag.getNewEntries().get(bagFile.getFilepath());
                 
                 if(filePath.equals("mets.xml")){
                     //je kan niet verwijzen naar jezelf
@@ -208,37 +270,48 @@ public class DefaultBagItMets extends BagItMets{
                     continue;
                 }
                                    
-                String fileId = MetsUtils.createID();                        
+                //String fileId = MetsUtils.createID();                        
+                String fileId = "DS."+(num++);
                 
                 fileIdMap.put(filePath,fileId);                
                 
                 //SIZE
-                FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId);                                                            
-                metsFile.setSIZE(bagFile.getSize());                    
+                FileSec.FileGrp.File metsFile = new FileSec.FileGrp.File(fileId); 
+                if(newFile != null){
+                    metsFile.setSIZE(newFile.length());
+                }else{
+                    metsFile.setSIZE(bagFile.getSize());                    
+                }
+                
                 
                 //MIMETYPE
                 String mimeType; 
-                File rootDir = metsBag.getFile();
-                File tagFile = new File(rootDir,filePath);                
+                                
                 
-                if(tagFile.isFile()){                    
-                    mimeType = FUtils.getMimeType(tagFile);
-                }else{                                            
-                    //indien bag geen directory is, maar een tar of zip
-                    mimeType = FUtils.getMimeType(bagFile.newInputStream());
-                }
+                if(newFile != null){
+                    mimeType = FUtils.getMimeType(newFile);
+                }else{
+                    if(tagFile.isFile()){                    
+                        mimeType = FUtils.getMimeType(tagFile);
+                    }else{                                            
+                        //indien bag geen directory is, maar een tar of zip
+                        mimeType = FUtils.getMimeType(bagFile.newInputStream());
+                    }
+                }                
 
                 metsFile.setMIMETYPE(mimeType);                                                                    
                 String checksumFile = tagfileManifest.get(filePath);         
                 
                 //CHECKSUM en CHECKSUMTYPE
                 metsFile.setCHECKSUM(checksumFile);
-                metsFile.setCHECKSUMTYPE(tagManifestChecksumType);                                                     
+                metsFile.setCHECKSUMTYPE(tagManifestChecksumType);                                               
                 
                 //CREATED => als map: dateCreated van het bestand, anders van de zip/tar
                 //dateCreated niet op alle systemen ondersteund, dus we nemen lastModified
-                try{                                   
-                    if(tagFile.isFile()){
+                try{  
+                    if(newFile != null){
+                        metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(newFile.lastModified())));
+                    }else if(tagFile.isFile()){
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(tagFile.lastModified())));
                     }else if(rootDir != null && rootDir.exists()){
                         metsFile.setCREATED(DateUtils.DateToGregorianCalender(new Date(rootDir.lastModified())));

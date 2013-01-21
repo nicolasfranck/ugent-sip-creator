@@ -76,8 +76,8 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema"
 targetNamespace="http://www.loc.gov/mads/v2"
  elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- imports-->
-	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd"/>
-	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.loc.gov/mods/xml.xsd"/>
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="metadata/xsd/xlink.xsd"/>
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="metadata/xsd/xml.xsd"/>
 	<!-- 
 
 ******************************************************************************************************************

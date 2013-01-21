@@ -77,7 +77,7 @@
 	2. Allow a <par> element to
 	contain a <seq> -->
 <xsd:schema targetNamespace="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/TR/xlink" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.loc.gov/METS/" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://www.w3.org/TR/xlink" schemaLocation="xlink.xsd"/>
+	<xsd:import namespace="http://www.w3.org/TR/xlink" schemaLocation="metadata/xsd/xlink.xsd"/>
 	<xsd:element name="mets">
 		<xsd:annotation>
 			<xsd:documentation>METS: Metadata Encoding and Transmission Standard.

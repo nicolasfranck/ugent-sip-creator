@@ -9,8 +9,8 @@
 	elementFormDefault="qualified" 
 	attributeFormDefault="unqualified">
 
-<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd" />
-<xsd:import namespace="urn:ebu:metadata-schema:ebuCore_2010" schemaLocation="http://www.aes.org/standards/schemas/aes60-2010.xsd" />
+<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="metadata/xsd/xlink.xsd" />
+<xsd:import namespace="urn:ebu:metadata-schema:ebuCore_2010" schemaLocation="metadata/xsd/aes60-2010.xsd" />
                         
 <xsd:element name="audioObject" type="audioObjectType"/>
 

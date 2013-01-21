@@ -366,11 +366,14 @@ public class XML {
                 lsInput.setByteStream(is);
                 lsInput.setSystemId(systemId);
             } catch (ClassNotFoundException ex) {
-                log.debug(ex);                
+                log.debug(ex);
+                ex.printStackTrace();
             } catch (InstantiationException ex) {
                 log.debug(ex);
+                ex.printStackTrace();
             } catch (IllegalAccessException ex) {
                 log.debug(ex);
+                ex.printStackTrace();
             }            
             return lsInput;
         }

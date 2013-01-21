@@ -130,6 +130,13 @@ public class SaveBagHandler extends Handler {
         @Override
         protected Object doInBackground() throws Exception {
             
+            SwingUtils.getStatusBar().setMessage(
+                Context.getMessage(
+                    "StatusBar.saveBag.message",
+                    new Object []{metsBag.getFile().getAbsolutePath()}
+                )
+            );
+            
             Mets mets = metsBag.getMets();
             metsBag.setBagItMets(new DefaultBagItMets());
             
@@ -192,6 +199,8 @@ public class SaveBagHandler extends Handler {
                     bagView.updateSaveBag();
                 }
             }
+            
+            SwingUtils.getStatusBar().setMessage("");
         }
            
     }    

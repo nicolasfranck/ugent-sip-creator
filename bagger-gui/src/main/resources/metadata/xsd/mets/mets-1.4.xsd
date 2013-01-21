@@ -116,7 +116,7 @@ mptr and area elements for mapping MPEG21 DII Identifier values
 7. "LOM" added as metadata type.
  -->
 <xsd:schema targetNamespace="http://www.loc.gov/METS/" xmlns="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
+	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="metadata/xsd/xlink.xsd"/>
 	<xsd:element name="mets">
 		<xsd:annotation>
 			<xsd:documentation>METS: Metadata Encoding and Transmission Standard.

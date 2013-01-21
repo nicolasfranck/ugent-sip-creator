@@ -102,7 +102,7 @@ with the assistance of Michael Alexander (British Library), Rick Beaubien (Unive
 4.Alter BehaviorSec to make it recursive, and add a new behavior element to wrap mechanism and interfaceDef elements.
 -->
 <xsd:schema targetNamespace="http://www.loc.gov/METS/" xmlns="http://www.loc.gov/METS/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/TR/xlink" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://www.w3.org/TR/xlink" schemaLocation="xlink.xsd"/>
+	<xsd:import namespace="http://www.w3.org/TR/xlink" schemaLocation="metadata/xsd/xlink.xsd"/>
 	<xsd:element name="mets">
 		<xsd:annotation>
 			<xsd:documentation>METS: Metadata Encoding and Transmission Standard.
