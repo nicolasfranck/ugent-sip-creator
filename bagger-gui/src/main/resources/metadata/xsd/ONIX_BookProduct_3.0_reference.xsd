@@ -155,8 +155,8 @@
 -->
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://ns.editeur.org/onix/3.0/reference" xmlns="http://ns.editeur.org/onix/3.0/reference">
-	<xs:include schemaLocation="ONIX_BookProduct_CodeLists.xsd"/>
-	<xs:include schemaLocation="ONIX_XHTML_Subset.xsd"/>
+	<xs:include schemaLocation="metadata/xsd/ONIX_BookProduct_CodeLists.xsd"/>
+	<xs:include schemaLocation="metadata/xsd/ONIX_XHTML_Subset.xsd"/>
 	<xs:element name="Addressee">
 		<xs:complexType>
 			<xs:sequence>

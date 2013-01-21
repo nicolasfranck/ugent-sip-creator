@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.tei-c.org/ns/1.0" xmlns:dcr="http://www.isocat.org/ns/dcr" xmlns:ns1="http://www.tei-c.org/ns/1.0" xmlns:examples="http://www.tei-c.org/ns/Examples">
-  <xs:import namespace="http://www.isocat.org/ns/dcr" schemaLocation="dcr.xsd"/>
-  <xs:import namespace="http://www.tei-c.org/ns/Examples" schemaLocation="examples.xsd"/>
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2004/10/xml.xsd"/>
+  <xs:import namespace="http://www.isocat.org/ns/dcr" schemaLocation="metadata/xsd/dcr.xsd"/>
+  <xs:import namespace="http://www.tei-c.org/ns/Examples" schemaLocation="metadata/xsd/examples.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="metadata/xsd/xml.xsd"/>
   <!--
     Schema generated from ODD source 2012-06-18T16:03:02Z. 
     Edition: 2.1.0. Last updated on 17th June 2012.

@@ -31,8 +31,7 @@
 
   </xs:annotation>
 
-   <xs:import namespace="http://purl.org/dc/elements/1.1/"
-              schemaLocation="dc.xsd"/>
+   <xs:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="metadata/xsd/dc.xsd"/>
 
    <xs:element name="simpledc" type="dc:elementContainer"/>
 
