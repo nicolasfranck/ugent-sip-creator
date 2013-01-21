@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
-
 <!-- Revised to correct error on line 301 (07/02/2007/jer) -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.loc.gov/MARC21/slim">
-	<xsl:include href="http://www.loc.gov/standards/marcxml/xslt/MARC21slimUtils.xsl"/>
+	<!--<xsl:include href="http://www.loc.gov/standards/marcxml/xslt/MARC21slimUtils.xsl"/>-->
+    <xsl:include href="MARC21slimUtils.xsl"/>
+
 	<xsl:output indent="yes"/>
 	
 	<xsl:template match="/ONIXmessage">
