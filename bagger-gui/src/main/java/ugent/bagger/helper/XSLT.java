@@ -72,46 +72,16 @@ public class XSLT {
         sourceDoc.appendChild(node);
         transform(new DOMSource(sourceDoc),new DOMSource(xsltD),new DOMResult(outDoc));
         return outDoc;
-    }
-   
+    }   
     public static void transform(Source source,Source xslt,Result result) throws TransformerConfigurationException, TransformerException{
         Transformer trans = getTransformerFactory().newTransformer(xslt);
         trans.transform(source,result);
-    }
-    /*
-    public static void main(String [] args){
-        
-        try{             
-            Document inputDoc = XML.XMLToDocument(new File("/tmp/input.xml"));
-            Document xsltDoc = XML.XMLToDocument(new File("/tmp/transform.xslt"));
-            Document outDoc = transform(inputDoc, xsltDoc);
-            
-            XML.DocumentToXML(outDoc,System.out, true);
-            Schema schema = XML.createSchema(new URL("http://www.openarchives.org/OAI/2.0/oai_dc.xsd"));
-            System.out.println("schema created");
-            XML.validate(
-                outDoc,
-                schema
-            );
-            System.out.println("validation successfull");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        try{
-            URL input = new URL("file:///home/nicolas/sandburgdc.xml");
-            URL xslt = new URL("file:///home/nicolas/dc2baginfo.xsl");
-            FileOutputStream out = new FileOutputStream(new File("/home/nicolas/bag-info.txt"));
-            transform(input,xslt,out);
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }*/ 
+    }   
     static class ResourceResolver implements URIResolver {
         @Override
         public Source resolve(String href,String base) throws TransformerException {
-           System.out.println("href: "+href);
-           System.out.println("base: "+base);
+           log.debug("href: "+href);
+           log.debug("base: "+base);
            StreamSource source = new StreamSource(Context.getResourceAsStream(href),href);
                    
            return source;

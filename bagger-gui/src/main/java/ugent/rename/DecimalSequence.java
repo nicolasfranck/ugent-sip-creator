@@ -1,10 +1,15 @@
 package ugent.rename;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  *
  * @author nicolas
  */
 public class DecimalSequence implements Sequence{
+    protected static final Log log = LogFactory.getLog(DecimalSequence.class);
+    
     int i = 0;   
     int padding = 0;
     boolean isSet = false;
@@ -51,7 +56,7 @@ public class DecimalSequence implements Sequence{
         seq.setPadding(10);        
         seq.setCounter(100);
         for(int i = 0;i<1000;i++){
-            System.out.println(seq.next());
+            log.debug(seq.next());
         }
     }*/
 

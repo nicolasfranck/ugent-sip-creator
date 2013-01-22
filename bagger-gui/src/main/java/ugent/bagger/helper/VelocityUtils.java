@@ -15,7 +15,7 @@ import org.apache.velocity.app.VelocityEngine;
 public class VelocityUtils {
     static VelocityEngine velocityEngine;
     static HashMap<String,String>velocityMap;
-    static Log log = LogFactory.getLog(VelocityUtils.class);
+    static final Log log = LogFactory.getLog(VelocityUtils.class);
 
     public static HashMap<String, String> getVelocityMap() {
         if(velocityMap == null){

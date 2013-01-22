@@ -1,7 +1,6 @@
 package ugent.bagger.dialogs;
 
 import com.anearalone.mets.MdSec;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

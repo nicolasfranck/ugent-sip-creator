@@ -36,7 +36,9 @@ public final class AddFieldPanel extends JPanel {
         if(baginfoReadonlyFields == null){            
             try{
                 baginfoReadonlyFields = (ArrayList<String>)Beans.getBean("baginfoReadonlyFields");
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.error(e.getMessage());
+            }
             if(baginfoReadonlyFields == null){
                 baginfoReadonlyFields = new ArrayList<String>();
             }            

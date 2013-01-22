@@ -125,8 +125,7 @@ public class XML {
             try{
                 sf.setResourceResolver(new ClasspathResourceResolver());
             }catch(Exception e){    
-                log.debug(e);
-                e.printStackTrace();
+                log.error(e);                
             }
         }
         return sf;
@@ -352,28 +351,26 @@ public class XML {
         @Override
         public LSInput resolveResource(String type, String namespaceURI,String publicId, String systemId,String baseURI) {
             LSInput lsInput = null;
-            /*System.out.println("ClasspathResourceResolver::resolveResource");
-            System.out.println("type: "+type);
-            System.out.println("namespaceURI: "+namespaceURI);
-            System.out.println("publicId: "+publicId);
-            System.out.println("systemId: "+systemId);
-            System.out.println("baseURI: "+baseURI);*/
+            
+            log.debug("ClasspathResourceResolver::resolveResource");
+            log.debug("type: "+type);
+            log.debug("namespaceURI: "+namespaceURI);
+            log.debug("publicId: "+publicId);
+            log.debug("systemId: "+systemId);
+            log.debug("baseURI: "+baseURI);
+            
             try {
                 lsInput = getDOMImplementationLS().createLSInput();
                 URL url = Context.getResource(systemId);                
-                //System.out.println("url: "+url);
                 InputStream is = Context.getResourceAsStream(systemId);;                
                 lsInput.setByteStream(is);
                 lsInput.setSystemId(systemId);
             } catch (ClassNotFoundException ex) {
-                log.debug(ex);
-                ex.printStackTrace();
+                log.error(ex.getMessage());                
             } catch (InstantiationException ex) {
-                log.debug(ex);
-                ex.printStackTrace();
+                log.error(ex.getMessage());                
             } catch (IllegalAccessException ex) {
-                log.debug(ex);
-                ex.printStackTrace();
+                log.error(ex.getMessage());                
             }            
             return lsInput;
         }

@@ -1,10 +1,14 @@
 package ugent.rename;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  *
  * @author nicolas
  */
 public class AlphaSequence implements Sequence {
+    protected static final Log log = LogFactory.getLog(AlphaSequence.class);
     /*
      * source: http://stackoverflow.com/questions/8710719/generating-an-alphabetic-sequence-in-java
      */
@@ -51,7 +55,7 @@ public class AlphaSequence implements Sequence {
         
         seq.setStep(10);
         for(int i = 0;i< 20;i++){
-            System.out.println(seq.next());            
+            log.debug(seq.next());            
         }       
     }*/
     @Override

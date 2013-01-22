@@ -121,8 +121,7 @@ public class SwingUtils {
                 while(!worker.isDone()){                    
                     Thread.sleep(1000);                    
                 }                
-            }catch(Exception e){
-                e.printStackTrace();
+            }catch(Exception e){                
                 log.error(e.getMessage());
             }            
         }
@@ -304,7 +303,7 @@ public class SwingUtils {
                     uiManagerMessages.put(key,props.getProperty(key));
                 }
             }catch(Exception e){                
-                log.debug(e);
+                log.error(e);
             }
         }
         return uiManagerMessages;

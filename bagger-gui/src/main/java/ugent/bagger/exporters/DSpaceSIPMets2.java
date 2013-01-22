@@ -71,6 +71,8 @@ import java.util.zip.ZipOutputStream;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileObject;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -89,6 +91,8 @@ import ugent.premis.PremisObject;
  * https://wiki.duraspace.org/download/attachments/19006203/DSpaceSIP.java?version=1&modificationDate=1291085198767
  */
 public class DSpaceSIPMets2 {
+    static final Log log = LogFactory.getLog(DSpaceSIPMets2.class);
+    
     // Describes the DSpace SIP version implemented here
     static final String METS_PROFILE = "DSpace METS SIP Profile 1.0";
 
@@ -307,6 +311,7 @@ public class DSpaceSIPMets2 {
             mdWrap = new MdWrap(MdSec.MDTYPE.fromValue(type));
             mdWrap.setMIMETYPE("text/xml");           
         }catch(Exception e){
+            log.error(e.getMessage());
             mdWrap = new MdWrap(MdSec.MDTYPE.OTHER);
             mdWrap.setOTHERMDTYPE(type);
         }
@@ -342,13 +347,15 @@ public class DSpaceSIPMets2 {
         try{
             agent = new Agent(Agent.ROLE.fromValue(role),aname);            
         }catch (Exception e){
+            log.error(e.getMessage());
             agent = new Agent(Agent.ROLE.OTHER,aname);            
             agent.setOTHERROLE(role);            
         }
         try{
             agent.setAGENTTYPE(Agent.AGENTTYPE.fromValue(type.toUpperCase()));            
         }
-        catch (Exception e){            
+        catch (Exception e){        
+            log.error(e.getMessage());
             agent.setAGENTTYPE(Agent.AGENTTYPE.OTHER);
             agent.setOTHERTYPE(type);
         }

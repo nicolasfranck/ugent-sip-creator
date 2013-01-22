@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileObject;
 import org.springframework.util.Assert;
 import org.w3c.dom.Document;
@@ -23,6 +25,7 @@ import ugent.bagger.helper.XML;
  * @author nicolas
  */
 public class DSpaceSIPSimpleArchive {
+    static final Log log = LogFactory.getLog(DSpaceSIPSimpleArchive.class);
     // Zip file compression level
     protected int compression = 0;
     //list files
@@ -161,11 +164,11 @@ public class DSpaceSIPSimpleArchive {
                 ArrayList<File>list = FUtils.listFiles(dir,true);
                 for(File file:list){
                     if(file.getAbsolutePath().equals(dir.getAbsolutePath()+"/dublin_core.xml")){
-                        System.out.println("setting dublin core");
+                        log.debug("setting dublin core");
                         sip.setMetadata(dir.getName(),"dc",file);
                     }else{
                         String relativeName = file.getAbsolutePath().replace(dir.getAbsolutePath()+"/","");
-                        System.out.println("relativeName: "+relativeName);
+                        log.debug("relativeName: "+relativeName);
                         sip.setFile(dir.getName(),relativeName,file);                    
                     }
                 }

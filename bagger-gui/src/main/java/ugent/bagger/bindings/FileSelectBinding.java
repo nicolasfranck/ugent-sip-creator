@@ -129,7 +129,7 @@ public final class FileSelectBinding extends CustomBinding{
     }
     @Override
     protected void enabledChanged(){        
-        
+        fileChooser.setEnabled(isEnabled());
     }
     protected String getTemplate() {
         if(template == null){

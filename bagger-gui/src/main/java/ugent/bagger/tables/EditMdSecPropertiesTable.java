@@ -79,7 +79,7 @@ public class EditMdSecPropertiesTable extends MdSecPropertiesTable{
                         });
                         
                     }catch(Exception e){
-                        logger.debug(e.getMessage());                    
+                        logger.error(e.getMessage());                    
                     }
                 }
             };

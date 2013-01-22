@@ -1,22 +1,21 @@
 package ugent.premis;
 
-import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import ugent.bagger.helper.XML;
-import ugent.premis.PremisEvent.PremisLinkingAgentIdentifier;
-import ugent.premis.PremisEvent.PremisLinkingObjectIdentifier;
 import ugent.premis.PremisObject.PremisObjectType;
 
 /**
  *
  * @author nicolas
  */
-public class Premis implements ElementInterface{      
+public class Premis implements ElementInterface{   
+    protected static final Log log = LogFactory.getLog(Premis.class);
     String version = "2.2";
     ArrayList<PremisObject>object;
     ArrayList<PremisEvent>event;
@@ -139,38 +138,38 @@ public class Premis implements ElementInterface{
     public static void main(String [] args){
         try{
             Document doc = XML.XMLToDocument(new File("/home/nicolas/premis_pp2.xml"));
-            System.out.println("document loaded"); 
+            log.debug("document loaded"); 
             Premis premis = new Premis();
             premis.unmarshal(doc.getDocumentElement());
             
             for(PremisObject object:premis.getObject()){
-                System.out.println("object type: "+object.getType());
+                log.debug("object type: "+object.getType());
             }
             ArrayList<PremisEvent> events = premis.getEvent();
             for(PremisEvent event:events){
-                System.out.println("xmlID:"+event.getXmlID());
-                System.out.println("eventDetail:"+event.getEventDetail());
-                System.out.println("eventDateTime:"+event.getEventDateTime());
-                System.out.println("eventType:"+event.getEventType());
-                System.out.println("version:"+event.getVersion());
+                log.debug("xmlID:"+event.getXmlID());
+                log.debug("eventDetail:"+event.getEventDetail());
+                log.debug("eventDateTime:"+event.getEventDateTime());
+                log.debug("eventType:"+event.getEventType());
+                log.debug("version:"+event.getVersion());
                 
                 ArrayList<PremisLinkingAgentIdentifier> laids = event.getLinkingAgentIdentifier();
                 
                 for(PremisLinkingAgentIdentifier laid:laids){
-                    System.out.println("LinkAgentXmlID: "+laid.getLinkAgentXmlID());
-                    System.out.println("LinkingAgentIdentifierType: "+laid.getLinkingAgentIdentifierType());
-                    System.out.println("LinkingAgentIdentifierValue: "+laid.getLinkingAgentIdentifierValue());                    
+                    log.debug("LinkAgentXmlID: "+laid.getLinkAgentXmlID());
+                    log.debug("LinkingAgentIdentifierType: "+laid.getLinkingAgentIdentifierType());
+                    log.debug("LinkingAgentIdentifierValue: "+laid.getLinkingAgentIdentifierValue());                    
                 }
                 
                 ArrayList<PremisLinkingObjectIdentifier> loids = event.getLinkingObjectIdentifier();
                 
                 for(PremisLinkingObjectIdentifier loid:loids){
-                    System.out.println("LinkObjectXmlID:"+loid.getLinkObjectXmlID());
-                    System.out.println("LinkingObjectIdentifierType:"+loid.getLinkingObjectIdentifierType());
-                    System.out.println("LinkingObjectIdentifierValue:"+loid.getLinkObjectXmlID());
+                    log.debug("LinkObjectXmlID:"+loid.getLinkObjectXmlID());
+                    log.debug("LinkingObjectIdentifierType:"+loid.getLinkingObjectIdentifierType());
+                    log.debug("LinkingObjectIdentifierValue:"+loid.getLinkObjectXmlID());
                 }
                 
-                System.out.println();
+                log.debug();
             }
             
             PremisIO.write(premis,System.out,true);

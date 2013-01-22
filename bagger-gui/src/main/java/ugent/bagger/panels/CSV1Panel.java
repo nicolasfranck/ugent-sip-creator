@@ -64,8 +64,7 @@ public class CSV1Panel extends JPanel{
                 }
             };   
             //verhinder dat kolombreedten aangepast worden opdat het in de view van de scrollpane zou kunnen
-            csvTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            
+            csvTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);            
             csvTable.setFillsViewportHeight(true);
         }
         return csvTable;

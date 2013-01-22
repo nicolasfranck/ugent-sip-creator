@@ -138,12 +138,13 @@ public class DefaultBagItMets extends BagItMets{
                         pFile.getCREATED() != null &&
                         !pFile.getFLocat().isEmpty()
                     ){
-                        System.out.println(
+                        log.debug(
                             "storing "+
                             pFile.getFLocat().get(0).getXlinkHREF() +
                             " => " +
                             pFile.getCREATED()
                         );
+                        
                         oldDatesCreated.put(
                             pFile.getFLocat().get(0).getXlinkHREF(),
                             pFile.getCREATED()
@@ -169,8 +170,8 @@ public class DefaultBagItMets extends BagItMets{
                 File payloadFile = new File(rootDir,bagFile.getFilepath());
                 File newFile = metsBag.getNewEntries().get(bagFile.getFilepath());
                 
-                System.out.println("newFile: "+newFile);
-                System.out.println("payloadFile: "+payloadFile);
+                log.debug("newFile: "+newFile);
+                log.debug("payloadFile: "+payloadFile);
                 
                 //xsd:ID moet NCName zijn                    
                 //String fileId = MetsUtils.createID();                        

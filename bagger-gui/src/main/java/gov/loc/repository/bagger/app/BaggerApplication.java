@@ -40,17 +40,19 @@ public class BaggerApplication {
                 new String[] { richclientApplicationContextPath }
             );
         }catch (IllegalStateException e) {
-            e.printStackTrace();
-            log.error("IllegalStateException during startup",e);            
+            
+            log.error("IllegalStateException during startup",e);                     
             JOptionPane.showMessageDialog(null,"An illegal state error occured.\n", "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
             System.exit(1);
-        }catch (PropertyAccessException e) {
-            e.printStackTrace();
+            
+        }catch (PropertyAccessException e) {      
+            
             log.error("PropertyAccessException during startup",e);
             JOptionPane.showMessageDialog(null, "An error occured loading properties.\n", "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
             System.exit(1);
-        }catch (RuntimeException e) {
-            e.printStackTrace();
+            
+        }catch (RuntimeException e) { 
+            
             log.error("RuntimeException during startup", e);            
             if (e.getMessage().contains("SAXParseException")){
                 JOptionPane.showMessageDialog(null, "An error occured parsing application context.  You may have no internet access.\n" , "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
@@ -58,6 +60,7 @@ public class BaggerApplication {
                 JOptionPane.showMessageDialog(null, "An error occured during startup.\n" , "Bagger startup error!",JOptionPane.ERROR_MESSAGE);
             }
             System.exit(1);
+            
         }
     }
 }

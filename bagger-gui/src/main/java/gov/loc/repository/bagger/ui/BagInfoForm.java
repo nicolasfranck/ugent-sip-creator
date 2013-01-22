@@ -139,7 +139,9 @@ public final class BagInfoForm extends AbstractForm {
         ArrayList<String>baginfoReadonlyFields = new ArrayList<String>();
         try{
             baginfoReadonlyFields = (ArrayList<String>)Beans.getBean("baginfoReadonlyFields");
-        }catch(Exception e){}
+        }catch(Exception e){
+            log.error(e.getMessage());
+        }
         
         if(fieldMap != null && !fieldMap.isEmpty()){
             Set<String> keys = fieldMap.keySet();

@@ -133,7 +133,22 @@ public class RenamePanel extends JPanel{
     
     public JLabel getLastFileLabel() {
         if(lastFileLabel == null){
-            lastFileLabel = new JLabel(getLastFile().getAbsolutePath(),SwingConstants.RIGHT);                                    
+            lastFileLabel = new JLabel(getLastFile().getAbsolutePath(),SwingConstants.RIGHT);    
+            if(!getLastFile().canRead()){
+                lastFileLabel.setText(
+                    Context.getMessage("RenamePanel.lastFileLabel.notReadable",new Object []{
+                        getLastFile().getAbsolutePath()
+                    })
+                );
+            }else if(!getLastFile().canWrite()){
+                lastFileLabel.setText(
+                    Context.getMessage("RenamePanel.lastFileLabel.notWritable",new Object []{
+                        getLastFile().getAbsolutePath()
+                    })
+                );
+            }else{
+                lastFileLabel.setText(getLastFile().getAbsolutePath());
+            }
             lastFileLabel.setForeground(
                 getLastFile().canRead() && getLastFile().canWrite() ? Color.BLACK : Color.red
             );
@@ -1012,14 +1027,29 @@ public class RenamePanel extends JPanel{
     }
     protected void setLastFile(File lastFile) {                 
         getParentFileButton().setEnabled(lastFile.getParentFile() != null);     
-        getLastFileLabel().setText(lastFile.getAbsolutePath());
+        //getLastFileLabel().setText(lastFile.getAbsolutePath());
+        if(!lastFile.canRead()){
+            getLastFileLabel().setText(
+                Context.getMessage("RenamePanel.lastFileLabel.notReadable",new Object []{
+                    lastFile.getAbsolutePath()
+                })
+            );
+        }else if(!lastFile.canWrite()){
+            getLastFileLabel().setText(
+                Context.getMessage("RenamePanel.lastFileLabel.notWritable",new Object []{
+                    lastFile.getAbsolutePath()
+                })
+            );
+        }else{
+            getLastFileLabel().setText(lastFile.getAbsolutePath());
+        }
         getLastFileLabel().setForeground(
             lastFile.canRead() && lastFile.canWrite() ? Color.BLACK : Color.red
         );
         this.lastFile = lastFile;        
     }       
     class TaskRenumber extends DefaultWorker {
-        final Log log = LogFactory.getLog(TaskRenumber.class);
+        
         RenumberParams renumberParams;
         public TaskRenumber(RenumberParams renumberParams){
             super();
@@ -1136,7 +1166,7 @@ public class RenamePanel extends JPanel{
         }
     }
     class TaskRename extends DefaultWorker {
-        final Log log = LogFactory.getLog(TaskRename.class);
+        
         RenameParams renameParams;      
         public TaskRename(RenameParams renameParams){
             super();

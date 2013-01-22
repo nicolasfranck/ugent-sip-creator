@@ -963,7 +963,7 @@ public class MdSec implements ElementInterface {
                 datatypeFactory = DatatypeFactory.newInstance();                
             } catch (DatatypeConfigurationException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                
             }
         }
         return datatypeFactory;

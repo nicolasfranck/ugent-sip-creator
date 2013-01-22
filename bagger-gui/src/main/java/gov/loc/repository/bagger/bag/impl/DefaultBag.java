@@ -702,7 +702,7 @@ public class DefaultBag {
     }
 
     public void removeBagInfoField(String key) {
-        System.out.println("removing field "+key);
+        log.debug("removing field "+key);        
         changed = true;
         changeToDirty();        
         bagInfo.removeField(key);

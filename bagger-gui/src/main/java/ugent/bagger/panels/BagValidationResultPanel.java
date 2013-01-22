@@ -10,6 +10,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -34,12 +36,20 @@ import ugent.bagger.workers.DefaultWorker;
  */
 public final class BagValidationResultPanel extends JPanel{
     static final Log log = LogFactory.getLog(BagValidationResultPanel.class);
+    
     JComponent buttonPanel;
     ClassTable<BagValidationResult> bagValidationResultTable;         
     ArrayList<BagValidationResult>data = new ArrayList<BagValidationResult>();
     BagValidateParams bagValidateParams;
-    BagValidateParamsForm bagValidateParamsForm;
-    
+    BagValidateParamsForm bagValidateParamsForm;  
+    JLabel labelStatistics;
+
+    public JLabel getLabelStatistics() {
+        if(labelStatistics == null){
+            labelStatistics = new JLabel();
+        }
+        return labelStatistics;
+    }
     public BagValidationResultPanel(){
         setLayout(new BorderLayout());
         add(createContentPane());        
@@ -120,6 +130,8 @@ public final class BagValidationResultPanel extends JPanel{
         form.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         panel.add(form);
         
+        panel.add(getLabelStatistics());
+        
         JTable table = (JTable) getBagValidationResultTable().getControl();        
         JScrollPane scrollerTable = new JScrollPane(table);
         scrollerTable.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -176,7 +188,16 @@ public final class BagValidationResultPanel extends JPanel{
     }
     public BagValidateParamsForm getBagValidateParamsForm() {
         if(bagValidateParamsForm == null){
-            bagValidateParamsForm = new BagValidateParamsForm(getBagValidateParams());            
+            bagValidateParamsForm = new BagValidateParamsForm(getBagValidateParams());  
+            bagValidateParamsForm.addFormValueChangeListener("files",new PropertyChangeListener(){
+                @Override
+                public void propertyChange(PropertyChangeEvent pce){
+                    
+                    //ledig result table
+                    getBagValidationResultTable().reset(new ArrayList<BagValidationResult>());
+                    getLabelStatistics().setText(" ");
+                }            
+            });
         }
         return bagValidateParamsForm;
     }
@@ -193,14 +214,34 @@ public final class BagValidationResultPanel extends JPanel{
     }
     class ValidateBagsWorker extends DefaultWorker {
         @Override
-        protected Void doInBackground(){
+        protected Void doInBackground(){            
+            
+            int numComplete = 0;
+            int numValid = 0;
             
             try{
-                reset(new ArrayList<BagValidationResult>());                
+                reset(new ArrayList<BagValidationResult>()); 
                 
                 ArrayList<File>files = getBagValidateParams().getFiles();
+                
+                log.error(Context.getMessage("ValidateBagsHandler.start",new Object []{
+                    files.size()
+                }));
+                
+                if(getBagValidateParams().isValid()){
+                    log.error(Context.getMessage("ValidateBagsHandler.validate"));
+                }
+                
+                
                 for(int i = 0;i < files.size();i++){
                     MetsBag bag = new MetsBag(files.get(i),null);
+                    
+                    log.error(
+                        Context.getMessage(
+                            "ValidateBagsHandler.validateBag.start",
+                            new Object [] {files.get(i),(i+1)}
+                        )
+                    );
 
                     CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
                     SimpleResult result;
@@ -232,7 +273,78 @@ public final class BagValidationResultPanel extends JPanel{
                     if(!isDone()){
                        setProgress(percent);                
                     }
+                    
+                    //bag is volledig
+                    if(complete){
+                        
+                        numComplete++;
+                        
+                        log.error(
+                            Context.getMessage(
+                                "ValidateBagsHandler.completeBag.success",
+                                new Object []{files.get(i)}
+                            )
+                        );
+                        
+                        //'valideer' niet aangevinkt, dus validatie onbekend
+                        if(!getBagValidateParams().isValid()){
+                            log.error(
+                                Context.getMessage(
+                                    "ValidateBagsHandler.validateBag.unknown",
+                                    new Object []{files.get(i)}
+                                )
+                            );
+                        }
+                        //bag is niet geldig
+                        else if(!valid){
+                            log.error(
+                                Context.getMessage(
+                                    "ValidateBagsHandler.validateBag.failed",
+                                    new Object []{files.get(i)}
+                                )
+                            );
+                        }
+                        //bag is geldig
+                        else{
+                            log.error(
+                                Context.getMessage(
+                                    "ValidateBagsHandler.validateBag.success",
+                                    new Object []{files.get(i)}
+                                )
+                            );
+                        }
+                    }
+                    //bag is niet volledig
+                    else{
+                        
+                        numValid++;
+                        
+                        log.error(
+                            Context.getMessage(
+                                "ValidateBagsHandler.completeBag.failed",
+                                new Object []{files.get(i)}
+                            )
+                        );
+                    }
+                    
+                    getLabelStatistics().setText(Context.getMessage(
+                        "BagValidationResultPanel.statistics.label",new Object []{
+                            files.size(),numComplete,numValid
+                        }
+                    ));
+                    
+                    
+                    log.error(
+                        Context.getMessage(
+                            "ValidateBagsHandler.validateBag.end",
+                            new Object [] {files.get(i),(i+1)}
+                        )
+                    );
                 }
+                
+                log.error(Context.getMessage("ValidateBagsHandler.end",new Object []{
+                    files.size()
+                }));
             }catch(Exception e){
                 log.error(e.getMessage());
             }            

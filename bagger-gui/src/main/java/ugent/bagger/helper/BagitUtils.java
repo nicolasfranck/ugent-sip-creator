@@ -129,8 +129,8 @@ public class BagitUtils {
         Bag bag = factory.createBag(file,LoadOption.BY_PAYLOAD_MANIFESTS);
         SimpleResult result = bag.verifyComplete();
         for(String error:result.getMessages()){
-            System.out.println("error: '"+error+"'");
-            System.out.println("error translated: "+parseBagError(error));
+            log.debug("error: '"+error+"'");
+            log.debug("error translated: "+parseBagError(error));
         }
     }*/
 }

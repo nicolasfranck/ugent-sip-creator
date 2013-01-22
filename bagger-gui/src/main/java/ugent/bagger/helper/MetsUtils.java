@@ -225,7 +225,9 @@ public class MetsUtils {
         if(mdSec.getCREATED() == null){
             try{
                 mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
-            }catch(Exception e){}            
+            }catch(Exception e){
+                log.error(e.getMessage());
+            }            
         }
         return mdSec;
     }
@@ -241,8 +243,7 @@ public class MetsUtils {
                 doc = fixNamespace(doc);
                 namespace = doc.getDocumentElement().getNamespaceURI();            
             }catch(DtdNoFixFoundException e){
-                log.debug(e.getMessage());
-                e.printStackTrace();
+                log.error(e.getMessage());                
             }            
         } 
         if(namespace != null && !namespace.isEmpty()){  
@@ -267,6 +268,7 @@ public class MetsUtils {
         try{                     
             mdType = MdSec.MDTYPE.fromValue(getNamespaceMap().get(namespace));                              
         }catch(IllegalArgumentException e){
+            log.error(e.getMessage());
             mdType = MdSec.MDTYPE.OTHER;                        
         }
         MdSec.MdWrap mdWrap = new MdSec.MdWrap(mdType);                                                            

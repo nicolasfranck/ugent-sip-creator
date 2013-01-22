@@ -150,7 +150,9 @@ public final class BagView extends DefaultView {
         if(bag == null){
             try{
                 bag = new MetsBag();
-            }catch(Exception e){}            
+            }catch(Exception e){
+                log.error(e.getMessage());
+            }            
         }
         return bag;
     }  
@@ -325,7 +327,8 @@ public final class BagView extends DefaultView {
     }
 
     public void updateClearBag() {
-    	enableBagSettings(false);    	
+    	enableBagSettings(false);    
+        openExecutor.setEnabled(true);
     	getInfoFormsPane().getHoleyValue().setText("");
         getInfoFormsPane().getBagVersionValue().setText("");
         getInfoFormsPane().getBagNameValue().setText("");
@@ -348,6 +351,7 @@ public final class BagView extends DefaultView {
 
     public void updateNewBag() {        
         enableBagSettings(true);
+        openExecutor.setEnabled(false);
         clearExecutor.setEnabled(true);
         addDataToolBarAction.setEnabled(true);
         addDataExecutor.setEnabled(true);        
@@ -361,7 +365,8 @@ public final class BagView extends DefaultView {
     }
 
     public void updateOpenBag() {
-        addDataToolBarAction.setEnabled(true);        
+        addDataToolBarAction.setEnabled(true);  
+        openExecutor.setEnabled(false);
         getInfoFormsPane().getSaveLabel().setEnabled(true);
         addDataExecutor.setEnabled(true);
         saveBagExecutor.setEnabled(getBag().getPayload().size() > 0 && getBag().getFile() != null && getBag().getFile().exists());     
@@ -376,6 +381,7 @@ public final class BagView extends DefaultView {
     }  
     
     public void updateSaveBag() {        
+        openExecutor.setEnabled(false);
         addDataToolBarAction.setEnabled(true);        
         addDataExecutor.setEnabled(true);
         saveBagExecutor.setEnabled(getBag().getPayload().size() > 0 && getBag().getFile() != null && getBag().getFile().exists());       
@@ -389,7 +395,8 @@ public final class BagView extends DefaultView {
         setValidateExecutor();  // Disables the Validate Bag Button for Holey Bags     
     }
     
-    public void updateAddData() {        
+    public void updateAddData() {   
+        openExecutor.setEnabled(false);
     	saveBagAsExecutor.setEnabled(getBag().getPayload().size() > 0);
         saveBagExecutor.setEnabled(getBag().getPayload().size() > 0 && getBag().getFile() != null && getBag().getFile().exists());
         exportExecutor.setEnabled(false);

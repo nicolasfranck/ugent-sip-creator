@@ -43,7 +43,7 @@ import ugent.bagger.params.CrosswalkParams;
  * @author nicolas
  */
 public class CrosswalkParamsForm extends AbstractForm{
-    static Log log = LogFactory.getLog(CrosswalkParamsForm.class);
+    static final Log log = LogFactory.getLog(CrosswalkParamsForm.class);
     
     public CrosswalkParamsForm(CrosswalkParams crosswalkParams){
         this(FormModelHelper.createFormModel(crosswalkParams,"crosswalkParamsForm"));
@@ -165,45 +165,53 @@ public class CrosswalkParamsForm extends AbstractForm{
                                 "XMLCrosswalkDialog.import.ParserConfigurationException.description",
                                 new Object [] {files.get(0),e.getMessage()}                                
                             );
+                            log.error(e.getMessage());
                         } catch (SAXException e) {                            
                             error = Context.getMessage(
                                 "XMLCrosswalkDialog.import.SAXException.description",
                                 new Object [] {files.get(0),e.getMessage()}                                
                             );
+                            log.error(e.getMessage());
                         } catch (IOException e) {                            
                             error = Context.getMessage(
                                 "XMLCrosswalkDialog.import.IOException.description",
                                 new Object [] {files.get(0),e.getMessage()}                                
                             );
+                            log.error(e.getMessage());
                         }catch(NoNamespaceException e){
                             error = Context.getMessage(
                                 "XMLCrosswalkDialog.import.NoNamespaceException.description",
                                 new Object [] {files.get(0)}                                
-                            );                                             
+                            );                        
+                            log.error(e.getMessage());
                         }catch(IllegalNamespaceException e){
                             error = Context.getMessage(
                                 "XMLCrosswalkDialog.import.IllegalNamespaceException.description",
                                 new Object [] {files.get(0),transformFromNamespace}                                
                             );
+                            log.error(e.getMessage());
                         }catch(NoTransformationFoundException e){
                             error = Context.getMessage(
                                 "XMLCrosswalkDialog.import.NoTransformationFoundException.description",
                                 new Object [] {files.get(0)}                                
                             );
+                            log.error(e.getMessage());
                         }catch(DtdNoFixFoundException e){     
                             error = Context.getMessage(
                                 "XMLCrosswalkDialog.import.DtdNoFixFoundException.description",
                                 new Object []{
                                     files.get(0).getAbsolutePath(),e.getMessage()
                                 }                                                         
-                            );                         
+                            );     
+                            log.error(e.getMessage());
                         }catch(Exception e){
                             error = Context.getMessage(
                                 "XMLCrosswalkDialog.import.Exception.description",
                                 new Object []{
                                     files.get(0).getAbsolutePath(),e.getMessage()
                                 }                                                         
-                            );                        
+                            );  
+                            log.error(e.getMessage());
                         }
                         
                         if(error != null){

@@ -127,8 +127,7 @@ public class ClearBagHandler extends AbstractAction {
         try{
             PremisUtils.setPremis(mets);
         }catch(Exception e){
-            log.error(e.getMessage());
-            e.printStackTrace();
+            log.error(e.getMessage());            
         }
         infoInputPane.enableForms(false);
     	bagView.updateClearBag();

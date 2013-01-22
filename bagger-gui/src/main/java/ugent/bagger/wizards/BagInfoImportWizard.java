@@ -1,7 +1,6 @@
 package ugent.bagger.wizards;
 
 import com.anearalone.mets.MdSec;
-import gov.loc.repository.bagger.ui.util.ApplicationContextUtil;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;

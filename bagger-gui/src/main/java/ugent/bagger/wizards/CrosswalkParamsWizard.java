@@ -109,6 +109,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    log.error(e.getMessage());
                    
                 }catch(SAXException e){                    
                     error = Context.getMessage(
@@ -117,6 +118,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    log.error(e.getMessage());
                    
                 }catch(IOException e){                      
                     error = Context.getMessage(
@@ -125,6 +127,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     ); 
+                    log.error(e.getMessage());
                     
                 }catch(TransformerConfigurationException e){                  
                     error = Context.getMessage(
@@ -133,6 +136,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    log.error(e.getMessage());
                    
                 }catch(TransformerException e){                    
                     error = Context.getMessage(
@@ -141,6 +145,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    log.error(e.getMessage());
                     
                 }catch(NoNamespaceException e){                    
                     error = Context.getMessage(
@@ -149,6 +154,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    log.error(e.getMessage());
                     
                 }catch(IllegalNamespaceException e){                    
                     error = Context.getMessage(
@@ -157,6 +163,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    log.error(e.getMessage());
                     
                 }catch(DtdNoFixFoundException e){                         
                     error = Context.getMessage("XMLCrosswalkDialog.transform.DtdNoFixFoundException.description",new Object []{
@@ -169,6 +176,7 @@ public class CrosswalkParamsWizard extends AbstractWizard {
                             file,e.getMessage()
                         }
                     );
+                    log.error(e.getMessage());
                     
                 }
                 

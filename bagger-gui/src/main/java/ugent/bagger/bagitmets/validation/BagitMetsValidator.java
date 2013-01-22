@@ -44,14 +44,14 @@ public class BagitMetsValidator {
         if(!file.isDirectory()){
             throw new BagitMetsValidationException(RESULT.BAGIT_NOT_DIRECTORY,file+" is not a directory");
         }        
-        System.out.println("file "+file+" is directory");       
+        log.debug("file "+file+" is directory");       
         
         //all files readable?
         ArrayList<File>notReadableFiles = FUtils.getNotReadableFiles(file);
         if(!notReadableFiles.isEmpty()){
             throw new BagitMetsValidationException(RESULT.BAGIT_FILES_NOT_READABLE,"not all files in directory "+file+" are readable");
         }
-        System.out.println("all files are readable");
+        log.debug("all files are readable");
         MetsBag metsBag = null;
         try{
             metsBag = new MetsBag(file,null);    
@@ -69,35 +69,35 @@ public class BagitMetsValidator {
             throw new BagitMetsValidationException(RESULT.METS_MISSING,"mets.xml missing in directory "+file);
         }
         
-        System.out.println(file+" contains a mets.xml");
+        log.debug(file+" contains a mets.xml");
             
         //mets.xml readable?
         if(!metsFile.canRead()){
             throw new BagitMetsValidationException(RESULT.METS_NOT_READABLE,"mets.xml is not readable");
         }
         
-        System.out.println(file+" has readable mets.xml");
+        log.debug(file+" has readable mets.xml");
         
         Mets mets = null;
         //xml? valid mets-document?
         try{            
             Document document = XML.XMLToDocument(metsFile,false);
-            System.out.println("xml document created");
+            log.debug("xml document created");
             String ns = document.getDocumentElement().getNamespaceURI();            
-            System.out.println("ns: "+ns+" <=> "+NS.METS.ns());
+            log.debug("ns: "+ns+" <=> "+NS.METS.ns());
             if(!ns.equals(NS.METS.ns())){
                 throw new Exception();
             }            
             
             /*
             String schemaPath = MetsUtils.getSchemaPath(document);           
-            System.out.println("schemaPath: "+schemaPath);
+            log.debug("schemaPath: "+schemaPath);
             URL schemaURL = Context.getResource(schemaPath);            
-            System.out.println("schemaURL: "+schemaURL);
+            log.debug("schemaURL: "+schemaURL);
             Schema schema = XML.createSchema(schemaURL);                        
-            System.out.println("schema created");
+            log.debug("schema created");
             XML.validate(document,schema);
-            System.out.println("validated against schema");*/
+            log.debug("validated against schema");*/
             
             mets = new Mets();
             mets.unmarshal(document.getDocumentElement());
@@ -106,7 +106,7 @@ public class BagitMetsValidator {
             throw new BagitMetsValidationException(RESULT.METS_NOT_VALID,"mets.xml is not valid: "+e.getMessage());
         }       
         
-        System.out.println(file+" has valid mets.xml");        
+        log.debug(file+" has valid mets.xml");        
         
         warnings.addAll(validate(metsBag,mets));
         
@@ -122,9 +122,9 @@ public class BagitMetsValidator {
         for(File file:files){
             try{
                 ArrayList<BagitMetsValidationException>warnings = validator.validate(file);
-                System.out.println("warning: ");
+                log.debug("warning: ");
                 for(BagitMetsValidationException warning:warnings){
-                    System.out.println(warning);
+                    log.debug(warning);
                 }
             }catch(BagitMetsValidationException e){
                 log.error(e.getMessage());
@@ -148,13 +148,13 @@ public class BagitMetsValidator {
         if(!result.isSuccess()){
             throw new BagitMetsValidationException(RESULT.BAGIT_NOT_VALID,"directory ");
         }
-        System.out.println(file+" is a valid bagit");        
+        log.debug(file+" is a valid bagit");        
         
         String name = file.getName();
         if(!file.isDirectory()){
             int pos = name.lastIndexOf('.');
             name = pos >= 0 ? name.substring(0,pos) : name;
-            System.out.println("name of subdirectory: "+name);
+            log.debug("name of subdirectory: "+name);
         }
         
         
@@ -232,15 +232,14 @@ public class BagitMetsValidator {
                 entry = FUtils.getEntryStringFor(file.getAbsolutePath(),xhref);
             }            
             
-            System.out.println("checking entry '"+entry+"' in flocat");
+            log.debug("checking entry '"+entry+"' in flocat");
             FileObject fobject = null;
             boolean exists = false;
             try{
                 fobject = FUtils.resolveFile(entry);
                 exists = fobject.exists();
             }catch(Exception e){
-                log.error(e.getMessage());
-                e.printStackTrace();
+                log.error(e.getMessage());                
             }            
             if(fobject == null || !exists){
                 throw new BagitMetsValidationException(RESULT.METS_FLOCAT_XHREF_MISSING,"FLocat of File with ID '"+id+"' does not refer to an existing file");

@@ -99,6 +99,7 @@ public final class JSpinnerNumberBinding extends CustomBinding{
     }
 
     @Override
-    protected void enabledChanged() {        
+    protected void enabledChanged() { 
+        getSpinner().setEnabled(isEnabled());
     }    
 }

@@ -196,6 +196,7 @@ public class OpenBagHandler extends AbstractAction {
             infoInputPane.resetMets(mets);       
             
         }catch(FileNotWritableException e){
+            log.error(e.getMessage());
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotWritableException.title"),
                 Context.getMessage("clearBagHandler.FileNotWritableException.description",new Object [] {file})

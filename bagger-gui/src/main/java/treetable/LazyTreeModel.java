@@ -16,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
  * http://stackoverflow.com/questions/1974670/java-dynamic-jtree
  */
 public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWillExpandListener {
-    static Log log = LogFactory.getLog(LazyTreeModel.class);
+    static final Log log = LogFactory.getLog(LazyTreeModel.class);
 
     public LazyTreeModel(TreeNode root, JTree tree) {
         super(root);
@@ -105,8 +105,7 @@ public abstract class LazyTreeModel extends DefaultTreeModel implements TreeWill
                     }
                 });
             } catch (Exception e) {
-                log.error(e.getMessage());
-                e.printStackTrace();
+                log.error(e.getMessage());                
             }            
         }
     }

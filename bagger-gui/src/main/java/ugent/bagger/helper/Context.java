@@ -31,6 +31,7 @@ public class Context{
         try{
             url = new URL(str);
         }catch(MalformedURLException e){
+            log.error(e.getMessage());
             url = Context.class.getClassLoader().getResource(str);
         }        
         return url;

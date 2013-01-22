@@ -3,10 +3,7 @@ package ugent.rename;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import ugent.bagger.helper.FUtils;
 
 /**
  *
@@ -167,7 +164,7 @@ public class Renumber extends AbstractRenamer{
                     nameInputFile = pos >= 0 ? nameInputFile.substring(0,pos) : nameInputFile;                    
                 }                
             }
-            System.out.println("source: "+inputFile+" ,nameInputFile: "+nameInputFile+", extension:"+extension);
+            log.debug("source: "+inputFile+" ,nameInputFile: "+nameInputFile+", extension:"+extension);
             int index = 0;                      
             
             
@@ -209,7 +206,7 @@ public class Renumber extends AbstractRenamer{
     public static void main(String [] args){
         /*Renumber renumber = new Renumber();
         ArrayList<File>inputFiles = FUtils.listFiles("/home/njfranck/test");
-        System.out.println("num files: "+inputFiles.size());
+        log.debug("num files: "+inputFiles.size());
         renumber.setSimulateOnly(true);
         renumber.setInputFiles(inputFiles);
         renumber.setStartPosType(StartPosType.RELATIVE);
@@ -221,21 +218,20 @@ public class Renumber extends AbstractRenamer{
         renumber.setRenameListener(new RenameListenerAdapter() {
             @Override
             public void onRenameSuccess(RenameFilePair pair, int index) {
-                System.out.println(pair.getSource()+" => "+pair.getTarget());
+                log.debug(pair.getSource()+" => "+pair.getTarget());
             }            
         });
         renumber.rename();*/
         ArrayList<File>files = new ArrayList<File>(Arrays.asList(new File("/home/njfranck/TESTDATA_TIM/2.Hernummer/5.sorteer").listFiles()));
         for(File file:files){
             
-            System.out.println(file+" => "+new Date(file.lastModified()).toString()+"("+file.lastModified()+")");
+            log.debug(file+" => "+new Date(file.lastModified()).toString()+"("+file.lastModified()+")");
         }
         FileSorter.sort(files,PreSort.FILE_DATE_MODIFIED_DESC);
-        System.out.println("after sorting:");
+        log.debug("after sorting:");
         
-        for(File file:files){
-            
-            System.out.println(file+" => "+new Date(file.lastModified()).toString()+"("+file.lastModified()+")");
+        for(File file:files){            
+            log.debug(file+" => "+new Date(file.lastModified()).toString()+"("+file.lastModified()+")");
         }
     }
 }

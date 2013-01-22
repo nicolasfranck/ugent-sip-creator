@@ -175,7 +175,7 @@ public class Renamer extends AbstractRenamer{
             )
         );        
         
-        System.out.println("inputFiles: "+files.size());
+        log.debug("inputFiles: "+files.size());
         renamer.setInputFiles(files);
         renamer.setSource("TXT");
         renamer.setDestination("txt");        
@@ -194,12 +194,12 @@ public class Renamer extends AbstractRenamer{
             }
             @Override
             public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr, int index) {
-                System.out.println("error: "+errorStr);                
+                log.debug("error: "+errorStr);                
                 return ErrorAction.skip;
             }
             @Override
             public void onRenameStart(RenameFilePair pair, int index) {
-                System.out.println("source: "+pair.getSource()+" => "+pair.getTarget());
+                log.debug("source: "+pair.getSource()+" => "+pair.getTarget());
             }            
         });
         renamer.rename();        

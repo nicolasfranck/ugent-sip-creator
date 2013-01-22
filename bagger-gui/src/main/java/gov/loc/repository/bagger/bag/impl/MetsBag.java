@@ -274,20 +274,20 @@ public final class MetsBag extends DefaultBag{
                 String entry = descendant.getAbsolutePath().replace(rootDir.getAbsolutePath()+File.separatorChar,"");
                 entry = "data/"+entry.replace('\\','/');
                 getNewEntries().put(entry,descendant);                        
-                System.out.println("adding "+entry+" => "+descendant.getAbsolutePath());
+                log.debug("adding "+entry+" => "+descendant.getAbsolutePath());
             }
         }else{
             String entry = "data/"+payloadFile.getName();
             getNewEntries().put(entry,payloadFile);                    
-            System.out.println("adding "+entry+" => "+payloadFile.getAbsolutePath());
+            log.debug("adding "+entry+" => "+payloadFile.getAbsolutePath());
         }
-        System.out.println(getNewEntries());
+        log.debug(getNewEntries());
     }
     @Override
     public void removeBagFile(String fileName){
         super.removeBagFile(fileName);
         getNewEntries().remove(fileName);        
-        System.out.println(getNewEntries());        
+        log.debug(getNewEntries());        
     }    
     @Override
     public void removePayloadDirectory(String fileName){
@@ -298,10 +298,10 @@ public final class MetsBag extends DefaultBag{
             Entry<String,File>entry = iterator.next();
             if(entry.getKey().startsWith(fileName)){
                 iterator.remove();                
-                System.out.println("removing "+entry.getKey()+" from "+fileName);
+                log.debug("removing "+entry.getKey()+" from "+fileName);
             }
         }
-        System.out.println(getNewEntries());
+        log.debug(getNewEntries());
     }
     @Override
     public String addTagFile(File tagFile){
@@ -314,14 +314,14 @@ public final class MetsBag extends DefaultBag{
                 String entry = descendant.getAbsolutePath().replace(rootDir.getAbsolutePath()+File.separatorChar,"");
                 entry = entry.replace('\\','/');
                 getNewEntries().put(entry,descendant);                        
-                System.out.println("adding tag directory "+entry+" => "+descendant.getAbsolutePath());
+                log.debug("adding tag directory "+entry+" => "+descendant.getAbsolutePath());
             }
         }else{
             String entry = tagFile.getName();
             getNewEntries().put(entry,tagFile);                    
-            System.out.println("adding tag file "+entry+" => "+tagFile.getAbsolutePath());
+            log.debug("adding tag file "+entry+" => "+tagFile.getAbsolutePath());
         }
-        System.out.println(getNewEntries());
+        log.debug(getNewEntries());
         
         return message;
     }

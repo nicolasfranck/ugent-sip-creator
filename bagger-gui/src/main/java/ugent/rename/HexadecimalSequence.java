@@ -52,7 +52,7 @@ public class HexadecimalSequence implements Sequence{
         seq.setCounter(100);
         seq.setStep(-1);
         for(int i = 0;i<1000;i++){
-            System.out.println(seq.next());
+            log.debug(seq.next());
         }
     }*/
     @Override

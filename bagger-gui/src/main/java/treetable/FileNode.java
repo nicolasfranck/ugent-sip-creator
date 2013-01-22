@@ -18,7 +18,7 @@ public class FileNode {
     Object[] children;   
     
     static FileSystemView fsv = FileSystemView.getFileSystemView();
-    static Log log = LogFactory.getLog(FileNode.class);
+    static final Log log = LogFactory.getLog(FileNode.class);
 
     public FileNode(File file) { 
 	this.file = file; 
@@ -101,8 +101,7 @@ public class FileNode {
                 children = new FileNode[]{};
             }
 	}catch(Exception se){
-            log.error(se);
-            se.printStackTrace();
+            log.error(se);            
             children = new FileNode[]{};
         }
 	return children; 

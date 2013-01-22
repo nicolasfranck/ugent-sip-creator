@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
 import ugent.bagger.forms.MdSecForm;
@@ -19,6 +21,7 @@ import ugent.bagger.helper.XML;
  * @author nicolas
  */
 final public class EditMdSecPanel extends JPanel{
+    static final Log log = LogFactory.getLog(EditMdSecPanel.class);
     JComponent buttonPanel;    
     MdSecForm mdSecForm;
     MdSec mdSec;    
@@ -45,7 +48,7 @@ final public class EditMdSecPanel extends JPanel{
                     textArea.append(entry);
                 }        
             }catch(Exception e){
-                e.printStackTrace();
+                log.error(e.getMessage());                
             }           
         }
         return textArea;

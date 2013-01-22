@@ -58,8 +58,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
     }    
     public void addBagData(File[] files) {                
     	if(files != null){
-            for (int i=0; i < files.length; i++) {
-                log.error("addBagData[" + i + "] " + files[i].getName());                
+            for (int i=0; i < files.length; i++) {                
                 addBagData(files[i],!(i < files.length-1));                
             }
     	}        
@@ -83,26 +82,25 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 //bestandsnamen cross platform overdraagbaar?                
                 FUtils.checkSafeFiles(file);
             }catch(FileNameNotPortableException e){
-                //één of meerdere bestandsnamen zijn niet portabel
-                log.error(e.getMessage());                
+                e.printStackTrace();
                 
+                //één of meerdere bestandsnamen zijn niet portabel                                
+                
+                String error = null;
                 if(file.isDirectory()){
-                    SwingUtils.ShowError(
-                        null,
-                        Context.getMessage(
-                            "addDataHandler.FileNameNotPortableException.directory.message",
-                            new Object [] {file,e.getFile()}
-                        )
-                    );
+                    error = Context.getMessage(
+                        "addDataHandler.FileNameNotPortableException.directory.message",
+                        new Object [] {file,e.getFile()}
+                    );                    
                 }else{
-                    SwingUtils.ShowError(
-                        null,
-                        Context.getMessage(
-                            "addDataHandler.FileNameNotPortableException.file.message",
-                            new Object [] {file}
-                        )
-                    );
+                    error = Context.getMessage(
+                        "addDataHandler.FileNameNotPortableException.file.message",
+                        new Object [] {file}
+                    );                    
                 }
+                
+                log.error(error);
+                SwingUtils.ShowError(null,error);
                 
                 return;
             }
@@ -111,13 +109,11 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             if(file.isDirectory()){
                 File [] children = file.listFiles();
                 if(children == null || children.length == 0){
-                    SwingUtils.ShowError(
-                        null,
-                        Context.getMessage(
-                            "addDataHandler.emptyDirectory.warning",
-                            new Object [] {file}
-                        )
+                    String error = Context.getMessage(
+                        "addDataHandler.emptyDirectory.warning",
+                        new Object [] {file}
                     );
+                    SwingUtils.ShowError(null,error);
                     return;
                 }
             }
@@ -145,13 +141,11 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                     (bagFile.getAbsoluteFile().getAbsolutePath().equals(file.getAbsoluteFile().getAbsolutePath()))
                 )
             ){
-                SwingUtils.ShowError(
-                    null,
-                    Context.getMessage(
+                String error = Context.getMessage(
                         "addDataHandler.fileInBag.warning",
                         new Object [] {file}
-                    )
-                );
+                    );
+                SwingUtils.ShowError(null,error);
                 return;
             }            
             
@@ -159,6 +153,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             boolean alreadyExists = bagView.getBagPayloadTree().addNodes(file, false);
             if(alreadyExists) {
                 String title = Context.getMessage("addDataHandler.fileExists.title");
+                
                 String message = Context.getMessage(
                     "addDataHandler.fileExists.message",
                     new Object [] {file.getName()}
@@ -166,7 +161,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 log.error(message);
                 SwingUtils.ShowError(title,message);
             }
-        }catch(FileNotReadableException e){          
+        }catch(FileNotReadableException e){ 
             String title = Context.getMessage("addDataHandler.FileNotReadableException.title");
             String message = Context.getMessage(
                 "addDataHandler.FileNotReadableException.message",
@@ -174,7 +169,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             ); 
             log.error(message);
             SwingUtils.ShowError(title,message);            
-        }catch(FileNotFoundException e){            
+        }catch(FileNotFoundException e){ 
             String title = Context.getMessage("addDataHandler.FileNotFoundException.title");
             String message = Context.getMessage(
                 "addDataHandler.FileNotFoundException.message",
@@ -182,10 +177,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             ); 
             log.error(message);
             SwingUtils.ShowError(title,message);            
-        }catch (Exception e){            
-            
-            log.error("BagView.addBagData: " + e);
-            
+        }catch (Exception e){
             String title = Context.getMessage("addDataHandler.unknowException.title");
             String message = Context.getMessage(
                 "addDataHandler.fileExists.message",

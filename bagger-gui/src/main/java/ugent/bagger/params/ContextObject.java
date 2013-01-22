@@ -1,5 +1,7 @@
 package ugent.bagger.params;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ugent.bagger.helper.Context;
 
 /**
@@ -10,6 +12,7 @@ import ugent.bagger.helper.Context;
  * for labelling the component, while preserving the original object intact
  */
 public class ContextObject {
+    static final Log log = LogFactory.getLog(ContextObject.class);
     Object object;
     String key;
     public ContextObject(Object object,String key){
@@ -22,7 +25,7 @@ public class ContextObject {
         try{
             text = Context.getMessage(key);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return text;
     }

@@ -13,7 +13,6 @@ import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.CreateBagsParams;
 import ugent.bagger.params.ExportParams;
 import ugent.bagger.params.NewBagParams;
-import ugent.bagger.params.RenameParams;
 import ugent.bagger.params.SaveBagParams;
 import ugent.bagger.params.ValidateManifestParams;
 

@@ -151,7 +151,7 @@ public class MdSecPropertiesPanel extends JPanel{
                         textArea.setText(writer.toString());
                     }catch(Exception e){
                         textArea.setText("");
-                        e.printStackTrace();
+                        log.error(e.getMessage());
                     }
                     
                     JPanel panel = new JPanel(new BorderLayout());

@@ -29,7 +29,7 @@ import ugent.bagger.params.VelocityTemplate;
  * @author nicolas
  */
 public class CSV2Panel extends JPanel{        
-    static Log log = LogFactory.getLog(CSV2Panel.class);
+    static final Log log = LogFactory.getLog(CSV2Panel.class);
     JButton testButton;   
     HashMap<String,String>record = new HashMap<String,String>();
     JTextArea textArea;

@@ -70,12 +70,12 @@ public class ValidateBagHandler extends Handler {
                 
                 result = metsBag.validateBag(validVerifier); 
                 for(String message:result.getMessages()){
-                    System.out.println("message: "+message);
+                    log.debug("message: "+message);
                 }
                    
-            }catch (Exception e){                                                
-                if(isCancelled()){
-                    log.error(e.getMessage());                    
+            }catch (Exception e){   
+                log.error(e.getMessage());  
+                if(isCancelled()){                                      
                     SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
                 }else{                    
                     SwingUtils.ShowError(

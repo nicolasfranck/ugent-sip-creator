@@ -170,16 +170,14 @@ public class PremisBagitMetsAnalyser implements BagitMetsAnalyser{
                 try{
                     mdSec.setCREATEDATE(DateUtils.DateToGregorianCalender());
                 }catch(Exception e){
-                    log.error(e.getMessage());
-                    e.printStackTrace();
+                    log.error(e.getMessage());                    
                 }            
             }            
             mdSec.setMdWrap(mdWrap);
             amdSec.getDigiprovMD().add(mdSec);
         
         }catch(Exception e){
-            log.error(e.getMessage());
-            e.printStackTrace();
+            log.error(e.getMessage());            
         }        
     }    
 }

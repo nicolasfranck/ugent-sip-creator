@@ -236,7 +236,7 @@ public class FUtils {
             }            
         }catch(Exception e){
             //als inputstream geen mark ondersteund, dan wordt een Exception geworpen
-            log.debug(e.getMessage());            
+            log.error(e.getMessage());            
         }
         return mimeType;        
     }    
@@ -347,7 +347,7 @@ public class FUtils {
         for(int i = 0;i<tab;i++){
             System.out.print(" ");
         }
-        System.out.println(node.getUserObject());                
+        log.debug(node.getUserObject());                
         for(int i = 0;i<node.getChildCount();i++){                       
             recurseTree((DefaultMutableTreeNode)node.getChildAt(i),tab+1);
         }
@@ -413,7 +413,11 @@ public class FUtils {
             throw new FileNameNotPortableException(file);            
         }        
         if(file.isDirectory()){
-            for(File child:file.listFiles()){
+            File [] children = file.listFiles();
+            if(children == null){
+                return;
+            }
+            for(File child:children){
                 checkSafeFiles(child);
             }
         }
@@ -423,13 +427,5 @@ public class FUtils {
     }
     public static boolean isSafeFileName(String name){        
         return safeFileNamePattern.matcher(name).find();        
-    }
-    /*
-    public static void main(String...args){
-        try{
-            checkSafeFiles(new File("/home/njfranck/test/bag-a"));
-        }catch(FileNameNotPortableException e){
-            e.printStackTrace();
-        }
-    }*/
+    }   
 }

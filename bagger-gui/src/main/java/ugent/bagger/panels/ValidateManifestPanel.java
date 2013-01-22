@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -45,6 +48,7 @@ public class ValidateManifestPanel extends JPanel{
     ValidateManifestParamsForm validateManifestParamsForm;
     ClassTable<ValidateManifestResult> validateManifestResultTable;
     ArrayList<ValidateManifestResult>validateManifestResults;
+    JLabel labelStatistics;
     
     public ValidateManifestPanel(){
         init();
@@ -64,7 +68,9 @@ public class ValidateManifestPanel extends JPanel{
         
         JComponent buttonPanel = createButtonPanel();
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        add(buttonPanel); 
+        add(buttonPanel);
+        
+        add(getLabelStatistics());
         
         JTable table = (JTable)getValidateManifestResultTable().getControl();
         JScrollPane scroller = new JScrollPane(table);
@@ -74,6 +80,14 @@ public class ValidateManifestPanel extends JPanel{
         
         
     }
+
+    public JLabel getLabelStatistics() {
+        if(labelStatistics == null){
+            labelStatistics = new JLabel();
+        }
+        return labelStatistics;
+    }
+    
     public ValidateManifestParams getValidateManifestParams() {
         if(validateManifestParams == null){
             validateManifestParams = new ValidateManifestParams();
@@ -83,14 +97,20 @@ public class ValidateManifestPanel extends JPanel{
     public ValidateManifestParamsForm getValidateManifestParamsForm() {
         if(validateManifestParamsForm == null){
             validateManifestParamsForm = new ValidateManifestParamsForm(getValidateManifestParams());
+            validateManifestParamsForm.addFormValueChangeListener("files",new PropertyChangeListener(){
+                @Override
+                public void propertyChange(PropertyChangeEvent pce) {
+                    reset(new ArrayList<ValidateManifestResult>());
+                }            
+            });
         }
         return validateManifestParamsForm;
     }
     public JComponent createButtonPanel(){        
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
-        JButton okButton = new JButton(Context.getMessage("ok"));
-        JButton cancelButton = new JButton(Context.getMessage("cancel"));
+        JButton okButton = new JButton(Context.getMessage("ValidateManifestPanel.startCheck"));
+        JButton cancelButton = new JButton(Context.getMessage("ValidateManifestPanel.closeCheck"));
         
         okButton.addActionListener(new ActionListener(){
             @Override
@@ -183,7 +203,9 @@ public class ValidateManifestPanel extends JPanel{
             BagFactory bagFactory = new BagFactory();            
             BagPartFactoryImpl bagPartFactory = new BagPartFactoryImpl(bagFactory,new BagConstantsImpl());
             
-            int i = 0;                        
+            int i = 0;  
+            int numValid = 0;
+            int numError = 0;
             for(File manifestFile:getValidateManifestParams().getFiles()){
                 try{                    
                     File baseDir = manifestFile.getParentFile();    
@@ -202,15 +224,36 @@ public class ValidateManifestPanel extends JPanel{
                     while(manifestReader.hasNext()){
                         FilenameFixity fixity = manifestReader.next();                            
                         File childFile = new File(baseDir,fixity.getFilename());                                                                        
-                        String checksumComputed = MessageDigestHelper.generateFixity(childFile,algorithm);                            
-                        addValidateManifestResult(new ValidateManifestResult(manifestFile,childFile,fixity.getFixityValue(),checksumComputed));
+                        String checksumComputed = MessageDigestHelper.generateFixity(childFile,algorithm); 
+                        
+                        ValidateManifestResult result = new ValidateManifestResult(
+                            manifestFile,
+                            childFile,
+                            fixity.getFixityValue(),
+                            checksumComputed
+                        );
+                        addValidateManifestResult(result);
+                        
+                        if(result.isSuccess()){
+                            numValid++;
+                        }else{
+                            numError++;
+                        }
+                        
+                        getLabelStatistics().setText(Context.getMessage(
+                            "ValidateManifestPanel.statistics.label",new Object []{
+                                numValid,numError
+                            }
+                        ));
                     }  
                     
                     int percent = (int)Math.floor( ((i+1) / ((float)getValidateManifestParams().getFiles().size()))*100);
                     setProgress(percent);
-                }catch(FileNotFoundException e){
-                    log.error(e.getMessage());
                     
+                    
+                    
+                }catch(FileNotFoundException e){
+                    log.error(e.getMessage());                    
                 }
                 int percent = (int)Math.floor( ((++i) / ((float)getValidateManifestParams().getFiles().size()))*100);                    
                 setProgress(percent);                                

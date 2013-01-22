@@ -1,6 +1,6 @@
 package ugent.bagger.params;
 
-import ugent.bagger.helper.MetsUtils;
+import java.util.UUID;
 
 /**
  *
@@ -18,7 +18,7 @@ public class NewBagParams {
     }    
     public String getBagId() {
         if(bagId == null){
-            bagId = MetsUtils.createID();
+            bagId = "UUID-"+UUID.randomUUID().toString();
         }
         return bagId;
     }
