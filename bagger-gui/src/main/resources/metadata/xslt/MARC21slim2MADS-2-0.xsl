@@ -5,7 +5,7 @@
 
     <!--<xsl:include href="http://www.loc.gov/marcxml/xslt/MARC21slimUtils.xsl"/>-->
 
-	<xsl:include href="MARC21slimUtils.xsl"/>
+	<xsl:include href="metadata/xslt/MARC21slimUtils.xsl"/>
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 	<xsl:strip-space elements="*"/>
 

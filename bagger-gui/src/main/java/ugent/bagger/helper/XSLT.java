@@ -11,6 +11,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -32,6 +33,7 @@ public class XSLT {
     public static TransformerFactory getTransformerFactory() {
         if(tf == null){
             tf = TransformerFactory.newInstance();
+            tf.setURIResolver(new ResourceResolver());
         }
         return tf;
     }
@@ -105,4 +107,14 @@ public class XSLT {
             e.printStackTrace();
         }
     }*/ 
+    static class ResourceResolver implements URIResolver {
+        @Override
+        public Source resolve(String href,String base) throws TransformerException {
+           System.out.println("href: "+href);
+           System.out.println("base: "+base);
+           StreamSource source = new StreamSource(Context.getResourceAsStream(href),href);
+                   
+           return source;
+        }        
+    }
 }

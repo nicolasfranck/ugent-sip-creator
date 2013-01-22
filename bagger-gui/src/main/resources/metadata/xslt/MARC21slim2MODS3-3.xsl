@@ -2,7 +2,7 @@
 	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	exclude-result-prefixes="xlink marc" version="1.0">
 	<!--<xsl:include href="http://www.loc.gov/standards/marcxml/xslt/MARC21slimUtils.xsl"/>-->
-    <xsl:include href="MARC21slimUtils.xsl"/>
+    <xsl:include href="metadata/xslt/MARC21slimUtils.xsl"/>
 	<xsl:output encoding="UTF-8" indent="yes" method="xml"/>
 
 <!-- Maintenance note: 
