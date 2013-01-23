@@ -51,6 +51,24 @@ public class ClearBagHandler extends AbstractAction {
     	// For all other types of Bags the Save Dialog Box pops up
         BagView bagView = BagView.getInstance();
         MetsBag metsBag = bagView.getBag();
+        
+        if(metsBag.getFile() != null){
+            log.error(
+                Context.getMessage(
+                    "ClearBagHandler.closeExistingBag.label",
+                    new Object []{metsBag.getFile()}                
+                )
+            );
+        }else{
+            log.error(
+                Context.getMessage(
+                    "ClearBagHandler.closeNewBag.label",
+                    new Object []{}                
+                )
+            );
+        }
+        
+        
     	if(!metsBag.isChanged()){
             clearExistingBag();
         }else {

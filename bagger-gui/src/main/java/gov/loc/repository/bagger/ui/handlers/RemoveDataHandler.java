@@ -50,27 +50,26 @@ public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
             
             
             DefaultTreeModel model = (DefaultTreeModel)bagView.getBagPayloadTree().getModel();
+            
+            log.error(Context.getMessage("RemoveDataHandler.start"));
+            log.error(Context.getMessage("RemoveDataHandler.todo",new Object []{paths.length}));
+            
             for (int i=0; i < paths.length; i++) {
                 TreePath path = paths[i];
                 Object node = path.getLastPathComponent();
-                
-                log.error("removeData: " + path.toString());
-                log.error("removeData pathCount: " + path.getPathCount());
-                
+                               
                 File filePath = null;
                 String fileName = null;
                 if (path.getPathCount() > 0){                    
                     filePath = new File(""+path.getPathComponent(0));
                     for (int j = 1; j < path.getPathCount(); j++) {
-                        filePath = new File(filePath, ""+path.getPathComponent(j));
-                        log.debug("\t" + filePath);
+                        filePath = new File(filePath, ""+path.getPathComponent(j));                        
                     }
                 }
                 if(filePath != null) {
                     fileName = BaggerFileEntity.normalize(filePath.getPath());
-                }
-                
-                log.debug("removeData filePath: " + fileName); 
+                }               
+               
                 
                 if (fileName != null && !fileName.isEmpty()) {
                     try {
@@ -85,10 +84,14 @@ public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
                             model.removeNodeFromParent((MutableTreeNode)aNode);
                         }
                     } catch (Exception e) {     
-                        log.error(e.getMessage());
+                        //Payload file <payload> not contained in bag.
+                        //deze melding krijg je wanneer je een directory probeert te verwijderen mbv removeBagFile
+                        log.debug(e.getMessage());
                         
                         try {                                                       
-                            bag.removePayloadDirectory(fileName);                                                       
+                            bag.removePayloadDirectory(fileName);  
+                            
+                            log.error(Context.getMessage("RemoveDataHandler.removeData.success.description",new Object []{fileName}));
                             
                             if(node instanceof MutableTreeNode) {
                                 model.removeNodeFromParent((MutableTreeNode)node);
@@ -109,6 +112,8 @@ public class RemoveDataHandler extends AbstractAction /*implements Loggable*/{
                     }
                 }
             }
+            
+            log.error(Context.getMessage("RemoveDataHandler.end"));
 
             bagView.getBagPayloadTree().removeSelectionPaths(paths);
             bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());

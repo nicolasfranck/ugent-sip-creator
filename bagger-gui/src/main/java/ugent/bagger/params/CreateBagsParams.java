@@ -11,12 +11,12 @@ import java.util.ArrayList;
 public class CreateBagsParams {
     ArrayList<File>directories;
     String version = BagFactory.Version.V0_96.versionString;    
-    boolean keepEmptyDirectories = false;
+    boolean keepEmptyDirectories = true;
     String metadataPaths = "";
     String [] metadata;
     boolean keepMetadata = true;
     boolean addDC = false;
-    boolean writeToBagInfo = false;
+    boolean writeToBagInfo = true;
     boolean bagInPlace = true;
     ArrayList<File> outputDir;    
 

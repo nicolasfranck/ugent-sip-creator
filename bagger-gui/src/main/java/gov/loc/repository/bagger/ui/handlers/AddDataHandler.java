@@ -6,7 +6,6 @@ import gov.loc.repository.bagger.ui.Progress;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import org.apache.commons.logging.Log;
@@ -43,13 +42,9 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
             true
         );         
             
-        SwingUtils.ShowBusy();                
-        String message = Context.getMessage("bag.message.filesadded");        
-        addBagData(files);
-        log.error(message);        
-        for(File file:files){            
-            log.error("\t"+file.getAbsolutePath());
-        }
+        SwingUtils.ShowBusy();                        
+        
+        addBagData(files);        
         bagView.getBagPayloadTreePanel().refresh(bagView.getBagPayloadTree());
         bagView.updateAddData();
         
@@ -57,16 +52,29 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
         
     }    
     public void addBagData(File[] files) {                
+        log.error(Context.getMessage("addDataHandler.addBagDataList.start",new Object []{files.length}));
     	if(files != null){
             for (int i=0; i < files.length; i++) {                
                 addBagData(files[i],!(i < files.length-1));                
             }
     	}        
+        log.error(Context.getMessage("addDataHandler.addBagDataList.end",new Object []{files.length}));
+    }
+    protected void addBagDataReport(File file,boolean isSuccess){
+        if(isSuccess){
+            log.error(Context.getMessage("addDataHandler.addBagData.success",new Object []{file}));
+        }else{
+            log.error(Context.getMessage("addDataHandler.addBagData.error",new Object []{file}));
+        }
     }
     public void addBagData(File file, boolean lastFileFlag) {
         
         final BagView bagView = BagView.getInstance();  
         final MetsBag metsBag = bagView.getBag();
+        
+        
+        log.error(Context.getMessage("addDataHandler.addBagData.start",new Object []{file}));
+        
         try{
             File bagFile = metsBag.getFile();            
             
@@ -74,7 +82,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 //leesbaar?
                 FUtils.checkFile(file,true);                
             }catch(FileNotWritableException e){
-                log.error(e.getMessage());
+                log.debug(e.getMessage());
                 //doe niets
             }
             
@@ -82,8 +90,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 //bestandsnamen cross platform overdraagbaar?                
                 FUtils.checkSafeFiles(file);
             }catch(FileNameNotPortableException e){
-                e.printStackTrace();
-                
+                                
                 //één of meerdere bestandsnamen zijn niet portabel                                
                 
                 String error = null;
@@ -100,7 +107,9 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 }
                 
                 log.error(error);
-                SwingUtils.ShowError(null,error);
+                SwingUtils.ShowError(null,error);  
+                
+                addBagDataReport(file,false);
                 
                 return;
             }
@@ -114,6 +123,10 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                         new Object [] {file}
                     );
                     SwingUtils.ShowError(null,error);
+                    log.error(error);
+                    
+                    addBagDataReport(file,false);
+                    
                     return;
                 }
             }
@@ -146,6 +159,10 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                         new Object [] {file}
                     );
                 SwingUtils.ShowError(null,error);
+                log.error(error);
+                
+                addBagDataReport(file,false);
+                
                 return;
             }            
             
@@ -160,6 +177,10 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 );                        
                 log.error(message);
                 SwingUtils.ShowError(title,message);
+                
+                addBagDataReport(file,false);
+            }else{
+                addBagDataReport(file,true);
             }
         }catch(FileNotReadableException e){ 
             String title = Context.getMessage("addDataHandler.FileNotReadableException.title");
@@ -168,6 +189,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 new Object [] {e.getFile()}
             ); 
             log.error(message);
+            addBagDataReport(file,false);
             SwingUtils.ShowError(title,message);            
         }catch(FileNotFoundException e){ 
             String title = Context.getMessage("addDataHandler.FileNotFoundException.title");
@@ -176,6 +198,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 new Object [] {file}
             ); 
             log.error(message);
+            addBagDataReport(file,false);
             SwingUtils.ShowError(title,message);            
         }catch (Exception e){
             String title = Context.getMessage("addDataHandler.unknowException.title");
@@ -184,6 +207,7 @@ public class AddDataHandler extends AbstractAction implements Progress /*,Loggab
                 new Object [] {e.getMessage()}
             ); 
             log.error(message);
+            addBagDataReport(file,false);
             SwingUtils.ShowError(title,message);            
         }    	
     }    

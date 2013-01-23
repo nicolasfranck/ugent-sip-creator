@@ -41,12 +41,11 @@
       class="org.springframework.richclient.exceptionhandling.delegation.DelegatingExceptionHandler">
       <property name="delegateList">
         <list>
-          <bean
-            class="org.springframework.richclient.exceptionhandling.delegation.SimpleExceptionHandlerDelegate">
+          <bean class="org.springframework.richclient.exceptionhandling.delegation.SimpleExceptionHandlerDelegate">
             <property name="throwableClass" value="java.lang.Error" />
             <property name="exceptionHandler">
               <bean class="org.springframework.richclient.exceptionhandling.MessagesDialogExceptionHandler">
-                <property name="logLevel" value="DEBUG" />
+                <property name="logLevel" value="WARN" />
                 <property name="shutdownPolicy" value="OBLIGATE" />
               </bean>
             </property>
@@ -57,7 +56,7 @@
             <property name="throwableClass" value="java.lang.Throwable" />
             <property name="exceptionHandler">
               <bean class="org.springframework.richclient.exceptionhandling.MessagesDialogExceptionHandler">
-                <property name="logLevel" value="DEBUG" />
+                <property name="logLevel" value="WARN" />
                 <property name="shutdownPolicy" value="ASK" />
               </bean>
             </property>
@@ -184,12 +183,14 @@
         </property>
     </bean>
     
-    <bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />
+    <!--<bean class="org.springframework.richclient.form.builder.support.ToolTipInterceptorFactory" />-->
 
     <bean id="rulesSource" class="gov.loc.repository.bagger.domain.BaggerValidationRulesSource" />
     
     <bean id="commandServices" class="org.springframework.richclient.command.support.DefaultCommandServices">
-        <property name="toolBarButtonConfigurer"> <ref bean="toolBarButtonConfigurer"/> </property>
+        <property name="toolBarButtonConfigurer"> 
+            <ref bean="toolBarButtonConfigurer"/> 
+        </property>
     </bean> 
 
     <bean id="toolBarButtonConfigurer" class="gov.loc.repository.bagger.app.BbToolBarCommandButtonConfigurer">
@@ -698,6 +699,7 @@
     <util:map map-class="java.util.HashMap" id="velocity">
         <entry key="properties" value="velocity.properties" />
     </util:map>
+    
     <util:map map-class="java.util.HashMap" id="velocityTemplates">        
         <entry key="oai-dc-simple">
             <util:map map-class="java.util.HashMap">
@@ -747,23 +749,7 @@
                 </property>
                 <property name="destination" value="" />                
             </bean>  
-        </entry>
-        <!--
-        <entry key="toUpperCase">
-            <bean class="ugent.bagger.params.RenameParams">
-                <property name="regex" value="true" />                                
-                <property name="source" value="(.*)" />
-                <property name="destination" value="\U\1" />                
-            </bean>  
-        </entry>
-        <entry key="toLowerCase">
-            <bean class="ugent.bagger.params.RenameParams">
-                <property name="regex" value="true" />                                
-                <property name="source" value="(.*)" />
-                <property name="destination" value="\L\1" />                
-            </bean>  
-        </entry>
-        -->
+        </entry>        
     </util:map>
     
     <util:map id="csvDefaultMapConfig" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.util.HashMap" >

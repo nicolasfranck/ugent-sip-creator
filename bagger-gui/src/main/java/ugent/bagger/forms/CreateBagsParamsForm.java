@@ -53,10 +53,10 @@ public class CreateBagsParamsForm extends AbstractForm{
         builder.row();
         
         //keep empty directories
-        builder.add("keepEmptyDirectories");
-        builder.row();
+        /*builder.add("keepEmptyDirectories");
+        builder.row();*/
         
-        for(String key:new String [] {"metadataPaths","keepMetadata","addDC","writeToBagInfo"}){
+        for(String key:new String [] {"metadataPaths","keepMetadata","addDC"/*,"writeToBagInfo"*/}){
             builder.add(key);
             builder.row();
         }   
@@ -73,18 +73,21 @@ public class CreateBagsParamsForm extends AbstractForm{
             fileChooser,            
             SwingUtils.getFrame()
         );                        
-        SwingUtils.setJComponentEnabled(outputDirBinding.getControl(),!createBagParams.isBagInPlace());
-        builder.add(outputDirBinding);
+        
+        final JComponent [] componentsOutputDir = builder.add(outputDirBinding);
         builder.row();
+        
         
         //relatie bagInPlace en outputDir        
         getValueModel("bagInPlace").addValueChangeListener(new PropertyChangeListener(){
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                Boolean b = (Boolean) pce.getNewValue();                
-                SwingUtils.setJComponentEnabled(outputDirBinding.getControl(),!b);                
+                Boolean b = (Boolean) pce.getNewValue();  
+                SwingUtils.setJComponentsEnabled(componentsOutputDir,!b);
             }            
         });
+        
+        SwingUtils.setJComponentsEnabled(componentsOutputDir,!createBagParams.isBagInPlace());
         
         getValueModel("outputDir").addValueChangeListener(new PropertyChangeListener(){
             @Override

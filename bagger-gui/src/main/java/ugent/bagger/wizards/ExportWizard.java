@@ -88,11 +88,20 @@ public class ExportWizard extends AbstractWizard {
         
         HashMap<String,HashMap<String,Object>>exportersConfig = null;
         try{
-            final File outputFile = exportParams.getOutputFile().get(0);
+            File outputFile = exportParams.getOutputFile().get(0);
             
             exportersConfig = (HashMap<String,HashMap<String,Object>>) Beans.getBean("exporters");            
             HashMap<String,Object>econfig = exportersConfig.get(exportParams.getFormat());                
             
+            final Exporter exporter = (Exporter) Class.forName((String)econfig.get("class")).newInstance();
+            
+            //name outputbestand
+            if(!outputFile.getName().toLowerCase().endsWith("."+exporter.getExtension())){
+                outputFile = new File(
+                    outputFile.getParentFile(),
+                    outputFile.getName()+"."+exporter.getExtension()
+                );
+            }            
             
             //controle op bestand
             if(!outputFile.getParentFile().canRead()){
@@ -168,14 +177,16 @@ public class ExportWizard extends AbstractWizard {
             }           
             
             
-            //export
-            final Exporter exporter = (Exporter) Class.forName((String)econfig.get("class")).newInstance();
-            
+            //converteer metadata
             MetadataConverter metadataConverter = null;
             if(econfig.containsKey("metadataConverter")){
                 metadataConverter = (MetadataConverter) econfig.get("metadataConverter");                
                 exporter.setMetadataConverter(metadataConverter);
             }
+            
+            //exporteer
+            
+            final String outputFilePath = outputFile.getAbsolutePath();
             
             
             Runnable runnable = new Runnable() {                
@@ -185,7 +196,7 @@ public class ExportWizard extends AbstractWizard {
                     boolean success = false;
                     
                     try {
-                        exporter.export(metsBag,mets,new BufferedOutputStream(new FileOutputStream(outputFile)));
+                        exporter.export(metsBag,mets,new BufferedOutputStream(new FileOutputStream(new File(outputFilePath))));
                         success = true;
                     } catch (IOException e) {                                                
                         log.error(e.getMessage());
@@ -209,7 +220,7 @@ public class ExportWizard extends AbstractWizard {
                     SwingUtils.ShowMessage(
                         null,
                         Context.getMessage("ExportWizard.exportSuccessfull.label",new Object []{
-                            outputFile
+                            new File(outputFilePath)
                     }));
                 }
             };           

@@ -85,7 +85,7 @@ public class StartNewBagHandler extends AbstractAction {
 
     	bagView.getInfoFormsPane().getInfoInputPane().populateForms();
         
-        log.error(Context.getMessage("StartNewBagHandler.newBagCreated.label"));
+        log.error(Context.getMessage("StartNewBagHandler.newBagCreated.label",new Object []{params.getBagId()}));
         
         
     	bagView.updateNewBag();

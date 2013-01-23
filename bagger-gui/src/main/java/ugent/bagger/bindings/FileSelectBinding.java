@@ -21,6 +21,7 @@ public final class FileSelectBinding extends CustomBinding{
     
     JFileChooser fileChooser;    
     JTextField field;
+    JButton browseButton;
     Component parent;
     String template;    
     String buttonText;
@@ -112,24 +113,20 @@ public final class FileSelectBinding extends CustomBinding{
     }
     @Override
     protected JComponent doBindControl() {         
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));        
-        JButton browseButton = new JButton(getButtonText());        
-        browseButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                fieldListener();
-            }
-        });        
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0)); 
         panel.add(getField());
-        panel.add(browseButton);        
+        panel.add(getBrowseButton());        
         return panel;        
     }
     @Override
     protected void readOnlyChanged() {        
     }
     @Override
-    protected void enabledChanged(){        
-        fileChooser.setEnabled(isEnabled());
+    protected void enabledChanged(){     
+        boolean enabled = isEnabled();
+        fileChooser.setEnabled(enabled);
+        getBrowseButton().setEnabled(enabled);
+        getField().setEditable(enabled);
     }
     protected String getTemplate() {
         if(template == null){
@@ -146,5 +143,16 @@ public final class FileSelectBinding extends CustomBinding{
         }
         return buttonText;
     }
-    
+    protected JButton getBrowseButton() {
+        if(browseButton == null){
+            browseButton = new JButton(getButtonText());        
+            browseButton.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    fieldListener();
+                }
+            }); 
+        }
+        return browseButton;
+    }
 }

@@ -130,12 +130,12 @@ public class SaveBagHandler extends Handler {
         @Override
         protected Object doInBackground() throws Exception {
             
-            SwingUtils.getStatusBar().setMessage(
-                Context.getMessage(
-                    "StatusBar.saveBag.message",
-                    new Object []{metsBag.getFile().getAbsolutePath()}
-                )
+            String message = Context.getMessage(
+                "StatusBar.saveBag.message",
+                new Object []{metsBag.getFile().getAbsolutePath()}
             );
+            SwingUtils.getStatusBar().setMessage(message);
+            log.error(message);
             
             Mets mets = metsBag.getMets();
             metsBag.setBagItMets(new DefaultBagItMets());
@@ -178,7 +178,8 @@ public class SaveBagHandler extends Handler {
             } else {
                 String message = Context.getMessage("bag.saved.description");
                 String title = Context.getMessage("bag.saved.title");
-                SwingUtils.ShowMessage(title,message);                                
+                SwingUtils.ShowMessage(title,message);
+                log.error(message);
             }
 
             if(metsBag.isSerialized()){
@@ -193,8 +194,7 @@ public class SaveBagHandler extends Handler {
                     if(metsBag.isValidateOnSave()) {
                         bagView.validateBagHandler.validateBag();
                     }                     
-                    File bagFile = metsBag.getFile();
-                    log.info("BagView.openExistingBag: " + bagFile);
+                    File bagFile = metsBag.getFile();                    
                     bagView.openBagHandler.openExistingBag(bagFile);
                     bagView.updateSaveBag();
                 }

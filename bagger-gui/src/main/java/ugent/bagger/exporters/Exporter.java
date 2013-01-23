@@ -3,7 +3,6 @@ package ugent.bagger.exporters;
 import com.anearalone.mets.MdSec;
 import com.anearalone.mets.Mets;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,4 +41,5 @@ public abstract class Exporter {
         ArrayList<BagitMetsValidationException>warnings = validator.validate(metsBag,mets);                
         return warnings;    
     }
+    public abstract String getExtension();
 }

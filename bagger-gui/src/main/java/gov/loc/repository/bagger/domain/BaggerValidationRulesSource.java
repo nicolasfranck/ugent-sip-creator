@@ -67,6 +67,21 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         };       
         createBagsParamsRules.add(bagInPlaceOutputDir);
         
+        PropertyConstraint outputDirConstraint = new AbstractPropertyConstraint("outputDir"){
+            @Override
+            protected boolean test(PropertyAccessStrategy pas) {                
+                Boolean bagInPlace = (Boolean) pas.getPropertyValue("bagInPlace");
+                ArrayList<File>outputDir = (ArrayList<File>) pas.getPropertyValue("outputDir");                
+               
+                if(bagInPlace){
+                    return true;
+                }else{
+                    return outputDir != null && !outputDir.isEmpty();
+                }
+            }
+        }; 
+        createBagsParamsRules.add(outputDirConstraint);
+        
         Constraint metadataPaths = regexp("^[a-zA-Z0-9_\\-\\.]*(?:,[a-zA-Z0-9_\\-\\.]+)*$");
         createBagsParamsRules.add(value("metadataPaths",metadataPaths));        
         addRules(createBagsParamsRules);
@@ -89,10 +104,6 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         validateManifestParamsRules.add(value("files",filesConstraint));
         addRules(validateManifestParamsRules);
         
-        //rename
-        /*Rules renameParamsRules = new Rules(RenameParams.class);
-        renameParamsRules.add(required("source"));
-        addRules(renameParamsRules);*/
         
         //exportParams
         Rules exportParamsRules = new Rules(ExportParams.class);

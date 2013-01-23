@@ -118,4 +118,9 @@ public class ExporterDSpaceSimpleArchive extends Exporter{
     public void setMetadataConverter(MetadataConverter converter) {
         this.metadataConverter = converter;                
     }
+
+    @Override
+    public String getExtension() {
+        return "zip";
+    }
 }

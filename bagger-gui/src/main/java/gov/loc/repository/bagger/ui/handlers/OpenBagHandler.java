@@ -83,9 +83,10 @@ public class OpenBagHandler extends AbstractAction {
     public void openExistingBag(File file) { 
         SwingUtils.ShowBusy();                
         
-        SwingUtils.getStatusBar().setMessage(
-            Context.getMessage("StatusBar.openBag.message",new Object []{file.getAbsolutePath()})
-        );
+        String message = Context.getMessage("StatusBar.openBag.message",new Object []{file.getAbsolutePath()});
+        
+        SwingUtils.getStatusBar().setMessage(message);
+        log.error(message);
         
         BagView bagView = BagView.getInstance();
         InfoFormsPane infoFormsPane = bagView.getInfoFormsPane();
@@ -103,6 +104,7 @@ public class OpenBagHandler extends AbstractAction {
             
             //formaat correct?
             bagView.clearBagHandler.newDefaultBag(file); 
+            
             log.error(Context.getMessage("clearBagHandler.bagOpened.label",new Object [] {
                 file
             }));                
@@ -196,52 +198,64 @@ public class OpenBagHandler extends AbstractAction {
             infoInputPane.resetMets(mets);       
             
         }catch(FileNotWritableException e){
-            log.error(e.getMessage());
+            String error = Context.getMessage(
+                "clearBagHandler.FileNotWritableException.description",
+                new Object [] {file,e.getMessage()}
+            );
+            log.error(error);
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotWritableException.title"),
-                Context.getMessage("clearBagHandler.FileNotWritableException.description",new Object [] {file})
+                error
             );
         }catch(FileNotReadableException e){
-            log.error(e.getMessage());
+            String error = Context.getMessage("clearBagHandler.FileNotReadableException.description",new Object [] {file,e.getMessage()});
+            log.error(error);
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotReadableException.title"),
-                Context.getMessage("clearBagHandler.FileNotReadableException.description",new Object [] {file})
+                error
             );                     
         }catch(FileNotFoundException e){
-           log.error(e.getMessage());
-           SwingUtils.ShowError(
+            String error = Context.getMessage("clearBagHandler.FileNotFoundException.description",new Object [] {file,e.getMessage()});
+            log.error(error);
+            SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotFoundException.title"),
-                Context.getMessage("clearBagHandler.FileNotFoundException.description",new Object [] {file})
+                error
             );            
         }catch(BagUnknownFormatException e){
-            log.error(e.getMessage());
+            String error = Context.getMessage("clearBagHandler.BagUnknownFormatException.description",new Object [] {file,e.getMessage()});
+            log.error(error);
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagUnknownFormatException.title"),
-                Context.getMessage("clearBagHandler.BagUnknownFormatException.description",new Object [] {file})
+                error
             );
         }catch(BagNoBagDirException ex){
-            log.error(ex.getMessage());
             /*
              * geserialiseerde bag bevat geen hoofdmap met dezelfde naam
              */
             String basename = file.getName();
             int index = basename.lastIndexOf('.');
             String n = index >= 0 ? basename.substring(0,index) : basename;
+            
+            String error = Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file,ex.getMessage()});
+            log.error(error);
+            
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagNoBagDirException.title"),
-                Context.getMessage("clearBagHandler.BagNoBagDirException.description",new Object [] {n,file})
+                error
             );
         }catch(BagFetchForbiddenException e){
-            log.error(e.getMessage());
+            String error = Context.getMessage("clearBagHandler.BagFetchForbiddenException.description",new Object [] {file,e.getMessage()});
+            log.error(error);
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagFetchForbiddenException.title"),
-                Context.getMessage("clearBagHandler.BagFetchForbiddenException.description",new Object [] {file})
+                error
             );
         }catch(BagNoDataException e){
-            log.error(e.getMessage());
+            String error = Context.getMessage("clearBagHandler.BagNoDataException.description",new Object [] {file,e.getMessage()});
+            log.error(error);
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.BagNoDataException.title"),
-                Context.getMessage("clearBagHandler.BagNoDataException.description",new Object [] {file})
+                error
             );
         }
         
