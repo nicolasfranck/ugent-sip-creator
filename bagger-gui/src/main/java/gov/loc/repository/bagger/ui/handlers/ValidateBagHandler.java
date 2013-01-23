@@ -1,6 +1,5 @@
 package gov.loc.repository.bagger.ui.handlers;
 
-import gov.loc.repository.bagger.bag.impl.DefaultBag;
 import gov.loc.repository.bagger.bag.impl.MetsBag;
 import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagit.Manifest;
@@ -77,10 +76,11 @@ public class ValidateBagHandler extends Handler {
                 log.error(e.getMessage());  
                 if(isCancelled()){                                      
                     SwingUtils.ShowError(Context.getMessage("ValidateBagHandler.validationCancelled.title"),Context.getMessage("ValidateBagHandler.validationCancelled.label"));
-                }else{                    
+                }else{
+                    log.error(Context.getMessage("ValidateBagHandler.Exception.message",new Object [] {e.getMessage()}));
                     SwingUtils.ShowError(
-                        Context.getMessage("ValidateBagHandler.validationFailed.title"), 
-                        Context.getMessage("ValidateBagHandler.validationFailed.label",new Object [] {e.getMessage()})
+                        Context.getMessage("ValidateBagHandler.Exception.title"),
+                        Context.getMessage("ValidateBagHandler.Exception.message",new Object [] {e.getMessage()})
                     );
                 }
             }            
@@ -103,33 +103,9 @@ public class ValidateBagHandler extends Handler {
                     ArrayList<String>tagsFixityFailure = new ArrayList<String>();               
                     ArrayList<String>filesNotInManifest = new ArrayList<String>();
                     
-                    for(String message:result.getMessages()){                        
-                        
-                        /*
-                        Matcher m1 = BagitUtils.payloadsMissingPattern.matcher(message);
-                        Matcher m2 = BagitUtils.tagsMissingPattern.matcher(message);
-                        Matcher m3 = BagitUtils.payloadsFixityFailurePattern.matcher(message);
-                        Matcher m4 = BagitUtils.tagsFixityFailurePattern.matcher(message);
-                        Matcher m5 = BagitUtils.fileNotInManifestPattern.matcher(message);
-                        Matcher m6 = BagitUtils.fileNotAllowedInBagDirPattern.matcher(message);
-                        
-                        
-                        if(m1.matches()){
-                            payloadsMissing.add(m1.group(1));
-                        }else if(m2.matches()){
-                            tagsMissing.add(m2.group(1));
-                        }else if(m3.matches()){                            
-                            payloadsFixityFailure.add(m3.group(1));
-                        }else if(m4.matches()){
-                            tagsFixityFailure.add(m4.group(1));
-                        }else if(m5.matches()){
-                            filesNotInManifest.add(m5.group(1));
-                        }else if(m6.matches()){
-                            filesNotInManifest.add(m6.group(1));
-                        }*/
+                    for(String message:result.getMessages()){
                         
                         Matcher m = null;
-                        
                         
                         if(
                             (m = BagitUtils.payloadsMissingPattern.matcher(message)) != null &&

@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -40,10 +39,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import ugent.bagger.bagitmets.DefaultBagItMets;
-import ugent.bagger.exceptions.FileEmptyDirectoryException;
-import ugent.bagger.exceptions.FileNameNotPortableException;
-import ugent.bagger.exceptions.FileNotReadableException;
-import ugent.bagger.exceptions.FileNotWritableException;
 import ugent.bagger.forms.CreateBagsParamsForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
@@ -252,23 +247,41 @@ public final class CreateBagsPanel extends JPanel{
         return panel;
     }    
     class NewBagsInPlaceWorker extends LongTask{
+        public boolean isBadRWDir(File file){
+            return file.isDirectory() && (!file.canRead() || !file.canWrite());            
+        }
+        public ArrayList<File> getBadRWDirs(File file){
+            ArrayList<File>badDirs = new ArrayList<File>();
+
+            if(isBadRWDir(file)){
+                badDirs.add(file);
+            }
+            if(file.isDirectory()){               
+                for(File f:file.listFiles()){  
+                    badDirs.addAll(getBadRWDirs(f));
+                }                
+            }
+            return badDirs;
+        }        
+        
         @Override
-        protected Object doInBackground() throws Exception {                      
+        protected Object doInBackground() throws Exception {          
+            
             BusyIndicator.showAt(CreateBagsPanel.this);            
             
-            try{
+            try{ 
                 int totalSuccess = 0;
-                int total = getCreateBagsParams().getDirectories().size();                
+                int total = getCreateBagsParams().getDirectories().size();
                
                 for(int i = 0; i< getCreateBagsParams().getDirectories().size();i++){                                                    
-                    
                     File file = getCreateBagsParams().getDirectories().get(i);
                     
-                    int percent = (int)Math.floor( ((i+1) / ((float)getCreateBagsParams().getDirectories().size()))*100);                    
-                    ArrayList<String>errors = new ArrayList<String>();
-                    
-                    String error = null;
-                    String errorTitle = null;
+                    MetsBag metsBag = new MetsBag(null,null);
+                    metsBag.setBagItMets(new DefaultBagItMets());            
+                    metsBag.setFile(file);
+                    //ledig mets
+                    Mets mets = new Mets();
+                    metsBag.setMets(mets);
                     
                     //regular check
                     if(isCancelled()){
@@ -276,66 +289,97 @@ public final class CreateBagsPanel extends JPanel{
                         break;
                     }
                     
-                    try{
-                        //bestaat? leesbaar? schrijfbaar?
-                        FUtils.checkFile(file,true);                                        
-                        
-                        //bestandsnamen cross platform overdraagbaar?
-                        FUtils.checkSafeFiles(file);                        
-                                               
-                        //creëer bag in place
-                        MetsBag metsBag = new MetsBag(null,null);
-                        metsBag.setBagItMets(new DefaultBagItMets());            
-                        metsBag.setFile(file);
-                        
-                        //ledig mets
-                        Mets mets = new Mets();
-                        metsBag.setMets(mets);
-                        
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
-                            break;
+                    int percent = (int)Math.floor( ((i+1) / ((float)getCreateBagsParams().getDirectories().size()))*100);                                                                        
+                    
+                    ArrayList<String>errors = new ArrayList<String>();
+                    
+                    //leesbaar? schrijfbaar?
+                    if(isBadRWDir(file)){
+                        String error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.error.badrwdirs",new Object [] {
+                            file
+                        });
+                        errors.add(error);
+                        addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
+                        if(!isDone()){
+                            setProgress(percent);                
                         }
-
-                        //zoek metadata bestanden (todo: haal die uit payload lijst)                         
-                        for(String metadataPath:getCreateBagsParams().getMetadata()){
-                            File metadataFile = new File(file,metadataPath);                                       
-
-                            if(metadataFile.exists() && metadataFile.isFile()){                                                            
+                        continue;
+                    }
+                    
+                    //regular check
+                    if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
+                        break;
+                    }
+                    
+                    //zoek metadata bestanden (todo: haal die uit payload lijst)
+                    boolean ok = false;
+                    for(String metadataPath:getCreateBagsParams().getMetadata()){
+                        File metadataFile = new File(file,metadataPath);                                       
+                        
+                        if(metadataFile.exists() && metadataFile.isFile()){                            
+                            try{
                                 if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
                                     MdSec mdSec = MetsUtils.createMdSec(metadataFile);                                    
                                     mets.getDmdSec().add(mdSec);
                                 }
-                            }                           
-                        }                                                                
-
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
-                            break;
+                                ok = true;
+                            }catch(Exception e){                                    
+                                log.error(e.getMessage());
+                                errors.add(e.getMessage());                                                              
+                            }
+                        }else{
+                            ok = true;
                         }
-
-                        //voeg dc toe indien nodig, en mogelijk
-                        if(getCreateBagsParams().isAddDC()){                            
+                        if(!ok){
+                            break;                            
+                        }
+                    }                    
+                    if(!ok){
+                        addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
+                        if(!isDone()){
+                            setProgress(percent);                
+                        }
+                        continue;
+                    }                    
+                    
+                    //regular check
+                    if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
+                        break;
+                    }
+                    
+                    //voeg dc toe indien nodig, en mogelijk
+                    if(getCreateBagsParams().isAddDC()){
+                        try{
                             Document dcDoc = MetsUtils.generateDCDoc(mets);
                             if(dcDoc != null){
                                 mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
                             }
-                        }                    
-
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
-                            break;
-                        }
-
-                        //schrijf naar bag-info
-                        if(getCreateBagsParams().isWriteToBagInfo()){                            
+                        }catch(Exception e){                            
+                            log.error(e.getMessage());
+                            errors.add(e.getMessage());
+                            addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
+                            continue;
+                        }                        
+                    }                    
+                    
+                    //regular check
+                    if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
+                        break;
+                    }
+                    
+                    //schrijf naar bag-info
+                    if(getCreateBagsParams().isWriteToBagInfo()){
+                        try{
                             ArrayList<Element>dcElements = new ArrayList<Element>();
                             ArrayList<Element>dcCandidates = new ArrayList<Element>();
                             MetsUtils.findDC(mets,dcElements,dcCandidates);
-
+                            
                             Document dcDoc = null;
                             if(dcElements.size() > 0){
                                 Document doc = XML.createDocument();
@@ -345,7 +389,7 @@ public final class CreateBagsPanel extends JPanel{
                             }else{
                                 dcDoc = MetsUtils.generateDCDoc(dcElements,dcCandidates);
                             }
-
+                            
                             if(dcDoc != null){                                                                
                                 ByteArrayInputStream baginfoIn = new ByteArrayInputStream(MetsUtils.DCToBagInfo(dcDoc));
                                 NameValueReaderImpl reader = new NameValueReaderImpl(
@@ -360,94 +404,73 @@ public final class CreateBagsPanel extends JPanel{
                                     field.setComponentType(BagInfoField.TEXTFIELD_COMPONENT);                                    
                                     metsBag.addField(field);
                                 }
-                            }                                                        
-                        }                    
-
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
-                            break;
-                        }                    
-
-                        String [] ignoreFiles = 
-                            getCreateBagsParams().isKeepMetadata() ? 
-                                new String [] {} : 
-                                getCreateBagsParams().getMetadata();                                        
-
-                        if(getCreateBagsParams().isKeepEmptyDirectories()){                                                                        
-                            metsBag.createPreBagAddKeepFilesToEmptyFolders(file,getCreateBagsParams().getVersion(),ignoreFiles);                                                                       
-                        }else{	                                                    
-                            metsBag.createPreBag(file,getCreateBagsParams().getVersion(),ignoreFiles);                      
+                            }                            
+                        }catch(Exception e){                            
+                            log.error(e.getMessage());
+                            errors.add(e.getMessage());
+                            addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
+                            continue;
                         }
-                        
-                    }catch(FileNotWritableException e){
-                        
-                        errorTitle = Context.getMessage("addDataHandler.FileNotWritableException.title");
-                        error = Context.getMessage(
-                            "addDataHandler.FileNotWritableException.message",
-                            new Object [] {file}
-                        );                         
-                        
-                    }catch(FileNotReadableException e){
-                        
-                        errorTitle = Context.getMessage("addDataHandler.FileNotReadableException.title");
-                        error = Context.getMessage(
-                            "addDataHandler.FileNotReadableException.message",
-                            new Object [] {file}
-                        ); 
-                        
-                    }catch(FileNotFoundException e){
-                        
-                        errorTitle = Context.getMessage("addDataHandler.FileNotFoundException.title");
-                        error = Context.getMessage(
-                            "addDataHandler.FileNotFoundException.message",
-                            new Object [] {file}
-                        );                         
-                        
-                    }catch(FileNameNotPortableException e){
-                        
-                        //één of meerdere bestandsnamen zijn niet portabel                                                        
-                        if(file.isDirectory()){
-                            error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.directory.message",
-                                new Object [] {file,e.getFile()}
-                            );                    
-                        }else{
-                            error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.file.message",
-                                new Object [] {file}
-                            );                    
-                        }
-                        
-                    }catch(Exception e){                                    
-                        error = e.getMessage();                        
-                    }
-                    
-                    //rapport
-                    if(error != null){
-                        errors.add(error);
-                        log.error(error);
-                        SwingUtils.ShowError(errorTitle,error);
-                    }
-                    
-                    reportStatistics(total,totalSuccess);
-                    addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
-                    if(!isDone()){
-                        setProgress(percent);                
-                    }
+                    }                    
                     
                     //regular check
                     if(isCancelled()){
                         reportStatistics(total,totalSuccess);
                         break;
+                    }                    
+                    
+                    String [] ignoreFiles = 
+                        getCreateBagsParams().isKeepMetadata() ? 
+                            new String [] {} : 
+                            getCreateBagsParams().getMetadata();                                        
+                    
+                    if(getCreateBagsParams().isKeepEmptyDirectories()){                                            
+                        try {
+                            metsBag.createPreBagAddKeepFilesToEmptyFolders(file,getCreateBagsParams().getVersion(),ignoreFiles);                                           
+                        } catch (Exception e) {
+                            log.error(e.getMessage());
+                            String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
+                            String message = Context.getMessage(
+                                "DefaultBag.createPreBag.Exception.description", 
+                                new Object [] {file,e.getMessage()}
+                            );                            
+                            SwingUtils.ShowError(title,message);    	   
+                        }
+                    }else{	                        
+                        try {
+                            metsBag.createPreBag(file,getCreateBagsParams().getVersion(),ignoreFiles);                      
+                        } catch (Exception e) {
+                            log.error(e.getMessage());
+
+                            String title = Context.getMessage("DefaultBag.createPreBag.Exception.title");
+                            String message = Context.getMessage(
+                                "DefaultBag.createPreBag.Exception.description", 
+                                new Object [] {file,e.getMessage()}
+                            );
+                            //log(message);
+                            SwingUtils.ShowError(title,message);    	   
+                        }
                     }
-                }
+                    
+                    if(!isDone()){
+                        setProgress(percent);                
+                    }
+                    
+                    totalSuccess++;
+                    
+                    reportStatistics(total,totalSuccess);
+                    addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
+                }                
                 
             }catch(Exception e){                                  
                 log.error(e.getMessage());
             }
             
-            BusyIndicator.clearAt(CreateBagsPanel.this);                
+            BusyIndicator.clearAt(CreateBagsPanel.this);    
+            
             return null;
         }               
     }
@@ -458,121 +481,131 @@ public final class CreateBagsPanel extends JPanel{
             
             BusyIndicator.showAt(CreateBagsPanel.this);           
             
-            //ledig payloads en tags (anders hoopt alles zich in de opeenvolgende bags..)
+            
+            //ledig payloads en tags (anders hoopt alles zich in de opeenvolgende bags..)           
+            
             try{
                 int total = getCreateBagsParams().getDirectories().size();
                 int totalSuccess = 0;
                 
                 for(int i = 0; i< getCreateBagsParams().getDirectories().size();i++){
                     
-                    File inputDir = getCreateBagsParams().getDirectories().get(i);                    
-                    File out = new File(getCreateBagsParams().getOutputDir().get(0),inputDir.getName());                                        
+                    //regular check
+                    if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
+                        break;
+                    }                    
+                    
+                    int percent = (int)Math.floor( ((i+1) / ((float)getCreateBagsParams().getDirectories().size()))*100);                                                                        
+                    
+                    File inputDir = getCreateBagsParams().getDirectories().get(i);
                     ArrayList<String>errors = new ArrayList<String>();
-                    int percent = (int)Math.floor( ((i+1) / ((float)getCreateBagsParams().getDirectories().size()))*100);
+                    
+                    //ledig mets                    
+                    Mets mets = new Mets();
+                    
+                    File out = new File(getCreateBagsParams().getOutputDir().get(0),inputDir.getName());                    
+                    
+                    /*
+                     *  Lege bag:
+                     *      rootDir: null, want map bestaat nog niet (opgeven File die nog niet bestaat geef IOException)                     
+                     */
+                    MetsBag metsBag = new MetsBag(null,getCreateBagsParams().getVersion());                    
+                    metsBag.setFile(out);
+                    metsBag.setBagItMets(new DefaultBagItMets());
+                    metsBag.setMets(mets);
+                    
+                    //voeg payloads toe
+                    
+                    File [] listPayloads = inputDir.listFiles();
+                    if(listPayloads != null){
+                        for(File file:listPayloads){
+                            metsBag.addFileToPayload(file);
+                        }
+                    }
                     
                     //regular check
                     if(isCancelled()){
                         reportStatistics(total,totalSuccess);
                         break;
-                    }
+                    }                    
                     
-                    String error = null;
-                    String errorTitle = null;
+                    //zoek metadata bestanden (todo: haal die uit payload lijst)
+                    boolean ok = false;
+                    for(String metadataPath:getCreateBagsParams().getMetadata()){
+                        File metadataFile = new File(inputDir,metadataPath);                       
                     
-                    try{
-                        // -> input check
-                        
-                        try{               
-                            //leesbaar? bestaat?
-                            FUtils.checkFile(inputDir,true);                
-                        }catch(FileNotWritableException e){
-                            log.debug(e.getMessage());
-                            //doe niets
-                        }
-                        
-                        //bestandsnamen cross platform overdraagbaar?                
-                        FUtils.checkSafeFiles(inputDir);
-                        
-                        //lege map verboden
-                        if(inputDir.isDirectory()){
-                            File [] children = inputDir.listFiles();
-                            if(children == null || children.length == 0){
-                                throw new FileEmptyDirectoryException(inputDir);
-                            }
-                        }
-                        
-                        //ledig mets                    
-                        Mets mets = new Mets();                        
-
-                        /*
-                         *  Lege bag:
-                         *      rootDir: null, want map bestaat nog niet (opgeven File die nog niet bestaat geef IOException)                     
-                         */
-                        MetsBag metsBag = new MetsBag(null,getCreateBagsParams().getVersion());                    
-                        metsBag.setFile(out);
-                        metsBag.setBagItMets(new DefaultBagItMets());
-                        metsBag.setMets(mets);
-
-                        //voeg payloads toe
-                        File [] listPayloads = inputDir.listFiles();
-                        if(listPayloads != null){
-                            for(File file:listPayloads){
-                                metsBag.addFileToPayload(file);
-                            }
-                        }
-
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
-                            break;
-                        }                    
-
-                        //zoek metadata bestanden (todo: haal die uit payload lijst)                        
-                        for(String metadataPath:getCreateBagsParams().getMetadata()){
-                            File metadataFile = new File(inputDir,metadataPath);                       
-                            if(metadataFile.exists() && metadataFile.isFile()){                            
-                                //voeg toe aan mets
-                                
+                        if(metadataFile.exists() && metadataFile.isFile()){                            
+                            //voeg toe aan mets
+                            try{
                                 if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
                                     MdSec mdSec = MetsUtils.createMdSec(metadataFile);                                    
                                     mets.getDmdSec().add(mdSec);
-                                }                                    
+                                }else if(metadataFile.getAbsolutePath().endsWith(".csv")){
                                 
-                                //haal uit payload lijst
-                                if(!getCreateBagsParams().isKeepMetadata()){
-                                    String path = "data/"+metadataPath;                            
-                                    metsBag.removeBagFile(path);
-                                }                            
+                                }
+                                ok = true;
+                            }catch(Exception e){                                 
+                                log.error(e.getMessage());
+                                errors.add(e.getMessage());
+                            }
+                            //haal uit payload lijst
+                            if(!getCreateBagsParams().isKeepMetadata()){
+                                String path = "data/"+metadataPath;                            
+                                metsBag.removeBagFile(path);
                             }                            
-                        }                        
-
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
+                        }else{
+                            ok = true;
+                        }
+                        if(!ok){
                             break;
-                        }                    
-
-                        //voeg dc toe indien nodig, en mogelijk
-                        if(getCreateBagsParams().isAddDC()){                            
+                        }                            
+                    }
+                    if(!ok){
+                        addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
+                        if(!isDone()){
+                            setProgress(percent);                
+                        }
+                        continue;
+                    }
+                    
+                    //regular check
+                    if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
+                        break;
+                    }                    
+                    
+                    //voeg dc toe indien nodig, en mogelijk
+                    if(getCreateBagsParams().isAddDC()){
+                        try{
                             Document dcDoc = MetsUtils.generateDCDoc(mets);
                             if(dcDoc != null){
                                 mets.getDmdSec().add(MetsUtils.createMdSec(dcDoc));
-                            }                                                    
-                        }
-
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
-                            break;
-                        }                    
-
-                        //schrijf naar bag-info
-                        if(getCreateBagsParams().isWriteToBagInfo()){
-                            
+                            }                           
+                        }catch(Exception e){                           
+                            log.error(e.getMessage());
+                            errors.add(e.getMessage());
+                            addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
+                            continue;
+                        }                        
+                    }
+                    
+                    //regular check
+                    if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
+                        break;
+                    }                    
+                    
+                    //schrijf naar bag-info
+                    if(getCreateBagsParams().isWriteToBagInfo()){
+                        try{
                             ArrayList<Element>dcElements = new ArrayList<Element>();
                             ArrayList<Element>dcCandidates = new ArrayList<Element>();
                             MetsUtils.findDC(mets,dcElements,dcCandidates);
-
+                            
                             Document dcDoc = null;
                             if(dcElements.size() > 0){
                                 Document doc = XML.createDocument();
@@ -582,9 +615,9 @@ public final class CreateBagsPanel extends JPanel{
                             }else{
                                 dcDoc = MetsUtils.generateDCDoc(dcElements,dcCandidates);
                             }
-
+                            
                             if(dcDoc != null){                                                               
-
+                                
                                 ByteArrayInputStream baginfoIn = new ByteArrayInputStream(MetsUtils.DCToBagInfo(dcDoc));
                                 NameValueReaderImpl reader = new NameValueReaderImpl(
                                     "UTF-8",baginfoIn,"bagInfoTxt"
@@ -599,78 +632,49 @@ public final class CreateBagsPanel extends JPanel{
                                     metsBag.addField(field);
                                 }
                             }                            
-
+                        }catch(Exception e){                            
+                            log.error(e.getMessage());
+                            errors.add(e.getMessage());
+                            addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
+                            if(!isDone()){
+                                setProgress(percent);                
+                            }
+                            continue;
                         }
-
-                        //regular check
-                        if(isCancelled()){
-                            reportStatistics(total,totalSuccess);
-                            break;
-                        }
-
-                        //save!
-                        Writer writer = new FileSystemWriter(new BagFactory());
-                        boolean saveOk = metsBag.write(writer);
-
-                        //save ok!
-                        if(saveOk){
-                            totalSuccess++;
-                        }                        
-                        
-                        
-                    }catch(FileNotReadableException e){
-                        
-                        errorTitle = Context.getMessage("addDataHandler.FileNotReadableException.title");
-                        error = Context.getMessage(
-                            "addDataHandler.FileNotReadableException.message",
-                            new Object [] {inputDir}
-                        );                         
-                        
-                    }catch(FileNotFoundException e){
-                        
-                        errorTitle = Context.getMessage("addDataHandler.FileNotFoundException.title");
-                        error = Context.getMessage(
-                            "addDataHandler.FileNotFoundException.message",
-                            new Object [] {inputDir}
-                        );                         
-                        
-                    }catch(FileNameNotPortableException e){
-                        
-                        //één of meerdere bestandsnamen zijn niet portabel                                                        
-                        if(inputDir.isDirectory()){
-                            error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.directory.message",
-                                new Object [] {inputDir,e.getFile()}
-                            );                    
-                        }else{
-                            error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.file.message",
-                                new Object [] {inputDir}
-                            );                    
-                        }                                                
-                        
-                    }catch(FileEmptyDirectoryException e){
-                        
-                        error = Context.getMessage(
-                            "addDataHandler.emptyDirectory.warning",
-                            new Object [] {inputDir}
-                        );                        
-                        
-                    }catch(Exception e){
-                        error = e.getMessage();
                     }
                     
-                    //rapport                         
-                    if(error != null){                                                
-                        SwingUtils.ShowError(errorTitle,error);
-                        log.error(error);                                                                                
-                    }  
+                    //regular check
+                    if(isCancelled()){
+                        reportStatistics(total,totalSuccess);
+                        break;
+                    }
+                    
+                    reportStatistics(total,totalSuccess);
+                    
+                    
+                    
+                    Writer writer = new FileSystemWriter(new BagFactory());
+                    
+                    boolean saveOk = metsBag.write(writer);
+
+                    if(!saveOk){                        
+                        String message = Context.getMessage("bag.warning.savingFailed");
+                        SwingUtils.ShowError(null,message);
+                        log.error(message);                        
+                        addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
+                        if(!isDone()){
+                            setProgress(percent);                
+                        }
+                        continue;
+                    }                                   
+                    
+                    totalSuccess++;
                     
                     reportStatistics(total,totalSuccess);                    
                     addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                     if(!isDone()){
                         setProgress(percent);                
-                    }
+                    }                  
                 }                
                 
             }catch(Exception e){                               

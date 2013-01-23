@@ -25,7 +25,7 @@ import ugent.bagger.params.SaveBagParams;
  * @author nicolas
  */
 public final class SaveBagPanel extends JPanel{
-    static final Log log = LogFactory.getLog(CreateBagsPanel.class);
+    static final Log log = LogFactory.getLog(SaveBagPanel.class);
     SaveBagParams saveBagParams;
     SaveBagParamsForm saveBagParamsForm;           
     

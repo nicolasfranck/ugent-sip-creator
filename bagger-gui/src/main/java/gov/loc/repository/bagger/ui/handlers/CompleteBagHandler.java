@@ -94,18 +94,6 @@ public class CompleteBagHandler extends Handler {
 
                     for(String message:result.getMessages()){    
                         
-                        /*
-                        Matcher m1 = BagitUtils.payloadsMissingPattern.matcher(message);
-                        Matcher m2 = BagitUtils.tagsMissingPattern.matcher(message);
-                        Matcher m3 = BagitUtils.fileNotInManifestPattern.matcher(message);
-                        if(m1.matches()){
-                            payloadsMissing.add(m1.group(1));                            
-                        }else if(m2.matches()){
-                            tagsMissing.add(m2.group(1));                            
-                        }else if(m3.matches()){
-                            filesNotInManifest.add(m3.group(1));
-                        }*/
-                        
                         Matcher m = null;
                         
                         if(
