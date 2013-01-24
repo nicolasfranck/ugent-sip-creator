@@ -208,7 +208,10 @@ public class OpenBagHandler extends AbstractAction {
                 error
             );
         }catch(FileNotReadableException e){
-            String error = Context.getMessage("clearBagHandler.FileNotReadableException.description",new Object [] {file,e.getMessage()});
+            String error = Context.getMessage("clearBagHandler.FileNotReadableException.description",new Object [] {
+                e.getFile(),
+                e.getMessage()
+            });
             log.error(error);
             SwingUtils.ShowError(
                 Context.getMessage("clearBagHandler.FileNotReadableException.title"),

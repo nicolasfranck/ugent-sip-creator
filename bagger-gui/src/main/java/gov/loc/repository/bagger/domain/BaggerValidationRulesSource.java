@@ -54,14 +54,20 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         
         PropertyConstraint bagInPlaceOutputDir = new AbstractPropertyConstraint("bagInPlace"){
             @Override
-            protected boolean test(PropertyAccessStrategy pas) {                
+            protected boolean test(PropertyAccessStrategy pas) {    
+                System.out.println("test bagInPlace");
                 Boolean bagInPlace = (Boolean) pas.getPropertyValue("bagInPlace");
                 ArrayList<File>outputDir = (ArrayList<File>) pas.getPropertyValue("outputDir");                
                
+                System.out.println("bagInPlace:"+bagInPlace);
+                System.out.println("outputDir:"+outputDir);
                 if(bagInPlace){
+                    System.out.println("return true");
                     return true;
                 }else{
-                    return outputDir != null && !outputDir.isEmpty();
+                    boolean ok = outputDir != null && !outputDir.isEmpty();
+                    System.out.println("ok: "+ok);
+                    return ok;
                 }
             }
         };       
@@ -69,14 +75,20 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         
         PropertyConstraint outputDirConstraint = new AbstractPropertyConstraint("outputDir"){
             @Override
-            protected boolean test(PropertyAccessStrategy pas) {                
+            protected boolean test(PropertyAccessStrategy pas) {  
+                System.out.println("test outputDir");
                 Boolean bagInPlace = (Boolean) pas.getPropertyValue("bagInPlace");
                 ArrayList<File>outputDir = (ArrayList<File>) pas.getPropertyValue("outputDir");                
                
+                System.out.println("bagInPlace:"+bagInPlace);
+                System.out.println("outputDir:"+outputDir);
                 if(bagInPlace){
+                    System.out.println("return true");
                     return true;
                 }else{
-                    return outputDir != null && !outputDir.isEmpty();
+                    boolean ok = outputDir != null && !outputDir.isEmpty();
+                    System.out.println("ok: "+ok);
+                    return ok;
                 }
             }
         }; 

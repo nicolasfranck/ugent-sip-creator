@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -28,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.validation.ValidationListener;
@@ -39,11 +41,15 @@ import org.springframework.richclient.progress.BusyIndicator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 import ugent.bagger.bagitmets.DefaultBagItMets;
+import ugent.bagger.exceptions.DtdNoFixFoundException;
 import ugent.bagger.exceptions.FileEmptyDirectoryException;
 import ugent.bagger.exceptions.FileNameNotPortableException;
 import ugent.bagger.exceptions.FileNotReadableException;
 import ugent.bagger.exceptions.FileNotWritableException;
+import ugent.bagger.exceptions.IllegalNamespaceException;
+import ugent.bagger.exceptions.NoNamespaceException;
 import ugent.bagger.forms.CreateBagsParamsForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.FUtils;
@@ -167,6 +173,7 @@ public final class CreateBagsPanel extends JPanel{
             createBagsParamsForm.addValidationListener(new ValidationListener(){
                 @Override
                 public void validationResultsChanged(ValidationResults vr) {
+                    System.out.println("errors: "+vr.getMessages());
                     getOkButton().setEnabled(!vr.getHasErrors());                    
                 }                
             });
@@ -379,25 +386,22 @@ public final class CreateBagsPanel extends JPanel{
                         
                     }catch(FileNotWritableException e){
                         
-                        errorTitle = Context.getMessage("addDataHandler.FileNotWritableException.title");
                         error = Context.getMessage(
-                            "addDataHandler.FileNotWritableException.message",
-                            new Object [] {file}
+                            "CreateBagsPanel.NewBagsInPlaceWorker.FileNotWritableException",
+                            new Object [] {e.getFile()}
                         );                         
                         
                     }catch(FileNotReadableException e){
                         
-                        errorTitle = Context.getMessage("addDataHandler.FileNotReadableException.title");
                         error = Context.getMessage(
-                            "addDataHandler.FileNotReadableException.message",
-                            new Object [] {file}
+                            "CreateBagsPanel.NewBagsInPlaceWorker.FileNotReadableException",
+                            new Object [] {e.getFile()}
                         ); 
                         
                     }catch(FileNotFoundException e){
                         
-                        errorTitle = Context.getMessage("addDataHandler.FileNotFoundException.title");
                         error = Context.getMessage(
-                            "addDataHandler.FileNotFoundException.message",
+                            "CreateBagsPanel.NewBagsInPlaceWorker.FileNotFoundException",
                             new Object [] {file}
                         );                         
                         
@@ -406,18 +410,46 @@ public final class CreateBagsPanel extends JPanel{
                         //één of meerdere bestandsnamen zijn niet portabel                                                        
                         if(file.isDirectory()){
                             error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.directory.message",
+                                "CreateBagsPanel.NewBagsInPlaceWorker.FileNameNotPortableException.directory",
                                 new Object [] {file,e.getFile()}
                             );                    
                         }else{
                             error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.file.message",
+                                "CreateBagsPanel.NewBagsInPlaceWorker.FileNameNotPortableException.file",
                                 new Object [] {file}
                             );                    
                         }
                         
+                    }catch(IOException e){                                  
+                        error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.IOException",new Object []{
+                            e.getMessage()
+                        });                         
+
+                    }catch(SAXException e){                                  
+                        error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.SAXException",new Object []{
+                            e.getMessage()
+                        });       
+                        
+                    }catch(ParserConfigurationException e){                                  
+                        error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.ParserConfigurationException",new Object []{
+                            e.getMessage()
+                        });                        
+
+                    }catch(IllegalNamespaceException e){                                                      
+                        error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.IllegalNamespaceException",new Object []{
+                            e.getNamespace()
+                        });
+                        
+                    }catch(NoNamespaceException e){                            
+                        error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.NoNamespaceException");
+                        
+                    }catch(DtdNoFixFoundException e){                                    
+                        error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.DtdNoFixFoundException");
+                        
                     }catch(Exception e){                                    
-                        error = e.getMessage();                        
+                        error = Context.getMessage("CreateBagsPanel.NewBagsInPlaceWorker.Exception",new Object []{
+                            e.getMessage()
+                        });                        
                     }
                     
                     //rapport
@@ -613,17 +645,15 @@ public final class CreateBagsPanel extends JPanel{
                         
                     }catch(FileNotReadableException e){
                         
-                        errorTitle = Context.getMessage("addDataHandler.FileNotReadableException.title");
                         error = Context.getMessage(
-                            "addDataHandler.FileNotReadableException.message",
-                            new Object [] {inputDir}
+                            "CreateBagsPanel.NewBagsWorker.FileNotReadableException",
+                            new Object [] {e.getFile()}
                         );                         
                         
-                    }catch(FileNotFoundException e){
-                        
-                        errorTitle = Context.getMessage("addDataHandler.FileNotFoundException.title");
+                    }catch(FileNotFoundException e){                        
+                       
                         error = Context.getMessage(
-                            "addDataHandler.FileNotFoundException.message",
+                            "CreateBagsPanel.NewBagsWorker.FileNotFoundException",
                             new Object [] {inputDir}
                         );                         
                         
@@ -632,12 +662,12 @@ public final class CreateBagsPanel extends JPanel{
                         //één of meerdere bestandsnamen zijn niet portabel                                                        
                         if(inputDir.isDirectory()){
                             error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.directory.message",
+                                "CreateBagsPanel.NewBagsWorker.FileNameNotPortableException.directory",
                                 new Object [] {inputDir,e.getFile()}
                             );                    
                         }else{
                             error = Context.getMessage(
-                                "addDataHandler.FileNameNotPortableException.file.message",
+                                "CreateBagsPanel.NewBagsWorker.FileNameNotPortableException.file",
                                 new Object [] {inputDir}
                             );                    
                         }                                                
@@ -645,12 +675,40 @@ public final class CreateBagsPanel extends JPanel{
                     }catch(FileEmptyDirectoryException e){
                         
                         error = Context.getMessage(
-                            "addDataHandler.emptyDirectory.warning",
+                            "CreateBagsPanel.NewBagsWorker.FileEmptyDirectoryException",
                             new Object [] {inputDir}
                         );                        
                         
+                    }catch(IOException e){                                  
+                        error = Context.getMessage("CreateBagsPanel.NewBagsWorker.IOException",new Object []{
+                            e.getMessage()
+                        });                         
+
+                    }catch(SAXException e){                                  
+                        error = Context.getMessage("CreateBagsPanel.NewBagsWorker.SAXException",new Object []{
+                            e.getMessage()
+                        });       
+                        
+                    }catch(ParserConfigurationException e){                                  
+                        error = Context.getMessage("CreateBagsPanel.NewBagsWorker.ParserConfigurationException",new Object []{
+                            e.getMessage()
+                        });                        
+
+                    }catch(IllegalNamespaceException e){                                
+                        error = Context.getMessage("CreateBagsPanel.NewBagsWorker.IllegalNamespaceException",new Object []{
+                            e.getNamespace()
+                        });
+                        
+                    }catch(NoNamespaceException e){                                                 
+                        error = Context.getMessage("CreateBagsPanel.NewBagsWorker.NoNamespaceException");
+                        
+                    }catch(DtdNoFixFoundException e){                                    
+                        error = Context.getMessage("CreateBagsPanel.NewBagsWorker.DtdNoFixFoundException");
+                        
                     }catch(Exception e){
-                        error = e.getMessage();
+                        error = Context.getMessage("CreateBagsPanel.NewBagsWorker.Exception",new Object []{
+                            e.getMessage()
+                        });
                     }
                     
                     //rapport                         

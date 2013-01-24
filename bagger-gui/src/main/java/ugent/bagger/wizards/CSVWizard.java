@@ -146,7 +146,7 @@ public class CSVWizard extends AbstractWizard {
                            log.error(e.getMessage());
                            error = Context.getMessage(
                                 "CSVWizard.FileNotReadableException.message",
-                                new Object []{e.getMessage()}
+                                new Object []{e.getFile()}
                            );                            
                         }catch(IOException e){
                             log.error(e.getMessage());
