@@ -287,8 +287,6 @@ public final class CreateBagsPanel extends JPanel{
                         MetsBag metsBag = new MetsBag(null,null);
                         metsBag.setBagItMets(new DefaultBagItMets());            
                         metsBag.setFile(file);
-                        
-                        //ledig mets
                         Mets mets = new Mets();
                         metsBag.setMets(mets);
                         
@@ -300,8 +298,7 @@ public final class CreateBagsPanel extends JPanel{
 
                         //zoek metadata bestanden (todo: haal die uit payload lijst)                         
                         for(String metadataPath:getCreateBagsParams().getMetadata()){
-                            File metadataFile = new File(file,metadataPath);                                       
-
+                            File metadataFile = new File(file,metadataPath);
                             if(metadataFile.exists() && metadataFile.isFile()){                                                            
                                 if(metadataFile.getAbsolutePath().endsWith(".xml")){                    
                                     MdSec mdSec = MetsUtils.createMdSec(metadataFile);                                    
@@ -428,8 +425,7 @@ public final class CreateBagsPanel extends JPanel{
                         errors.add(error);
                         log.error(error);
                         SwingUtils.ShowError(errorTitle,error);
-                    }
-                    
+                    }                    
                     reportStatistics(total,totalSuccess);
                     addCreateBagResult(new CreateBagResult(file,file,errors.toArray(new String [] {})));
                     if(!isDone()){
@@ -458,7 +454,6 @@ public final class CreateBagsPanel extends JPanel{
             
             BusyIndicator.showAt(CreateBagsPanel.this);           
             
-            //ledig payloads en tags (anders hoopt alles zich in de opeenvolgende bags..)
             try{
                 int total = getCreateBagsParams().getDirectories().size();
                 int totalSuccess = 0;
@@ -501,9 +496,6 @@ public final class CreateBagsPanel extends JPanel{
                             }
                         }
                         
-                        //ledig mets                    
-                        Mets mets = new Mets();                        
-
                         /*
                          *  Lege bag:
                          *      rootDir: null, want map bestaat nog niet (opgeven File die nog niet bestaat geef IOException)                     
@@ -511,6 +503,7 @@ public final class CreateBagsPanel extends JPanel{
                         MetsBag metsBag = new MetsBag(null,getCreateBagsParams().getVersion());                    
                         metsBag.setFile(out);
                         metsBag.setBagItMets(new DefaultBagItMets());
+                        Mets mets = new Mets();       
                         metsBag.setMets(mets);
 
                         //voeg payloads toe
@@ -661,11 +654,11 @@ public final class CreateBagsPanel extends JPanel{
                     }
                     
                     //rapport                         
-                    if(error != null){                                                
+                    if(error != null){                         
+                        errors.add(error);
                         SwingUtils.ShowError(errorTitle,error);
                         log.error(error);                                                                                
-                    }  
-                    
+                    }                      
                     reportStatistics(total,totalSuccess);                    
                     addCreateBagResult(new CreateBagResult(inputDir,out,errors.toArray(new String [] {})));
                     if(!isDone()){

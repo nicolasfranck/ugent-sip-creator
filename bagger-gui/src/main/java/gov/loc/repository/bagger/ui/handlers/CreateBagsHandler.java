@@ -1,6 +1,5 @@
 package gov.loc.repository.bagger.ui.handlers;
 
-import gov.loc.repository.bagger.ui.BagView;
 import gov.loc.repository.bagger.ui.Progress;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
@@ -28,8 +27,6 @@ public class CreateBagsHandler extends AbstractAction implements Progress/*,Logg
         createBags();        
     }
     public void createBags() {
-        BagView bagView = BagView.getInstance();        
-    
         CreateBagsDialog dialog = new CreateBagsDialog(SwingUtils.getFrame(),true);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);  
         SwingUtils.centerOnParent(dialog,true);
