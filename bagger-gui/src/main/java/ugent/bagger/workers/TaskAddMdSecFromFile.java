@@ -60,46 +60,38 @@ public class TaskAddMdSecFromFile extends DefaultWorker {
             }catch(IOException e){                                  
                 error = Context.getMessage("mdSecTable.addMdSec.IOException",new Object []{
                     file,e.getMessage()
-                }); 
-                log.error(e.getMessage());
+                });                 
                 
             }catch(SAXException e){                                  
                 error = Context.getMessage("mdSecTable.addMdSec.SAXException",new Object []{
                     file,e.getMessage()
-                });       
-                log.error(e.getMessage());
+                });                       
                 
             }catch(ParserConfigurationException e){                                  
                 error = Context.getMessage("mdSecTable.addMdSec.ParserConfigurationException",new Object []{
                     e.getMessage()
-                });
-                log.error(e.getMessage());
+                });                
                 
             }catch(IllegalNamespaceException e){                                
                 error = Context.getMessage("mdSecTable.addMdSec.IllegalNamespaceException",new Object []{
                     file,e.getNamespace()
-                });
-                log.error(e.getMessage());
+                });                
                
             }
             catch(NoNamespaceException e){                                                 
                 error = Context.getMessage("mdSecTable.addMdSec.NoNamespaceException",new Object []{
                     file
-                });
-                log.error(e.getMessage());
+                });                
                
             }catch(DtdNoFixFoundException e){                                    
                 error = Context.getMessage("mdSecTable.addMdSec.DtdNoFixFoundException",new Object []{
                     file
                 });
-                log.error(e.getMessage());               
                 
             }catch(Exception e){                                        
                 error = Context.getMessage("mdSecTable.addMdSec.Exception",new Object []{
                     file
-                });
-                log.error(e.getMessage());
-                
+                });                
             }
             
             if(error != null){

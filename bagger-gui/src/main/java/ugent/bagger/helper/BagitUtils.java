@@ -1,10 +1,5 @@
 package ugent.bagger.helper;
 
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.BagFactory.LoadOption;
-import gov.loc.repository.bagit.utilities.SimpleResult;
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.filechooser.FileFilter;

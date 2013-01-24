@@ -8,7 +8,6 @@ import org.springframework.rules.Rules;
 import org.springframework.rules.constraint.Constraint;
 import org.springframework.rules.constraint.property.AbstractPropertyConstraint;
 import org.springframework.rules.constraint.property.PropertyConstraint;
-import org.springframework.rules.constraint.property.RequiredIfTrue;
 import org.springframework.rules.support.DefaultRulesSource;
 import ugent.bagger.params.CSVParseParams;
 import ugent.bagger.params.CreateBagsParams;
@@ -53,38 +52,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         createBagsParamsRules.add("directories",directoriesConstraint);                
            
         /*
-        PropertyConstraint outputDirConstraint = new AbstractPropertyConstraint("outputDir"){
-            @Override
-            public boolean isDependentOn(String propertyName){
-                System.out.println("propertyName: "+propertyName);
-                return propertyName.equals("bagInPlace");
-            }
-            @Override
-            protected boolean test(PropertyAccessStrategy pas) {  
-                System.out.println("test outputDir");
-                Boolean bagInPlace = (Boolean) pas.getPropertyValue("bagInPlace");
-                ArrayList<File>outputDir = (ArrayList<File>) pas.getPropertyValue("outputDir");                
-               
-                System.out.println("bagInPlace:"+bagInPlace);
-                System.out.println("outputDir:"+outputDir);
-                if(bagInPlace){
-                    System.out.println("return true");
-                    return true;
-                }else{
-                    boolean ok = outputDir != null && !outputDir.isEmpty();
-                    System.out.println("ok: "+ok);
-                    return ok;
-                }
-            }
-        };
-        createBagsParamsRules.add(outputDirConstraint);
-        
         PropertyConstraint bagInPlaceOutputDir = new AbstractPropertyConstraint("bagInPlace"){
-            @Override
-            public boolean isDependentOn(String propertyName){
-                System.out.println("propertyName: "+propertyName);
-                return propertyName.equals("outputDir");
-            }
             @Override
             protected boolean test(PropertyAccessStrategy pas) {    
                 System.out.println("test bagInPlace");
@@ -103,8 +71,29 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
                 }
             }
         };       
-        createBagsParamsRules.add(bagInPlaceOutputDir);*/
+        createBagsParamsRules.add(bagInPlaceOutputDir);
         
+        
+        PropertyConstraint outputDirConstraint = new AbstractPropertyConstraint("outputDir"){
+            @Override
+            protected boolean test(PropertyAccessStrategy pas) {  
+                System.out.println("test outputDir");
+                Boolean bagInPlace = (Boolean) pas.getPropertyValue("bagInPlace");
+                ArrayList<File>outputDir = (ArrayList<File>) pas.getPropertyValue("outputDir");                
+               
+                System.out.println("bagInPlace:"+bagInPlace);
+                System.out.println("outputDir:"+outputDir);
+                if(bagInPlace){
+                    System.out.println("return true");
+                    return true;
+                }else{
+                    boolean ok = outputDir != null && !outputDir.isEmpty();
+                    System.out.println("ok: "+ok);
+                    return ok;
+                }
+            }
+        }; 
+        createBagsParamsRules.add(outputDirConstraint);*/
         
         Constraint metadataPaths = regexp("^[a-zA-Z0-9_\\-\\.]*(?:,[a-zA-Z0-9_\\-\\.]+)*$");
         createBagsParamsRules.add(value("metadataPaths",metadataPaths));        

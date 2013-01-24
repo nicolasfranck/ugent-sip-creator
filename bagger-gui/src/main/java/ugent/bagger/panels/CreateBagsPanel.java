@@ -220,6 +220,11 @@ public final class CreateBagsPanel extends JPanel{
                     if(getCreateBagsParamsForm().hasErrors()){
                         return;
                     }
+                    
+                    //ledig tabel
+                    getCreateBagResults().clear();
+                    getCreateBagResultTable().reset(getCreateBagResults());
+                    
                     getCreateBagsParamsForm().commit();
                     File outputDir = getCreateBagsParams().getOutputDir().size() > 0 ? getCreateBagsParams().getOutputDir().get(0):null;
                     //monitor

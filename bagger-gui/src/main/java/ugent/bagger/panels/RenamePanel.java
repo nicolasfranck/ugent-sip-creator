@@ -1191,12 +1191,10 @@ public class RenamePanel extends JPanel{
                 renamer.setCopy(renameParams.isCopy());               
                 renamer.setSimulateOnly(renameParams.isSimulateOnly());                                
                 renamer.setOverwrite(renameParams.isOverWrite());
-                renamer.setRecursive(renameParams.isRecursive());
-                
+                renamer.setRecursive(renameParams.isRecursive());                
                 renamer.setPrefix(renameParams.getPrefix());
                 renamer.setPostfix(renameParams.getPostfix());
-                renamer.setRenameExtension(renameParams.isRenameExtension());
-                
+                renamer.setRenameExtension(renameParams.isRenameExtension());                
                 if(renameParams.isIgnoreCase()){
                     renamer.setPatternFlag(Pattern.CASE_INSENSITIVE);
                 }else{

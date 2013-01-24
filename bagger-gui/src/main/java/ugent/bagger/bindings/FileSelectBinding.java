@@ -1,5 +1,6 @@
 package ugent.bagger.bindings;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -87,9 +88,9 @@ public final class FileSelectBinding extends CustomBinding{
                 files = new File [] {};
             }
         }        
-        if(files.length > 0){     
-            ArrayList<File>newList = new ArrayList<File>(Arrays.asList(files));
-            getValueModel().setValue(newList);
+        if(files.length > 0){            
+            ArrayList<File>newList = new ArrayList<File>(Arrays.asList(files));            
+            getValueModel().setValue(newList);            
             valueModelChanged(newList);
         }
     }
@@ -109,6 +110,7 @@ public final class FileSelectBinding extends CustomBinding{
                 fileChooser.setSelectedFile(list.get(0));
             }
         }
+                
         getField().invalidate();        
     }
     @Override
@@ -119,7 +121,8 @@ public final class FileSelectBinding extends CustomBinding{
         return panel;        
     }
     @Override
-    protected void readOnlyChanged() {        
+    protected void readOnlyChanged() {  
+       
     }
     @Override
     protected void enabledChanged(){     
