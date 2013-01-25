@@ -315,6 +315,16 @@
                 </entry>            
             </util:map>            
         </entry> 
+        <entry key="http://www.doaj.org/schemas/doajArticle/">            
+            <util:map>
+                <entry key="versionable" value="false"/>            
+                <entry key="versions">
+                    <util:map>
+                        <entry key="default" value="metadata/xsd/doajArticles.xsd" />
+                    </util:map>    
+                </entry>            
+            </util:map>            
+        </entry> 
         <entry key="http://www.loc.gov/mods/">
             <util:map>
                 <entry key="versionable" value="true"/>
