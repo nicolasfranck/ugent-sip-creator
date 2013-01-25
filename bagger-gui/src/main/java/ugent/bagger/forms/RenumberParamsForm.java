@@ -12,7 +12,6 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 import ugent.bagger.bindings.JSpinnerNumberBinding;
 import ugent.bagger.params.RenumberParams;
 import ugent.rename.ErrorAction;
-import ugent.rename.PreSort;
 import ugent.rename.Radix;
 import ugent.rename.StartPosRelative;
 import ugent.rename.StartPosType;
@@ -109,8 +108,9 @@ public class RenumberParamsForm extends AbstractForm{
             }
         }
         
+        /*
         builder.add(bf.createBoundComboBox("preSort",PreSort.values()));
-        builder.row();
+        builder.row();*/
                 
         
         final JComponent [] paddingComponents = builder.add(new JSpinnerNumberBinding(

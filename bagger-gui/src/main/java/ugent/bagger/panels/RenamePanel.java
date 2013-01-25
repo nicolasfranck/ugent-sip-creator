@@ -99,8 +99,7 @@ public class RenamePanel extends JPanel{
     JPanel panelFileTable;
     ArrayList<File>selectedFiles = new ArrayList<File>();
     HashMap<String,RenameParams>renameParamsTemplates;
-    ArrayList<File>forbiddenFiles;  
-    
+    ArrayList<File>forbiddenFiles;      
     JComboBox renameParamsTemplatesComboBox;
 
     public JComboBox getRenameParamsTemplatesComboBox() {
@@ -369,6 +368,7 @@ public class RenamePanel extends JPanel{
             });            
             table.setShowGrid(false);
             
+            /*
             table.getTableHeader().addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent mouseEvent) {
@@ -396,7 +396,7 @@ public class RenamePanel extends JPanel{
                         }                        
                     }
                 }                
-            });
+            });*/
             
             SwingUtilities.invokeLater(new Runnable(){
                 @Override
@@ -810,9 +810,7 @@ public class RenamePanel extends JPanel{
         //result tabel
         JScrollPane scrollerResultTable = new JScrollPane(getResultTable());
         scrollerResultTable.setBorder(null);
-        getResultTable().setPreferredSize(new Dimension(512,350));
-        scrollerResultTable.setPreferredSize(new Dimension(512,350));    
-        
+                
         panelSouth.add(scrollerResultTable);               
         
         //add panel east to split pane
