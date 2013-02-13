@@ -1,18 +1,3 @@
-#compiled package
-bagger_distribution/bagger-2.1.2.jar
-
 #target directories for maven build
-bagger-common/target
-bagger-core/target
-bagger-gui/target
-bagger-business/target
-bagger-package/target
-bagger-maven/target
-tools/FileTreeMaven/target
+target
 *.class
-/new/bagger-gui/target/
-/new/bagger-business/target/
-/new/bagger-core/target/
-/new/bagger-package/target/
-/new/bagger-maven/target/
-/tools/bagit/target/
