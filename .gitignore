@@ -1,3 +1,4 @@
 #target directories for maven build
 target
 *.class
+*.log

@@ -292,15 +292,16 @@ public class DSpaceSIPMets2 {
     
     /**
      * Adds a section of descriptive metadata (DMD) to the METS document,
-     * based on a JDOM element.  The element will be the
+     * based on a Element.  The element will be the
      * contents of the dmdSec in the METS document.
      * Note that all DMD sections apply to the entire Item in the SIP.
      * @param type METS metadata type name (e.g. "MODS")
-     * @param md JDOM element containing the DMD
+     * @param element Element containing the DMD
      */
     public void addDescriptiveMD(String type, Element element){                
 
-        String dmdID = createID();
+        addDescriptiveMD(type,new Element [] {element});
+        /*String dmdID = createID();
         dmdIDs.add(dmdID);
         
         MdSec dmdSec = new MdSec(dmdID);        
@@ -319,7 +320,31 @@ public class DSpaceSIPMets2 {
         mdWrap.getXmlData().add(element);        
         dmdSec.setMdWrap(mdWrap);        
         getMets().getDmdSec().add(dmdSec);       
+        */
+    }
+    public void addDescriptiveMD(String type, Element [] elements){
+        String dmdID = createID();
+        dmdIDs.add(dmdID);
         
+        MdSec dmdSec = new MdSec(dmdID);        
+        dmdSec.setGROUPID(dmdGroupID);                
+        
+        MdWrap mdWrap;
+        try{
+            mdWrap = new MdWrap(MdSec.MDTYPE.fromValue(type));
+            mdWrap.setMIMETYPE("text/xml");           
+        }catch(Exception e){
+            log.error(e.getMessage());
+            mdWrap = new MdWrap(MdSec.MDTYPE.OTHER);
+            mdWrap.setOTHERMDTYPE(type);
+        }
+        
+        for(Element element:elements){
+            mdWrap.getXmlData().add(element);        
+        }
+        
+        dmdSec.setMdWrap(mdWrap);        
+        getMets().getDmdSec().add(dmdSec); 
     }
 
     /**

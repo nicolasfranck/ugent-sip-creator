@@ -14,7 +14,6 @@ UGent Sip Creator 1.0
 
     As base for this project, the source code of Bagger (2.1.2) from the Library of Congress
     was used (http://sourceforge.net/projects/loc-xferutils/files/loc-bagger/).
-    Hence the name of this git repository 'Bagger-LC'.
 
     Several changes were made to suit the needs of this project.
 
@@ -35,6 +34,6 @@ UGent Sip Creator 1.0
 
   Instructions:
 
-    cd Bagger-LC
+    cd ugent-sip-creator
     mvn clean assembly:assembly
     java -jar target/ugent-sip-1.0-jar-with-dependencies.jar
