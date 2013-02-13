@@ -1,0 +1,134 @@
+Acknowledgements
+----------------
+This software uses code from the following projects:
+ * Ant (http://ant.apache.org/)
+ * AOP Alliance (http://aopalliance.sourceforge.net/)
+ ** Bagger 2.1.2 (http://sourceforge.net/projects/loc-xferutils/files/loc-bagger/) => used as base of this project, and changed
+ ** Bagit 3.13 (http://sourceforge.net/projects/loc-xferutils/)
+ * Classworlds (http://classworlds.codehaus.org/)
+ * Commons Codec (http://commons.apache.org/codec/)
+ * Commons Collections (http://commons.apache.org/codec/)
+ * Commons Exec (http://commons.apache.org/exec/)
+ * Commons HttpClient (http://hc.apache.org/httpclient-3.x/)
+ * Commons IO (http://commons.apache.org/io/)
+ * Commons Logging (http://commons.apache.org/logging/)
+ * Commons Net (http://commons.apache.org/net/)
+ * Commons VFS (http://commons.apache.org/vfs/)
+ * DOM4J (http://www.dom4j.org/dom4j-1.6.1/)
+ ** DSpace SIP Toolkit (https://wiki.duraspace.org/display/DSPACE/DSpace+SIP+Toolkit) => changed
+ * Jaxen (http://jaxen.codehaus.org/)
+ * JGoodies Forms (http://www.jgoodies.com/freeware/forms/)
+ * JGoodies Looks (http://www.jgoodies.com/freeware/looks/)
+ * JSAP (http://www.martiansoftware.com/jsap/)
+ ** mets-api (https://github.com/jpstroop/mets-api) => included as maven pakket in lib
+ ** mime-util 2.1.3 (http://www.medsea.eu/mime-util/ http://sourceforge.net/projects/mime-util/files/mime-util/)
+ * Log4j (http://logging.apache.org/log4j/1.2/)
+ * OGNL (http://www.opensymphony.com/ognl/)
+ * Spring Rich Client (http://spring-rich-c.sourceforge.net/1.1.0/index.html)
+ * Spring Core (http://www.springsource.org/)
+ ** Super CSV (http://supercsv.sourceforge.net/)
+ ** SwingX (http://swingx.java.net/)
+ ** The Apache Velocity Project (http://velocity.apache.org/)
+ * Xerces (http://xerces.apache.org/)
+ * XML Commons External Components XML APIs (http://xml.apache.org/commons/)
+
+Please see LICENSE.txt for the licenses that apply to these dependencies.
+
+Other use of code, that did not had any license, or did not refer to its author, is mentioned in the source code
+
+Copyright notices for software licensed under Apache 2.0
+--------------------------------------------------------
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org/).
+
+
+Apache Commons Collections
+Copyright 2001-2008 The Apache Software Foundation
+
+
+Apache Commons Logging
+Copyright 2003-2007 The Apache Software Foundation
+
+
+Apache Commons Exec
+Copyright 2005-2010 The Apache Software Foundation
+
+
+Apache Commons IO
+Copyright 2002-2010 The Apache Software Foundation
+
+
+Apache Commons Net
+Copyright 2001-2010 The Apache Software Foundation
+
+
+Apache Jakarta Commons VFS
+Copyright 2002-2006 The Apache Software Foundation
+
+
+Apache log4j
+Copyright 2007 The Apache Software Foundation
+
+
+Apache HttpComponents Client
+Copyright 1999-2011 The Apache Software Foundation
+
+This project contains annotations derived from JCIP-ANNOTATIONS
+Copyright (c) 2005 Brian Goetz and Tim Peierls. See http://www.jcip.net
+
+
+Apache Commons Codec
+Copyright 2002-2009 The Apache Software Foundation
+
+src/test/org/apache/commons/codec/language/DoubleMetaphoneTest.java contains 
+test data from http://aspell.sourceforge.net/test/batch0.tab.
+
+Copyright (C) 2002 Kevin Atkinson (kevina@gnu.org). Verbatim copying
+and distribution of this entire article is permitted in any medium,
+provided this notice is preserved.
+
+
+Apache Ant
+Copyright 1999-2008 The Apache Software Foundation
+
+This product includes also software developed by :
+  - the W3C consortium (http://www.w3c.org) ,
+  - the SAX project (http://www.saxproject.org)
+
+The <sync> task is based on code Copyright (c) 2002, Landmark
+Graphics Corp that has been kindly donated to the Apache Software
+Foundation.
+
+Portions of this software were originally based on the following:
+  - software copyright (c) 1999, IBM Corporation., http://www.ibm.com.
+  - software copyright (c) 1999, Sun Microsystems., http://www.sun.com.
+  - voluntary contributions made by Paul Eng on behalf of the 
+    Apache Software Foundation that were originally developed at iClick, Inc.,
+    software copyright (c) 1999.
+
+
+Notes
+-----------
+
+ * Bagger
+
+    Used as base of this project, but changed to fit the needs of the project
+
+ * mets-api
+
+    not available in maven repositories, but compiled and added to a local
+    repository in ugent-sip-creator/libs
+
+    a fix was made to the original source code 'MetsIO.java':
+
+      original: 
+      
+        dbfac.setFeature("http://xml.org/sax/features/namespaces", true);
+
+      new:
+
+        dbfac.setNamespaceAware(true);
+
+ * DSpace SIP
+
+    Used as base for class ugent.bagger.exporters.DSPaceMets

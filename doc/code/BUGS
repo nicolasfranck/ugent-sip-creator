@@ -1,8 +1,0 @@
-sun.awt.X11.XException: Cannot write XdndAware property
-    => http://bugs.sun.com/view_bug.do?bug_id=7027598
-    => bug op Linux systemen voor jdk boven versie 1.6.0_22
-    => fix:
-        zet droptarget van JTextFields op null: <JTextField>.setDropTarget(null);
-        http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7027598:
-            "Workaround: Seems that adding components after invoking pack() causes the exception. Removing the first pack() solves it."            
-

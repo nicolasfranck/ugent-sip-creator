@@ -1,2 +1,0 @@
-http://african.lanl.gov/aDORe/projects/DIDLTools/docs/modules/did-adore/javadoc/org/adore/didl/content/Premis.html#Premis()
-    vlakke presentatie van premis..
