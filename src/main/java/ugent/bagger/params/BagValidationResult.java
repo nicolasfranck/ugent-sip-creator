@@ -46,7 +46,7 @@ public class BagValidationResult {
         this.complete = complete;
     }
     public boolean isSuccess(){
-        return getResult().isSuccess();
+        return getResult() != null && getResult().isSuccess();
     }
     public Date getDate() {
         return date;

@@ -17,11 +17,14 @@ import java.util.ArrayList;
 import javax.swing.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.vfs2.FileSystemException;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.ActionCommandExecutor;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.core.DefaultMessage;
 import org.springframework.richclient.dialog.TitlePane;
+import ugent.bagger.exceptions.BagFetchForbiddenException;
+import ugent.bagger.exceptions.BagNoDataException;
 import ugent.bagger.forms.BagValidateParamsForm;
 import ugent.bagger.helper.Context;
 import ugent.bagger.helper.SwingUtils;
@@ -218,6 +221,7 @@ public final class BagValidationResultPanel extends JPanel{
             
             int numComplete = 0;
             int numValid = 0;
+            ArrayList<Exception>loadExceptions = new ArrayList<Exception>();
             
             try{
                 reset(new ArrayList<BagValidationResult>()); 
@@ -234,7 +238,6 @@ public final class BagValidationResultPanel extends JPanel{
                 
                 
                 for(int i = 0;i < files.size();i++){
-                    MetsBag bag = new MetsBag(files.get(i),null);
                     
                     log.error(
                         Context.getMessage(
@@ -242,23 +245,50 @@ public final class BagValidationResultPanel extends JPanel{
                             new Object [] {files.get(i),(i+1)}
                         )
                     );
-
-                    CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
-                    SimpleResult result;
+                    
+                    MetsBag bag = null;                    
                     boolean valid = false;
                     boolean complete = false;
+                    SimpleResult result = null;
+                    
+                    //load bag
+                    Exception loadException = null;
+                    try{                        
+                        bag = new MetsBag(files.get(i),null);
+                    }catch(BagFetchForbiddenException e){
+                        loadException = e;
+                        log.error(Context.getMessage("ValidateBagsHandler.BagFetchForbiddenException",new String [] {e.getMessage()}));
+                    }catch(FileSystemException e){
+                        log.error(Context.getMessage("ValidateBagsHandler.FileSystemException",new String [] {e.getMessage()}));
+                        loadException = e;
+                    }catch(BagNoDataException e){
+                        log.error(Context.getMessage("ValidateBagsHandler.BagNoDataException",new String [] {e.getMessage()}));
+                        loadException = e;
+                    }catch(Exception e){
+                        log.error(Context.getMessage("ValidateBagsHandler.Exception",new String [] {e.getMessage()}));
+                        loadException = e;
+                    }
+                    
+                    if(loadException != null){
+                        loadExceptions.add(loadException);                        
+                    }else{
 
-                    if(getBagValidateParams().isValid()){                
-                        ParallelManifestChecksumVerifier manifestVerifier = new ParallelManifestChecksumVerifier();
-                        ValidVerifierImpl validVerifier = new ValidVerifierImpl(completeVerifier, manifestVerifier);                          
+                        //validate bag                    
+                        CompleteVerifierImpl completeVerifier = new CompleteVerifierImpl();
+
+                        if(getBagValidateParams().isValid()){                
+                            ParallelManifestChecksumVerifier manifestVerifier = new ParallelManifestChecksumVerifier();
+                            ValidVerifierImpl validVerifier = new ValidVerifierImpl(completeVerifier, manifestVerifier);                          
+
+                            result = bag.validateBag(validVerifier);
+                            valid = result.isSuccess();
+                            complete = valid;
+                        }else{                        
+                            result = bag.completeBag(completeVerifier);
+                            valid = false;
+                            complete = result.isSuccess();
+                        }
                         
-                        result = bag.validateBag(validVerifier);
-                        valid = result.isSuccess();
-                        complete = valid;
-                    }else{                        
-                        result = bag.completeBag(completeVerifier);
-                        valid = false;
-                        complete = result.isSuccess();
                     }
                     
                     BagValidationResult vresult = new BagValidationResult(
@@ -306,6 +336,9 @@ public final class BagValidationResultPanel extends JPanel{
                         }
                         //bag is geldig
                         else{
+                            
+                            numValid++;
+                            
                             log.error(
                                 Context.getMessage(
                                     "ValidateBagsHandler.validateBag.success",
@@ -315,9 +348,7 @@ public final class BagValidationResultPanel extends JPanel{
                         }
                     }
                     //bag is niet volledig
-                    else{
-                        
-                        numValid++;
+                    else if(loadException == null){                        
                         
                         log.error(
                             Context.getMessage(
@@ -348,6 +379,12 @@ public final class BagValidationResultPanel extends JPanel{
             }catch(Exception e){
                 log.error(e.getMessage());
             }            
+            
+            if(!loadExceptions.isEmpty()){
+                String message = Context.getMessage("ValidateBagsHandler.LoadException");
+                log.error(message);
+                SwingUtils.ShowError(null,message);
+            }
           
             return null;
         }        
