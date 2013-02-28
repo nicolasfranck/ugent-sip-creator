@@ -98,7 +98,7 @@ abstract public class AbstractRenamer {
         for(int i = 0;i < pairs.size();i++){
             RenameFilePair pair = pairs.get(i);
             
-            log.debug(pair.getSource()+" => "+pair.getTarget());
+            log.error(pair.getSource()+" => "+pair.getTarget());
             
             pair.setSuccess(false);
             l.onRenameStart(pair,i);            
@@ -112,18 +112,16 @@ abstract public class AbstractRenamer {
                         //Windows: A.TXT levert true op, wanneer enkel a.txt bestaat (file existence check is case insensitive).
                         //kan dus a.txt naar A.txt hernoemen, hoewel file check true oplevert..
                         if(isWindowsOS){                            
-                            log.error("Windows systeem gedetecteerd!");
+                            log.error("Windows systeem gedetecteerd!");                            
                             if(pair.getTarget().getName().equals(pair.getSource().getName())){
                                 throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
                             }
+                            pair.setSuccess(true);
                         }else{
                             throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
                         }                        
                         
-                    }/*else if(!pair.getTarget().getParentFile().canWrite()){
-                        throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
-                    }*/
-                    else if(!pair.getTarget().getParentFile().canWrite()){
+                    }else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }else{
                         pair.setSuccess(true);                        
@@ -135,16 +133,16 @@ abstract public class AbstractRenamer {
                         //kan dus a.txt naar A.txt hernoemen, hoewel file check true oplevert..
                         if(isWindowsOS){                            
                             log.error("Windows systeem gedetecteerd!");
+                            
                             if(pair.getTarget().getName().equals(pair.getSource().getName())){
                                 throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
+                            }else{                                
+                                pair.setSuccess(pair.getSource().renameTo(pair.getTarget()));
                             }
                         }else{
                             throw new TargetExistsException("target file "+pair.getTarget().getAbsolutePath()+" already exists");                        
                         } 
-                    }/*else if(!pair.getTarget().getParentFile().canWrite()){
-                        throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
-                    }*/
-                    else if(!pair.getTarget().getParentFile().canWrite()){
+                    }else if(!pair.getTarget().getParentFile().canWrite()){
                         throw new ParentNotWritableException("cannot write to "+pair.getTarget().getParentFile().getAbsolutePath());                        
                     }
                     else{
@@ -158,11 +156,12 @@ abstract public class AbstractRenamer {
                             /*
                                 *  TODO: in Windows wordt target niet overschreven.
                                 Zie: http://stackoverflow.com/questions/595631/how-to-atomically-rename-a-file-in-java-even-if-the-dest-file-already-exists
-                                */                              
+                                */                                  
                             pair.setSuccess(pair.getSource().renameTo(pair.getTarget()));                              
                         }                        
                     }
                 }
+                log.error(pair.getSource()+" => "+pair.getTarget()+", success: "+pair.isSuccess());
                 if(pair.isSuccess()){
                     numSuccess++;
                     l.onRenameSuccess(pair,i);
