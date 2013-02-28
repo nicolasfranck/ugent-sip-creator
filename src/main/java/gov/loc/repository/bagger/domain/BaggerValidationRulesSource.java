@@ -106,7 +106,7 @@ public class BaggerValidationRulesSource extends DefaultRulesSource {
         createBagsParamsRules.add(bagInPlaceOutputDir);*/
         
         
-        Constraint metadataPaths = regexp("^[a-zA-Z0-9_\\-\\.]*(?:,[a-zA-Z0-9_\\-\\.]+)*$");
+        Constraint metadataPaths = regexp("^(?:[a-zA-Z0-9_\\-\\.]+(?:,[a-zA-Z0-9_\\-\\.]+)*)*$");
         createBagsParamsRules.add(value("metadataPaths",metadataPaths));        
         addRules(createBagsParamsRules);
         
