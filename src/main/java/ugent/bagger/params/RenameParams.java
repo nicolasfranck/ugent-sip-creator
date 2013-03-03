@@ -18,7 +18,25 @@ public class RenameParams {
     boolean renameExtension = false;
     boolean recursive = false;
     String prefix;
-    String postfix;    
+    String postfix;
+    
+    public RenameParams(RenameParams params){
+        source = params.source;
+        destination = params.destination;
+        copy = params.copy;
+        regex = params.regex;
+        onErrorAction = params.onErrorAction;
+        ignoreCase = params.ignoreCase;
+        overWrite = params.overWrite;
+        simulateOnly = params.simulateOnly;
+        renameExtension = params.renameExtension;
+        recursive = params.recursive;
+        prefix = params.prefix;
+        postfix = params.postfix;
+    }
+    public RenameParams(){
+        
+    }
 
     public boolean isRecursive() {
         return recursive;

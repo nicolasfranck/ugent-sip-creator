@@ -103,16 +103,19 @@ public class Renamer extends AbstractRenamer{
             }
             
             String baseName = sourceFile.getName();
-            String extension = null;            
+            String extension = null;
             
             //extensie ook mee betrekken in rename?
             if(sourceFile.isFile() && !isRenameExtension()){
+                //out.tif => 'out' en '.tif'
+                //out.tar.gz => 'out' en '.tar.gz'
+                
                 boolean isDoubleExtension = false;
                 //controleer speciale gevallen
                 for(String n:doubleFileExtension){
                     if(baseName.toLowerCase().endsWith("."+n)){
                         //en niet 'extension = n', want de test wordt case-insensitive uitgevoerd..
-                        extension = baseName.substring(baseName.length() - n.length());
+                        extension = baseName.substring(baseName.length() - n.length() - 1);
                         isDoubleExtension = true;
                         baseName = baseName.substring(0,baseName.length() - n.length() - 1);
                         break;
@@ -120,9 +123,10 @@ public class Renamer extends AbstractRenamer{
                 }
                 if(!isDoubleExtension){
                     int pos = baseName.lastIndexOf('.');
-                    extension = pos >= 0 ? baseName.substring(pos + 1):"";
+                    extension = pos >= 0 ? baseName.substring(pos):"";
                     baseName = pos >= 0 ? baseName.substring(0,pos) : baseName;                    
                 }                
+                System.out.println("baseName: "+baseName+", extension: "+extension);
             }            
             
             String newName = null;
@@ -148,7 +152,7 @@ public class Renamer extends AbstractRenamer{
                 newName += getPostfix();                
             }
             if(sourceFile.isFile() && !isRenameExtension()){
-                newName += (extension != null ? "."+extension : "");
+                newName += (extension != null ? extension : "");
             }
             
             if(newName.compareTo(sourceFile.getName()) == 0){                
@@ -164,7 +168,7 @@ public class Renamer extends AbstractRenamer{
     protected ArrayList<RenameFilePair> getFilePairs(){               
         return getFilePairs(getInputFiles());        
     }
-    /*
+    
     public static void main(String [] args){
         Renamer renamer = new Renamer();
         
@@ -175,13 +179,15 @@ public class Renamer extends AbstractRenamer{
             )
         );        
         
-        log.debug("inputFiles: "+files.size());
+        System.out.println("inputFiles: "+files.size());
         renamer.setInputFiles(files);
-        renamer.setSource("TXT");
-        renamer.setDestination("txt");        
+        renamer.setSource("a");
+        renamer.setDestination("c");        
         renamer.setSimulateOnly(false); 
-        renamer.setRenameExtension(true);
+        renamer.setRenameExtension(false);
         renamer.setRecursive(true);
+        renamer.setSimulateOnly(true);
+        renamer.setPostfix(".doc");
         //renamer.setPrefix("rug01-");
         //renamer.setPostfix("-post");
         
@@ -194,14 +200,14 @@ public class Renamer extends AbstractRenamer{
             }
             @Override
             public ErrorAction onError(RenameFilePair pair, RenameError errorType, String errorStr, int index) {
-                log.debug("error: "+errorStr);                
+                System.out.println("error: "+errorStr);                
                 return ErrorAction.skip;
             }
             @Override
             public void onRenameStart(RenameFilePair pair, int index) {
-                log.debug("source: "+pair.getSource()+" => "+pair.getTarget());
+                System.out.println("source: "+pair.getSource()+" => "+pair.getTarget());
             }            
         });
         renamer.rename();        
-    }*/
+    }
 }
