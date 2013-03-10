@@ -13,6 +13,9 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.binding.form.FormModel;
@@ -148,7 +151,7 @@ public final class BagInfoForm extends AbstractForm {
             if (keys != null){
                 for(Iterator<String> iter = keys.iterator();iter.hasNext();){
                     final String key = (String) iter.next();                    
-                    ArrayList<String>values = fieldMap.get(key);                 
+                    final ArrayList<String>values = fieldMap.get(key);                 
                     
                     boolean isReadOnly = baginfoReadonlyFields.contains(key);
                     
@@ -191,16 +194,47 @@ public final class BagInfoForm extends AbstractForm {
                         if(value.length() > 50){
                             componentType = BagInfoField.TEXTAREA_COMPONENT;
                         }
+                        
+                        final int thisIndex = i;
                         switch(componentType){
                             case BagInfoField.TEXTAREA_COMPONENT:
                                 JComponent[] tlist = formBuilder.addTextArea(key,false,key,removeButton, "");
                                 JComponent textarea = tlist[index];
-                                textarea.setEnabled(!isReadOnly);                             
-                                ((NoTabTextArea) textarea).setText(value);
-                                ((NoTabTextArea) textarea).setBorder(new EmptyBorder(1,1,1,1));
-                                ((NoTabTextArea) textarea).setLineWrap(true);                                
-                                if (rowCount == 1) {
+                                textarea.setEnabled(!isReadOnly);
+                                NoTabTextArea area = (NoTabTextArea)textarea;
+                                area.setText(value);
+                                area.setBorder(new EmptyBorder(1,1,1,1));
+                                area.setLineWrap(true);                                
+                                if(rowCount == 1){
                                     focusField = textarea;
+                                }
+                                if(!isReadOnly){
+                                    area.getDocument().addDocumentListener(new DocumentListener(){
+
+                                        @Override
+                                        public void insertUpdate(DocumentEvent de) {
+                                            Document doc = de.getDocument();
+                                            try{                                                
+                                                values.set(thisIndex,doc.getText(0,doc.getLength()));
+                                            }catch(Exception e){}
+                                            
+                                        }
+
+                                        @Override
+                                        public void removeUpdate(DocumentEvent de) {
+                                            Document doc = de.getDocument();
+                                            try{                                                
+                                                values.set(thisIndex,doc.getText(0,doc.getLength()));
+                                            }catch(Exception e){}
+                                            
+                                        }
+
+                                        @Override
+                                        public void changedUpdate(DocumentEvent de) {
+                                            
+                                        }
+                                    
+                                    });
                                 }
                                 break;
                             case BagInfoField.TEXTFIELD_COMPONENT:
@@ -210,6 +244,36 @@ public final class BagInfoForm extends AbstractForm {
                                 ((JTextField) comp).setText(value);
                                 if(rowCount == 1){
                                     focusField = comp;
+                                }
+                                if(!isReadOnly){
+                                    JTextField field = (JTextField)comp;
+                                    field.getDocument().addDocumentListener(new DocumentListener(){
+
+                                        @Override
+                                        public void insertUpdate(DocumentEvent de) {
+                                            Document doc = de.getDocument();
+                                            try{                                                
+                                                values.set(thisIndex,doc.getText(0,doc.getLength()));
+                                            }catch(Exception e){}
+                                            
+                                        }
+
+                                        @Override
+                                        public void removeUpdate(DocumentEvent de) {
+                                            Document doc = de.getDocument();
+                                            try{                                                
+                                                values.set(thisIndex,doc.getText(0,doc.getLength()));
+                                            }catch(Exception e){}
+                                            
+                                        }
+
+                                        @Override
+                                        public void changedUpdate(DocumentEvent de) {
+                                            
+                                        }
+                                    
+                                    });
+                                    
                                 }
                                 break;
                         }  
