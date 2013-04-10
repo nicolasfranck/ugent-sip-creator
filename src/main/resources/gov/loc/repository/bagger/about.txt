@@ -1,26 +1,22 @@
-<table>
-<tr>
-<td><img src="image:about.main" border="0" alt=""></td>
-<td valign="top">
-<p>
-<b>Description</b>
-<p>
-The Bagger application creates and deposits bags. <br> Using the BagIt specification. <br>
-<br>
-<p>
-<b>Bagger Application</b>
-<p>
-Version: 2.1.2 <br>
-<br>
-<p>
-<b>Bag It Library</b>
-<p>
-Version: 3.13 <br>
-<br>
-<p>
-<b>Distribution Site</b>
-<p>
-<a href="http://sourceforge.net/projects/loc-xferutils/">http://sourceforge.net/projects/loc-xferutils/</a>
-</td>
-</tr>
-</table>
+<img src="image:about.main" border="0" alt="" style="float:left">
+<div style="float:right;width:400px">
+    
+    <h1>Beschrijving</h1>
+    <p>SIP Creator is een gebruiksvriendelijke software die toelaat 
+        om digitale bestanden en een uitgebreide bijhorende set metadata te verpakken in 1 digitaal pakket.            
+    </p>
+    <p>SIP Creator is enerzijds gebaseerd op BagIt, wat toelaat om bestanden te verpakken, veilig te transporteren over een netwerk             
+        en op te slaan op harde schijven. Anderzijds is het gebaseerd op XML en een aantal open metadatastandaarden (DC, EAD, MARC21)             
+        om een zo rijk mogelijke set metadata te kunnen bewaren naast de data. 
+    </p>
+    <p>
+        Bij de ontwikkeling werd vertrokken van de <a href="http://sourceforge.net/projects/loc-xferutils/files/loc-bagger/">Bagger</a> van de Library of Congress.
+    </p>
+    <p>
+    <p>Version: 1.0</p>
+    <p>BagIt Library: 3.13</p>
+    <p><b>Download:</b><br>
+        <a href="http://sourceforge.net/projects/ugentsipcreator/">via SourceForge</a><br>
+        <a href="https://github.com/nicolasfranck/ugent-sip-creator">via Github (voor ontwikkelaars)</a>
+    </p>
+</div>
