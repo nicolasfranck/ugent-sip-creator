@@ -1,6 +1,8 @@
 UGent Sip Creator 1.0
 =======================
 
+The binary must be download here: http://sourceforge.net/projects/ugentsipcreator/
+
 1. Introduction
    ============
 
